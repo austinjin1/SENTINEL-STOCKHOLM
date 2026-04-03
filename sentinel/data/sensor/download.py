@@ -379,3 +379,318 @@ def load_station_catalog(path: str | Path = "data/sensor/station_catalog.json") 
     with open(path, "r", encoding="utf-8") as f:
         records = json.load(f)
     return [StationInfo(**r) for r in records]
+
+
+# ---------------------------------------------------------------------------
+# EPA Water Quality Portal (WQP) — discrete water quality samples
+# ---------------------------------------------------------------------------
+
+# Mapping from SENTINEL canonical parameter names to WQP characteristic names.
+# WQP uses human-readable characteristic names rather than numeric codes.
+WQP_CHARACTERISTIC_NAMES: dict[str, str] = {
+    "DO": "Dissolved oxygen (DO)",
+    "pH": "pH",
+    "SpCond": "Specific conductance",
+    "Temp": "Temperature, water",
+    "Turb": "Turbidity",
+    "ORP": "Oxidation reduction potential (ORP)",
+}
+
+# Reverse lookup: WQP characteristic name -> SENTINEL parameter name
+_WQP_TO_SENTINEL: dict[str, str] = {v: k for k, v in WQP_CHARACTERISTIC_NAMES.items()}
+
+
+def download_wqp(
+    states: Sequence[str] | None = None,
+    parameter_codes: Sequence[str] | None = None,
+    start_date: str | date = "2020-01-01",
+    end_date: str | date = "2024-12-31",
+    output_dir: str | Path = "data/sensor/wqp",
+    *,
+    delay_between_states: float = 2.0,
+) -> dict[str, Path]:
+    """Download discrete water quality samples from the EPA Water Quality Portal.
+
+    Uses ``dataretrieval.wqp.get_results()`` to fetch grab-sample (discrete)
+    lab-analyzed measurements.  These complement USGS continuous IV data with
+    lab-verified values that are typically collected weekly to monthly.
+
+    Parameters
+    ----------
+    states:
+        Two-letter state codes to query (default: all US states).
+    parameter_codes:
+        SENTINEL canonical parameter names to request (e.g. ``["DO", "pH"]``).
+        Default: all 6 SENTINEL parameters.
+    start_date, end_date:
+        Date range for the query.
+    output_dir:
+        Directory for output Parquet files (one per state).
+    delay_between_states:
+        Seconds to wait between state queries (rate limiting).
+
+    Returns
+    -------
+    Mapping of state code -> output Parquet path for states with data.
+    """
+    from dataretrieval import wqp
+
+    states = states or US_STATES
+    if isinstance(start_date, str):
+        start_date = date.fromisoformat(start_date)
+    if isinstance(end_date, str):
+        end_date = date.fromisoformat(end_date)
+
+    # Resolve which WQP characteristic names to request
+    param_names = parameter_codes or list(WQP_CHARACTERISTIC_NAMES.keys())
+    characteristics = [
+        WQP_CHARACTERISTIC_NAMES[p]
+        for p in param_names
+        if p in WQP_CHARACTERISTIC_NAMES
+    ]
+    if not characteristics:
+        raise ValueError(
+            f"No valid WQP characteristic names for parameters: {param_names}"
+        )
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results: dict[str, Path] = {}
+
+    progress = make_progress()
+    with progress:
+        task = progress.add_task("Downloading WQP data", total=len(states))
+        for state in states:
+            try:
+                df, _ = wqp.get_results(
+                    statecode=f"US:{state}",
+                    characteristicName=characteristics,
+                    startDateLo=start_date.strftime("%m-%d-%Y"),
+                    startDateHi=end_date.strftime("%m-%d-%Y"),
+                )
+                if df is not None and not df.empty:
+                    # Add a SENTINEL canonical parameter column
+                    if "CharacteristicName" in df.columns:
+                        df["sentinel_param"] = (
+                            df["CharacteristicName"]
+                            .map(_WQP_TO_SENTINEL)
+                        )
+                    out_path = output_dir / f"wqp_{state}.parquet"
+                    df.to_parquet(out_path)
+                    results[state] = out_path
+                    logger.info(
+                        f"WQP {state}: {len(df)} discrete samples -> {out_path}"
+                    )
+            except Exception as exc:
+                logger.warning(f"WQP download failed for {state}: {exc}")
+
+            progress.advance(task)
+            if delay_between_states > 0:
+                time.sleep(delay_between_states)
+
+    logger.info(
+        f"WQP download complete: {sum(1 for _ in results)} states with data "
+        f"-> {output_dir}"
+    )
+    return results
+
+
+# ---------------------------------------------------------------------------
+# EU Waterbase — EEA water quality bulk download
+# ---------------------------------------------------------------------------
+
+# Canonical URL for the Waterbase disaggregated data CSV (rivers).
+_EU_WATERBASE_URL = (
+    "https://discodata.eea.europa.eu/sql?query="
+    "SELECT%20*%20FROM%20%5BWISE_SOE%5D.%5Blatest%5D.%5BSOE_WISE6_WaterQuality%5D"
+    "&p=1&nrOfHits=100000&mail=null&schema=null"
+)
+
+# Fallback: direct bulk CSV download from EEA data catalogue.
+_EU_WATERBASE_BULK_URL = (
+    "https://cmshare.eea.europa.eu/s/YbfYWHoXxXLSm6n/download"
+)
+
+# Mapping of EU Waterbase determinand codes to SENTINEL canonical names.
+EU_DETERMINAND_TO_SENTINEL: dict[str, str] = {
+    "EEA_3131-01-2": "DO",     # Dissolved oxygen
+    "EEA_3121-01-2": "pH",     # pH
+    "EEA_3123-01-5": "SpCond", # Electrical conductivity (proxy for SpCond)
+    "EEA_3101-01-9": "Temp",   # Water temperature
+    "EEA_3126-01-2": "Turb",   # Turbidity
+    "EEA_3145-01-2": "ORP",    # Oxidation-reduction potential
+}
+
+
+def download_eu_waterbase(
+    output_dir: str | Path = "data/sensor/eu_waterbase",
+    countries: Sequence[str] | None = None,
+) -> Path:
+    """Download EU Waterbase water quality data from the EEA.
+
+    Downloads the Waterbase bulk CSV and optionally filters to specific
+    countries.  The EU Waterbase contains discrete water quality monitoring
+    data from the European Environment Agency (EEA) covering EU member states.
+
+    Parameters
+    ----------
+    output_dir:
+        Directory for the downloaded / processed file.
+    countries:
+        Optional ISO-2 country codes to keep (e.g. ``["SE", "DE", "NL"]``).
+        If *None*, all countries are retained.
+
+    Returns
+    -------
+    Path to the saved Parquet file.
+    """
+    import urllib.request
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    csv_path = output_dir / "waterbase_raw.csv"
+    parquet_path = output_dir / "waterbase.parquet"
+
+    # Download bulk CSV
+    logger.info("Downloading EU Waterbase bulk CSV (this may take several minutes)...")
+    try:
+        urllib.request.urlretrieve(_EU_WATERBASE_BULK_URL, str(csv_path))
+    except Exception as exc:
+        logger.warning(
+            f"Bulk download failed ({exc}); trying DiscoData SQL endpoint..."
+        )
+        urllib.request.urlretrieve(_EU_WATERBASE_URL, str(csv_path))
+
+    logger.info(f"Parsing EU Waterbase CSV: {csv_path}")
+    df = pd.read_csv(csv_path, low_memory=False)
+
+    # Filter to target countries if specified
+    country_col = None
+    for candidate in ("countryCode", "CountryCode", "country_code", "countrycode"):
+        if candidate in df.columns:
+            country_col = candidate
+            break
+    if countries and country_col:
+        df = df[df[country_col].isin(countries)]
+        logger.info(f"Filtered to {len(df)} rows for countries: {countries}")
+
+    # Map determinand codes to SENTINEL parameter names
+    determinand_col = None
+    for candidate in (
+        "observedPropertyDeterminandCode",
+        "Determinand",
+        "determinand_code",
+    ):
+        if candidate in df.columns:
+            determinand_col = candidate
+            break
+    if determinand_col:
+        df["sentinel_param"] = df[determinand_col].map(EU_DETERMINAND_TO_SENTINEL)
+
+    df.to_parquet(parquet_path)
+    logger.info(f"EU Waterbase saved: {len(df)} records -> {parquet_path}")
+
+    # Clean up raw CSV to save disk space
+    try:
+        csv_path.unlink()
+    except OSError:
+        pass
+
+    return parquet_path
+
+
+# ---------------------------------------------------------------------------
+# GEMS/Water (GEMStat) — global water quality data
+# ---------------------------------------------------------------------------
+
+GEMSTAT_SENTINEL_PARAMS: dict[str, str] = {
+    "Dissolved Oxygen": "DO",
+    "pH": "pH",
+    "Electrical Conductivity": "SpCond",
+    "Water Temperature": "Temp",
+    "Turbidity": "Turb",
+    "Oxidation Reduction Potential": "ORP",
+}
+
+
+def download_gemstat(
+    output_dir: str | Path = "data/sensor/gemstat",
+) -> Path:
+    """Download GEMStat global water quality data.
+
+    GEMStat (https://gemstat.org/) is the Global Water Quality database
+    maintained by UNEP.  **Registration is required** to access the data
+    downloads — the data cannot be fetched programmatically without an
+    authenticated session.
+
+    This function provides:
+      1. Instructions for manual download and expected file placement.
+      2. Parsing of the downloaded CSV into a SENTINEL-compatible Parquet
+         file with canonical parameter names.
+
+    Parameters
+    ----------
+    output_dir:
+        Directory where the user should place the downloaded GEMStat CSV
+        and where the processed Parquet will be written.
+
+    Returns
+    -------
+    Path to the processed Parquet file (or the expected path if not yet
+    downloaded).
+
+    Raises
+    ------
+    FileNotFoundError
+        If no GEMStat CSV is found in *output_dir* — with instructions on
+        how to obtain the data.
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    parquet_path = output_dir / "gemstat.parquet"
+
+    # Look for an existing download (any CSV in the output directory)
+    csv_files = sorted(output_dir.glob("*.csv"))
+    if not csv_files:
+        instructions = (
+            "GEMStat data requires manual download from https://gemstat.org/.\n"
+            "Steps:\n"
+            "  1. Register / log in at https://gemstat.org/\n"
+            "  2. Navigate to Data > Data Download\n"
+            "  3. Select parameters: Dissolved Oxygen, pH, Electrical "
+            "Conductivity, Water Temperature, Turbidity, ORP\n"
+            "  4. Select desired countries / river basins\n"
+            "  5. Download the CSV export\n"
+            f"  6. Place the CSV file in: {output_dir.resolve()}\n"
+            "  7. Re-run this function to parse the CSV into Parquet."
+        )
+        logger.warning(instructions)
+        raise FileNotFoundError(
+            f"No GEMStat CSV found in {output_dir}. "
+            "See log output for download instructions."
+        )
+
+    # Parse the first CSV found
+    csv_path = csv_files[0]
+    logger.info(f"Parsing GEMStat CSV: {csv_path}")
+    df = pd.read_csv(csv_path, low_memory=False, encoding="utf-8-sig")
+
+    # Map parameter names to SENTINEL canonical names
+    param_col = None
+    for candidate in (
+        "Parameter",
+        "parameter",
+        "ParameterDescription",
+        "parameter_description",
+    ):
+        if candidate in df.columns:
+            param_col = candidate
+            break
+    if param_col:
+        df["sentinel_param"] = df[param_col].map(GEMSTAT_SENTINEL_PARAMS)
+
+    df.to_parquet(parquet_path)
+    logger.info(f"GEMStat saved: {len(df)} records -> {parquet_path}")
+    return parquet_path

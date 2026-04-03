@@ -457,3 +457,303 @@ def download_all_microbial(
     logger.info(f"Download summary -> {summary_path}")
 
     return summary
+
+
+# ---------------------------------------------------------------------------
+# MGnify aquatic metagenome download
+# ---------------------------------------------------------------------------
+
+MGNIFY_API_BASE = "https://www.ebi.ac.uk/metagenomics/api/v1"
+
+
+def search_mgnify_aquatic(
+    biome: str = "root:Environmental:Aquatic",
+    max_studies: int = 100,
+) -> list[dict]:
+    """Search MGnify for aquatic metagenome studies.
+
+    Parameters
+    ----------
+    biome:
+        MGnify biome lineage filter (default: aquatic environments).
+    max_studies:
+        Maximum number of studies to return.
+
+    Returns
+    -------
+    List of study dicts with keys: accession, bioproject, name, description,
+    biomes, n_samples.
+    """
+    studies: list[dict] = []
+    url = f"{MGNIFY_API_BASE}/studies"
+    params: dict[str, Any] = {
+        "lineage": biome,
+        "ordering": "-samples_count",
+        "page_size": min(max_studies, 100),
+    }
+
+    logger.info(f"Searching MGnify for biome: {biome}")
+
+    while url and len(studies) < max_studies:
+        try:
+            resp = requests.get(url, params=params, timeout=60)
+            resp.raise_for_status()
+            payload = resp.json()
+        except Exception as exc:
+            logger.warning(f"MGnify API request failed: {exc}")
+            break
+
+        for item in payload.get("data", []):
+            if len(studies) >= max_studies:
+                break
+            attrs = item.get("attributes", {})
+            studies.append({
+                "accession": item.get("id", ""),
+                "bioproject": attrs.get("bioproject", ""),
+                "name": attrs.get("study-name", ""),
+                "description": attrs.get("study-abstract", ""),
+                "biomes": [
+                    b.get("id", "")
+                    for b in item.get("relationships", {})
+                    .get("biomes", {})
+                    .get("data", [])
+                ],
+                "n_samples": attrs.get("samples-count", 0),
+            })
+
+        # Follow pagination link; clear params so they aren't doubled
+        next_link = payload.get("links", {}).get("next")
+        url = next_link
+        params = {}
+
+    logger.info(f"MGnify search returned {len(studies)} aquatic studies")
+    return studies
+
+
+def download_mgnify_study(
+    accession: str,
+    output_dir: str | Path,
+    *,
+    timeout: int = 300,
+) -> Path:
+    """Download a MGnify study's OTU/ASV tables and metadata.
+
+    Parameters
+    ----------
+    accession:
+        MGnify study accession (e.g., ``MGYS00001234``).
+    output_dir:
+        Directory for downloaded files.
+    timeout:
+        HTTP request timeout in seconds.
+
+    Returns
+    -------
+    Path to the study output directory containing downloaded files.
+    """
+    output_dir = Path(output_dir) / accession
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Download study metadata
+    study_url = f"{MGNIFY_API_BASE}/studies/{accession}"
+    try:
+        resp = requests.get(study_url, timeout=timeout)
+        resp.raise_for_status()
+        study_meta = resp.json()
+        with open(output_dir / "study_metadata.json", "w", encoding="utf-8") as f:
+            json.dump(study_meta, f, indent=2)
+        logger.info(f"Saved study metadata for {accession}")
+    except Exception as exc:
+        logger.error(f"Failed to download metadata for {accession}: {exc}")
+
+    # Download analyses (OTU/ASV taxonomic abundance tables)
+    analyses_url = f"{MGNIFY_API_BASE}/studies/{accession}/analyses"
+    analysis_params: dict[str, Any] = {"page_size": 100}
+    analysis_ids: list[str] = []
+
+    try:
+        while analyses_url:
+            resp = requests.get(analyses_url, params=analysis_params, timeout=timeout)
+            resp.raise_for_status()
+            payload = resp.json()
+            for item in payload.get("data", []):
+                analysis_ids.append(item.get("id", ""))
+            analyses_url = payload.get("links", {}).get("next")
+            analysis_params = {}
+    except Exception as exc:
+        logger.warning(f"Failed to list analyses for {accession}: {exc}")
+
+    # For each analysis, attempt to download the taxonomic abundance TSV
+    for analysis_id in analysis_ids:
+        dl_url = (
+            f"{MGNIFY_API_BASE}/analyses/{analysis_id}/file/"
+            f"OTU_abundances_v2.tsv"
+        )
+        try:
+            resp = requests.get(dl_url, timeout=timeout, stream=True)
+            if resp.status_code == 200:
+                out_file = output_dir / f"{analysis_id}_otu_abundances.tsv"
+                with open(out_file, "wb") as f:
+                    for chunk in resp.iter_content(chunk_size=8192):
+                        f.write(chunk)
+                logger.info(f"Downloaded OTU table for analysis {analysis_id}")
+            else:
+                # Try BIOM format
+                biom_url = (
+                    f"{MGNIFY_API_BASE}/analyses/{analysis_id}/file/"
+                    f"OTU_abundances.biom"
+                )
+                resp2 = requests.get(biom_url, timeout=timeout, stream=True)
+                if resp2.status_code == 200:
+                    out_file = output_dir / f"{analysis_id}_otu_abundances.biom"
+                    with open(out_file, "wb") as f:
+                        for chunk in resp2.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                    logger.info(
+                        f"Downloaded OTU BIOM for analysis {analysis_id}"
+                    )
+        except Exception as exc:
+            logger.warning(
+                f"Failed to download OTU table for {analysis_id}: {exc}"
+            )
+
+    logger.info(
+        f"Study {accession}: downloaded metadata + "
+        f"{len(analysis_ids)} analysis files -> {output_dir}"
+    )
+    return output_dir
+
+
+def download_mgnify_batch(
+    studies: list[dict],
+    output_dir: str | Path,
+    max_studies: int = 50,
+) -> list[Path]:
+    """Batch download MGnify studies with progress bar.
+
+    Parameters
+    ----------
+    studies:
+        List of study dicts as returned by :func:`search_mgnify_aquatic`.
+    output_dir:
+        Root output directory.
+    max_studies:
+        Maximum number of studies to download.
+
+    Returns
+    -------
+    List of paths to downloaded study directories.
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    targets = studies[:max_studies]
+    results: list[Path] = []
+
+    progress = make_progress()
+    with progress:
+        task = progress.add_task("Downloading MGnify studies", total=len(targets))
+        for study in targets:
+            accession = study.get("accession", "")
+            if not accession:
+                progress.advance(task)
+                continue
+            try:
+                path = download_mgnify_study(accession, output_dir)
+                results.append(path)
+            except Exception as exc:
+                logger.warning(f"Failed to download {accession}: {exc}")
+            progress.advance(task)
+
+    logger.info(
+        f"MGnify batch download: {len(results)}/{len(targets)} studies succeeded"
+    )
+    return results
+
+
+# ---------------------------------------------------------------------------
+# FreshWater Watch citizen science data
+# ---------------------------------------------------------------------------
+
+
+def download_freshwater_watch(output_dir: str | Path) -> Path:
+    """Download FreshWater Watch citizen science data.
+
+    FreshWater Watch data requires registration at
+    https://freshwaterwatch.thewaterhub.org/
+
+    This function processes pre-downloaded CSV exports. Users must:
+      1. Register at https://freshwaterwatch.thewaterhub.org/
+      2. Navigate to the data download portal
+      3. Export data as CSV and place files in ``output_dir``
+
+    The expected CSV columns include: latitude, longitude, date, nitrate,
+    phosphate, turbidity, and other water quality indicators.
+
+    Parameters
+    ----------
+    output_dir:
+        Directory containing pre-downloaded FreshWater Watch CSV exports.
+        Processed outputs will also be written here.
+
+    Returns
+    -------
+    Path to the processed/consolidated output file.
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    csv_files = list(output_dir.glob("*.csv"))
+    if not csv_files:
+        logger.warning(
+            "No FreshWater Watch CSV files found in %s. "
+            "Please download data from https://freshwaterwatch.thewaterhub.org/ "
+            "and place CSV exports in this directory.",
+            output_dir,
+        )
+        # Write instructions file
+        instructions_path = output_dir / "DOWNLOAD_INSTRUCTIONS.txt"
+        instructions_path.write_text(
+            "FreshWater Watch Data Download Instructions\n"
+            "============================================\n\n"
+            "1. Register at https://freshwaterwatch.thewaterhub.org/\n"
+            "2. Log in and navigate to the data download section\n"
+            "3. Select your region/time range of interest\n"
+            "4. Export data as CSV\n"
+            "5. Place the CSV files in this directory\n"
+            "6. Re-run this function to process the data\n",
+            encoding="utf-8",
+        )
+        return instructions_path
+
+    # Consolidate all CSV exports into a single DataFrame
+    import pandas as pd
+
+    frames: list[pd.DataFrame] = []
+    for csv_path in csv_files:
+        try:
+            df = pd.read_csv(csv_path, encoding="utf-8")
+            frames.append(df)
+            logger.info(f"Loaded {csv_path.name}: {len(df)} records")
+        except Exception as exc:
+            logger.warning(f"Failed to read {csv_path.name}: {exc}")
+
+    if not frames:
+        logger.error("No valid CSV files could be loaded")
+        return output_dir
+
+    combined = pd.concat(frames, ignore_index=True)
+
+    # Standardize column names (lowercase, underscores)
+    combined.columns = [
+        c.strip().lower().replace(" ", "_") for c in combined.columns
+    ]
+
+    output_path = output_dir / "freshwater_watch_consolidated.parquet"
+    combined.to_parquet(output_path, index=False)
+    logger.info(
+        f"FreshWater Watch: consolidated {len(combined)} records "
+        f"from {len(csv_files)} files -> {output_path}"
+    )
+
+    return output_path

@@ -500,3 +500,458 @@ def _find_artifact(directory: Path, suffix: str = "") -> Path:
             f"No .qza artifact found in {directory} (suffix={suffix!r})"
         )
     return candidates[0]
+
+
+# ---------------------------------------------------------------------------
+# MicroBiomeNet input preparation
+# ---------------------------------------------------------------------------
+
+
+def extract_representative_sequences(
+    rep_seqs_artifact_or_fasta: str | Path,
+    output_dir: str | Path,
+) -> dict[str, str]:
+    """Extract DNA sequences for each ASV from a QIIME 2 artifact or FASTA.
+
+    These sequences are intended for DNABERT-S phylogenetic-aware encoding
+    in MicroBiomeNet.
+
+    Parameters
+    ----------
+    rep_seqs_artifact_or_fasta:
+        Path to a QIIME 2 rep-seqs artifact (``.qza``) or a plain FASTA file.
+    output_dir:
+        Directory where the output JSON will be written.
+
+    Returns
+    -------
+    Dict mapping ASV ID to its DNA sequence string.
+    """
+    rep_seqs_artifact_or_fasta = Path(rep_seqs_artifact_or_fasta)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    fasta_path: Path
+
+    # If .qza, export to FASTA first
+    if rep_seqs_artifact_or_fasta.suffix == ".qza":
+        export_dir = output_dir / "_qza_export"
+        export_dir.mkdir(parents=True, exist_ok=True)
+        cmd = [
+            "qiime", "tools", "export",
+            "--input-path", str(rep_seqs_artifact_or_fasta),
+            "--output-path", str(export_dir),
+        ]
+        logger.info(f"Exporting .qza to FASTA: {rep_seqs_artifact_or_fasta.name}")
+        try:
+            subprocess.run(cmd, capture_output=True, text=True, check=True)
+        except FileNotFoundError:
+            logger.error(
+                "QIIME 2 not found. Install via: conda install -c qiime2 qiime2"
+            )
+            raise
+        except subprocess.CalledProcessError as exc:
+            logger.error(f"QIIME 2 export failed: {exc.stderr}")
+            raise
+
+        # qiime tools export writes dna-sequences.fasta
+        fasta_path = export_dir / "dna-sequences.fasta"
+        if not fasta_path.exists():
+            # Try alternative naming
+            fasta_candidates = list(export_dir.glob("*.fasta")) + list(
+                export_dir.glob("*.fa")
+            )
+            if not fasta_candidates:
+                raise FileNotFoundError(
+                    f"No FASTA file found after exporting {rep_seqs_artifact_or_fasta}"
+                )
+            fasta_path = fasta_candidates[0]
+    else:
+        fasta_path = rep_seqs_artifact_or_fasta
+
+    # Parse FASTA
+    sequences: dict[str, str] = {}
+    current_id: str | None = None
+    current_seq: list[str] = []
+
+    with open(fasta_path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith(">"):
+                if current_id is not None:
+                    sequences[current_id] = "".join(current_seq)
+                # Take the first whitespace-delimited token as the ID
+                current_id = line[1:].split()[0]
+                current_seq = []
+            elif current_id is not None:
+                current_seq.append(line)
+        # Last record
+        if current_id is not None:
+            sequences[current_id] = "".join(current_seq)
+
+    # Save as JSON
+    json_path = output_dir / "representative_sequences.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(sequences, f, indent=2)
+
+    logger.info(
+        f"Extracted {len(sequences)} representative sequences -> {json_path}"
+    )
+    return sequences
+
+
+def annotate_zero_inflation(
+    abundance_table: pd.DataFrame,
+    min_prevalence: float = 0.1,
+) -> pd.DataFrame:
+    """Classify zeros in an ASV abundance table as structural or sampling.
+
+    For each zero entry, determines whether the zero is:
+    - ``structural``: the taxon is truly absent (prevalence < *min_prevalence*
+      across all samples)
+    - ``sampling``: the taxon is present in enough samples to expect detection,
+      but was below detection limit in this particular sample
+
+    This annotation is critical for MicroBiomeNet's zero-inflation gating
+    mechanism.
+
+    Parameters
+    ----------
+    abundance_table:
+        ASV table of shape ``(n_samples, n_features)`` with raw counts.
+    min_prevalence:
+        Prevalence threshold (fraction of samples a taxon must appear in
+        to be considered truly present in the community).
+
+    Returns
+    -------
+    DataFrame of the same shape with string values: ``"observed"``,
+    ``"structural_zero"``, or ``"sampling_zero"``.
+    """
+    n_samples = abundance_table.shape[0]
+
+    # Prevalence: fraction of samples where each taxon has count > 0
+    prevalence = (abundance_table > 0).sum(axis=0) / n_samples
+
+    # Build annotation matrix
+    annotations = pd.DataFrame(
+        "observed",
+        index=abundance_table.index,
+        columns=abundance_table.columns,
+    )
+
+    # Mask of zeros
+    is_zero = abundance_table == 0
+
+    # Structural zeros: taxon prevalence < min_prevalence
+    structural_taxa = prevalence[prevalence < min_prevalence].index
+    annotations.loc[:, structural_taxa] = annotations.loc[:, structural_taxa].where(
+        ~is_zero[structural_taxa], other="structural_zero"
+    )
+
+    # Sampling zeros: taxon prevalence >= min_prevalence but zero in this sample
+    sampling_taxa = prevalence[prevalence >= min_prevalence].index
+    annotations.loc[:, sampling_taxa] = annotations.loc[:, sampling_taxa].where(
+        ~is_zero[sampling_taxa], other="sampling_zero"
+    )
+
+    n_structural = (annotations == "structural_zero").sum().sum()
+    n_sampling = (annotations == "sampling_zero").sum().sum()
+    n_observed = (annotations == "observed").sum().sum()
+
+    logger.info(
+        f"Zero-inflation annotation: {n_observed} observed, "
+        f"{n_structural} structural zeros, {n_sampling} sampling zeros"
+    )
+
+    return annotations
+
+
+def export_simplex_format(
+    abundance_table: pd.DataFrame | np.ndarray,
+    output_path: str | Path,
+) -> np.ndarray:
+    """Convert raw counts to proportions on the simplex.
+
+    Unlike CLR, this keeps data as relative abundances summing to 1.0 per
+    sample, which is the native format for MicroBiomeNet's neural ODE
+    simplex operations.
+
+    Parameters
+    ----------
+    abundance_table:
+        Raw count matrix of shape ``(n_samples, n_features)``.
+    output_path:
+        Path (without extension) for output files. Writes both a ``.npy``
+        array and a ``_features.json`` with feature names.
+
+    Returns
+    -------
+    Proportions array of shape ``(n_samples, n_features)``.
+    """
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    if isinstance(abundance_table, pd.DataFrame):
+        feature_names = list(abundance_table.columns)
+        values = abundance_table.values.astype(np.float64)
+    else:
+        feature_names = [f"feature_{i}" for i in range(abundance_table.shape[1])]
+        values = abundance_table.astype(np.float64)
+
+    # Compute per-sample proportions (avoid division by zero)
+    row_sums = values.sum(axis=1, keepdims=True)
+    row_sums[row_sums == 0] = 1.0
+    proportions = values / row_sums
+
+    # Verify simplex constraint
+    assert np.allclose(
+        proportions.sum(axis=1), 1.0, atol=1e-10
+    ), "Proportions do not sum to 1.0 for all samples"
+
+    proportions = proportions.astype(np.float32)
+
+    # Save array
+    npy_path = output_path.with_suffix(".npy")
+    np.save(npy_path, proportions)
+
+    # Save feature names
+    features_path = output_path.with_name(output_path.stem + "_features.json")
+    with open(features_path, "w", encoding="utf-8") as f:
+        json.dump(feature_names, f, indent=2)
+
+    logger.info(
+        f"Simplex export: {proportions.shape[0]} samples x "
+        f"{proportions.shape[1]} features -> {npy_path}"
+    )
+
+    return proportions
+
+
+def extract_temporal_metadata(
+    metadata: pd.DataFrame,
+    timestamp_cols: Sequence[str] | None = None,
+) -> pd.DataFrame:
+    """Parse and standardize temporal metadata for MicroBiomeNet's ODE modeling.
+
+    Scans metadata columns for date/time information and converts to Unix
+    timestamps, which are required for MicroBiomeNet's simplex ODE temporal
+    trajectory modeling.
+
+    Parameters
+    ----------
+    metadata:
+        Sample metadata DataFrame (index = sample IDs).
+    timestamp_cols:
+        Explicit column names containing timestamps. If *None*, the function
+        auto-detects columns by searching for common names like
+        ``collection_date``, ``collection_timestamp``, ``date``, etc.
+
+    Returns
+    -------
+    DataFrame indexed by sample ID with columns:
+    - ``timestamp_unix``: Unix timestamp (seconds since epoch)
+    - ``timestamp_iso``: ISO 8601 formatted string
+    - ``source_column``: which metadata column the timestamp came from
+    """
+    CANDIDATE_COLS = [
+        "collection_date",
+        "collection_timestamp",
+        "date",
+        "sample_date",
+        "sampling_date",
+        "datetime",
+        "collection_time",
+        "date_collected",
+        "event_date",
+        "eventDate",
+        "collectionDate",
+    ]
+
+    if timestamp_cols is None:
+        # Auto-detect: check for known column names (case-insensitive)
+        col_lower_map = {c.lower(): c for c in metadata.columns}
+        timestamp_cols = []
+        for candidate in CANDIDATE_COLS:
+            if candidate.lower() in col_lower_map:
+                timestamp_cols.append(col_lower_map[candidate.lower()])
+        if not timestamp_cols:
+            # Fallback: try columns with "date" or "time" in the name
+            timestamp_cols = [
+                c for c in metadata.columns
+                if "date" in c.lower() or "time" in c.lower()
+            ]
+
+    if not timestamp_cols:
+        logger.warning(
+            "No timestamp columns found in metadata. "
+            "Provide explicit column names via timestamp_cols parameter."
+        )
+        return pd.DataFrame(
+            columns=["timestamp_unix", "timestamp_iso", "source_column"],
+            index=metadata.index,
+        )
+
+    logger.info(f"Detected timestamp columns: {timestamp_cols}")
+
+    # Try each candidate column until we get valid parses
+    best_col: str | None = None
+    best_parsed: pd.Series | None = None
+    best_valid_count = 0
+
+    for col in timestamp_cols:
+        try:
+            parsed = pd.to_datetime(metadata[col], errors="coerce", utc=True)
+            valid_count = parsed.notna().sum()
+            if valid_count > best_valid_count:
+                best_col = col
+                best_parsed = parsed
+                best_valid_count = valid_count
+        except Exception:
+            continue
+
+    if best_parsed is None or best_valid_count == 0:
+        logger.warning("Could not parse any timestamp columns")
+        return pd.DataFrame(
+            columns=["timestamp_unix", "timestamp_iso", "source_column"],
+            index=metadata.index,
+        )
+
+    logger.info(
+        f"Using column '{best_col}': {best_valid_count}/{len(metadata)} "
+        f"valid timestamps"
+    )
+
+    result = pd.DataFrame(index=metadata.index)
+    result["timestamp_unix"] = (
+        best_parsed.astype("int64") // 10**9
+    ).astype("Int64")  # nullable integer for NaT
+    result["timestamp_iso"] = best_parsed.dt.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+    result["timestamp_iso"] = result["timestamp_iso"].where(best_parsed.notna(), other=None)
+    result["source_column"] = best_col
+
+    return result
+
+
+def prepare_microbiomenet_inputs(
+    biom_path: str | Path,
+    metadata_path: str | Path,
+    output_dir: str | Path,
+    *,
+    rep_seqs_path: str | Path | None = None,
+    pseudocount: float = DEFAULT_PSEUDOCOUNT,
+    min_abundance: float = DEFAULT_MIN_ABUNDANCE,
+    max_features: int = DEFAULT_MAX_FEATURES,
+    min_prevalence: float = 0.1,
+) -> dict:
+    """Full pipeline producing all input formats needed by MicroBiomeNet.
+
+    Generates:
+      - CLR-transformed matrix (via existing :func:`preprocess_biom`)
+      - Raw simplex proportions (:func:`export_simplex_format`)
+      - Representative DNA sequences (:func:`extract_representative_sequences`)
+      - Zero-inflation annotations (:func:`annotate_zero_inflation`)
+      - Temporal metadata (:func:`extract_temporal_metadata`)
+
+    Parameters
+    ----------
+    biom_path:
+        Path to BIOM file (JSON or HDF5 format).
+    metadata_path:
+        Path to sample metadata TSV.
+    output_dir:
+        Root output directory for all generated files.
+    rep_seqs_path:
+        Path to representative sequences (``.qza`` or FASTA). If *None*,
+        the DNA sequence extraction step is skipped.
+    pseudocount:
+        CLR pseudocount.
+    min_abundance:
+        Minimum relative abundance threshold.
+    max_features:
+        Maximum ASV features.
+    min_prevalence:
+        Prevalence threshold for zero-inflation annotation.
+
+    Returns
+    -------
+    Dict with paths to all output files:
+      - ``clr_matrix``: path to CLR .npy file
+      - ``simplex``: path to simplex proportions .npy file
+      - ``rep_seqs``: path to representative sequences JSON (or None)
+      - ``zero_inflation``: path to zero-inflation annotation parquet
+      - ``temporal_metadata``: path to temporal metadata parquet
+      - ``feature_info``: path to feature info JSON
+    """
+    from biom import load_table
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # --- 1. Run existing CLR pipeline ---
+    logger.info("Step 1/5: CLR transformation via preprocess_biom")
+    clr_result = preprocess_biom(
+        biom_path,
+        output_dir / "clr",
+        metadata_path=metadata_path,
+        pseudocount=pseudocount,
+        min_abundance=min_abundance,
+        max_features=max_features,
+    )
+
+    # --- 2. Load raw table for simplex + zero-inflation ---
+    logger.info("Step 2/5: Simplex proportions export")
+    table = load_table(str(biom_path))
+    raw_df = pd.DataFrame(
+        table.to_dataframe().T.values,
+        index=table.ids(axis="sample"),
+        columns=table.ids(axis="observation"),
+    )
+    # Filter to same features as CLR output
+    feature_names = clr_result["feature_names"]
+    available_features = [f for f in feature_names if f in raw_df.columns]
+    raw_filtered = raw_df[available_features]
+
+    simplex_path = output_dir / "simplex" / "proportions"
+    export_simplex_format(raw_filtered, simplex_path)
+
+    # --- 3. Zero-inflation annotation ---
+    logger.info("Step 3/5: Zero-inflation annotation")
+    zero_annot = annotate_zero_inflation(raw_filtered, min_prevalence=min_prevalence)
+    zero_annot_path = output_dir / "zero_inflation_annotations.parquet"
+    zero_annot.to_parquet(zero_annot_path)
+
+    # --- 4. Representative sequences ---
+    rep_seqs_output: str | None = None
+    if rep_seqs_path is not None:
+        logger.info("Step 4/5: Representative sequence extraction")
+        seqs = extract_representative_sequences(
+            rep_seqs_path, output_dir / "rep_seqs"
+        )
+        rep_seqs_output = str(output_dir / "rep_seqs" / "representative_sequences.json")
+    else:
+        logger.info("Step 4/5: Skipping representative sequences (no path provided)")
+
+    # --- 5. Temporal metadata ---
+    logger.info("Step 5/5: Temporal metadata extraction")
+    metadata = pd.read_csv(metadata_path, sep="\t", index_col=0)
+    temporal = extract_temporal_metadata(metadata)
+    temporal_path = output_dir / "temporal_metadata.parquet"
+    temporal.to_parquet(temporal_path)
+
+    outputs = {
+        "clr_matrix": str(output_dir / "clr" / "clr_matrix.npy"),
+        "simplex": str(simplex_path.with_suffix(".npy")),
+        "rep_seqs": rep_seqs_output,
+        "zero_inflation": str(zero_annot_path),
+        "temporal_metadata": str(temporal_path),
+        "feature_info": str(output_dir / "clr" / "feature_info.json"),
+    }
+
+    # Save manifest
+    manifest_path = output_dir / "microbiomenet_manifest.json"
+    with open(manifest_path, "w", encoding="utf-8") as f:
+        json.dump(outputs, f, indent=2)
+
+    logger.info(f"MicroBiomeNet inputs ready -> {manifest_path}")
+    return outputs
