@@ -1,0 +1,49 @@
+name: sentinel
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.11
+  - pytorch>=2.1
+  - torchvision
+  - torchaudio
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - pip
+  - pip:
+    # Remote sensing & geospatial
+    - earthengine-api
+    - pystac-client
+    - planetary-computer
+    - rasterio
+    - geopandas
+    - shapely
+    - leafmap
+
+    # Data access
+    - dataretrieval
+    - GEOparse
+
+    # Deep learning
+    - transformers
+    - timm
+    - segmentation-models-pytorch
+    - stable-baselines3
+
+    # Bioinformatics
+    - biom-format
+
+    # Visualization
+    - umap-learn
+    - plotly
+
+    # Utilities
+    - tqdm
+    - pyyaml
+    - wandb
+    - rich
