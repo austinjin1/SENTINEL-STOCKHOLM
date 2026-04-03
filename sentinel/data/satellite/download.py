@@ -460,3 +460,305 @@ def download_satellite(
     logger.info(f"Metadata saved to {meta_path}")
 
     return result
+
+
+# ---------------------------------------------------------------------------
+# Sentinel-3 OLCI constants and downloader
+# ---------------------------------------------------------------------------
+
+S3_OLCI_COLLECTION = "COPERNICUS/S3/OLCI"
+S3_OLCI_BANDS = [f"Oa{str(i).zfill(2)}_radiance" for i in range(1, 22)]  # 21 bands
+
+
+class Sentinel3OLCIDownloader:
+    """Download Sentinel-3 OLCI data via Google Earth Engine.
+
+    S3 OLCI has 300 m resolution and near-daily revisit.  Tiles are exported
+    at 512 px, giving a ground footprint of ~15.36 km x 15.36 km.
+    """
+
+    S3_RESOLUTION_M: float = 300.0
+    S3_TILE_SIZE_PX: int = 512
+    S3_TILE_SIZE_KM: float = 300.0 * 512 / 1000.0  # 153.6 km — see note below
+
+    def __init__(self, project: str | None = None) -> None:
+        import ee
+
+        try:
+            ee.Initialize(project=project)
+        except Exception:
+            ee.Authenticate()
+            ee.Initialize(project=project)
+        self._ee = ee
+        logger.info("GEE initialized for Sentinel-3 OLCI")
+
+    def search(self, req: DownloadRequest) -> list[dict[str, Any]]:
+        """Search the OLCI collection and return image metadata."""
+        ee = self._ee
+        aoi = ee.Geometry.Rectangle(req.aoi.to_list())
+        collection = (
+            ee.ImageCollection(S3_OLCI_COLLECTION)
+            .filterBounds(aoi)
+            .filterDate(req.start_date.isoformat(), req.end_date.isoformat())
+            .select(S3_OLCI_BANDS)
+            .sort("system:time_start")
+        )
+        count = collection.size().getInfo()
+        logger.info(f"Found {count} Sentinel-3 OLCI scenes")
+
+        metadata: list[dict[str, Any]] = []
+        image_list = collection.toList(count)
+        for i in range(count):
+            img = ee.Image(image_list.get(i))
+            props = img.getInfo()["properties"]
+            metadata.append(
+                {
+                    "id": props.get("system:index", f"s3_scene_{i}"),
+                    "datetime": datetime.utcfromtimestamp(
+                        props["system:time_start"] / 1000
+                    ).isoformat(),
+                    "source": "GEE",
+                    "collection": S3_OLCI_COLLECTION,
+                }
+            )
+        return metadata
+
+    def export_tiles(
+        self,
+        req: DownloadRequest,
+        *,
+        max_images: int | None = None,
+        drive_folder: str = "SENTINEL_S3_tiles",
+    ) -> list[str]:
+        """Export Sentinel-3 OLCI tiles as GeoTIFFs to Google Drive.
+
+        Tiles are 512 x 512 pixels at 300 m resolution (15.36 km x 15.36 km
+        ground footprint per tile side).
+
+        Returns a list of GEE task IDs.
+        """
+        ee = self._ee
+        aoi = ee.Geometry.Rectangle(req.aoi.to_list())
+        collection = (
+            ee.ImageCollection(S3_OLCI_COLLECTION)
+            .filterBounds(aoi)
+            .filterDate(req.start_date.isoformat(), req.end_date.isoformat())
+            .select(S3_OLCI_BANDS)
+            .sort("system:time_start")
+        )
+        count = collection.size().getInfo()
+        if max_images:
+            count = min(count, max_images)
+
+        task_ids: list[str] = []
+        image_list = collection.toList(count)
+        for i in range(count):
+            img = ee.Image(image_list.get(i))
+            props = img.getInfo()["properties"]
+            scene_id = props.get("system:index", f"s3_{i}").replace("/", "_")
+
+            task = ee.batch.Export.image.toDrive(
+                image=img.toFloat(),
+                description=f"S3_{scene_id}",
+                folder=drive_folder,
+                region=aoi,
+                scale=self.S3_RESOLUTION_M,
+                maxPixels=1e9,
+                crs="EPSG:4326",
+                dimensions=f"{self.S3_TILE_SIZE_PX}x{self.S3_TILE_SIZE_PX}",
+                fileFormat="GeoTIFF",
+            )
+            task.start()
+            task_ids.append(task.id)
+            logger.info(f"Started S3 OLCI export task: {task.id} ({scene_id})")
+
+        return task_ids
+
+
+# ---------------------------------------------------------------------------
+# JRC Global Surface Water mask
+# ---------------------------------------------------------------------------
+
+
+def download_jrc_water_mask(
+    aoi: AOI | list[float],
+    output_dir: str | Path,
+    *,
+    occurrence_threshold: float = 50.0,
+    gee_project: str | None = None,
+) -> Path:
+    """Download a binary water mask from JRC Global Surface Water.
+
+    Uses the ``occurrence`` band of ``JRC/GSW1_4/GlobalSurfaceWater``,
+    thresholding at *occurrence_threshold* % to produce a binary mask.
+
+    Parameters
+    ----------
+    aoi:
+        Bounding box as :class:`AOI` or ``[west, south, east, north]``.
+    output_dir:
+        Directory to write the output GeoTIFF.
+    occurrence_threshold:
+        Minimum water occurrence percentage (0--100) to classify a pixel as
+        water.  Default 50 %.
+    gee_project:
+        GEE project ID for ``ee.Initialize``.
+
+    Returns
+    -------
+    Path to the binary water mask GeoTIFF (pixel value 1 = water,
+    0 = non-water).
+    """
+    import ee
+
+    if isinstance(aoi, (list, tuple)):
+        aoi = AOI(*aoi)
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        ee.Initialize(project=gee_project)
+    except Exception:
+        ee.Authenticate()
+        ee.Initialize(project=gee_project)
+
+    geometry = ee.Geometry.Rectangle(aoi.to_list())
+
+    gsw = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select("occurrence")
+    water_mask = gsw.gte(occurrence_threshold).rename("water_mask")
+
+    out_path = output_dir / "jrc_water_mask.tif"
+
+    # Export to Drive, then the user downloads; or use getDownloadURL for
+    # small regions.  Here we use getDownloadURL for convenience.
+    url = water_mask.getDownloadURL(
+        {
+            "region": geometry,
+            "scale": 30,  # JRC native resolution
+            "format": "GEO_TIFF",
+            "crs": "EPSG:4326",
+        }
+    )
+
+    import urllib.request
+
+    logger.info(f"Downloading JRC water mask from {url[:80]}...")
+    urllib.request.urlretrieve(url, str(out_path))
+    logger.info(f"JRC water mask saved to {out_path}")
+    return out_path
+
+
+# ---------------------------------------------------------------------------
+# Unified v2 interface (wraps original + S3 + JRC)
+# ---------------------------------------------------------------------------
+
+
+def download_satellite_v2(
+    aoi: AOI | list[float],
+    start_date: str | date,
+    end_date: str | date,
+    *,
+    backend: Literal["gee", "planetary_computer"] = "gee",
+    output_dir: str | Path = "data/satellite/raw",
+    cloud_max_pct: float = 20.0,
+    include_thermal: bool = True,
+    include_s3_olci: bool = False,
+    include_water_mask: bool = False,
+    max_images: int | None = None,
+    gee_project: str | None = None,
+) -> dict[str, Any]:
+    """Extended unified entry point for satellite data download.
+
+    Wraps :func:`download_satellite` and adds optional Sentinel-3 OLCI
+    download and JRC Global Surface Water mask retrieval.
+
+    Parameters
+    ----------
+    aoi:
+        Bounding box as :class:`AOI` or ``[west, south, east, north]``.
+    start_date, end_date:
+        Date range.
+    backend:
+        ``"gee"`` for Google Earth Engine, ``"planetary_computer"`` for
+        Microsoft Planetary Computer (S2 only).
+    output_dir:
+        Directory for downloaded tiles.
+    cloud_max_pct:
+        Maximum cloud cover percentage.
+    include_thermal:
+        Whether to also download Landsat thermal data (GEE only).
+    include_s3_olci:
+        Whether to download Sentinel-3 OLCI tiles (GEE only).
+    include_water_mask:
+        Whether to download the JRC Global Surface Water binary mask.
+    max_images:
+        Cap on number of images to download per collection.
+    gee_project:
+        GEE project ID (for ``ee.Initialize``).
+
+    Returns
+    -------
+    dict with keys ``"s2_metadata"``, ``"thermal_metadata"``, ``"paths"``,
+    and optionally ``"s3_metadata"``, ``"s3_task_ids"``, ``"water_mask_path"``.
+    """
+    # Delegate S2 + thermal to the original function
+    result = download_satellite(
+        aoi=aoi,
+        start_date=start_date,
+        end_date=end_date,
+        backend=backend,
+        output_dir=output_dir,
+        cloud_max_pct=cloud_max_pct,
+        include_thermal=include_thermal,
+        max_images=max_images,
+        gee_project=gee_project,
+    )
+
+    if isinstance(aoi, (list, tuple)):
+        aoi = AOI(*aoi)
+    if isinstance(start_date, str):
+        start_date = date.fromisoformat(start_date)
+    if isinstance(end_date, str):
+        end_date = date.fromisoformat(end_date)
+
+    output_dir = Path(output_dir)
+
+    # Sentinel-3 OLCI
+    if include_s3_olci and backend == "gee":
+        s3_req = DownloadRequest(
+            aoi=aoi,
+            start_date=start_date,
+            end_date=end_date,
+            cloud_max_pct=cloud_max_pct,
+            output_dir=output_dir,
+            bands=list(S3_OLCI_BANDS),
+        )
+        s3_dl = Sentinel3OLCIDownloader(project=gee_project)
+        result["s3_metadata"] = s3_dl.search(s3_req)
+        result["s3_task_ids"] = s3_dl.export_tiles(
+            s3_req, max_images=max_images
+        )
+    elif include_s3_olci:
+        logger.warning(
+            "Sentinel-3 OLCI download requires the GEE backend; skipping."
+        )
+
+    # JRC water mask
+    if include_water_mask:
+        mask_path = download_jrc_water_mask(
+            aoi, output_dir, gee_project=gee_project
+        )
+        result["water_mask_path"] = str(mask_path)
+
+    # Update metadata file
+    meta_path = output_dir / "download_metadata_v2.json"
+    serializable = {
+        k: ([str(p) for p in v] if k == "paths" else v)
+        for k, v in result.items()
+    }
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(serializable, f, indent=2, default=str)
+    logger.info(f"v2 metadata saved to {meta_path}")
+
+    return result
