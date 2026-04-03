@@ -1,0 +1,227 @@
+# SENTINEL Default Configuration
+
+# ============================================================
+# Data
+# ============================================================
+data:
+  root_dir: "data/"
+  satellite:
+    tile_size: 512          # pixels
+    tile_resolution: 10     # meters
+    bands: ["B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"]
+    num_bands: 10
+    temporal_buffer: 10     # number of cloud-free acquisitions to keep
+    cloud_threshold: 20     # max cloud percentage
+  sensor:
+    parameters: ["00300","00400","00095","00010","63680","00090"]
+    parameter_names: ["DO","pH","SpCond","Temp","Turb","ORP"]
+    num_parameters: 6
+    lookback_window: 672    # 7 days at 15-min intervals
+    normalization: "z-score" # rolling 90-day per-station
+  microbial:
+    min_abundance: 0.001    # minimum relative abundance threshold
+    pseudocount: 0.5        # for CLR transformation
+    max_features: 5000      # max ASVs to retain
+  molecular:
+    num_pathways: 7
+    pathway_names:
+      - "AHR/CYP1A"
+      - "Metallothionein"
+      - "Estrogen/Endocrine"
+      - "Cholinesterase"
+      - "Oxidative Stress"
+      - "Heat Shock"
+      - "DNA Damage"
+    num_genes: 200          # curated stress-response gene panel
+  ecotox:
+    endpoint_types: ["LC50","EC50","NOEC","LOEC"]
+    exposure_medium: "freshwater"
+    min_species_count: 5
+
+# ============================================================
+# Models
+# ============================================================
+models:
+  shared_embedding_dim: 256
+
+  satellite:
+    backbone: "vit_small_patch16_224"
+    pretrained_weights: "ssl4eo_s12"
+    patch_size: 16
+    embed_dim: 384
+    num_layers: 12
+    num_heads: 6
+    input_size: 224
+    segmentation_classes: 8   # anomaly types + normal
+    temporal_transformer_layers: 2
+
+  sensor:
+    tcn_channels: [64, 128, 256]
+    kernel_size: 7
+    dropout: 0.2
+    num_parameters: 6
+    mpp_mask_ratio: [0.25, 0.75]  # random contiguous masking range
+
+  microbial:
+    source_attribution:
+      embed_dim: 256
+      num_heads: 4
+      num_layers: 4
+      ff_dim: 512
+      dropout: 0.1
+      num_classes: 8          # contamination types
+    vae:
+      latent_dim: 32
+      encoder_dims: [512, 256]
+      decoder_dims: [256, 512]
+
+  molecular:
+    chem2path:
+      input_dim: null         # set dynamically from chemical encoding
+      hidden_dims: [512, 256, 128]
+      num_pathways: 7
+    bottleneck:
+      l1_lambda_range: [0.0, 0.1]  # sweep range
+      target_genes: [15, 25]
+
+  digital_biosentinel:
+    chemical_embed_dim: 128
+    species_embed_dim: 64
+    hidden_dims: [512, 256, 128]
+    num_endpoints: 4
+    mc_dropout_passes: 20
+    dropout: 0.3
+
+  fusion:
+    state_dim: 256
+    num_heads: 8
+    gru_hidden: 256
+    decay_init:               # initial tau in seconds
+      satellite: 432000       # ~5 days
+      sensor: 7200            # ~2 hours
+      microbial: 604800       # ~7 days
+      molecular: 259200       # ~3 days
+
+  escalation:
+    state_dim: 64
+    hidden_dims: [128, 64]
+    num_tiers: 4
+    gamma: 0.99
+    lr: 3.0e-4
+    rewards:
+      detect: 10.0
+      early_bonus_per_hour: 0.5
+      false_alarm: -5.0
+      compute_cost_per_tier: -0.1
+      miss_penalty: -50.0
+
+# ============================================================
+# Training
+# ============================================================
+training:
+  satellite:
+    segmentation:
+      lr: 1.0e-4
+      batch_size: 32
+      epochs: 50
+      optimizer: "adamw"
+      scheduler: "cosine"
+      weight_decay: 0.05
+    temporal:
+      lr: 1.0e-4
+      batch_size: 64
+      epochs: 30
+
+  sensor:
+    pretraining:
+      lr: 5.0e-4
+      batch_size: 256
+      epochs: 100
+      warmup_steps: 5000
+    finetuning:
+      lr: 1.0e-4
+      batch_size: 128
+      epochs: 50
+
+  microbial:
+    source_attribution:
+      lr: 1.0e-3
+      batch_size: 64
+      epochs: 200
+      cross_val_folds: 5
+    vae:
+      lr: 1.0e-3
+      batch_size: 32
+      epochs: 300
+
+  molecular:
+    chem2path:
+      lr: 1.0e-3
+      batch_size: 64
+      epochs: 100
+    bottleneck:
+      lr: 1.0e-3
+      batch_size: 64
+      epochs: 50
+
+  biosentinel:
+    lr: 1.0e-3
+    batch_size: 512
+    epochs: 100
+    oversample_rare: true
+
+  fusion:
+    stage1:
+      lr: 1.0e-4
+      batch_size: 32
+      epochs: 50
+    stage2:
+      lr: 1.0e-5
+      batch_size: 16
+      epochs: 30
+
+  escalation:
+    algorithm: "PPO"
+    total_timesteps: 500000
+    n_steps: 2048
+    batch_size: 64
+    n_epochs: 10
+
+# ============================================================
+# Evaluation
+# ============================================================
+evaluation:
+  metrics:
+    - "detection_auc"
+    - "mean_lead_time_hours"
+    - "source_attribution_top1"
+    - "source_attribution_top3"
+    - "false_positive_rate"
+    - "impact_calibration_error"
+    - "fusion_improvement"
+    - "cost_efficiency"
+  ablation_conditions:
+    - "sensor_only"
+    - "satellite_only"
+    - "microbial_only"
+    - "sensor_satellite"
+    - "sensor_satellite_microbial"
+    - "full_fusion"
+    - "full_no_decay"
+    - "full_sync_only"
+    - "full_no_missing_tokens"
+    - "full_random_escalation"
+    - "full_always_tier3"
+  case_studies:
+    - name: "Lake Erie HAB"
+      years: [2018, 2019, 2020, 2021, 2022, 2023]
+      location: [-83.5, 41.5, -82.8, 41.8]
+      contaminant: "nutrient/agricultural"
+    - name: "East Palestine Derailment"
+      year: 2023
+      location: [-80.55, 40.82, -80.48, 40.87]
+      contaminant: "industrial_chemical"
+    - name: "Chesapeake Bay Blooms"
+      years: [2019, 2020, 2021, 2022, 2023]
+      location: [-76.5, 36.8, -75.8, 39.5]
+      contaminant: "nutrient/agricultural"

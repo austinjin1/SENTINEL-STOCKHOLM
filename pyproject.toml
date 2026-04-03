@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sentinel"
+version = "0.1.0"
+description = "SENTINEL: Scalable Environmental Network for Temporal Intelligence and Ecological Learning"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "SENTINEL Team"},
+]
+
+dependencies = [
+    "torch>=2.1",
+    "torchvision",
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "matplotlib",
+    "seaborn",
+    "transformers",
+    "timm",
+    "segmentation-models-pytorch",
+    "stable-baselines3",
+    "dataretrieval",
+    "earthengine-api",
+    "pystac-client",
+    "planetary-computer",
+    "rasterio",
+    "geopandas",
+    "shapely",
+    "GEOparse",
+    "biom-format",
+    "umap-learn",
+    "tqdm",
+    "pyyaml",
+    "wandb",
+    "rich",
+]
+
+[project.optional-dependencies]
+dashboard = [
+    "flask",
+    "flask-cors",
+]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+
+[tool.setuptools.packages.find]
+include = ["sentinel*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
