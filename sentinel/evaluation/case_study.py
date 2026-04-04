@@ -1,8 +1,9 @@
 """Historical contamination event case study runner.
 
 Runs SENTINEL in simulated real-time mode against 10 documented water
-contamination events, feeding data chronologically and comparing
-SENTINEL detection timing against the official record.
+contamination events, feeding data from all 5 modalities (sensor,
+satellite, microbial, molecular, behavioral) chronologically and
+comparing SENTINEL detection timing against the official record.
 
 Usage::
 
@@ -100,7 +101,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         official_notification_date="2015-08-06T09:00:00",
         description="EPA crew accidentally released 3 million gallons of mine waste "
         "into Cement Creek, a tributary of the Animas River.",
-        available_modalities=("sensor", "satellite"),
+        available_modalities=("sensor", "satellite", "behavioral"),
         severity="major",
     ),
     "lake_erie_hab": HistoricalEvent(
@@ -121,7 +122,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         "driven by agricultural phosphorus runoff.",
         recurring=True,
         recurring_years=(2014, 2015, 2017, 2018, 2019, 2020, 2021, 2022, 2023),
-        available_modalities=("sensor", "satellite", "microbial"),
+        available_modalities=("sensor", "satellite", "microbial", "behavioral"),
         severity="major",
     ),
     "toledo_water_crisis": HistoricalEvent(
@@ -141,7 +142,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         description="Microcystin levels at Toledo Collins Park WTP intake "
         "exceeded safe drinking water thresholds, triggering do-not-drink "
         "advisory for ~500,000 residents.",
-        available_modalities=("sensor", "satellite", "microbial"),
+        available_modalities=("sensor", "satellite", "microbial", "behavioral"),
         severity="catastrophic",
     ),
     "dan_river_coal_ash": HistoricalEvent(
@@ -161,7 +162,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         description="Collapsed stormwater pipe at Duke Energy Dan River Steam "
         "Station released ~39,000 tons of coal ash and 27 million gallons of "
         "contaminated water into the Dan River.",
-        available_modalities=("sensor", "satellite"),
+        available_modalities=("sensor", "satellite", "behavioral"),
         severity="major",
     ),
     "elk_river_mchm": HistoricalEvent(
@@ -181,7 +182,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         description="Freedom Industries storage tank leaked ~10,000 gallons of "
         "MCHM into the Elk River upstream of the West Virginia American Water "
         "intake, contaminating drinking water for 300,000 residents.",
-        available_modalities=("sensor",),
+        available_modalities=("sensor", "behavioral"),
         severity="catastrophic",
     ),
     "houston_ship_channel": HistoricalEvent(
@@ -202,7 +203,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         "fire released benzene and other VOCs into the Houston Ship Channel.",
         recurring=True,
         recurring_years=(2014, 2016, 2017, 2019, 2021),
-        available_modalities=("sensor", "satellite"),
+        available_modalities=("sensor", "satellite", "behavioral"),
         severity="major",
     ),
     "flint_mi": HistoricalEvent(
@@ -222,7 +223,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         description="City of Flint switched water source to Flint River without "
         "corrosion control, causing lead leaching from distribution pipes. "
         "Detection was delayed ~17 months due to institutional failures.",
-        available_modalities=("sensor", "microbial"),
+        available_modalities=("sensor", "microbial", "behavioral"),
         severity="catastrophic",
     ),
     "gulf_dead_zone": HistoricalEvent(
@@ -243,7 +244,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         "upstream agricultural nutrient loading. 2023 measured ~3,275 sq mi.",
         recurring=True,
         recurring_years=tuple(range(2010, 2024)),
-        available_modalities=("sensor", "satellite", "microbial"),
+        available_modalities=("sensor", "satellite", "microbial", "behavioral"),
         severity="major",
     ),
     "chesapeake_bay_blooms": HistoricalEvent(
@@ -264,7 +265,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         "nutrient loading from the Susquehanna and Potomac watersheds.",
         recurring=True,
         recurring_years=tuple(range(2015, 2024)),
-        available_modalities=("sensor", "satellite", "microbial"),
+        available_modalities=("sensor", "satellite", "microbial", "behavioral"),
         severity="moderate",
     ),
     "east_palestine": HistoricalEvent(
@@ -284,7 +285,7 @@ HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
         description="Norfolk Southern Railway derailment of 38 cars including "
         "hazardous material tankers. Controlled burn of vinyl chloride released "
         "toxic chemicals into Sulphur Run and local waterways.",
-        available_modalities=("sensor", "satellite"),
+        available_modalities=("sensor", "satellite", "behavioral"),
         severity="catastrophic",
     ),
 }
@@ -358,6 +359,7 @@ def generate_simulated_stream(
       - satellite: every 5 days (Sentinel-2 revisit)
       - microbial: every 7 days (weekly sampling)
       - molecular: every 14 days (bi-weekly sampling)
+      - behavioral: every 1 hour (community reports, social media)
 
     Args:
         timeline: The event timeline to simulate.
@@ -375,6 +377,7 @@ def generate_simulated_stream(
         "satellite": 432000.0,   # 5 days
         "microbial": 604800.0,   # 7 days
         "molecular": 1209600.0,  # 14 days
+        "behavioral": 3600.0,    # 1 hour (community reports, social media, etc.)
     }
 
     # Anomaly ramp: signal builds linearly from onset over 48 hours
@@ -388,6 +391,7 @@ def generate_simulated_stream(
         "satellite": 0.70,
         "microbial": 0.90,
         "molecular": 0.95,
+        "behavioral": 0.60,  # community/behavioral signals: noisy but early
     }
 
     for modality in event.available_modalities:
@@ -488,6 +492,7 @@ class CaseStudyResult:
     mean_tier_during_event: float
     total_observations: int
     modality_observation_counts: Dict[str, int]
+    behavioral_anomaly_score: Optional[float] = None
 
 
 class SENTINELSimulator:
@@ -786,6 +791,16 @@ def run_case_study(
     mean_pre = float(np.mean(pre_event_tiers)) if pre_event_tiers else 0.0
     mean_during = float(np.mean(during_event_tiers)) if during_event_tiers else 0.0
 
+    # Compute behavioral anomaly score (peak behavioral modality score)
+    behavioral_anomaly: Optional[float] = None
+    behavioral_scores = [
+        d.modality_scores.get("behavioral", 0.0)
+        for d in detections
+        if d.modality_scores.get("behavioral", 0.0) > 0.0
+    ]
+    if behavioral_scores:
+        behavioral_anomaly = float(max(behavioral_scores))
+
     result = CaseStudyResult(
         event_id=event.event_id,
         event_name=event.name,
@@ -805,6 +820,7 @@ def run_case_study(
         mean_tier_during_event=mean_during,
         total_observations=len(stream),
         modality_observation_counts=modality_counts,
+        behavioral_anomaly_score=behavioral_anomaly,
     )
 
     # Persist results
@@ -876,6 +892,7 @@ def _save_result(result: CaseStudyResult, path: Path) -> None:
         "mean_tier_during_event": result.mean_tier_during_event,
         "total_observations": result.total_observations,
         "modality_observation_counts": result.modality_observation_counts,
+        "behavioral_anomaly_score": result.behavioral_anomaly_score,
         "num_detections": len(result.detections),
         "num_alerts": sum(1 for d in result.detections if d.is_alert),
         "anomaly_scores": [d.anomaly_score for d in result.detections],
@@ -938,6 +955,11 @@ def _log_summary(result: CaseStudyResult) -> None:
         f"  Mean tier: pre-event={result.mean_tier_pre_event:.2f}, "
         f"during-event={result.mean_tier_during_event:.2f}"
     )
+    if result.behavioral_anomaly_score is not None:
+        logger.info(
+            f"  Behavioral anomaly score (peak): "
+            f"{result.behavioral_anomaly_score:.3f}"
+        )
 
 
 # ---------------------------------------------------------------------------

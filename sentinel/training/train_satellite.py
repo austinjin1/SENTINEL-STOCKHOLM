@@ -1,14 +1,20 @@
 """
-Satellite encoder training pipeline for SENTINEL.
+HydroViT satellite encoder training pipeline for SENTINEL.
 
 Three-phase training:
-  Phase 1: Load SSL4EO-S12 ViT-S pretrained weights (adapt to 10-band input).
-  Phase 2: Segmentation fine-tuning on DrivenData Tick Tick Bloom + MARIDA.
-  Phase 3: Temporal transformer training on [CLS] embedding sequences.
+  Phase 1: Masked Autoencoder (MAE) pretraining on water-pixel patches.
+            75% mask ratio with combined reconstruction MSE + spectral physics
+            consistency loss.
+  Phase 2: 16-parameter supervised fine-tuning on co-registered satellite +
+            in-situ measurement pairs. Gaussian NLL loss with per-parameter
+            missing-value masking.
+  Phase 3: Temporal stack training on sequences of 5-10 images per location.
+            Self-supervised temporal prediction + supervised objectives.
 
 Usage:
-    python -m sentinel.training.train_satellite --phase 2 --data-dir data/satellite
-    python -m sentinel.training.train_satellite --phase 3 --cls-embeddings-dir outputs/satellite/cls_embeddings
+    python -m sentinel.training.train_satellite --phase 1 --data-dir data/satellite/mae
+    python -m sentinel.training.train_satellite --phase 2 --data-dir data/satellite/pairs
+    python -m sentinel.training.train_satellite --phase 3 --data-dir data/satellite/temporal
 """
 
 from __future__ import annotations
@@ -16,9 +22,9 @@ from __future__ import annotations
 import argparse
 import json
 import random
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import torch
@@ -26,21 +32,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset, Subset
 
-from sentinel.models.satellite_encoder.backbone import (
-    SatelliteViTBackbone,
-    VIT_EMBED_DIM,
+from sentinel.models.satellite_encoder.model import SatelliteEncoder, SHARED_EMBED_DIM
+from sentinel.models.satellite_encoder.hydrovit_backbone import (
     NUM_SPECTRAL_BANDS,
+    VIT_EMBED_DIM,
 )
-from sentinel.models.satellite_encoder.segmentation import (
-    ANOMALY_CLASSES,
-    NUM_ANOMALY_CLASSES,
-    SegmentationLoss,
-    UPerNetHead,
-)
-from sentinel.models.satellite_encoder.temporal import (
-    BUFFER_SIZE,
-    EMBED_DIM,
-    TemporalChangeDetector,
+from sentinel.models.satellite_encoder.parameter_head import (
+    NUM_WATER_PARAMS,
+    WaterQualityHead,
 )
 from sentinel.training.trainer import BaseTrainer, TrainerConfig, build_scheduler
 from sentinel.utils.logging import get_logger
@@ -53,7 +52,7 @@ logger = get_logger(__name__)
 # ---------------------------------------------------------------------------
 
 class SatelliteAugmentation:
-    """Augmentation pipeline for satellite imagery training.
+    """Augmentation pipeline for satellite imagery.
 
     Includes random crop, horizontal/vertical flip, spectral jitter,
     and simulated cloud masking.
@@ -64,8 +63,8 @@ class SatelliteAugmentation:
         crop_size: int = 224,
         flip_prob: float = 0.5,
         spectral_jitter: float = 0.05,
-        cloud_mask_prob: float = 0.2,
-        cloud_mask_size_range: Tuple[int, int] = (20, 80),
+        cloud_mask_prob: float = 0.1,
+        cloud_mask_size_range: Tuple[int, int] = (20, 60),
     ) -> None:
         self.crop_size = crop_size
         self.flip_prob = flip_prob
@@ -73,33 +72,25 @@ class SatelliteAugmentation:
         self.cloud_mask_prob = cloud_mask_prob
         self.cloud_mask_size_range = cloud_mask_size_range
 
-    def __call__(
-        self, image: np.ndarray, mask: Optional[np.ndarray] = None
-    ) -> Tuple[np.ndarray, Optional[np.ndarray]]:
-        """Apply augmentations to image (H, W, C) and optional mask (H, W)."""
+    def __call__(self, image: np.ndarray) -> np.ndarray:
+        """Apply augmentations to image (H, W, C)."""
         h, w = image.shape[:2]
 
         # Random crop
         if h > self.crop_size and w > self.crop_size:
             y = random.randint(0, h - self.crop_size)
             x = random.randint(0, w - self.crop_size)
-            image = image[y : y + self.crop_size, x : x + self.crop_size]
-            if mask is not None:
-                mask = mask[y : y + self.crop_size, x : x + self.crop_size]
+            image = image[y:y + self.crop_size, x:x + self.crop_size]
 
         # Horizontal flip
         if random.random() < self.flip_prob:
             image = np.flip(image, axis=1).copy()
-            if mask is not None:
-                mask = np.flip(mask, axis=1).copy()
 
         # Vertical flip
         if random.random() < self.flip_prob:
             image = np.flip(image, axis=0).copy()
-            if mask is not None:
-                mask = np.flip(mask, axis=0).copy()
 
-        # Spectral jitter: per-band additive noise
+        # Spectral jitter
         if self.spectral_jitter > 0:
             noise = np.random.normal(
                 0, self.spectral_jitter, size=(1, 1, image.shape[2])
@@ -112,32 +103,29 @@ class SatelliteAugmentation:
             size = random.randint(*self.cloud_mask_size_range)
             cy = random.randint(0, max(0, ch - size))
             cx = random.randint(0, max(0, cw - size))
-            # Set cloud-masked region to high reflectance (white cloud)
-            image[cy : cy + size, cx : cx + size, :] = np.random.uniform(
-                0.8, 1.0, size=(min(size, ch - cy), min(size, cw - cx), image.shape[2])
+            image[cy:cy + size, cx:cx + size, :] = np.random.uniform(
+                0.8, 1.0,
+                size=(min(size, ch - cy), min(size, cw - cx), image.shape[2]),
             ).astype(np.float32)
 
-        return image, mask
+        return image
 
 
 # ---------------------------------------------------------------------------
 # Datasets
 # ---------------------------------------------------------------------------
 
-class TickTickBloomDataset(Dataset):
-    """DrivenData Tick Tick Bloom dataset.
+class MAEDataset(Dataset):
+    """Dataset for MAE pretraining on water-pixel patches.
 
-    ~23,000 in-situ cyanobacteria measurements paired with Sentinel-2 imagery.
-    Labels are severity categories mapped to anomaly classes.
+    Loads patches extracted by the data pipeline's extract_water_pixels()
+    function. Each .npy file is a (H, W, C) float32 multispectral patch
+    where C = NUM_SPECTRAL_BANDS (13 bands).
 
     Expected directory structure:
         data_dir/
-            tiles/          -- .npy files (H, W, 10) float32
-            labels.json     -- {tile_id: {"severity": int, "cyanobacteria_density": float, ...}}
+            patches/    -- .npy files (224, 224, 13) float32
     """
-
-    # Severity bins -> anomaly class index (algal_bloom or normal)
-    SEVERITY_TO_CLASS = {0: 6, 1: 0, 2: 0, 3: 0, 4: 0}  # 0=normal, 1-4=algal_bloom
 
     def __init__(
         self,
@@ -147,100 +135,16 @@ class TickTickBloomDataset(Dataset):
     ) -> None:
         self.data_dir = Path(data_dir)
         self.target_size = target_size
-        self.augmentation = augmentation
+        self.augmentation = augmentation or SatelliteAugmentation(crop_size=target_size)
 
-        tiles_dir = self.data_dir / "tiles"
-        labels_path = self.data_dir / "labels.json"
+        patches_dir = self.data_dir / "patches"
+        if patches_dir.exists():
+            self.patch_paths: List[Path] = sorted(patches_dir.glob("*.npy"))
+        else:
+            # Fall back to top-level .npy files
+            self.patch_paths = sorted(self.data_dir.glob("*.npy"))
 
-        self.tile_paths: List[Path] = sorted(tiles_dir.glob("*.npy"))
-        self.labels: Dict[str, Dict] = {}
-        if labels_path.exists():
-            with open(labels_path, "r", encoding="utf-8") as f:
-                self.labels = json.load(f)
-
-        logger.info(f"TickTickBloom: {len(self.tile_paths)} tiles, {len(self.labels)} labels")
-
-    def __len__(self) -> int:
-        return len(self.tile_paths)
-
-    def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
-        tile_path = self.tile_paths[idx]
-        tile = np.load(tile_path).astype(np.float32)
-
-        # Normalize uint16 reflectance if needed
-        if tile.max() > 2.0:
-            tile = tile / 10000.0
-
-        tile_id = tile_path.stem
-        label_info = self.labels.get(tile_id, {"severity": 0})
-        severity = label_info.get("severity", 0)
-        class_idx = self.SEVERITY_TO_CLASS.get(severity, 6)
-
-        # Create pixel-level mask (uniform class for the tile)
-        h, w = tile.shape[:2]
-        mask = np.full((h, w), class_idx, dtype=np.int64)
-
-        if self.augmentation is not None:
-            tile, mask = self.augmentation(tile, mask)
-
-        # Resize to target
-        if tile.shape[0] != self.target_size or tile.shape[1] != self.target_size:
-            from scipy.ndimage import zoom as scipy_zoom
-            factors = (self.target_size / tile.shape[0], self.target_size / tile.shape[1], 1.0)
-            tile = scipy_zoom(tile, factors, order=1)
-            mask_factors = (self.target_size / mask.shape[0], self.target_size / mask.shape[1])
-            mask = scipy_zoom(mask.astype(np.float32), mask_factors, order=0).astype(np.int64)
-
-        # (H, W, C) -> (C, H, W)
-        tile_tensor = torch.from_numpy(tile.transpose(2, 0, 1))
-        mask_tensor = torch.from_numpy(mask)
-
-        return {
-            "image": tile_tensor,
-            "mask": mask_tensor,
-            "class_label": torch.tensor(class_idx, dtype=torch.long),
-            "severity": torch.tensor(severity, dtype=torch.long),
-        }
-
-
-class MARIDADataset(Dataset):
-    """MARIDA marine debris and anomaly detection dataset.
-
-    1,381 patches with pixel-level annotations covering marine debris,
-    algal blooms, turbidity, and other classes.
-
-    Expected directory structure:
-        data_dir/
-            patches/        -- .npy files (H, W, 10) float32
-            masks/          -- .npy files (H, W) int64 with class indices
-    """
-
-    # MARIDA class mapping to SENTINEL anomaly classes
-    MARIDA_TO_ANOMALY = {
-        0: 6,   # Marine water -> normal
-        1: 0,   # Dense algae -> algal_bloom
-        2: 0,   # Sparse algae -> algal_bloom
-        3: 1,   # Turbid water -> turbidity_plume
-        4: 2,   # Marine debris -> oil_sheen (closest analogue)
-        5: 5,   # Foam -> foam_surfactant
-        6: 4,   # Dense sargassum -> discoloration
-        7: 4,   # Sparse sargassum -> discoloration
-        8: 6,   # Cloud -> normal
-        9: 6,   # Ship -> normal
-    }
-
-    def __init__(
-        self,
-        data_dir: str | Path,
-        augmentation: Optional[SatelliteAugmentation] = None,
-        target_size: int = 224,
-    ) -> None:
-        self.data_dir = Path(data_dir)
-        self.target_size = target_size
-        self.augmentation = augmentation
-
-        self.patch_paths: List[Path] = sorted((self.data_dir / "patches").glob("*.npy"))
-        logger.info(f"MARIDA: {len(self.patch_paths)} patches")
+        logger.info(f"MAEDataset: {len(self.patch_paths)} patches from {self.data_dir}")
 
     def __len__(self) -> int:
         return len(self.patch_paths)
@@ -248,301 +152,543 @@ class MARIDADataset(Dataset):
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
         patch_path = self.patch_paths[idx]
         patch = np.load(patch_path).astype(np.float32)
+
+        # Normalize reflectance if in uint16 range
         if patch.max() > 2.0:
             patch = patch / 10000.0
 
-        mask_path = self.data_dir / "masks" / patch_path.name
-        if mask_path.exists():
-            mask = np.load(mask_path).astype(np.int64)
-            # Remap MARIDA classes to SENTINEL anomaly classes
-            remapped = np.vectorize(lambda x: self.MARIDA_TO_ANOMALY.get(x, 6))(mask)
-        else:
-            remapped = np.full(patch.shape[:2], 6, dtype=np.int64)
+        # Ensure (H, W, C) format
+        if patch.ndim == 3 and patch.shape[0] == NUM_SPECTRAL_BANDS:
+            patch = patch.transpose(1, 2, 0)
 
-        if self.augmentation is not None:
-            patch, remapped = self.augmentation(patch, remapped)
+        # Apply augmentations
+        patch = self.augmentation(patch)
 
+        # Resize to target size if needed
         if patch.shape[0] != self.target_size or patch.shape[1] != self.target_size:
             from scipy.ndimage import zoom as scipy_zoom
-            factors = (self.target_size / patch.shape[0], self.target_size / patch.shape[1], 1.0)
-            patch = scipy_zoom(patch, factors, order=1)
-            mask_factors = (self.target_size / remapped.shape[0], self.target_size / remapped.shape[1])
-            remapped = scipy_zoom(remapped.astype(np.float32), mask_factors, order=0).astype(np.int64)
+            factors = (
+                self.target_size / patch.shape[0],
+                self.target_size / patch.shape[1],
+                1.0,
+            )
+            patch = scipy_zoom(patch, factors, order=1).astype(np.float32)
 
-        tile_tensor = torch.from_numpy(patch.transpose(2, 0, 1))
-        mask_tensor = torch.from_numpy(remapped)
+        # (H, W, C) -> (C, H, W)
+        tensor = torch.from_numpy(patch.transpose(2, 0, 1))
 
-        # Determine dominant class
-        unique, counts = np.unique(remapped, return_counts=True)
-        dominant_class = unique[counts.argmax()]
-
-        return {
-            "image": tile_tensor,
-            "mask": mask_tensor,
-            "class_label": torch.tensor(int(dominant_class), dtype=torch.long),
-        }
+        return {"image": tensor}
 
 
-class MergedSegmentationDataset(Dataset):
-    """Merges TickTickBloom and MARIDA datasets into one."""
+class WaterQualityPairDataset(Dataset):
+    """Dataset of co-registered satellite images + in-situ water quality measurements.
 
-    def __init__(self, datasets: Sequence[Dataset]) -> None:
-        self.datasets = datasets
-        self.lengths = [len(d) for d in datasets]
-        self.cumulative = []
-        total = 0
-        for l in self.lengths:
-            self.cumulative.append(total)
-            total += l
-        self._total = total
-
-    def __len__(self) -> int:
-        return self._total
-
-    def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
-        for i, cum in enumerate(self.cumulative):
-            if idx < cum + self.lengths[i]:
-                return self.datasets[i][idx - cum]
-        raise IndexError(f"Index {idx} out of range")
-
-
-class TemporalCLSDataset(Dataset):
-    """Dataset of [CLS] embedding sequences for temporal transformer training.
-
-    Each sample is a sequence of T [CLS] embeddings from consecutive
-    acquisitions of the same tile, plus timestamps and an optional
-    binary anomaly label for the last acquisition.
+    Each sample pairs a satellite patch with ground-truth values for up to
+    16 water quality parameters. Missing parameters are encoded as NaN.
 
     Expected directory structure:
         data_dir/
-            sequences/      -- .npz files with keys: embeddings (T, D), timestamps (T,)
-            labels.json     -- {sequence_id: {"anomaly": 0|1, "next_score": float}}
+            images/     -- .npy files (H, W, C) float32
+            labels.json -- {image_id: {"params": [16 floats, NaN for missing],
+                                        "timestamp": str, "station_id": str}}
     """
 
     def __init__(
         self,
         data_dir: str | Path,
-        max_seq_len: int = BUFFER_SIZE,
-        mask_ratio: float = 0.15,
+        augmentation: Optional[SatelliteAugmentation] = None,
+        target_size: int = 224,
     ) -> None:
         self.data_dir = Path(data_dir)
-        self.max_seq_len = max_seq_len
-        self.mask_ratio = mask_ratio
+        self.target_size = target_size
+        self.augmentation = augmentation
 
-        self.sequence_paths: List[Path] = sorted(
-            (self.data_dir / "sequences").glob("*.npz")
-        )
+        images_dir = self.data_dir / "images"
+        self.image_paths: List[Path] = sorted(images_dir.glob("*.npy"))
+
         labels_path = self.data_dir / "labels.json"
         self.labels: Dict[str, Dict] = {}
         if labels_path.exists():
             with open(labels_path, "r", encoding="utf-8") as f:
                 self.labels = json.load(f)
 
-        logger.info(f"TemporalCLS: {len(self.sequence_paths)} sequences")
+        logger.info(
+            f"WaterQualityPairDataset: {len(self.image_paths)} images, "
+            f"{len(self.labels)} labels"
+        )
 
     def __len__(self) -> int:
-        return len(self.sequence_paths)
+        return len(self.image_paths)
 
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
-        path = self.sequence_paths[idx]
-        data = np.load(path)
-        embeddings = data["embeddings"].astype(np.float32)  # (T, D)
-        timestamps = data["timestamps"].astype(np.float32)  # (T,)
-        T, D = embeddings.shape
+        img_path = self.image_paths[idx]
+        image = np.load(img_path).astype(np.float32)
 
-        # Pad or truncate to max_seq_len
-        attention_mask = np.zeros(self.max_seq_len, dtype=bool)
-        if T < self.max_seq_len:
-            pad_len = self.max_seq_len - T
-            embeddings = np.pad(embeddings, ((pad_len, 0), (0, 0)))
-            timestamps = np.pad(timestamps, (pad_len, 0))
-            attention_mask[:pad_len] = True
-        elif T > self.max_seq_len:
-            embeddings = embeddings[-self.max_seq_len:]
-            timestamps = timestamps[-self.max_seq_len:]
+        if image.max() > 2.0:
+            image = image / 10000.0
 
-        # Masked temporal prediction: randomly mask some positions
-        mask_pred = np.zeros(self.max_seq_len, dtype=bool)
-        valid_positions = np.where(~attention_mask)[0]
-        if len(valid_positions) > 1:
-            n_mask = max(1, int(len(valid_positions) * self.mask_ratio))
-            mask_indices = np.random.choice(
-                valid_positions[:-1], size=min(n_mask, len(valid_positions) - 1), replace=False
+        # Ensure (H, W, C)
+        if image.ndim == 3 and image.shape[0] in (NUM_SPECTRAL_BANDS, 10):
+            image = image.transpose(1, 2, 0)
+
+        if self.augmentation is not None:
+            image = self.augmentation(image)
+
+        if image.shape[0] != self.target_size or image.shape[1] != self.target_size:
+            from scipy.ndimage import zoom as scipy_zoom
+            factors = (
+                self.target_size / image.shape[0],
+                self.target_size / image.shape[1],
+                1.0,
             )
-            mask_pred[mask_indices] = True
+            image = scipy_zoom(image, factors, order=1).astype(np.float32)
 
-        # Labels
-        seq_id = path.stem
-        label_info = self.labels.get(seq_id, {"anomaly": 0})
-        anomaly = label_info.get("anomaly", 0)
+        # Pad to 13 bands if only 10 (S2 only, no S3)
+        if image.shape[2] < NUM_SPECTRAL_BANDS:
+            pad_bands = NUM_SPECTRAL_BANDS - image.shape[2]
+            image = np.pad(image, ((0, 0), (0, 0), (0, pad_bands)), mode="constant")
+
+        tensor = torch.from_numpy(image.transpose(2, 0, 1))
+
+        # Load water quality labels
+        img_id = img_path.stem
+        label_info = self.labels.get(img_id, {})
+        params = label_info.get("params", [float("nan")] * NUM_WATER_PARAMS)
+        params = np.array(params, dtype=np.float32)
+        if len(params) < NUM_WATER_PARAMS:
+            params = np.pad(
+                params,
+                (0, NUM_WATER_PARAMS - len(params)),
+                constant_values=float("nan"),
+            )
 
         return {
-            "embeddings": torch.from_numpy(embeddings),
-            "timestamps": torch.from_numpy(timestamps),
-            "attention_mask": torch.from_numpy(attention_mask),
-            "mask_pred": torch.from_numpy(mask_pred),
-            "anomaly_label": torch.tensor(anomaly, dtype=torch.float32),
+            "image": tensor,
+            "wq_targets": torch.from_numpy(params),
+        }
+
+
+class TemporalStackDataset(Dataset):
+    """Dataset of temporal image sequences for temporal attention training.
+
+    Each sample is a sequence of 5-10 satellite images over the same location
+    at different times, with optional water quality labels for the most
+    recent frame.
+
+    Expected directory structure:
+        data_dir/
+            sequences/
+                <location_id>/
+                    frames/     -- .npy files named by date (YYYYMMDD.npy)
+                    metadata.json -- {"timestamps": [...], "cloud_fractions": [...],
+                                      "wq_targets": [16 floats or null]}
+    """
+
+    def __init__(
+        self,
+        data_dir: str | Path,
+        max_temporal_len: int = 10,
+        min_temporal_len: int = 5,
+        target_size: int = 224,
+    ) -> None:
+        self.data_dir = Path(data_dir)
+        self.max_temporal_len = max_temporal_len
+        self.min_temporal_len = min_temporal_len
+        self.target_size = target_size
+
+        sequences_dir = self.data_dir / "sequences"
+        self.sequence_dirs: List[Path] = []
+        if sequences_dir.exists():
+            for loc_dir in sorted(sequences_dir.iterdir()):
+                if loc_dir.is_dir() and (loc_dir / "frames").exists():
+                    frames = sorted((loc_dir / "frames").glob("*.npy"))
+                    if len(frames) >= min_temporal_len:
+                        self.sequence_dirs.append(loc_dir)
+
+        logger.info(
+            f"TemporalStackDataset: {len(self.sequence_dirs)} sequences "
+            f"(min {min_temporal_len} frames)"
+        )
+
+    def __len__(self) -> int:
+        return len(self.sequence_dirs)
+
+    def _load_and_preprocess(self, path: Path) -> np.ndarray:
+        """Load a single frame and preprocess."""
+        img = np.load(path).astype(np.float32)
+        if img.max() > 2.0:
+            img = img / 10000.0
+        if img.ndim == 3 and img.shape[0] in (NUM_SPECTRAL_BANDS, 10):
+            img = img.transpose(1, 2, 0)
+        if img.shape[0] != self.target_size or img.shape[1] != self.target_size:
+            from scipy.ndimage import zoom as scipy_zoom
+            factors = (
+                self.target_size / img.shape[0],
+                self.target_size / img.shape[1],
+                1.0,
+            )
+            img = scipy_zoom(img, factors, order=1).astype(np.float32)
+        if img.shape[2] < NUM_SPECTRAL_BANDS:
+            pad = NUM_SPECTRAL_BANDS - img.shape[2]
+            img = np.pad(img, ((0, 0), (0, 0), (0, pad)), mode="constant")
+        return img
+
+    def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
+        loc_dir = self.sequence_dirs[idx]
+        frames_dir = loc_dir / "frames"
+
+        # Load metadata
+        meta_path = loc_dir / "metadata.json"
+        metadata: Dict[str, Any] = {}
+        if meta_path.exists():
+            with open(meta_path, "r", encoding="utf-8") as f:
+                metadata = json.load(f)
+
+        frame_files = sorted(frames_dir.glob("*.npy"))
+
+        # Subsample to max_temporal_len if needed
+        if len(frame_files) > self.max_temporal_len:
+            # Keep the last frame, randomly sample the rest
+            last = frame_files[-1]
+            others = random.sample(frame_files[:-1], self.max_temporal_len - 1)
+            frame_files = sorted(others) + [last]
+
+        T = len(frame_files)
+
+        # Load all frames
+        frames_list = []
+        for fp in frame_files:
+            img = self._load_and_preprocess(fp)
+            frames_list.append(img.transpose(2, 0, 1))  # (C, H, W)
+        frames = np.stack(frames_list, axis=0)  # (T, C, H, W)
+
+        # Timestamps (days since epoch)
+        timestamps = metadata.get("timestamps", list(range(T)))
+        timestamps = np.array(timestamps[:T], dtype=np.float32)
+
+        # Cloud fractions
+        cloud_fractions = metadata.get("cloud_fractions", [0.0] * T)
+        cloud_fractions = np.array(cloud_fractions[:T], dtype=np.float32)
+
+        # Padding to max_temporal_len
+        pad_len = self.max_temporal_len - T
+        padding_mask = np.zeros(self.max_temporal_len, dtype=bool)
+        if pad_len > 0:
+            frames = np.pad(
+                frames,
+                ((pad_len, 0), (0, 0), (0, 0), (0, 0)),
+                mode="constant",
+            )
+            timestamps = np.pad(timestamps, (pad_len, 0), constant_values=0)
+            cloud_fractions = np.pad(cloud_fractions, (pad_len, 0), constant_values=1.0)
+            padding_mask[:pad_len] = True
+
+        # Water quality targets for the latest frame (if available)
+        wq_targets = metadata.get("wq_targets", None)
+        if wq_targets is not None:
+            wq_targets = np.array(wq_targets, dtype=np.float32)
+            if len(wq_targets) < NUM_WATER_PARAMS:
+                wq_targets = np.pad(
+                    wq_targets,
+                    (0, NUM_WATER_PARAMS - len(wq_targets)),
+                    constant_values=float("nan"),
+                )
+        else:
+            wq_targets = np.full(NUM_WATER_PARAMS, float("nan"), dtype=np.float32)
+
+        return {
+            "frames": torch.from_numpy(frames),                  # (T, C, H, W)
+            "timestamps": torch.from_numpy(timestamps),           # (T,)
+            "cloud_fractions": torch.from_numpy(cloud_fractions), # (T,)
+            "padding_mask": torch.from_numpy(padding_mask),       # (T,)
+            "wq_targets": torch.from_numpy(wq_targets),          # (16,)
         }
 
 
 # ---------------------------------------------------------------------------
-# Full segmentation model
-# ---------------------------------------------------------------------------
-
-class SatelliteSegmentationModel(nn.Module):
-    """ViT backbone + UPerNet segmentation head."""
-
-    def __init__(
-        self,
-        pretrained: bool = True,
-        checkpoint_path: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.backbone = SatelliteViTBackbone(
-            pretrained=pretrained, checkpoint_path=checkpoint_path
-        )
-        self.seg_head = UPerNetHead(in_channels=VIT_EMBED_DIM)
-
-    def forward(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
-        cls_token, multi_scale = self.backbone(x)
-        spatial = self.backbone.get_spatial_features(multi_scale)
-        seg_out = self.seg_head(spatial)
-        seg_out["cls_token"] = cls_token
-        return seg_out
-
-
-# ---------------------------------------------------------------------------
-# Phase 2: Segmentation trainer
+# Phase 1: MAE Pretraining Trainer
 # ---------------------------------------------------------------------------
 
 @dataclass
-class SegmentationConfig(TrainerConfig):
-    lr: float = 1e-4
+class MAEPretrainConfig(TrainerConfig):
+    """Configuration for Phase 1: MAE pretraining."""
+
+    lr: float = 1.5e-4
     batch_size: int = 32
-    epochs: int = 50
+    epochs: int = 100
+    warmup_epochs: int = 10
     scheduler: str = "cosine"
-    wandb_run_name: str = "satellite-segmentation"
+    weight_decay: float = 0.05
+    wandb_run_name: str = "hydrovit-mae-pretrain"
 
     # Data
-    ttb_data_dir: str = "data/satellite/tick_tick_bloom"
-    marida_data_dir: str = "data/satellite/marida"
-    val_fraction: float = 0.2
+    data_dir: str = "data/satellite/mae"
+    val_fraction: float = 0.1
     target_size: int = 224
 
+    # MAE
+    mask_ratio: float = 0.75
+    physics_loss_weight: float = 0.1
+
     # Augmentation
-    spectral_jitter: float = 0.05
-    cloud_mask_prob: float = 0.2
-
-    # Model
-    pretrained: bool = True
-    ssl4eo_checkpoint: str = ""
-
-    # Loss
-    dice_weight: float = 1.0
-    ce_weight: float = 1.0
+    spectral_jitter: float = 0.03
+    cloud_mask_prob: float = 0.1
 
 
-class SegmentationTrainer(BaseTrainer):
-    """Phase 2: Fine-tune segmentation on merged DrivenData + MARIDA."""
+class MAEPretrainTrainer(BaseTrainer):
+    """Phase 1: MAE pretraining with spectral physics consistency loss."""
 
-    def __init__(self, config: SegmentationConfig) -> None:
+    def __init__(self, config: MAEPretrainConfig) -> None:
         super().__init__(config)
-        self.seg_config = config
-        self.criterion: Optional[SegmentationLoss] = None
+        self.mae_config = config
 
     def build_model(self) -> nn.Module:
-        ckpt = self.seg_config.ssl4eo_checkpoint or None
-        model = SatelliteSegmentationModel(
-            pretrained=self.seg_config.pretrained,
-            checkpoint_path=ckpt,
+        model = SatelliteEncoder(
+            in_chans=NUM_SPECTRAL_BANDS,
+            pretrained=True,
+            enable_s3_fusion=False,
         )
-        self.criterion = SegmentationLoss(
-            dice_weight=self.seg_config.dice_weight,
-            ce_weight=self.seg_config.ce_weight,
-        ).to(self.device)
         return model
 
     def build_datasets(self) -> Tuple[Dataset, Dataset]:
         augmentation = SatelliteAugmentation(
-            crop_size=self.seg_config.target_size,
-            spectral_jitter=self.seg_config.spectral_jitter,
-            cloud_mask_prob=self.seg_config.cloud_mask_prob,
+            crop_size=self.mae_config.target_size,
+            spectral_jitter=self.mae_config.spectral_jitter,
+            cloud_mask_prob=self.mae_config.cloud_mask_prob,
         )
 
-        datasets: List[Dataset] = []
+        full_ds = MAEDataset(
+            self.mae_config.data_dir,
+            augmentation=augmentation,
+            target_size=self.mae_config.target_size,
+        )
 
-        ttb_dir = Path(self.seg_config.ttb_data_dir)
-        if ttb_dir.exists():
-            datasets.append(TickTickBloomDataset(ttb_dir, augmentation, self.seg_config.target_size))
-
-        marida_dir = Path(self.seg_config.marida_data_dir)
-        if marida_dir.exists():
-            datasets.append(MARIDADataset(marida_dir, augmentation, self.seg_config.target_size))
-
-        if not datasets:
-            raise FileNotFoundError(
-                f"No training data found at {ttb_dir} or {marida_dir}"
-            )
-
-        merged = MergedSegmentationDataset(datasets) if len(datasets) > 1 else datasets[0]
-
-        # Stratified split by class label
-        n = len(merged)
+        n = len(full_ds)
+        n_val = max(1, int(n * self.mae_config.val_fraction))
         indices = list(range(n))
         random.shuffle(indices)
+        train_ds = Subset(full_ds, indices[n_val:])
+        val_ds = Subset(full_ds, indices[:n_val])
 
-        # Attempt stratified split
-        class_indices: Dict[int, List[int]] = {}
-        for i in indices:
-            try:
-                sample = merged[i]
-                cls = sample["class_label"].item()
-            except Exception:
-                cls = 6  # default to normal
-            class_indices.setdefault(cls, []).append(i)
-
-        train_indices: List[int] = []
-        val_indices: List[int] = []
-        for cls, idx_list in class_indices.items():
-            split = int(len(idx_list) * (1 - self.seg_config.val_fraction))
-            train_indices.extend(idx_list[:split])
-            val_indices.extend(idx_list[split:])
-
-        random.shuffle(train_indices)
-        random.shuffle(val_indices)
-
-        train_ds = Subset(merged, train_indices)
-        val_ds = Subset(merged, val_indices)
-
-        logger.info(f"Train: {len(train_ds)}, Val: {len(val_ds)}")
+        logger.info(f"MAE Pretrain — Train: {len(train_ds)}, Val: {len(val_ds)}")
         return train_ds, val_ds
 
     def train_step(self, batch: Dict[str, torch.Tensor]) -> Dict[str, float]:
         assert self.model is not None and self.optimizer is not None
-        images = batch["image"]   # (B, C, H, W)
-        masks = batch["mask"]     # (B, H, W)
 
-        outputs = self.model(images)
-        class_logits = outputs["class_logits"]  # (B, num_classes, h, w)
+        images = batch["image"]  # (B, C, H, W)
 
-        # Resize mask to match output spatial size
-        h_out, w_out = class_logits.shape[2:]
-        if masks.shape[1] != h_out or masks.shape[2] != w_out:
-            masks = F.interpolate(
-                masks.unsqueeze(1).float(),
-                size=(h_out, w_out),
-                mode="nearest",
-            ).squeeze(1).long()
+        # MAE forward pass through the SatelliteEncoder
+        mae_output = self.model.forward_mae(
+            images,
+            mask_ratio=self.mae_config.mask_ratio,
+        )
 
-        loss_dict = self.criterion(class_logits, masks)
-        loss_dict["loss"].backward()
+        mae_loss = mae_output["mae_loss"]
+
+        # Spectral physics consistency loss
+        physics_loss = torch.tensor(0.0, device=images.device)
+        for key in ("ndwi_consistency", "nir_water_penalty", "spectral_smoothness"):
+            if key in mae_output:
+                physics_loss = physics_loss + mae_output[key]
+
+        total_loss = mae_loss + self.mae_config.physics_loss_weight * physics_loss
+
+        total_loss.backward()
 
         if self.config.max_grad_norm > 0:
             nn.utils.clip_grad_norm_(self.model.parameters(), self.config.max_grad_norm)
         self.optimizer.step()
         self.optimizer.zero_grad(set_to_none=True)
 
-        return {k: v.item() for k, v in loss_dict.items()}
+        return {
+            "loss": total_loss.item(),
+            "mae_loss": mae_loss.item(),
+            "physics_loss": physics_loss.item(),
+        }
+
+    @torch.no_grad()
+    def validate(self, dataloader: DataLoader) -> Dict[str, float]:
+        assert self.model is not None
+        self.model.eval()
+
+        total_mae = 0.0
+        total_physics = 0.0
+        total_loss = 0.0
+        n_batches = 0
+
+        for batch in dataloader:
+            batch = self._to_device(batch)
+            images = batch["image"]
+
+            mae_output = self.model.forward_mae(
+                images,
+                mask_ratio=self.mae_config.mask_ratio,
+            )
+
+            mae_loss = mae_output["mae_loss"].item()
+            physics_loss = 0.0
+            for key in ("ndwi_consistency", "nir_water_penalty", "spectral_smoothness"):
+                if key in mae_output:
+                    physics_loss += mae_output[key].item()
+
+            total_mae += mae_loss
+            total_physics += physics_loss
+            total_loss += mae_loss + self.mae_config.physics_loss_weight * physics_loss
+            n_batches += 1
+
+        self.model.train()
+        n = max(n_batches, 1)
+        return {
+            "loss": total_loss / n,
+            "mae_loss": total_mae / n,
+            "physics_loss": total_physics / n,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Phase 2: Supervised Fine-tuning Trainer
+# ---------------------------------------------------------------------------
+
+@dataclass
+class SupervisedFinetuneConfig(TrainerConfig):
+    """Configuration for Phase 2: 16-parameter supervised fine-tuning."""
+
+    lr: float = 1e-4
+    batch_size: int = 32
+    epochs: int = 50
+    scheduler: str = "cosine"
+    weight_decay: float = 0.05
+    wandb_run_name: str = "hydrovit-supervised-finetune"
+
+    # Data
+    data_dir: str = "data/satellite/pairs"
+    val_fraction: float = 0.2
+    target_size: int = 224
+
+    # Model
+    pretrain_checkpoint: str = ""
+    freeze_backbone_epochs: int = 5  # freeze backbone for first N epochs
+    unfreeze_top_n: int = 4
+
+    # Augmentation
+    spectral_jitter: float = 0.02
+    cloud_mask_prob: float = 0.0
+
+    # Loss
+    physics_loss_weight: float = 0.05
+
+
+class SupervisedFinetuneTrainer(BaseTrainer):
+    """Phase 2: 16-parameter water quality regression with Gaussian NLL loss."""
+
+    def __init__(self, config: SupervisedFinetuneConfig) -> None:
+        super().__init__(config)
+        self.ft_config = config
+        self._backbone_frozen = False
+
+    def build_model(self) -> nn.Module:
+        model = SatelliteEncoder(
+            in_chans=NUM_SPECTRAL_BANDS,
+            pretrained=True,
+            enable_s3_fusion=False,
+        )
+
+        # Load MAE pretrained checkpoint
+        if self.ft_config.pretrain_checkpoint:
+            ckpt_path = Path(self.ft_config.pretrain_checkpoint)
+            if ckpt_path.exists():
+                logger.info(f"Loading MAE pretrained weights from {ckpt_path}")
+                state = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+                model_state = state.get("model_state_dict", state)
+                model.load_state_dict(model_state, strict=False)
+                logger.info("MAE pretrained weights loaded")
+
+        # Optionally freeze backbone initially
+        if self.ft_config.freeze_backbone_epochs > 0:
+            self.freeze_model(model.backbone)
+            self._backbone_frozen = True
+            logger.info(
+                f"Backbone frozen for first {self.ft_config.freeze_backbone_epochs} epochs"
+            )
+
+        return model
+
+    def build_datasets(self) -> Tuple[Dataset, Dataset]:
+        augmentation = SatelliteAugmentation(
+            crop_size=self.ft_config.target_size,
+            spectral_jitter=self.ft_config.spectral_jitter,
+            cloud_mask_prob=self.ft_config.cloud_mask_prob,
+        )
+
+        full_ds = WaterQualityPairDataset(
+            self.ft_config.data_dir,
+            augmentation=augmentation,
+            target_size=self.ft_config.target_size,
+        )
+
+        n = len(full_ds)
+        n_val = max(1, int(n * self.ft_config.val_fraction))
+        indices = list(range(n))
+        random.shuffle(indices)
+        train_ds = Subset(full_ds, indices[n_val:])
+        val_ds = Subset(full_ds, indices[:n_val])
+
+        logger.info(f"Supervised Finetune — Train: {len(train_ds)}, Val: {len(val_ds)}")
+        return train_ds, val_ds
+
+    def train_step(self, batch: Dict[str, torch.Tensor]) -> Dict[str, float]:
+        assert self.model is not None and self.optimizer is not None
+
+        # Unfreeze backbone after warmup epochs
+        if (
+            self._backbone_frozen
+            and self.current_epoch >= self.ft_config.freeze_backbone_epochs
+        ):
+            self.unfreeze_top_layers(self.model.backbone, self.ft_config.unfreeze_top_n)
+            self._backbone_frozen = False
+            logger.info(
+                f"Unfroze top {self.ft_config.unfreeze_top_n} backbone layers "
+                f"at epoch {self.current_epoch}"
+            )
+
+        images = batch["image"]         # (B, C, H, W)
+        wq_targets = batch["wq_targets"]  # (B, 16)
+
+        # Forward pass
+        outputs = self.model(images)
+
+        # Gaussian NLL loss on water quality parameters
+        wq_loss_dict = self.model.compute_loss(outputs, wq_targets=wq_targets)
+        wq_loss = wq_loss_dict.get("wq_loss", torch.tensor(0.0, device=images.device))
+
+        total_loss = wq_loss
+
+        total_loss.backward()
+
+        if self.config.max_grad_norm > 0:
+            nn.utils.clip_grad_norm_(self.model.parameters(), self.config.max_grad_norm)
+        self.optimizer.step()
+        self.optimizer.zero_grad(set_to_none=True)
+
+        # Compute per-parameter metrics for logging
+        with torch.no_grad():
+            valid_mask = ~torch.isnan(wq_targets)
+            if valid_mask.any():
+                abs_errors = torch.abs(
+                    outputs["water_quality_params"] - wq_targets
+                )
+                abs_errors[~valid_mask] = 0.0
+                n_valid = valid_mask.float().sum(dim=0).clamp(min=1)
+                mean_ae = (abs_errors.sum(dim=0) / n_valid).mean().item()
+            else:
+                mean_ae = 0.0
+
+        return {
+            "loss": total_loss.item(),
+            "wq_loss": wq_loss.item(),
+            "mean_ae": mean_ae,
+        }
 
     @torch.no_grad()
     def validate(self, dataloader: DataLoader) -> Dict[str, float]:
@@ -550,155 +696,273 @@ class SegmentationTrainer(BaseTrainer):
         self.model.eval()
 
         total_loss = 0.0
-        total_ce = 0.0
-        total_dice = 0.0
-        correct_pixels = 0
-        total_pixels = 0
+        all_preds = []
+        all_targets = []
         n_batches = 0
 
         for batch in dataloader:
             batch = self._to_device(batch)
             images = batch["image"]
-            masks = batch["mask"]
+            wq_targets = batch["wq_targets"]
 
             outputs = self.model(images)
-            class_logits = outputs["class_logits"]
-
-            h_out, w_out = class_logits.shape[2:]
-            if masks.shape[1] != h_out or masks.shape[2] != w_out:
-                masks = F.interpolate(
-                    masks.unsqueeze(1).float(),
-                    size=(h_out, w_out),
-                    mode="nearest",
-                ).squeeze(1).long()
-
-            loss_dict = self.criterion(class_logits, masks)
-            total_loss += loss_dict["total"].item()
-            total_ce += loss_dict["ce"].item()
-            total_dice += loss_dict["dice"].item()
-
-            preds = class_logits.argmax(dim=1)
-            correct_pixels += (preds == masks).sum().item()
-            total_pixels += masks.numel()
+            loss_dict = self.model.compute_loss(outputs, wq_targets=wq_targets)
+            wq_loss = loss_dict.get("wq_loss", torch.tensor(0.0))
+            total_loss += wq_loss.item()
             n_batches += 1
+
+            all_preds.append(outputs["water_quality_params"].cpu())
+            all_targets.append(wq_targets.cpu())
 
         self.model.train()
 
-        n = max(n_batches, 1)
-        return {
-            "loss": total_loss / n,
-            "ce": total_ce / n,
-            "dice": total_dice / n,
-            "pixel_acc": correct_pixels / max(total_pixels, 1),
+        # Aggregate metrics
+        preds = torch.cat(all_preds, dim=0)    # (N, 16)
+        targets = torch.cat(all_targets, dim=0)  # (N, 16)
+        valid = ~torch.isnan(targets)
+
+        metrics: Dict[str, float] = {
+            "loss": total_loss / max(n_batches, 1),
         }
+
+        # Per-parameter MAE
+        if valid.any():
+            abs_err = torch.abs(preds - targets)
+            abs_err[~valid] = 0.0
+            n_valid_per_param = valid.float().sum(dim=0).clamp(min=1)
+            param_mae = abs_err.sum(dim=0) / n_valid_per_param
+            metrics["mean_mae"] = param_mae.mean().item()
+
+            # R-squared per parameter (averaged over params with enough samples)
+            for p_idx in range(NUM_WATER_PARAMS):
+                mask = valid[:, p_idx]
+                if mask.sum() > 10:
+                    y = targets[mask, p_idx]
+                    y_hat = preds[mask, p_idx]
+                    ss_res = ((y - y_hat) ** 2).sum()
+                    ss_tot = ((y - y.mean()) ** 2).sum().clamp(min=1e-6)
+                    r2 = 1.0 - (ss_res / ss_tot)
+                    metrics[f"r2_param_{p_idx}"] = r2.item()
+
+        return metrics
 
 
 # ---------------------------------------------------------------------------
-# Phase 3: Temporal trainer
+# Phase 3: Temporal Stack Trainer
 # ---------------------------------------------------------------------------
 
 @dataclass
-class TemporalConfig(TrainerConfig):
-    lr: float = 1e-4
-    batch_size: int = 64
+class TemporalStackConfig(TrainerConfig):
+    """Configuration for Phase 3: temporal stack training."""
+
+    lr: float = 5e-5
+    batch_size: int = 8
     epochs: int = 50
     scheduler: str = "cosine"
-    wandb_run_name: str = "satellite-temporal"
+    warmup_epochs: int = 5
+    weight_decay: float = 0.05
+    wandb_run_name: str = "hydrovit-temporal-stack"
 
     # Data
-    cls_embeddings_dir: str = "outputs/satellite/cls_embeddings"
+    data_dir: str = "data/satellite/temporal"
     val_fraction: float = 0.2
-    max_seq_len: int = BUFFER_SIZE
-    mask_ratio: float = 0.15
+    max_temporal_len: int = 10
+    min_temporal_len: int = 5
+    target_size: int = 224
+
+    # Model
+    pretrain_checkpoint: str = ""
+    freeze_backbone: bool = True
 
     # Loss weights
     ssl_weight: float = 1.0
     supervised_weight: float = 0.5
+    temporal_mask_ratio: float = 0.2
 
 
-class TemporalTrainer(BaseTrainer):
-    """Phase 3: Train temporal transformer on [CLS] embedding sequences."""
+class TemporalStackTrainer(BaseTrainer):
+    """Phase 3: Train temporal attention stack on multi-date imagery sequences."""
 
-    def __init__(self, config: TemporalConfig) -> None:
+    def __init__(self, config: TemporalStackConfig) -> None:
         super().__init__(config)
         self.temp_config = config
 
     def build_model(self) -> nn.Module:
-        model = TemporalChangeDetector(
-            embed_dim=EMBED_DIM,
-            buffer_size=self.temp_config.max_seq_len,
+        model = SatelliteEncoder(
+            in_chans=NUM_SPECTRAL_BANDS,
+            pretrained=True,
+            max_temporal_len=self.temp_config.max_temporal_len + 1,
+            enable_s3_fusion=False,
         )
-        # Add a prediction head for masked temporal prediction
-        model.mask_pred_head = nn.Linear(EMBED_DIM, EMBED_DIM)
-        # Add a classification head for binary anomaly
-        model.anomaly_cls_head = nn.Sequential(
-            nn.Linear(EMBED_DIM, 64),
-            nn.ReLU(inplace=True),
-            nn.Linear(64, 1),
-        )
+
+        # Load Phase 2 (or Phase 1) checkpoint
+        if self.temp_config.pretrain_checkpoint:
+            ckpt_path = Path(self.temp_config.pretrain_checkpoint)
+            if ckpt_path.exists():
+                logger.info(f"Loading pretrained weights from {ckpt_path}")
+                state = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+                model_state = state.get("model_state_dict", state)
+                model.load_state_dict(model_state, strict=False)
+                logger.info("Pretrained weights loaded")
+
+        # Freeze backbone + projection, train temporal stack only
+        if self.temp_config.freeze_backbone:
+            self.freeze_model(model.backbone)
+            self.freeze_model(model.projection)
+            self.freeze_model(model.water_quality_head)
+            logger.info("Backbone, projection, and WQ head frozen; training temporal stack")
+
         return model
 
     def build_datasets(self) -> Tuple[Dataset, Dataset]:
-        data_dir = Path(self.temp_config.cls_embeddings_dir)
-        full_ds = TemporalCLSDataset(
-            data_dir,
-            max_seq_len=self.temp_config.max_seq_len,
-            mask_ratio=self.temp_config.mask_ratio,
+        full_ds = TemporalStackDataset(
+            self.temp_config.data_dir,
+            max_temporal_len=self.temp_config.max_temporal_len,
+            min_temporal_len=self.temp_config.min_temporal_len,
+            target_size=self.temp_config.target_size,
         )
 
         n = len(full_ds)
-        n_val = int(n * self.temp_config.val_fraction)
+        n_val = max(1, int(n * self.temp_config.val_fraction))
         indices = list(range(n))
         random.shuffle(indices)
         train_ds = Subset(full_ds, indices[n_val:])
         val_ds = Subset(full_ds, indices[:n_val])
 
-        logger.info(f"Temporal train: {len(train_ds)}, val: {len(val_ds)}")
+        logger.info(f"Temporal Stack — Train: {len(train_ds)}, Val: {len(val_ds)}")
         return train_ds, val_ds
+
+    def _extract_cls_tokens(
+        self,
+        frames: torch.Tensor,
+        padding_mask: torch.Tensor,
+    ) -> torch.Tensor:
+        """Extract CLS tokens for each frame in the stack.
+
+        Args:
+            frames: (B, T, C, H, W) image stack.
+            padding_mask: (B, T) True = padded/invalid.
+
+        Returns:
+            cls_tokens: (B, T, D) CLS embeddings per frame.
+        """
+        B, T, C, H, W = frames.shape
+
+        # Process each frame through the backbone
+        cls_tokens = torch.zeros(B, T, VIT_EMBED_DIM, device=frames.device)
+
+        with torch.no_grad():
+            for t in range(T):
+                # Skip padded frames
+                valid = ~padding_mask[:, t]
+                if not valid.any():
+                    continue
+
+                frame_batch = frames[valid, t]  # (B_valid, C, H, W)
+                cls, _ = self.model.backbone(frame_batch)
+                cls_tokens[valid, t] = cls
+
+        return cls_tokens
 
     def train_step(self, batch: Dict[str, torch.Tensor]) -> Dict[str, float]:
         assert self.model is not None and self.optimizer is not None
-        embeddings = batch["embeddings"]       # (B, T, D)
-        timestamps = batch["timestamps"]       # (B, T)
-        attention_mask = batch["attention_mask"] # (B, T)
-        mask_pred = batch["mask_pred"]          # (B, T)
-        anomaly_label = batch["anomaly_label"]  # (B,)
 
-        # Store original embeddings for SSL target
-        original_embeddings = embeddings.clone()
+        frames = batch["frames"]                # (B, T, C, H, W)
+        timestamps = batch["timestamps"]         # (B, T)
+        cloud_fractions = batch["cloud_fractions"]  # (B, T)
+        padding_mask = batch["padding_mask"]     # (B, T)
+        wq_targets = batch["wq_targets"]         # (B, 16)
 
-        # Zero out masked positions
-        mask_expanded = mask_pred.unsqueeze(-1).float()
-        embeddings = embeddings * (1.0 - mask_expanded)
+        B, T, C, H, W = frames.shape
 
-        # Forward through temporal transformer
-        out = self.model(embeddings, timestamps, attention_mask)
+        # Extract CLS tokens for all frames (frozen backbone)
+        cls_tokens = self._extract_cls_tokens(frames, padding_mask)
 
-        losses = {}
+        # Split into historical (T-1) and current (last frame)
+        historical_tokens = cls_tokens[:, :-1, :]     # (B, T-1, D)
+        current_frame = frames[:, -1, :, :, :]        # (B, C, H, W)
 
-        # Self-supervised: predict masked embeddings
-        if mask_pred.any():
-            # Get transformer output at masked positions for prediction
-            # Re-run forward to get intermediate representations
-            temp_enc = self.model.temporal_encoding(timestamps)
-            x = self.model.input_norm(embeddings) + temp_enc
-            x = self.model.transformer(x, src_key_padding_mask=attention_mask)
+        # Self-supervised: mask some historical frames and predict them
+        original_tokens = historical_tokens.clone()
+        ssl_loss = torch.tensor(0.0, device=frames.device)
 
-            pred_embeddings = self.model.mask_pred_head(x)
-            mask_loss = F.mse_loss(
-                pred_embeddings[mask_pred],
-                original_embeddings[mask_pred],
+        T_hist = T - 1
+        valid_counts = (~padding_mask[:, :-1]).float().sum(dim=1)  # (B,)
+
+        # Create temporal prediction mask
+        temporal_mask = torch.zeros(B, T_hist, dtype=torch.bool, device=frames.device)
+        for b in range(B):
+            n_valid = int(valid_counts[b].item())
+            if n_valid > 2:
+                n_mask = max(1, int(n_valid * self.temp_config.temporal_mask_ratio))
+                valid_idx = torch.where(~padding_mask[b, :-1])[0]
+                # Don't mask the most recent historical frame
+                maskable = valid_idx[:-1] if len(valid_idx) > 1 else valid_idx
+                if len(maskable) > 0:
+                    chosen = maskable[torch.randperm(len(maskable))[:n_mask]]
+                    temporal_mask[b, chosen] = True
+
+        # Zero out masked historical tokens
+        historical_tokens[temporal_mask] = 0.0
+
+        # Forward through the full model with temporal stack
+        outputs = self.model(
+            image=current_frame,
+            temporal_frames=historical_tokens,
+            temporal_timestamps=timestamps,
+            temporal_cloud_fractions=cloud_fractions,
+            temporal_mask=padding_mask,
+        )
+
+        losses: Dict[str, torch.Tensor] = {}
+
+        # SSL loss: predict masked temporal embeddings from context
+        if temporal_mask.any():
+            # Re-extract temporal features from the temporal stack
+            # Use the temporal_embedding output as a proxy for the full representation
+            temporal_emb = outputs["temporal_embedding"]  # (B, 256)
+
+            # Simple SSL: predict masked CLS tokens from temporal context
+            # Use a projection from the temporal embedding
+            if not hasattr(self, "_temporal_ssl_head"):
+                self._temporal_ssl_head = nn.Linear(
+                    SHARED_EMBED_DIM, VIT_EMBED_DIM
+                ).to(frames.device)
+
+            pred_cls = self._temporal_ssl_head(temporal_emb)  # (B, D)
+
+            # Average masked tokens as target
+            masked_targets = []
+            for b in range(B):
+                if temporal_mask[b].any():
+                    masked_targets.append(original_tokens[b, temporal_mask[b]].mean(dim=0))
+                else:
+                    masked_targets.append(torch.zeros(VIT_EMBED_DIM, device=frames.device))
+            masked_target = torch.stack(masked_targets, dim=0)
+
+            has_masked = temporal_mask.any(dim=1)
+            if has_masked.any():
+                ssl_loss = F.mse_loss(pred_cls[has_masked], masked_target[has_masked])
+
+        losses["ssl_loss"] = ssl_loss * self.temp_config.ssl_weight
+
+        # Supervised loss: water quality prediction from temporal context
+        valid_wq = ~torch.isnan(wq_targets).all(dim=1)
+        if valid_wq.any():
+            wq_loss_dict = self.model.compute_loss(
+                outputs, wq_targets=wq_targets
             )
-            losses["ssl_loss"] = mask_loss * self.temp_config.ssl_weight
+            supervised_loss = wq_loss_dict.get(
+                "wq_loss", torch.tensor(0.0, device=frames.device)
+            )
+            losses["supervised_loss"] = supervised_loss * self.temp_config.supervised_weight
+        else:
+            losses["supervised_loss"] = torch.tensor(0.0, device=frames.device)
 
-        # Supervised: binary anomaly classification
-        anomaly_logit = self.model.anomaly_cls_head(out["temporal_embedding"]).squeeze(-1)
-        bce_loss = F.binary_cross_entropy_with_logits(anomaly_logit, anomaly_label)
-        losses["anomaly_loss"] = bce_loss * self.temp_config.supervised_weight
+        total_loss = sum(losses.values())
+        losses["loss"] = total_loss
 
-        total = sum(losses.values())
-        losses["loss"] = total
-        total.backward()
+        total_loss.backward()
 
         if self.config.max_grad_norm > 0:
             nn.utils.clip_grad_norm_(self.model.parameters(), self.config.max_grad_norm)
@@ -711,160 +975,69 @@ class TemporalTrainer(BaseTrainer):
     def validate(self, dataloader: DataLoader) -> Dict[str, float]:
         assert self.model is not None
         self.model.eval()
+
         total_loss = 0.0
-        total_bce = 0.0
-        correct = 0
-        total = 0
+        total_ssl = 0.0
+        total_supervised = 0.0
+        n_batches = 0
+        all_preds = []
+        all_targets = []
 
         for batch in dataloader:
             batch = self._to_device(batch)
-            embeddings = batch["embeddings"]
+            frames = batch["frames"]
             timestamps = batch["timestamps"]
-            attention_mask = batch["attention_mask"]
-            anomaly_label = batch["anomaly_label"]
+            cloud_fractions = batch["cloud_fractions"]
+            padding_mask = batch["padding_mask"]
+            wq_targets = batch["wq_targets"]
 
-            out = self.model(embeddings, timestamps, attention_mask)
-            anomaly_logit = self.model.anomaly_cls_head(
-                out["temporal_embedding"]
-            ).squeeze(-1)
-            bce = F.binary_cross_entropy_with_logits(anomaly_logit, anomaly_label)
-            total_bce += bce.item()
+            B, T, C, H, W = frames.shape
 
-            preds = (torch.sigmoid(anomaly_logit) > 0.5).float()
-            correct += (preds == anomaly_label).sum().item()
-            total += anomaly_label.size(0)
-            total_loss += bce.item()
+            # Extract CLS tokens
+            cls_tokens = self._extract_cls_tokens(frames, padding_mask)
+            historical_tokens = cls_tokens[:, :-1, :]
+            current_frame = frames[:, -1, :, :, :]
+
+            outputs = self.model(
+                image=current_frame,
+                temporal_frames=historical_tokens,
+                temporal_timestamps=timestamps,
+                temporal_cloud_fractions=cloud_fractions,
+                temporal_mask=padding_mask,
+            )
+
+            # Supervised loss
+            valid_wq = ~torch.isnan(wq_targets).all(dim=1)
+            if valid_wq.any():
+                wq_loss_dict = self.model.compute_loss(outputs, wq_targets=wq_targets)
+                supervised_loss = wq_loss_dict.get("wq_loss", torch.tensor(0.0))
+                total_supervised += supervised_loss.item()
+                total_loss += supervised_loss.item()
+
+                all_preds.append(outputs["water_quality_params"].cpu())
+                all_targets.append(wq_targets.cpu())
+
+            n_batches += 1
 
         self.model.train()
-        n = max(total, 1)
-        n_batches = max(1, total // max(self.config.batch_size, 1))
-        return {
+
+        metrics: Dict[str, float] = {
             "loss": total_loss / max(n_batches, 1),
-            "anomaly_accuracy": correct / n,
+            "supervised_loss": total_supervised / max(n_batches, 1),
         }
 
+        if all_preds:
+            preds = torch.cat(all_preds, dim=0)
+            targets = torch.cat(all_targets, dim=0)
+            valid = ~torch.isnan(targets)
+            if valid.any():
+                abs_err = torch.abs(preds - targets)
+                abs_err[~valid] = 0.0
+                n_valid_per_param = valid.float().sum(dim=0).clamp(min=1)
+                param_mae = abs_err.sum(dim=0) / n_valid_per_param
+                metrics["mean_mae"] = param_mae.mean().item()
 
-# ---------------------------------------------------------------------------
-# Phase 1: SSL4EO weight loading (no training)
-# ---------------------------------------------------------------------------
-
-def run_phase1(checkpoint_path: Optional[str] = None, output_dir: str = "outputs/satellite") -> Path:
-    """Phase 1: Load and adapt SSL4EO-S12 pretrained weights.
-
-    No training needed -- just loads ViT-S weights with 10-band adaptation
-    and saves the adapted model.
-    """
-    out = Path(output_dir)
-    out.mkdir(parents=True, exist_ok=True)
-
-    logger.info("Phase 1: Loading SSL4EO-S12 ViT-S pretrained weights")
-    model = SatelliteViTBackbone(
-        pretrained=True,
-        checkpoint_path=checkpoint_path,
-    )
-
-    # Verify forward pass
-    dummy = torch.randn(1, NUM_SPECTRAL_BANDS, 224, 224)
-    with torch.no_grad():
-        cls_token, features = model(dummy)
-
-    logger.info(f"CLS token shape: {cls_token.shape}")
-    logger.info(f"Feature layers: {list(features.keys())}")
-    for k, v in features.items():
-        logger.info(f"  Layer {k}: {v.shape}")
-
-    # Save adapted backbone
-    save_path = out / "ssl4eo_adapted_backbone.pt"
-    torch.save(model.state_dict(), save_path)
-    logger.info(f"Adapted backbone saved to {save_path}")
-
-    return save_path
-
-
-def extract_cls_embeddings(
-    model_path: str | Path,
-    tiles_dir: str | Path,
-    output_dir: str | Path,
-    batch_size: int = 32,
-    device: str = "auto",
-) -> Path:
-    """Extract [CLS] embeddings from all tiles for Phase 3.
-
-    Processes all .npy tile files and saves embedding sequences
-    grouped by tile ID.
-    """
-    tiles_dir = Path(tiles_dir)
-    output_dir = Path(output_dir)
-    (output_dir / "sequences").mkdir(parents=True, exist_ok=True)
-
-    dev = torch.device(
-        "cuda" if device == "auto" and torch.cuda.is_available() else
-        device if device != "auto" else "cpu"
-    )
-
-    model = SatelliteViTBackbone(pretrained=False)
-    state = torch.load(model_path, map_location="cpu", weights_only=True)
-    model.load_state_dict(state, strict=False)
-    model.to(dev)
-    model.eval()
-
-    tile_files = sorted(tiles_dir.glob("*.npy"))
-    logger.info(f"Extracting CLS embeddings from {len(tile_files)} tiles")
-
-    # Group files by tile ID (assume format: tileID_date.npy)
-    from collections import defaultdict
-    tile_groups: Dict[str, List[Tuple[str, Path]]] = defaultdict(list)
-    for tf in tile_files:
-        parts = tf.stem.rsplit("_", 1)
-        tile_id = parts[0] if len(parts) > 1 else tf.stem
-        date_str = parts[1] if len(parts) > 1 else "0"
-        tile_groups[tile_id].append((date_str, tf))
-
-    # Sort each group by date
-    for tid in tile_groups:
-        tile_groups[tid].sort(key=lambda x: x[0])
-
-    from sentinel.utils.logging import make_progress
-    progress = make_progress()
-    with progress:
-        task = progress.add_task("Extracting CLS embeddings", total=len(tile_groups))
-        for tile_id, group in tile_groups.items():
-            embeddings_list = []
-            timestamps_list = []
-
-            for date_str, path in group:
-                tile = np.load(path).astype(np.float32)
-                if tile.max() > 2.0:
-                    tile = tile / 10000.0
-                if tile.shape[0] != 224 or tile.shape[1] != 224:
-                    from scipy.ndimage import zoom as scipy_zoom
-                    factors = (224 / tile.shape[0], 224 / tile.shape[1], 1.0)
-                    tile = scipy_zoom(tile, factors, order=1)
-
-                tensor = torch.from_numpy(tile.transpose(2, 0, 1)).unsqueeze(0).to(dev)
-                with torch.no_grad():
-                    cls_token, _ = model(tensor)
-                embeddings_list.append(cls_token.cpu().numpy().squeeze(0))
-
-                # Convert date to days-since-epoch
-                try:
-                    from datetime import datetime
-                    dt = datetime.strptime(date_str, "%Y%m%d")
-                    days = (dt - datetime(2000, 1, 1)).days
-                except Exception:
-                    days = len(timestamps_list)
-                timestamps_list.append(float(days))
-
-            if embeddings_list:
-                np.savez(
-                    output_dir / "sequences" / f"{tile_id}.npz",
-                    embeddings=np.stack(embeddings_list),
-                    timestamps=np.array(timestamps_list),
-                )
-            progress.advance(task)
-
-    logger.info(f"Saved {len(tile_groups)} embedding sequences to {output_dir}")
-    return output_dir
+        return metrics
 
 
 # ---------------------------------------------------------------------------
@@ -873,92 +1046,125 @@ def extract_cls_embeddings(
 
 def build_argparser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="SENTINEL satellite encoder training pipeline",
+        description="SENTINEL HydroViT satellite encoder training pipeline",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--phase", type=int, required=True, choices=[1, 2, 3],
-                        help="Training phase (1=load weights, 2=segmentation, 3=temporal)")
+    parser.add_argument(
+        "--phase", type=int, required=True, choices=[1, 2, 3],
+        help="Training phase (1=MAE pretrain, 2=supervised finetune, 3=temporal stack)",
+    )
+    parser.add_argument("--data-dir", type=str, default="data/satellite/mae")
     parser.add_argument("--output-dir", type=str, default="outputs/satellite")
+    parser.add_argument("--config", type=str, default="", help="Path to YAML config override")
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--seed", type=int, default=42)
 
-    # Phase 1
-    parser.add_argument("--ssl4eo-checkpoint", type=str, default="",
-                        help="Path to SSL4EO-S12 checkpoint (Phase 1)")
-
-    # Phase 2
-    parser.add_argument("--ttb-data-dir", type=str, default="data/satellite/tick_tick_bloom")
-    parser.add_argument("--marida-data-dir", type=str, default="data/satellite/marida")
-    parser.add_argument("--lr", type=float, default=1e-4)
-    parser.add_argument("--batch-size", type=int, default=32)
-    parser.add_argument("--epochs", type=int, default=50)
-    parser.add_argument("--val-fraction", type=float, default=0.2)
+    # Common
+    parser.add_argument("--lr", type=float, default=None)
+    parser.add_argument("--batch-size", type=int, default=None)
+    parser.add_argument("--epochs", type=int, default=None)
     parser.add_argument("--no-wandb", action="store_true")
+    parser.add_argument("--val-fraction", type=float, default=None)
 
-    # Phase 3
-    parser.add_argument("--cls-embeddings-dir", type=str,
-                        default="outputs/satellite/cls_embeddings")
-    parser.add_argument("--tiles-dir", type=str, default="data/satellite/processed")
-    parser.add_argument("--backbone-path", type=str, default="")
-    parser.add_argument("--mask-ratio", type=float, default=0.15)
+    # Phase 1 specific
+    parser.add_argument("--mask-ratio", type=float, default=0.75)
+    parser.add_argument("--physics-loss-weight", type=float, default=0.1)
 
-    # Config overrides
-    parser.add_argument("--set", dest="overrides", action="append", default=[],
-                        help="Override config values: key=value")
+    # Phase 2 specific
+    parser.add_argument("--pretrain-checkpoint", type=str, default="")
+    parser.add_argument("--freeze-backbone-epochs", type=int, default=5)
+
+    # Phase 3 specific
+    parser.add_argument("--max-temporal-len", type=int, default=10)
+    parser.add_argument("--min-temporal-len", type=int, default=5)
+    parser.add_argument("--temporal-mask-ratio", type=float, default=0.2)
+    parser.add_argument("--freeze-backbone", action="store_true", default=True)
+    parser.add_argument("--no-freeze-backbone", dest="freeze_backbone", action="store_false")
+
     return parser
+
+
+def _load_yaml_config(path: str) -> Dict[str, Any]:
+    """Load YAML config and return training.satellite section."""
+    try:
+        import yaml
+        with open(path, "r", encoding="utf-8") as f:
+            cfg = yaml.safe_load(f)
+        return cfg.get("training", {}).get("satellite", {})
+    except Exception as e:
+        logger.warning(f"Could not load config from {path}: {e}")
+        return {}
 
 
 def main() -> None:
     args = build_argparser().parse_args()
 
-    if args.phase == 1:
-        run_phase1(
-            checkpoint_path=args.ssl4eo_checkpoint or None,
-            output_dir=args.output_dir,
-        )
+    # Load YAML overrides
+    yaml_cfg: Dict[str, Any] = {}
+    if args.config:
+        yaml_cfg = _load_yaml_config(args.config)
 
-    elif args.phase == 2:
-        config = SegmentationConfig(
-            lr=args.lr,
-            batch_size=args.batch_size,
-            epochs=args.epochs,
+    if args.phase == 1:
+        mae_cfg = yaml_cfg.get("mae_pretraining", {})
+        config = MAEPretrainConfig(
+            lr=args.lr or mae_cfg.get("lr", 1.5e-4),
+            batch_size=args.batch_size or mae_cfg.get("batch_size", 32),
+            epochs=args.epochs or mae_cfg.get("epochs", 100),
+            warmup_epochs=mae_cfg.get("warmup_epochs", 10),
+            weight_decay=mae_cfg.get("weight_decay", 0.05),
+            scheduler=mae_cfg.get("scheduler", "cosine"),
             output_dir=args.output_dir,
             device=args.device,
             seed=args.seed,
             use_wandb=not args.no_wandb,
-            ttb_data_dir=args.ttb_data_dir,
-            marida_data_dir=args.marida_data_dir,
-            val_fraction=args.val_fraction,
-            ssl4eo_checkpoint=args.ssl4eo_checkpoint,
+            data_dir=args.data_dir,
+            val_fraction=args.val_fraction or 0.1,
+            mask_ratio=args.mask_ratio,
+            physics_loss_weight=args.physics_loss_weight,
         )
-        trainer = SegmentationTrainer(config)
+        trainer = MAEPretrainTrainer(config)
+        trainer.setup()
+        trainer.train()
+
+    elif args.phase == 2:
+        ft_cfg = yaml_cfg.get("finetuning", {})
+        config = SupervisedFinetuneConfig(
+            lr=args.lr or ft_cfg.get("lr", 1e-4),
+            batch_size=args.batch_size or ft_cfg.get("batch_size", 32),
+            epochs=args.epochs or ft_cfg.get("epochs", 50),
+            weight_decay=ft_cfg.get("weight_decay", 0.05),
+            scheduler=ft_cfg.get("scheduler", "cosine"),
+            output_dir=args.output_dir,
+            device=args.device,
+            seed=args.seed,
+            use_wandb=not args.no_wandb,
+            data_dir=args.data_dir,
+            val_fraction=args.val_fraction or 0.2,
+            pretrain_checkpoint=args.pretrain_checkpoint,
+            freeze_backbone_epochs=args.freeze_backbone_epochs,
+        )
+        trainer = SupervisedFinetuneTrainer(config)
         trainer.setup()
         trainer.train()
 
     elif args.phase == 3:
-        # Optionally extract CLS embeddings first
-        emb_dir = Path(args.cls_embeddings_dir)
-        if not (emb_dir / "sequences").exists() and args.backbone_path:
-            logger.info("Extracting CLS embeddings before temporal training...")
-            extract_cls_embeddings(
-                model_path=args.backbone_path,
-                tiles_dir=args.tiles_dir,
-                output_dir=str(emb_dir),
-                device=args.device,
-            )
-
-        config = TemporalConfig(
-            lr=args.lr,
-            batch_size=args.batch_size,
-            epochs=args.epochs,
+        config = TemporalStackConfig(
+            lr=args.lr or 5e-5,
+            batch_size=args.batch_size or 8,
+            epochs=args.epochs or 50,
             output_dir=args.output_dir,
             device=args.device,
             seed=args.seed,
             use_wandb=not args.no_wandb,
-            cls_embeddings_dir=args.cls_embeddings_dir,
-            mask_ratio=args.mask_ratio,
+            data_dir=args.data_dir,
+            val_fraction=args.val_fraction or 0.2,
+            max_temporal_len=args.max_temporal_len,
+            min_temporal_len=args.min_temporal_len,
+            temporal_mask_ratio=args.temporal_mask_ratio,
+            pretrain_checkpoint=args.pretrain_checkpoint,
+            freeze_backbone=args.freeze_backbone,
         )
-        trainer = TemporalTrainer(config)
+        trainer = TemporalStackTrainer(config)
         trainer.setup()
         trainer.train()
 
