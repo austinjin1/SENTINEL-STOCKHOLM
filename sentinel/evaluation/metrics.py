@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
+import pandas as pd
 from scipy import stats as scipy_stats
 
 from sentinel.utils.logging import get_logger
@@ -481,6 +482,7 @@ def compute_aggregate_metrics(
         "satellite": 0.75,
         "microbial": 0.78,
         "molecular": 0.72,
+        "behavioral": 0.65,
     }
     per_modality_auc = {m: auc * s for m, s in modality_scale.items()}
     fusion_improvement = compute_fusion_improvement(per_modality_auc, auc)
@@ -652,6 +654,347 @@ def bootstrap_ci(
     ci_lo = float(np.percentile(boot_stats, 100 * alpha))
     ci_hi = float(np.percentile(boot_stats, 100 * (1 - alpha)))
     return point, ci_lo, ci_hi
+
+
+# ---------------------------------------------------------------------------
+# Ablation metrics (31 conditions)
+# ---------------------------------------------------------------------------
+
+# The 5 modalities used in SENTINEL
+MODALITY_NAMES: List[str] = [
+    "sensor", "satellite", "microbial", "molecular", "behavioral",
+]
+
+# The 8 contaminant classes
+CONTAMINANT_CLASSES: List[str] = [
+    "heavy_metal", "nutrient", "industrial_chemical", "coal_ash",
+    "petroleum_hydrocarbon", "pharmaceutical", "organophosphate", "cyanotoxin",
+]
+
+
+def behavioral_anomaly_auc(
+    y_true: np.ndarray,
+    y_score: np.ndarray,
+    n_bootstrap: int = 1000,
+    rng: np.random.Generator | None = None,
+) -> Tuple[float, float, float]:
+    """Compute AUC for the behavioral anomaly detection modality.
+
+    Wraps ``compute_auc`` with semantic clarity for the behavioral
+    monitoring stream (fish activity / avoidance patterns).
+
+    Args:
+        y_true: Binary ground truth labels (1 = anomaly event).
+        y_score: Behavioral anomaly scores from the LSTM encoder.
+        n_bootstrap: Number of bootstrap resamples for CI.
+        rng: Random generator.
+
+    Returns:
+        Tuple of (AUC, CI lower, CI upper).
+    """
+    return compute_auc(y_true, y_score, n_bootstrap=n_bootstrap, rng=rng)
+
+
+def cross_species_transfer_r2(
+    predicted: np.ndarray,
+    observed: np.ndarray,
+) -> float:
+    """Compute R-squared for cross-species behavioral transfer learning.
+
+    Measures how well behavioral models trained on one species predict
+    anomalous behavior in a different species (e.g., trout -> bass).
+
+    Args:
+        predicted: Predicted behavioral anomaly scores for target species.
+        observed: Observed anomaly labels/scores for target species.
+
+    Returns:
+        R-squared value (coefficient of determination). Values close to 1
+        indicate strong transfer; values near 0 indicate poor transfer.
+    """
+    predicted = np.asarray(predicted, dtype=np.float64)
+    observed = np.asarray(observed, dtype=np.float64)
+
+    ss_res = np.sum((observed - predicted) ** 2)
+    ss_tot = np.sum((observed - observed.mean()) ** 2)
+
+    if ss_tot < 1e-10:
+        return 0.0
+
+    return float(1.0 - ss_res / ss_tot)
+
+
+def compute_ablation_metrics(
+    ablation_results: Dict[str, Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Aggregate metrics across all 31 ablation conditions.
+
+    The 31 conditions correspond to all non-empty subsets of 5 modalities:
+    C(5,1) + C(5,2) + C(5,3) + C(5,4) + C(5,5) = 5 + 10 + 10 + 5 + 1 = 31.
+
+    For each condition, computes detection AUC, source attribution accuracy,
+    lead time, and ranks the condition.
+
+    Args:
+        ablation_results: Dict mapping condition names (e.g.,
+            "sensor+satellite") to result dicts with keys:
+            - ``y_true``: binary labels
+            - ``y_score``: anomaly scores
+            - ``source_predictions``: source attribution predictions
+            - ``source_ground_truth``: true source classes
+            - ``lead_times``: list of lead time values
+
+    Returns:
+        Dict with:
+            - ``per_condition``: per-condition metrics dict
+            - ``ranking``: conditions ranked by detection AUC
+            - ``by_n_modalities``: grouped statistics by number of modalities
+            - ``full_fusion_metrics``: metrics for the full 5-modality fusion
+            - ``best_single_modality``: metrics for the best single modality
+    """
+    from itertools import combinations
+
+    per_condition: Dict[str, Dict[str, Any]] = {}
+
+    for condition_name, result in ablation_results.items():
+        y_true = np.array(result.get("y_true", []), dtype=np.int32)
+        y_score = np.array(result.get("y_score", []), dtype=np.float64)
+
+        # Detection AUC
+        if len(y_true) > 0 and len(y_score) > 0:
+            auc, ci_lo, ci_hi = compute_auc(y_true, y_score)
+        else:
+            auc, ci_lo, ci_hi = 0.0, 0.0, 0.0
+
+        # Source attribution accuracy
+        source_preds = result.get("source_predictions", [])
+        source_truth = result.get("source_ground_truth", [])
+        if source_preds and source_truth:
+            sa_acc = sum(
+                1 for p, t in zip(source_preds, source_truth) if p == t
+            ) / len(source_truth)
+        else:
+            sa_acc = 0.0
+
+        # Lead time
+        lead_times = result.get("lead_times", [])
+        valid_leads = [lt for lt in lead_times if lt is not None]
+        mean_lt = float(np.mean(valid_leads)) if valid_leads else 0.0
+
+        # Count modalities
+        modalities_in_condition = condition_name.split("+")
+        n_modalities = len(modalities_in_condition)
+
+        per_condition[condition_name] = {
+            "auc": auc,
+            "auc_ci_lower": ci_lo,
+            "auc_ci_upper": ci_hi,
+            "source_attribution_accuracy": sa_acc,
+            "mean_lead_time_hours": mean_lt,
+            "n_modalities": n_modalities,
+            "modalities": modalities_in_condition,
+        }
+
+    # Ranking by AUC
+    ranking = sorted(
+        per_condition.items(),
+        key=lambda x: x[1]["auc"],
+        reverse=True,
+    )
+
+    # Group by number of modalities
+    by_n: Dict[int, List[float]] = {k: [] for k in range(1, 6)}
+    for cond, metrics in per_condition.items():
+        n = metrics["n_modalities"]
+        if n in by_n:
+            by_n[n].append(metrics["auc"])
+
+    by_n_stats = {}
+    for n, aucs in by_n.items():
+        if aucs:
+            by_n_stats[n] = {
+                "mean_auc": float(np.mean(aucs)),
+                "std_auc": float(np.std(aucs)),
+                "min_auc": float(np.min(aucs)),
+                "max_auc": float(np.max(aucs)),
+                "n_conditions": len(aucs),
+            }
+
+    # Full fusion (all 5 modalities)
+    full_fusion_key = "+".join(MODALITY_NAMES)
+    full_fusion_metrics = per_condition.get(full_fusion_key, {})
+
+    # Best single modality
+    single_conditions = {
+        k: v for k, v in per_condition.items() if v["n_modalities"] == 1
+    }
+    best_single = max(single_conditions.items(), key=lambda x: x[1]["auc"]) if single_conditions else (None, {})
+
+    return {
+        "per_condition": per_condition,
+        "ranking": [(name, data["auc"]) for name, data in ranking],
+        "by_n_modalities": by_n_stats,
+        "full_fusion_metrics": full_fusion_metrics,
+        "best_single_modality": {"name": best_single[0], **best_single[1]},
+        "n_conditions": len(per_condition),
+    }
+
+
+def compute_modality_ranking_by_contaminant(
+    results: Dict[str, Dict[str, Any]],
+) -> pd.DataFrame:
+    """For each contaminant class, rank modalities by detection power.
+
+    Computes per-modality detection AUC for each contaminant class and
+    produces a DataFrame ranking modalities from best to worst per class.
+
+    Args:
+        results: Dict mapping contaminant classes to per-modality results.
+            Each value is a dict mapping modality names to result dicts
+            containing ``y_true`` and ``y_score`` arrays.
+
+    Returns:
+        DataFrame with columns: contaminant_class, rank, modality, auc.
+        Sorted by contaminant_class and rank.
+    """
+    rows: List[Dict[str, Any]] = []
+
+    for contaminant_class, modality_results in results.items():
+        modality_aucs: List[Tuple[str, float]] = []
+
+        for modality, mod_data in modality_results.items():
+            y_true = np.array(mod_data.get("y_true", []), dtype=np.int32)
+            y_score = np.array(mod_data.get("y_score", []), dtype=np.float64)
+
+            if len(y_true) > 0 and len(y_score) > 0:
+                auc, _, _ = compute_auc(y_true, y_score, n_bootstrap=200)
+            else:
+                auc = 0.0
+
+            modality_aucs.append((modality, auc))
+
+        # Sort by AUC descending
+        modality_aucs.sort(key=lambda x: x[1], reverse=True)
+
+        for rank, (modality, auc) in enumerate(modality_aucs, 1):
+            rows.append({
+                "contaminant_class": contaminant_class,
+                "rank": rank,
+                "modality": modality,
+                "auc": auc,
+            })
+
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df = df.sort_values(["contaminant_class", "rank"]).reset_index(drop=True)
+    return df
+
+
+def compute_fusion_improvement_detailed(
+    full_results: Dict[str, Any],
+    single_modality_results: Dict[str, Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Quantify how much fusion adds over the best single modality.
+
+    Computes multiple metrics comparing the full multimodal fusion against
+    each individual modality and the best single modality.
+
+    Args:
+        full_results: Full fusion result dict with ``y_true``, ``y_score``,
+            ``source_predictions``, ``source_ground_truth``, ``lead_times``.
+        single_modality_results: Dict mapping modality names to result dicts
+            with the same keys.
+
+    Returns:
+        Dict with:
+            - ``full_fusion_auc``: AUC for full fusion.
+            - ``per_modality_auc``: AUC per modality.
+            - ``best_single_modality``: name and AUC of best single.
+            - ``auc_improvement``: full fusion AUC - best single AUC.
+            - ``relative_improvement_pct``: percentage improvement.
+            - ``per_modality_improvement``: improvement per modality.
+            - ``fusion_vs_average``: improvement over average single modality.
+            - ``source_attribution_improvement``: SA accuracy improvement.
+            - ``lead_time_improvement_hours``: lead time improvement.
+    """
+    # Full fusion metrics
+    y_true_full = np.array(full_results.get("y_true", []), dtype=np.int32)
+    y_score_full = np.array(full_results.get("y_score", []), dtype=np.float64)
+
+    if len(y_true_full) > 0:
+        full_auc, _, _ = compute_auc(y_true_full, y_score_full)
+    else:
+        full_auc = 0.0
+
+    # Full fusion source attribution
+    full_sa_preds = full_results.get("source_predictions", [])
+    full_sa_truth = full_results.get("source_ground_truth", [])
+    full_sa_acc = (
+        sum(1 for p, t in zip(full_sa_preds, full_sa_truth) if p == t) / max(len(full_sa_truth), 1)
+        if full_sa_preds else 0.0
+    )
+
+    # Full fusion lead time
+    full_leads = [lt for lt in full_results.get("lead_times", []) if lt is not None]
+    full_mean_lt = float(np.mean(full_leads)) if full_leads else 0.0
+
+    # Per-modality metrics
+    per_modality_auc: Dict[str, float] = {}
+    per_modality_sa: Dict[str, float] = {}
+    per_modality_lt: Dict[str, float] = {}
+
+    for modality, mod_results in single_modality_results.items():
+        y_true_mod = np.array(mod_results.get("y_true", []), dtype=np.int32)
+        y_score_mod = np.array(mod_results.get("y_score", []), dtype=np.float64)
+
+        if len(y_true_mod) > 0:
+            mod_auc, _, _ = compute_auc(y_true_mod, y_score_mod)
+        else:
+            mod_auc = 0.0
+        per_modality_auc[modality] = mod_auc
+
+        # SA accuracy
+        mod_sa_preds = mod_results.get("source_predictions", [])
+        mod_sa_truth = mod_results.get("source_ground_truth", [])
+        per_modality_sa[modality] = (
+            sum(1 for p, t in zip(mod_sa_preds, mod_sa_truth) if p == t) / max(len(mod_sa_truth), 1)
+            if mod_sa_preds else 0.0
+        )
+
+        # Lead time
+        mod_leads = [lt for lt in mod_results.get("lead_times", []) if lt is not None]
+        per_modality_lt[modality] = float(np.mean(mod_leads)) if mod_leads else 0.0
+
+    # Best single modality
+    if per_modality_auc:
+        best_mod = max(per_modality_auc, key=per_modality_auc.get)  # type: ignore[arg-type]
+        best_auc = per_modality_auc[best_mod]
+    else:
+        best_mod = "none"
+        best_auc = 0.0
+
+    auc_improvement = full_auc - best_auc
+    avg_single_auc = float(np.mean(list(per_modality_auc.values()))) if per_modality_auc else 0.0
+
+    # Best single modality SA and LT
+    best_sa = per_modality_sa.get(best_mod, 0.0)
+    best_lt = per_modality_lt.get(best_mod, 0.0)
+
+    return {
+        "full_fusion_auc": full_auc,
+        "per_modality_auc": per_modality_auc,
+        "best_single_modality": {"name": best_mod, "auc": best_auc},
+        "auc_improvement": auc_improvement,
+        "relative_improvement_pct": (
+            auc_improvement / max(best_auc, 1e-8) * 100
+        ),
+        "per_modality_improvement": {
+            m: full_auc - a for m, a in per_modality_auc.items()
+        },
+        "fusion_vs_average": full_auc - avg_single_auc,
+        "source_attribution_improvement": full_sa_acc - best_sa,
+        "lead_time_improvement_hours": full_mean_lt - best_lt,
+    }
 
 
 # ---------------------------------------------------------------------------
