@@ -1,16 +1,19 @@
-"""Satellite encoder: ViT-S/16 backbone + UPerNet segmentation + temporal change detection."""
+"""HydroViT satellite encoder: water-specific foundation model + temporal + multi-resolution."""
 
 from .model import SatelliteEncoder
-from .backbone import SatelliteViTBackbone
-from .segmentation import UPerNetHead, SegmentationLoss, ANOMALY_CLASSES
-from .temporal import TemporalChangeDetector, RollingBuffer
+from .hydrovit_backbone import HydroViTBackbone
+from .multi_resolution import ResolutionCrossAttention
+from .temporal_stack import TemporalAttentionStack
+from .parameter_head import WaterQualityHead, PARAM_NAMES, NUM_WATER_PARAMS
+from .physics_loss import SpectralPhysicsLoss
 
 __all__ = [
     "SatelliteEncoder",
-    "SatelliteViTBackbone",
-    "UPerNetHead",
-    "SegmentationLoss",
-    "TemporalChangeDetector",
-    "RollingBuffer",
-    "ANOMALY_CLASSES",
+    "HydroViTBackbone",
+    "ResolutionCrossAttention",
+    "TemporalAttentionStack",
+    "WaterQualityHead",
+    "SpectralPhysicsLoss",
+    "PARAM_NAMES",
+    "NUM_WATER_PARAMS",
 ]

@@ -1,6 +1,6 @@
 """Output heads for the SENTINEL fusion layer.
 
-Three heads consume the fused waterway state to produce actionable
+Four heads consume the fused waterway state to produce actionable
 predictions:
 
 1. **AnomalyDetectionHead** -- real-time anomaly detection with
@@ -10,6 +10,8 @@ predictions:
 3. **BiosentinelIntegrationHead** -- translates the fused state into
    a predicted chemistry vector for the Digital Biosentinel ecological
    impact model.
+4. **EscalationRecommendationHead** -- recommends a monitoring tier
+   and escalation urgency based on the fused state.
 """
 
 from __future__ import annotations
@@ -407,26 +409,141 @@ class BiosentinelIntegrationHead(nn.Module):
 
 
 # =========================================================================
+# Head 4: Escalation Recommendation
+# =========================================================================
+
+# Monitoring tiers (ordinal).
+MONITORING_TIERS: tuple[str, ...] = (
+    "routine",       # Tier 0: normal scheduled monitoring
+    "elevated",      # Tier 1: increase sampling frequency
+    "intensive",     # Tier 2: deploy additional sensors / field team
+    "emergency",     # Tier 3: immediate response required
+)
+NUM_MONITORING_TIERS: int = len(MONITORING_TIERS)
+
+
+@dataclass
+class EscalationOutput:
+    """Structured output from :class:`EscalationRecommendationHead`.
+
+    Attributes:
+        tier_logits: Raw logits over monitoring tiers, shape
+            ``[B, 4]``.
+        tier_probs: Softmax probabilities over monitoring tiers.
+        recommended_tier: Index of the recommended monitoring tier.
+        escalation_urgency: Urgency score in ``[0, 1]``
+            (0 = no urgency, 1 = immediate action needed).
+    """
+
+    tier_logits: torch.Tensor
+    tier_probs: torch.Tensor
+    recommended_tier: torch.Tensor
+    escalation_urgency: torch.Tensor
+
+
+class EscalationRecommendationHead(nn.Module):
+    """Monitoring escalation recommendation head.
+
+    Consumes the fused waterway state and produces:
+
+    * Recommended monitoring tier (logits over 4 tiers).
+    * Escalation urgency score (continuous 0-1).
+
+    Architecture::
+
+        fused_state [256]
+            |
+            MLP (256 -> 128, GELU, Dropout)
+            |
+        +-------+--------+
+        |                |
+       tiers           urgency
+       [B, 4]          [B]
+
+    Args:
+        state_dim: Fused state dimensionality.
+        hidden_dim: Intermediate MLP width.
+        num_tiers: Number of monitoring tiers.
+        dropout: Dropout probability.
+    """
+
+    def __init__(
+        self,
+        state_dim: int = SHARED_EMBEDDING_DIM,
+        hidden_dim: int = 128,
+        num_tiers: int = NUM_MONITORING_TIERS,
+        dropout: float = 0.1,
+    ) -> None:
+        super().__init__()
+        self.mlp = nn.Sequential(
+            nn.Linear(state_dim, hidden_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+        )
+        self.tier_head = nn.Linear(hidden_dim, num_tiers)
+        self.urgency_head = nn.Linear(hidden_dim, 1)
+
+        self._init_weights()
+
+    def _init_weights(self) -> None:
+        for module in self.modules():
+            if isinstance(module, nn.Linear):
+                nn.init.kaiming_normal_(module.weight, nonlinearity="relu")
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
+        # Bias toward "routine" tier at initialization.
+        nn.init.constant_(self.tier_head.bias[0], 1.0)
+        # Bias urgency toward low at initialization.
+        nn.init.constant_(self.urgency_head.bias, -2.0)
+
+    def forward(self, fused_state: torch.Tensor) -> EscalationOutput:
+        """Predict escalation recommendation from fused state.
+
+        Args:
+            fused_state: Shape ``[B, state_dim]``.
+
+        Returns:
+            :class:`EscalationOutput`.
+        """
+        h = self.mlp(fused_state)
+
+        tier_logits = self.tier_head(h)
+        tier_probs = F.softmax(tier_logits, dim=-1)
+        recommended_tier = tier_probs.argmax(dim=-1)
+
+        urgency = torch.sigmoid(self.urgency_head(h)).squeeze(-1)
+
+        return EscalationOutput(
+            tier_logits=tier_logits,
+            tier_probs=tier_probs,
+            recommended_tier=recommended_tier,
+            escalation_urgency=urgency,
+        )
+
+
+# =========================================================================
 # Combined head wrapper
 # =========================================================================
 
 @dataclass
 class SentinelHeadsOutput:
-    """Combined output from all three heads.
+    """Combined output from all four heads.
 
     Attributes:
         anomaly: Output from :class:`AnomalyDetectionHead`.
         source: Output from :class:`SourceAttributionHead`.
         biosentinel: Output from :class:`BiosentinelIntegrationHead`.
+        escalation: Output from :class:`EscalationRecommendationHead`.
     """
 
     anomaly: AnomalyOutput
     source: SourceAttributionOutput
     biosentinel: BiosentinelOutput
+    escalation: EscalationOutput
 
 
 class SentinelOutputHeads(nn.Module):
-    """Convenience wrapper running all three output heads.
+    """Convenience wrapper running all four output heads.
 
     Args:
         state_dim: Fused state dimensionality.
@@ -448,9 +565,12 @@ class SentinelOutputHeads(nn.Module):
         self.biosentinel_head = BiosentinelIntegrationHead(
             state_dim=state_dim, dropout=dropout
         )
+        self.escalation_head = EscalationRecommendationHead(
+            state_dim=state_dim, dropout=dropout
+        )
 
     def forward(self, fused_state: torch.Tensor) -> SentinelHeadsOutput:
-        """Run all three heads on the fused waterway state.
+        """Run all four heads on the fused waterway state.
 
         The source attribution probabilities are automatically piped
         into the biosentinel integration head.
@@ -466,8 +586,10 @@ class SentinelOutputHeads(nn.Module):
         biosentinel_out = self.biosentinel_head(
             fused_state, source_out.class_probs
         )
+        escalation_out = self.escalation_head(fused_state)
         return SentinelHeadsOutput(
             anomaly=anomaly_out,
             source=source_out,
             biosentinel=biosentinel_out,
+            escalation=escalation_out,
         )

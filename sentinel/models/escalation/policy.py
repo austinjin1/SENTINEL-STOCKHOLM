@@ -27,13 +27,13 @@ from sentinel.models.escalation.environment import NUM_ACTIONS, STATE_DIM
 class EscalationFeaturesExtractor(BaseFeaturesExtractor):
     """Shared feature extractor for the escalation policy.
 
-    Maps the raw state vector (266 dims) through a two-layer MLP that
+    Maps the raw state vector (267 dims) through a two-layer MLP that
     produces a 64-dimensional feature representation consumed by both
     the policy (actor) and value (critic) heads.
 
     Architecture::
 
-        state (266) -> Linear(128) -> ReLU -> Linear(64) -> ReLU
+        state (267) -> Linear(128) -> ReLU -> Linear(64) -> ReLU
     """
 
     def __init__(
@@ -73,7 +73,7 @@ class EscalationPolicyNetwork(nn.Module):
 
     Architecture::
 
-        state (266) -> 128 (ReLU) -> 64 (ReLU) -> 4  (action logits)
+        state (267) -> 128 (ReLU) -> 64 (ReLU) -> 4  (action logits)
                                                    \\-> 1  (state value)
     """
 

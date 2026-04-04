@@ -1,16 +1,19 @@
-"""Sensor encoder: TCN backbone + masked parameter prediction + anomaly detection."""
+"""Sensor encoder: AquaSSM backbone + masked parameter prediction + anomaly detection."""
 
 from .model import SensorEncoder
-from .tcn import SensorTCN
+from .aqua_ssm import AquaSSM
 from .mpp import MaskedParameterPrediction, PARAMETER_NAMES
-from .anomaly import ReconstructionAnomalyDetector, AnomalyClassifier, SensorHealthClassifier
+from .anomaly import ReconstructionAnomalyDetector, AnomalyClassifier
+from .sensor_health import SensorHealthSentinel
+from .physics_constraints import PhysicsConstraintLoss
 
 __all__ = [
     "SensorEncoder",
-    "SensorTCN",
+    "AquaSSM",
     "MaskedParameterPrediction",
     "ReconstructionAnomalyDetector",
     "AnomalyClassifier",
-    "SensorHealthClassifier",
+    "SensorHealthSentinel",
+    "PhysicsConstraintLoss",
     "PARAMETER_NAMES",
 ]

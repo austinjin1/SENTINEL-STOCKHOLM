@@ -24,6 +24,7 @@ NATIVE_DIMS: Dict[str, int] = {
     "sensor": 256,      # Temporal transformer
     "microbial": 256,   # Community encoder
     "molecular": 128,   # Pathway encoder
+    "behavioral": 256,  # Behavioral pattern encoder
 }
 
 

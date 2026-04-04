@@ -1,14 +1,17 @@
-"""Molecular encoder: Chem2Path prediction + information bottleneck biomarker panel."""
+"""Molecular encoder: ToxiGene biological hierarchy network + bottleneck biomarker panel."""
 
 from .model import MolecularEncoder
-from .chem2path import Chem2Path, PATHWAYS
-from .bottleneck import InformationBottleneck, sweep_lambda, find_elbow_point
+from .hierarchy_network import HierarchyNetwork, SparseConstrainedLinear
+from .cross_species import CrossSpeciesEncoder, OrthologAligner
+from .bottleneck import HierarchyBottleneck, sweep_lambda, find_elbow_point
 
 __all__ = [
     "MolecularEncoder",
-    "Chem2Path",
-    "InformationBottleneck",
-    "PATHWAYS",
+    "HierarchyNetwork",
+    "SparseConstrainedLinear",
+    "CrossSpeciesEncoder",
+    "OrthologAligner",
+    "HierarchyBottleneck",
     "sweep_lambda",
     "find_elbow_point",
 ]

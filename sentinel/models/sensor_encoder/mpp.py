@@ -1,9 +1,11 @@
-"""Masked Parameter Prediction (MPP) for self-supervised sensor pretraining.
+"""Masked Parameter Prediction (MPP) for self-supervised AquaSSM pretraining.
 
 Analogous to BERT's masked language modeling but for multivariate water
 quality time series. Randomly masks one complete parameter within a
-contiguous temporal window and trains the TCN to reconstruct the masked
-values from remaining parameters and unmasked temporal context.
+contiguous temporal window and trains the SSM to reconstruct the masked
+values from remaining parameters and temporal context.
+
+Adapted from TCN-based v1 to work with AquaSSM backbone.
 """
 
 from __future__ import annotations
@@ -15,7 +17,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .tcn import SensorTCN, NUM_PARAMETERS, LOOKBACK_STEPS
+from .aqua_ssm import AquaSSM, NUM_PARAMETERS, OUTPUT_DIM
 
 # Parameter names and default loss weights (DO weighted higher)
 PARAMETER_NAMES = ["pH", "DO", "turbidity", "conductivity", "temperature", "ORP"]
@@ -27,27 +29,31 @@ DEFAULT_PARAM_WEIGHTS = torch.tensor(
 class MPPHead(nn.Module):
     """Reconstruction head for masked parameter prediction.
 
-    Takes per-timestep features from the TCN and reconstructs masked
-    parameter values.
+    Takes per-timestep SSM features and reconstructs masked parameter values.
+    Uses a small MLP per timestep (implemented as 1D convolutions for efficiency).
 
     Args:
-        feature_dim: Channel dimension of TCN temporal features.
+        feature_dim: Dimension of SSM temporal features.
         num_params: Number of output parameters to reconstruct.
     """
 
-    def __init__(self, feature_dim: int = 256, num_params: int = NUM_PARAMETERS) -> None:
+    def __init__(
+        self,
+        feature_dim: int = OUTPUT_DIM,
+        num_params: int = NUM_PARAMETERS,
+    ) -> None:
         super().__init__()
         self.head = nn.Sequential(
-            nn.Conv1d(feature_dim, feature_dim // 2, kernel_size=1),
+            nn.Linear(feature_dim, feature_dim // 2),
             nn.GELU(),
-            nn.Conv1d(feature_dim // 2, num_params, kernel_size=1),
+            nn.Linear(feature_dim // 2, num_params),
         )
         self._init_weights()
 
     def _init_weights(self) -> None:
         for m in self.modules():
-            if isinstance(m, nn.Conv1d):
-                nn.init.kaiming_normal_(m.weight, nonlinearity="linear")
+            if isinstance(m, nn.Linear):
+                nn.init.xavier_uniform_(m.weight)
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)
 
@@ -55,42 +61,42 @@ class MPPHead(nn.Module):
         """Reconstruct all parameters from temporal features.
 
         Args:
-            temporal_features: TCN features [B, feature_dim, T].
+            temporal_features: SSM features [B, T, feature_dim].
 
         Returns:
-            Reconstructed values [B, num_params, T].
+            Reconstructed values [B, T, num_params].
         """
-        return self.head(temporal_features)
+        return self.head(temporal_features)  # [B, T, num_params]
 
 
 class MaskedParameterPrediction(nn.Module):
-    """Self-supervised pretraining via masked parameter prediction.
+    """Self-supervised pretraining via masked parameter prediction on AquaSSM.
 
     Training procedure:
     1. For each sample, randomly select one parameter to mask.
-    2. Within that parameter, mask a contiguous sub-window (25-75% of lookback).
+    2. Within that parameter, mask a contiguous sub-window (25-75% of sequence).
     3. Set masked values to zero in the input.
-    4. Train the TCN + reconstruction head to predict masked values.
-    5. Loss: weighted MSE on masked values only.
+    4. Train the SSM + reconstruction head to predict masked values.
+    5. Loss: weighted MSE on masked values only (DO weighted 2x).
 
     Args:
-        tcn: The SensorTCN backbone (shared with downstream tasks).
+        ssm: The AquaSSM backbone (shared with downstream tasks).
         num_params: Number of sensor parameters.
-        feature_dim: TCN output feature dimension.
-        param_weights: Per-parameter loss weights. DO is weighted higher.
+        feature_dim: SSM output feature dimension.
+        param_weights: Per-parameter loss weights.
         mask_ratio_range: (min, max) fraction of temporal window to mask.
     """
 
     def __init__(
         self,
-        tcn: SensorTCN,
+        ssm: AquaSSM,
         num_params: int = NUM_PARAMETERS,
-        feature_dim: int = 256,
+        feature_dim: int = OUTPUT_DIM,
         param_weights: Optional[torch.Tensor] = None,
         mask_ratio_range: tuple[float, float] = (0.25, 0.75),
     ) -> None:
         super().__init__()
-        self.tcn = tcn
+        self.ssm = ssm
         self.num_params = num_params
         self.mask_ratio_range = mask_ratio_range
         self.reconstruction_head = MPPHead(feature_dim, num_params)
@@ -113,22 +119,22 @@ class MaskedParameterPrediction(nn.Module):
             device: Target device.
 
         Returns:
-            mask: Boolean tensor [B, P, T] where True = masked.
+            mask: Boolean tensor [B, T, P] where True = masked.
             masked_params: Index of masked parameter per sample [B].
         """
-        mask = torch.zeros(batch_size, self.num_params, seq_len, dtype=torch.bool, device=device)
+        mask = torch.zeros(
+            batch_size, seq_len, self.num_params, dtype=torch.bool, device=device
+        )
         masked_params = torch.zeros(batch_size, dtype=torch.long, device=device)
 
         for i in range(batch_size):
-            # Randomly select parameter to mask
             param_idx = random.randint(0, self.num_params - 1)
             masked_params[i] = param_idx
 
-            # Random contiguous window (25-75% of sequence)
             ratio = random.uniform(*self.mask_ratio_range)
             window_len = max(1, int(seq_len * ratio))
             start = random.randint(0, seq_len - window_len)
-            mask[i, param_idx, start : start + window_len] = True
+            mask[i, start : start + window_len, param_idx] = True
 
         return mask, masked_params
 
@@ -137,21 +143,21 @@ class MaskedParameterPrediction(nn.Module):
         x: torch.Tensor,
         mask: Optional[torch.Tensor] = None,
         masked_params: Optional[torch.Tensor] = None,
+        delta_ts: Optional[torch.Tensor] = None,
     ) -> dict[str, torch.Tensor]:
         """Forward pass for MPP pretraining.
 
         Args:
             x: Raw sensor readings [B, T, P].
-            mask: Optional precomputed mask [B, P, T]. If None, generated
-                automatically.
-            masked_params: Optional parameter indices [B]. Required if mask
-                is provided.
+            mask: Optional precomputed mask [B, T, P]. If None, generated.
+            masked_params: Optional parameter indices [B].
+            delta_ts: Optional time gaps [B, T]. Default 900s.
 
         Returns:
             Dict with:
                 'loss': Weighted MSE loss on masked values.
-                'predictions': Reconstructed values [B, P, T].
-                'mask': Applied mask [B, P, T].
+                'predictions': Reconstructed values [B, T, P].
+                'mask': Applied mask [B, T, P].
                 'masked_params': Masked parameter indices [B].
         """
         B, T, P = x.shape
@@ -162,27 +168,36 @@ class MaskedParameterPrediction(nn.Module):
         else:
             assert masked_params is not None, "masked_params required with custom mask"
 
-        # Transpose to [B, P, T] for masking
-        x_input = x.transpose(1, 2).clone()  # [B, P, T]
-
-        # Store original values for loss computation
-        x_original = x_input.clone()
+        # Store original values
+        x_original = x.clone()  # [B, T, P]
 
         # Zero out masked values
+        x_input = x.clone()
         x_input[mask] = 0.0
 
-        # Forward through TCN (expects [B, T, P])
-        _, temporal_features = self.tcn(x_input.transpose(1, 2))  # [B, 256, T]
+        # Create validity mask (inverse of masking)
+        validity_mask = (~mask).float()  # [B, T, P]
+
+        # Forward through SSM
+        _, temporal_outputs = self.ssm.forward_with_values(
+            x_input, delta_ts=delta_ts, masks=validity_mask
+        )
+
+        # Use first scale's temporal output for reconstruction
+        # Average across all scales for richer features
+        temporal_features = torch.stack(
+            [out for out in temporal_outputs], dim=0
+        ).mean(dim=0)  # [B, T, output_dim]
 
         # Reconstruct all parameters
-        predictions = self.reconstruction_head(temporal_features)  # [B, P, T]
+        predictions = self.reconstruction_head(temporal_features)  # [B, T, P]
 
         # Compute weighted MSE loss on masked values only
-        error = (predictions - x_original) ** 2  # [B, P, T]
-        error = error * mask.float()  # Only masked positions
+        error = (predictions - x_original) ** 2  # [B, T, P]
+        error = error * mask.float()
 
         # Weight by parameter importance
-        weights = self.param_weights.view(1, -1, 1).expand_as(error)
+        weights = self.param_weights.view(1, 1, -1).expand_as(error)
         weighted_error = error * weights
 
         # Mean over masked positions
@@ -203,6 +218,7 @@ class MaskedParameterPrediction(nn.Module):
         param_idx: int,
         mask_start: int,
         mask_end: int,
+        delta_ts: Optional[torch.Tensor] = None,
     ) -> torch.Tensor:
         """Predict values for a specific masked region (inference utility).
 
@@ -211,17 +227,23 @@ class MaskedParameterPrediction(nn.Module):
             param_idx: Index of parameter to mask and predict.
             mask_start: Start index of mask window.
             mask_end: End index of mask window (exclusive).
+            delta_ts: Optional time gaps [B, T].
 
         Returns:
             Predicted values for the masked region [B, mask_end - mask_start].
         """
         B, T, P = x.shape
-        x_input = x.transpose(1, 2).clone()  # [B, P, T]
+        x_input = x.clone()
+        x_input[:, mask_start:mask_end, param_idx] = 0.0
 
-        # Zero out the specified region
-        x_input[:, param_idx, mask_start:mask_end] = 0.0
+        validity_mask = torch.ones(B, T, P, device=x.device)
+        validity_mask[:, mask_start:mask_end, param_idx] = 0.0
 
-        _, temporal_features = self.tcn(x_input.transpose(1, 2))
-        predictions = self.reconstruction_head(temporal_features)  # [B, P, T]
+        _, temporal_outputs = self.ssm.forward_with_values(
+            x_input, delta_ts=delta_ts, masks=validity_mask
+        )
 
-        return predictions[:, param_idx, mask_start:mask_end]
+        temporal_features = torch.stack(temporal_outputs, dim=0).mean(dim=0)
+        predictions = self.reconstruction_head(temporal_features)
+
+        return predictions[:, mask_start:mask_end, param_idx]

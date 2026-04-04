@@ -1,24 +1,28 @@
-"""Cross-Modal Temporal Attention Fusion Layer for SENTINEL.
+"""Perceiver IO Multimodal Fusion Layer for SENTINEL.
 
 Public API
 ----------
 .. autosummary::
 
-    CrossModalTemporalFusion
+    PerceiverIOFusion
     FusionOutput
     SentinelOutputHeads
     SentinelHeadsOutput
     EmbeddingRegistry
     ProjectionBank
     TemporalDecay
-    CrossModalTemporalAttention
-    WaterwayStateGRU
+    PerceiverCrossAttention
+    LatentArray
+    ConfidenceGate
+    CrossModalConsistencyLoss
     AnomalyDetectionHead
     SourceAttributionHead
     BiosentinelIntegrationHead
+    EscalationRecommendationHead
 """
 
-from sentinel.models.fusion.attention import CrossModalTemporalAttention
+from sentinel.models.fusion.confidence_gating import ConfidenceGate
+from sentinel.models.fusion.consistency_loss import CrossModalConsistencyLoss
 from sentinel.models.fusion.embedding_registry import (
     MODALITY_IDS,
     NUM_MODALITIES,
@@ -31,41 +35,52 @@ from sentinel.models.fusion.heads import (
     AnomalyOutput,
     BiosentinelIntegrationHead,
     BiosentinelOutput,
+    EscalationOutput,
+    EscalationRecommendationHead,
     SentinelHeadsOutput,
     SentinelOutputHeads,
     SourceAttributionHead,
     SourceAttributionOutput,
 )
-from sentinel.models.fusion.model import CrossModalTemporalFusion, FusionOutput
+from sentinel.models.fusion.latent_array import LatentArray
+from sentinel.models.fusion.model import FusionOutput, PerceiverIOFusion
+from sentinel.models.fusion.perceiver_attention import PerceiverCrossAttention
 from sentinel.models.fusion.projections import (
     NATIVE_DIMS,
     ModalityProjection,
     ProjectionBank,
 )
-from sentinel.models.fusion.state import WaterwayStateGRU
 from sentinel.models.fusion.temporal_decay import TemporalDecay
+
+# Backwards compatibility aliases.
+CrossModalTemporalFusion = PerceiverIOFusion
 
 __all__ = [
     # Core fusion
-    "CrossModalTemporalFusion",
+    "PerceiverIOFusion",
+    "CrossModalTemporalFusion",  # backwards compat alias
     "FusionOutput",
     # Sub-modules
-    "CrossModalTemporalAttention",
+    "PerceiverCrossAttention",
+    "LatentArray",
+    "ConfidenceGate",
+    "CrossModalConsistencyLoss",
     "EmbeddingRegistry",
     "ModalityEntry",
     "ProjectionBank",
     "ModalityProjection",
     "TemporalDecay",
-    "WaterwayStateGRU",
     # Output heads
     "AnomalyDetectionHead",
     "SourceAttributionHead",
     "BiosentinelIntegrationHead",
+    "EscalationRecommendationHead",
     "SentinelOutputHeads",
     # Output dataclasses
     "AnomalyOutput",
     "SourceAttributionOutput",
     "BiosentinelOutput",
+    "EscalationOutput",
     "SentinelHeadsOutput",
     # Constants
     "MODALITY_IDS",

@@ -40,7 +40,9 @@ from sentinel.models.escalation.decision_tree import (
     save_protocol,
 )
 from sentinel.models.escalation.environment import (
+    MODALITY_IDS,
     NUM_ACTIONS,
+    NUM_MODALITIES,
     NUM_TIERS,
     STATE_DIM,
     TIER_COMPUTE_COST,

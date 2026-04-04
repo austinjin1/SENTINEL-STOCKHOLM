@@ -8,10 +8,10 @@ timely detection while penalising unnecessary compute.
 
 Tier definitions
 ----------------
-0 — Sensor only (continuous passive monitoring, lowest cost)
-1 — Sensor + Satellite (triggered analysis, medium cost)
-2 — Sensor + Satellite + Microbial query (medium-high cost)
-3 — Full pipeline incl. Digital Biosentinel (highest cost)
+0 — Sensor + Behavioral (continuous passive monitoring, lowest cost)
+1 — Sensor + Behavioral + Satellite (triggered analysis, medium cost)
+2 — Sensor + Behavioral + Satellite + Microbial query (medium-high cost)
+3 — Full pipeline incl. Molecular/Digital Biosentinel (highest cost)
 """
 
 from __future__ import annotations
@@ -29,14 +29,15 @@ from gymnasium import spaces
 
 NUM_TIERS: int = 4
 FUSED_DIM: int = 256
-NUM_MODALITIES: int = 4  # satellite, sensor, microbial, molecular
-STATE_DIM: int = FUSED_DIM + NUM_MODALITIES + NUM_TIERS + 1 + 1  # 266
+NUM_MODALITIES: int = 5  # sensor, satellite, microbial, molecular, behavioral
+MODALITY_IDS: Tuple[str, ...] = ("sensor", "satellite", "microbial", "molecular", "behavioral")
+STATE_DIM: int = FUSED_DIM + NUM_MODALITIES + NUM_TIERS + 1 + 1  # 267
 
 TIER_MODALITIES: Dict[int, List[str]] = {
-    0: ["sensor"],
-    1: ["sensor", "satellite"],
-    2: ["sensor", "satellite", "microbial"],
-    3: ["sensor", "satellite", "microbial", "molecular"],
+    0: ["sensor", "behavioral"],                                          # continuous, fast
+    1: ["sensor", "behavioral", "satellite"],                             # + spatial analysis
+    2: ["sensor", "behavioral", "satellite", "microbial"],                # + source attribution
+    3: ["sensor", "behavioral", "satellite", "microbial", "molecular"],   # full characterization
 }
 
 TIER_COMPUTE_COST: Dict[int, float] = {0: 0.1, 1: 0.3, 2: 0.6, 3: 1.0}
@@ -81,7 +82,7 @@ class ContaminationEvent:
     duration: int
     magnitude: float
     ramp_steps: int
-    modality_signatures: np.ndarray  # (4,)
+    modality_signatures: np.ndarray  # (5,)
 
 
 @dataclass
@@ -143,10 +144,11 @@ def generate_event_scenario(
     latest = max(earliest + 1, length - duration - 10)
     onset = rng.integers(earliest, latest + 1)
 
-    # Per-modality signatures: sensor always responds; higher modalities
-    # provide cleaner signal at higher tiers
+    # Per-modality signatures: sensor and behavioral always respond (tier 0);
+    # higher modalities provide cleaner signal at higher tiers
     base_sig = rng.uniform(0.3, 1.0, size=(NUM_MODALITIES,)).astype(np.float32)
     base_sig[0] = max(base_sig[0], 0.5)  # sensor always has decent signal
+    base_sig[4] = max(base_sig[4], 0.4)  # behavioral responds quickly
     modality_signatures = base_sig * magnitude
 
     sensor_series = rng.standard_normal((length, FUSED_DIM)).astype(np.float32) * 0.1
@@ -174,10 +176,10 @@ class CascadeEscalationEnv(gym.Env):
 
     Observation (Box, float32, shape ``(STATE_DIM,)``):
         [0:256]   — fused representation (augmented by event signal)
-        [256:260] — per-modality anomaly scores
-        [260:264] — current tier one-hot
-        [264]     — normalised time since last escalation
-        [265]     — historical event rate at this site
+        [256:261] — per-modality anomaly scores (sensor, satellite, microbial, molecular, behavioral)
+        [261:265] — current tier one-hot
+        [265]     — normalised time since last escalation
+        [266]     — historical event rate at this site
 
     Action (Discrete 4):
         0 = maintain, 1 = escalate +1, 2 = escalate +2, 3 = de-escalate -1
@@ -331,7 +333,7 @@ class CascadeEscalationEnv(gym.Env):
             progress = self._step - event.onset_step
             # Ramp factor: linear ramp up over ramp_steps
             ramp = float(np.clip(progress / max(event.ramp_steps, 1), 0.0, 1.0))
-            for m_idx, modality in enumerate(["sensor", "satellite", "microbial", "molecular"]):
+            for m_idx, modality in enumerate(MODALITY_IDS):
                 if modality in TIER_MODALITIES[self._tier]:
                     signal = event.modality_signatures[m_idx] * ramp
                     anomaly_scores[m_idx] = signal
@@ -414,10 +416,10 @@ class CascadeEscalationEnv(gym.Env):
             raise ValueError(f"Tier must be in [0, {NUM_TIERS - 1}], got {tier}")
 
         descriptions = {
-            0: "Passive monitoring — sensor-only continuous inference",
-            1: "Anomaly detected — sensor + satellite triggered analysis",
-            2: "Multi-modal confirmation — sensor + satellite + microbial query",
-            3: "Full characterisation — all modalities + Digital Biosentinel",
+            0: "Passive monitoring — sensor + behavioral continuous inference",
+            1: "Anomaly detected — sensor + behavioral + satellite triggered analysis",
+            2: "Multi-modal confirmation — sensor + behavioral + satellite + microbial query",
+            3: "Full characterisation — all modalities incl. molecular + Digital Biosentinel",
         }
         return {
             "tier": tier,

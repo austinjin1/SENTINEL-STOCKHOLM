@@ -15,7 +15,7 @@ import torch
 
 
 # Canonical modality identifiers and ordering.
-MODALITY_IDS: tuple[str, ...] = ("satellite", "sensor", "microbial", "molecular")
+MODALITY_IDS: tuple[str, ...] = ("satellite", "sensor", "microbial", "molecular", "behavioral")
 NUM_MODALITIES: int = len(MODALITY_IDS)
 SHARED_EMBEDDING_DIM: int = 256
 
