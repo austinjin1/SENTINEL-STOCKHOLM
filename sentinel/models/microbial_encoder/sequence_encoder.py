@@ -195,13 +195,19 @@ class DNABERTSequenceEncoder(nn.Module):
 
         n_otus = min(n_otus, self.max_otus)
         indices = torch.arange(n_otus, device=device)
+
+        # Create fallback embeddings on-the-fly if DNABERT was loaded
+        # but no sequences were provided
+        if not hasattr(self, 'fallback_embeddings'):
+            self.fallback_embeddings = nn.Embedding(
+                self.max_otus, self.output_dim
+            ).to(device)
+            nn.init.xavier_uniform_(self.fallback_embeddings.weight)
+
         raw_embeddings = self.fallback_embeddings(indices)  # [n_otus, output_dim]
 
-        # Fallback embeddings are already output_dim, but project for consistency
-        return self.projection(
-            # Pad to backbone dim if needed, or bypass projection
-            raw_embeddings
-        )
+        # Fallback embeddings are already output_dim — skip projection
+        return raw_embeddings
 
     def get_cached_embeddings(
         self,

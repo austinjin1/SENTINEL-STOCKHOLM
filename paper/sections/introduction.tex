@@ -1,0 +1,58 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Water pollution threatens ecosystems and public health worldwide, yet existing
+monitoring systems rely on sparse, single-modality measurements that detect
+contamination only after significant damage has occurred. The fundamental challenge
+is that no single sensing modality can detect all pollution types early enough:
+chemical sensors measure only pre-specified analytes, satellite remote sensing
+cannot resolve sub-surface processes, and biological indicators integrate over
+unknown timescales.
+
+Biology, by contrast, runs a massively redundant detection system. Molecular
+stress responses activate within minutes of toxicant exposure. Organismal
+behavior changes before physiological damage occurs. Microbial communities shift
+in composition as environmental conditions change. Spectral properties of water
+bodies reflect integrated biogeochemical state. Each channel captures different
+aspects of water quality with different latencies and specificities. The question
+is: can we build an AI system that reads all these channels simultaneously?
+
+Existing approaches in AI-driven water quality monitoring operate within
+individual modalities. HydroGEM~\citep{Loreaux2025} applies foundation models to
+sensor time series; Zhi et al.~\citep{Zhi2024} demonstrate satellite-based
+prediction of non-optically-active parameters; and scattered work applies
+machine learning to environmental metagenomics. However, no system integrates
+multiple modalities, and no architecture addresses the core technical
+challenges of environmental multimodal fusion: asynchronous sampling,
+heterogeneous mathematical spaces, routinely missing modalities, and cascade
+decision-making.
+
+In this work, we present \textbf{SENTINEL} (\textbf{S}ynergistic
+\textbf{E}nvironmental \textbf{N}etwork for \textbf{T}emporal
+\textbf{I}ntelligence and \textbf{N}etworked \textbf{E}cological
+\textbf{L}earning), the first multimodal AI framework for early water
+pollution detection. Our contributions are:
+
+\begin{itemize}
+    \item \textbf{SENTINEL-DB}: A large-scale multimodal water quality dataset
+    harmonizing 390M+ records from thirteen public sources across five modality
+    types, with a unified parameter ontology and H3 spatial cross-modal linking.
+
+    \item \textbf{Five novel architectures}: AquaSSM (continuous-time SSM for
+    sensor data), HydroViT (water-specific satellite foundation model),
+    MicroBiomeNet (Aitchison-geometry-aware metagenomics encoder), ToxiGene
+    (pathway-informed transcriptomic classifier), and BioMotion
+    (diffusion-pretrained behavioral anomaly detector).
+
+    \item \textbf{SENTINEL-Fusion}: A Perceiver IO-derived cross-modal temporal
+    attention framework with temporal decay attention and confidence-weighted
+    gating, designed for asynchronous heterogeneous environmental monitoring.
+
+    \item \textbf{Theoretical contributions}: Cross-modal transfer bounds,
+    compositional neural network guarantees, and distribution-free conformal
+    anomaly detection with coverage guarantees.
+
+    \item \textbf{A public platform}: A web application enabling anyone to
+    assess water quality via GPS, photos, or test kit readings, with
+    automated citizen data quality control.
+\end{itemize}

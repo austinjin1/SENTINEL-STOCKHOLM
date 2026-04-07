@@ -134,7 +134,10 @@ class TemporalCrossAttentionLayer(nn.Module):
         if confidence_weights is not None:
             # Bias: queries attend preferentially to high-confidence keys
             # [B, T] -> [B, 1, T] broadcast over query positions
-            log_conf = torch.log(confidence_weights.clamp(min=1e-6))
+            # Scale log-confidence to have meaningful impact on attention logits
+            # Raw log(conf) is too small (e.g., log(0.1) = -2.3) relative to
+            # attention logits which are O(sqrt(d)). Multiply by scaling factor.
+            log_conf = torch.log(confidence_weights.clamp(min=1e-6)) * 5.0
             # [B, T, T]: each query sees same key bias
             attn_bias = log_conf.unsqueeze(1).expand(B, T, T)
             # MultiheadAttention expects [B*num_heads, T, T] or None

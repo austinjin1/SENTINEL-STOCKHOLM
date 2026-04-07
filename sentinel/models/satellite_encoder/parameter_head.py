@@ -232,9 +232,13 @@ class WaterQualityHead(nn.Module):
         if not valid_mask.any():
             return torch.tensor(0.0, device=predictions.device, requires_grad=True)
 
+        # Replace NaN targets with 0 before computation (NaN * 0.0 = NaN in IEEE 754)
+        targets_safe = targets.clone()
+        targets_safe[~valid_mask] = 0.0
+
         # Gaussian NLL: 0.5 * (log_var + (y - mu)^2 / exp(log_var))
-        precision = torch.exp(-uncertainties)
-        nll = 0.5 * (uncertainties + (targets - predictions) ** 2 * precision)
+        precision = torch.exp(-uncertainties.clamp(-10, 10))
+        nll = 0.5 * (uncertainties.clamp(-10, 10) + (targets_safe - predictions) ** 2 * precision)
 
         # Zero out invalid entries
         nll = nll * valid_mask.float()

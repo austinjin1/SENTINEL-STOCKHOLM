@@ -1,0 +1,64 @@
+[2026-04-04 09:06:59] ============================================================
+[2026-04-04 09:06:59] EPA Water Quality Portal Download
+[2026-04-04 09:06:59] Target: 12 parameters across 18 HUC2 basins
+[2026-04-04 09:06:59] Date range: 2020-01-01 to 2025-12-31
+[2026-04-04 09:06:59] ============================================================
+[2026-04-04 09:06:59] 
+HUC 01: New England
+[2026-04-04 09:06:59]   Downloading HUC 01 (New England)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,12,30,33,40,43) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:08:42]     Dissolved oxygen (DO): 48,501 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,23,24,25,30,34,41,47,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:10:33]     pH: 47,974 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,23,24,25,30,33,43,54) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:12:36]     Temperature, water: 96,434 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,10,23,24,25,30,37,40,41,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:12:54]     Specific conductance: 60,824 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,16,18,20,24,25,32,35,43,47,56,57,59) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:13:06]     Turbidity: 33,603 records
+[2026-04-04 09:13:06]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 09:13:28]     Nitrate: 15,291 records
+[2026-04-04 09:13:33]     Ammonia: 3,588 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,24,25,39,41,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:13:43]     Phosphorus: 31,307 records
+[2026-04-04 09:13:48]     Chlorophyll a: 5,356 records
+[2026-04-04 09:13:53]     Total dissolved solids: 11,783 records
+[2026-04-04 09:13:56]     Total suspended solids: 4,125 records
+Traceback (most recent call last):
+  File "/home/bcheng/SENTINEL/scripts/download_epa_wqp.py", line 168, in <module>
+    main()
+  File "/home/bcheng/SENTINEL/scripts/download_epa_wqp.py", line 138, in main
+    n = download_wqp_by_huc2(huc2, TARGET_CHARACTERISTICS)
+  File "/home/bcheng/SENTINEL/scripts/download_epa_wqp.py", line 118, in download_wqp_by_huc2
+    combined.to_parquet(dest, index=False)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/pandas/util/_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/pandas/core/frame.py", line 3118, in to_parquet
+    return to_parquet(
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/pandas/io/parquet.py", line 482, in to_parquet
+    impl.write(
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/pandas/io/parquet.py", line 191, in write
+    table = self.api.Table.from_pandas(df, **from_pandas_kwargs)
+  File "pyarrow/table.pxi", line 4796, in pyarrow.lib.Table.from_pandas
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/pyarrow/pandas_compat.py", line 664, in dataframe_to_arrays
+    arrays[i] = maybe_fut.result()
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/pyarrow/pandas_compat.py", line 639, in convert_column
+    raise e
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/pyarrow/pandas_compat.py", line 633, in convert_column
+    result = pa.array(col, type=type_, from_pandas=True, safe=safe)
+  File "pyarrow/array.pxi", line 365, in pyarrow.lib.array
+  File "pyarrow/array.pxi", line 91, in pyarrow.lib._ndarray_to_array
+  File "pyarrow/error.pxi", line 92, in pyarrow.lib.check_status
+pyarrow.lib.ArrowTypeError: ("Expected bytes, got a 'float' object", 'Conversion failed for column ResultMeasureValue with type object')

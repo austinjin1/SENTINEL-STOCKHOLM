@@ -162,12 +162,16 @@ class ContinuousTimeSSMCell(nn.Module):
         delta_t = self.step_size_fn(gap, h_prev)  # [B, 1]
 
         # Discretize: exact solution for diagonal A
-        A_diag = self.A  # [hidden_dim]
-        A_bar = torch.exp(A_diag.unsqueeze(0) * delta_t)  # [B, hidden_dim]
+        # Clamp the exponent to prevent overflow/underflow
+        A_diag = self.A  # [hidden_dim], guaranteed negative
+        exponent = A_diag.unsqueeze(0) * delta_t  # [B, hidden_dim]
+        exponent = exponent.clamp(min=-20.0, max=0.0)  # exp(-20)≈2e-9, exp(0)=1
+        A_bar = torch.exp(exponent)  # [B, hidden_dim], in (0, 1]
         B_bar = self.B(x_t) * delta_t  # [B, hidden_dim]
 
-        # State update
+        # State update with hidden state clamping for stability
         h_t = A_bar * h_prev + B_bar  # [B, hidden_dim]
+        h_t = h_t.clamp(min=-50.0, max=50.0)  # prevent hidden state explosion
 
         # Output
         y_t = self.C(h_t) + self.D * x_t  # [B, input_dim]

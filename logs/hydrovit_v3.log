@@ -1,0 +1,50 @@
+[08:52:18] INFO     Data: 350/75/75 tiles (224x224, 13 bands)                   
+Unexpected keys: ['head.weight', 'head.bias']
+[08:52:21] INFO     HydroViT: 40,796,000 parameters                             
+           INFO     ============================================================
+           INFO     PHASE 1: MAE Pretraining                                    
+           INFO     ============================================================
+[08:52:33] INFO     MAE Ep   1/20 | Train: 0.0582 | Val: 0.0022 | nb=88         
+[08:53:18] INFO     MAE Ep   5/20 | Train: 0.0003 | Val: 0.0003 | nb=88         
+[08:54:22] INFO     MAE Ep  10/20 | Train: 0.0001 | Val: 0.0001 | nb=88         
+[08:55:20] INFO     MAE Ep  15/20 | Train: 0.0001 | Val: 0.0001 | nb=88         
+[08:56:10] INFO     MAE Ep  20/20 | Train: 0.0000 | Val: 0.0000 | nb=88         
+[08:56:11] INFO     Reloading best MAE checkpoint from                          
+                    checkpoints/satellite/hydrovit_mae_best.pt                  
+[08:56:12] INFO     ============================================================
+           INFO     PHASE 2: WQ Fine-tuning (frozen backbone + built-in WQ head)
+           INFO     ============================================================
+           INFO     Trainable params: 829,984 (water_quality_head only)         
+[08:56:25] INFO     WQ Ep   1/40 | Loss: 1.1662 | Val R²: -0.0494 | nb=88       
+[08:57:13] INFO     WQ Ep   5/40 | Loss: 0.5546 | Val R²: -0.0476 | nb=88       
+[08:58:18] INFO     WQ Ep  10/40 | Loss: 0.5403 | Val R²: -0.0350 | nb=88       
+[08:59:12] INFO     WQ Ep  15/40 | Loss: 0.5271 | Val R²: -0.0331 | nb=88       
+[09:00:19] INFO     WQ Ep  20/40 | Loss: 0.5145 | Val R²: -0.0312 | nb=88       
+[09:02:02] INFO     WQ Ep  25/40 | Loss: 0.5153 | Val R²: -0.0323 | nb=88       
+[09:03:52] INFO     WQ Ep  30/40 | Loss: 0.5089 | Val R²: -0.0333 | nb=88       
+[09:06:06] INFO     WQ Ep  35/40 | Loss: 0.5113 | Val R²: -0.0342 | nb=88       
+[09:09:05] INFO     WQ Ep  40/40 | Loss: 0.5089 | Val R²: -0.0336 | nb=88       
+[09:09:06] INFO     ============================================================
+           INFO     TEST EVALUATION                                             
+[09:09:07] INFO     ============================================================
+[09:09:17] INFO                  chla: R² = -0.0103                             
+           INFO             turbidity: R² = -0.0839                             
+           INFO                secchi: R² = -0.0062                             
+           INFO                  cdom: R² = -0.0010                             
+           INFO                   tss: R² = -0.0535                             
+           INFO                    tn: R² = -0.0318                             
+           INFO                    tp: R² = -0.1729                             
+           INFO                    do: R² = -0.0025                             
+           INFO               ammonia: R² = -0.0347                             
+           INFO               nitrate: R² = -0.0002                             
+           INFO                    ph: R² = -0.0150                             
+           INFO                  temp: R² = -0.0434                             
+           INFO           phycocyanin: R² = -0.0824                             
+           INFO              oil_prob: R² = -0.0001                             
+           INFO                 acdom: R² = -0.0102                             
+           INFO                   pai: R² = -0.0028                             
+           INFO                                                                 
+                      Mean R²: -0.0344                                          
+           INFO     BELOW THRESHOLD (-0.0344)                                   
+           INFO     Time: 17.0m                                                 
+           INFO     DONE                                                        

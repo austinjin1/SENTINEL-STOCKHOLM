@@ -1,0 +1,134 @@
+[2026-04-04 09:05:08] ============================================================
+[2026-04-04 09:05:08] GRQA Dataset Download
+[2026-04-04 09:05:08] ============================================================
+[2026-04-04 09:05:08] Querying Zenodo record 7056647...
+[2026-04-04 09:05:08] Found 5 files in Zenodo record:
+[2026-04-04 09:05:08]   GRQA_data_v1.3.zip                         1147.6 MB
+[2026-04-04 09:05:08]   GRQA_source_data.zip                       3717.0 MB
+[2026-04-04 09:05:08]   README_v1.3.md                                0.0 MB
+[2026-04-04 09:05:08]   GRQA_figures.zip                             38.4 MB
+[2026-04-04 09:05:08]   GRQA_meta.zip                                13.7 MB
+[2026-04-04 09:05:08]   TOTAL                                      4916.6 MB
+[2026-04-04 09:05:08]   Downloading: GRQA_data_v1.3.zip (1147.6 MB)...
+[2026-04-04 09:05:11]     50/1148 MB (4%)
+[2026-04-04 09:05:13]     100/1148 MB (9%)
+[2026-04-04 09:05:14]     150/1148 MB (13%)
+[2026-04-04 09:05:16]     200/1148 MB (17%)
+[2026-04-04 09:05:18]     250/1148 MB (22%)
+[2026-04-04 09:05:19]     300/1148 MB (26%)
+[2026-04-04 09:05:21]     350/1148 MB (31%)
+[2026-04-04 09:05:22]     401/1148 MB (35%)
+[2026-04-04 09:05:24]     451/1148 MB (39%)
+[2026-04-04 09:05:26]     501/1148 MB (44%)
+[2026-04-04 09:05:27]     551/1148 MB (48%)
+[2026-04-04 09:05:29]     601/1148 MB (52%)
+[2026-04-04 09:05:30]     651/1148 MB (57%)
+[2026-04-04 09:05:32]     701/1148 MB (61%)
+[2026-04-04 09:05:34]     751/1148 MB (65%)
+[2026-04-04 09:05:35]     801/1148 MB (70%)
+[2026-04-04 09:05:37]     851/1148 MB (74%)
+[2026-04-04 09:05:38]     901/1148 MB (79%)
+[2026-04-04 09:05:40]     951/1148 MB (83%)
+[2026-04-04 09:05:42]     1001/1148 MB (87%)
+[2026-04-04 09:05:43]     1051/1148 MB (92%)
+[2026-04-04 09:05:45]     1102/1148 MB (96%)
+[2026-04-04 09:05:46]   Done: GRQA_data_v1.3.zip (1147.6 MB)
+[2026-04-04 09:05:46]   Downloading: GRQA_source_data.zip (3717.0 MB)...
+[2026-04-04 09:05:49]     50/3717 MB (1%)
+[2026-04-04 09:05:51]     100/3717 MB (3%)
+[2026-04-04 09:05:52]     150/3717 MB (4%)
+[2026-04-04 09:05:54]     200/3717 MB (5%)
+[2026-04-04 09:05:56]     250/3717 MB (7%)
+[2026-04-04 09:05:57]     300/3717 MB (8%)
+[2026-04-04 09:05:59]     350/3717 MB (9%)
+[2026-04-04 09:06:00]     401/3717 MB (11%)
+[2026-04-04 09:06:02]     451/3717 MB (12%)
+[2026-04-04 09:06:04]     501/3717 MB (13%)
+[2026-04-04 09:06:05]     551/3717 MB (15%)
+[2026-04-04 09:06:07]     601/3717 MB (16%)
+[2026-04-04 09:06:09]     651/3717 MB (18%)
+[2026-04-04 09:06:10]     701/3717 MB (19%)
+[2026-04-04 09:06:12]     751/3717 MB (20%)
+[2026-04-04 09:06:13]     801/3717 MB (22%)
+[2026-04-04 09:06:15]     851/3717 MB (23%)
+[2026-04-04 09:06:17]     901/3717 MB (24%)
+[2026-04-04 09:06:18]     951/3717 MB (26%)
+[2026-04-04 09:06:20]     1001/3717 MB (27%)
+[2026-04-04 09:06:22]     1051/3717 MB (28%)
+[2026-04-04 09:06:23]     1102/3717 MB (30%)
+[2026-04-04 09:06:25]     1152/3717 MB (31%)
+[2026-04-04 09:06:26]     1202/3717 MB (32%)
+[2026-04-04 09:06:28]     1252/3717 MB (34%)
+[2026-04-04 09:06:30]     1302/3717 MB (35%)
+[2026-04-04 09:06:31]     1352/3717 MB (36%)
+[2026-04-04 09:06:33]     1402/3717 MB (38%)
+[2026-04-04 09:06:34]     1452/3717 MB (39%)
+[2026-04-04 09:06:36]     1502/3717 MB (40%)
+[2026-04-04 09:06:38]     1552/3717 MB (42%)
+[2026-04-04 09:06:39]     1602/3717 MB (43%)
+[2026-04-04 09:06:41]     1652/3717 MB (44%)
+[2026-04-04 09:06:43]     1702/3717 MB (46%)
+[2026-04-04 09:06:44]     1752/3717 MB (47%)
+[2026-04-04 09:06:46]     1803/3717 MB (48%)
+[2026-04-04 09:06:47]     1853/3717 MB (50%)
+[2026-04-04 09:06:49]     1903/3717 MB (51%)
+[2026-04-04 09:06:51]     1953/3717 MB (53%)
+[2026-04-04 09:06:52]     2003/3717 MB (54%)
+[2026-04-04 09:06:54]     2053/3717 MB (55%)
+[2026-04-04 09:06:56]     2103/3717 MB (57%)
+[2026-04-04 09:06:57]     2153/3717 MB (58%)
+[2026-04-04 09:06:59]     2203/3717 MB (59%)
+[2026-04-04 09:07:01]     2253/3717 MB (61%)
+[2026-04-04 09:07:02]     2303/3717 MB (62%)
+[2026-04-04 09:07:04]     2353/3717 MB (63%)
+[2026-04-04 09:07:06]     2403/3717 MB (65%)
+[2026-04-04 09:07:07]     2453/3717 MB (66%)
+[2026-04-04 09:07:09]     2503/3717 MB (67%)
+[2026-04-04 09:07:11]     2554/3717 MB (69%)
+[2026-04-04 09:07:13]     2604/3717 MB (70%)
+[2026-04-04 09:07:15]     2654/3717 MB (71%)
+[2026-04-04 09:07:16]     2704/3717 MB (73%)
+[2026-04-04 09:07:18]     2754/3717 MB (74%)
+[2026-04-04 09:07:20]     2804/3717 MB (75%)
+[2026-04-04 09:07:22]     2854/3717 MB (77%)
+[2026-04-04 09:07:23]     2904/3717 MB (78%)
+[2026-04-04 09:07:25]     2954/3717 MB (79%)
+[2026-04-04 09:07:27]     3004/3717 MB (81%)
+[2026-04-04 09:07:29]     3054/3717 MB (82%)
+[2026-04-04 09:07:31]     3104/3717 MB (84%)
+[2026-04-04 09:07:32]     3154/3717 MB (85%)
+[2026-04-04 09:07:34]     3204/3717 MB (86%)
+[2026-04-04 09:07:36]     3255/3717 MB (88%)
+[2026-04-04 09:07:38]     3305/3717 MB (89%)
+[2026-04-04 09:07:39]     3355/3717 MB (90%)
+[2026-04-04 09:07:41]     3405/3717 MB (92%)
+[2026-04-04 09:07:42]     3455/3717 MB (93%)
+[2026-04-04 09:07:44]     3505/3717 MB (94%)
+[2026-04-04 09:07:46]     3555/3717 MB (96%)
+[2026-04-04 09:07:47]     3605/3717 MB (97%)
+[2026-04-04 09:07:49]     3655/3717 MB (98%)
+[2026-04-04 09:07:51]     3705/3717 MB (100%)
+[2026-04-04 09:07:51]   Done: GRQA_source_data.zip (3717.0 MB)
+[2026-04-04 09:07:51]   Downloading: README_v1.3.md (0.0 MB)...
+[2026-04-04 09:07:51]   Done: README_v1.3.md (0.0 MB)
+[2026-04-04 09:07:51]   Downloading: GRQA_figures.zip (38.4 MB)...
+[2026-04-04 09:08:20]   Done: GRQA_figures.zip (38.4 MB)
+[2026-04-04 09:08:20]   Downloading: GRQA_meta.zip (13.7 MB)...
+[2026-04-04 09:08:22]   Done: GRQA_meta.zip (13.7 MB)
+[2026-04-04 09:08:22]   Extracting: GRQA_data_v1.3.zip...
+[2026-04-04 09:08:53]   Extracted to data/raw/grqa
+[2026-04-04 09:08:53]   Extracting: GRQA_source_data.zip...
+[2026-04-04 09:10:18]   Extracted to data/raw/grqa
+[2026-04-04 09:10:18]   Extracting: GRQA_figures.zip...
+[2026-04-04 09:10:18]   Extracted to data/raw/grqa
+[2026-04-04 09:10:18]   Extracting: GRQA_meta.zip...
+[2026-04-04 09:10:19]   Extracted to data/raw/grqa
+[2026-04-04 09:10:19] 
+============================================================
+[2026-04-04 09:10:19] GRQA Download Complete!
+[2026-04-04 09:10:19] ============================================================
+[2026-04-04 09:10:19] CSV files: 326
+[2026-04-04 09:10:19] Parquet files: 0
+[2026-04-04 09:10:19]   TC_GRQA.csv: 1 columns, preview: ['obs_id;lat_wgs84;lon_wgs84;obs_date;obs_time;obs_time_zone;site_id;site_name;site_country;upstream_basin_area;upstream_basin_area_unit;drainage_region_name;param_code;source_param_code;param_name;source_param_name;obs_value;source_obs_value;detection_limit_flag;param_form;source_param_form;unit;source_unit;filtration;source;obs_percentile;obs_iqr_outlier;site_ts_availability;site_ts_continuity;GEMSTAT_meta_Station_Narrative;GEMSTAT_meta_Parameter_Description;GEMSTAT_meta_Analysis_Method_Code;GEMSTAT_meta_Method_Name;GEMSTAT_meta_Method_Description;GLORICH_meta_Value_remark_code;GLORICH_meta_Meaning;WQP_meta_ResultAnalyticalMethod_MethodName;WQP_meta_ResultLaboratoryCommentText']
+[2026-04-04 09:10:19]   DC_GRQA.csv: 1 columns, preview: ['obs_id;lat_wgs84;lon_wgs84;obs_date;obs_time;obs_time_zone;site_id;site_name;site_country;upstream_basin_area;upstream_basin_area_unit;drainage_region_name;param_code;source_param_code;param_name;source_param_name;obs_value;source_obs_value;detection_limit_flag;param_form;source_param_form;unit;source_unit;filtration;source;obs_percentile;obs_iqr_outlier;site_ts_availability;site_ts_continuity;GEMSTAT_meta_Station_Narrative;GEMSTAT_meta_Parameter_Description;GEMSTAT_meta_Analysis_Method_Code;GEMSTAT_meta_Method_Name;GEMSTAT_meta_Method_Description']
+[2026-04-04 09:10:19]   DOP_GRQA.csv: 1 columns, preview: ['obs_id;lat_wgs84;lon_wgs84;obs_date;obs_time;obs_time_zone;site_id;site_name;site_country;upstream_basin_area;upstream_basin_area_unit;drainage_region_name;param_code;source_param_code;param_name;source_param_name;obs_value;source_obs_value;detection_limit_flag;param_form;source_param_form;unit;source_unit;filtration;source;obs_percentile;obs_iqr_outlier;site_ts_availability;site_ts_continuity;WQP_meta_ResultAnalyticalMethod_MethodName;WQP_meta_ResultLaboratoryCommentText']

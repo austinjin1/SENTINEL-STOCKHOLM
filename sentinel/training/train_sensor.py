@@ -37,6 +37,7 @@ from sentinel.models.sensor_encoder.sensor_health import (
     NUM_HEALTH_CLASSES,
     SensorHealthSentinel,
 )
+from sentinel.models.sensor_encoder.physics_constraints import PhysicsConstraintLoss
 from sentinel.training.trainer import BaseTrainer, TrainerConfig, build_scheduler
 from sentinel.utils.logging import get_logger
 
@@ -367,6 +368,8 @@ class MPPPretrainTrainer(BaseTrainer):
     def __init__(self, config: MPPPretrainConfig) -> None:
         super().__init__(config)
         self.mpp_config = config
+        self.physics_loss = PhysicsConstraintLoss()
+        self.physics_weight = 0.1  # weight for physics constraint regularization
 
     def build_model(self) -> nn.Module:
         model = SensorEncoder(
@@ -434,7 +437,18 @@ class MPPPretrainTrainer(BaseTrainer):
             delta_ts=delta_ts,
         )
 
-        loss = mpp_output["loss"]
+        mpp_loss = mpp_output["loss"]
+
+        # Physics constraint regularization on reconstructed values
+        pred_tensor = mpp_output["predictions"]  # (B, T, P)
+        # Convert tensor to named dict for physics constraints
+        _param_names = ["do", "ph", "conductivity", "temperature", "turb", "orp"]
+        pred_dict = {name: pred_tensor[..., i] for i, name in enumerate(_param_names)}
+        physics_out = self.physics_loss(pred_dict)
+        physics_loss = physics_out["total_loss"]
+
+        loss = mpp_loss + self.physics_weight * physics_loss
+
         loss.backward()
 
         if self.config.max_grad_norm > 0:
@@ -442,7 +456,15 @@ class MPPPretrainTrainer(BaseTrainer):
         self.optimizer.step()
         self.optimizer.zero_grad(set_to_none=True)
 
-        return {"loss": loss.item()}
+        # Update running error statistics for anomaly normalization
+        with torch.no_grad():
+            self.model.anomaly_detector.update_statistics(predictions, values)
+
+        return {
+            "loss": loss.item(),
+            "mpp_loss": mpp_loss.item(),
+            "physics_loss": physics_loss.item(),
+        }
 
     @torch.no_grad()
     def validate(self, dataloader: DataLoader) -> Dict[str, float]:

@@ -1,0 +1,38 @@
+[17:20:54] === USGS NWIS + Sentinel-2 v3 Data Collection ===
+[17:20:54] Target: 2000 new pairs from NWIS stations
+[17:20:54] Found 918 unique station IDs
+[17:20:54] Fetching station GPS from USGS...
+[17:20:59] GPS coords: 918/918 stations
+[17:20:59] 918 stations with valid GPS, processing up to 400
+[17:36:35]   20/400 stations | 156 pairs collected
+[17:54:34]   40/400 stations | 332 pairs collected
+[18:09:20]   60/400 stations | 484 pairs collected
+[18:34:06]   80/400 stations | 705 pairs collected
+[19:00:16]   100/400 stations | 1032 pairs collected
+[19:19:44]   120/400 stations | 1241 pairs collected
+[19:38:24]   140/400 stations | 1446 pairs collected
+[19:59:04]   160/400 stations | 1718 pairs collected
+[20:14:37]   180/400 stations | 1903 pairs collected
+[20:24:34]   Reached target 2000 pairs at station 188
+[20:24:34] New pairs collected: 2014
+[20:24:34] Loading existing 847 pairs...
+[20:24:42] Combined: 2861 pairs (847 existing + 2014 new NWIS)
+[20:27:51] Valid pairs per parameter in combined dataset:
+[20:27:51]   chl_a: 92/2861
+[20:27:51]   turb: 1654/2861
+[20:27:51]   secchi: 0/2861
+[20:27:51]   cdom: 0/2861
+[20:27:51]   TSS: 550/2861
+[20:27:51]   TN: 843/2861
+[20:27:51]   TP: 844/2861
+[20:27:51]   DO: 2207/2861
+[20:27:51]   NH4: 314/2861
+[20:27:51]   NO3: 807/2861
+[20:27:51]   pH: 2206/2861
+[20:27:51]   temp: 2861/2861
+[20:27:51]   PC: 432/2861
+[20:27:51]   oil: 0/2861
+[20:27:51]   aCDOM: 0/2861
+[20:27:51]   PAI: 0/2861
+[20:27:51] Saved /home/bcheng/SENTINEL/data/processed/satellite/paired_wq_v3.npz
+[20:27:51] DONE

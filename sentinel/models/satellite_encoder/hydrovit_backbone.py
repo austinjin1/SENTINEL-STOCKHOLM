@@ -63,8 +63,16 @@ class SpectralPositionalEmbedding(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Add spectral encoding.  x: [B, num_patches, embed_dim]."""
-        # Broadcast same spectral bias across spatial dimension
-        return x + self.spectral_embed.mean(dim=1, keepdim=True)
+        # Project spectral embeddings via learned aggregation across bands,
+        # preserving per-band structure through a weighted sum rather than mean
+        # Each band contributes a distinct learned vector to the spatial encoding
+        spectral_weights = torch.softmax(
+            self.spectral_embed.mean(dim=-1, keepdim=True), dim=1
+        )  # [1, num_bands, 1]
+        spectral_code = (self.spectral_embed * spectral_weights).sum(
+            dim=1, keepdim=True
+        )  # [1, 1, embed_dim]
+        return x + spectral_code
 
 
 class MAEDecoder(nn.Module):

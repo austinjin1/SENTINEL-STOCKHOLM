@@ -1,0 +1,107 @@
+/home/bcheng/SENTINEL/scripts/train_hydrovit_wq.py:71: RuntimeWarning: Mean of empty slice
+  self.target_mean = np.nanmean(self.targets, axis=0)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/numpy/lib/_nanfunctions_impl.py:2019: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/bcheng/SENTINEL/scripts/train_hydrovit_wq.py:90: RuntimeWarning: Mean of empty slice
+  self.target_mean = np.nanmean(self.targets_norm, axis=0)
+[00:39:03] INFO     Loaded 847 paired samples, images: (847, 10, 224, 224),     
+                    targets: (847, 16)                                          
+           INFO     Non-NaN target density: 0.508                               
+           INFO     Split: 592 train / 127 val / 128 test                       
+           INFO     Loading HydroViT with pretrained weights from               
+                    checkpoints/satellite/hydrovit_real_mae.pt                  
+[00:39:08] INFO     Loaded checkpoint: 0 missing, 0 unexpected keys             
+           INFO     HydroViT: 40,796,000 parameters                             
+           INFO     ============================================================
+           INFO     PHASE 1: Train WQ Head (backbone frozen)                    
+           INFO     ============================================================
+           INFO     Trainable: 829,984 / 40,796,000 (2.0%)                      
+[00:39:45] INFO     [Head] Ep   1/80 | Train Loss: 1.9212 | Val Loss: 0.5032 |  
+                    Mean R2: -0.0188 | Optical R2: -0.0535                      
+[00:41:48] INFO     [Head] Ep   5/80 | Train Loss: 0.4877 | Val Loss: 0.4481 |  
+                    Mean R2: 0.0156 | Optical R2: -0.0504                       
+[00:46:00] INFO     [Head] Ep  10/80 | Train Loss: 0.4560 | Val Loss: 0.4384 |  
+                    Mean R2: 0.0303 | Optical R2: -0.0487                       
+[00:50:17] INFO     [Head] Ep  15/80 | Train Loss: 0.4442 | Val Loss: 0.4176 |  
+                    Mean R2: 0.0464 | Optical R2: -0.0477                       
+[00:54:04] INFO     [Head] Ep  20/80 | Train Loss: 0.4428 | Val Loss: 0.4307 |  
+                    Mean R2: 0.0416 | Optical R2: -0.0460                       
+[00:56:46] INFO     [Head] Ep  25/80 | Train Loss: 0.4122 | Val Loss: 0.4279 |  
+                    Mean R2: 0.0474 | Optical R2: -0.0265                       
+[00:59:26] INFO     [Head] Ep  30/80 | Train Loss: 0.3953 | Val Loss: 0.4453 |  
+                    Mean R2: 0.0531 | Optical R2: -0.0212                       
+[01:03:24] INFO     [Head] Ep  35/80 | Train Loss: 0.3727 | Val Loss: 0.4435 |  
+                    Mean R2: 0.0566 | Optical R2: -0.0335                       
+[01:07:11] INFO     [Head] Ep  40/80 | Train Loss: 0.3616 | Val Loss: 0.4504 |  
+                    Mean R2: 0.0421 | Optical R2: -0.0436                       
+[01:10:50] INFO     [Head] Ep  45/80 | Train Loss: 0.3410 | Val Loss: 0.4962 |  
+                    Mean R2: 0.0506 | Optical R2: -0.0354                       
+[01:14:22] INFO     [Head] Ep  50/80 | Train Loss: 0.3178 | Val Loss: 0.4994 |  
+                    Mean R2: 0.0554 | Optical R2: -0.0359                       
+[01:17:54] INFO     [Head] Ep  55/80 | Train Loss: 0.3058 | Val Loss: 0.4832 |  
+                    Mean R2: 0.0254 | Optical R2: -0.0661                       
+[01:19:21] INFO     [Head] Ep  60/80 | Train Loss: 0.2897 | Val Loss: 0.5044 |  
+                    Mean R2: 0.0485 | Optical R2: -0.0335                       
+[01:21:58] INFO     [Head] Ep  65/80 | Train Loss: 0.2787 | Val Loss: 0.5195 |  
+                    Mean R2: 0.0492 | Optical R2: -0.0428                       
+[01:23:44] INFO     [Head] Ep  70/80 | Train Loss: 0.2719 | Val Loss: 0.5185 |  
+                    Mean R2: 0.0443 | Optical R2: -0.0429                       
+[01:23:59] INFO     [Head] Ep  75/80 | Train Loss: 0.2639 | Val Loss: 0.5349 |  
+                    Mean R2: 0.0437 | Optical R2: -0.0424                       
+[01:24:15] INFO     [Head] Ep  80/80 | Train Loss: 0.2624 | Val Loss: 0.5346 |  
+                    Mean R2: 0.0433 | Optical R2: -0.0436                       
+           INFO     Phase 1 best val R2: 0.0644                                 
+           INFO     ============================================================
+           INFO     PHASE 2: Fine-tune backbone + head                          
+           INFO     ============================================================
+[01:24:19] INFO     [Finetune] Ep   1/50 | Train Loss: 0.3406 | Val Loss: 0.4734
+                    | Mean R2: 0.0308 | Optical R2: -0.0735                     
+[01:24:39] INFO     [Finetune] Ep   5/50 | Train Loss: 0.3141 | Val Loss: 0.4840
+                    | Mean R2: 0.0381 | Optical R2: -0.0511                     
+[01:25:04] INFO     [Finetune] Ep  10/50 | Train Loss: 0.2882 | Val Loss: 0.5283
+                    | Mean R2: 0.0111 | Optical R2: -0.0924                     
+[01:25:29] INFO     [Finetune] Ep  15/50 | Train Loss: 0.2790 | Val Loss: 0.5111
+                    | Mean R2: 0.0548 | Optical R2: -0.0429                     
+[01:25:53] INFO     [Finetune] Ep  20/50 | Train Loss: 0.2632 | Val Loss: 0.5737
+                    | Mean R2: 0.0491 | Optical R2: -0.0430                     
+[01:26:17] INFO     [Finetune] Ep  25/50 | Train Loss: 0.2448 | Val Loss: 0.5694
+                    | Mean R2: 0.0556 | Optical R2: -0.0242                     
+[01:26:49] INFO     [Finetune] Ep  30/50 | Train Loss: 0.2373 | Val Loss: 0.5856
+                    | Mean R2: 0.0323 | Optical R2: -0.0474                     
+[01:27:21] INFO     [Finetune] Ep  35/50 | Train Loss: 0.2274 | Val Loss: 0.5973
+                    | Mean R2: 0.0495 | Optical R2: -0.0293                     
+[01:27:51] INFO     [Finetune] Ep  40/50 | Train Loss: 0.2126 | Val Loss: 0.6158
+                    | Mean R2: 0.0490 | Optical R2: -0.0266                     
+[01:28:21] INFO     [Finetune] Ep  45/50 | Train Loss: 0.2141 | Val Loss: 0.6090
+                    | Mean R2: 0.0449 | Optical R2: -0.0313                     
+[01:28:54] INFO     [Finetune] Ep  50/50 | Train Loss: 0.2101 | Val Loss: 0.6130
+                    | Mean R2: 0.0438 | Optical R2: -0.0312                     
+[01:28:55] INFO     Phase 2 best val R2: 0.0608                                 
+           INFO     ============================================================
+           INFO     TEST EVALUATION                                             
+           INFO     ============================================================
+[01:28:56] INFO                           chl_a: R2 =  -0.0217 [OPTICAL] BELOW  
+           INFO                       turbidity: R2 =  -0.0192 [OPTICAL] BELOW  
+           INFO                    secchi_depth: R2 =      nan                  
+           INFO                            cdom: R2 =      nan                  
+           INFO                             tss: R2 =  -0.0525 [OPTICAL] BELOW  
+           INFO                  total_nitrogen: R2 =   0.0466                  
+           INFO                total_phosphorus: R2 =   0.0209                  
+           INFO                dissolved_oxygen: R2 =   0.1856                  
+           INFO                         ammonia: R2 =   0.0047                  
+           INFO                         nitrate: R2 =  -0.0126                  
+           INFO                              ph: R2 =   0.0792                  
+           INFO                      water_temp: R2 =   0.5262                  
+           INFO                     phycocyanin: R2 =  -0.0938                  
+           INFO                 oil_probability: R2 =      nan                  
+           INFO                           acdom: R2 =      nan                  
+           INFO         pollution_anomaly_index: R2 =      nan                  
+           INFO       Mean R2 (all params with data): 0.0603                    
+           INFO       Mean R2 (optical params): -0.0311                         
+           INFO       >>> BELOW THRESHOLD (0.0603) <<<                          
+           INFO     Saved checkpoint:                                           
+                    checkpoints/satellite/hydrovit_wq_finetuned.pt              
+           INFO     Results saved:                                              
+                    checkpoints/satellite/results_wq_finetuned.json             
+           INFO     Total time: 50.0 min                                        
+           INFO     DONE                                                        

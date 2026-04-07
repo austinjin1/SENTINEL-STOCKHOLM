@@ -1,0 +1,188 @@
+{
+  "sensor": {
+    "auc": 0.9428809120814323,
+    "n_modalities": 1,
+    "ci_lower": 0.9390210998261751,
+    "ci_upper": 0.9482578258688202
+  },
+  "satellite": {
+    "auc": 0.7280117094126486,
+    "n_modalities": 1,
+    "ci_lower": 0.7165506849483421,
+    "ci_upper": 0.7378874670920933
+  },
+  "microbial": {
+    "auc": 0.6088741150006318,
+    "n_modalities": 1,
+    "ci_lower": 0.5973952845663462,
+    "ci_upper": 0.6196113753943256
+  },
+  "molecular": {
+    "auc": 0.5010858849876718,
+    "n_modalities": 1,
+    "ci_lower": 0.4941647131784986,
+    "ci_upper": 0.514588083909058
+  },
+  "behavioral": {
+    "auc": 0.8424763504140376,
+    "n_modalities": 1,
+    "ci_lower": 0.8327032186818971,
+    "ci_upper": 0.8501535293543527
+  },
+  "sensor+satellite": {
+    "auc": 0.9430611670430253,
+    "n_modalities": 2,
+    "ci_lower": 0.9397146323564506,
+    "ci_upper": 0.9488171068185787
+  },
+  "sensor+microbial": {
+    "auc": 0.9430339530044743,
+    "n_modalities": 2,
+    "ci_lower": 0.9392511754064115,
+    "ci_upper": 0.9483417637650239
+  },
+  "sensor+molecular": {
+    "auc": 0.9428809120814323,
+    "n_modalities": 2,
+    "ci_lower": 0.9390210998261751,
+    "ci_upper": 0.9482578258688202
+  },
+  "sensor+behavioral": {
+    "auc": 0.9913390740585546,
+    "n_modalities": 2,
+    "ci_lower": 0.9893049136836439,
+    "ci_upper": 0.9924050101572104
+  },
+  "satellite+microbial": {
+    "auc": 0.800273117684101,
+    "n_modalities": 2,
+    "ci_lower": 0.784089173031189,
+    "ci_upper": 0.8029594587420362
+  },
+  "satellite+molecular": {
+    "auc": 0.7280117094126486,
+    "n_modalities": 2,
+    "ci_lower": 0.7165506849483421,
+    "ci_upper": 0.7378874670920933
+  },
+  "satellite+behavioral": {
+    "auc": 0.842420161716847,
+    "n_modalities": 2,
+    "ci_lower": 0.8327647840778877,
+    "ci_upper": 0.8502924037608185
+  },
+  "microbial+molecular": {
+    "auc": 0.6088741150006318,
+    "n_modalities": 2,
+    "ci_lower": 0.5973952845663462,
+    "ci_upper": 0.6196113753943256
+  },
+  "microbial+behavioral": {
+    "auc": 0.8429307143609135,
+    "n_modalities": 2,
+    "ci_lower": 0.8335154516071928,
+    "ci_upper": 0.8507505176490703
+  },
+  "molecular+behavioral": {
+    "auc": 0.8424763504140376,
+    "n_modalities": 2,
+    "ci_lower": 0.8327032186818971,
+    "ci_upper": 0.8501535293543527
+  },
+  "sensor+satellite+microbial": {
+    "auc": 0.943215484673032,
+    "n_modalities": 3,
+    "ci_lower": 0.9400326231219015,
+    "ci_upper": 0.9490019462815258
+  },
+  "sensor+satellite+molecular": {
+    "auc": 0.9430611670430253,
+    "n_modalities": 3,
+    "ci_lower": 0.9397146323564506,
+    "ci_upper": 0.9488171068185787
+  },
+  "sensor+satellite+behavioral": {
+    "auc": 0.9917540408877101,
+    "n_modalities": 3,
+    "ci_lower": 0.9904074502876384,
+    "ci_upper": 0.9931276297873678
+  },
+  "sensor+microbial+molecular": {
+    "auc": 0.9430339530044743,
+    "n_modalities": 3,
+    "ci_lower": 0.9392511754064115,
+    "ci_upper": 0.9483417637650239
+  },
+  "sensor+microbial+behavioral": {
+    "auc": 0.9915261894667977,
+    "n_modalities": 3,
+    "ci_lower": 0.9896970752944342,
+    "ci_upper": 0.9926591977285576
+  },
+  "sensor+molecular+behavioral": {
+    "auc": 0.9913390740585546,
+    "n_modalities": 3,
+    "ci_lower": 0.9893049136836439,
+    "ci_upper": 0.9924050101572104
+  },
+  "satellite+microbial+molecular": {
+    "auc": 0.800273117684101,
+    "n_modalities": 3,
+    "ci_lower": 0.784089173031189,
+    "ci_upper": 0.8029594587420362
+  },
+  "satellite+microbial+behavioral": {
+    "auc": 0.8428766800037654,
+    "n_modalities": 3,
+    "ci_lower": 0.8337616763625937,
+    "ci_upper": 0.8512488605050805
+  },
+  "satellite+molecular+behavioral": {
+    "auc": 0.842420161716847,
+    "n_modalities": 3,
+    "ci_lower": 0.8327647840778877,
+    "ci_upper": 0.8502924037608185
+  },
+  "microbial+molecular+behavioral": {
+    "auc": 0.8429307143609135,
+    "n_modalities": 3,
+    "ci_lower": 0.8335154516071928,
+    "ci_upper": 0.8507505176490703
+  },
+  "sensor+satellite+microbial+molecular": {
+    "auc": 0.943215484673032,
+    "n_modalities": 4,
+    "ci_lower": 0.9400326231219015,
+    "ci_upper": 0.9490019462815258
+  },
+  "sensor+satellite+microbial+behavioral": {
+    "auc": 0.9919417876481392,
+    "n_modalities": 4,
+    "ci_lower": 0.9906725898124583,
+    "ci_upper": 0.9933543101729972
+  },
+  "sensor+satellite+molecular+behavioral": {
+    "auc": 0.9917540408877101,
+    "n_modalities": 4,
+    "ci_lower": 0.9904074502876384,
+    "ci_upper": 0.9931276297873678
+  },
+  "sensor+microbial+molecular+behavioral": {
+    "auc": 0.9915261894667977,
+    "n_modalities": 4,
+    "ci_lower": 0.9896970752944342,
+    "ci_upper": 0.9926591977285576
+  },
+  "satellite+microbial+molecular+behavioral": {
+    "auc": 0.8428766800037654,
+    "n_modalities": 4,
+    "ci_lower": 0.8337616763625937,
+    "ci_upper": 0.8512488605050805
+  },
+  "sensor+satellite+microbial+molecular+behavioral": {
+    "auc": 0.9919417876481392,
+    "n_modalities": 5,
+    "ci_lower": 0.9906725898124583,
+    "ci_upper": 0.9933543101729972
+  }
+}

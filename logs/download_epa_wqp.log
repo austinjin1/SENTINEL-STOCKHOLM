@@ -1,0 +1,36 @@
+[2026-04-04 09:05:10] ============================================================
+[2026-04-04 09:05:10] EPA Water Quality Portal Download
+[2026-04-04 09:05:10] Target: 12 parameters across 18 HUC2 basins
+[2026-04-04 09:05:10] Date range: 2015-01-01 to 2025-12-31
+[2026-04-04 09:05:10] ============================================================
+[2026-04-04 09:05:10] 
+HUC 01: New England
+[2026-04-04 09:05:10]   Downloading HUC 01 (New England)...
+[2026-04-04 09:05:10]     Dissolved oxygen (DO): FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Dissolved+oxygen+%28DO%29&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:12]     pH: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=pH&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:15]     Temperature, water: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Temperature%2C+water&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:17]     Specific conductance: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Specific+conductance&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:19]     Turbidity: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Turbidity&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:22]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:24]     Nitrate: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Nitrate&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:26]     Ammonia: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Ammonia&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:29]     Phosphorus: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Phosphorus&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:31]     Chlorophyll a: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Chlorophyll+a&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:33]     Total dissolved solids: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Total+dissolved+solids&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:36]     Total suspended solids: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Total+suspended+solids&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:38]     No data for HUC 01
+[2026-04-04 09:05:38] 
+HUC 02: Mid-Atlantic
+[2026-04-04 09:05:38]   Downloading HUC 02 (Mid-Atlantic)...
+[2026-04-04 09:05:38]     Dissolved oxygen (DO): FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Dissolved+oxygen+%28DO%29&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:40]     pH: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=pH&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:42]     Temperature, water: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Temperature%2C+water&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:45]     Specific conductance: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Specific+conductance&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:47]     Turbidity: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Turbidity&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:49]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:52]     Nitrate: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Nitrate&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:54]     Ammonia: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Ammonia&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:56]     Phosphorus: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Phosphorus&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:05:59]     Chlorophyll a: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Chlorophyll+a&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:06:01]     Total dissolved solids: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Total+dissolved+solids&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)
+[2026-04-04 09:06:03]     Total suspended solids: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Total+suspended+solids&startDateLo=2015-01-01&startDateHi=2025-12-31&mimeType=csv)

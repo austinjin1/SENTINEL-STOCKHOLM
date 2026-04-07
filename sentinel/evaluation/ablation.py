@@ -153,6 +153,8 @@ def run_ablation_condition(
     escalation_threshold: float = 0.5,
     alert_threshold: float = 0.7,
     device: torch.device = torch.device("cpu"),
+    fast_mode: bool = True,
+    _cached_streams: Optional[Dict[str, Any]] = None,
 ) -> AblationResult:
     """Evaluate SENTINEL under a single ablation condition.
 
@@ -166,6 +168,8 @@ def run_ablation_condition(
         escalation_threshold: Tier escalation threshold.
         alert_threshold: Formal alert threshold.
         device: Torch device for model inference.
+        fast_mode: Use lightweight fusion (skip attention forward pass).
+        _cached_streams: Pre-generated streams keyed by event_id (internal).
 
     Returns:
         AblationResult with aggregate detection metrics.
@@ -188,8 +192,11 @@ def run_ablation_condition(
         event_rng = np.random.default_rng(seed + i)
         timeline = build_timeline(event)
 
-        # Generate the full stream, then mask inactive modalities
-        full_stream = generate_simulated_stream(timeline, rng=event_rng)
+        # Use cached stream if available, otherwise generate
+        if _cached_streams is not None and event_id in _cached_streams:
+            full_stream = _cached_streams[event_id]["stream"]
+        else:
+            full_stream = generate_simulated_stream(timeline, rng=event_rng)
         stream = _filter_stream(full_stream, condition.modalities, event_rng)
 
         simulator = SENTINELSimulator(
@@ -198,6 +205,7 @@ def run_ablation_condition(
             alert_threshold=alert_threshold,
             device=device,
             seed=seed + i,
+            fast_mode=fast_mode,
         )
         simulator.reset()
 
@@ -333,6 +341,16 @@ def run_full_ablation(
     ]
     logger.info(f"Running ablation study: {len(conditions)} conditions")
 
+    # Pre-generate all event streams once (shared across conditions)
+    logger.info("Pre-generating event streams...")
+    cached_streams: Dict[str, Any] = {}
+    for i, (event_id, event) in enumerate(HISTORICAL_EVENTS.items()):
+        event_rng = np.random.default_rng(seed + i)
+        timeline = build_timeline(event)
+        full_stream = generate_simulated_stream(timeline, rng=event_rng)
+        cached_streams[event_id] = {"stream": full_stream, "timeline": timeline}
+    logger.info(f"  Cached {len(cached_streams)} event streams")
+
     results: List[AblationResult] = []
     progress = make_progress()
 
@@ -341,7 +359,9 @@ def run_full_ablation(
         for cond in conditions:
             logger.info(f"  Condition: {cond.name}")
             t0 = time.time()
-            result = run_ablation_condition(cond, seed=seed, device=device)
+            result = run_ablation_condition(
+                cond, seed=seed, device=device, _cached_streams=cached_streams,
+            )
             elapsed = time.time() - t0
             logger.info(
                 f"    AUC={result.detection_auc:.4f}  "

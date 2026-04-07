@@ -14,6 +14,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from .aitchison_attention import AitchisonTransformerLayer
+
 # Maximum number of ASV features (amplicon sequence variants)
 MAX_ASV_FEATURES = 5000
 EMBED_DIM = 256
@@ -128,19 +130,16 @@ class SourceAttributionTransformer(nn.Module):
         # ASV embedding layer
         self.embedding = ASVEmbedding(input_dim, embed_dim, dropout)
 
-        # Transformer encoder
-        encoder_layer = nn.TransformerEncoderLayer(
-            d_model=embed_dim,
-            nhead=num_heads,
-            dim_feedforward=ff_dim,
-            dropout=dropout,
-            activation="gelu",
-            batch_first=True,
-            norm_first=True,
-        )
-        self.transformer = nn.TransformerEncoder(
-            encoder_layer, num_layers=num_layers
-        )
+        # Aitchison-aware transformer encoder for compositional consistency
+        self.transformer_layers = nn.ModuleList([
+            AitchisonTransformerLayer(
+                embed_dim=embed_dim,
+                num_heads=num_heads,
+                ff_dim=ff_dim,
+                dropout=dropout,
+            )
+            for _ in range(num_layers)
+        ])
 
         # Classification head for contamination sources
         self.classification_head = nn.Sequential(
@@ -168,8 +167,9 @@ class SourceAttributionTransformer(nn.Module):
 
     def _register_attention_hooks(self) -> None:
         """Register hooks to capture attention weights from each layer."""
-        for layer in self.transformer.layers:
-            layer.self_attn.register_forward_hook(self._attention_hook)
+        for layer in self.transformer_layers:
+            if hasattr(layer, 'attn'):
+                layer.attn.register_forward_hook(self._attention_hook)
 
     def _attention_hook(self, module, input, output):
         """Capture attention weights from self-attention layers."""
@@ -196,19 +196,12 @@ class SourceAttributionTransformer(nn.Module):
 
         embedded = self.embedding(x)
 
-        # Manually run through transformer layers to capture attention
+        # Manually run through Aitchison transformer layers with attention
         hidden = embedded
-        for layer in self.transformer.layers:
-            # Pre-norm
-            normed = layer.norm1(hidden)
-            # Self-attention with attention weights
-            attn_out, attn_weights = layer.self_attn(
-                normed, normed, normed, need_weights=True, average_attn_weights=False
-            )
-            attention_weights.append(attn_weights.detach())
-            # Residual + FF
-            hidden = hidden + attn_out
-            hidden = hidden + layer._ff_block(layer.norm2(hidden))
+        for layer in self.transformer_layers:
+            hidden, attn_w = layer(hidden, need_weights=True)
+            if attn_w is not None:
+                attention_weights.append(attn_w.detach())
 
         return attention_weights
 
@@ -259,8 +252,10 @@ class SourceAttributionTransformer(nn.Module):
         # Embed ASV vector
         embedded = self.embedding(x)  # [B, N+1, D]
 
-        # Transformer encoding
-        encoded = self.transformer(embedded)  # [B, N+1, D]
+        # Aitchison-aware transformer encoding
+        encoded = embedded
+        for layer in self.transformer_layers:
+            encoded, _ = layer(encoded)  # [B, N+1, D]
 
         # CLS token output
         cls_output = encoded[:, 0, :]  # [B, D]

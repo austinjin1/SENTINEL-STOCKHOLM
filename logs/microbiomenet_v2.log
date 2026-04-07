@@ -1,0 +1,43 @@
+[08:55:57] INFO     Data: 35000/7500/7500 samples, 5000 features                
+[08:55:59] INFO     MicroBiomeNet: 128,933,510 parameters                       
+           INFO     ============================================================
+           INFO     SOURCE CLASSIFICATION TRAINING                              
+           INFO     ============================================================
+[08:56:23] INFO     Ep   1/60 | Loss: 2.0957 | Train F1: 0.1424 | Val F1: 0.0722
+Exception in thread Thread-4 (_pin_memory_loop):
+Traceback (most recent call last):
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 59, in _pin_memory_loop
+    do_one_step()
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 35, in do_one_step
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/multiprocessing/queues.py", line 122, in get
+    return _ForkingPickler.loads(res)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/torch/multiprocessing/reductions.py", line 541, in rebuild_storage_fd
+    fd = df.detach()
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/multiprocessing/resource_sharer.py", line 57, in detach
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/multiprocessing/resource_sharer.py", line 86, in get_connection
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/multiprocessing/connection.py", line 502, in Client
+    c = SocketClient(address)
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/multiprocessing/connection.py", line 630, in SocketClient
+    s.connect(address)
+FileNotFoundError: [Errno 2] No such file or directory
+Traceback (most recent call last):
+  File "/home/bcheng/SENTINEL/scripts/train_microbiomenet.py", line 233, in <module>
+    main()
+  File "/home/bcheng/SENTINEL/scripts/train_microbiomenet.py", line 169, in main
+    best_f1 = train_source_classification(model, tr_dl, va_dl, epochs=60, lr=3e-4)
+  File "/home/bcheng/SENTINEL/scripts/train_microbiomenet.py", line 110, in train_source_classification
+    for batch in va_dl:
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1458, in _next_data
+    idx, data = self._get_data()
+  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1415, in _get_data
+    raise RuntimeError("Pin memory thread exited unexpectedly")
+RuntimeError: Pin memory thread exited unexpectedly

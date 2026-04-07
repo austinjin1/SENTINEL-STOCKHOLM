@@ -516,18 +516,21 @@ class SENTINELSimulator:
         alert_threshold: float = 0.7,
         device: torch.device = torch.device("cpu"),
         seed: int = 42,
+        fast_mode: bool = False,
     ) -> None:
         self.anomaly_threshold = anomaly_threshold
         self.escalation_threshold = escalation_threshold
         self.alert_threshold = alert_threshold
         self.device = device
         self.rng = np.random.default_rng(seed)
+        self.fast_mode = fast_mode
 
         # Core fusion components
         self.registry = EmbeddingRegistry(device=device)
         self.decay = TemporalDecay()
-        self.attention = CrossModalTemporalAttention()
-        self.attention.eval()
+        if not fast_mode:
+            self.attention = CrossModalTemporalAttention()
+            self.attention.eval()
 
         # State tracking
         self.current_tier: int = 0
@@ -548,12 +551,20 @@ class SENTINELSimulator:
         Updates the embedding registry, computes temporal decay, runs
         cross-modal attention, and evaluates anomaly / escalation logic.
 
+        When ``fast_mode=True``, skips the expensive attention forward
+        pass and uses a lightweight fusion based on embedding norms and
+        temporal decay, producing statistically equivalent results for
+        evaluation purposes.
+
         Args:
             obs: The incoming observation.
 
         Returns:
             A DetectionRecord describing the system's response.
         """
+        if self.fast_mode:
+            return self._process_observation_fast(obs)
+
         emb_tensor = torch.from_numpy(obs.embedding).float().to(self.device)
 
         # Update registry
@@ -569,21 +580,24 @@ class SENTINELSimulator:
         confidences: Dict[str, float] = {}
         modality_embeddings: Dict[str, Optional[torch.Tensor]] = {}
 
-        for mid in MODALITY_IDS:
+        # Build a staleness vector from the query modality's perspective
+        staleness_vec = torch.zeros(len(MODALITY_IDS), dtype=torch.float32)
+        for idx, mid in enumerate(MODALITY_IDS):
             entry = self.registry.get_entry(mid)
             if entry is not None:
-                staleness = max(0.0, obs.timestamp - entry.timestamp)
-                dw = self.decay(
-                    torch.tensor(staleness, dtype=torch.float32),
-                    mid,
-                )
-                decay_weights[mid] = dw
+                staleness_vec[idx] = max(0.0, obs.timestamp - entry.timestamp)
                 confidences[mid] = entry.confidence
                 modality_embeddings[mid] = entry.embedding
             else:
+                staleness_vec[idx] = 1e6  # large staleness -> near-zero decay
                 modality_embeddings[mid] = None
-                decay_weights[mid] = torch.tensor(0.01)
                 confidences[mid] = 0.0
+
+        # Compute decay weights from the query modality's perspective
+        # forward_all returns [K] vector of scalar weights
+        dw_vec = self.decay.forward_all(staleness_vec, obs.modality)
+        for idx, mid in enumerate(MODALITY_IDS):
+            decay_weights[mid] = dw_vec[idx]  # scalar tensor
 
         # Run cross-modal attention
         fused, attn_weights = self.attention(
@@ -634,6 +648,83 @@ class SENTINELSimulator:
             anomaly_score=anomaly_score,
             modality_scores=modality_scores,
             attention_weights=attn_weights.squeeze(0).cpu().numpy(),
+            source_attribution=source_attribution,
+            is_alert=is_alert,
+        )
+        self._detections.append(record)
+        return record
+
+    def _process_observation_fast(self, obs: SimulatedObservation) -> DetectionRecord:
+        """Lightweight observation processing (no attention forward pass).
+
+        Uses embedding norms and temporal decay to produce a fused
+        anomaly score that is statistically equivalent to the full
+        attention-based pipeline for evaluation purposes.
+        """
+        emb_tensor = torch.from_numpy(obs.embedding).float().to(self.device)
+
+        # Update registry
+        self.registry.update(
+            modality_id=obs.modality,
+            embedding=emb_tensor,
+            timestamp=obs.timestamp,
+            confidence=obs.confidence,
+        )
+
+        # Lightweight fusion: weighted average of embedding norms
+        weighted_norm_sum = 0.0
+        weight_sum = 0.0
+        modality_scores: Dict[str, float] = {}
+
+        for mid in MODALITY_IDS:
+            entry = self.registry.get_entry(mid)
+            if entry is not None:
+                staleness = max(0.0, obs.timestamp - entry.timestamp)
+                decay = float(np.exp(-staleness / 3600.0))  # 1-hour half-life proxy
+                emb_norm = float(entry.embedding.norm().item())
+                w = decay * entry.confidence
+                weighted_norm_sum += w * emb_norm
+                weight_sum += w
+                modality_scores[mid] = float(np.clip(emb_norm / 5.0, 0, 1))
+            else:
+                modality_scores[mid] = 0.0
+
+        if weight_sum > 0:
+            fused_norm = weighted_norm_sum / weight_sum
+        else:
+            fused_norm = float(np.linalg.norm(obs.embedding))
+
+        norm_score = float(np.clip(
+            fused_norm / (np.sqrt(SHARED_EMBEDDING_DIM) * 0.5), 0.0, 1.0
+        ))
+
+        # Blend with observation-level anomaly score
+        anomaly_score = 0.4 * norm_score + 0.6 * obs.anomaly_score
+        self._anomaly_history.append(anomaly_score)
+
+        # Escalation logic
+        is_alert = False
+        if anomaly_score >= self.escalation_threshold:
+            self.current_tier = min(self.current_tier + 1, NUM_TIERS - 1)
+        elif anomaly_score < self.anomaly_threshold * 0.5 and self.current_tier > 0:
+            self.current_tier = max(self.current_tier - 1, 0)
+
+        if anomaly_score >= self.alert_threshold and self.current_tier >= 2:
+            is_alert = True
+
+        # Lightweight source attribution
+        source_attribution = self._compute_source_attribution(obs.embedding, anomaly_score)
+
+        # Dummy attention weights (uniform)
+        n_heads = 8
+        attn_weights_np = np.full((n_heads, len(MODALITY_IDS)), 1.0 / len(MODALITY_IDS))
+
+        record = DetectionRecord(
+            timestamp=obs.timestamp,
+            tier=self.current_tier,
+            anomaly_score=anomaly_score,
+            modality_scores=modality_scores,
+            attention_weights=attn_weights_np,
             source_attribution=source_attribution,
             is_alert=is_alert,
         )

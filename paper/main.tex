@@ -1,0 +1,62 @@
+\documentclass[11pt,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage[numbers]{natbib}
+\usepackage[margin=1in]{geometry}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+\title{SENTINEL: A Multimodal AI Framework for Early Water Pollution Detection through Cross-Modal Temporal Fusion}
+\author{Bryan Cheng}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present SENTINEL, the first multimodal AI framework that unifies five
+environmental sensing modalities---physicochemical sensor time series, satellite
+remote sensing, aquatic metagenomics, transcriptomic stress biomarkers, and
+organismal behavioral signals---for early water pollution detection. SENTINEL
+introduces five novel modality-specific architectures: AquaSSM (continuous-time
+state space model for irregular sensor data), HydroViT (water-specific vision
+foundation model for satellite imagery), MicroBiomeNet (Aitchison-geometry-aware
+deep learning for compositional microbiome data), ToxiGene (pathway-informed
+transcriptomic classifier with minimal biomarker panel discovery), and BioMotion
+(diffusion-pretrained behavioral anomaly detector). These encoders feed into
+SENTINEL-Fusion, a Perceiver IO-derived cross-modal temporal attention framework
+that handles asynchronous, heterogeneous data streams with missing modalities as
+the norm. We contribute SENTINEL-DB, a large-scale multimodal water quality dataset
+(${\sim}85$\,GB; 390M+ records from thirteen public sources), and three theoretical contributions
+including cross-modal transfer bounds and distribution-free conformal anomaly
+detection. Trained on real data from NEON, USGS, EPA, GRQA, Sentinel-2, Earth Microbiome
+Project, and NCBI GEO, SENTINEL achieves AUROC = 0.920 for sensor anomaly
+detection (AquaSSM), F1 = 0.913 for microbial source attribution
+(MicroBiomeNet), and AUROC = 0.992 for multimodal fusion---significantly
+outperforming the best single modality ($p = 0.002$).
+The behavioral channel provides minutes-scale initial alerts while genomic
+channels enable diagnostic specificity.
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methods}
+\input{sections/experiments}
+\input{sections/results}
+\input{sections/discussion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+\end{document}

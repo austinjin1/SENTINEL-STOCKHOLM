@@ -1,0 +1,35 @@
+[08:59:45] INFO     Data: 35000/7500/7500 samples, 5000 features                
+[08:59:47] INFO     MicroBiomeNet: 128,933,510 parameters                       
+           INFO     ============================================================
+           INFO     SOURCE CLASSIFICATION TRAINING                              
+           INFO     ============================================================
+[09:02:41] INFO     Ep   1/60 | Loss: 2.0941 | Train F1: 0.1417 | Val F1: 0.1110
+[09:19:53] INFO     Ep   5/60 | Loss: 2.0529 | Train F1: 0.1361 | Val F1: 0.0705
+[10:21:47] INFO     Ep  10/60 | Loss: 2.0478 | Train F1: 0.1175 | Val F1: 0.1119
+[11:17:05] INFO     Ep  15/60 | Loss: 2.0321 | Train F1: 0.1432 | Val F1: 0.1440
+[12:06:44] INFO     Ep  20/60 | Loss: 2.0122 | Train F1: 0.1587 | Val F1: 0.1399
+[12:58:40] INFO     Ep  25/60 | Loss: 2.0055 | Train F1: 0.1545 | Val F1: 0.0964
+[13:48:58] INFO     Ep  30/60 | Loss: 1.9998 | Train F1: 0.1577 | Val F1: 0.0965
+[14:40:07] INFO     Ep  35/60 | Loss: 1.9866 | Train F1: 0.1695 | Val F1: 0.1510
+[15:48:34] INFO     Ep  40/60 | Loss: 1.9751 | Train F1: 0.1810 | Val F1: 0.0726
+[16:52:36] INFO     Ep  45/60 | Loss: 1.9720 | Train F1: 0.1833 | Val F1: 0.1402
+[17:50:30] INFO     Ep  50/60 | Loss: 1.9638 | Train F1: 0.1883 | Val F1: 0.2047
+[18:30:32] INFO     Ep  55/60 | Loss: 1.9577 | Train F1: 0.1887 | Val F1: 0.1897
+[18:47:10] INFO     Ep  60/60 | Loss: 1.9543 | Train F1: 0.1892 | Val F1: 0.2045
+[18:47:47] INFO     ============================================================
+           INFO     TEST RESULTS                                                
+           INFO     ============================================================
+           INFO                   nutrient: F1 = 0.2643                         
+           INFO               heavy_metals: F1 = 0.1398                         
+           INFO                    thermal: F1 = 0.1733                         
+           INFO             pharmaceutical: F1 = 0.2326                         
+           INFO                   sediment: F1 = 0.2130                         
+           INFO          oil_petrochemical: F1 = 0.2557                         
+           INFO                     sewage: F1 = 0.0626                         
+           INFO                  acid_mine: F1 = 0.3112                         
+           INFO                                                                 
+                      Macro F1: 0.2066                                          
+           INFO       Accuracy: 0.2169                                          
+           INFO     BELOW THRESHOLD (0.2066)                                    
+           INFO     Time: 588.1m                                                
+           INFO     DONE                                                        

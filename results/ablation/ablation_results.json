@@ -1,0 +1,919 @@
+[
+  {
+    "condition_name": "sensor",
+    "modalities": [
+      "sensor"
+    ],
+    "num_modalities": 1,
+    "detection_auc": 0.9428809120814323,
+    "detection_auc_ci_lower": 0.9390210998261751,
+    "detection_auc_ci_upper": 0.9482578258688202,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "satellite",
+    "modalities": [
+      "satellite"
+    ],
+    "num_modalities": 1,
+    "detection_auc": 0.7280117094126486,
+    "detection_auc_ci_lower": 0.7165506849483421,
+    "detection_auc_ci_upper": 0.7378874670920933,
+    "mean_lead_time_hours": 194.06160143150223,
+    "median_lead_time_hours": -5.810849139624172,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5707708477589843,
+      "lake_erie_hab": 0.5488906724949327,
+      "toledo_water_crisis": 0.49544737798382804,
+      "dan_river_coal_ash": 0.5378484758781895,
+      "elk_river_mchm": 0.0009580047801136971,
+      "houston_ship_channel": 0.5445563315913347,
+      "flint_mi": 0.0009263062849640847,
+      "gulf_dead_zone": 0.6038383663530767,
+      "chesapeake_bay_blooms": 0.5592044823060465,
+      "east_palestine": 0.5578621249411378
+    }
+  },
+  {
+    "condition_name": "microbial",
+    "modalities": [
+      "microbial"
+    ],
+    "num_modalities": 1,
+    "detection_auc": 0.6088741150006318,
+    "detection_auc_ci_lower": 0.5973952845663462,
+    "detection_auc_ci_upper": 0.6196113753943256,
+    "mean_lead_time_hours": 2748.2157617800103,
+    "median_lead_time_hours": 264.46056955609055,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.0009273616597056389,
+      "lake_erie_hab": 0.7203898639633242,
+      "toledo_water_crisis": 0.6977532617839575,
+      "dan_river_coal_ash": 0.0009218571707606316,
+      "elk_river_mchm": 0.0009580047801136971,
+      "houston_ship_channel": 0.0009318404830992223,
+      "flint_mi": 0.6603694254523066,
+      "gulf_dead_zone": 0.7018496007760747,
+      "chesapeake_bay_blooms": 0.6857402804989837,
+      "east_palestine": 0.0009301961399614811
+    }
+  },
+  {
+    "condition_name": "molecular",
+    "modalities": [
+      "molecular"
+    ],
+    "num_modalities": 1,
+    "detection_auc": 0.5010858849876718,
+    "detection_auc_ci_lower": 0.4941647131784986,
+    "detection_auc_ci_upper": 0.514588083909058,
+    "mean_lead_time_hours": 0.0,
+    "median_lead_time_hours": 0.0,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.0009273616597056389,
+      "lake_erie_hab": 0.0009478451684117317,
+      "toledo_water_crisis": 0.0009277257137000561,
+      "dan_river_coal_ash": 0.0009218571707606316,
+      "elk_river_mchm": 0.0009580047801136971,
+      "houston_ship_channel": 0.0009318404830992223,
+      "flint_mi": 0.0009263062849640847,
+      "gulf_dead_zone": 0.0009206355549395085,
+      "chesapeake_bay_blooms": 0.0009320296347141267,
+      "east_palestine": 0.0009301961399614811
+    }
+  },
+  {
+    "condition_name": "behavioral",
+    "modalities": [
+      "behavioral"
+    ],
+    "num_modalities": 1,
+    "detection_auc": 0.8424763504140376,
+    "detection_auc_ci_lower": 0.8327032186818971,
+    "detection_auc_ci_upper": 0.8501535293543527,
+    "mean_lead_time_hours": 1413.3077959208026,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5478978838144337,
+      "lake_erie_hab": 0.553956220142435,
+      "toledo_water_crisis": 0.5490136012997369,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.5610288314148961,
+      "gulf_dead_zone": 0.5981161204648899,
+      "chesapeake_bay_blooms": 0.5552847329085587,
+      "east_palestine": 0.5484848717962721
+    }
+  },
+  {
+    "condition_name": "sensor+satellite",
+    "modalities": [
+      "sensor",
+      "satellite"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.9430611670430253,
+    "detection_auc_ci_lower": 0.9397146323564506,
+    "detection_auc_ci_upper": 0.9488171068185787,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.1,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "sensor+microbial",
+    "modalities": [
+      "sensor",
+      "microbial"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.9430339530044743,
+    "detection_auc_ci_lower": 0.9392511754064115,
+    "detection_auc_ci_upper": 0.9483417637650239,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "sensor+molecular",
+    "modalities": [
+      "sensor",
+      "molecular"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.9428809120814323,
+    "detection_auc_ci_lower": 0.9390210998261751,
+    "detection_auc_ci_upper": 0.9482578258688202,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "sensor+behavioral",
+    "modalities": [
+      "sensor",
+      "behavioral"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.9913390740585546,
+    "detection_auc_ci_lower": 0.9893049136836439,
+    "detection_auc_ci_upper": 0.9924050101572104,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142629,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7180644240086441,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.7145609344630274,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  },
+  {
+    "condition_name": "satellite+microbial",
+    "modalities": [
+      "satellite",
+      "microbial"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.800273117684101,
+    "detection_auc_ci_lower": 0.784089173031189,
+    "detection_auc_ci_upper": 0.8029594587420362,
+    "mean_lead_time_hours": 1514.9633138738739,
+    "median_lead_time_hours": 12.109804421199692,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5707708477589843,
+      "lake_erie_hab": 0.7203898639633242,
+      "toledo_water_crisis": 0.6977532617839575,
+      "dan_river_coal_ash": 0.5378484758781895,
+      "elk_river_mchm": 0.0009580047801136971,
+      "houston_ship_channel": 0.5445563315913347,
+      "flint_mi": 0.6603694254523066,
+      "gulf_dead_zone": 0.7018496007760747,
+      "chesapeake_bay_blooms": 0.6857402804989837,
+      "east_palestine": 0.5578621249411378
+    }
+  },
+  {
+    "condition_name": "satellite+molecular",
+    "modalities": [
+      "satellite",
+      "molecular"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.7280117094126486,
+    "detection_auc_ci_lower": 0.7165506849483421,
+    "detection_auc_ci_upper": 0.7378874670920933,
+    "mean_lead_time_hours": 194.06160143150223,
+    "median_lead_time_hours": -5.810849139624172,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5707708477589843,
+      "lake_erie_hab": 0.5488906724949327,
+      "toledo_water_crisis": 0.49544737798382804,
+      "dan_river_coal_ash": 0.5378484758781895,
+      "elk_river_mchm": 0.0009580047801136971,
+      "houston_ship_channel": 0.5445563315913347,
+      "flint_mi": 0.0009263062849640847,
+      "gulf_dead_zone": 0.6038383663530767,
+      "chesapeake_bay_blooms": 0.5592044823060465,
+      "east_palestine": 0.5578621249411378
+    }
+  },
+  {
+    "condition_name": "satellite+behavioral",
+    "modalities": [
+      "satellite",
+      "behavioral"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.842420161716847,
+    "detection_auc_ci_lower": 0.8327647840778877,
+    "detection_auc_ci_upper": 0.8502924037608185,
+    "mean_lead_time_hours": 1247.9348540943067,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5714455977176621,
+      "lake_erie_hab": 0.5539562201424348,
+      "toledo_water_crisis": 0.5490136012997369,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.5610288314148961,
+      "gulf_dead_zone": 0.5981161204648898,
+      "chesapeake_bay_blooms": 0.5552847329520489,
+      "east_palestine": 0.5555816452798881
+    }
+  },
+  {
+    "condition_name": "microbial+molecular",
+    "modalities": [
+      "microbial",
+      "molecular"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.6088741150006318,
+    "detection_auc_ci_lower": 0.5973952845663462,
+    "detection_auc_ci_upper": 0.6196113753943256,
+    "mean_lead_time_hours": 2748.2157617800103,
+    "median_lead_time_hours": 264.46056955609055,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.0009273616597056389,
+      "lake_erie_hab": 0.7203898639633242,
+      "toledo_water_crisis": 0.6977532617839575,
+      "dan_river_coal_ash": 0.0009218571707606316,
+      "elk_river_mchm": 0.0009580047801136971,
+      "houston_ship_channel": 0.0009318404830992223,
+      "flint_mi": 0.6603694254523066,
+      "gulf_dead_zone": 0.7018496007760747,
+      "chesapeake_bay_blooms": 0.6857402804989837,
+      "east_palestine": 0.0009301961399614811
+    }
+  },
+  {
+    "condition_name": "microbial+behavioral",
+    "modalities": [
+      "microbial",
+      "behavioral"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.8429307143609135,
+    "detection_auc_ci_lower": 0.8335154516071928,
+    "detection_auc_ci_upper": 0.8507505176490703,
+    "mean_lead_time_hours": 1413.508907363481,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5478978838144337,
+      "lake_erie_hab": 0.7050608214683102,
+      "toledo_water_crisis": 0.6901649049225174,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.6516849316563933,
+      "gulf_dead_zone": 0.69552591688211,
+      "chesapeake_bay_blooms": 0.6770053073690425,
+      "east_palestine": 0.5484848717962721
+    }
+  },
+  {
+    "condition_name": "molecular+behavioral",
+    "modalities": [
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 2,
+    "detection_auc": 0.8424763504140376,
+    "detection_auc_ci_lower": 0.8327032186818971,
+    "detection_auc_ci_upper": 0.8501535293543527,
+    "mean_lead_time_hours": 1413.3077959208026,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5478978838144337,
+      "lake_erie_hab": 0.553956220142435,
+      "toledo_water_crisis": 0.5490136012997369,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.5610288314148961,
+      "gulf_dead_zone": 0.5981161204648899,
+      "chesapeake_bay_blooms": 0.5552847329085587,
+      "east_palestine": 0.5484848717962721
+    }
+  },
+  {
+    "condition_name": "sensor+satellite+microbial",
+    "modalities": [
+      "sensor",
+      "satellite",
+      "microbial"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.943215484673032,
+    "detection_auc_ci_lower": 0.9400326231219015,
+    "detection_auc_ci_upper": 0.9490019462815258,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.1,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "sensor+satellite+molecular",
+    "modalities": [
+      "sensor",
+      "satellite",
+      "molecular"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.9430611670430253,
+    "detection_auc_ci_lower": 0.9397146323564506,
+    "detection_auc_ci_upper": 0.9488171068185787,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.1,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "sensor+satellite+behavioral",
+    "modalities": [
+      "sensor",
+      "satellite",
+      "behavioral"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.9917540408877101,
+    "detection_auc_ci_lower": 0.9904074502876384,
+    "detection_auc_ci_upper": 0.9931276297873678,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142629,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7172694645830764,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.714560934463027,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  },
+  {
+    "condition_name": "sensor+microbial+molecular",
+    "modalities": [
+      "sensor",
+      "microbial",
+      "molecular"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.9430339530044743,
+    "detection_auc_ci_lower": 0.9392511754064115,
+    "detection_auc_ci_upper": 0.9483417637650239,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "sensor+microbial+behavioral",
+    "modalities": [
+      "sensor",
+      "microbial",
+      "behavioral"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.9915261894667977,
+    "detection_auc_ci_lower": 0.9896970752944342,
+    "detection_auc_ci_upper": 0.9926591977285576,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142632,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7180644240086441,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.7145609344630274,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  },
+  {
+    "condition_name": "sensor+molecular+behavioral",
+    "modalities": [
+      "sensor",
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.9913390740585546,
+    "detection_auc_ci_lower": 0.9893049136836439,
+    "detection_auc_ci_upper": 0.9924050101572104,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142629,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7180644240086441,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.7145609344630274,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  },
+  {
+    "condition_name": "satellite+microbial+molecular",
+    "modalities": [
+      "satellite",
+      "microbial",
+      "molecular"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.800273117684101,
+    "detection_auc_ci_lower": 0.784089173031189,
+    "detection_auc_ci_upper": 0.8029594587420362,
+    "mean_lead_time_hours": 1514.9633138738739,
+    "median_lead_time_hours": 12.109804421199692,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5707708477589843,
+      "lake_erie_hab": 0.7203898639633242,
+      "toledo_water_crisis": 0.6977532617839575,
+      "dan_river_coal_ash": 0.5378484758781895,
+      "elk_river_mchm": 0.0009580047801136971,
+      "houston_ship_channel": 0.5445563315913347,
+      "flint_mi": 0.6603694254523066,
+      "gulf_dead_zone": 0.7018496007760747,
+      "chesapeake_bay_blooms": 0.6857402804989837,
+      "east_palestine": 0.5578621249411378
+    }
+  },
+  {
+    "condition_name": "satellite+microbial+behavioral",
+    "modalities": [
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.8428766800037654,
+    "detection_auc_ci_lower": 0.8337616763625937,
+    "detection_auc_ci_upper": 0.8512488605050805,
+    "mean_lead_time_hours": 1247.9348540943067,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5714455977176621,
+      "lake_erie_hab": 0.7050608214683102,
+      "toledo_water_crisis": 0.6901649049225174,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.6516849316563933,
+      "gulf_dead_zone": 0.69552591688211,
+      "chesapeake_bay_blooms": 0.6770053073690425,
+      "east_palestine": 0.5555816452798881
+    }
+  },
+  {
+    "condition_name": "satellite+molecular+behavioral",
+    "modalities": [
+      "satellite",
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.842420161716847,
+    "detection_auc_ci_lower": 0.8327647840778877,
+    "detection_auc_ci_upper": 0.8502924037608185,
+    "mean_lead_time_hours": 1247.9348540943067,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5714455977176621,
+      "lake_erie_hab": 0.5539562201424348,
+      "toledo_water_crisis": 0.5490136012997369,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.5610288314148961,
+      "gulf_dead_zone": 0.5981161204648898,
+      "chesapeake_bay_blooms": 0.5552847329520489,
+      "east_palestine": 0.5555816452798881
+    }
+  },
+  {
+    "condition_name": "microbial+molecular+behavioral",
+    "modalities": [
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 3,
+    "detection_auc": 0.8429307143609135,
+    "detection_auc_ci_lower": 0.8335154516071928,
+    "detection_auc_ci_upper": 0.8507505176490703,
+    "mean_lead_time_hours": 1413.508907363481,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5478978838144337,
+      "lake_erie_hab": 0.7050608214683102,
+      "toledo_water_crisis": 0.6901649049225174,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.6516849316563933,
+      "gulf_dead_zone": 0.69552591688211,
+      "chesapeake_bay_blooms": 0.6770053073690425,
+      "east_palestine": 0.5484848717962721
+    }
+  },
+  {
+    "condition_name": "sensor+satellite+microbial+molecular",
+    "modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular"
+    ],
+    "num_modalities": 4,
+    "detection_auc": 0.943215484673032,
+    "detection_auc_ci_lower": 0.9400326231219015,
+    "detection_auc_ci_upper": 0.9490019462815258,
+    "mean_lead_time_hours": 1373.2020297338565,
+    "median_lead_time_hours": -0.998008137245975,
+    "source_attribution_top1": 0.1,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7305995763930403,
+      "lake_erie_hab": 0.7347339747074845,
+      "toledo_water_crisis": 0.7296799898767903,
+      "dan_river_coal_ash": 0.7381519794464111,
+      "elk_river_mchm": 0.7272002935409546,
+      "houston_ship_channel": 0.7303605097223879,
+      "flint_mi": 0.7307400951601418,
+      "gulf_dead_zone": 0.7245018601417541,
+      "chesapeake_bay_blooms": 0.7373643636703491,
+      "east_palestine": 0.740357518196106
+    }
+  },
+  {
+    "condition_name": "sensor+satellite+microbial+behavioral",
+    "modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "num_modalities": 4,
+    "detection_auc": 0.9919417876481392,
+    "detection_auc_ci_lower": 0.9906725898124583,
+    "detection_auc_ci_upper": 0.9933543101729972,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142632,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7172694645830764,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.714560934463027,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  },
+  {
+    "condition_name": "sensor+satellite+molecular+behavioral",
+    "modalities": [
+      "sensor",
+      "satellite",
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 4,
+    "detection_auc": 0.9917540408877101,
+    "detection_auc_ci_lower": 0.9904074502876384,
+    "detection_auc_ci_upper": 0.9931276297873678,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142629,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7172694645830764,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.714560934463027,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  },
+  {
+    "condition_name": "sensor+microbial+molecular+behavioral",
+    "modalities": [
+      "sensor",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 4,
+    "detection_auc": 0.9915261894667977,
+    "detection_auc_ci_lower": 0.9896970752944342,
+    "detection_auc_ci_upper": 0.9926591977285576,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142632,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7180644240086441,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.7145609344630274,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  },
+  {
+    "condition_name": "satellite+microbial+molecular+behavioral",
+    "modalities": [
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 4,
+    "detection_auc": 0.8428766800037654,
+    "detection_auc_ci_lower": 0.8337616763625937,
+    "detection_auc_ci_upper": 0.8512488605050805,
+    "mean_lead_time_hours": 1247.9348540943067,
+    "median_lead_time_hours": 30.976877095401285,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 0,
+    "per_event_scores": {
+      "gold_king_mine": 0.5714455977176621,
+      "lake_erie_hab": 0.7050608214683102,
+      "toledo_water_crisis": 0.6901649049225174,
+      "dan_river_coal_ash": 0.5574417993091082,
+      "elk_river_mchm": 0.5604769914293685,
+      "houston_ship_channel": 0.5526809514187752,
+      "flint_mi": 0.6516849316563933,
+      "gulf_dead_zone": 0.69552591688211,
+      "chesapeake_bay_blooms": 0.6770053073690425,
+      "east_palestine": 0.5555816452798881
+    }
+  },
+  {
+    "condition_name": "sensor+satellite+microbial+molecular+behavioral",
+    "modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "num_modalities": 5,
+    "detection_auc": 0.9919417876481392,
+    "detection_auc_ci_lower": 0.9906725898124583,
+    "detection_auc_ci_upper": 0.9933543101729972,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "median_lead_time_hours": -14.99985138403045,
+    "source_attribution_top1": 0.0,
+    "false_positive_rate": 0.0,
+    "cost_efficiency": 0.0,
+    "num_events_detected": 10,
+    "per_event_scores": {
+      "gold_king_mine": 0.7203637187331963,
+      "lake_erie_hab": 0.7215026954142632,
+      "toledo_water_crisis": 0.7235072063741387,
+      "dan_river_coal_ash": 0.7226922900261992,
+      "elk_river_mchm": 0.7178032069064292,
+      "houston_ship_channel": 0.7172694645830764,
+      "flint_mi": 0.7215222481796194,
+      "gulf_dead_zone": 0.714560934463027,
+      "chesapeake_bay_blooms": 0.7230958338495934,
+      "east_palestine": 0.7290041348097771
+    }
+  }
+]

@@ -208,9 +208,11 @@ class PhysicsConstraintLoss(nn.Module):
         losses.append(cond_tds_loss)
 
         # Weighted combination with uncertainty regularization
-        weights = torch.exp(self.log_weights)
+        # Clamp log_weights to prevent instability from extreme values
+        clamped_log_w = self.log_weights.clamp(min=-4.0, max=4.0)
+        weights = torch.exp(clamped_log_w)
         total_loss = torch.tensor(0.0, device=self.log_weights.device)
-        for w, log_w, loss in zip(weights, self.log_weights, losses):
+        for w, log_w, loss in zip(weights, clamped_log_w, losses):
             total_loss = total_loss + w * loss + log_w  # uncertainty weighting
 
         return {

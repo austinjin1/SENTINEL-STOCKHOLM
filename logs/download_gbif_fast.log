@@ -1,0 +1,35 @@
+2026-04-06 04:27:30,310 INFO ============================================================
+2026-04-06 04:27:30,310 INFO Fast GBIF + Canada WQP + USGS Discrete WQ
+2026-04-06 04:27:30,310 INFO ============================================================
+2026-04-06 04:27:30,310 INFO === GBIF Freshwater Bioindicators (NA, 2010+) ===
+2026-04-06 04:27:30,310 INFO   GBIF mayflies_ephemeroptera (taxonKey=936)
+2026-04-06 04:27:30,787 INFO   mayflies_ephemeroptera: no records found
+2026-04-06 04:27:30,787 INFO   GBIF stoneflies_plecoptera (taxonKey=937)
+2026-04-06 04:27:31,225 INFO   stoneflies_plecoptera: no records found
+2026-04-06 04:27:31,225 INFO   GBIF caddisflies_trichoptera (taxonKey=935)
+2026-04-06 04:27:31,631 INFO   caddisflies_trichoptera: no records found
+2026-04-06 04:27:31,649 INFO   Already have daphnia: 1,035
+2026-04-06 04:27:31,652 INFO   Already have chironomidae: 727
+2026-04-06 04:27:31,652 INFO   GBIF freshwater_mussels_unionida (taxonKey=2287)
+2026-04-06 04:27:34,593 INFO   Saved: freshwater_mussels_unionida → 593
+2026-04-06 04:27:34,593 INFO   GBIF algae_chlorophyta (taxonKey=3041)
+2026-04-06 04:27:35,013 INFO   algae_chlorophyta: no records found
+2026-04-06 04:27:35,013 INFO   GBIF total: 2,355
+2026-04-06 04:27:35,015 INFO === Canada Water Quality (WQP) ===
+2026-04-06 04:34:06,752 INFO   Canada WQP: 801,714 records available
+2026-04-06 04:34:49,133 WARNING   Capped Canada at 300 MB
+2026-04-06 04:34:58,461 INFO   Canada WQP saved: 786,765
+2026-04-06 04:34:58,669 INFO === USGS Discrete Water Quality ===
+2026-04-06 04:34:58,669 INFO   USGS discrete nutrients...
+2026-04-06 04:34:58,936 INFO   nutrients: 0 available
+2026-04-06 04:35:01,938 INFO   USGS discrete metals...
+2026-04-06 04:35:02,212 INFO   metals: 0 available
+2026-04-06 04:35:05,215 INFO   USGS discrete physical...
+2026-04-06 04:35:05,484 INFO   physical: 0 available
+2026-04-06 04:35:08,490 INFO ============================================================
+2026-04-06 04:35:08,490 INFO SUMMARY:
+2026-04-06 04:35:08,490 INFO   gbif: 2,355
+2026-04-06 04:35:08,490 INFO   canada: 786,765
+2026-04-06 04:35:08,490 INFO   usgs_discrete: 0
+2026-04-06 04:35:08,490 INFO   TOTAL: 789,120
+2026-04-06 04:35:08,491 INFO Done.

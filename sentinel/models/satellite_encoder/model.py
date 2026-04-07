@@ -249,15 +249,16 @@ class SatelliteEncoder(nn.Module):
         loss_per_patch = ((reconstruction - target) ** 2).mean(dim=-1)  # [B, N]
         mae_loss = (loss_per_patch * mask).sum() / mask.sum().clamp(min=1.0)
 
-        # Physics consistency loss on reconstructed patches
-        physics_losses = self.physics_loss(reconstruction, water_mask=None)
+        # Skip physics loss during MAE pretraining — reconstruction is patch-based
+        # [B, N_patches, patch_dim], not image-shaped [B, C, H, W]
+        # Physics loss will be applied during fine-tuning on full images
 
         return {
             "mae_loss": mae_loss,
+            "total_loss": mae_loss,
             "reconstruction": reconstruction,
             "target": target,
             "mask": mask,
-            **physics_losses,
         }
 
     def compute_loss(

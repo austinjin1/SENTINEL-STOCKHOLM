@@ -314,15 +314,15 @@ def save_robustness_report(report: RobustnessReport, output_dir: Path) -> None:
     curves_data = []
     for c in report.degradation_curves:
         curves_data.append({
-            "num_dropped": c.num_dropped,
-            "num_available": c.num_available,
-            "mean_auc": c.mean_auc,
-            "std_auc": c.std_auc,
-            "ci_lower": c.ci_lower,
-            "ci_upper": c.ci_upper,
-            "mean_lead_time": c.mean_lead_time,
-            "std_lead_time": c.std_lead_time,
-            "num_trials": c.num_trials,
+            "num_dropped": int(c.num_dropped),
+            "num_available": int(c.num_available),
+            "mean_auc": float(c.mean_auc),
+            "std_auc": float(c.std_auc),
+            "ci_lower": float(c.ci_lower),
+            "ci_upper": float(c.ci_upper),
+            "mean_lead_time": float(c.mean_lead_time),
+            "std_lead_time": float(c.std_lead_time),
+            "num_trials": int(c.num_trials),
         })
     with open(output_dir / "degradation_curves.json", "w", encoding="utf-8") as f:
         json.dump(curves_data, f, indent=2)
@@ -331,22 +331,22 @@ def save_robustness_report(report: RobustnessReport, output_dir: Path) -> None:
     trials_data = []
     for t in report.per_trial_results:
         trials_data.append({
-            "trial_id": t.trial_id,
-            "num_dropped": t.num_dropped,
+            "trial_id": int(t.trial_id),
+            "num_dropped": int(t.num_dropped),
             "dropped_modalities": list(t.dropped_modalities),
             "active_modalities": list(t.active_modalities),
-            "detection_auc": t.detection_auc,
-            "mean_lead_time_hours": t.mean_lead_time_hours,
-            "source_attribution_top1": t.source_attribution_top1,
+            "detection_auc": float(t.detection_auc),
+            "mean_lead_time_hours": float(t.mean_lead_time_hours),
+            "source_attribution_top1": float(t.source_attribution_top1),
         })
     with open(output_dir / "trial_results.json", "w", encoding="utf-8") as f:
         json.dump(trials_data, f, indent=2)
 
     # Summary
     summary = {
-        "graceful_degradation_score": report.graceful_degradation_score,
-        "modality_criticality": report.modality_criticality,
-        "num_trials": len(report.per_trial_results),
+        "graceful_degradation_score": float(report.graceful_degradation_score),
+        "modality_criticality": {k: float(v) for k, v in report.modality_criticality.items()},
+        "num_trials": int(len(report.per_trial_results)),
     }
     with open(output_dir / "robustness_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)

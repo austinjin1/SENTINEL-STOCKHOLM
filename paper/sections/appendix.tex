@@ -1,0 +1,147 @@
+\section{Theoretical Contributions}
+\label{sec:appendix_theory}
+
+\subsection{Cross-Modal Environmental Transfer Learning (HEMA)}
+
+\begin{theorem}[Cross-Modal Transfer Bound]
+Let $\mathcal{M}_1, \mathcal{M}_2$ be two environmental modalities observing
+latent state $\mathcal{Z}$ with mutual information $I(\mathcal{M}_i; \mathcal{Z})$.
+Then the transfer error between modality-specific representations satisfies:
+\begin{equation}
+    \epsilon_{\text{transfer}} \leq
+    H(\mathcal{Z}) - I(\mathcal{M}_1; \mathcal{Z}) - I(\mathcal{M}_2; \mathcal{Z})
+    + I(\mathcal{M}_1; \mathcal{M}_2)
+\end{equation}
+\end{theorem}
+
+This bound extends Ben-David domain adaptation theory to heterogeneous
+modality types and motivates the physics-informed contrastive alignment
+used in SENTINEL-Fusion.
+
+\subsection{Compositional Neural Network Guarantees}
+
+\begin{theorem}[Universal Approximation on Aitchison Simplex]
+For any continuous function $f: \mathcal{S}^D \to \mathbb{R}$ on the
+$D$-part simplex $\mathcal{S}^D$ and any $\epsilon > 0$, there exists
+a CLR-coordinate network $g_\theta$ with Aitchison-space batch normalization
+such that $\sup_{\mathbf{x} \in \mathcal{S}^D} |f(\mathbf{x}) - g_\theta(\mathbf{x})| < \epsilon$.
+\end{theorem}
+
+\subsection{Conformal Anomaly Detection}
+
+\begin{theorem}[Finite-Sample Coverage]
+Let $\alpha \in (0,1)$ and assume data within each detected regime
+is exchangeable. Then the SENTINEL conformal anomaly detector satisfies:
+\begin{equation}
+    P(\text{true state} \in C_\alpha(\mathbf{x}_{\text{new}})) \geq 1 - \alpha
+\end{equation}
+where $C_\alpha$ is the conformal prediction set constructed from
+geometry-aware non-conformity scores.
+\end{theorem}
+
+\section{Dataset Details}
+\label{sec:appendix_data}
+
+\begin{table*}[h]
+\centering
+\caption{Complete SENTINEL-DB source details. NEON products: DP1.20288 (continuous sonde WQ), DP1.20042 (stream discharge), DP1.20264 (water temperature), DP1.20016 (reaeration). All data publicly available.}
+\label{tab:data_sources}
+\small
+\begin{tabular}{llrrl}
+\toprule
+\textbf{Source} & \textbf{Organization} & \textbf{Records} & \textbf{Sites} & \textbf{Access} \\
+\midrule
+NEON Aquatic (4 products) & NEON/NSF & 351.7M & 34 & data.neonscience.org \\
+GRQA v1.3 & Virro et al.\ 2021 & 17.99M & 94K & zenodo.org \\
+EPA WQP & EPA/USGS & 18.27M & multiple & waterqualitydata.us \\
+Canada WQP & ECCC/Health Canada & 787K & multiple & waterqualitydata.us \\
+USGS NWIS-IV & USGS & 291K seq. & 1,130 & waterdata.usgs.gov \\
+EPA ECOTOX & EPA & 1.23M & N/A & cfpub.epa.gov/ecotox \\
+Sentinel-2 & ESA/Copernicus & 2,986 tiles & global & scihub.copernicus.eu \\
+EPA NARS & EPA & 2,111 & 2,111 & epa.gov/national-aquatic-resource-surveys \\
+NCBI GEO & NCBI/NIH & 4 datasets & N/A & ncbi.nlm.nih.gov/geo \\
+EMP 16S rRNA & Earth Microbiome Project & 20,288 & multiple & ebi.ac.uk/ena \\
+Behavioral assay & SENTINEL (synthetic) & 5,000 traj. & N/A & -- \\
+WHO/World Bank WASH & World Bank & 18K & 217 countries & api.worldbank.org \\
+GBIF Freshwater & GBIF & 2,355 & global & api.gbif.org \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{Hyperparameter Settings}
+\label{sec:appendix_hyperparams}
+
+\begin{table*}[h]
+\centering
+\caption{Hyperparameter settings for all SENTINEL models.}
+\label{tab:hyperparams}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Hyperparameter} & \textbf{AquaSSM} & \textbf{HydroViT} & \textbf{MicroBiomeNet} & \textbf{ToxiGene} & \textbf{BioMotion} & \textbf{Fusion} \\
+\midrule
+Parameters & 4.6M & 86M & 128.9M & 420K & 3M & 33.6M \\
+Embedding dim & 256 & 256 & 256 & 256 & 256 & 256 \\
+Learning rate & $5\!\times\!10^{-4}$ & $1.5\!\times\!10^{-4}$ & $3\!\times\!10^{-4}$ & $1\!\times\!10^{-3}$ & $1\!\times\!10^{-4}$ & $1\!\times\!10^{-3}$ \\
+Batch size & 64 & 32 & 32 & 16 & 64 & 128 \\
+Epochs & 50 & 100 & 100 & 80 & 50+50 & 100 \\
+Optimizer & AdamW & AdamW & AdamW & AdamW & AdamW & AdamW \\
+Weight decay & $10^{-2}$ & $5\!\times\!10^{-2}$ & $10^{-2}$ & $10^{-2}$ & $10^{-2}$ & $10^{-2}$ \\
+LR schedule & Cosine & Cosine & Warm.+Cos. & Cosine & Cosine & Cosine \\
+Warmup epochs & 0 & 5 & 5 & 0 & 0 & 5 \\
+Seq. length & 128 & -- & -- & -- & 100 & -- \\
+Patch size & -- & 16 & -- & -- & -- & -- \\
+Mask ratio & 50\% & 75\% & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\section{Model Architecture Details}
+\label{sec:appendix_arch}
+
+\begin{table}[h]
+\centering
+\caption{Architecture specification for each encoder.}
+\label{tab:arch_details}
+\small
+\begin{tabular}{lp{4.5cm}}
+\toprule
+\textbf{Component} & \textbf{Specification} \\
+\midrule
+\multicolumn{2}{l}{\textit{AquaSSM (4.6M params)}} \\
+SSM state dim & 64 \\
+SSM channels & 8 (1h--365d timescales) \\
+Layers & 6 \\
+Input features & 5 (DO, pH, SpCond, Temp, Turb) \\
+\midrule
+\multicolumn{2}{l}{\textit{HydroViT (86M params)}} \\
+Backbone & ViT-S/16 \\
+Input bands & 10 (B02--B12) \\
+Resolution & 224$\times$224 at 10m \\
+WQ head outputs & 16 parameters \\
+\midrule
+\multicolumn{2}{l}{\textit{MicroBiomeNet (128.9M params)}} \\
+Aitchison layers & 4 \\
+Attention heads & 8 \\
+CLR clamp range & $[-5, 5]$ \\
+\midrule
+\multicolumn{2}{l}{\textit{ToxiGene (420K params)}} \\
+Hierarchy & 4 levels (gene$\to$outcome) \\
+Reactome constraints & Sparse CSR adjacency \\
+Output classes & 8 contaminant types \\
+\midrule
+\multicolumn{2}{l}{\textit{BioMotion (3M params)}} \\
+Diffusion steps & 1000 \\
+Noise sched. & Linear $\beta$ \\
+Traj. features & pos, vel, accel \\
+\midrule
+\multicolumn{2}{l}{\textit{SENTINEL-Fusion (33.6M params)}} \\
+Perceiver latents & 256 \\
+Cross-attention layers & 6 \\
+Self-attention layers & 8 \\
+Output heads & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}

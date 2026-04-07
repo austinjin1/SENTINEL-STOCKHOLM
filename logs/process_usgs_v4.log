@@ -1,0 +1,16 @@
+[2026-04-04 14:21:15] ============================================================
+[2026-04-04 14:21:15] Processing USGS NWIS Parquets → AquaSSM Training Data
+[2026-04-04 14:21:15] ============================================================
+[2026-04-04 14:21:15] Found 929 parquet files in data/raw/sensor/full
+[2026-04-04 14:21:16] Already processed: 785 stations
+[2026-04-04 14:21:27]   Progress: 88/929 (processed=25, seqs=7764, skipped=63)
+[2026-04-04 14:21:51]   Progress: 189/929 (processed=50, seqs=27781, skipped=139)
+[2026-04-04 14:22:05]   Progress: 769/929 (processed=75, seqs=38731, skipped=694)
+[2026-04-04 14:22:11]   Progress: 851/929 (processed=100, seqs=42827, skipped=751)
+[2026-04-04 14:22:19]   Progress: 900/929 (processed=125, seqs=48012, skipped=775)
+[2026-04-04 14:23:29] 
+Done! Total sequences: 291855
+[2026-04-04 14:23:29]   Normal: 241650
+[2026-04-04 14:23:29]   Anomalous: 50205
+[2026-04-04 14:23:29]   Anomaly rate: 17.2%
+[2026-04-04 14:23:29] DONE

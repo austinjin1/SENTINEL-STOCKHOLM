@@ -1,0 +1,60 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Interpretation}
+
+SENTINEL demonstrates that multimodal environmental monitoring through
+AI-driven fusion provides earlier and more specific pollution detection
+than any single modality. The fusion system (AUROC = 0.939) outperforms
+the best individual encoder (AquaSSM, AUROC = 0.920), confirming that
+cross-modal information is complementary rather than redundant. The key
+insight is that different modalities have fundamentally different response
+latencies: behavioral signals respond within minutes, sensor anomalies
+within hours, microbial community shifts within days, and satellite-visible
+changes within weeks. Fusion leverages this temporal hierarchy for both
+rapid initial detection and sustained diagnostic specificity.
+
+\subsection{Limitations}
+
+Several limitations should be noted:
+
+\begin{itemize}
+    \item \textbf{Data availability}: Truly multimodal data (all five
+    modalities at the same location-time) is rare. SENTINEL-DB contains
+    390M+ records but co-located five-modality samples are sparse. Most
+    training relies on single-modality or modality-pair data.
+
+    \item \textbf{Geographic bias}: 95\% of training data comes from
+    the United States (USGS, EPA) and Europe (GRQA). Performance in
+    tropical, arid, or data-sparse regions is expected to degrade.
+
+    \item \textbf{MicroBiomeNet scope}: While F1 = 0.913 on real EMP 16S
+    data validates the Aitchison-geometry design, the 8-class source
+    classification task is simpler than fine-grained pollution source
+    attribution. More targeted aquatic microbiome datasets with
+    contaminant-specific labels would better evaluate diagnostic utility.
+
+    \item \textbf{HydroViT WQ regression}: While MAE pretraining converges,
+    the 16-parameter water quality regression head requires spatiotemporally
+    co-registered satellite--in situ pairs, which are sparse in SENTINEL-DB.
+
+    \item \textbf{Computational cost}: The full 189.5M-parameter system
+    requires GPU acceleration for training; inference is more modest
+    ($\sim$50ms per forward pass on A100).
+\end{itemize}
+
+\subsection{Broader Impact}
+
+SENTINEL has potential for significant positive environmental impact by
+enabling earlier detection of water pollution events, reducing exposure
+of both ecosystems and human populations. The public platform component
+democratizes access to water quality intelligence. However, we note that
+AI-based monitoring should complement, not replace, direct chemical
+analysis and regulatory oversight.
+
+\subsection{Future Work}
+
+Future directions include: (1) extending to additional water body types
+(groundwater, coastal, deep ocean), (2) active learning for optimal
+sampling strategies, (3) integration with real-time alert systems, and
+(4) deployment in resource-limited settings through model distillation.

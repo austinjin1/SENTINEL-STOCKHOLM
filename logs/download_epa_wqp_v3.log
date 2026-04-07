@@ -1,0 +1,548 @@
+[2026-04-04 09:21:40] ============================================================
+[2026-04-04 09:21:40] EPA Water Quality Portal Download
+[2026-04-04 09:21:40] Target: 12 parameters across 18 HUC2 basins
+[2026-04-04 09:21:40] Date range: 2020-01-01 to 2025-12-31
+[2026-04-04 09:21:40] ============================================================
+[2026-04-04 09:21:40] 
+HUC 01: New England
+[2026-04-04 09:21:40]   Downloading HUC 01 (New England)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,12,30,33,40,43) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:21:41]     Dissolved oxygen (DO): 48,501 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,23,24,25,30,34,41,47,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:21:42]     pH: 47,974 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,23,24,25,30,33,43,54) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:21:43]     Temperature, water: 96,434 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,10,23,24,25,30,37,40,41,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:21:44]     Specific conductance: 60,824 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,16,18,20,24,25,32,35,43,47,56,57,59) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:21:45]     Turbidity: 33,603 records
+[2026-04-04 09:21:46]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=01&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 09:21:48]     Nitrate: 15,291 records
+[2026-04-04 09:21:49]     Ammonia: 3,588 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,24,25,39,41,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:21:50]     Phosphorus: 31,307 records
+[2026-04-04 09:21:50]     Chlorophyll a: 5,356 records
+[2026-04-04 09:21:51]     Total dissolved solids: 11,783 records
+[2026-04-04 09:21:52]     Total suspended solids: 4,125 records
+[2026-04-04 09:21:53]     Saved: 358,786 total records -> wqp_huc01.parquet
+[2026-04-04 09:21:53] 
+HUC 02: Mid-Atlantic
+[2026-04-04 09:21:53]   Downloading HUC 02 (Mid-Atlantic)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,15,17,24,33,35,40,47,48,49,50,59) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:29:41]     Dissolved oxygen (DO): 304,341 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,15,16,17,18,23,24,25,30,33,34,35,37,41,47,48,49,50,57,59,60,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:40:10]     pH: 327,129 records
+[2026-04-04 09:40:56]     Temperature, water: FAILED (No columns to parse from file)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,15,16,17,18,23,24,25,30,35,37,41,44,47,48,49,50,57,59,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:49:00]     Specific conductance: 236,199 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,23,24,25,33,35,48,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:53:32]     Turbidity: 171,116 records
+[2026-04-04 09:53:32]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=02&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 09:54:20]     Nitrate: FAILED (No columns to parse from file)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,24,33,47,48) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:55:35]     Ammonia: 52,934 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,16,18,24,25,33,35,39,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 09:59:13]     Phosphorus: 77,105 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,24,25,33,48,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 10:00:04]     Chlorophyll a: 52,726 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,14,23,24,25,33,35,41,47,48,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 10:02:30]     Total dissolved solids: 103,896 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,15,17,24,25,39,41,47,48,57,59,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 10:04:56]     Total suspended solids: 101,679 records
+[2026-04-04 10:05:04]     Saved: 1,427,125 total records -> wqp_huc02.parquet
+[2026-04-04 10:05:05] 
+HUC 03: South Atlantic-Gulf
+[2026-04-04 10:05:05]   Downloading HUC 03 (South Atlantic-Gulf)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,30,33,35,37,56) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 10:16:48]     Dissolved oxygen (DO): 598,347 records
+[2026-04-04 10:17:34]     pH: FAILED (No columns to parse from file)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,23,24,25,30,32,33,37,44,47,55,56,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 10:47:00]     Temperature, water: 624,135 records
+[2026-04-04 10:47:46]     Specific conductance: FAILED (No columns to parse from file)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,23,24,25,35,37,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 10:55:40]     Turbidity: 314,758 records
+[2026-04-04 10:55:41]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=03&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 10:56:29]     Nitrate: FAILED (No columns to parse from file)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (35) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 10:59:32]     Ammonia: 171,546 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (24,25,33,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 11:05:37]     Phosphorus: 368,424 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,22,24,25,33,44,57,59,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 11:06:29]     Chlorophyll a: 16,827 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (23,24,25,33,37,41,47,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 11:09:54]     Total dissolved solids: 86,315 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (23,24,25,57,59,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 11:14:16]     Total suspended solids: 174,632 records
+[2026-04-04 11:14:23]     Saved: 2,354,984 total records -> wqp_huc03.parquet
+[2026-04-04 11:14:24] 
+HUC 04: Great Lakes
+[2026-04-04 11:14:24]   Downloading HUC 04 (Great Lakes)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,12,16,18,30,33,35,37,40,55) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 11:21:45]     Dissolved oxygen (DO): 291,997 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,12,14,16,18,24,25,30,33,35,37,39,40,46,55,57,60,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 11:31:47]     pH: 252,301 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,24,25,30,33,35,37,40,55,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 11:55:13]     Temperature, water: 2,867,175 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,12,16,18,24,25,33,35,39,40,41,46,55,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:03:40]     Specific conductance: 231,467 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,24,25,30,33,35,37,39,40,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:07:48]     Turbidity: 161,554 records
+[2026-04-04 12:07:49]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=04&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,14,16,18,24,25,33,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:09:00]     Nitrate: 22,797 records
+[2026-04-04 12:10:11]     Ammonia: 25,088 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,24,25,33,35,42,47,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:13:45]     Phosphorus: 64,514 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,14,16,18,20,24,25,33,49,50,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:14:16]     Chlorophyll a: 18,994 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,24,25,39,40,41,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:16:16]     Total dissolved solids: 49,704 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (24,25,40,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:18:34]     Total suspended solids: 48,353 records
+[2026-04-04 12:18:46]     Saved: 4,033,944 total records -> wqp_huc04.parquet
+[2026-04-04 12:18:49] 
+HUC 05: Ohio
+[2026-04-04 12:18:49]   Downloading HUC 05 (Ohio)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,14,24,30,33,35,37,40,47,48,54,55) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:21:59]     Dissolved oxygen (DO): 83,679 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,30,33,34,37,40,48,57,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:25:12]     pH: 87,966 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,14,16,18,24,25,30,35,37,40,47,48,54,55) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:31:55]     Temperature, water: 249,012 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,35,37,40,48,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:33:02]     Specific conductance: 73,284 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,37,40,47,48,55,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:33:45]     Turbidity: 35,001 records
+[2026-04-04 12:33:45]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=05&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 12:34:04]     Nitrate: 13,396 records
+[2026-04-04 12:34:19]     Ammonia: 31,653 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,33,39,42,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:35:01]     Phosphorus: 21,815 records
+[2026-04-04 12:35:05]     Chlorophyll a: 2,546 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,20,24,25,33,37,41,48,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:35:40]     Total dissolved solids: 39,651 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,24,25,33,37,48,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:36:16]     Total suspended solids: 40,216 records
+[2026-04-04 12:36:19]     Saved: 678,219 total records -> wqp_huc05.parquet
+[2026-04-04 12:36:19] 
+HUC 06: Tennessee
+[2026-04-04 12:36:19]   Downloading HUC 06 (Tennessee)...
+[2026-04-04 12:37:51]     Dissolved oxygen (DO): 47,988 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,23,24,25,30,34,35,56,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:39:07]     pH: 50,923 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,16,18,23,24,25,30,55,56,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:40:35]     Temperature, water: 50,576 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,23,24,25,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:40:57]     Specific conductance: 31,010 records
+[2026-04-04 12:41:04]     Turbidity: 10,011 records
+[2026-04-04 12:41:05]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=06&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 12:41:17]     Nitrate: 5,082 records
+[2026-04-04 12:41:23]     Ammonia: 1,012 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:41:41]     Phosphorus: 20,531 records
+[2026-04-04 12:41:45]     Chlorophyll a: 2,017 records
+[2026-04-04 12:41:50]     Total dissolved solids: 5,702 records
+[2026-04-04 12:41:57]     Total suspended solids: 8,327 records
+[2026-04-04 12:41:58]     Saved: 233,179 total records -> wqp_huc06.parquet
+[2026-04-04 12:41:58] 
+HUC 07: Upper Mississippi
+[2026-04-04 12:41:58]   Downloading HUC 07 (Upper Mississippi)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,33,35,39) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 12:49:40]     Dissolved oxygen (DO): 271,379 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,33,34,35,39,57,60,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:00:26]     pH: 258,181 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,33,35,37,39,41,44,55,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:25:34]     Temperature, water: 2,318,526 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,30,33,35,39,41,46,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:34:12]     Specific conductance: 242,875 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,24,25,35,37,39,47,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:38:02]     Turbidity: 35,768 records
+[2026-04-04 13:38:03]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=07&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,20,24,25,39) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:39:26]     Nitrate: 21,883 records
+[2026-04-04 13:40:44]     Ammonia: 11,995 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,16,18,22,24,25,39,42,47,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:44:44]     Phosphorus: 116,590 records
+[2026-04-04 13:45:22]     Chlorophyll a: 10,011 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,24,25,41,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:47:34]     Total dissolved solids: 43,872 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,24,25,47,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:50:11]     Total suspended solids: 55,379 records
+[2026-04-04 13:50:24]     Saved: 3,386,459 total records -> wqp_huc07.parquet
+[2026-04-04 13:50:26] 
+HUC 08: Lower Mississippi
+[2026-04-04 13:50:26]   Downloading HUC 08 (Lower Mississippi)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,55) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:51:30]     Dissolved oxygen (DO): 22,927 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,14,23,24,25,57,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:53:10]     pH: 26,144 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,14,23,24,25) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:54:47]     Temperature, water: 29,862 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,14,23,24,25,37,56,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:55:02]     Specific conductance: 21,068 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,14,23,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:55:15]     Turbidity: 29,211 records
+[2026-04-04 13:55:16]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=08&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 13:55:27]     Nitrate: 3,459 records
+[2026-04-04 13:55:32]     Ammonia: 4,311 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:55:59]     Phosphorus: 28,439 records
+[2026-04-04 13:56:02]     Chlorophyll a: 1,267 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,13,14,16,18,22,24,25,30,33,35,37,41,44,47,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:56:15]     Total dissolved solids: 16,724 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,22,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:56:22]     Total suspended solids: 21,414 records
+[2026-04-04 13:56:23]     Saved: 204,826 total records -> wqp_huc08.parquet
+[2026-04-04 13:56:23] 
+HUC 09: Souris-Red-Rainy
+[2026-04-04 13:56:23]   Downloading HUC 09 (Souris-Red-Rainy)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,30,33,44,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:57:57]     Dissolved oxygen (DO): 59,297 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (20,24,25,30,33,34,35,57,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 13:59:32]     pH: 60,465 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,20,24,25,30,41,44,55,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:01:24]     Temperature, water: 73,827 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,16,18,20,24,25,30,33,35,41,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:01:38]     Specific conductance: 42,157 records
+[2026-04-04 14:01:46]     Turbidity: 8,962 records
+[2026-04-04 14:01:47]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=09&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 14:01:55]     Nitrate: 652 records
+[2026-04-04 14:01:58]     Ammonia: 1,384 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (20,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:02:24]     Phosphorus: 22,950 records
+[2026-04-04 14:02:28]     Chlorophyll a: 942 records
+[2026-04-04 14:02:39]     Total dissolved solids: 8,055 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,20,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:02:48]     Total suspended solids: 18,656 records
+[2026-04-04 14:02:49]     Saved: 297,347 total records -> wqp_huc09.parquet
+[2026-04-04 14:02:49] 
+HUC 10: Missouri
+[2026-04-04 14:02:49]   Downloading HUC 10 (Missouri)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (33,39) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:05:22]     Dissolved oxygen (DO): 70,290 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (24,25,30,33,34,35,39,57,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:08:26]     pH: 86,759 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (24,25,30,33,35,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:13:39]     Temperature, water: 109,879 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,24,25,30,35,37,39,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:14:24]     Specific conductance: 81,338 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,16,18,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:14:49]     Turbidity: 34,818 records
+[2026-04-04 14:14:50]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=10&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,14,16,18,24,25) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:15:15]     Nitrate: 18,676 records
+[2026-04-04 14:15:23]     Ammonia: 10,701 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,14,24,25,37,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:15:46]     Phosphorus: 18,403 records
+[2026-04-04 14:15:52]     Chlorophyll a: 8,346 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,24,25,37,41,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:16:17]     Total dissolved solids: 28,074 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,16,18,24,25,37,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:16:39]     Total suspended solids: 44,245 records
+[2026-04-04 14:16:40]     Saved: 511,529 total records -> wqp_huc10.parquet
+[2026-04-04 14:16:40] 
+HUC 11: Arkansas-White-Red
+[2026-04-04 14:16:40]   Downloading HUC 11 (Arkansas-White-Red)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (35,46) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:19:36]     Dissolved oxygen (DO): 57,035 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (24,25,35,46,57,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:23:03]     pH: 107,504 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (24,25,30,40,46,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:28:49]     Temperature, water: 71,465 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,24,25,30,33,35,41,46,47,48,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:30:19]     Specific conductance: 75,542 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (14,24,25,35,48,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:31:25]     Turbidity: 48,020 records
+[2026-04-04 14:31:26]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=11&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,14,24,25,37,40) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:32:21]     Nitrate: 22,482 records
+[2026-04-04 14:32:58]     Ammonia: 14,298 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,20,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:33:52]     Phosphorus: 35,575 records
+[2026-04-04 14:34:00]     Chlorophyll a: 5,460 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (16,18,24,25,41,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:34:39]     Total dissolved solids: 27,748 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,13,14,16,18,20,22,24,25,35,44,47,55,56,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:35:14]     Total suspended solids: 33,485 records
+[2026-04-04 14:35:15]     Saved: 498,614 total records -> wqp_huc11.parquet
+[2026-04-04 14:35:16] 
+HUC 12: Texas-Gulf
+[2026-04-04 14:35:16]   Downloading HUC 12 (Texas-Gulf)...
+[2026-04-04 14:37:11]     Dissolved oxygen (DO): 9,982 records
+[2026-04-04 14:37:57]     pH: FAILED (No columns to parse from file)
+[2026-04-04 14:39:22]     Temperature, water: FAILED (Response ended prematurely)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,13,14,16,18,20,24,25,26,27,28,29,32,44,54,55,56,57,58,60,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:41:19]     Specific conductance: 140,647 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,14,16,18,20,24,25,30,35,54,55,56,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:41:53]     Turbidity: 18,136 records
+[2026-04-04 14:41:54]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=12&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,13,14,16,18,20,24,25,39,44,56,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:42:44]     Nitrate: 26,434 records
+[2026-04-04 14:42:58]     Ammonia: 533 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,7,8,9,10,11,13,14,16,18,19,20,22,24,25,30,39,44,54,55,56,57,58,60,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:43:40]     Phosphorus: 35,891 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,7,8,13,19,20,22,24,25,30,32,44,54,55,56,57,58,60,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:43:50]     Chlorophyll a: 17,997 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,13,14,16,18,20,24,25,26,27,28,29,41,44,54,55,56,57,58,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:44:31]     Total dissolved solids: 31,339 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,13,20,24,25,35,44,56,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:44:56]     Total suspended solids: 33,125 records
+[2026-04-04 14:44:57]     Saved: 314,084 total records -> wqp_huc12.parquet
+[2026-04-04 14:44:57] 
+HUC 13: Rio Grande
+[2026-04-04 14:44:57]   Downloading HUC 13 (Rio Grande)...
+[2026-04-04 14:45:33]     Dissolved oxygen (DO): 9,589 records
+[2026-04-04 14:46:16]     pH: 12,014 records
+[2026-04-04 14:47:01]     Temperature, water: 11,276 records
+[2026-04-04 14:47:11]     Specific conductance: 10,795 records
+[2026-04-04 14:47:16]     Turbidity: 7,301 records
+[2026-04-04 14:47:17]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=13&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 14:47:22]     Nitrate: 2,767 records
+[2026-04-04 14:47:25]     Ammonia: 677 records
+[2026-04-04 14:47:28]     Phosphorus: 3,079 records
+[2026-04-04 14:47:30]     Chlorophyll a: 765 records
+[2026-04-04 14:47:33]     Total dissolved solids: 5,610 records
+[2026-04-04 14:47:36]     Total suspended solids: 2,301 records
+[2026-04-04 14:47:37]     Saved: 66,174 total records -> wqp_huc13.parquet
+[2026-04-04 14:47:37] 
+HUC 14: Upper Colorado
+[2026-04-04 14:47:37]   Downloading HUC 14 (Upper Colorado)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,32,33,37,40,55) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:49:08]     Dissolved oxygen (DO): 35,257 records
+[2026-04-04 14:49:54]     pH: FAILED (No columns to parse from file)
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,24,25,32,33,37,40,55,56,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:53:17]     Temperature, water: 67,497 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11,16,18,24,25,37,40,57,61) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 14:53:41]     Specific conductance: 48,038 records
+[2026-04-04 14:53:53]     Turbidity: 11,506 records
+[2026-04-04 14:53:54]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=14&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 14:54:13]     Nitrate: 9,009 records
+[2026-04-04 14:54:23]     Ammonia: 2,371 records
+[2026-04-04 14:54:34]     Phosphorus: 6,048 records
+[2026-04-04 14:54:38]     Chlorophyll a: 8,388 records
+[2026-04-04 14:55:03]     Total dissolved solids: 13,323 records
+[2026-04-04 14:55:10]     Total suspended solids: 7,000 records
+[2026-04-04 14:55:11]     Saved: 208,437 total records -> wqp_huc14.parquet
+[2026-04-04 14:55:11] 
+HUC 15: Lower Colorado
+[2026-04-04 14:55:11]   Downloading HUC 15 (Lower Colorado)...
+[2026-04-04 14:56:58]     Dissolved oxygen (DO): 7,375 records
+[2026-04-04 14:58:43]     pH: 9,549 records
+[2026-04-04 15:00:51]     Temperature, water: 11,618 records
+[2026-04-04 15:01:06]     Specific conductance: 8,991 records
+[2026-04-04 15:01:13]     Turbidity: 5,517 records
+[2026-04-04 15:01:14]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=15&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 15:01:24]     Nitrate: 2,414 records
+[2026-04-04 15:01:26]     Ammonia: 931 records
+[2026-04-04 15:01:40]     Phosphorus: 2,237 records
+[2026-04-04 15:01:42]     Chlorophyll a: 74 records
+[2026-04-04 15:01:55]     Total dissolved solids: 8,401 records
+[2026-04-04 15:01:59]     Total suspended solids: 1,136 records
+[2026-04-04 15:01:59]     Saved: 58,243 total records -> wqp_huc15.parquet
+[2026-04-04 15:01:59] 
+HUC 16: Great Basin
+[2026-04-04 15:01:59]   Downloading HUC 16 (Great Basin)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (9,10,11) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:03:17]     Dissolved oxygen (DO): 45,566 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,16,18,24,25,30,33,34,35,57,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:04:51]     pH: 50,915 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,24,25,33,37,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:07:25]     Temperature, water: 55,083 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,24,25,30,33,37,41,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:08:02]     Specific conductance: 56,007 records
+[2026-04-04 15:08:16]     Turbidity: 7,151 records
+[2026-04-04 15:08:17]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=16&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 15:08:37]     Nitrate: 4,416 records
+[2026-04-04 15:08:39]     Ammonia: 793 records
+[2026-04-04 15:08:52]     Phosphorus: 4,394 records
+[2026-04-04 15:08:56]     Chlorophyll a: 3,027 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (5,9,10,11,24,25,33,41,57,59) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:09:38]     Total dissolved solids: 19,665 records
+[2026-04-04 15:09:47]     Total suspended solids: 15,234 records
+[2026-04-04 15:09:48]     Saved: 262,251 total records -> wqp_huc16.parquet
+[2026-04-04 15:09:48] 
+HUC 17: Pacific Northwest
+[2026-04-04 15:09:48]   Downloading HUC 17 (Pacific Northwest)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,16,18,47) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:18:00]     Dissolved oxygen (DO): 253,775 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,16,18,23,24,25,33,43,47,57,60) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:29:43]     pH: 251,397 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,23,24,25,30,33,47) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 15:55:23]     Temperature, water: 2,315,043 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,23,24,25,33,43,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:03:34]     Specific conductance: 76,601 records
+[2026-04-04 16:04:19]     Turbidity: FAILED (No columns to parse from file)
+[2026-04-04 16:04:22]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=17&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 16:05:54]     Nitrate: 14,521 records
+[2026-04-04 16:07:19]     Ammonia: 16,187 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,24,25,37,40,57,59) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:11:02]     Phosphorus: 21,564 records
+[2026-04-04 16:11:40]     Chlorophyll a: 8,329 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,24,25,37,40,41,57,59) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:14:28]     Total dissolved solids: 97,541 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,24,25,37,39,40,41) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:17:11]     Total suspended solids: 29,786 records
+[2026-04-04 16:17:23]     Saved: 3,084,744 total records -> wqp_huc17.parquet
+[2026-04-04 16:17:25] 
+HUC 18: California
+[2026-04-04 16:17:25]   Downloading HUC 18 (California)...
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,20,47) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:17:46]     Dissolved oxygen (DO): 23,060 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,20,24,25,47,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:18:18]     pH: 28,818 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,20,24,25,35,43,47,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:18:58]     Temperature, water: 149,075 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,20,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:19:05]     Specific conductance: 21,002 records
+/home/bcheng/.conda/envs/physiformer/lib/python3.10/site-packages/dataretrieval/wqp.py:153: DtypeWarning: Columns (12,14,16,18,20,24,25,57) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(StringIO(response.text), delimiter=",")
+[2026-04-04 16:19:12]     Turbidity: 21,585 records
+[2026-04-04 16:19:13]     Nitrogen, mixed forms: FAILED (Bad Request, check that your parameters are correct. URL: https://www.waterqualitydata.us/data/Result/Search?huc=18&characteristicName=Nitrogen%2C+mixed+forms&startDateLo=01-01-2020&startDateHi=12-31-2025&mimeType=csv)
+[2026-04-04 16:19:27]     Nitrate: 12,859 records
+[2026-04-04 16:19:30]     Ammonia: 3,245 records
+[2026-04-04 16:19:36]     Phosphorus: 6,174 records
+[2026-04-04 16:19:39]     Chlorophyll a: 6,831 records
+[2026-04-04 16:19:45]     Total dissolved solids: 13,681 records
+[2026-04-04 16:19:48]     Total suspended solids: 2,645 records
+[2026-04-04 16:19:50]     Saved: 288,975 total records -> wqp_huc18.parquet
+[2026-04-04 16:19:50] 
+============================================================
+[2026-04-04 16:19:50] EPA WQP Download Summary
+[2026-04-04 16:19:50] ============================================================
+[2026-04-04 16:19:50]   HUC 01 (New England              ):    358,786 records
+[2026-04-04 16:19:50]   HUC 02 (Mid-Atlantic             ):  1,427,125 records
+[2026-04-04 16:19:50]   HUC 03 (South Atlantic-Gulf      ):  2,354,984 records
+[2026-04-04 16:19:50]   HUC 04 (Great Lakes              ):  4,033,944 records
+[2026-04-04 16:19:50]   HUC 05 (Ohio                     ):    678,219 records
+[2026-04-04 16:19:50]   HUC 06 (Tennessee                ):    233,179 records
+[2026-04-04 16:19:50]   HUC 07 (Upper Mississippi        ):  3,386,459 records
+[2026-04-04 16:19:50]   HUC 08 (Lower Mississippi        ):    204,826 records
+[2026-04-04 16:19:50]   HUC 09 (Souris-Red-Rainy         ):    297,347 records
+[2026-04-04 16:19:50]   HUC 10 (Missouri                 ):    511,529 records
+[2026-04-04 16:19:50]   HUC 11 (Arkansas-White-Red       ):    498,614 records
+[2026-04-04 16:19:50]   HUC 12 (Texas-Gulf               ):    314,084 records
+[2026-04-04 16:19:50]   HUC 13 (Rio Grande               ):     66,174 records
+[2026-04-04 16:19:50]   HUC 14 (Upper Colorado           ):    208,437 records
+[2026-04-04 16:19:50]   HUC 15 (Lower Colorado           ):     58,243 records
+[2026-04-04 16:19:50]   HUC 16 (Great Basin              ):    262,251 records
+[2026-04-04 16:19:50]   HUC 17 (Pacific Northwest        ):  3,084,744 records
+[2026-04-04 16:19:50]   HUC 18 (California               ):    288,975 records
+[2026-04-04 16:19:50]   TOTAL                             : 18,267,920 records
+[2026-04-04 16:19:50] 
+Data inspection:
+[2026-04-04 16:19:50]   Sample file: wqp_huc01.parquet
+[2026-04-04 16:19:50]   Columns: ['MonitoringLocationIdentifier', 'ActivityStartDate', 'ActivityStartTime/Time', 'CharacteristicName', 'ResultMeasureValue', 'ResultMeasure/MeasureUnitCode', 'ResultStatusIdentifier', 'ResultValueTypeName', 'ProviderName', 'OrganizationIdentifier', 'ActivityMediaName']
+[2026-04-04 16:19:50]   Parameters: {'Temperature, water': 96434, 'Specific conductance': 60824, 'Dissolved oxygen (DO)': 48501, 'pH': 47974, 'Turbidity': 33603, 'Phosphorus': 31307, 'Nitrate': 15291, 'Total dissolved solids': 11783, 'Chlorophyll a': 5356, 'Total suspended solids': 4125}
+[2026-04-04 16:19:50] DONE

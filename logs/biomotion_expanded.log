@@ -1,0 +1,97 @@
+Device: cuda
+  GPU: NVIDIA A100 80GB PCIe
+  Memory: 85.0 GB
+Found 5000 trajectory files
+  Normal: 2500, Anomalous: 2500
+  Train: 1750 normal + 1750 anomalous = 3500
+  Val:   375 normal + 375 anomalous = 750
+  Test:  375 normal + 375 anomalous = 750
+
+Encoder parameters: 2,976,016
+
+======================================================================
+PHASE 1: Diffusion Pretraining (normal trajectories only)
+======================================================================
+  Epoch   1/80 | train_loss=1.218391 | val_loss=1.032789 | lr=2.70e-05 | time=3.3s
+  Epoch   5/80 | train_loss=0.583380 | val_loss=0.663613 | lr=1.35e-04 | time=17.8s
+  Epoch  10/80 | train_loss=0.445912 | val_loss=0.505433 | lr=1.99e-04 | time=36.2s
+  Epoch  15/80 | train_loss=0.370986 | val_loss=0.460506 | lr=1.95e-04 | time=54.8s
+  Epoch  20/80 | train_loss=0.341996 | val_loss=0.427467 | lr=1.86e-04 | time=73.0s
+  Epoch  25/80 | train_loss=0.308306 | val_loss=0.408277 | lr=1.73e-04 | time=91.6s
+  Epoch  30/80 | train_loss=0.288707 | val_loss=0.383218 | lr=1.56e-04 | time=109.9s
+  Epoch  35/80 | train_loss=0.287725 | val_loss=0.381913 | lr=1.37e-04 | time=128.0s
+  Epoch  40/80 | train_loss=0.275727 | val_loss=0.359492 | lr=1.17e-04 | time=145.4s
+  Epoch  45/80 | train_loss=0.262553 | val_loss=0.358661 | lr=9.54e-05 | time=163.4s
+  Epoch  50/80 | train_loss=0.258117 | val_loss=0.353944 | lr=7.44e-05 | time=181.4s
+  Epoch  55/80 | train_loss=0.254927 | val_loss=0.351105 | lr=5.45e-05 | time=199.5s
+  Epoch  60/80 | train_loss=0.255847 | val_loss=0.355666 | lr=3.68e-05 | time=217.5s
+  Epoch  65/80 | train_loss=0.252416 | val_loss=0.348768 | lr=2.21e-05 | time=234.3s
+  Epoch  70/80 | train_loss=0.247394 | val_loss=0.337916 | lr=1.11e-05 | time=252.6s
+  Epoch  75/80 | train_loss=0.248041 | val_loss=0.336861 | lr=4.31e-06 | time=270.6s
+  Epoch  80/80 | train_loss=0.241279 | val_loss=0.336445 | lr=2.00e-06 | time=288.7s
+
+Phase 1 complete in 288.7s | best_val_loss=0.335823
+
+======================================================================
+PHASE 2: Anomaly Classification Fine-tuning
+======================================================================
+  Epoch   1/50 | train_loss=0.3809 | val_loss=0.0648 | val_acc=0.9893 | lr=2.70e-05 | time=6.6s
+  Epoch   5/50 | train_loss=0.0102 | val_loss=0.0017 | val_acc=0.9987 | lr=4.95e-05 | time=33.1s
+  Epoch  10/50 | train_loss=0.0056 | val_loss=0.0011 | val_acc=1.0000 | lr=4.66e-05 | time=64.4s
+  Epoch  15/50 | train_loss=0.0028 | val_loss=0.0049 | val_acc=0.9987 | lr=4.14e-05 | time=97.4s
+  Epoch  20/50 | train_loss=0.0013 | val_loss=0.0122 | val_acc=0.9973 | lr=3.46e-05 | time=130.4s
+  Epoch  25/50 | train_loss=0.0002 | val_loss=0.0053 | val_acc=0.9987 | lr=2.67e-05 | time=164.0s
+  Epoch  30/50 | train_loss=0.0001 | val_loss=0.0002 | val_acc=1.0000 | lr=1.87e-05 | time=197.5s
+  Epoch  35/50 | train_loss=0.0003 | val_loss=0.0013 | val_acc=0.9987 | lr=1.14e-05 | time=229.3s
+  Epoch  40/50 | train_loss=0.0001 | val_loss=0.0002 | val_acc=1.0000 | lr=5.58e-06 | time=262.2s
+  Epoch  45/50 | train_loss=0.0000 | val_loss=0.0003 | val_acc=1.0000 | lr=1.81e-06 | time=295.0s
+  Epoch  50/50 | train_loss=0.0000 | val_loss=0.0003 | val_acc=1.0000 | lr=5.00e-07 | time=327.6s
+
+Phase 2 complete in 327.6s | best_val_loss=0.0000 | best_val_acc=1.0000
+
+======================================================================
+TEST SET EVALUATION
+======================================================================
+
+  Test samples: 750
+  Normal:       375
+  Anomalous:    375
+
+  AUROC:     1.0000
+  F1:        1.0000
+  Precision: 1.0000
+  Recall:    1.0000
+  Accuracy:  1.0000
+
+  Classification Report:
+                precision    recall  f1-score   support
+  
+        normal       1.00      1.00      1.00       375
+     anomalous       1.00      1.00      1.00       375
+  
+      accuracy                           1.00       750
+     macro avg       1.00      1.00      1.00       750
+  weighted avg       1.00      1.00      1.00       750
+  
+
+  Diffusion-based anomaly scoring (unsupervised):
+  Diffusion AUROC: 0.3623
+
+----------------------------------------------------------------------
+Verifying BioMotionEncoder forward pass with Daphnia data...
+  embedding:            torch.Size([4, 256])
+  fusion_embedding:     torch.Size([4, 256])
+  anomaly_score:        torch.Size([4])
+  denoising_difficulty: torch.Size([4])
+  organism_embeddings[daphnia]: torch.Size([4, 256])
+  BioMotionEncoder forward pass: OK
+
+======================================================================
+Results saved to /home/bcheng/SENTINEL/checkpoints/biomotion/results.json
+======================================================================
+
+Final test metrics:
+  AUROC:           1.0000
+  F1:              1.0000
+  Accuracy:        1.0000
+  Diffusion AUROC: 0.3623

@@ -1,0 +1,35 @@
+2026-04-06 03:10:06,316 INFO === HydroLAKES / LakeATLAS Download ===
+2026-04-06 03:10:06,316 INFO Output: /home/bcheng/SENTINEL/data/raw/hydrolakes
+2026-04-06 03:10:06,316 INFO Zenodo record 6386212...
+2026-04-06 03:10:06,707 INFO   Title: NUMERICAL STUDY OF FORCED CONVECTION OF AIR IN A U-SHAPED CAVITY
+2026-04-06 03:10:06,708 INFO   File: 70.pdf (0.6 MB)
+2026-04-06 03:10:07,591 INFO   Saved: 70.pdf
+2026-04-06 03:10:07,595 INFO Zenodo record 6407091...
+2026-04-06 03:10:08,295 INFO   Title: oegedijk/explainerdashboard: v0.5.8: lightgbm treeviz, LinearSVC support, logodds fixes
+2026-04-06 03:10:08,295 INFO   File: oegedijk/explainerdashboard-v0.5.8.zip (62.4 MB)
+2026-04-06 03:10:09,825 WARNING   Failed: [Errno 2] No such file or directory: 'data/raw/hydrolakes/oegedijk/explainerdashboard-v0.5.8.zip'
+2026-04-06 03:10:09,827 INFO Zenodo record 6481897...
+2026-04-06 03:10:10,652 WARNING   Record not found: 404
+2026-04-06 03:10:10,653 INFO Trying HydroSHEDS direct URLs...
+2026-04-06 03:10:10,654 INFO   Trying: https://www.hydrosheds.org/images/inpages/HydroLAKES_polys_v10_csv.zip
+2026-04-06 03:10:10,851 WARNING   HTTP 404: https://www.hydrosheds.org/images/inpages/HydroLAKES_polys_v10_csv.zip
+2026-04-06 03:10:10,851 INFO   Trying: https://zenodo.org/record/6386212/files/LakeATLAS_v10_csv.zip
+2026-04-06 03:10:11,156 WARNING   HTTP 403: https://zenodo.org/record/6386212/files/LakeATLAS_v10_csv.zip
+2026-04-06 03:10:11,158 INFO Searching Zenodo for global lake data...
+2026-04-06 03:10:11,814 INFO   [18834668] Long-Term Landslide Inventory of the Xiluodu Reservoir, Downstream Jin (4169 MB)
+2026-04-06 03:10:11,814 INFO   [19433886] Dados de comparação das expressões barométricas e imagens dos ajustes  (0 MB)
+2026-04-06 03:10:11,814 INFO   [19433786] Topography-Derived Cold-Air Pooling Maps of the Colorado Rocky Mountai (6178 MB)
+2026-04-06 03:10:11,814 INFO   [19433239] Global past-to-future maps of ecoregion biodiversity indicators (1763 MB)
+2026-04-06 03:10:11,815 INFO   [19431611] Microclimate Observation Dataset — Goa, India (0 MB)
+2026-04-06 03:10:12,420 INFO   [18950636] GLCD250-MOD: Global Lakes Chlorophyll-a Daily 250 m based on MODIS (198471 MB)
+2026-04-06 03:10:12,420 INFO   [18474996] Lateral fluxes of DOC stimulate methane emissions from terrestrial and (1307 MB)
+2026-04-06 03:10:12,420 INFO   [18864681] A Multi-Year Dataset of Annual Inundation Dynamics in Nebraska (2017–2 (420 MB)
+2026-04-06 03:10:12,421 INFO   [18733431] Integrating reservoirs and Lakes in the CoSWAT model. (3473 MB)
+2026-04-06 03:10:12,421 INFO   [18454553] From seasonal fluctuations to long-term trends: global lake area dynam (222 MB)
+2026-04-06 03:10:13,369 INFO   [18834668] Long-Term Landslide Inventory of the Xiluodu Reservoir, Downstream Jin (4169 MB)
+2026-04-06 03:10:13,370 INFO   [19433886] Dados de comparação das expressões barométricas e imagens dos ajustes  (0 MB)
+2026-04-06 03:10:13,370 INFO   [19433239] Global past-to-future maps of ecoregion biodiversity indicators (1763 MB)
+2026-04-06 03:10:13,370 INFO   [19340491] Relativistic Dirac–Hartree–Fock X-ray scattering factors. III. Chemica (1 MB)
+2026-04-06 03:10:13,370 INFO   [19431493] THE ROLE OF BUSINESS ENVIRONMENT IN ATTRACTING FOREIGN INVESTMENT (0 MB)
+2026-04-06 03:10:13,372 INFO Total: 0.6 MB across 1 files
+2026-04-06 03:10:13,372 INFO Done.

@@ -120,7 +120,7 @@ def compute_auc(
 ) -> Tuple[float, float, float]:
     """Compute area under the ROC curve with bootstrap confidence interval.
 
-    Implements the trapezoidal rule over sorted thresholds.
+    Uses the vectorized Mann-Whitney U statistic formulation for speed.
 
     Args:
         y_true: Binary ground truth labels, shape ``(n,)``.
@@ -135,8 +135,8 @@ def compute_auc(
     rng = rng or np.random.default_rng(42)
 
     def _auc(yt: np.ndarray, ys: np.ndarray) -> float:
-        """Manual AUC computation via trapezoidal rule."""
-        n_pos = yt.sum()
+        """Vectorized AUC via Mann-Whitney U statistic."""
+        n_pos = int(yt.sum())
         n_neg = len(yt) - n_pos
         if n_pos == 0 or n_neg == 0:
             return 0.5
@@ -145,32 +145,44 @@ def compute_auc(
         order = np.argsort(-ys)
         yt_sorted = yt[order]
 
-        tpr_list = [0.0]
-        fpr_list = [0.0]
-        tp = 0
-        fp = 0
-        for label in yt_sorted:
-            if label == 1:
-                tp += 1
-            else:
-                fp += 1
-            tpr_list.append(tp / n_pos)
-            fpr_list.append(fp / n_neg)
+        # Cumulative sums for vectorized TPR/FPR
+        tp_cum = np.cumsum(yt_sorted)
+        fp_cum = np.cumsum(1 - yt_sorted)
 
-        # Trapezoidal integration
-        auc_val = 0.0
-        for i in range(1, len(fpr_list)):
-            auc_val += (fpr_list[i] - fpr_list[i - 1]) * (tpr_list[i] + tpr_list[i - 1]) / 2
+        # Prepend zeros for the origin point
+        tpr = np.concatenate([[0.0], tp_cum / n_pos])
+        fpr = np.concatenate([[0.0], fp_cum / n_neg])
+
+        # Trapezoidal integration (vectorized)
+        auc_val = float(np.trapz(tpr, fpr))
         return auc_val
 
     auc = _auc(y_true, y_score)
 
-    # Bootstrap confidence interval
-    aucs = np.empty(n_bootstrap)
+    # For large datasets, subsample for bootstrap to keep runtime manageable
+    max_bootstrap_n = 10000
     n = len(y_true)
+    if n > max_bootstrap_n:
+        # Stratified subsample: keep class ratio
+        pos_idx = np.where(y_true == 1)[0]
+        neg_idx = np.where(y_true == 0)[0]
+        n_pos_sample = min(len(pos_idx), max_bootstrap_n // 2)
+        n_neg_sample = min(len(neg_idx), max_bootstrap_n // 2)
+        sub_pos = rng.choice(pos_idx, size=n_pos_sample, replace=False)
+        sub_neg = rng.choice(neg_idx, size=n_neg_sample, replace=False)
+        sub_idx = np.concatenate([sub_pos, sub_neg])
+        y_true_bs = y_true[sub_idx]
+        y_score_bs = y_score[sub_idx]
+    else:
+        y_true_bs = y_true
+        y_score_bs = y_score
+
+    # Bootstrap confidence interval
+    n_bs = len(y_true_bs)
+    aucs = np.empty(n_bootstrap)
     for b in range(n_bootstrap):
-        idx = rng.choice(n, size=n, replace=True)
-        aucs[b] = _auc(y_true[idx], y_score[idx])
+        idx = rng.choice(n_bs, size=n_bs, replace=True)
+        aucs[b] = _auc(y_true_bs[idx], y_score_bs[idx])
 
     alpha = (1 - ci_level) / 2
     ci_lower = float(np.percentile(aucs, 100 * alpha))

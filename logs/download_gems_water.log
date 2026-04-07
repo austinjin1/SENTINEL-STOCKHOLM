@@ -1,0 +1,123 @@
+2026-04-06 03:10:01,762 INFO === GEMS/Water Download ===
+2026-04-06 03:10:01,762 INFO Output: /home/bcheng/SENTINEL/data/raw/gems_water
+2026-04-06 03:10:01,762 INFO Trying Zenodo record 7547235...
+2026-04-06 03:10:02,393 INFO Trying Zenodo record 7547234...
+2026-04-06 03:10:02,886 INFO   Title: TEKISLIKDA TO'G'RI BURCHAKLI KOORDINATALAR SISTEMASI
+2026-04-06 03:10:02,886 INFO   Skipping — not a water quality record
+2026-04-06 03:10:02,887 INFO Trying Zenodo record 5778959...
+2026-04-06 03:10:03,499 INFO   Title: Role of Super Immune Activation Secondary to Infection in the Context of Cancer
+2026-04-06 03:10:03,499 INFO   Skipping — not a water quality record
+2026-04-06 03:10:03,501 INFO Trying Zenodo record 6350573...
+2026-04-06 03:10:04,050 INFO   Title: Synchronous primary endometrial and ovarian cancers
+2026-04-06 03:10:04,050 INFO   Skipping — not a water quality record
+2026-04-06 03:10:04,051 INFO Searching Zenodo for GEMS Water...
+2026-04-06 03:10:05,206 INFO   Found: [18834668] Long-Term Landslide Inventory of the Xiluodu Reservoir, Downstream Jinsha River, China: Fusing C- and L-Band SAR Observations for Pre- and Post-Impoundment Monitoring in a High-Mountain Canyon Region
+2026-04-06 03:10:05,207 INFO   Found: [19433886] Dados de comparação das expressões barométricas e imagens dos ajustes polinomiais – RBEF– Modelagem atmosférica: desenvolvimento e validação de uma nova expressão barométrica com perfil térmico quadrático.
+2026-04-06 03:10:05,207 INFO   Found: [19433786] Topography-Derived Cold-Air Pooling Maps of the Colorado Rocky Mountains
+2026-04-06 03:10:05,207 INFO   Found: [19433239] Global past-to-future maps of ecoregion biodiversity indicators
+2026-04-06 03:10:05,207 INFO   Found: [19431611] Microclimate Observation Dataset — Goa, India
+2026-04-06 03:10:05,207 INFO   Found: [19431493] THE ROLE OF BUSINESS ENVIRONMENT IN ATTRACTING FOREIGN INVESTMENT
+2026-04-06 03:10:05,207 INFO   Found: [19431474] TRANSFORMATION AND FEATURES OF THEORIES OF WORLD ECONOMIC GLOBALIZATION AT THE BEGINNING OF THE 21st CENTURY
+2026-04-06 03:10:05,207 INFO   Found: [19431447] FREE ECONOMIC ZONES: A CONCEPTUAL ANALYSIS OF MULTI-LAYERED ECONOMIC MECHANISMS, INNOVATIVE INFRASTRUCTURE, AND INSTITUTIONAL COORDINATION
+2026-04-06 03:10:05,207 INFO   Found: [19431416] GLOBALIZATION AND THE DYNAMICS OF ECONOMIC CYCLES
+2026-04-06 03:10:05,207 INFO   Found: [19431398] SUPPLY CHAIN MANAGEMENT IN MODERN CONDITIONS
+2026-04-06 03:10:05,208 INFO Trying Zenodo record 18834668...
+2026-04-06 03:10:05,755 INFO   Title: Long-Term Landslide Inventory of the Xiluodu Reservoir, Downstream Jinsha River, China: Fusing C- and L-Band SAR Observations for Pre- and Post-Impoundment Monitoring in a High-Mountain Canyon Region
+2026-04-06 03:10:05,755 INFO   Skipping — not a water quality record
+2026-04-06 03:10:05,757 INFO Trying Zenodo record 19433886...
+2026-04-06 03:10:06,478 INFO   Title: Dados de comparação das expressões barométricas e imagens dos ajustes polinomiais – RBEF– Modelagem atmosférica: desenvolvimento e validação de uma nova expressão barométrica com perfil térmico quadrático.
+2026-04-06 03:10:06,478 INFO   Files: 25
+2026-04-06 03:10:06,478 INFO   File: tabela_ERA5_Nordeste_23_(1).csv (0.0 MB)
+2026-04-06 03:10:06,479 INFO   Downloading tabela_ERA5_Nordeste_23_(1).csv...
+2026-04-06 03:10:06,881 INFO   Saved tabela_ERA5_Nordeste_23_(1).csv
+2026-04-06 03:10:06,881 INFO   File: Ajuste_medio.pdf (0.0 MB)
+2026-04-06 03:10:06,881 INFO   Downloading Ajuste_medio.pdf...
+2026-04-06 03:10:07,366 INFO   Saved Ajuste_medio.pdf
+2026-04-06 03:10:07,367 INFO   File: ajuste_individual_Nordeste_ERA5_11h.pdf (0.0 MB)
+2026-04-06 03:10:07,367 INFO   Downloading ajuste_individual_Nordeste_ERA5_11h.pdf...
+2026-04-06 03:10:07,844 INFO   Saved ajuste_individual_Nordeste_ERA5_11h.pdf
+2026-04-06 03:10:07,844 INFO   File: tabela_MERRA2_Norte_22__30_min(1).csv (0.0 MB)
+2026-04-06 03:10:07,844 INFO   Downloading tabela_MERRA2_Norte_22__30_min(1).csv...
+2026-04-06 03:10:08,285 INFO   Saved tabela_MERRA2_Norte_22__30_min(1).csv
+2026-04-06 03:10:08,286 INFO   File: tabela_MERRA2_Norte_10__30_min(1).csv (0.0 MB)
+2026-04-06 03:10:08,286 INFO   Downloading tabela_MERRA2_Norte_10__30_min(1).csv...
+2026-04-06 03:10:08,673 INFO   Saved tabela_MERRA2_Norte_10__30_min(1).csv
+2026-04-06 03:10:08,673 INFO   File: ajuste_individual_Sul_MERRA-2_22h_30min.pdf (0.0 MB)
+2026-04-06 03:10:08,673 INFO   Downloading ajuste_individual_Sul_MERRA-2_22h_30min.pdf...
+2026-04-06 03:10:09,155 INFO   Saved ajuste_individual_Sul_MERRA-2_22h_30min.pdf
+2026-04-06 03:10:09,155 INFO   File: tabela_ERA5_Sul_23_(1).csv (0.0 MB)
+2026-04-06 03:10:09,155 INFO   Downloading tabela_ERA5_Sul_23_(1).csv...
+2026-04-06 03:10:09,548 INFO   Saved tabela_ERA5_Sul_23_(1).csv
+2026-04-06 03:10:09,548 INFO   File: tabela_ERA5_Norte_23_(1).csv (0.0 MB)
+2026-04-06 03:10:09,548 INFO   Downloading tabela_ERA5_Norte_23_(1).csv...
+2026-04-06 03:10:09,972 INFO   Saved tabela_ERA5_Norte_23_(1).csv
+2026-04-06 03:10:09,972 INFO   File: ajuste_individual_Norte_MERRA-2_22h_30min.pdf (0.0 MB)
+2026-04-06 03:10:09,972 INFO   Downloading ajuste_individual_Norte_MERRA-2_22h_30min.pdf...
+2026-04-06 03:10:10,457 INFO   Saved ajuste_individual_Norte_MERRA-2_22h_30min.pdf
+2026-04-06 03:10:10,458 INFO   File: tabela_MERRA2_Nordeste_22__30_min(1).csv (0.0 MB)
+2026-04-06 03:10:10,458 INFO   Downloading tabela_MERRA2_Nordeste_22__30_min(1).csv...
+2026-04-06 03:10:10,831 INFO   Saved tabela_MERRA2_Nordeste_22__30_min(1).csv
+2026-04-06 03:10:10,832 INFO   File: tabela_MERRA2_Sul_22__30_min(1).csv (0.0 MB)
+2026-04-06 03:10:10,832 INFO   Downloading tabela_MERRA2_Sul_22__30_min(1).csv...
+2026-04-06 03:10:11,255 INFO   Saved tabela_MERRA2_Sul_22__30_min(1).csv
+2026-04-06 03:10:11,255 INFO   File: tabela_MERRA2_Nordeste_10__30_min(1).csv (0.0 MB)
+2026-04-06 03:10:11,255 INFO   Downloading tabela_MERRA2_Nordeste_10__30_min(1).csv...
+2026-04-06 03:10:11,670 INFO   Saved tabela_MERRA2_Nordeste_10__30_min(1).csv
+2026-04-06 03:10:11,670 INFO   File: ajuste_individual_Sul_ERA5_23h.pdf (0.0 MB)
+2026-04-06 03:10:11,670 INFO   Downloading ajuste_individual_Sul_ERA5_23h.pdf...
+2026-04-06 03:10:12,158 INFO   Saved ajuste_individual_Sul_ERA5_23h.pdf
+2026-04-06 03:10:12,158 INFO   File: ajuste_individual_Sul_ERA5_11h.pdf (0.0 MB)
+2026-04-06 03:10:12,158 INFO   Downloading ajuste_individual_Sul_ERA5_11h.pdf...
+2026-04-06 03:10:12,644 INFO   Saved ajuste_individual_Sul_ERA5_11h.pdf
+2026-04-06 03:10:12,644 INFO   File: ajuste_individual_Norte_ERA5_23h.pdf (0.0 MB)
+2026-04-06 03:10:12,644 INFO   Downloading ajuste_individual_Norte_ERA5_23h.pdf...
+2026-04-06 03:10:13,133 INFO   Saved ajuste_individual_Norte_ERA5_23h.pdf
+2026-04-06 03:10:13,133 INFO   File: tabela_ERA5_Sul_11_(1).csv (0.0 MB)
+2026-04-06 03:10:13,133 INFO   Downloading tabela_ERA5_Sul_11_(1).csv...
+2026-04-06 03:10:13,499 INFO   Saved tabela_ERA5_Sul_11_(1).csv
+2026-04-06 03:10:13,499 INFO   File: tabela_ERA5_Norte_11_(1).csv (0.0 MB)
+2026-04-06 03:10:13,499 INFO   Downloading tabela_ERA5_Norte_11_(1).csv...
+2026-04-06 03:10:13,905 INFO   Saved tabela_ERA5_Norte_11_(1).csv
+2026-04-06 03:10:13,905 INFO   File: ajuste_individual_Nordeste_ERA5_23h.pdf (0.0 MB)
+2026-04-06 03:10:13,905 INFO   Downloading ajuste_individual_Nordeste_ERA5_23h.pdf...
+2026-04-06 03:10:14,369 INFO   Saved ajuste_individual_Nordeste_ERA5_23h.pdf
+2026-04-06 03:10:14,369 INFO   File: tabela_ERA5_Nordeste_11_(1).csv (0.0 MB)
+2026-04-06 03:10:14,369 INFO   Downloading tabela_ERA5_Nordeste_11_(1).csv...
+2026-04-06 03:10:14,804 INFO   Saved tabela_ERA5_Nordeste_11_(1).csv
+2026-04-06 03:10:14,804 INFO   File: ajuste_individual_Norte_ERA5_11h.pdf (0.0 MB)
+2026-04-06 03:10:14,804 INFO   Downloading ajuste_individual_Norte_ERA5_11h.pdf...
+2026-04-06 03:10:15,301 INFO   Saved ajuste_individual_Norte_ERA5_11h.pdf
+2026-04-06 03:10:15,301 INFO   File: tabela_MERRA2_Sul_10__30_min(1).csv (0.0 MB)
+2026-04-06 03:10:15,301 INFO   Downloading tabela_MERRA2_Sul_10__30_min(1).csv...
+2026-04-06 03:10:15,701 INFO   Saved tabela_MERRA2_Sul_10__30_min(1).csv
+2026-04-06 03:10:15,701 INFO   File: ajuste_individual_Nordeste_MERRA-2_10h_30min.pdf (0.0 MB)
+2026-04-06 03:10:15,702 INFO   Downloading ajuste_individual_Nordeste_MERRA-2_10h_30min.pdf...
+2026-04-06 03:10:16,185 INFO   Saved ajuste_individual_Nordeste_MERRA-2_10h_30min.pdf
+2026-04-06 03:10:16,185 INFO   File: ajuste_individual_Sul_MERRA-2_10h_30min.pdf (0.0 MB)
+2026-04-06 03:10:16,185 INFO   Downloading ajuste_individual_Sul_MERRA-2_10h_30min.pdf...
+2026-04-06 03:10:16,670 INFO   Saved ajuste_individual_Sul_MERRA-2_10h_30min.pdf
+2026-04-06 03:10:16,670 INFO   File: ajuste_individual_Nordeste_MERRA-2_22h_30min.pdf (0.0 MB)
+2026-04-06 03:10:16,671 INFO   Downloading ajuste_individual_Nordeste_MERRA-2_22h_30min.pdf...
+2026-04-06 03:10:17,159 INFO   Saved ajuste_individual_Nordeste_MERRA-2_22h_30min.pdf
+2026-04-06 03:10:17,159 INFO   File: ajuste_individual_Norte_MERRA-2_10h_30min.pdf (0.0 MB)
+2026-04-06 03:10:17,160 INFO   Downloading ajuste_individual_Norte_MERRA-2_10h_30min.pdf...
+2026-04-06 03:10:17,661 INFO   Saved ajuste_individual_Norte_MERRA-2_10h_30min.pdf
+2026-04-06 03:10:17,663 INFO Trying alternative global WQ sources on Zenodo...
+2026-04-06 03:10:18,476 INFO   [18834668] Long-Term Landslide Inventory of the Xiluodu Reservoir, Downstream Jinsha River, (6 files)
+2026-04-06 03:10:18,476 INFO   [19433886] Dados de comparação das expressões barométricas e imagens dos ajustes polinomiai (25 files)
+2026-04-06 03:10:18,476 INFO   [19433786] Topography-Derived Cold-Air Pooling Maps of the Colorado Rocky Mountains (2 files)
+2026-04-06 03:10:18,476 INFO   [19433239] Global past-to-future maps of ecoregion biodiversity indicators (2 files)
+2026-04-06 03:10:18,476 INFO   [19431764] Dissolved Si:N:P influence on algae and DOM: Raw data files associated with publ (5 files)
+2026-04-06 03:10:19,135 INFO   [18834668] Long-Term Landslide Inventory of the Xiluodu Reservoir, Downstream Jinsha River, (6 files)
+2026-04-06 03:10:19,135 INFO   [19433886] Dados de comparação das expressões barométricas e imagens dos ajustes polinomiai (25 files)
+2026-04-06 03:10:19,135 INFO   [19433786] Topography-Derived Cold-Air Pooling Maps of the Colorado Rocky Mountains (2 files)
+2026-04-06 03:10:19,135 INFO   [19433239] Global past-to-future maps of ecoregion biodiversity indicators (2 files)
+2026-04-06 03:10:19,135 INFO   [19340491] Relativistic Dirac–Hartree–Fock X-ray scattering factors. III. Chemically releva (1 files)
+2026-04-06 03:10:19,775 INFO   [18834668] Long-Term Landslide Inventory of the Xiluodu Reservoir, Downstream Jinsha River, (6 files)
+2026-04-06 03:10:19,776 INFO   [19433786] Topography-Derived Cold-Air Pooling Maps of the Colorado Rocky Mountains (2 files)
+2026-04-06 03:10:19,776 INFO   [19431611] Microclimate Observation Dataset — Goa, India (1 files)
+2026-04-06 03:10:19,776 INFO   [19431398] SUPPLY CHAIN MANAGEMENT IN MODERN CONDITIONS (1 files)
+2026-04-06 03:10:19,776 INFO   [19431027] WAYS TO DEVELOP PILGRIMAGE TOURISM IN UZBEKISTAN BASED ON FOREIGN EXPERIENCE (1 files)
+2026-04-06 03:10:19,779 INFO Processing 12 CSVs, 0 ZIPs...
+2026-04-06 03:10:19,780 INFO Status: {'success': True, 'files': ['tabela_ERA5_Nordeste_23_(1).csv', 'Ajuste_medio.pdf', 'ajuste_individual_Nordeste_ERA5_11h.pdf', 'tabela_MERRA2_Norte_22__30_min(1).csv', 'tabela_MERRA2_Norte_10__30_min(1).csv', 'ajuste_individual_Sul_MERRA-2_22h_30min.pdf', 'tabela_ERA5_Sul_23_(1).csv', 'tabela_ERA5_Norte_23_(1).csv', 'ajuste_individual_Norte_MERRA-2_22h_30min.pdf', 'tabela_MERRA2_Nordeste_22__30_min(1).csv', 'tabela_MERRA2_Sul_22__30_min(1).csv', 'tabela_MERRA2_Nordeste_10__30_min(1).csv', 'ajuste_individual_Sul_ERA5_23h.pdf', 'ajuste_individual_Sul_ERA5_11h.pdf', 'ajuste_individual_Norte_ERA5_23h.pdf', 'tabela_ERA5_Sul_11_(1).csv', 'tabela_ERA5_Norte_11_(1).csv', 'ajuste_individual_Nordeste_ERA5_23h.pdf', 'tabela_ERA5_Nordeste_11_(1).csv', 'ajuste_individual_Norte_ERA5_11h.pdf', 'tabela_MERRA2_Sul_10__30_min(1).csv', 'ajuste_individual_Nordeste_MERRA-2_10h_30min.pdf', 'ajuste_individual_Sul_MERRA-2_10h_30min.pdf', 'ajuste_individual_Nordeste_MERRA-2_22h_30min.pdf', 'ajuste_individual_Norte_MERRA-2_10h_30min.pdf'], 'total_mb': 0.307604}
+2026-04-06 03:10:19,780 INFO Done.

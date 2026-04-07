@@ -1,0 +1,9 @@
+Loading data...
+Data on GPU: torch.Size([20000, 512, 6]), pos=3353/20000
+Truncated to T=128: torch.Size([20000, 128, 6])
+Model: 4,600,895 params
+Testing single batch...
+  Forward: 1.11s, loss=0.3440
+  Backward: 2.70s
+
+Phase 1: MPP Pretrain (N=14000, BS=16, T=128)

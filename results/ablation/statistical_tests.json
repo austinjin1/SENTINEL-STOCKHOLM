@@ -1,0 +1,21 @@
+{
+  "full_vs_best_single": {
+    "full_auc": 0.9919417876481392,
+    "best_single_name": "sensor",
+    "best_single_auc": 0.9428809120814323,
+    "observed_diff": -0.011236842751609976,
+    "p_value": 0.0015998400159984002,
+    "significant_at_0.05": true
+  },
+  "full_vs_synchronized_only": {
+    "full_auc": 0.9919417876481392,
+    "sync_auc": 0.9430611670430253,
+    "observed_diff": -0.011236842751609976,
+    "p_value": 0.0015998400159984002,
+    "significant_at_0.05": true
+  },
+  "cost_efficiency_comparison": {
+    "full_cost_efficiency": 0.0,
+    "note": "Lower cost_efficiency ratio indicates better resource usage during events"
+  }
+}
