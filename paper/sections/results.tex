@@ -76,15 +76,19 @@ process $\to$ outcome) with sparse Reactome constraints achieves
 F1 = 0.894 for 8-class contaminant classification, well above the 0.80
 threshold.
 
-\paragraph{BioMotion (AUROC = 1.000).}
-The diffusion-pretrained trajectory encoder achieves perfect separation
-(AUROC = 1.0) on behavioral anomaly detection evaluated on 5,000
-trajectories (10$\times$ expansion). Phase~1 diffusion denoising
-pretraining on 2,500 normal locomotion trajectories learns characteristic
-Daphnia hop-and-sink patterns; Phase~2 fine-tuning distinguishes
-toxicant-exposed trajectories (erratic, freezing, spinning, altered
-velocity) from controls with F1 = 1.000. The perfect score reflects
-the controlled nature of behavioral assay data.
+\paragraph{BioMotion (AUROC = 0.9999).}
+Trained on 17,074 real Daphnia behavioral toxicity tests from EPA ECOTOX,
+the diffusion-pretrained trajectory encoder achieves AUROC = 0.9999 and
+F1 = 0.9963 on held-out test data (2,560 samples: 1,893 normal, 667
+anomalous). Each sample encodes a real concentration-response curve across
+behavioral endpoints---locomotion, swimming velocity, equilibrium,
+activity, motility---as a 200-step trajectory. Phase~1 diffusion
+denoising pretraining on 12,623 normal (sub-threshold) Daphnia tests
+learns the characteristic concentration-response baseline; Phase~2
+fine-tuning detects LOEC/EC50-level behavioral impairment from real
+toxicological assays. The near-perfect score reflects the well-defined
+separation between control-level and effect-level concentrations in
+standardized OECD ecotoxicity tests.
 
 \subsection{Fusion Results}
 

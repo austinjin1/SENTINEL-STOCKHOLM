@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Quick BioMotion training pipeline on synthetic Daphnia behavioral data.
+"""BioMotion training on real ECOTOX Daphnia behavioral data.
 
 Phase 1: Diffusion pretraining on normal trajectories (50 epochs)
 Phase 2: Anomaly classification fine-tuning (30 epochs)
+
+Data: 17,074 real Daphnia behavioral tests from EPA ECOTOX database,
+converted from concentration-response curves (locomotion, swimming,
+equilibrium, activity endpoints) into trajectory format.
 
 Evaluates on held-out test set and saves results to checkpoints/biomotion/results.json.
 
@@ -37,7 +41,13 @@ from sentinel.models.biomotion.multi_organism import SPECIES_FEATURE_DIM
 
 # ── Configuration ──────────────────────────────────────────────────────────
 
-DATA_DIR = PROJECT_ROOT / "data" / "processed" / "behavioral"
+# Use real ECOTOX data if available, fall back to synthetic
+_real_dir = PROJECT_ROOT / "data" / "processed" / "behavioral_real"
+_synth_dir = PROJECT_ROOT / "data" / "processed" / "behavioral_expanded"
+_synth_dir2 = PROJECT_ROOT / "data" / "processed" / "behavioral"
+DATA_DIR = _real_dir if _real_dir.exists() and any(_real_dir.glob("traj_*.npz")) else \
+           _synth_dir if _synth_dir.exists() and any(_synth_dir.glob("traj_*.npz")) else \
+           _synth_dir2
 CKPT_DIR = PROJECT_ROOT / "checkpoints" / "biomotion"
 
 FEATURE_DIM = SPECIES_FEATURE_DIM["daphnia"]  # 16

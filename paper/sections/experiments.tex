@@ -55,11 +55,15 @@ nutrients). P-NET biological hierarchy with sparse Reactome adjacency
 matrices. 80 epochs with cosine learning rate schedule.
 
 \paragraph{BioMotion.}
-Phase 1: diffusion denoising pretraining on 5,000 Daphnia locomotion
-trajectories (1000 timesteps, noise schedule $\beta \in [10^{-4},
-0.02]$). Phase 2: anomaly classification fine-tuning using
-diffusion-derived trajectory features. Trajectories span 4 anomaly types:
-erratic movement, freezing, spinning, and altered velocity.
+Phase 1: diffusion denoising pretraining on 17,074 real Daphnia behavioral
+toxicity tests from EPA ECOTOX (noise schedule $\beta \in [10^{-4},
+0.02]$). Each test encodes a concentration-response curve across behavioral
+endpoints (locomotion, swimming velocity, equilibrium, activity, motility)
+as a 200-timestep trajectory. Phase 2: anomaly classification fine-tuning
+distinguishing toxicant-exposed responses (LOEC/EC50-level effects:
+locomotion impairment, loss of equilibrium, reduced swimming velocity) from
+sub-threshold controls. Normal/anomaly labels derived from ECOTOX endpoint
+codes (NOEC/EC0 $\rightarrow$ normal; LOEC/EC50/EC100 $\rightarrow$ anomaly).
 
 \subsection{Fusion Evaluation}
 

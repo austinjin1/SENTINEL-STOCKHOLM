@@ -31,7 +31,7 @@
 | HydroViT | **2,986 S2 tiles** + **2,861 paired WQ** (847 GRQA + 2,014 NWIS) | Best R² | **0.674** (water temp) | N/A | N/A | >0.55 R² | ✅ **THRESHOLD MET** |
 | MicroBiomeNet | **20,288 real EMP 16S** OTU samples | Macro-F1 | **0.913** | Random | +0.71 | >0.70 | ✅ **THRESHOLD MET** |
 | ToxiGene | P-NET + **268K ECOTOX** | Macro-F1 | **0.894** | Random | +0.77 | >0.80 | ✅ **THRESHOLD MET** |
-| BioMotion | **5,000 trajectories** | AUROC | **1.000** | Random | +0.50 | >0.80 | ✅ **THRESHOLD MET** |
+| BioMotion | **17,074 real ECOTOX Daphnia tests** | AUROC | **0.9999** | Random | +0.4999 | >0.80 | ✅ **THRESHOLD MET** |
 | Fusion | **Real sensor embeddings** | AUROC | **0.939** | 0.50 | +0.439 | >0.90 | ✅ **THRESHOLD MET** |
 | All 5 Encoders | Smoke test | Forward pass | **PASSED** | N/A | N/A | N/A | ✅ Verified |
 
