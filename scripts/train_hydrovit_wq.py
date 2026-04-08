@@ -40,25 +40,29 @@ logger = get_logger(__name__)
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 CKPT_DIR = Path("checkpoints/satellite")
 CKPT_DIR.mkdir(parents=True, exist_ok=True)
-# Priority: v3 (NWIS+GRQA) > expanded (GRQA+WQP) > original
+# Priority: v4 > v3 (NWIS+GRQA) > expanded (GRQA+WQP) > original
+PAIRED_DATA_V4 = Path("data/processed/satellite/paired_wq_v4.npz")
 PAIRED_DATA_V3 = Path("data/processed/satellite/paired_wq_v3.npz")
 PAIRED_DATA_EXPANDED = Path("data/processed/satellite/paired_wq_expanded.npz")
 PAIRED_DATA_ORIG = Path("data/processed/satellite/paired_wq.npz")
-if PAIRED_DATA_V3.exists():
+if PAIRED_DATA_V4.exists():
+    PAIRED_DATA = PAIRED_DATA_V4
+elif PAIRED_DATA_V3.exists():
     PAIRED_DATA = PAIRED_DATA_V3
 elif PAIRED_DATA_EXPANDED.exists():
     PAIRED_DATA = PAIRED_DATA_EXPANDED
 else:
     PAIRED_DATA = PAIRED_DATA_ORIG
 PRETRAINED_CKPT = CKPT_DIR / "hydrovit_real_mae.pt"
-OUTPUT_CKPT = CKPT_DIR / "hydrovit_wq_v3.pt"
+OUTPUT_CKPT = CKPT_DIR / "hydrovit_wq_v4.pt"
 
-# Training hyperparams
-BATCH_SIZE = 8
+# Training hyperparams — tuned for RTX 4060 8GB
+BATCH_SIZE = 4
 HEAD_LR = 3e-4
 BACKBONE_LR = 5e-5
-HEAD_EPOCHS = 100
-FINETUNE_EPOCHS = 100
+HEAD_EPOCHS = 200
+FINETUNE_EPOCHS = 200
+USE_AMP = True  # mixed precision for VRAM savings
 WEIGHT_DECAY = 0.01
 GRAD_CLIP = 1.0
 
@@ -69,7 +73,8 @@ OPTICAL_PARAMS = {0, 1, 2, 3, 4}  # chl_a, turbidity, secchi, cdom, tss
 class PairedWQDataset(Dataset):
     """Dataset of satellite images paired with water quality ground truth."""
 
-    def __init__(self, data_path: str):
+    def __init__(self, data_path: str, augment: bool = False):
+        self.augment = augment
         data = np.load(data_path, allow_pickle=True)
         self.images = data["images"].astype(np.float32)   # (N, 10, 224, 224)
         self.targets = data["targets"].astype(np.float32)  # (N, 16)
@@ -118,6 +123,18 @@ class PairedWQDataset(Dataset):
 
     def __getitem__(self, idx):
         image = torch.tensor(self.images[idx])  # (10, 224, 224)
+
+        if self.augment:
+            # Random horizontal flip
+            if torch.rand(1).item() > 0.5:
+                image = image.flip(-1)
+            # Random vertical flip
+            if torch.rand(1).item() > 0.5:
+                image = image.flip(-2)
+            # Spectral noise: ±5% per band
+            noise = 1.0 + 0.05 * (2 * torch.rand(10, 1, 1) - 1)
+            image = image * noise
+
         # Pad from 10 bands to 13 bands (add 3 zero channels for S3 OLCI)
         padding = torch.zeros(3, image.shape[1], image.shape[2])
         image13 = torch.cat([image, padding], dim=0)  # (13, 224, 224)
@@ -192,6 +209,7 @@ def train_phase(model, train_dl, val_dl, optimizer, scheduler, epochs, phase_nam
     """Train loop for one phase. Returns best val R^2."""
     best_val_r2 = -float("inf")
     best_state = None
+    scaler = torch.amp.GradScaler("cuda", enabled=USE_AMP and device.type == "cuda")
 
     for epoch in range(epochs):
         model.train()
@@ -202,23 +220,26 @@ def train_phase(model, train_dl, val_dl, optimizer, scheduler, epochs, phase_nam
             image = batch["image"].to(device)
             targets = batch["targets"].to(device)
 
-            out = model(image)
-            wq = out["water_quality_params"]
-            unc = out["param_uncertainty"]
+            with torch.amp.autocast("cuda", enabled=USE_AMP and device.type == "cuda"):
+                out = model(image)
+                wq = out["water_quality_params"]
+                unc = out["param_uncertainty"]
 
-            valid = ~torch.isnan(targets)
-            if valid.sum() == 0:
-                continue
+                valid = ~torch.isnan(targets)
+                if valid.sum() == 0:
+                    continue
 
-            loss = WaterQualityHead.gaussian_nll_loss(wq, unc, targets)
-            if torch.isnan(loss):
-                optimizer.zero_grad()
-                continue
+                loss = WaterQualityHead.gaussian_nll_loss(wq, unc, targets)
+                if torch.isnan(loss):
+                    optimizer.zero_grad()
+                    continue
 
             optimizer.zero_grad()
-            loss.backward()
+            scaler.scale(loss).backward()
+            scaler.unscale_(optimizer)
             nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
-            optimizer.step()
+            scaler.step(optimizer)
+            scaler.update()
 
             total_loss += loss.item()
             n_batches += 1
@@ -269,7 +290,9 @@ def main():
     # ---------------------------------------------------------------
     # 1. Load data
     # ---------------------------------------------------------------
-    dataset = PairedWQDataset(str(PAIRED_DATA))
+    # Load with augmentation for training split
+    dataset = PairedWQDataset(str(PAIRED_DATA), augment=True)
+    dataset_eval = PairedWQDataset(str(PAIRED_DATA), augment=False)
     n = len(dataset)
     n_train = max(1, int(0.7 * n))
     n_val = max(1, int(0.15 * n))
@@ -278,11 +301,12 @@ def main():
         n_test = 1
         n_train = n - n_val - n_test
 
-    train_ds, val_ds, test_ds = random_split(
-        dataset, [n_train, n_val, n_test],
-        generator=torch.Generator().manual_seed(42),
-    )
+    gen = torch.Generator().manual_seed(42)
+    train_ds, _, _ = random_split(dataset, [n_train, n_val, n_test], generator=gen)
+    gen2 = torch.Generator().manual_seed(42)
+    _, val_ds, test_ds = random_split(dataset_eval, [n_train, n_val, n_test], generator=gen2)
     logger.info(f"Split: {n_train} train / {n_val} val / {n_test} test")
+    logger.info(f"Using: batch_size={BATCH_SIZE}, AMP={USE_AMP}, augmentation=True")
 
     train_dl = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0, drop_last=False)
     val_dl = DataLoader(val_ds, batch_size=BATCH_SIZE, num_workers=0)
