@@ -252,7 +252,8 @@ def compute_graceful_degradation_score(
     x_norm = (x - x.min()) / max(x.max() - x.min(), 1e-8)
 
     # Actual area (trapezoidal)
-    actual_area = float(np.trapz(y, x_norm))
+    _trapz = getattr(np, "trapezoid", getattr(np, "trapz", None))
+    actual_area = float(_trapz(y, x_norm))
 
     # Perfect area (no degradation) = 1.0
     perfect_area = 1.0

@@ -1,0 +1,108 @@
+{
+  "num_events": 10,
+  "events_detected": 10,
+  "mean_lead_time_vs_detection_hours": 1413.5793081552652,
+  "median_lead_time_vs_detection_hours": 32.57167644196086,
+  "per_event": [
+    {
+      "event_id": "gold_king_mine",
+      "event_name": "Gold King Mine Spill",
+      "detected": true,
+      "lead_time_hours": -20.19867552816868,
+      "source_pred": "heavy_metal",
+      "source_conf": 0.61795520556577,
+      "mean_tier_pre": 0.984777193468032,
+      "mean_tier_during": 2.991258498681837
+    },
+    {
+      "event_id": "lake_erie_hab",
+      "event_name": "Lake Erie Harmful Algal Bloom",
+      "detected": true,
+      "lead_time_hours": 324.16944816145633,
+      "source_pred": "pharmaceutical",
+      "source_conf": 0.5598682556316855,
+      "mean_tier_pre": 0.47257617728531853,
+      "mean_tier_during": 2.9918237250554323
+    },
+    {
+      "event_id": "toledo_water_crisis",
+      "event_name": "Toledo Water Crisis",
+      "detected": true,
+      "lead_time_hours": 78.9959000896083,
+      "source_pred": "heavy_metal",
+      "source_conf": 0.36043013480512465,
+      "mean_tier_pre": 0.9607300884955752,
+      "mean_tier_during": 2.9897563676633445
+    },
+    {
+      "event_id": "dan_river_coal_ash",
+      "event_name": "Dan River Coal Ash Spill",
+      "detected": true,
+      "lead_time_hours": -22.08281513147884,
+      "source_pred": "other",
+      "source_conf": 0.4487047342392648,
+      "mean_tier_pre": 0.9500138850319356,
+      "mean_tier_during": 2.998201189982012
+    },
+    {
+      "event_id": "elk_river_mchm",
+      "event_name": "Elk River MCHM Spill",
+      "detected": true,
+      "lead_time_hours": -16.03367234620783,
+      "source_pred": "nutrient",
+      "source_conf": 0.545545692112336,
+      "mean_tier_pre": 0.0,
+      "mean_tier_during": 2.98442280945758
+    },
+    {
+      "event_id": "houston_ship_channel",
+      "event_name": "Houston Ship Channel Contamination",
+      "detected": true,
+      "lead_time_hours": -23.1604106474585,
+      "source_pred": "other",
+      "source_conf": 0.5401390682020489,
+      "mean_tier_pre": 1.2101026922009437,
+      "mean_tier_during": 2.9943118756936737
+    },
+    {
+      "event_id": "flint_mi",
+      "event_name": "Flint Water Crisis",
+      "detected": true,
+      "lead_time_hours": 12177.71465095573,
+      "source_pred": "nutrient",
+      "source_conf": 0.3741469753097737,
+      "mean_tier_pre": 0.4952751528627015,
+      "mean_tier_during": 2.9916701374427324
+    },
+    {
+      "event_id": "gulf_dead_zone",
+      "event_name": "Gulf of Mexico Dead Zone",
+      "detected": true,
+      "lead_time_hours": 1257.5484882701767,
+      "source_pred": "industrial_chemical",
+      "source_conf": 0.27100461211270027,
+      "mean_tier_pre": 0.4366860626212247,
+      "mean_tier_during": 2.9922405431619787
+    },
+    {
+      "event_id": "chesapeake_bay_blooms",
+      "event_name": "Chesapeake Bay Algal Blooms",
+      "detected": true,
+      "lead_time_hours": 392.6927149346802,
+      "source_pred": "petroleum_hydrocarbon",
+      "source_conf": 0.3309115467408769,
+      "mean_tier_pre": 1.640841173215274,
+      "mean_tier_during": 3.0
+    },
+    {
+      "event_id": "east_palestine",
+      "event_name": "East Palestine Train Derailment",
+      "detected": true,
+      "lead_time_hours": -13.85254720568657,
+      "source_pred": "pharmaceutical",
+      "source_conf": 0.3756208982392029,
+      "mean_tier_pre": 0.4407675194660734,
+      "mean_tier_during": 2.9918066935147896
+    }
+  ]
+}

@@ -1,0 +1,1762 @@
+{
+  "n_candidates": 150,
+  "n_stations": 30,
+  "n_modalities": 5,
+  "modality_costs": {
+    "sensor": 5.0,
+    "satellite": 0.5,
+    "microbial": 15.0,
+    "molecular": 25.0,
+    "behavioral": 10.0
+  },
+  "budget_levels": {
+    "50": {
+      "n_sensors": 37,
+      "total_gain": 16.678876876831055,
+      "total_cost": 50.0,
+      "cost_efficiency": 0.3335775375366211,
+      "modality_counts": {
+        "satellite": 30,
+        "sensor": 7
+      },
+      "modality_spend": {
+        "satellite": 15.0,
+        "sensor": 35.0
+      },
+      "placements": [
+        {
+          "location_id": 101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1989476680755615,
+          "cumulative_gain": 1.1989476680755615
+        },
+        {
+          "location_id": 3001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.198305368423462,
+          "cumulative_gain": 2.3972530364990234
+        },
+        {
+          "location_id": 1901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1740503311157227,
+          "cumulative_gain": 3.571303367614746
+        },
+        {
+          "location_id": 2401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.0112285614013672,
+          "cumulative_gain": 4.582531929016113
+        },
+        {
+          "location_id": 2701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7743282318115234,
+          "cumulative_gain": 5.356860160827637
+        },
+        {
+          "location_id": 901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7549324035644531,
+          "cumulative_gain": 6.11179256439209
+        },
+        {
+          "location_id": 1501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.5536079406738281,
+          "cumulative_gain": 6.665400505065918
+        },
+        {
+          "location_id": 701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3424663543701172,
+          "cumulative_gain": 7.007866859436035
+        },
+        {
+          "location_id": 2901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3147554397583008,
+          "cumulative_gain": 7.322622299194336
+        },
+        {
+          "location_id": 2001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2927398681640625,
+          "cumulative_gain": 7.615362167358398
+        },
+        {
+          "location_id": 1301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2740316390991211,
+          "cumulative_gain": 7.8893938064575195
+        },
+        {
+          "location_id": 201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.24754047393798828,
+          "cumulative_gain": 8.136934280395508
+        },
+        {
+          "location_id": 2601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.22796249389648438,
+          "cumulative_gain": 8.364896774291992
+        },
+        {
+          "location_id": 1601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.20984458923339844,
+          "cumulative_gain": 8.57474136352539
+        },
+        {
+          "location_id": 2301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.19105052947998047,
+          "cumulative_gain": 8.765791893005371
+        },
+        {
+          "location_id": 2801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.18298721313476562,
+          "cumulative_gain": 8.948779106140137
+        },
+        {
+          "location_id": 601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.16978931427001953,
+          "cumulative_gain": 9.118568420410156
+        },
+        {
+          "location_id": 2101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1381826400756836,
+          "cumulative_gain": 9.25675106048584
+        },
+        {
+          "location_id": 1801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1339282989501953,
+          "cumulative_gain": 9.390679359436035
+        },
+        {
+          "location_id": 301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.131927490234375,
+          "cumulative_gain": 9.52260684967041
+        },
+        {
+          "location_id": 1201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.12192535400390625,
+          "cumulative_gain": 9.644532203674316
+        },
+        {
+          "location_id": 801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.11698722839355469,
+          "cumulative_gain": 9.761519432067871
+        },
+        {
+          "location_id": 3000,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1369514465332031,
+          "cumulative_gain": 10.898470878601074
+        },
+        {
+          "location_id": 900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1358890533447266,
+          "cumulative_gain": 12.0343599319458
+        },
+        {
+          "location_id": 2501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1078348159790039,
+          "cumulative_gain": 12.142194747924805
+        },
+        {
+          "location_id": 100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.0563926696777344,
+          "cumulative_gain": 13.198587417602539
+        },
+        {
+          "location_id": 2600,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.9656734466552734,
+          "cumulative_gain": 14.164260864257812
+        },
+        {
+          "location_id": 1401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09521293640136719,
+          "cumulative_gain": 14.25947380065918
+        },
+        {
+          "location_id": 1001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09173393249511719,
+          "cumulative_gain": 14.351207733154297
+        },
+        {
+          "location_id": 401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08747291564941406,
+          "cumulative_gain": 14.438680648803711
+        },
+        {
+          "location_id": 1701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08368492126464844,
+          "cumulative_gain": 14.52236557006836
+        },
+        {
+          "location_id": 2201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.0820150375366211,
+          "cumulative_gain": 14.60438060760498
+        },
+        {
+          "location_id": 2400,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.7997236251831055,
+          "cumulative_gain": 15.404104232788086
+        },
+        {
+          "location_id": 1101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.07194328308105469,
+          "cumulative_gain": 15.47604751586914
+        },
+        {
+          "location_id": 501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.06802940368652344,
+          "cumulative_gain": 15.544076919555664
+        },
+        {
+          "location_id": 1900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.6722450256347656,
+          "cumulative_gain": 16.21632194519043
+        },
+        {
+          "location_id": 1100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.462554931640625,
+          "cumulative_gain": 16.678876876831055
+        }
+      ],
+      "marginal_gain_curve": [
+        1.1989476680755615,
+        1.198305368423462,
+        1.1740503311157227,
+        1.0112285614013672,
+        0.7743282318115234,
+        0.7549324035644531,
+        0.5536079406738281,
+        0.3424663543701172,
+        0.3147554397583008,
+        0.2927398681640625,
+        0.2740316390991211,
+        0.24754047393798828,
+        0.22796249389648438,
+        0.20984458923339844,
+        0.19105052947998047,
+        0.18298721313476562,
+        0.16978931427001953,
+        0.1381826400756836,
+        0.1339282989501953,
+        0.131927490234375,
+        0.12192535400390625,
+        0.11698722839355469,
+        1.1369514465332031,
+        1.1358890533447266,
+        0.1078348159790039,
+        1.0563926696777344,
+        0.9656734466552734,
+        0.09521293640136719,
+        0.09173393249511719,
+        0.08747291564941406,
+        0.08368492126464844,
+        0.0820150375366211,
+        0.7997236251831055,
+        0.07194328308105469,
+        0.06802940368652344,
+        0.6722450256347656,
+        0.462554931640625
+      ]
+    },
+    "100": {
+      "n_sensors": 42,
+      "total_gain": 21.464479446411133,
+      "total_cost": 100.0,
+      "cost_efficiency": 0.21464479446411133,
+      "modality_counts": {
+        "satellite": 30,
+        "sensor": 7,
+        "behavioral": 5
+      },
+      "modality_spend": {
+        "satellite": 15.0,
+        "sensor": 35.0,
+        "behavioral": 50.0
+      },
+      "placements": [
+        {
+          "location_id": 101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1989476680755615,
+          "cumulative_gain": 1.1989476680755615
+        },
+        {
+          "location_id": 3001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.198305368423462,
+          "cumulative_gain": 2.3972530364990234
+        },
+        {
+          "location_id": 1901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1740503311157227,
+          "cumulative_gain": 3.571303367614746
+        },
+        {
+          "location_id": 2401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.0112285614013672,
+          "cumulative_gain": 4.582531929016113
+        },
+        {
+          "location_id": 2701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7743282318115234,
+          "cumulative_gain": 5.356860160827637
+        },
+        {
+          "location_id": 901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7549324035644531,
+          "cumulative_gain": 6.11179256439209
+        },
+        {
+          "location_id": 1501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.5536079406738281,
+          "cumulative_gain": 6.665400505065918
+        },
+        {
+          "location_id": 701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3424663543701172,
+          "cumulative_gain": 7.007866859436035
+        },
+        {
+          "location_id": 2901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3147554397583008,
+          "cumulative_gain": 7.322622299194336
+        },
+        {
+          "location_id": 2001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2927398681640625,
+          "cumulative_gain": 7.615362167358398
+        },
+        {
+          "location_id": 1301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2740316390991211,
+          "cumulative_gain": 7.8893938064575195
+        },
+        {
+          "location_id": 201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.24754047393798828,
+          "cumulative_gain": 8.136934280395508
+        },
+        {
+          "location_id": 2601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.22796249389648438,
+          "cumulative_gain": 8.364896774291992
+        },
+        {
+          "location_id": 1601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.20984458923339844,
+          "cumulative_gain": 8.57474136352539
+        },
+        {
+          "location_id": 2301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.19105052947998047,
+          "cumulative_gain": 8.765791893005371
+        },
+        {
+          "location_id": 2801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.18298721313476562,
+          "cumulative_gain": 8.948779106140137
+        },
+        {
+          "location_id": 601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.16978931427001953,
+          "cumulative_gain": 9.118568420410156
+        },
+        {
+          "location_id": 2101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1381826400756836,
+          "cumulative_gain": 9.25675106048584
+        },
+        {
+          "location_id": 1801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1339282989501953,
+          "cumulative_gain": 9.390679359436035
+        },
+        {
+          "location_id": 301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.131927490234375,
+          "cumulative_gain": 9.52260684967041
+        },
+        {
+          "location_id": 1201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.12192535400390625,
+          "cumulative_gain": 9.644532203674316
+        },
+        {
+          "location_id": 801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.11698722839355469,
+          "cumulative_gain": 9.761519432067871
+        },
+        {
+          "location_id": 3000,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1369514465332031,
+          "cumulative_gain": 10.898470878601074
+        },
+        {
+          "location_id": 900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1358890533447266,
+          "cumulative_gain": 12.0343599319458
+        },
+        {
+          "location_id": 2501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1078348159790039,
+          "cumulative_gain": 12.142194747924805
+        },
+        {
+          "location_id": 100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.0563926696777344,
+          "cumulative_gain": 13.198587417602539
+        },
+        {
+          "location_id": 2600,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.9656734466552734,
+          "cumulative_gain": 14.164260864257812
+        },
+        {
+          "location_id": 1401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09521293640136719,
+          "cumulative_gain": 14.25947380065918
+        },
+        {
+          "location_id": 1001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09173393249511719,
+          "cumulative_gain": 14.351207733154297
+        },
+        {
+          "location_id": 401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08747291564941406,
+          "cumulative_gain": 14.438680648803711
+        },
+        {
+          "location_id": 1701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08368492126464844,
+          "cumulative_gain": 14.52236557006836
+        },
+        {
+          "location_id": 2201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.0820150375366211,
+          "cumulative_gain": 14.60438060760498
+        },
+        {
+          "location_id": 2400,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.7997236251831055,
+          "cumulative_gain": 15.404104232788086
+        },
+        {
+          "location_id": 1101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.07194328308105469,
+          "cumulative_gain": 15.47604751586914
+        },
+        {
+          "location_id": 501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.06802940368652344,
+          "cumulative_gain": 15.544076919555664
+        },
+        {
+          "location_id": 1900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.6722450256347656,
+          "cumulative_gain": 16.21632194519043
+        },
+        {
+          "location_id": 1104,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 1.1068305969238281,
+          "cumulative_gain": 17.323152542114258
+        },
+        {
+          "location_id": 3004,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 1.1000728607177734,
+          "cumulative_gain": 18.42322540283203
+        },
+        {
+          "location_id": 1904,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.9288139343261719,
+          "cumulative_gain": 19.352039337158203
+        },
+        {
+          "location_id": 1100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.45709800720214844,
+          "cumulative_gain": 19.80913734436035
+        },
+        {
+          "location_id": 2404,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.8574008941650391,
+          "cumulative_gain": 20.66653823852539
+        },
+        {
+          "location_id": 104,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.7979412078857422,
+          "cumulative_gain": 21.464479446411133
+        }
+      ],
+      "marginal_gain_curve": [
+        1.1989476680755615,
+        1.198305368423462,
+        1.1740503311157227,
+        1.0112285614013672,
+        0.7743282318115234,
+        0.7549324035644531,
+        0.5536079406738281,
+        0.3424663543701172,
+        0.3147554397583008,
+        0.2927398681640625,
+        0.2740316390991211,
+        0.24754047393798828,
+        0.22796249389648438,
+        0.20984458923339844,
+        0.19105052947998047,
+        0.18298721313476562,
+        0.16978931427001953,
+        0.1381826400756836,
+        0.1339282989501953,
+        0.131927490234375,
+        0.12192535400390625,
+        0.11698722839355469,
+        1.1369514465332031,
+        1.1358890533447266,
+        0.1078348159790039,
+        1.0563926696777344,
+        0.9656734466552734,
+        0.09521293640136719,
+        0.09173393249511719,
+        0.08747291564941406,
+        0.08368492126464844,
+        0.0820150375366211,
+        0.7997236251831055,
+        0.07194328308105469,
+        0.06802940368652344,
+        0.6722450256347656,
+        1.1068305969238281,
+        1.1000728607177734,
+        0.9288139343261719,
+        0.45709800720214844,
+        0.8574008941650391,
+        0.7979412078857422
+      ]
+    },
+    "200": {
+      "n_sensors": 52,
+      "total_gain": 28.07781982421875,
+      "total_cost": 200.0,
+      "cost_efficiency": 0.14038909912109376,
+      "modality_counts": {
+        "satellite": 30,
+        "sensor": 11,
+        "behavioral": 7,
+        "microbial": 4
+      },
+      "modality_spend": {
+        "satellite": 15.0,
+        "sensor": 55.0,
+        "behavioral": 70.0,
+        "microbial": 60.0
+      },
+      "placements": [
+        {
+          "location_id": 101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1989476680755615,
+          "cumulative_gain": 1.1989476680755615
+        },
+        {
+          "location_id": 3001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.198305368423462,
+          "cumulative_gain": 2.3972530364990234
+        },
+        {
+          "location_id": 1901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1740503311157227,
+          "cumulative_gain": 3.571303367614746
+        },
+        {
+          "location_id": 2401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.0112285614013672,
+          "cumulative_gain": 4.582531929016113
+        },
+        {
+          "location_id": 2701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7743282318115234,
+          "cumulative_gain": 5.356860160827637
+        },
+        {
+          "location_id": 901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7549324035644531,
+          "cumulative_gain": 6.11179256439209
+        },
+        {
+          "location_id": 1501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.5536079406738281,
+          "cumulative_gain": 6.665400505065918
+        },
+        {
+          "location_id": 701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3424663543701172,
+          "cumulative_gain": 7.007866859436035
+        },
+        {
+          "location_id": 2901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3147554397583008,
+          "cumulative_gain": 7.322622299194336
+        },
+        {
+          "location_id": 2001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2927398681640625,
+          "cumulative_gain": 7.615362167358398
+        },
+        {
+          "location_id": 1301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2740316390991211,
+          "cumulative_gain": 7.8893938064575195
+        },
+        {
+          "location_id": 201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.24754047393798828,
+          "cumulative_gain": 8.136934280395508
+        },
+        {
+          "location_id": 2601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.22796249389648438,
+          "cumulative_gain": 8.364896774291992
+        },
+        {
+          "location_id": 1601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.20984458923339844,
+          "cumulative_gain": 8.57474136352539
+        },
+        {
+          "location_id": 2301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.19105052947998047,
+          "cumulative_gain": 8.765791893005371
+        },
+        {
+          "location_id": 2801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.18298721313476562,
+          "cumulative_gain": 8.948779106140137
+        },
+        {
+          "location_id": 601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.16978931427001953,
+          "cumulative_gain": 9.118568420410156
+        },
+        {
+          "location_id": 2101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1381826400756836,
+          "cumulative_gain": 9.25675106048584
+        },
+        {
+          "location_id": 1801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1339282989501953,
+          "cumulative_gain": 9.390679359436035
+        },
+        {
+          "location_id": 301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.131927490234375,
+          "cumulative_gain": 9.52260684967041
+        },
+        {
+          "location_id": 1201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.12192535400390625,
+          "cumulative_gain": 9.644532203674316
+        },
+        {
+          "location_id": 801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.11698722839355469,
+          "cumulative_gain": 9.761519432067871
+        },
+        {
+          "location_id": 3000,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1369514465332031,
+          "cumulative_gain": 10.898470878601074
+        },
+        {
+          "location_id": 900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1358890533447266,
+          "cumulative_gain": 12.0343599319458
+        },
+        {
+          "location_id": 2501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1078348159790039,
+          "cumulative_gain": 12.142194747924805
+        },
+        {
+          "location_id": 100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.0563926696777344,
+          "cumulative_gain": 13.198587417602539
+        },
+        {
+          "location_id": 2600,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.9656734466552734,
+          "cumulative_gain": 14.164260864257812
+        },
+        {
+          "location_id": 1401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09521293640136719,
+          "cumulative_gain": 14.25947380065918
+        },
+        {
+          "location_id": 1001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09173393249511719,
+          "cumulative_gain": 14.351207733154297
+        },
+        {
+          "location_id": 401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08747291564941406,
+          "cumulative_gain": 14.438680648803711
+        },
+        {
+          "location_id": 1701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08368492126464844,
+          "cumulative_gain": 14.52236557006836
+        },
+        {
+          "location_id": 2201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.0820150375366211,
+          "cumulative_gain": 14.60438060760498
+        },
+        {
+          "location_id": 2400,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.7997236251831055,
+          "cumulative_gain": 15.404104232788086
+        },
+        {
+          "location_id": 1101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.07194328308105469,
+          "cumulative_gain": 15.47604751586914
+        },
+        {
+          "location_id": 501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.06802940368652344,
+          "cumulative_gain": 15.544076919555664
+        },
+        {
+          "location_id": 1900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.6722450256347656,
+          "cumulative_gain": 16.21632194519043
+        },
+        {
+          "location_id": 1104,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 1.1068305969238281,
+          "cumulative_gain": 17.323152542114258
+        },
+        {
+          "location_id": 3004,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 1.1000728607177734,
+          "cumulative_gain": 18.42322540283203
+        },
+        {
+          "location_id": 1904,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.9288139343261719,
+          "cumulative_gain": 19.352039337158203
+        },
+        {
+          "location_id": 1100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.45709800720214844,
+          "cumulative_gain": 19.80913734436035
+        },
+        {
+          "location_id": 2404,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.8574008941650391,
+          "cumulative_gain": 20.66653823852539
+        },
+        {
+          "location_id": 104,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.7979412078857422,
+          "cumulative_gain": 21.464479446411133
+        },
+        {
+          "location_id": 2700,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.3776378631591797,
+          "cumulative_gain": 21.842117309570312
+        },
+        {
+          "location_id": 2702,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 1.0911331176757812,
+          "cumulative_gain": 22.933250427246094
+        },
+        {
+          "location_id": 902,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 1.0786075592041016,
+          "cumulative_gain": 24.011857986450195
+        },
+        {
+          "location_id": 2704,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.6985950469970703,
+          "cumulative_gain": 24.710453033447266
+        },
+        {
+          "location_id": 102,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 1.0069942474365234,
+          "cumulative_gain": 25.71744728088379
+        },
+        {
+          "location_id": 904,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.6280536651611328,
+          "cumulative_gain": 26.345500946044922
+        },
+        {
+          "location_id": 2900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.3098125457763672,
+          "cumulative_gain": 26.65531349182129
+        },
+        {
+          "location_id": 700,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.2907886505126953,
+          "cumulative_gain": 26.946102142333984
+        },
+        {
+          "location_id": 3002,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 0.8569927215576172,
+          "cumulative_gain": 27.8030948638916
+        },
+        {
+          "location_id": 1300,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.27472496032714844,
+          "cumulative_gain": 28.07781982421875
+        }
+      ],
+      "marginal_gain_curve": [
+        1.1989476680755615,
+        1.198305368423462,
+        1.1740503311157227,
+        1.0112285614013672,
+        0.7743282318115234,
+        0.7549324035644531,
+        0.5536079406738281,
+        0.3424663543701172,
+        0.3147554397583008,
+        0.2927398681640625,
+        0.2740316390991211,
+        0.24754047393798828,
+        0.22796249389648438,
+        0.20984458923339844,
+        0.19105052947998047,
+        0.18298721313476562,
+        0.16978931427001953,
+        0.1381826400756836,
+        0.1339282989501953,
+        0.131927490234375,
+        0.12192535400390625,
+        0.11698722839355469,
+        1.1369514465332031,
+        1.1358890533447266,
+        0.1078348159790039,
+        1.0563926696777344,
+        0.9656734466552734,
+        0.09521293640136719,
+        0.09173393249511719,
+        0.08747291564941406,
+        0.08368492126464844,
+        0.0820150375366211,
+        0.7997236251831055,
+        0.07194328308105469,
+        0.06802940368652344,
+        0.6722450256347656,
+        1.1068305969238281,
+        1.1000728607177734,
+        0.9288139343261719,
+        0.45709800720214844,
+        0.8574008941650391,
+        0.7979412078857422,
+        0.3776378631591797,
+        1.0911331176757812,
+        1.0786075592041016,
+        0.6985950469970703,
+        1.0069942474365234,
+        0.6280536651611328,
+        0.3098125457763672,
+        0.2907886505126953,
+        0.8569927215576172,
+        0.27472496032714844
+      ]
+    },
+    "500": {
+      "n_sensors": 77,
+      "total_gain": 38.70123291015625,
+      "total_cost": 500.0,
+      "cost_efficiency": 0.0774024658203125,
+      "modality_counts": {
+        "satellite": 30,
+        "sensor": 22,
+        "behavioral": 12,
+        "microbial": 7,
+        "molecular": 6
+      },
+      "modality_spend": {
+        "satellite": 15.0,
+        "sensor": 110.0,
+        "behavioral": 120.0,
+        "microbial": 105.0,
+        "molecular": 150.0
+      },
+      "placements": [
+        {
+          "location_id": 101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1989476680755615,
+          "cumulative_gain": 1.1989476680755615
+        },
+        {
+          "location_id": 3001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.198305368423462,
+          "cumulative_gain": 2.3972530364990234
+        },
+        {
+          "location_id": 1901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.1740503311157227,
+          "cumulative_gain": 3.571303367614746
+        },
+        {
+          "location_id": 2401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 1.0112285614013672,
+          "cumulative_gain": 4.582531929016113
+        },
+        {
+          "location_id": 2701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7743282318115234,
+          "cumulative_gain": 5.356860160827637
+        },
+        {
+          "location_id": 901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.7549324035644531,
+          "cumulative_gain": 6.11179256439209
+        },
+        {
+          "location_id": 1501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.5536079406738281,
+          "cumulative_gain": 6.665400505065918
+        },
+        {
+          "location_id": 701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3424663543701172,
+          "cumulative_gain": 7.007866859436035
+        },
+        {
+          "location_id": 2901,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.3147554397583008,
+          "cumulative_gain": 7.322622299194336
+        },
+        {
+          "location_id": 2001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2927398681640625,
+          "cumulative_gain": 7.615362167358398
+        },
+        {
+          "location_id": 1301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.2740316390991211,
+          "cumulative_gain": 7.8893938064575195
+        },
+        {
+          "location_id": 201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.24754047393798828,
+          "cumulative_gain": 8.136934280395508
+        },
+        {
+          "location_id": 2601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.22796249389648438,
+          "cumulative_gain": 8.364896774291992
+        },
+        {
+          "location_id": 1601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.20984458923339844,
+          "cumulative_gain": 8.57474136352539
+        },
+        {
+          "location_id": 2301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.19105052947998047,
+          "cumulative_gain": 8.765791893005371
+        },
+        {
+          "location_id": 2801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.18298721313476562,
+          "cumulative_gain": 8.948779106140137
+        },
+        {
+          "location_id": 601,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.16978931427001953,
+          "cumulative_gain": 9.118568420410156
+        },
+        {
+          "location_id": 2101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1381826400756836,
+          "cumulative_gain": 9.25675106048584
+        },
+        {
+          "location_id": 1801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1339282989501953,
+          "cumulative_gain": 9.390679359436035
+        },
+        {
+          "location_id": 301,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.131927490234375,
+          "cumulative_gain": 9.52260684967041
+        },
+        {
+          "location_id": 1201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.12192535400390625,
+          "cumulative_gain": 9.644532203674316
+        },
+        {
+          "location_id": 801,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.11698722839355469,
+          "cumulative_gain": 9.761519432067871
+        },
+        {
+          "location_id": 3000,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1369514465332031,
+          "cumulative_gain": 10.898470878601074
+        },
+        {
+          "location_id": 900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.1358890533447266,
+          "cumulative_gain": 12.0343599319458
+        },
+        {
+          "location_id": 2501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.1078348159790039,
+          "cumulative_gain": 12.142194747924805
+        },
+        {
+          "location_id": 100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 1.0563926696777344,
+          "cumulative_gain": 13.198587417602539
+        },
+        {
+          "location_id": 2600,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.9656734466552734,
+          "cumulative_gain": 14.164260864257812
+        },
+        {
+          "location_id": 1401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09521293640136719,
+          "cumulative_gain": 14.25947380065918
+        },
+        {
+          "location_id": 1001,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.09173393249511719,
+          "cumulative_gain": 14.351207733154297
+        },
+        {
+          "location_id": 401,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08747291564941406,
+          "cumulative_gain": 14.438680648803711
+        },
+        {
+          "location_id": 1701,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.08368492126464844,
+          "cumulative_gain": 14.52236557006836
+        },
+        {
+          "location_id": 2201,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.0820150375366211,
+          "cumulative_gain": 14.60438060760498
+        },
+        {
+          "location_id": 2400,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.7997236251831055,
+          "cumulative_gain": 15.404104232788086
+        },
+        {
+          "location_id": 1101,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.07194328308105469,
+          "cumulative_gain": 15.47604751586914
+        },
+        {
+          "location_id": 501,
+          "modality": "satellite",
+          "cost": 0.5,
+          "marginal_gain": 0.06802940368652344,
+          "cumulative_gain": 15.544076919555664
+        },
+        {
+          "location_id": 1900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.6722450256347656,
+          "cumulative_gain": 16.21632194519043
+        },
+        {
+          "location_id": 1104,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 1.1068305969238281,
+          "cumulative_gain": 17.323152542114258
+        },
+        {
+          "location_id": 3004,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 1.1000728607177734,
+          "cumulative_gain": 18.42322540283203
+        },
+        {
+          "location_id": 1904,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.9288139343261719,
+          "cumulative_gain": 19.352039337158203
+        },
+        {
+          "location_id": 1100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.45709800720214844,
+          "cumulative_gain": 19.80913734436035
+        },
+        {
+          "location_id": 2404,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.8574008941650391,
+          "cumulative_gain": 20.66653823852539
+        },
+        {
+          "location_id": 104,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.7979412078857422,
+          "cumulative_gain": 21.464479446411133
+        },
+        {
+          "location_id": 2700,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.3776378631591797,
+          "cumulative_gain": 21.842117309570312
+        },
+        {
+          "location_id": 2702,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 1.0911331176757812,
+          "cumulative_gain": 22.933250427246094
+        },
+        {
+          "location_id": 902,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 1.0786075592041016,
+          "cumulative_gain": 24.011857986450195
+        },
+        {
+          "location_id": 2704,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.6985950469970703,
+          "cumulative_gain": 24.710453033447266
+        },
+        {
+          "location_id": 102,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 1.0069942474365234,
+          "cumulative_gain": 25.71744728088379
+        },
+        {
+          "location_id": 904,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.6280536651611328,
+          "cumulative_gain": 26.345500946044922
+        },
+        {
+          "location_id": 2900,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.3098125457763672,
+          "cumulative_gain": 26.65531349182129
+        },
+        {
+          "location_id": 700,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.2907886505126953,
+          "cumulative_gain": 26.946102142333984
+        },
+        {
+          "location_id": 3002,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 0.8569927215576172,
+          "cumulative_gain": 27.8030948638916
+        },
+        {
+          "location_id": 2402,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 0.8270626068115234,
+          "cumulative_gain": 28.630157470703125
+        },
+        {
+          "location_id": 1300,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.2743988037109375,
+          "cumulative_gain": 28.904556274414062
+        },
+        {
+          "location_id": 2000,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.2511024475097656,
+          "cumulative_gain": 29.155658721923828
+        },
+        {
+          "location_id": 200,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.2364788055419922,
+          "cumulative_gain": 29.39213752746582
+        },
+        {
+          "location_id": 1902,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 0.6855278015136719,
+          "cumulative_gain": 30.077665328979492
+        },
+        {
+          "location_id": 2103,
+          "modality": "molecular",
+          "cost": 25.0,
+          "marginal_gain": 1.0725078582763672,
+          "cumulative_gain": 31.15017318725586
+        },
+        {
+          "location_id": 3003,
+          "modality": "molecular",
+          "cost": 25.0,
+          "marginal_gain": 1.0446929931640625,
+          "cumulative_gain": 32.19486618041992
+        },
+        {
+          "location_id": 1600,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.20526504516601562,
+          "cumulative_gain": 32.40013122558594
+        },
+        {
+          "location_id": 103,
+          "modality": "molecular",
+          "cost": 25.0,
+          "marginal_gain": 0.9547691345214844,
+          "cumulative_gain": 33.35490036010742
+        },
+        {
+          "location_id": 2300,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.19058609008789062,
+          "cumulative_gain": 33.54548645019531
+        },
+        {
+          "location_id": 903,
+          "modality": "molecular",
+          "cost": 25.0,
+          "marginal_gain": 0.9156417846679688,
+          "cumulative_gain": 34.46112823486328
+        },
+        {
+          "location_id": 2800,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.1795654296875,
+          "cumulative_gain": 34.64069366455078
+        },
+        {
+          "location_id": 1502,
+          "modality": "microbial",
+          "cost": 15.0,
+          "marginal_gain": 0.4986686706542969,
+          "cumulative_gain": 35.13936233520508
+        },
+        {
+          "location_id": 2004,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.32379913330078125,
+          "cumulative_gain": 35.46316146850586
+        },
+        {
+          "location_id": 600,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.15462875366210938,
+          "cumulative_gain": 35.61779022216797
+        },
+        {
+          "location_id": 2904,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.3051490783691406,
+          "cumulative_gain": 35.92293930053711
+        },
+        {
+          "location_id": 2100,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.1472015380859375,
+          "cumulative_gain": 36.07014083862305
+        },
+        {
+          "location_id": 704,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.28632354736328125,
+          "cumulative_gain": 36.35646438598633
+        },
+        {
+          "location_id": 2403,
+          "modality": "molecular",
+          "cost": 25.0,
+          "marginal_gain": 0.7136116027832031,
+          "cumulative_gain": 37.07007598876953
+        },
+        {
+          "location_id": 1304,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.27050018310546875,
+          "cumulative_gain": 37.340576171875
+        },
+        {
+          "location_id": 1800,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.13134002685546875,
+          "cumulative_gain": 37.47191619873047
+        },
+        {
+          "location_id": 1903,
+          "modality": "molecular",
+          "cost": 25.0,
+          "marginal_gain": 0.63995361328125,
+          "cumulative_gain": 38.11186981201172
+        },
+        {
+          "location_id": 300,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.12770843505859375,
+          "cumulative_gain": 38.23957824707031
+        },
+        {
+          "location_id": 204,
+          "modality": "behavioral",
+          "cost": 10.0,
+          "marginal_gain": 0.23542022705078125,
+          "cumulative_gain": 38.474998474121094
+        },
+        {
+          "location_id": 1400,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.11664581298828125,
+          "cumulative_gain": 38.591644287109375
+        },
+        {
+          "location_id": 800,
+          "modality": "sensor",
+          "cost": 5.0,
+          "marginal_gain": 0.109588623046875,
+          "cumulative_gain": 38.70123291015625
+        }
+      ],
+      "marginal_gain_curve": [
+        1.1989476680755615,
+        1.198305368423462,
+        1.1740503311157227,
+        1.0112285614013672,
+        0.7743282318115234,
+        0.7549324035644531,
+        0.5536079406738281,
+        0.3424663543701172,
+        0.3147554397583008,
+        0.2927398681640625,
+        0.2740316390991211,
+        0.24754047393798828,
+        0.22796249389648438,
+        0.20984458923339844,
+        0.19105052947998047,
+        0.18298721313476562,
+        0.16978931427001953,
+        0.1381826400756836,
+        0.1339282989501953,
+        0.131927490234375,
+        0.12192535400390625,
+        0.11698722839355469,
+        1.1369514465332031,
+        1.1358890533447266,
+        0.1078348159790039,
+        1.0563926696777344,
+        0.9656734466552734,
+        0.09521293640136719,
+        0.09173393249511719,
+        0.08747291564941406,
+        0.08368492126464844,
+        0.0820150375366211,
+        0.7997236251831055,
+        0.07194328308105469,
+        0.06802940368652344,
+        0.6722450256347656,
+        1.1068305969238281,
+        1.1000728607177734,
+        0.9288139343261719,
+        0.45709800720214844,
+        0.8574008941650391,
+        0.7979412078857422,
+        0.3776378631591797,
+        1.0911331176757812,
+        1.0786075592041016,
+        0.6985950469970703,
+        1.0069942474365234,
+        0.6280536651611328,
+        0.3098125457763672,
+        0.2907886505126953,
+        0.8569927215576172,
+        0.8270626068115234,
+        0.2743988037109375,
+        0.2511024475097656,
+        0.2364788055419922,
+        0.6855278015136719,
+        1.0725078582763672,
+        1.0446929931640625,
+        0.20526504516601562,
+        0.9547691345214844,
+        0.19058609008789062,
+        0.9156417846679688,
+        0.1795654296875,
+        0.4986686706542969,
+        0.32379913330078125,
+        0.15462875366210938,
+        0.3051490783691406,
+        0.1472015380859375,
+        0.28632354736328125,
+        0.7136116027832031,
+        0.27050018310546875,
+        0.13134002685546875,
+        0.63995361328125,
+        0.12770843505859375,
+        0.23542022705078125,
+        0.11664581298828125,
+        0.109588623046875
+      ]
+    }
+  }
+}

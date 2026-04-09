@@ -1,0 +1,123 @@
+{
+  "alpha_levels": [
+    0.05,
+    0.1
+  ],
+  "per_alpha": {
+    "0.05": {
+      "modalities": {
+        "behavioral": {
+          "n_calibration": 8587,
+          "n_test_normal": 3681,
+          "threshold": 17.148401260375977,
+          "empirical_coverage": 0.9030154849225754,
+          "target_coverage": 0.95,
+          "coverage_met": false,
+          "mean_pvalue_normal": 0.4170762300491333,
+          "n_anomalous": 9337,
+          "anomaly_detection_rate": 0.946556709863982,
+          "mean_pvalue_anomalous": 0.011998429894447327
+        },
+        "microbial": {
+          "n_calibration": 23,
+          "n_test_normal": 11,
+          "threshold": 5.227975845336914,
+          "empirical_coverage": 0.0,
+          "target_coverage": 0.95,
+          "coverage_met": false,
+          "mean_pvalue_normal": 0.0416666604578495,
+          "n_anomalous": 30,
+          "anomaly_detection_rate": 1.0,
+          "mean_pvalue_anomalous": 0.0416666679084301
+        },
+        "satellite": {
+          "n_calibration": 55,
+          "n_test_normal": 24,
+          "threshold": 0.9712587594985962,
+          "empirical_coverage": 0.375,
+          "target_coverage": 0.95,
+          "coverage_met": false,
+          "mean_pvalue_normal": 0.0803571417927742,
+          "n_anomalous": 66,
+          "anomaly_detection_rate": 0.6666666666666666,
+          "mean_pvalue_anomalous": 0.07846320420503616
+        },
+        "sensor": {
+          "n_calibration": 30813,
+          "n_test_normal": 13206,
+          "threshold": 17.15876579284668,
+          "empirical_coverage": 0.9405573224291989,
+          "target_coverage": 0.95,
+          "coverage_met": true,
+          "mean_pvalue_normal": 0.4769430458545685,
+          "n_anomalous": 42359,
+          "anomaly_detection_rate": 0.943624731462027,
+          "mean_pvalue_anomalous": 0.012903859838843346
+        }
+      },
+      "overall_coverage": 0.9309774258361896,
+      "overall_detection_rate": 0.9438330244053136,
+      "coverage_guarantee_met": false
+    },
+    "0.1": {
+      "modalities": {
+        "behavioral": {
+          "n_calibration": 8587,
+          "n_test_normal": 3681,
+          "threshold": 16.874217987060547,
+          "empirical_coverage": 0.8342841619125237,
+          "target_coverage": 0.9,
+          "coverage_met": false,
+          "mean_pvalue_normal": 0.4170762300491333,
+          "n_anomalous": 9337,
+          "anomaly_detection_rate": 0.9657277498125736,
+          "mean_pvalue_anomalous": 0.011998429894447327
+        },
+        "microbial": {
+          "n_calibration": 23,
+          "n_test_normal": 11,
+          "threshold": 5.2259368896484375,
+          "empirical_coverage": 0.0,
+          "target_coverage": 0.9,
+          "coverage_met": false,
+          "mean_pvalue_normal": 0.0416666604578495,
+          "n_anomalous": 30,
+          "anomaly_detection_rate": 1.0,
+          "mean_pvalue_anomalous": 0.0416666679084301
+        },
+        "satellite": {
+          "n_calibration": 55,
+          "n_test_normal": 24,
+          "threshold": 0.9358532428741455,
+          "empirical_coverage": 0.20833333333333334,
+          "target_coverage": 0.9,
+          "coverage_met": false,
+          "mean_pvalue_normal": 0.0803571417927742,
+          "n_anomalous": 66,
+          "anomaly_detection_rate": 0.803030303030303,
+          "mean_pvalue_anomalous": 0.07846320420503616
+        },
+        "sensor": {
+          "n_calibration": 30813,
+          "n_test_normal": 13206,
+          "threshold": 16.864038467407227,
+          "empirical_coverage": 0.8830834469180675,
+          "target_coverage": 0.9,
+          "coverage_met": true,
+          "mean_pvalue_normal": 0.4769430458545685,
+          "n_anomalous": 42359,
+          "anomaly_detection_rate": 0.963313581529309,
+          "mean_pvalue_anomalous": 0.012903859838843346
+        }
+      },
+      "overall_coverage": 0.8709372414608202,
+      "overall_detection_rate": 0.9635658016682113,
+      "coverage_guarantee_met": false
+    }
+  },
+  "per_modality": {},
+  "ensemble": {
+    "correction": "benjamini-hochberg",
+    "alpha": 0.05
+  }
+}

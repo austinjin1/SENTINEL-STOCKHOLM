@@ -154,7 +154,8 @@ def compute_auc(
         fpr = np.concatenate([[0.0], fp_cum / n_neg])
 
         # Trapezoidal integration (vectorized)
-        auc_val = float(np.trapz(tpr, fpr))
+        _trapz = getattr(np, "trapezoid", getattr(np, "trapz", None))
+        auc_val = float(_trapz(tpr, fpr))
         return auc_val
 
     auc = _auc(y_true, y_score)
