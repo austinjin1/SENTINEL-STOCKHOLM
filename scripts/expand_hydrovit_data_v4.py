@@ -42,15 +42,15 @@ STAC_URL = "https://planetarycomputer.microsoft.com/api/stac/v1"
 COLLECTION = "sentinel-2-l2a"
 BANDS = ["B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B11", "B12"]
 PATCH_SIZE = 224
-MAX_CLOUD = 30
-TARGET_PAIRS = 5000
+MAX_CLOUD = 40
+TARGET_PAIRS = 8000
 MAX_STATIONS = 1000
 NUM_PARAMS = 16
 
 STABLE_PARAMS = {7, 10, 11}   # DO, pH, water_temp
 OPTICAL_PARAMS = {0, 1, 4}    # chl_a, turbidity, TSS
 QUALITY_TAU_HOURS = 12.0
-MAX_PER_CELL = 15
+MAX_PER_CELL = 30
 
 GRQA_PARAM_MAP = {
     "TSS": 4, "TN": 5, "TP": 6, "DO": 7,
@@ -342,15 +342,15 @@ def download_tile(lat, lon, date_str):
     catalog = pystac_client.Client.open(STAC_URL)
     bbox = [lon - 0.015, lat - 0.015, lon + 0.015, lat + 0.015]
     dt = datetime.strptime(date_str, "%Y-%m-%d")
-    start = (dt - timedelta(days=1)).strftime("%Y-%m-%d")
-    end = (dt + timedelta(days=1)).strftime("%Y-%m-%d")
+    start = (dt - timedelta(days=7)).strftime("%Y-%m-%d")
+    end = (dt + timedelta(days=7)).strftime("%Y-%m-%d")
 
     search = catalog.search(
         collections=[COLLECTION],
         bbox=bbox,
         datetime=f"{start}/{end}",
         query={"eo:cloud_cover": {"lt": MAX_CLOUD}},
-        max_items=5,
+        max_items=10,
     )
     items = list(search.items())
     if not items:
