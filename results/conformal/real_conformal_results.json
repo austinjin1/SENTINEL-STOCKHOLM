@@ -36,9 +36,19 @@
           "coverage_met": false,
           "mean_pvalue": 0.4660082161426544,
           "median_pvalue": 0.46615251898765564
+        },
+        "behavioral": {
+          "n_calibration": 1400,
+          "n_test": 600,
+          "threshold": 9.620875358581543,
+          "empirical_coverage": 0.9133333333333333,
+          "target_coverage": 0.95,
+          "coverage_met": false,
+          "mean_pvalue": 0.4213918447494507,
+          "median_pvalue": 0.3818700909614563
         }
       },
-      "overall_coverage": 0.9378161261529306,
+      "overall_coverage": 0.9341075485988387,
       "coverage_guarantee_met": false
     },
     "0.1": {
@@ -72,14 +82,25 @@
           "coverage_met": false,
           "mean_pvalue": 0.4660082161426544,
           "median_pvalue": 0.46615251898765564
+        },
+        "behavioral": {
+          "n_calibration": 1400,
+          "n_test": 600,
+          "threshold": 9.338617324829102,
+          "empirical_coverage": 0.8483333333333334,
+          "target_coverage": 0.9,
+          "coverage_met": false,
+          "mean_pvalue": 0.4213918447494507,
+          "median_pvalue": 0.3818700909614563
         }
       },
-      "overall_coverage": 0.8800952097590004,
+      "overall_coverage": 0.875284019187074,
       "coverage_guarantee_met": false
     }
   },
   "ensemble": {
     "modalities": [
+      "behavioral",
       "microbial",
       "satellite",
       "sensor"
