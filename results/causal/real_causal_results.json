@@ -1,0 +1,2749 @@
+{
+  "source": "real_grqa_data",
+  "n_sites_analyzed": 20,
+  "max_lag_hours": 168,
+  "n_known_chains": 15,
+  "per_site": {
+    "BEL00092": {
+      "n_params": 11,
+      "n_records": 703,
+      "n_chains": 20,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/ammonia",
+          "lag_hours": 168.0,
+          "strength": 0.13212994057307964,
+          "p_value": 4.229661398811549e-166,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 144.0,
+          "strength": 0.12409058087184839,
+          "p_value": 1.132482184761009e-146,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": -0.11956936869254907,
+          "p_value": 1.0723967447922055e-136,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.11724673601180594,
+          "p_value": 5.640226522607506e-131,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": -0.11234091727885295,
+          "p_value": 2.438789803811679e-120,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/ammonia",
+          "lag_hours": 168.0,
+          "strength": -0.10131042528227971,
+          "p_value": 4.0582401736077327e-98,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": -0.08178834453301004,
+          "p_value": 9.81482507315418e-65,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 54.0,
+          "strength": -0.058083918290293,
+          "p_value": 1.98580278961026e-33,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/ammonia",
+          "lag_hours": 1.0,
+          "strength": 0.055291357998933935,
+          "p_value": 1.762362633055402e-30,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/ammonia",
+          "lag_hours": 168.0,
+          "strength": 0.05455908437573067,
+          "p_value": 1.3008179683359866e-29,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00102": {
+      "n_params": 11,
+      "n_records": 687,
+      "n_chains": 30,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": -0.20730738485532405,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/nitrate",
+          "lag_hours": 96.0,
+          "strength": 0.18635532747393452,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 168.0,
+          "strength": 0.17752146392288498,
+          "p_value": 2.0380545618818487e-294,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 168.0,
+          "strength": 0.13741686301318495,
+          "p_value": 3.881823876371964e-176,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/nitrate",
+          "lag_hours": 168.0,
+          "strength": -0.13684598644937104,
+          "p_value": 1.112042380877961e-174,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/nitrate",
+          "lag_hours": 168.0,
+          "strength": 0.11652591469729255,
+          "p_value": 6.9372858506720794e-127,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/ammonia",
+          "lag_hours": 1.0,
+          "strength": -0.10593664634012968,
+          "p_value": 1.6830404941684892e-105,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 168.0,
+          "strength": 0.10553551309195151,
+          "p_value": 2.631754569130112e-104,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/ammonia",
+          "lag_hours": 168.0,
+          "strength": 0.09865093029139128,
+          "p_value": 2.5403272426911655e-91,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": -0.09268987128537305,
+          "p_value": 8.514933397307197e-81,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00110": {
+      "n_params": 11,
+      "n_records": 706,
+      "n_chains": 2,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 168.0,
+          "strength": 0.09251320190311388,
+          "p_value": 1.9440123965775939e-81,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/nitrate",
+          "lag_hours": 168.0,
+          "strength": -0.07331183659307798,
+          "p_value": 9.600268072683444e-52,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00111": {
+      "n_params": 11,
+      "n_records": 680,
+      "n_chains": 20,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": -0.1682127723683841,
+          "p_value": 3.108159711580548e-266,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 168.0,
+          "strength": -0.1597211557624855,
+          "p_value": 6.640096867449369e-240,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": 0.15320113515001452,
+          "p_value": 1.603098348274498e-221,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": -0.1431170059426104,
+          "p_value": 1.5252883567325529e-192,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": 0.12938154788790462,
+          "p_value": 4.728587363967169e-158,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": 0.12420716974542971,
+          "p_value": 1.0013333008005225e-145,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.09981813253427185,
+          "p_value": 1.4784567933127936e-94,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.09432741236942896,
+          "p_value": 2.826106968718822e-84,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": -0.07918445408937948,
+          "p_value": 7.337901180339134e-60,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 168.0,
+          "strength": 0.07006952487611316,
+          "p_value": 3.125838557345977e-47,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00112": {
+      "n_params": 11,
+      "n_records": 674,
+      "n_chains": 2,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/dissolved_organic_carbon",
+          "lag_hours": 168.0,
+          "strength": 0.1475683484759195,
+          "p_value": 3.1478750123644926e-200,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_organic_carbon",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": -0.08191886780530677,
+          "p_value": 8.000260887706085e-63,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00113": {
+      "n_params": 11,
+      "n_records": 729,
+      "n_chains": 30,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": -0.4360459601315078,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 1.0,
+          "strength": 0.41245018936217787,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": -0.3944456309746196,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": 0.3888033172993719,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 1.0,
+          "strength": -0.3811457162537195,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": 0.34589225462626466,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.34227311815447314,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 1.0,
+          "strength": 0.33801636069019636,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": -0.3242347423873947,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": 0.32311462611033387,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00114": {
+      "n_params": 11,
+      "n_records": 713,
+      "n_chains": 54,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": -0.2083348936961607,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_organic_carbon",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": -0.2052404775726779,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": 0.20308923481064783,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": -0.1907498355353407,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 126.0,
+          "strength": 0.18697476977719535,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/ammonia",
+          "lag_hours": 150.0,
+          "strength": 0.18613016767326324,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/dissolved_organic_carbon",
+          "lag_hours": 102.0,
+          "strength": 0.18566575771619392,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/dissolved_organic_carbon",
+          "lag_hours": 1.0,
+          "strength": 0.18501048830039704,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/dissolved_organic_carbon",
+          "lag_hours": 72.0,
+          "strength": 0.1846853171314821,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 60.0,
+          "strength": -0.18447583158950215,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00115": {
+      "n_params": 11,
+      "n_records": 699,
+      "n_chains": 5,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.1157718490865442,
+          "p_value": 3.311920834015198e-124,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/ammonia",
+          "lag_hours": 168.0,
+          "strength": -0.07922157267754983,
+          "p_value": 5.83534611606568e-59,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 168.0,
+          "strength": -0.06385373247829583,
+          "p_value": 6.966730111188501e-39,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": -0.04180178514238998,
+          "p_value": 1.2234988979557955e-17,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/ammonia",
+          "lag_hours": 168.0,
+          "strength": -0.02931114504035444,
+          "p_value": 2.1990719799570103e-09,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00116": {
+      "n_params": 11,
+      "n_records": 698,
+      "n_chains": 12,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": -0.17284554133189214,
+          "p_value": 1.0167725866147854e-277,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 168.0,
+          "strength": 0.1622428356429116,
+          "p_value": 1.542831563386921e-243,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/nitrate",
+          "lag_hours": 168.0,
+          "strength": 0.15652989095822234,
+          "p_value": 1.2575008825664581e-226,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 1.0,
+          "strength": -0.14203205638252603,
+          "p_value": 2.712808722089288e-187,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.12828596677121487,
+          "p_value": 2.7664044868945235e-152,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": -0.10838689072424196,
+          "p_value": 1.8951127250593437e-109,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": 0.08246354277902194,
+          "p_value": 9.507579209775822e-64,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/nitrate",
+          "lag_hours": 168.0,
+          "strength": 0.06940255787416594,
+          "p_value": 1.2351278126928182e-45,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.0617771887775789,
+          "p_value": 1.6802354932425803e-36,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": -0.05092620263266742,
+          "p_value": 2.518651487664791e-25,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00093": {
+      "n_params": 11,
+      "n_records": 718,
+      "n_chains": 41,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 1.0,
+          "strength": 0.3282864620402569,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 1.0,
+          "strength": -0.22298632568180118,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": -0.2197097436949158,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.18687042787611052,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 150.0,
+          "strength": 0.1859650847250684,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 96.0,
+          "strength": 0.1844694587119537,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 168.0,
+          "strength": 0.16929409125561704,
+          "p_value": 7.101310951479813e-273,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 168.0,
+          "strength": 0.1679635656583081,
+          "p_value": 1.4163992799569217e-268,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": -0.14210547871116436,
+          "p_value": 4.5549688809794154e-192,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": -0.13828832982736233,
+          "p_value": 1.3343199287768289e-182,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00082": {
+      "n_params": 11,
+      "n_records": 583,
+      "n_chains": 6,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.28185941529927416,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/ammonia",
+          "lag_hours": 1.0,
+          "strength": -0.2135848624699793,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": -0.08347953543574971,
+          "p_value": 4.068187904599076e-67,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": 0.07987476109315346,
+          "p_value": 1.3899430333249565e-61,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.07621276667583415,
+          "p_value": 1.9994019861433091e-56,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/ammonia",
+          "lag_hours": 168.0,
+          "strength": 0.019782019372771364,
+          "p_value": 4.225750872478718e-05,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00084": {
+      "n_params": 11,
+      "n_records": 763,
+      "n_chains": 20,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.213235513814272,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": -0.197018265322839,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/ammonia",
+          "lag_hours": 1.0,
+          "strength": 0.1887649447889466,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 108.0,
+          "strength": 0.18693354610605392,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 126.0,
+          "strength": 0.18596723791102945,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 78.0,
+          "strength": -0.18514546408434768,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": -0.17695342290552607,
+          "p_value": 2.508307249564013e-298,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.16011007449312123,
+          "p_value": 6.351659910690723e-244,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": 0.14602481284082652,
+          "p_value": 1.3695218883944915e-203,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 1.0,
+          "strength": -0.1326702285612891,
+          "p_value": 4.2179409003920857e-168,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00090": {
+      "n_params": 11,
+      "n_records": 714,
+      "n_chains": 41,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/nitrate",
+          "lag_hours": 168.0,
+          "strength": 0.17779767531968632,
+          "p_value": 3.3170997771692828e-301,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": -0.16868472728259154,
+          "p_value": 6.68443973697671e-271,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/ammonia",
+          "lag_hours": 2.0,
+          "strength": 0.16610124129271986,
+          "p_value": 1.2593658521679605e-263,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.11089796943436417,
+          "p_value": 9.494738092034647e-118,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 90.0,
+          "strength": 0.10133337933943272,
+          "p_value": 2.4507943789521168e-98,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.09907809557901236,
+          "p_value": 2.9030380949579697e-94,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 168.0,
+          "strength": -0.09238823203058857,
+          "p_value": 7.53778518703647e-82,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 1.0,
+          "strength": 0.09060663111878241,
+          "p_value": 4.4083685939272785e-79,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.08961267149920643,
+          "p_value": 4.254025537817586e-77,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/nitrate",
+          "lag_hours": 168.0,
+          "strength": 0.08508145575856699,
+          "p_value": 1.1786642733063608e-69,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00120": {
+      "n_params": 11,
+      "n_records": 696,
+      "n_chains": 2,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/dissolved_organic_carbon",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.02122456625404417,
+          "p_value": 1.1157010111241819e-05,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/dissolved_organic_carbon",
+          "lag_hours": 168.0,
+          "strength": -0.016449123995305237,
+          "p_value": 0.0006621694442676584,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "BEL00123": {
+      "n_params": 11,
+      "n_records": 837,
+      "n_chains": 29,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 84.0,
+          "strength": 0.19005318168457588,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 72.0,
+          "strength": 0.18978498200797414,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 84.0,
+          "strength": 0.1866323925486563,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/nitrate",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 96.0,
+          "strength": 0.1865078830155657,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/dissolved_oxygen",
+          "lag_hours": 168.0,
+          "strength": 0.18406715526444273,
+          "p_value": 2.417e-320,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": -0.14193850210373,
+          "p_value": 5.036179596838673e-190,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/dissolved_oxygen",
+          "effect": "sensor/nitrate",
+          "lag_hours": 1.0,
+          "strength": -0.12681291062423256,
+          "p_value": 2.241465060044905e-152,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_nitrogen",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": -0.12114159101220405,
+          "p_value": 1.3584300863034942e-138,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_nitrogen",
+          "lag_hours": 168.0,
+          "strength": -0.11697846768444345,
+          "p_value": 2.6537619810488125e-129,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/ammonia",
+          "effect": "sensor/total_phosphorus",
+          "lag_hours": 168.0,
+          "strength": -0.09676887846509208,
+          "p_value": 6.556789325523215e-89,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "MEX00035": {
+      "n_params": 10,
+      "n_records": 398,
+      "n_chains": 55,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.27816098232553643,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/water_temperature",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": -0.2430402694226138,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": -0.16380791741329098,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/water_temperature",
+          "lag_hours": 1.0,
+          "strength": 0.1627671961163902,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/pH",
+          "effect": "sensor/dissolved_organic_carbon",
+          "lag_hours": 162.0,
+          "strength": 0.15902493650175892,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/water_temperature",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 102.0,
+          "strength": -0.15834420408074681,
+          "p_value": 0.0,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/pH",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 36.0,
+          "strength": 0.1582963383814968,
+          "p_value": 0.0,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/water_temperature",
+          "lag_hours": 2.0,
+          "strength": 0.15068658361553589,
+          "p_value": 5.846143466777267e-294,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/pH",
+          "lag_hours": 1.0,
+          "strength": -0.13806132305326826,
+          "p_value": 1.1649653647258018e-246,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/total_phosphorus",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": 0.12751043112635416,
+          "p_value": 2.0488890004896703e-210,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    },
+    "MEX01298": {
+      "n_params": 10,
+      "n_records": 394,
+      "n_chains": 6,
+      "n_validated": 0,
+      "top_chains": [
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.1308151517007307,
+          "p_value": 2.7913978017657374e-220,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/water_temperature",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.10009243997485553,
+          "p_value": 2.3642895968570188e-129,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/chemical_oxygen_demand",
+          "effect": "sensor/water_temperature",
+          "lag_hours": 1.0,
+          "strength": -0.09240189947131233,
+          "p_value": 9.227969274712713e-111,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/chemical_oxygen_demand",
+          "lag_hours": 1.0,
+          "strength": -0.06861861752768678,
+          "p_value": 8.19414272071272e-62,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/water_temperature",
+          "effect": "sensor/biochemical_oxygen_demand",
+          "lag_hours": 168.0,
+          "strength": 0.06407055878938701,
+          "p_value": 5.87320001214667e-54,
+          "direction": "positive",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        },
+        {
+          "cause": "sensor/biochemical_oxygen_demand",
+          "effect": "sensor/water_temperature",
+          "lag_hours": 1.0,
+          "strength": -0.043631510167215,
+          "p_value": 5.554547364453112e-26,
+          "direction": "negative",
+          "validated": false,
+          "note": "No matching known chain found (may be novel)"
+        }
+      ]
+    }
+  },
+  "aggregated": {
+    "n_sites": 17,
+    "total_chains_discovered": 375,
+    "total_validated": 0,
+    "validation_rate": 0.0,
+    "chain_types": {
+      "sensor/chemical_oxygen_demand -> sensor/total_phosphorus": {
+        "frequency": 10,
+        "fraction_of_sites": 0.5882352941176471,
+        "mean_lag_hours": 147.1,
+        "std_lag_hours": 49.417507019274055,
+        "mean_strength": 0.08013330265838026,
+        "std_strength": 0.04364773635538092,
+        "mean_p_value": 1.379072522781341e-09,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_phosphorus -> sensor/chemical_oxygen_demand": {
+        "frequency": 10,
+        "fraction_of_sites": 0.5882352941176471,
+        "mean_lag_hours": 101.2,
+        "std_lag_hours": 81.81295740895816,
+        "mean_strength": 0.07403627115930785,
+        "std_strength": 0.03938548991981811,
+        "mean_p_value": 1.4330432678148519e-06,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/ammonia -> sensor/chemical_oxygen_demand": {
+        "frequency": 10,
+        "fraction_of_sites": 0.5882352941176471,
+        "mean_lag_hours": 80.8,
+        "std_lag_hours": 75.24200954254212,
+        "mean_strength": 0.1077478253822735,
+        "std_strength": 0.07234744616266922,
+        "mean_p_value": 3.471985477853494e-19,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/ammonia": {
+        "frequency": 10,
+        "fraction_of_sites": 0.5882352941176471,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.1041464403416635,
+        "std_strength": 0.059473482810694804,
+        "mean_p_value": 6.042095874760153e-18,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_nitrogen -> sensor/ammonia": {
+        "frequency": 10,
+        "fraction_of_sites": 0.5882352941176471,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.09098441585437901,
+        "std_strength": 0.07886682927698462,
+        "mean_p_value": 0.0003191937185085432,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/ammonia -> sensor/total_nitrogen": {
+        "frequency": 10,
+        "fraction_of_sites": 0.5882352941176471,
+        "mean_lag_hours": 107.1,
+        "std_lag_hours": 76.31703610597047,
+        "mean_strength": 0.11700402741282216,
+        "std_strength": 0.0918650423873102,
+        "mean_p_value": 1.3694886455698143e-06,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_phosphorus -> sensor/ammonia": {
+        "frequency": 9,
+        "fraction_of_sites": 0.5294117647058824,
+        "mean_lag_hours": 56.77777777777778,
+        "std_lag_hours": 78.64657621675138,
+        "mean_strength": 0.10048676121726724,
+        "std_strength": 0.06730547360059029,
+        "mean_p_value": 4.69527874719858e-06,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_phosphorus -> sensor/nitrate": {
+        "frequency": 9,
+        "fraction_of_sites": 0.5294117647058824,
+        "mean_lag_hours": 112.33333333333333,
+        "std_lag_hours": 78.7245549721023,
+        "mean_strength": 0.10690656008227659,
+        "std_strength": 0.06789324760929229,
+        "mean_p_value": 2.6680383513462223e-11,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/nitrate -> sensor/total_phosphorus": {
+        "frequency": 9,
+        "fraction_of_sites": 0.5294117647058824,
+        "mean_lag_hours": 93.77777777777777,
+        "std_lag_hours": 82.98296716499219,
+        "mean_strength": 0.08550238311135455,
+        "std_strength": 0.07370032633797222,
+        "mean_p_value": 3.419959730781846e-05,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/total_nitrogen": {
+        "frequency": 9,
+        "fraction_of_sites": 0.5294117647058824,
+        "mean_lag_hours": 38.111111111111114,
+        "std_lag_hours": 69.4285315101387,
+        "mean_strength": 0.08563558603632258,
+        "std_strength": 0.04724755507186069,
+        "mean_p_value": 2.465655888504999e-10,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/ammonia -> sensor/total_phosphorus": {
+        "frequency": 9,
+        "fraction_of_sites": 0.5294117647058824,
+        "mean_lag_hours": 130.88888888888889,
+        "std_lag_hours": 69.4285315101387,
+        "mean_strength": 0.11856349910019522,
+        "std_strength": 0.10062015259393857,
+        "mean_p_value": 2.5289890019653783e-09,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/nitrate -> sensor/chemical_oxygen_demand": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 121.0,
+        "std_lag_hours": 70.59567975450055,
+        "mean_strength": 0.07668229367978269,
+        "std_strength": 0.059889535331939164,
+        "mean_p_value": 0.00010619421477873185,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_phosphorus -> sensor/total_nitrogen": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 105.375,
+        "std_lag_hours": 80.84852735207983,
+        "mean_strength": 0.09005189374119606,
+        "std_strength": 0.06201188365678346,
+        "mean_p_value": 1.9957222994054192e-17,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/nitrate -> sensor/total_nitrogen": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 126.375,
+        "std_lag_hours": 72.09704830989962,
+        "mean_strength": 0.072408313411254,
+        "std_strength": 0.04694401688625505,
+        "mean_p_value": 2.0225122035156102e-08,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_nitrogen -> sensor/chemical_oxygen_demand": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 114.25,
+        "std_lag_hours": 72.35459556932096,
+        "mean_strength": 0.0992186811875635,
+        "std_strength": 0.05092934502948495,
+        "mean_p_value": 4.887915111936334e-05,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_nitrogen -> sensor/total_phosphorus": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.09346892036966878,
+        "std_strength": 0.07188518037941988,
+        "mean_p_value": 0.0002637589501794619,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/ammonia -> sensor/dissolved_oxygen": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 87.375,
+        "std_lag_hours": 72.73227876947071,
+        "mean_strength": 0.14203620255668348,
+        "std_strength": 0.06492107634650514,
+        "mean_p_value": 2.2764118647697822e-11,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_phosphorus -> sensor/dissolved_oxygen": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 63.625,
+        "std_lag_hours": 80.84852735207983,
+        "mean_strength": 0.13246554031990782,
+        "std_strength": 0.07497489444749944,
+        "mean_p_value": 1.530962440019305e-05,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_oxygen -> sensor/total_phosphorus": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 63.625,
+        "std_lag_hours": 80.84852735207983,
+        "mean_strength": 0.12655938264817182,
+        "std_strength": 0.09096727983872473,
+        "mean_p_value": 7.117242157400166e-12,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/dissolved_oxygen -> sensor/ammonia": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 42.75,
+        "std_lag_hours": 72.31312121600062,
+        "mean_strength": 0.0906094079973341,
+        "std_strength": 0.05917199468118845,
+        "mean_p_value": 1.0325406723082802e-06,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/dissolved_oxygen -> sensor/total_nitrogen": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.11740195333233015,
+        "std_strength": 0.1084885746244786,
+        "mean_p_value": 5.951909621062971e-20,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_oxygen -> sensor/chemical_oxygen_demand": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 126.25,
+        "std_lag_hours": 72.31312121600062,
+        "mean_strength": 0.08534220792109247,
+        "std_strength": 0.031920080599322775,
+        "mean_p_value": 1.8800564456382828e-10,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/dissolved_oxygen": {
+        "frequency": 8,
+        "fraction_of_sites": 0.47058823529411764,
+        "mean_lag_hours": 94.875,
+        "std_lag_hours": 77.41517535341504,
+        "mean_strength": 0.09520354230038922,
+        "std_strength": 0.06389847893027746,
+        "mean_p_value": 1.724006018565383e-08,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/nitrate -> sensor/ammonia": {
+        "frequency": 7,
+        "fraction_of_sites": 0.4117647058823529,
+        "mean_lag_hours": 93.85714285714286,
+        "std_lag_hours": 80.6321959294683,
+        "mean_strength": 0.12862448116970654,
+        "std_strength": 0.084943191010803,
+        "mean_p_value": 3.6072449858745294e-10,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/nitrate": {
+        "frequency": 7,
+        "fraction_of_sites": 0.4117647058823529,
+        "mean_lag_hours": 72.57142857142857,
+        "std_lag_hours": 82.64356710400072,
+        "mean_strength": 0.08493730443876535,
+        "std_strength": 0.0522230929947251,
+        "mean_p_value": 9.187647267477663e-07,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/ammonia -> sensor/nitrate": {
+        "frequency": 7,
+        "fraction_of_sites": 0.4117647058823529,
+        "mean_lag_hours": 48.714285714285715,
+        "std_lag_hours": 75.44290989258847,
+        "mean_strength": 0.13172271738854863,
+        "std_strength": 0.12040684692181443,
+        "mean_p_value": 5.773575728472233e-06,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_nitrogen -> sensor/nitrate": {
+        "frequency": 7,
+        "fraction_of_sites": 0.4117647058823529,
+        "mean_lag_hours": 120.28571428571429,
+        "std_lag_hours": 75.44290989258849,
+        "mean_strength": 0.07503425703514047,
+        "std_strength": 0.057352301648810056,
+        "mean_p_value": 8.376094711190641e-07,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/nitrate -> sensor/dissolved_oxygen": {
+        "frequency": 7,
+        "fraction_of_sites": 0.4117647058823529,
+        "mean_lag_hours": 38.57142857142857,
+        "std_lag_hours": 62.14466335634517,
+        "mean_strength": 0.18476158856919475,
+        "std_strength": 0.10321639030930276,
+        "mean_p_value": 1.062321235551277e-15,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/dissolved_oxygen -> sensor/nitrate": {
+        "frequency": 7,
+        "fraction_of_sites": 0.4117647058823529,
+        "mean_lag_hours": 38.42857142857143,
+        "std_lag_hours": 62.22966022922588,
+        "mean_strength": 0.17632794712644592,
+        "std_strength": 0.12128848573258726,
+        "mean_p_value": 2.7586680871609954e-12,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_nitrogen -> sensor/dissolved_oxygen": {
+        "frequency": 7,
+        "fraction_of_sites": 0.4117647058823529,
+        "mean_lag_hours": 66.42857142857143,
+        "std_lag_hours": 62.80777281937812,
+        "mean_strength": 0.14382234147504686,
+        "std_strength": 0.09081522628081501,
+        "mean_p_value": 4.442961502176056e-06,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/chemical_oxygen_demand": {
+        "frequency": 6,
+        "fraction_of_sites": 0.35294117647058826,
+        "mean_lag_hours": 29.0,
+        "std_lag_hours": 62.163762219908584,
+        "mean_strength": 0.10073027886467394,
+        "std_strength": 0.08743015785897937,
+        "mean_p_value": 0.004389135982225251,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/biochemical_oxygen_demand": {
+        "frequency": 6,
+        "fraction_of_sites": 0.35294117647058826,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.10030851065161932,
+        "std_strength": 0.0360777453568622,
+        "mean_p_value": 2.0147063505502655e-42,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/total_phosphorus": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 67.8,
+        "std_lag_hours": 81.81295740895816,
+        "mean_strength": 0.17092175199021642,
+        "std_strength": 0.1352354857621893,
+        "mean_p_value": 3.63225516114352e-17,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_oxygen -> sensor/biochemical_oxygen_demand": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 85.8,
+        "std_lag_hours": 74.49134177875976,
+        "mean_strength": 0.1267025018415075,
+        "std_strength": 0.10990940425269195,
+        "mean_p_value": 3.125193225661912e-23,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_phosphorus -> sensor/biochemical_oxygen_demand": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 68.2,
+        "std_lag_hours": 81.48963124226296,
+        "mean_strength": 0.13479900799129957,
+        "std_strength": 0.10967917527673937,
+        "mean_p_value": 9.49153955910871e-10,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/dissolved_oxygen": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 68.0,
+        "std_lag_hours": 81.65047458527108,
+        "mean_strength": 0.13658656260738092,
+        "std_strength": 0.0878715771561982,
+        "mean_p_value": 3.813022611843924e-29,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/ammonia -> sensor/biochemical_oxygen_demand": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 101.2,
+        "std_lag_hours": 81.81295740895816,
+        "mean_strength": 0.10356137796075784,
+        "std_strength": 0.0768859047461196,
+        "mean_p_value": 2.8945763866199082e-05,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/nitrate": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 47.4,
+        "std_lag_hours": 65.34401273261383,
+        "mean_strength": 0.10293028999910395,
+        "std_strength": 0.058514021998418174,
+        "mean_p_value": 2.4017366169491583e-05,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/nitrate -> sensor/biochemical_oxygen_demand": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 101.2,
+        "std_lag_hours": 81.81295740895814,
+        "mean_strength": 0.08631865162171247,
+        "std_strength": 0.05634938346322004,
+        "mean_p_value": 1.354622087293906e-11,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_nitrogen -> sensor/biochemical_oxygen_demand": {
+        "frequency": 5,
+        "fraction_of_sites": 0.29411764705882354,
+        "mean_lag_hours": 34.4,
+        "std_lag_hours": 66.8,
+        "mean_strength": 0.10585432383491933,
+        "std_strength": 0.06004470151911794,
+        "mean_p_value": 1.4484829265904451e-10,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/dissolved_organic_carbon": {
+        "frequency": 4,
+        "fraction_of_sites": 0.23529411764705882,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.08428997926336407,
+        "std_strength": 0.05091927096157586,
+        "mean_p_value": 0.0001655423610669146,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/biochemical_oxygen_demand": {
+        "frequency": 4,
+        "fraction_of_sites": 0.23529411764705882,
+        "mean_lag_hours": 42.75,
+        "std_lag_hours": 72.31312121600062,
+        "mean_strength": 0.04987884497481059,
+        "std_strength": 0.02907305495472791,
+        "mean_p_value": 7.857839137473931e-06,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/ammonia": {
+        "frequency": 4,
+        "fraction_of_sites": 0.23529411764705882,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.07613353547128437,
+        "std_strength": 0.057288218304972605,
+        "mean_p_value": 9.239008757533054e-09,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/total_nitrogen": {
+        "frequency": 4,
+        "fraction_of_sites": 0.23529411764705882,
+        "mean_lag_hours": 126.25,
+        "std_lag_hours": 72.31312121600062,
+        "mean_strength": 0.12849194194282704,
+        "std_strength": 0.04049134648831958,
+        "mean_p_value": 1.8844462967591175e-82,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/nitrate": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.13161243721957985,
+        "std_strength": 0.07362804035309804,
+        "mean_p_value": 6.611115745878933e-45,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/dissolved_organic_carbon": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 135.0,
+        "std_lag_hours": 33.0,
+        "mean_strength": 0.15026287922447912,
+        "std_strength": 0.03540287849171481,
+        "mean_p_value": 1.1049876406127e-170,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_phosphorus -> sensor/dissolved_organic_carbon": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.14190342197012668,
+        "std_strength": 0.04310706633027036,
+        "mean_p_value": 1.1444854237199547e-126,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/nitrate -> sensor/dissolved_organic_carbon": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 120.0,
+        "std_lag_hours": 48.0,
+        "mean_strength": 0.09927619842718369,
+        "std_strength": 0.0854091187042984,
+        "mean_p_value": 0.00040659765126403616,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/total_phosphorus": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.1003156131886074,
+        "std_strength": 0.05537550661461816,
+        "mean_p_value": 9.343917298960979e-28,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/chemical_oxygen_demand": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.09759300504197091,
+        "std_strength": 0.02401549498071047,
+        "mean_p_value": 2.7360905771683425e-71,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/water_temperature -> sensor/chemical_oxygen_demand": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 84.5,
+        "std_lag_hours": 83.5,
+        "mean_strength": 0.17156635469873466,
+        "std_strength": 0.07147391472387914,
+        "mean_p_value": 1.1821447984285094e-129,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/water_temperature": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.1031993531418026,
+        "std_strength": 0.0595678429745876,
+        "mean_p_value": 2.777273682226556e-26,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/water_temperature -> sensor/biochemical_oxygen_demand": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 135.0,
+        "std_lag_hours": 33.0,
+        "mean_strength": 0.11120738143506692,
+        "std_strength": 0.0471368226456799,
+        "mean_p_value": 2.936600006073335e-54,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/water_temperature": {
+        "frequency": 2,
+        "fraction_of_sites": 0.11764705882352941,
+        "mean_lag_hours": 1.5,
+        "std_lag_hours": 0.5,
+        "mean_strength": 0.12154424154342411,
+        "std_strength": 0.029142342072111777,
+        "mean_p_value": 4.6139846373563566e-111,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_nitrogen -> sensor/dissolved_organic_carbon": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.18119084745841593,
+        "std_strength": 0.0,
+        "mean_p_value": 6.3677589019e-313,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/total_nitrogen": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.14880796549301784,
+        "std_strength": 0.0,
+        "mean_p_value": 1.973288232742919e-211,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/ammonia": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.08723986036404043,
+        "std_strength": 0.0,
+        "mean_p_value": 3.756474262005634e-73,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_oxygen -> sensor/dissolved_organic_carbon": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.0685633423285936,
+        "std_strength": 0.0,
+        "mean_p_value": 8.220262703962722e-46,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/ammonia -> sensor/dissolved_organic_carbon": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.039277510943512915,
+        "std_strength": 0.0,
+        "mean_p_value": 4.2022600668980455e-16,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/dissolved_oxygen": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.01909618432280158,
+        "std_strength": 0.0,
+        "mean_p_value": 7.479819183628141e-05,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/pH -> sensor/dissolved_organic_carbon": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 162.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.15902493650175892,
+        "std_strength": 0.0,
+        "mean_p_value": 0.0,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/pH -> sensor/biochemical_oxygen_demand": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 36.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.1582963383814968,
+        "std_strength": 0.0,
+        "mean_p_value": 0.0,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/pH": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.13806132305326826,
+        "std_strength": 0.0,
+        "mean_p_value": 1.1649653647258018e-246,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_phosphorus -> sensor/pH": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.12610699813720616,
+        "std_strength": 0.0,
+        "mean_p_value": 3.0950316326496037e-205,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/pH -> sensor/chemical_oxygen_demand": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.1207205778432306,
+        "std_strength": 0.0,
+        "mean_p_value": 3.979518785380642e-188,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/pH -> sensor/total_suspended_solids": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.11096186023964362,
+        "std_strength": 0.0,
+        "mean_p_value": 4.4306020903170313e-159,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/total_suspended_solids": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.1023592741009305,
+        "std_strength": 0.0,
+        "mean_p_value": 1.5105351150343498e-135,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_phosphorus -> sensor/total_suspended_solids": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.09421010265579992,
+        "std_strength": 0.0,
+        "mean_p_value": 2.32691243410889e-115,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/water_temperature -> sensor/dissolved_organic_carbon": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.09373999764487408,
+        "std_strength": 0.0,
+        "mean_p_value": 6.626607725726927e-114,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_suspended_solids -> sensor/chemical_oxygen_demand": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.09277468425038865,
+        "std_strength": 0.0,
+        "mean_p_value": 1.3331647326322239e-111,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/pH": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.08804471211188662,
+        "std_strength": 0.0,
+        "mean_p_value": 6.032622997099719e-101,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/total_suspended_solids": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.06653331859123578,
+        "std_strength": 0.0,
+        "mean_p_value": 2.3601225843590908e-58,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_phosphorus -> sensor/water_temperature": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.06347784798171317,
+        "std_strength": 0.0,
+        "mean_p_value": 4.023548730137733e-53,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/pH -> sensor/nitrate": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.05692344658134972,
+        "std_strength": 0.0,
+        "mean_p_value": 4.759745184758919e-43,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/dissolved_organic_carbon -> sensor/water_temperature": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.055867563276021576,
+        "std_strength": 0.0,
+        "mean_p_value": 1.2134676234127605e-41,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/nitrate -> sensor/pH": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.05248049514554347,
+        "std_strength": 0.0,
+        "mean_p_value": 7.656425495158833e-37,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/water_temperature -> sensor/total_suspended_solids": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.046357645086542144,
+        "std_strength": 0.0,
+        "mean_p_value": 3.4513170416778056e-29,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/pH -> sensor/total_phosphorus": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.04448561694657357,
+        "std_strength": 0.0,
+        "mean_p_value": 5.2356318717425904e-27,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_suspended_solids -> sensor/dissolved_organic_carbon": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.04139633703249866,
+        "std_strength": 0.0,
+        "mean_p_value": 1.5375314892351998e-23,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/total_suspended_solids -> sensor/total_phosphorus": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.03733544213001993,
+        "std_strength": 0.0,
+        "mean_p_value": 1.7102199485221552e-19,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_suspended_solids -> sensor/biochemical_oxygen_demand": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.03639730480767281,
+        "std_strength": 0.0,
+        "mean_p_value": 1.4853802710634151e-18,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/chemical_oxygen_demand -> sensor/pH": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.03588365105598677,
+        "std_strength": 0.0,
+        "mean_p_value": 3.991380057385597e-18,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/water_temperature -> sensor/pH": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.035789654408031335,
+        "std_strength": 0.0,
+        "mean_p_value": 5.4319402453607725e-18,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_suspended_solids -> sensor/pH": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.03430869246480217,
+        "std_strength": 0.0,
+        "mean_p_value": 1.0598807641268248e-16,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/water_temperature -> sensor/total_phosphorus": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.031989294473303204,
+        "std_strength": 0.0,
+        "mean_p_value": 1.0210140688127097e-14,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/nitrate -> sensor/total_suspended_solids": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.031522549774773444,
+        "std_strength": 0.0,
+        "mean_p_value": 2.682701380221871e-14,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_suspended_solids -> sensor/nitrate": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.028605887168926446,
+        "std_strength": 0.0,
+        "mean_p_value": 4.912167612542073e-12,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/total_suspended_solids -> sensor/water_temperature": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.025148011804267244,
+        "std_strength": 0.0,
+        "mean_p_value": 1.2573017370276823e-09,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/pH -> sensor/water_temperature": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 1.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.024544587782277843,
+        "std_strength": 0.0,
+        "mean_p_value": 2.929797394058582e-09,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      },
+      "sensor/biochemical_oxygen_demand -> sensor/total_suspended_solids": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.02202442598742228,
+        "std_strength": 0.0,
+        "mean_p_value": 1.0475371161101421e-07,
+        "validated_fraction": 0.0,
+        "direction": "negative"
+      },
+      "sensor/water_temperature -> sensor/nitrate": {
+        "frequency": 1,
+        "fraction_of_sites": 0.058823529411764705,
+        "mean_lag_hours": 168.0,
+        "std_lag_hours": 0.0,
+        "mean_strength": 0.008165158478884714,
+        "std_strength": 0.0,
+        "mean_p_value": 0.04867248842422641,
+        "validated_fraction": 0.0,
+        "direction": "positive"
+      }
+    },
+    "novel_chains": [
+      {
+        "chain": "sensor/nitrate -> sensor/ammonia",
+        "frequency": 7,
+        "mean_lag_hours": 93.85714285714286,
+        "mean_strength": 0.12862448116970654
+      },
+      {
+        "chain": "sensor/chemical_oxygen_demand -> sensor/total_phosphorus",
+        "frequency": 10,
+        "mean_lag_hours": 147.1,
+        "mean_strength": 0.08013330265838026
+      },
+      {
+        "chain": "sensor/chemical_oxygen_demand -> sensor/nitrate",
+        "frequency": 7,
+        "mean_lag_hours": 72.57142857142857,
+        "mean_strength": 0.08493730443876535
+      },
+      {
+        "chain": "sensor/nitrate -> sensor/chemical_oxygen_demand",
+        "frequency": 8,
+        "mean_lag_hours": 121.0,
+        "mean_strength": 0.07668229367978269
+      },
+      {
+        "chain": "sensor/total_phosphorus -> sensor/chemical_oxygen_demand",
+        "frequency": 10,
+        "mean_lag_hours": 101.2,
+        "mean_strength": 0.07403627115930785
+      },
+      {
+        "chain": "sensor/total_phosphorus -> sensor/ammonia",
+        "frequency": 9,
+        "mean_lag_hours": 56.77777777777778,
+        "mean_strength": 0.10048676121726724
+      },
+      {
+        "chain": "sensor/ammonia -> sensor/nitrate",
+        "frequency": 7,
+        "mean_lag_hours": 48.714285714285715,
+        "mean_strength": 0.13172271738854863
+      },
+      {
+        "chain": "sensor/ammonia -> sensor/chemical_oxygen_demand",
+        "frequency": 10,
+        "mean_lag_hours": 80.8,
+        "mean_strength": 0.1077478253822735
+      },
+      {
+        "chain": "sensor/chemical_oxygen_demand -> sensor/ammonia",
+        "frequency": 10,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.1041464403416635
+      },
+      {
+        "chain": "sensor/total_nitrogen -> sensor/ammonia",
+        "frequency": 10,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.09098441585437901
+      },
+      {
+        "chain": "sensor/total_phosphorus -> sensor/nitrate",
+        "frequency": 9,
+        "mean_lag_hours": 112.33333333333333,
+        "mean_strength": 0.10690656008227659
+      },
+      {
+        "chain": "sensor/total_phosphorus -> sensor/total_nitrogen",
+        "frequency": 8,
+        "mean_lag_hours": 105.375,
+        "mean_strength": 0.09005189374119606
+      },
+      {
+        "chain": "sensor/nitrate -> sensor/total_phosphorus",
+        "frequency": 9,
+        "mean_lag_hours": 93.77777777777777,
+        "mean_strength": 0.08550238311135455
+      },
+      {
+        "chain": "sensor/nitrate -> sensor/total_nitrogen",
+        "frequency": 8,
+        "mean_lag_hours": 126.375,
+        "mean_strength": 0.072408313411254
+      },
+      {
+        "chain": "sensor/chemical_oxygen_demand -> sensor/total_nitrogen",
+        "frequency": 9,
+        "mean_lag_hours": 38.111111111111114,
+        "mean_strength": 0.08563558603632258
+      },
+      {
+        "chain": "sensor/ammonia -> sensor/total_phosphorus",
+        "frequency": 9,
+        "mean_lag_hours": 130.88888888888889,
+        "mean_strength": 0.11856349910019522
+      },
+      {
+        "chain": "sensor/total_nitrogen -> sensor/nitrate",
+        "frequency": 7,
+        "mean_lag_hours": 120.28571428571429,
+        "mean_strength": 0.07503425703514047
+      },
+      {
+        "chain": "sensor/ammonia -> sensor/total_nitrogen",
+        "frequency": 10,
+        "mean_lag_hours": 107.1,
+        "mean_strength": 0.11700402741282216
+      },
+      {
+        "chain": "sensor/total_nitrogen -> sensor/chemical_oxygen_demand",
+        "frequency": 8,
+        "mean_lag_hours": 114.25,
+        "mean_strength": 0.0992186811875635
+      },
+      {
+        "chain": "sensor/total_nitrogen -> sensor/total_phosphorus",
+        "frequency": 8,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.09346892036966878
+      },
+      {
+        "chain": "sensor/nitrate -> sensor/dissolved_oxygen",
+        "frequency": 7,
+        "mean_lag_hours": 38.57142857142857,
+        "mean_strength": 0.18476158856919475
+      },
+      {
+        "chain": "sensor/dissolved_oxygen -> sensor/nitrate",
+        "frequency": 7,
+        "mean_lag_hours": 38.42857142857143,
+        "mean_strength": 0.17632794712644592
+      },
+      {
+        "chain": "sensor/ammonia -> sensor/dissolved_oxygen",
+        "frequency": 8,
+        "mean_lag_hours": 87.375,
+        "mean_strength": 0.14203620255668348
+      },
+      {
+        "chain": "sensor/total_phosphorus -> sensor/dissolved_oxygen",
+        "frequency": 8,
+        "mean_lag_hours": 63.625,
+        "mean_strength": 0.13246554031990782
+      },
+      {
+        "chain": "sensor/dissolved_oxygen -> sensor/total_phosphorus",
+        "frequency": 8,
+        "mean_lag_hours": 63.625,
+        "mean_strength": 0.12655938264817182
+      },
+      {
+        "chain": "sensor/dissolved_oxygen -> sensor/ammonia",
+        "frequency": 8,
+        "mean_lag_hours": 42.75,
+        "mean_strength": 0.0906094079973341
+      },
+      {
+        "chain": "sensor/total_nitrogen -> sensor/dissolved_oxygen",
+        "frequency": 7,
+        "mean_lag_hours": 66.42857142857143,
+        "mean_strength": 0.14382234147504686
+      },
+      {
+        "chain": "sensor/dissolved_oxygen -> sensor/total_nitrogen",
+        "frequency": 8,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.11740195333233015
+      },
+      {
+        "chain": "sensor/dissolved_oxygen -> sensor/chemical_oxygen_demand",
+        "frequency": 8,
+        "mean_lag_hours": 126.25,
+        "mean_strength": 0.08534220792109247
+      },
+      {
+        "chain": "sensor/chemical_oxygen_demand -> sensor/dissolved_oxygen",
+        "frequency": 8,
+        "mean_lag_hours": 94.875,
+        "mean_strength": 0.09520354230038922
+      },
+      {
+        "chain": "sensor/biochemical_oxygen_demand -> sensor/dissolved_organic_carbon",
+        "frequency": 4,
+        "mean_lag_hours": 168.0,
+        "mean_strength": 0.08428997926336407
+      },
+      {
+        "chain": "sensor/dissolved_organic_carbon -> sensor/biochemical_oxygen_demand",
+        "frequency": 4,
+        "mean_lag_hours": 42.75,
+        "mean_strength": 0.04987884497481059
+      },
+      {
+        "chain": "sensor/biochemical_oxygen_demand -> sensor/total_phosphorus",
+        "frequency": 5,
+        "mean_lag_hours": 67.8,
+        "mean_strength": 0.17092175199021642
+      },
+      {
+        "chain": "sensor/dissolved_oxygen -> sensor/biochemical_oxygen_demand",
+        "frequency": 5,
+        "mean_lag_hours": 85.8,
+        "mean_strength": 0.1267025018415075
+      },
+      {
+        "chain": "sensor/total_phosphorus -> sensor/biochemical_oxygen_demand",
+        "frequency": 5,
+        "mean_lag_hours": 68.2,
+        "mean_strength": 0.13479900799129957
+      },
+      {
+        "chain": "sensor/biochemical_oxygen_demand -> sensor/dissolved_oxygen",
+        "frequency": 5,
+        "mean_lag_hours": 68.0,
+        "mean_strength": 0.13658656260738092
+      },
+      {
+        "chain": "sensor/ammonia -> sensor/biochemical_oxygen_demand",
+        "frequency": 5,
+        "mean_lag_hours": 101.2,
+        "mean_strength": 0.10356137796075784
+      },
+      {
+        "chain": "sensor/biochemical_oxygen_demand -> sensor/nitrate",
+        "frequency": 5,
+        "mean_lag_hours": 47.4,
+        "mean_strength": 0.10293028999910395
+      },
+      {
+        "chain": "sensor/nitrate -> sensor/biochemical_oxygen_demand",
+        "frequency": 5,
+        "mean_lag_hours": 101.2,
+        "mean_strength": 0.08631865162171247
+      },
+      {
+        "chain": "sensor/biochemical_oxygen_demand -> sensor/ammonia",
+        "frequency": 4,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.07613353547128437
+      },
+      {
+        "chain": "sensor/biochemical_oxygen_demand -> sensor/total_nitrogen",
+        "frequency": 4,
+        "mean_lag_hours": 126.25,
+        "mean_strength": 0.12849194194282704
+      },
+      {
+        "chain": "sensor/total_nitrogen -> sensor/biochemical_oxygen_demand",
+        "frequency": 5,
+        "mean_lag_hours": 34.4,
+        "mean_strength": 0.10585432383491933
+      },
+      {
+        "chain": "sensor/biochemical_oxygen_demand -> sensor/chemical_oxygen_demand",
+        "frequency": 6,
+        "mean_lag_hours": 29.0,
+        "mean_strength": 0.10073027886467394
+      },
+      {
+        "chain": "sensor/chemical_oxygen_demand -> sensor/biochemical_oxygen_demand",
+        "frequency": 6,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.10030851065161932
+      }
+    ]
+  }
+}
