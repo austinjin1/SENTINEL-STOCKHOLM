@@ -1,0 +1,207 @@
+{
+  "modalities_evaluated": [
+    "satellite",
+    "sensor"
+  ],
+  "anomaly_types": [
+    "chemical_spike",
+    "dissolved_oxygen_drop",
+    "turbidity_surge",
+    "ph_deviation",
+    "temperature_anomaly",
+    "nutrient_bloom",
+    "microbial_shift",
+    "toxic_compound"
+  ],
+  "contaminant_classes": [
+    "nutrient",
+    "heavy_metals",
+    "thermal",
+    "pharmaceutical",
+    "sediment",
+    "oil_petrochemical",
+    "sewage",
+    "acid_mine"
+  ],
+  "per_modality": {
+    "satellite": {
+      "n_samples": 1000,
+      "n_anomalous": 0,
+      "anomaly_rate": 0.0,
+      "mean_anomaly_prob": 0.045014120638370514,
+      "mean_severity": 0.18998554348945618,
+      "n_high_alert": 5,
+      "alert_distribution": {
+        "no_event": 0.699,
+        "low": 0.296,
+        "high": 0.005
+      },
+      "type_ranking_all": [
+        {
+          "type": "turbidity_surge",
+          "mean_prob": 0.8458715081214905
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_prob": 0.8343704342842102
+        },
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_prob": 0.732867956161499
+        },
+        {
+          "type": "microbial_shift",
+          "mean_prob": 0.651807427406311
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_prob": 0.6060371994972229
+        },
+        {
+          "type": "toxic_compound",
+          "mean_prob": 0.4624447822570801
+        },
+        {
+          "type": "chemical_spike",
+          "mean_prob": 0.43332234025001526
+        },
+        {
+          "type": "ph_deviation",
+          "mean_prob": 0.06102936342358589
+        }
+      ],
+      "type_ranking_anomalous": [
+        {
+          "type": "turbidity_surge",
+          "mean_prob": 0.8458715081214905
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_prob": 0.8343704342842102
+        },
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_prob": 0.732867956161499
+        },
+        {
+          "type": "microbial_shift",
+          "mean_prob": 0.651807427406311
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_prob": 0.6060371994972229
+        },
+        {
+          "type": "toxic_compound",
+          "mean_prob": 0.4624447822570801
+        },
+        {
+          "type": "chemical_spike",
+          "mean_prob": 0.43332234025001526
+        },
+        {
+          "type": "ph_deviation",
+          "mean_prob": 0.06102936342358589
+        }
+      ],
+      "anomaly_prob_percentiles": {
+        "p10": 0.022383159026503563,
+        "p25": 0.030717264860868454,
+        "p50": 0.043227825313806534,
+        "p75": 0.05669059976935387,
+        "p90": 0.07171393930912018,
+        "p99": 0.09229159355163574
+      }
+    },
+    "sensor": {
+      "n_samples": 1000,
+      "n_anomalous": 0,
+      "anomaly_rate": 0.0,
+      "mean_anomaly_prob": 0.10079916566610336,
+      "mean_severity": 6.048469362314475e-20,
+      "n_high_alert": 1000,
+      "alert_distribution": {
+        "no_event": 0.0,
+        "low": 0.0,
+        "high": 1.0
+      },
+      "type_ranking_all": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_prob": 0.9998198747634888
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_prob": 0.9943704009056091
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_prob": 0.9035099744796753
+        },
+        {
+          "type": "turbidity_surge",
+          "mean_prob": 0.34222111105918884
+        },
+        {
+          "type": "toxic_compound",
+          "mean_prob": 0.25412073731422424
+        },
+        {
+          "type": "microbial_shift",
+          "mean_prob": 0.06281737238168716
+        },
+        {
+          "type": "chemical_spike",
+          "mean_prob": 0.022026579827070236
+        },
+        {
+          "type": "ph_deviation",
+          "mean_prob": 3.0058279207878513e-06
+        }
+      ],
+      "type_ranking_anomalous": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_prob": 0.9998198747634888
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_prob": 0.9943704009056091
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_prob": 0.9035099744796753
+        },
+        {
+          "type": "turbidity_surge",
+          "mean_prob": 0.34222111105918884
+        },
+        {
+          "type": "toxic_compound",
+          "mean_prob": 0.25412073731422424
+        },
+        {
+          "type": "microbial_shift",
+          "mean_prob": 0.06281737238168716
+        },
+        {
+          "type": "chemical_spike",
+          "mean_prob": 0.022026579827070236
+        },
+        {
+          "type": "ph_deviation",
+          "mean_prob": 3.0058279207878513e-06
+        }
+      ],
+      "anomaly_prob_percentiles": {
+        "p10": 0.09974820166826248,
+        "p25": 0.10037064552307129,
+        "p50": 0.1005832850933075,
+        "p75": 0.10072788596153259,
+        "p90": 0.10088014602661133,
+        "p99": 0.10466146469116211
+      }
+    }
+  },
+  "elapsed_seconds": 7.7276692390441895
+}
