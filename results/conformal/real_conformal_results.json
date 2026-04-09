@@ -26,10 +26,20 @@
           "coverage_met": false,
           "mean_pvalue": 0.47818583250045776,
           "median_pvalue": 0.4853675961494446
+        },
+        "microbial": {
+          "n_calibration": 3500,
+          "n_test": 1500,
+          "threshold": 59.348087310791016,
+          "empirical_coverage": 0.9173333333333333,
+          "target_coverage": 0.95,
+          "coverage_met": false,
+          "mean_pvalue": 0.4660082161426544,
+          "median_pvalue": 0.46615251898765564
         }
       },
-      "overall_coverage": 0.9543256313809779,
-      "coverage_guarantee_met": true
+      "overall_coverage": 0.9378161261529306,
+      "coverage_guarantee_met": false
     },
     "0.1": {
       "modalities": {
@@ -52,14 +62,25 @@
           "coverage_met": false,
           "mean_pvalue": 0.47818583250045776,
           "median_pvalue": 0.4853675961494446
+        },
+        "microbial": {
+          "n_calibration": 3500,
+          "n_test": 1500,
+          "threshold": 58.7530517578125,
+          "empirical_coverage": 0.8533333333333334,
+          "target_coverage": 0.9,
+          "coverage_met": false,
+          "mean_pvalue": 0.4660082161426544,
+          "median_pvalue": 0.46615251898765564
         }
       },
-      "overall_coverage": 0.9016657710908114,
-      "coverage_guarantee_met": true
+      "overall_coverage": 0.8800952097590004,
+      "coverage_guarantee_met": false
     }
   },
   "ensemble": {
     "modalities": [
+      "microbial",
       "satellite",
       "sensor"
     ],

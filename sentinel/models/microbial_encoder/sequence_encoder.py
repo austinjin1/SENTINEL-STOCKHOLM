@@ -65,7 +65,10 @@ class DNABERTSequenceEncoder(nn.Module):
         self._init_backbone(model_id)
 
         # Projection from backbone dim to output_dim
-        backbone_dim = DNABERT_S_DIM if self.using_dnabert else output_dim
+        # Always use DNABERT_S_DIM so checkpoint weights load correctly
+        # even when DNABERT-S is unavailable (fallback embeddings are
+        # expanded to match)
+        backbone_dim = DNABERT_S_DIM
         self.projection = nn.Sequential(
             nn.Linear(backbone_dim, output_dim),
             nn.GELU(),
@@ -206,8 +209,16 @@ class DNABERTSequenceEncoder(nn.Module):
 
         raw_embeddings = self.fallback_embeddings(indices)  # [n_otus, output_dim]
 
-        # Fallback embeddings are already output_dim — skip projection
-        return raw_embeddings
+        # Pad fallback embeddings to backbone dim then project, so that
+        # the trained projection weights are used even in fallback mode
+        proj_in_dim = self.projection[0].in_features
+        if raw_embeddings.size(-1) < proj_in_dim:
+            pad = torch.zeros(
+                *raw_embeddings.shape[:-1], proj_in_dim - raw_embeddings.size(-1),
+                device=raw_embeddings.device, dtype=raw_embeddings.dtype,
+            )
+            raw_embeddings = torch.cat([raw_embeddings, pad], dim=-1)
+        return self.projection(raw_embeddings)
 
     def get_cached_embeddings(
         self,
