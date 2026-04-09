@@ -1,0 +1,41 @@
+{
+  "source": "real_embeddings",
+  "alpha_levels": [
+    0.05,
+    0.1
+  ],
+  "per_alpha": {
+    "0.05": {
+      "modalities": {
+        "satellite": {
+          "n_calibration": 2941,
+          "n_test": 1261,
+          "threshold": 0.378424733877182,
+          "empirical_coverage": 0.9627279936558287,
+          "target_coverage": 0.95,
+          "coverage_met": true,
+          "mean_pvalue": 0.5045623779296875,
+          "median_pvalue": 0.49592113494873047
+        }
+      },
+      "overall_coverage": 0.9627279936558287,
+      "coverage_guarantee_met": true
+    },
+    "0.1": {
+      "modalities": {
+        "satellite": {
+          "n_calibration": 2941,
+          "n_test": 1261,
+          "threshold": 0.28904789686203003,
+          "empirical_coverage": 0.9199048374306106,
+          "target_coverage": 0.9,
+          "coverage_met": true,
+          "mean_pvalue": 0.5045623779296875,
+          "median_pvalue": 0.49592113494873047
+        }
+      },
+      "overall_coverage": 0.9199048374306106,
+      "coverage_guarantee_met": true
+    }
+  }
+}
