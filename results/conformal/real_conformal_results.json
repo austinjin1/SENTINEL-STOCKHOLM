@@ -16,9 +16,19 @@
           "coverage_met": true,
           "mean_pvalue": 0.5045623779296875,
           "median_pvalue": 0.49592113494873047
+        },
+        "sensor": {
+          "n_calibration": 1400,
+          "n_test": 600,
+          "threshold": 17.170955657958984,
+          "empirical_coverage": 0.9366666666666666,
+          "target_coverage": 0.95,
+          "coverage_met": false,
+          "mean_pvalue": 0.47818583250045776,
+          "median_pvalue": 0.4853675961494446
         }
       },
-      "overall_coverage": 0.9627279936558287,
+      "overall_coverage": 0.9543256313809779,
       "coverage_guarantee_met": true
     },
     "0.1": {
@@ -32,10 +42,28 @@
           "coverage_met": true,
           "mean_pvalue": 0.5045623779296875,
           "median_pvalue": 0.49592113494873047
+        },
+        "sensor": {
+          "n_calibration": 1400,
+          "n_test": 600,
+          "threshold": 11.914560317993164,
+          "empirical_coverage": 0.8633333333333333,
+          "target_coverage": 0.9,
+          "coverage_met": false,
+          "mean_pvalue": 0.47818583250045776,
+          "median_pvalue": 0.4853675961494446
         }
       },
-      "overall_coverage": 0.9199048374306106,
+      "overall_coverage": 0.9016657710908114,
       "coverage_guarantee_met": true
     }
+  },
+  "ensemble": {
+    "modalities": [
+      "satellite",
+      "sensor"
+    ],
+    "correction": "bonferroni",
+    "alpha": 0.05
   }
 }
