@@ -1,0 +1,1577 @@
+[
+  {
+    "trial_id": 0,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919417888836621,
+    "mean_lead_time_hours": 1359.1142536944087,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 1,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "behavioral"
+    ],
+    "detection_auc": 0.9915436411880121,
+    "mean_lead_time_hours": 1355.4798386932812,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 2,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "behavioral"
+    ],
+    "detection_auc": 0.8440586207857317,
+    "mean_lead_time_hours": 1266.6380443034373,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 3,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite"
+    ],
+    "detection_auc": 0.9433809385659808,
+    "mean_lead_time_hours": 1383.0686818927063,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 4,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "microbial",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9912800440976209,
+    "mean_lead_time_hours": 1359.3006975924175,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 5,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor"
+    ],
+    "detection_auc": 0.9432563006402895,
+    "mean_lead_time_hours": 1370.2022432184153,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 6,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8424480558227232,
+    "mean_lead_time_hours": 1415.2034284101987,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 7,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.8431627994112212,
+    "mean_lead_time_hours": 1395.59851565065,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 8,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial"
+    ],
+    "detection_auc": 0.603094532525259,
+    "mean_lead_time_hours": 2773.959424284644,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 9,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite"
+    ],
+    "detection_auc": 0.7645282611982469,
+    "mean_lead_time_hours": 192.6384227689604,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 10,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8430346491209681,
+    "mean_lead_time_hours": 1388.6671609636148,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 11,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919339633296779,
+    "mean_lead_time_hours": 1382.4319220157265,
+    "source_attribution_top1": 0.3
+  },
+  {
+    "trial_id": 12,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite"
+    ],
+    "detection_auc": 0.9437758863827438,
+    "mean_lead_time_hours": 1380.5039236147604,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 13,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "behavioral",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial",
+      "molecular"
+    ],
+    "detection_auc": 0.9431604570374238,
+    "mean_lead_time_hours": 1369.8172613186043,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 14,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9916301715021216,
+    "mean_lead_time_hours": 1363.3352865510383,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 15,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.842031586578895,
+    "mean_lead_time_hours": 1412.8350928508903,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 16,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9920373676911732,
+    "mean_lead_time_hours": 1369.6463919366533,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 17,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial"
+    ],
+    "detection_auc": 0.9428968881285531,
+    "mean_lead_time_hours": 1378.399814195653,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 18,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite"
+    ],
+    "detection_auc": 0.7324909864152145,
+    "mean_lead_time_hours": 193.0948690509465,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 19,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "molecular"
+    ],
+    "detection_auc": 0.9424799282116542,
+    "mean_lead_time_hours": 1377.7784863578945,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 20,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite"
+    ],
+    "detection_auc": 0.7685823717422521,
+    "mean_lead_time_hours": 186.02655478774673,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 21,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite"
+    ],
+    "detection_auc": 0.7814247721680265,
+    "mean_lead_time_hours": 180.3268195099963,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 22,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.991759248187954,
+    "mean_lead_time_hours": 1322.1006933222084,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 23,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "microbial",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9916201048458851,
+    "mean_lead_time_hours": 1357.7772324766054,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 24,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.992022122333998,
+    "mean_lead_time_hours": 1359.3525282957291,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 25,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9921826605069651,
+    "mean_lead_time_hours": 1355.0277981048755,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 26,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8470534179317313,
+    "mean_lead_time_hours": 1321.8296334348784,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 27,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "microbial",
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "behavioral"
+    ],
+    "detection_auc": 0.9914991909491756,
+    "mean_lead_time_hours": 1353.1492767637237,
+    "source_attribution_top1": 0.3
+  },
+  {
+    "trial_id": 28,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "behavioral"
+    ],
+    "detection_auc": 0.8419769949609908,
+    "mean_lead_time_hours": 1414.2845430029497,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 29,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918022926786247,
+    "mean_lead_time_hours": 1334.125145159152,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 30,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.9916683108971808,
+    "mean_lead_time_hours": 1338.10369872321,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 31,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919505911355828,
+    "mean_lead_time_hours": 1354.8044314276244,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 32,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "microbial"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918787319298807,
+    "mean_lead_time_hours": 1362.0204138307836,
+    "source_attribution_top1": 0.3
+  },
+  {
+    "trial_id": 33,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular"
+    ],
+    "detection_auc": 0.499487662115605,
+    "mean_lead_time_hours": 0.0,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 34,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular"
+    ],
+    "detection_auc": 0.49794944092889193,
+    "mean_lead_time_hours": 0.0,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 35,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9921000083933864,
+    "mean_lead_time_hours": 1348.7494295872052,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 36,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "microbial",
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "behavioral"
+    ],
+    "detection_auc": 0.9916758609332852,
+    "mean_lead_time_hours": 1356.3658192373578,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 37,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "behavioral"
+    ],
+    "detection_auc": 0.9913337966364579,
+    "mean_lead_time_hours": 1344.8869108345045,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 38,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9920668882484487,
+    "mean_lead_time_hours": 1348.9250964400967,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 39,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8450479253044322,
+    "mean_lead_time_hours": 1329.116363153676,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 40,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9915835849370818,
+    "mean_lead_time_hours": 1346.9321902930408,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 41,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919428156559081,
+    "mean_lead_time_hours": 1354.9932475269768,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 42,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite"
+    ],
+    "detection_auc": 0.9437939657389064,
+    "mean_lead_time_hours": 1376.5164810098408,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 43,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular"
+    ],
+    "detection_auc": 0.4982558045028164,
+    "mean_lead_time_hours": 0.0,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 44,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918511478120035,
+    "mean_lead_time_hours": 1373.8311454132463,
+    "source_attribution_top1": 0.4
+  },
+  {
+    "trial_id": 45,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9916816921275413,
+    "mean_lead_time_hours": 1348.14442689132,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 46,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919076304804456,
+    "mean_lead_time_hours": 1358.5996979076199,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 47,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial"
+    ],
+    "detection_auc": 0.942792076026064,
+    "mean_lead_time_hours": 1382.8425135655734,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 48,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919907219480786,
+    "mean_lead_time_hours": 1358.5740033760733,
+    "source_attribution_top1": 0.3
+  },
+  {
+    "trial_id": 49,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "behavioral"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular"
+    ],
+    "detection_auc": 0.9436729139612242,
+    "mean_lead_time_hours": 1367.0884497029385,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 50,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "behavioral"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular"
+    ],
+    "detection_auc": 0.942604246452862,
+    "mean_lead_time_hours": 1370.5837904452287,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 51,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "molecular"
+    ],
+    "detection_auc": 0.9429096765267001,
+    "mean_lead_time_hours": 1366.7324876675937,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 52,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "behavioral"
+    ],
+    "detection_auc": 0.9911120704385941,
+    "mean_lead_time_hours": 1348.203505209744,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 53,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "molecular"
+    ],
+    "detection_auc": 0.9424254785988656,
+    "mean_lead_time_hours": 1375.9529817056325,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 54,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.8444825815387865,
+    "mean_lead_time_hours": 1413.7991571868392,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 55,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8433742703664604,
+    "mean_lead_time_hours": 1412.9372083517778,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 56,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "microbial",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8429307687235422,
+    "mean_lead_time_hours": 1283.493472141809,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 57,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918994771356546,
+    "mean_lead_time_hours": 1376.3104154288174,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 58,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "behavioral"
+    ],
+    "detection_auc": 0.9912996628358566,
+    "mean_lead_time_hours": 1348.622580925862,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 59,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "molecular"
+    ],
+    "detection_auc": 0.751894674739873,
+    "mean_lead_time_hours": 203.93020125905673,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 60,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919716394321804,
+    "mean_lead_time_hours": 1369.394115544584,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 61,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.8415503209662033,
+    "mean_lead_time_hours": 1414.0969133049714,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 62,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9917832655780489,
+    "mean_lead_time_hours": 1324.1933574425116,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 63,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918109903652591,
+    "mean_lead_time_hours": 1355.8374826269678,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 64,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918885278180036,
+    "mean_lead_time_hours": 1363.3003147304653,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 65,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "behavioral"
+    ],
+    "detection_auc": 0.8427338711681003,
+    "mean_lead_time_hours": 1382.6660746792886,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 66,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "behavioral"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular"
+    ],
+    "detection_auc": 0.9427930440476255,
+    "mean_lead_time_hours": 1375.6301496560704,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 67,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor"
+    ],
+    "detection_auc": 0.9430678741081641,
+    "mean_lead_time_hours": 1377.6850582873092,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 68,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918800707352362,
+    "mean_lead_time_hours": 1362.3753131562935,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 69,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial"
+    ],
+    "detection_auc": 0.6127429791261924,
+    "mean_lead_time_hours": 2779.6207125240035,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 70,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "molecular"
+    ],
+    "detection_auc": 0.9432737166741482,
+    "mean_lead_time_hours": 1377.5791982406574,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 71,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular"
+    ],
+    "detection_auc": 0.4987333686663453,
+    "mean_lead_time_hours": 0.0,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 72,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "microbial"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918606197656102,
+    "mean_lead_time_hours": 1341.4614948148596,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 73,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "microbial",
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "behavioral"
+    ],
+    "detection_auc": 0.9920289837135143,
+    "mean_lead_time_hours": 1352.7391885372533,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 74,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918661200851021,
+    "mean_lead_time_hours": 1348.8216932319006,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 75,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "behavioral"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular"
+    ],
+    "detection_auc": 0.9429283385873966,
+    "mean_lead_time_hours": 1378.02330772739,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 76,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919530260815479,
+    "mean_lead_time_hours": 1372.197179356151,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 77,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "behavioral"
+    ],
+    "detection_auc": 0.8440666344489324,
+    "mean_lead_time_hours": 1412.8124915725125,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 78,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial",
+      "molecular"
+    ],
+    "detection_auc": 0.618401680285056,
+    "mean_lead_time_hours": 2786.6008507878387,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 79,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "behavioral"
+    ],
+    "detection_auc": 0.9913872541863457,
+    "mean_lead_time_hours": 1373.8013232817452,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 80,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial"
+    ],
+    "detection_auc": 0.599168604850613,
+    "mean_lead_time_hours": 2759.9067410591574,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 81,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9919811257315136,
+    "mean_lead_time_hours": 1359.8734868055778,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 82,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "microbial",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "behavioral"
+    ],
+    "detection_auc": 0.8454770096641467,
+    "mean_lead_time_hours": 1412.928672146572,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 83,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "molecular"
+    ],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.9920925591887404,
+    "mean_lead_time_hours": 1353.2536925751697,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 84,
+    "num_dropped": 2,
+    "dropped_modalities": [
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.9913627132810006,
+    "mean_lead_time_hours": 1354.6689627732899,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 85,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite"
+    ],
+    "detection_auc": 0.7178346958664787,
+    "mean_lead_time_hours": 164.5776207230157,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 86,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "molecular",
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite"
+    ],
+    "detection_auc": 0.7495606370720519,
+    "mean_lead_time_hours": 179.07613863713212,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 87,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial"
+    ],
+    "detection_auc": 0.6031950238348303,
+    "mean_lead_time_hours": 2762.03108362337,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 88,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial"
+    ],
+    "detection_auc": 0.9442606670135404,
+    "mean_lead_time_hours": 1373.5578224613932,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 89,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial",
+      "behavioral"
+    ],
+    "detection_auc": 0.8438343617306445,
+    "mean_lead_time_hours": 1364.7388744477232,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 90,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "sensor"
+    ],
+    "active_modalities": [
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8449806235651324,
+    "mean_lead_time_hours": 1413.2183364160062,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 91,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918468045403063,
+    "mean_lead_time_hours": 1362.6147953874004,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 92,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9915843369132153,
+    "mean_lead_time_hours": 1363.0762977236177,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 93,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular"
+    ],
+    "detection_auc": 0.5034179648007346,
+    "mean_lead_time_hours": 0.0,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 94,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular"
+    ],
+    "detection_auc": 0.5002597895205012,
+    "mean_lead_time_hours": 0.0,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 95,
+    "num_dropped": 4,
+    "dropped_modalities": [
+      "behavioral",
+      "molecular",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "microbial"
+    ],
+    "detection_auc": 0.6135102255052272,
+    "mean_lead_time_hours": 2750.7342633328035,
+    "source_attribution_top1": 0.0
+  },
+  {
+    "trial_id": 96,
+    "num_dropped": 1,
+    "dropped_modalities": [
+      "satellite"
+    ],
+    "active_modalities": [
+      "sensor",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9915223801068498,
+    "mean_lead_time_hours": 1366.2954041192995,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 97,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9921462416008384,
+    "mean_lead_time_hours": 1365.6495829125047,
+    "source_attribution_top1": 0.2
+  },
+  {
+    "trial_id": 98,
+    "num_dropped": 0,
+    "dropped_modalities": [],
+    "active_modalities": [
+      "sensor",
+      "satellite",
+      "microbial",
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.9918100851926002,
+    "mean_lead_time_hours": 1367.5111316854689,
+    "source_attribution_top1": 0.1
+  },
+  {
+    "trial_id": 99,
+    "num_dropped": 3,
+    "dropped_modalities": [
+      "microbial",
+      "satellite",
+      "sensor"
+    ],
+    "active_modalities": [
+      "molecular",
+      "behavioral"
+    ],
+    "detection_auc": 0.8420260626302459,
+    "mean_lead_time_hours": 1412.8525558097695,
+    "source_attribution_top1": 0.0
+  }
+]

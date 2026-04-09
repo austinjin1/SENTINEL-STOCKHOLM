@@ -1,0 +1,11 @@
+{
+  "graceful_degradation_score": -1.0,
+  "modality_criticality": {
+    "sensor": 0.246257743902755,
+    "satellite": 0.11108373571035335,
+    "microbial": 0.07712791828696686,
+    "molecular": 0.030808347004190106,
+    "behavioral": 0.1737640486456835
+  },
+  "num_trials": 100
+}

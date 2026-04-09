@@ -1,0 +1,112 @@
+{
+  "summary": {
+    "redundancy_ratio": 0.9582259275485785,
+    "complementarity_score": 0.04177407245142151,
+    "total_self_information": 16.000740089640022,
+    "total_unique_information": 0.6684160757809874,
+    "mean_pairwise_mi": 3.651075489171781,
+    "interpretation": "Highly redundant: modalities largely overlap."
+  },
+  "mi_matrix": [
+    [
+      0.047323721647262576,
+      6.717690097540617,
+      7.762934894859791,
+      0.0,
+      0.13974867910146713
+    ],
+    [
+      6.717690097540617,
+      6.987565637752414,
+      7.371261582570151,
+      0.0,
+      6.700826692394912
+    ],
+    [
+      7.762934894859791,
+      7.371261582570151,
+      8.486709021031857,
+      0.0,
+      7.818292945250869
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.13974867910146713,
+      6.700826692394912,
+      7.818292945250869,
+      0.0,
+      0.4791417092084885
+    ]
+  ],
+  "modality_labels": [
+    "sensor",
+    "satellite",
+    "microbial",
+    "molecular",
+    "behavioral"
+  ],
+  "most_redundant_pair": {
+    "modalities": [
+      "microbial",
+      "behavioral"
+    ],
+    "mi": 7.818292945250869
+  },
+  "most_independent_pair": {
+    "modalities": [
+      "sensor",
+      "molecular"
+    ],
+    "mi": 0.0
+  },
+  "per_modality": [
+    {
+      "modality": "sensor",
+      "self_information": 0.047323721647262576,
+      "unique_information": 0.0,
+      "mean_mi_with_others": 3.655093417875469,
+      "max_mi_with_other": 7.762934894859791
+    },
+    {
+      "modality": "satellite",
+      "self_information": 6.987565637752414,
+      "unique_information": 0.0,
+      "mean_mi_with_others": 5.19744459312642,
+      "max_mi_with_other": 7.371261582570151
+    },
+    {
+      "modality": "microbial",
+      "self_information": 8.486709021031857,
+      "unique_information": 0.6684160757809874,
+      "mean_mi_with_others": 5.738122355670203,
+      "max_mi_with_other": 7.818292945250869
+    },
+    {
+      "modality": "molecular",
+      "self_information": 0.0,
+      "unique_information": 0.0,
+      "mean_mi_with_others": 0.0,
+      "max_mi_with_other": 0.0
+    },
+    {
+      "modality": "behavioral",
+      "self_information": 0.4791417092084885,
+      "unique_information": 0.0,
+      "mean_mi_with_others": 3.664717079186812,
+      "max_mi_with_other": 7.818292945250869
+    }
+  ],
+  "unique_information": {
+    "sensor": 0.0,
+    "satellite": 0.0,
+    "microbial": 0.6684160757809874,
+    "molecular": 0.0,
+    "behavioral": 0.0
+  }
+}
