@@ -1,0 +1,1526 @@
+[
+  {
+    "center_time": "2014-04-25T15:40:00",
+    "center_ts": 1398440400.0,
+    "anomaly_probability": 0.012186329811811447,
+    "severity_score": 6.414901235984871e-06
+  },
+  {
+    "center_time": "2014-04-26T02:20:00",
+    "center_ts": 1398478800.0,
+    "anomaly_probability": 0.08440855890512466,
+    "severity_score": 9.73259739112109e-06
+  },
+  {
+    "center_time": "2014-04-26T13:00:00",
+    "center_ts": 1398517200.0,
+    "anomaly_probability": 0.06809395551681519,
+    "severity_score": 2.8139891128375893e-07
+  },
+  {
+    "center_time": "2014-04-26T23:40:00",
+    "center_ts": 1398555600.0,
+    "anomaly_probability": 0.0589180588722229,
+    "severity_score": 1.144944472564191e-09
+  },
+  {
+    "center_time": "2014-04-27T10:20:00",
+    "center_ts": 1398594000.0,
+    "anomaly_probability": 0.05458090454339981,
+    "severity_score": 1.2578915339900298e-11
+  },
+  {
+    "center_time": "2014-04-27T21:00:00",
+    "center_ts": 1398632400.0,
+    "anomaly_probability": 0.05131063237786293,
+    "severity_score": 4.383975279152741e-13
+  },
+  {
+    "center_time": "2014-04-28T07:40:00",
+    "center_ts": 1398670800.0,
+    "anomaly_probability": 0.04926037788391113,
+    "severity_score": 3.773048632424794e-14
+  },
+  {
+    "center_time": "2014-04-28T18:20:00",
+    "center_ts": 1398709200.0,
+    "anomaly_probability": 0.04816192388534546,
+    "severity_score": 6.183545073413154e-15
+  },
+  {
+    "center_time": "2014-04-29T05:00:00",
+    "center_ts": 1398747600.0,
+    "anomaly_probability": 0.04768292233347893,
+    "severity_score": 1.5829188664446018e-15
+  },
+  {
+    "center_time": "2014-04-29T15:50:00",
+    "center_ts": 1398786600.0,
+    "anomaly_probability": 0.04760395362973213,
+    "severity_score": 5.528046710202904e-16
+  },
+  {
+    "center_time": "2014-04-30T02:30:00",
+    "center_ts": 1398825000.0,
+    "anomaly_probability": 0.04778671637177467,
+    "severity_score": 2.407289341315995e-16
+  },
+  {
+    "center_time": "2014-04-30T13:10:00",
+    "center_ts": 1398863400.0,
+    "anomaly_probability": 0.04813723266124725,
+    "severity_score": 1.2309732622588714e-16
+  },
+  {
+    "center_time": "2014-04-30T23:50:00",
+    "center_ts": 1398901800.0,
+    "anomaly_probability": 0.04859054088592529,
+    "severity_score": 7.095468605951676e-17
+  },
+  {
+    "center_time": "2014-05-02T07:45:00",
+    "center_ts": 1399016700.0,
+    "anomaly_probability": 0.0491013266146183,
+    "severity_score": 4.4808125627813743e-17
+  },
+  {
+    "center_time": "2014-05-02T13:05:00",
+    "center_ts": 1399035900.0,
+    "anomaly_probability": 0.049639131873846054,
+    "severity_score": 3.0377043325707467e-17
+  },
+  {
+    "center_time": "2014-05-02T18:25:00",
+    "center_ts": 1399055100.0,
+    "anomaly_probability": 0.05018369108438492,
+    "severity_score": 2.1782075932826198e-17
+  },
+  {
+    "center_time": "2014-05-02T23:45:00",
+    "center_ts": 1399074300.0,
+    "anomaly_probability": 0.05072232708334923,
+    "severity_score": 1.6338934680290432e-17
+  },
+  {
+    "center_time": "2014-05-03T05:05:00",
+    "center_ts": 1399093500.0,
+    "anomaly_probability": 0.051246803253889084,
+    "severity_score": 1.27138098555125e-17
+  },
+  {
+    "center_time": "2014-05-03T10:25:00",
+    "center_ts": 1399112700.0,
+    "anomaly_probability": 0.05175255984067917,
+    "severity_score": 1.0196560285170729e-17
+  },
+  {
+    "center_time": "2014-05-03T15:45:00",
+    "center_ts": 1399131900.0,
+    "anomaly_probability": 0.0522368885576725,
+    "severity_score": 8.386277996140265e-18
+  },
+  {
+    "center_time": "2014-05-03T21:05:00",
+    "center_ts": 1399151100.0,
+    "anomaly_probability": 0.05269883573055267,
+    "severity_score": 7.04494921178449e-18
+  },
+  {
+    "center_time": "2014-05-04T02:25:00",
+    "center_ts": 1399170300.0,
+    "anomaly_probability": 0.05313822254538536,
+    "severity_score": 6.025450761174108e-18
+  },
+  {
+    "center_time": "2014-05-04T07:45:00",
+    "center_ts": 1399189500.0,
+    "anomaly_probability": 0.05355529859662056,
+    "severity_score": 5.233324822210159e-18
+  },
+  {
+    "center_time": "2014-05-04T13:05:00",
+    "center_ts": 1399208700.0,
+    "anomaly_probability": 0.053950849920511246,
+    "severity_score": 4.605919080936651e-18
+  },
+  {
+    "center_time": "2014-05-04T18:25:00",
+    "center_ts": 1399227900.0,
+    "anomaly_probability": 0.054326072335243225,
+    "severity_score": 4.10057624675453e-18
+  },
+  {
+    "center_time": "2014-05-04T23:45:00",
+    "center_ts": 1399247100.0,
+    "anomaly_probability": 0.05468178912997246,
+    "severity_score": 3.687431377237876e-18
+  },
+  {
+    "center_time": "2014-05-05T05:05:00",
+    "center_ts": 1399266300.0,
+    "anomaly_probability": 0.05501924455165863,
+    "severity_score": 3.3452356500162733e-18
+  },
+  {
+    "center_time": "2014-05-05T10:25:00",
+    "center_ts": 1399285500.0,
+    "anomaly_probability": 0.05533932149410248,
+    "severity_score": 3.0584461345846976e-18
+  },
+  {
+    "center_time": "2014-05-05T15:45:00",
+    "center_ts": 1399304700.0,
+    "anomaly_probability": 0.05564326047897339,
+    "severity_score": 2.815531106023547e-18
+  },
+  {
+    "center_time": "2014-05-05T21:05:00",
+    "center_ts": 1399323900.0,
+    "anomaly_probability": 0.05593211203813553,
+    "severity_score": 2.607847147317102e-18
+  },
+  {
+    "center_time": "2014-05-06T02:25:00",
+    "center_ts": 1399343100.0,
+    "anomaly_probability": 0.05620674043893814,
+    "severity_score": 2.4287509641707957e-18
+  },
+  {
+    "center_time": "2014-05-06T07:45:00",
+    "center_ts": 1399362300.0,
+    "anomaly_probability": 0.056468281894922256,
+    "severity_score": 2.273104110619449e-18
+  },
+  {
+    "center_time": "2014-05-06T13:05:00",
+    "center_ts": 1399381500.0,
+    "anomaly_probability": 0.056717075407505035,
+    "severity_score": 2.136866843346506e-18
+  },
+  {
+    "center_time": "2014-05-06T18:25:00",
+    "center_ts": 1399400700.0,
+    "anomaly_probability": 0.05695435777306557,
+    "severity_score": 2.0168801595926264e-18
+  },
+  {
+    "center_time": "2014-05-06T23:45:00",
+    "center_ts": 1399419900.0,
+    "anomaly_probability": 0.057180631905794144,
+    "severity_score": 1.9105564316065916e-18
+  },
+  {
+    "center_time": "2014-05-07T05:05:00",
+    "center_ts": 1399439100.0,
+    "anomaly_probability": 0.057396821677684784,
+    "severity_score": 1.8158057875707862e-18
+  },
+  {
+    "center_time": "2014-05-07T10:25:00",
+    "center_ts": 1399458300.0,
+    "anomaly_probability": 0.05760344862937927,
+    "severity_score": 1.7309694201643117e-18
+  },
+  {
+    "center_time": "2014-05-07T15:45:00",
+    "center_ts": 1399477500.0,
+    "anomaly_probability": 0.057800885289907455,
+    "severity_score": 1.6546477397907284e-18
+  },
+  {
+    "center_time": "2014-05-07T21:05:00",
+    "center_ts": 1399496700.0,
+    "anomaly_probability": 0.057990044355392456,
+    "severity_score": 1.5856964454701457e-18
+  },
+  {
+    "center_time": "2014-05-08T02:25:00",
+    "center_ts": 1399515900.0,
+    "anomaly_probability": 0.05817117169499397,
+    "severity_score": 1.5231586960289928e-18
+  },
+  {
+    "center_time": "2014-05-08T07:45:00",
+    "center_ts": 1399535100.0,
+    "anomaly_probability": 0.05834481865167618,
+    "severity_score": 1.4662050361080324e-18
+  },
+  {
+    "center_time": "2014-05-08T13:05:00",
+    "center_ts": 1399554300.0,
+    "anomaly_probability": 0.05851137265563011,
+    "severity_score": 1.4141834405894193e-18
+  },
+  {
+    "center_time": "2014-05-08T19:40:00",
+    "center_ts": 1399578000.0,
+    "anomaly_probability": 0.05867120623588562,
+    "severity_score": 1.3664865521083866e-18
+  },
+  {
+    "center_time": "2014-05-09T01:00:00",
+    "center_ts": 1399597200.0,
+    "anomaly_probability": 0.058824822306632996,
+    "severity_score": 1.3226365704636084e-18
+  },
+  {
+    "center_time": "2014-05-09T06:20:00",
+    "center_ts": 1399616400.0,
+    "anomaly_probability": 0.05897238850593567,
+    "severity_score": 1.2822173204093938e-18
+  },
+  {
+    "center_time": "2014-05-09T11:40:00",
+    "center_ts": 1399635600.0,
+    "anomaly_probability": 0.05911468341946602,
+    "severity_score": 1.2448363047450865e-18
+  },
+  {
+    "center_time": "2014-05-09T17:00:00",
+    "center_ts": 1399654800.0,
+    "anomaly_probability": 0.05925137177109718,
+    "severity_score": 1.2102058714126712e-18
+  },
+  {
+    "center_time": "2014-05-09T22:20:00",
+    "center_ts": 1399674000.0,
+    "anomaly_probability": 0.05938310921192169,
+    "severity_score": 1.1780298897528538e-18
+  },
+  {
+    "center_time": "2014-05-10T03:40:00",
+    "center_ts": 1399693200.0,
+    "anomaly_probability": 0.059510014951229095,
+    "severity_score": 1.1480750948328944e-18
+  },
+  {
+    "center_time": "2014-05-10T09:00:00",
+    "center_ts": 1399712400.0,
+    "anomaly_probability": 0.05963243544101715,
+    "severity_score": 1.1201203192365117e-18
+  },
+  {
+    "center_time": "2014-05-10T14:20:00",
+    "center_ts": 1399731600.0,
+    "anomaly_probability": 0.05975056067109108,
+    "severity_score": 1.0939807914943766e-18
+  },
+  {
+    "center_time": "2014-05-10T19:40:00",
+    "center_ts": 1399750800.0,
+    "anomaly_probability": 0.059864647686481476,
+    "severity_score": 1.0695033797955903e-18
+  },
+  {
+    "center_time": "2014-05-11T01:00:00",
+    "center_ts": 1399770000.0,
+    "anomaly_probability": 0.05997469648718834,
+    "severity_score": 1.0465352625219835e-18
+  },
+  {
+    "center_time": "2014-05-11T06:20:00",
+    "center_ts": 1399789200.0,
+    "anomaly_probability": 0.06008110195398331,
+    "severity_score": 1.0249396446797553e-18
+  },
+  {
+    "center_time": "2014-05-11T11:40:00",
+    "center_ts": 1399808400.0,
+    "anomaly_probability": 0.06018407270312309,
+    "severity_score": 1.0046057874644002e-18
+  },
+  {
+    "center_time": "2014-05-11T17:00:00",
+    "center_ts": 1399827600.0,
+    "anomaly_probability": 0.06028362363576889,
+    "severity_score": 9.854417704303482e-19
+  },
+  {
+    "center_time": "2014-05-11T22:20:00",
+    "center_ts": 1399846800.0,
+    "anomaly_probability": 0.06037990376353264,
+    "severity_score": 9.673368547730939e-19
+  },
+  {
+    "center_time": "2014-05-12T03:40:00",
+    "center_ts": 1399866000.0,
+    "anomaly_probability": 0.06047319248318672,
+    "severity_score": 9.502204199478403e-19
+  },
+  {
+    "center_time": "2014-05-12T09:00:00",
+    "center_ts": 1399885200.0,
+    "anomaly_probability": 0.060563452541828156,
+    "severity_score": 9.340089207127198e-19
+  },
+  {
+    "center_time": "2014-05-12T14:20:00",
+    "center_ts": 1399904400.0,
+    "anomaly_probability": 0.06065110117197037,
+    "severity_score": 9.186378369799532e-19
+  },
+  {
+    "center_time": "2014-05-12T19:40:00",
+    "center_ts": 1399923600.0,
+    "anomaly_probability": 0.06073598936200142,
+    "severity_score": 9.040473015527069e-19
+  },
+  {
+    "center_time": "2014-05-13T01:00:00",
+    "center_ts": 1399942800.0,
+    "anomaly_probability": 0.060818154364824295,
+    "severity_score": 8.901773438365709e-19
+  },
+  {
+    "center_time": "2014-05-13T06:20:00",
+    "center_ts": 1399962000.0,
+    "anomaly_probability": 0.06089813634753227,
+    "severity_score": 8.769817451148187e-19
+  },
+  {
+    "center_time": "2014-05-13T11:40:00",
+    "center_ts": 1399981200.0,
+    "anomaly_probability": 0.060975659638643265,
+    "severity_score": 8.644103058640261e-19
+  },
+  {
+    "center_time": "2014-05-13T18:10:00",
+    "center_ts": 1400004600.0,
+    "anomaly_probability": 0.061050958931446075,
+    "severity_score": 8.524222357402365e-19
+  },
+  {
+    "center_time": "2014-05-13T23:30:00",
+    "center_ts": 1400023800.0,
+    "anomaly_probability": 0.06112402305006981,
+    "severity_score": 8.409820176758984e-19
+  },
+  {
+    "center_time": "2014-05-14T04:50:00",
+    "center_ts": 1400043000.0,
+    "anomaly_probability": 0.061195008456707,
+    "severity_score": 8.300499987003976e-19
+  },
+  {
+    "center_time": "2014-05-14T10:10:00",
+    "center_ts": 1400062200.0,
+    "anomaly_probability": 0.06126408651471138,
+    "severity_score": 8.195975376850244e-19
+  },
+  {
+    "center_time": "2014-05-14T15:30:00",
+    "center_ts": 1400081400.0,
+    "anomaly_probability": 0.06133132427930832,
+    "severity_score": 8.095980097538122e-19
+  },
+  {
+    "center_time": "2014-05-14T20:50:00",
+    "center_ts": 1400100600.0,
+    "anomaly_probability": 0.061396609991788864,
+    "severity_score": 8.000132612010072e-19
+  },
+  {
+    "center_time": "2014-05-15T02:10:00",
+    "center_ts": 1400119800.0,
+    "anomaly_probability": 0.06146013364195824,
+    "severity_score": 7.908255076434393e-19
+  },
+  {
+    "center_time": "2014-05-15T07:30:00",
+    "center_ts": 1400139000.0,
+    "anomaly_probability": 0.0615219883620739,
+    "severity_score": 7.820087962893897e-19
+  },
+  {
+    "center_time": "2014-05-15T12:50:00",
+    "center_ts": 1400158200.0,
+    "anomaly_probability": 0.06158210709691048,
+    "severity_score": 7.735469971169136e-19
+  },
+  {
+    "center_time": "2014-05-15T18:10:00",
+    "center_ts": 1400177400.0,
+    "anomaly_probability": 0.061640664935112,
+    "severity_score": 7.654132784548914e-19
+  },
+  {
+    "center_time": "2014-05-15T23:30:00",
+    "center_ts": 1400196600.0,
+    "anomaly_probability": 0.06169797107577324,
+    "severity_score": 7.5758758117346865e-19
+  },
+  {
+    "center_time": "2014-05-16T04:50:00",
+    "center_ts": 1400215800.0,
+    "anomaly_probability": 0.06175347790122032,
+    "severity_score": 7.500649938877583e-19
+  },
+  {
+    "center_time": "2014-05-16T10:10:00",
+    "center_ts": 1400235000.0,
+    "anomaly_probability": 0.06180768460035324,
+    "severity_score": 7.428183230351226e-19
+  },
+  {
+    "center_time": "2014-05-16T15:30:00",
+    "center_ts": 1400254200.0,
+    "anomaly_probability": 0.06186061352491379,
+    "severity_score": 7.3583526430395e-19
+  },
+  {
+    "center_time": "2014-05-16T20:50:00",
+    "center_ts": 1400273400.0,
+    "anomaly_probability": 0.061912063509225845,
+    "severity_score": 7.291014454310972e-19
+  },
+  {
+    "center_time": "2014-05-17T02:10:00",
+    "center_ts": 1400292600.0,
+    "anomaly_probability": 0.061962321400642395,
+    "severity_score": 7.226083878152856e-19
+  },
+  {
+    "center_time": "2014-05-17T07:30:00",
+    "center_ts": 1400311800.0,
+    "anomaly_probability": 0.06201143190264702,
+    "severity_score": 7.163425463739847e-19
+  },
+  {
+    "center_time": "2014-05-17T12:50:00",
+    "center_ts": 1400331000.0,
+    "anomaly_probability": 0.06205933541059494,
+    "severity_score": 7.102881529767677e-19
+  },
+  {
+    "center_time": "2014-05-17T18:10:00",
+    "center_ts": 1400350200.0,
+    "anomaly_probability": 0.062106069177389145,
+    "severity_score": 7.0443812488963955e-19
+  },
+  {
+    "center_time": "2014-05-17T23:30:00",
+    "center_ts": 1400369400.0,
+    "anomaly_probability": 0.06215173006057739,
+    "severity_score": 6.987801578009886e-19
+  },
+  {
+    "center_time": "2014-05-18T04:50:00",
+    "center_ts": 1400388600.0,
+    "anomaly_probability": 0.06219632178544998,
+    "severity_score": 6.933052561216532e-19
+  },
+  {
+    "center_time": "2014-05-18T10:10:00",
+    "center_ts": 1400407800.0,
+    "anomaly_probability": 0.06223982572555542,
+    "severity_score": 6.8801223077950295e-19
+  },
+  {
+    "center_time": "2014-05-18T15:30:00",
+    "center_ts": 1400427000.0,
+    "anomaly_probability": 0.0622822642326355,
+    "severity_score": 6.828846415598633e-19
+  },
+  {
+    "center_time": "2014-05-18T20:50:00",
+    "center_ts": 1400446200.0,
+    "anomaly_probability": 0.062323734164237976,
+    "severity_score": 6.77914268355397e-19
+  },
+  {
+    "center_time": "2014-05-19T02:10:00",
+    "center_ts": 1400465400.0,
+    "anomaly_probability": 0.0623643659055233,
+    "severity_score": 6.73103282515212e-19
+  },
+  {
+    "center_time": "2014-05-19T07:30:00",
+    "center_ts": 1400484600.0,
+    "anomaly_probability": 0.062404096126556396,
+    "severity_score": 6.684335377646205e-19
+  },
+  {
+    "center_time": "2014-05-19T12:50:00",
+    "center_ts": 1400503800.0,
+    "anomaly_probability": 0.06244278699159622,
+    "severity_score": 6.639025525617847e-19
+  },
+  {
+    "center_time": "2014-05-19T18:10:00",
+    "center_ts": 1400523000.0,
+    "anomaly_probability": 0.062480777502059937,
+    "severity_score": 6.595104303042813e-19
+  },
+  {
+    "center_time": "2014-05-19T23:30:00",
+    "center_ts": 1400542200.0,
+    "anomaly_probability": 0.06251799315214157,
+    "severity_score": 6.552423851386608e-19
+  },
+  {
+    "center_time": "2014-05-20T04:50:00",
+    "center_ts": 1400561400.0,
+    "anomaly_probability": 0.06255429238080978,
+    "severity_score": 6.510962974146036e-19
+  },
+  {
+    "center_time": "2014-05-20T10:10:00",
+    "center_ts": 1400580600.0,
+    "anomaly_probability": 0.06258992105722427,
+    "severity_score": 6.470702025781549e-19
+  },
+  {
+    "center_time": "2014-05-20T15:30:00",
+    "center_ts": 1400599800.0,
+    "anomaly_probability": 0.06262478977441788,
+    "severity_score": 6.43154898245e-19
+  },
+  {
+    "center_time": "2014-05-20T20:50:00",
+    "center_ts": 1400619000.0,
+    "anomaly_probability": 0.06265871226787567,
+    "severity_score": 6.393511081981749e-19
+  },
+  {
+    "center_time": "2014-05-21T02:10:00",
+    "center_ts": 1400638200.0,
+    "anomaly_probability": 0.06269210577011108,
+    "severity_score": 6.356474070054687e-19
+  },
+  {
+    "center_time": "2014-05-21T07:30:00",
+    "center_ts": 1400657400.0,
+    "anomaly_probability": 0.06272456049919128,
+    "severity_score": 6.320422954020212e-19
+  },
+  {
+    "center_time": "2014-05-21T12:50:00",
+    "center_ts": 1400676600.0,
+    "anomaly_probability": 0.06275669485330582,
+    "severity_score": 6.285367556648097e-19
+  },
+  {
+    "center_time": "2014-05-21T18:10:00",
+    "center_ts": 1400695800.0,
+    "anomaly_probability": 0.06278792023658752,
+    "severity_score": 6.251221540961908e-19
+  },
+  {
+    "center_time": "2014-05-21T23:30:00",
+    "center_ts": 1400715000.0,
+    "anomaly_probability": 0.06281856447458267,
+    "severity_score": 6.21799679768295e-19
+  },
+  {
+    "center_time": "2014-05-22T04:50:00",
+    "center_ts": 1400734200.0,
+    "anomaly_probability": 0.06284872442483902,
+    "severity_score": 6.185608540798436e-19
+  },
+  {
+    "center_time": "2014-05-22T10:10:00",
+    "center_ts": 1400753400.0,
+    "anomaly_probability": 0.06287819147109985,
+    "severity_score": 6.154000418629137e-19
+  },
+  {
+    "center_time": "2014-05-22T15:30:00",
+    "center_ts": 1400772600.0,
+    "anomaly_probability": 0.06290705502033234,
+    "severity_score": 6.123207069363202e-19
+  },
+  {
+    "center_time": "2014-05-22T20:50:00",
+    "center_ts": 1400791800.0,
+    "anomaly_probability": 0.06293532252311707,
+    "severity_score": 6.093195405776129e-19
+  },
+  {
+    "center_time": "2014-05-23T02:10:00",
+    "center_ts": 1400811000.0,
+    "anomaly_probability": 0.0629630833864212,
+    "severity_score": 6.063909593176572e-19
+  },
+  {
+    "center_time": "2014-05-23T07:30:00",
+    "center_ts": 1400830200.0,
+    "anomaly_probability": 0.06299033761024475,
+    "severity_score": 6.0352932798853e-19
+  },
+  {
+    "center_time": "2014-05-23T12:50:00",
+    "center_ts": 1400849400.0,
+    "anomaly_probability": 0.06301701813936234,
+    "severity_score": 6.007385239993527e-19
+  },
+  {
+    "center_time": "2014-05-23T18:10:00",
+    "center_ts": 1400868600.0,
+    "anomaly_probability": 0.06304321438074112,
+    "severity_score": 5.980153937240398e-19
+  },
+  {
+    "center_time": "2014-05-23T23:30:00",
+    "center_ts": 1400887800.0,
+    "anomaly_probability": 0.0630689486861229,
+    "severity_score": 5.953590582831906e-19
+  },
+  {
+    "center_time": "2014-05-24T04:50:00",
+    "center_ts": 1400907000.0,
+    "anomaly_probability": 0.06309410184621811,
+    "severity_score": 5.927575235579231e-19
+  },
+  {
+    "center_time": "2014-05-24T10:10:00",
+    "center_ts": 1400926200.0,
+    "anomaly_probability": 0.06311880797147751,
+    "severity_score": 5.902146669573585e-19
+  },
+  {
+    "center_time": "2014-05-24T15:30:00",
+    "center_ts": 1400945400.0,
+    "anomaly_probability": 0.06314299255609512,
+    "severity_score": 5.877342107942534e-19
+  },
+  {
+    "center_time": "2014-05-24T20:50:00",
+    "center_ts": 1400964600.0,
+    "anomaly_probability": 0.0631667897105217,
+    "severity_score": 5.853111402861441e-19
+  },
+  {
+    "center_time": "2014-05-25T02:10:00",
+    "center_ts": 1400983800.0,
+    "anomaly_probability": 0.06319016963243484,
+    "severity_score": 5.82940233855414e-19
+  },
+  {
+    "center_time": "2014-05-25T07:30:00",
+    "center_ts": 1401003000.0,
+    "anomaly_probability": 0.06321319192647934,
+    "severity_score": 5.806189065626488e-19
+  },
+  {
+    "center_time": "2014-05-25T12:50:00",
+    "center_ts": 1401022200.0,
+    "anomaly_probability": 0.06323577463626862,
+    "severity_score": 5.783508290218167e-19
+  },
+  {
+    "center_time": "2014-05-25T18:10:00",
+    "center_ts": 1401041400.0,
+    "anomaly_probability": 0.06325781345367432,
+    "severity_score": 5.761311932456072e-19
+  },
+  {
+    "center_time": "2014-05-25T23:30:00",
+    "center_ts": 1401060600.0,
+    "anomaly_probability": 0.06327958405017853,
+    "severity_score": 5.739529681988137e-19
+  },
+  {
+    "center_time": "2014-05-26T04:50:00",
+    "center_ts": 1401079800.0,
+    "anomaly_probability": 0.0633009597659111,
+    "severity_score": 5.718265970366695e-19
+  },
+  {
+    "center_time": "2014-05-26T10:10:00",
+    "center_ts": 1401099000.0,
+    "anomaly_probability": 0.06332186609506607,
+    "severity_score": 5.697449970251798e-19
+  },
+  {
+    "center_time": "2014-05-26T15:30:00",
+    "center_ts": 1401118200.0,
+    "anomaly_probability": 0.06334240734577179,
+    "severity_score": 5.67703515273399e-19
+  },
+  {
+    "center_time": "2014-05-26T20:50:00",
+    "center_ts": 1401137400.0,
+    "anomaly_probability": 0.06336258351802826,
+    "severity_score": 5.65703806142552e-19
+  },
+  {
+    "center_time": "2014-05-27T02:10:00",
+    "center_ts": 1401156600.0,
+    "anomaly_probability": 0.0633826032280922,
+    "severity_score": 5.637477824878055e-19
+  },
+  {
+    "center_time": "2014-05-27T07:30:00",
+    "center_ts": 1401175800.0,
+    "anomaly_probability": 0.06340207159519196,
+    "severity_score": 5.618284649727411e-19
+  },
+  {
+    "center_time": "2014-05-27T12:50:00",
+    "center_ts": 1401195000.0,
+    "anomaly_probability": 0.06342127174139023,
+    "severity_score": 5.599498861028449e-19
+  },
+  {
+    "center_time": "2014-05-27T18:10:00",
+    "center_ts": 1401214200.0,
+    "anomaly_probability": 0.0634402334690094,
+    "severity_score": 5.581052733368516e-19
+  },
+  {
+    "center_time": "2014-05-27T23:30:00",
+    "center_ts": 1401233400.0,
+    "anomaly_probability": 0.06345872581005096,
+    "severity_score": 5.563006754329906e-19
+  },
+  {
+    "center_time": "2014-05-28T04:50:00",
+    "center_ts": 1401252600.0,
+    "anomaly_probability": 0.06347712129354477,
+    "severity_score": 5.545273035972535e-19
+  },
+  {
+    "center_time": "2014-05-28T10:10:00",
+    "center_ts": 1401271800.0,
+    "anomaly_probability": 0.06349492073059082,
+    "severity_score": 5.527890352387616e-19
+  },
+  {
+    "center_time": "2014-05-28T15:30:00",
+    "center_ts": 1401291000.0,
+    "anomaly_probability": 0.06351257860660553,
+    "severity_score": 5.510836473096187e-19
+  },
+  {
+    "center_time": "2014-05-28T20:50:00",
+    "center_ts": 1401310200.0,
+    "anomaly_probability": 0.06352993845939636,
+    "severity_score": 5.494086582679871e-19
+  },
+  {
+    "center_time": "2014-05-29T02:10:00",
+    "center_ts": 1401329400.0,
+    "anomaly_probability": 0.06354688853025436,
+    "severity_score": 5.477679455229882e-19
+  },
+  {
+    "center_time": "2014-05-29T07:30:00",
+    "center_ts": 1401348600.0,
+    "anomaly_probability": 0.06356365978717804,
+    "severity_score": 5.46157166376406e-19
+  },
+  {
+    "center_time": "2014-05-29T12:50:00",
+    "center_ts": 1401367800.0,
+    "anomaly_probability": 0.06358017772436142,
+    "severity_score": 5.445760623342992e-19
+  },
+  {
+    "center_time": "2014-05-29T18:10:00",
+    "center_ts": 1401387000.0,
+    "anomaly_probability": 0.06359641999006271,
+    "severity_score": 5.430223069511949e-19
+  },
+  {
+    "center_time": "2014-05-29T23:30:00",
+    "center_ts": 1401406200.0,
+    "anomaly_probability": 0.06361246854066849,
+    "severity_score": 5.41499881033791e-19
+  },
+  {
+    "center_time": "2014-05-30T04:50:00",
+    "center_ts": 1401425400.0,
+    "anomaly_probability": 0.06362809240818024,
+    "severity_score": 5.400002025832324e-19
+  },
+  {
+    "center_time": "2014-05-30T10:10:00",
+    "center_ts": 1401444600.0,
+    "anomaly_probability": 0.06364352256059647,
+    "severity_score": 5.385293720565365e-19
+  },
+  {
+    "center_time": "2014-05-30T15:30:00",
+    "center_ts": 1401463800.0,
+    "anomaly_probability": 0.06365878134965897,
+    "severity_score": 5.370850630082307e-19
+  },
+  {
+    "center_time": "2014-05-30T20:50:00",
+    "center_ts": 1401483000.0,
+    "anomaly_probability": 0.0636737048625946,
+    "severity_score": 5.356671203419499e-19
+  },
+  {
+    "center_time": "2014-05-31T02:10:00",
+    "center_ts": 1401502200.0,
+    "anomaly_probability": 0.06368847191333771,
+    "severity_score": 5.342712013594784e-19
+  },
+  {
+    "center_time": "2014-05-31T07:30:00",
+    "center_ts": 1401521400.0,
+    "anomaly_probability": 0.06370311975479126,
+    "severity_score": 5.328993223135592e-19
+  },
+  {
+    "center_time": "2014-05-31T12:50:00",
+    "center_ts": 1401540600.0,
+    "anomaly_probability": 0.06371726840734482,
+    "severity_score": 5.315512247102509e-19
+  },
+  {
+    "center_time": "2014-05-31T18:10:00",
+    "center_ts": 1401559800.0,
+    "anomaly_probability": 0.06373130530118942,
+    "severity_score": 5.3022675345318865e-19
+  },
+  {
+    "center_time": "2014-05-31T23:30:00",
+    "center_ts": 1401579000.0,
+    "anomaly_probability": 0.06374523788690567,
+    "severity_score": 5.289257534460076e-19
+  },
+  {
+    "center_time": "2014-06-01T04:50:00",
+    "center_ts": 1401598200.0,
+    "anomaly_probability": 0.06375887244939804,
+    "severity_score": 5.276440370868567e-19
+  },
+  {
+    "center_time": "2014-06-01T10:10:00",
+    "center_ts": 1401617400.0,
+    "anomaly_probability": 0.06377233564853668,
+    "severity_score": 5.263835689296907e-19
+  },
+  {
+    "center_time": "2014-06-01T15:30:00",
+    "center_ts": 1401636600.0,
+    "anomaly_probability": 0.06378549337387085,
+    "severity_score": 5.2514403878178e-19
+  },
+  {
+    "center_time": "2014-06-01T20:50:00",
+    "center_ts": 1401655800.0,
+    "anomaly_probability": 0.06379849463701248,
+    "severity_score": 5.239254983419128e-19
+  },
+  {
+    "center_time": "2014-06-02T02:10:00",
+    "center_ts": 1401675000.0,
+    "anomaly_probability": 0.06381132453680038,
+    "severity_score": 5.227257245621929e-19
+  },
+  {
+    "center_time": "2014-06-02T07:30:00",
+    "center_ts": 1401694200.0,
+    "anomaly_probability": 0.06382397562265396,
+    "severity_score": 5.215445623462555e-19
+  },
+  {
+    "center_time": "2014-06-02T12:50:00",
+    "center_ts": 1401713400.0,
+    "anomaly_probability": 0.06383639574050903,
+    "severity_score": 5.203839762480553e-19
+  },
+  {
+    "center_time": "2014-06-02T18:10:00",
+    "center_ts": 1401732600.0,
+    "anomaly_probability": 0.06384876370429993,
+    "severity_score": 5.192418466172727e-19
+  },
+  {
+    "center_time": "2014-06-02T23:30:00",
+    "center_ts": 1401751800.0,
+    "anomaly_probability": 0.06386072188615799,
+    "severity_score": 5.181179666587546e-19
+  },
+  {
+    "center_time": "2014-06-03T04:50:00",
+    "center_ts": 1401771000.0,
+    "anomaly_probability": 0.06387273967266083,
+    "severity_score": 5.170044264578934e-19
+  },
+  {
+    "center_time": "2014-06-03T10:10:00",
+    "center_ts": 1401790200.0,
+    "anomaly_probability": 0.06388435512781143,
+    "severity_score": 5.1591492619358445e-19
+  },
+  {
+    "center_time": "2014-06-03T15:30:00",
+    "center_ts": 1401809400.0,
+    "anomaly_probability": 0.06389588862657547,
+    "severity_score": 5.14841504252432e-19
+  },
+  {
+    "center_time": "2014-06-03T20:50:00",
+    "center_ts": 1401828600.0,
+    "anomaly_probability": 0.06390736252069473,
+    "severity_score": 5.137820409841165e-19
+  },
+  {
+    "center_time": "2014-06-04T02:10:00",
+    "center_ts": 1401847800.0,
+    "anomaly_probability": 0.0639185756444931,
+    "severity_score": 5.127423783517139e-19
+  },
+  {
+    "center_time": "2014-06-04T07:30:00",
+    "center_ts": 1401867000.0,
+    "anomaly_probability": 0.06392954289913177,
+    "severity_score": 5.117146064406167e-19
+  },
+  {
+    "center_time": "2014-06-04T12:50:00",
+    "center_ts": 1401886200.0,
+    "anomaly_probability": 0.06394039839506149,
+    "severity_score": 5.10708341225446e-19
+  },
+  {
+    "center_time": "2014-06-04T19:50:00",
+    "center_ts": 1401911400.0,
+    "anomaly_probability": 0.06395124644041061,
+    "severity_score": 5.09711847081261e-19
+  },
+  {
+    "center_time": "2014-06-05T01:10:00",
+    "center_ts": 1401930600.0,
+    "anomaly_probability": 0.06396178156137466,
+    "severity_score": 5.087288980196066e-19
+  },
+  {
+    "center_time": "2014-06-05T06:30:00",
+    "center_ts": 1401949800.0,
+    "anomaly_probability": 0.06397219747304916,
+    "severity_score": 5.077614585944375e-19
+  },
+  {
+    "center_time": "2014-06-05T11:50:00",
+    "center_ts": 1401969000.0,
+    "anomaly_probability": 0.06398262083530426,
+    "severity_score": 5.06809373709389e-19
+  },
+  {
+    "center_time": "2014-06-05T17:10:00",
+    "center_ts": 1401988200.0,
+    "anomaly_probability": 0.06399274617433548,
+    "severity_score": 5.058706271117179e-19
+  },
+  {
+    "center_time": "2014-06-05T22:30:00",
+    "center_ts": 1402007400.0,
+    "anomaly_probability": 0.06400267034769058,
+    "severity_score": 5.049433059462577e-19
+  },
+  {
+    "center_time": "2014-06-06T03:50:00",
+    "center_ts": 1402026600.0,
+    "anomaly_probability": 0.0640125721693039,
+    "severity_score": 5.040310808269765e-19
+  },
+  {
+    "center_time": "2014-06-06T09:10:00",
+    "center_ts": 1402045800.0,
+    "anomaly_probability": 0.06402241438627243,
+    "severity_score": 5.03132038898708e-19
+  },
+  {
+    "center_time": "2014-06-06T15:40:00",
+    "center_ts": 1402069200.0,
+    "anomaly_probability": 0.06403197348117828,
+    "severity_score": 5.022422510535423e-19
+  },
+  {
+    "center_time": "2014-06-06T21:00:00",
+    "center_ts": 1402088400.0,
+    "anomaly_probability": 0.06404136121273041,
+    "severity_score": 5.013731944224788e-19
+  },
+  {
+    "center_time": "2014-06-07T02:20:00",
+    "center_ts": 1402107600.0,
+    "anomaly_probability": 0.06405062228441238,
+    "severity_score": 5.0050754991144205e-19
+  },
+  {
+    "center_time": "2014-06-07T07:40:00",
+    "center_ts": 1402126800.0,
+    "anomaly_probability": 0.06405985355377197,
+    "severity_score": 4.996586558078095e-19
+  },
+  {
+    "center_time": "2014-06-07T13:00:00",
+    "center_ts": 1402146000.0,
+    "anomaly_probability": 0.06406909227371216,
+    "severity_score": 4.988168961369602e-19
+  },
+  {
+    "center_time": "2014-06-07T18:20:00",
+    "center_ts": 1402165200.0,
+    "anomaly_probability": 0.06407788395881653,
+    "severity_score": 4.979917317771503e-19
+  },
+  {
+    "center_time": "2014-06-07T23:40:00",
+    "center_ts": 1402184400.0,
+    "anomaly_probability": 0.06408673524856567,
+    "severity_score": 4.971736501513354e-19
+  },
+  {
+    "center_time": "2014-06-08T05:00:00",
+    "center_ts": 1402203600.0,
+    "anomaly_probability": 0.06409548968076706,
+    "severity_score": 4.963682864274384e-19
+  },
+  {
+    "center_time": "2014-06-08T10:20:00",
+    "center_ts": 1402222800.0,
+    "anomaly_probability": 0.0641040951013565,
+    "severity_score": 4.955717631963381e-19
+  },
+  {
+    "center_time": "2014-06-08T15:40:00",
+    "center_ts": 1402242000.0,
+    "anomaly_probability": 0.06411264091730118,
+    "severity_score": 4.94787802770791e-19
+  },
+  {
+    "center_time": "2014-06-08T21:00:00",
+    "center_ts": 1402261200.0,
+    "anomaly_probability": 0.06412093341350555,
+    "severity_score": 4.940145439944188e-19
+  },
+  {
+    "center_time": "2014-06-09T02:20:00",
+    "center_ts": 1402280400.0,
+    "anomaly_probability": 0.06412920355796814,
+    "severity_score": 4.932500740120549e-19
+  },
+  {
+    "center_time": "2014-06-09T07:40:00",
+    "center_ts": 1402299600.0,
+    "anomaly_probability": 0.06413739174604416,
+    "severity_score": 4.924942377273346e-19
+  },
+  {
+    "center_time": "2014-06-09T13:00:00",
+    "center_ts": 1402318800.0,
+    "anomaly_probability": 0.06414539366960526,
+    "severity_score": 4.917526703081808e-19
+  },
+  {
+    "center_time": "2014-06-09T18:20:00",
+    "center_ts": 1402338000.0,
+    "anomaly_probability": 0.06415330618619919,
+    "severity_score": 4.910141531175358e-19
+  },
+  {
+    "center_time": "2014-06-09T23:40:00",
+    "center_ts": 1402357200.0,
+    "anomaly_probability": 0.06416119635105133,
+    "severity_score": 4.902898013948808e-19
+  },
+  {
+    "center_time": "2014-06-10T05:00:00",
+    "center_ts": 1402376400.0,
+    "anomaly_probability": 0.06416892260313034,
+    "severity_score": 4.895758928274592e-19
+  },
+  {
+    "center_time": "2014-06-10T10:20:00",
+    "center_ts": 1402395600.0,
+    "anomaly_probability": 0.06417657434940338,
+    "severity_score": 4.888666888497716e-19
+  },
+  {
+    "center_time": "2014-06-10T15:40:00",
+    "center_ts": 1402414800.0,
+    "anomaly_probability": 0.06418409198522568,
+    "severity_score": 4.881697374849074e-19
+  },
+  {
+    "center_time": "2014-06-10T21:00:00",
+    "center_ts": 1402434000.0,
+    "anomaly_probability": 0.0641915500164032,
+    "severity_score": 4.874812130225335e-19
+  },
+  {
+    "center_time": "2014-06-11T02:20:00",
+    "center_ts": 1402453200.0,
+    "anomaly_probability": 0.06419876962900162,
+    "severity_score": 4.867992026074836e-19
+  },
+  {
+    "center_time": "2014-06-11T07:40:00",
+    "center_ts": 1402472400.0,
+    "anomaly_probability": 0.06420604884624481,
+    "severity_score": 4.861255673961357e-19
+  },
+  {
+    "center_time": "2014-06-11T13:00:00",
+    "center_ts": 1402491600.0,
+    "anomaly_probability": 0.06421325355768204,
+    "severity_score": 4.854584462321117e-19
+  },
+  {
+    "center_time": "2014-06-11T18:20:00",
+    "center_ts": 1402510800.0,
+    "anomaly_probability": 0.06422030180692673,
+    "severity_score": 4.848070414997262e-19
+  },
+  {
+    "center_time": "2014-06-11T23:40:00",
+    "center_ts": 1402530000.0,
+    "anomaly_probability": 0.06422724574804306,
+    "severity_score": 4.841564639479532e-19
+  },
+  {
+    "center_time": "2014-06-12T05:00:00",
+    "center_ts": 1402549200.0,
+    "anomaly_probability": 0.0642341822385788,
+    "severity_score": 4.835178805150623e-19
+  },
+  {
+    "center_time": "2014-06-12T10:20:00",
+    "center_ts": 1402568400.0,
+    "anomaly_probability": 0.06424106657505035,
+    "severity_score": 4.828837948767521e-19
+  },
+  {
+    "center_time": "2014-06-12T15:40:00",
+    "center_ts": 1402587600.0,
+    "anomaly_probability": 0.06424766033887863,
+    "severity_score": 4.822578776469909e-19
+  },
+  {
+    "center_time": "2014-06-12T21:00:00",
+    "center_ts": 1402606800.0,
+    "anomaly_probability": 0.06425425410270691,
+    "severity_score": 4.816364582118104e-19
+  },
+  {
+    "center_time": "2014-06-13T02:20:00",
+    "center_ts": 1402626000.0,
+    "anomaly_probability": 0.06426094472408295,
+    "severity_score": 4.810268777991471e-19
+  },
+  {
+    "center_time": "2014-06-13T07:40:00",
+    "center_ts": 1402645200.0,
+    "anomaly_probability": 0.06426724046468735,
+    "severity_score": 4.804254140962445e-19
+  },
+  {
+    "center_time": "2014-06-13T13:00:00",
+    "center_ts": 1402664400.0,
+    "anomaly_probability": 0.06427379697561264,
+    "severity_score": 4.798246224775896e-19
+  },
+  {
+    "center_time": "2014-06-13T18:20:00",
+    "center_ts": 1402683600.0,
+    "anomaly_probability": 0.06428003311157227,
+    "severity_score": 4.792356181826635e-19
+  },
+  {
+    "center_time": "2014-06-13T23:40:00",
+    "center_ts": 1402702800.0,
+    "anomaly_probability": 0.06428618729114532,
+    "severity_score": 4.786546271999216e-19
+  },
+  {
+    "center_time": "2014-06-14T05:00:00",
+    "center_ts": 1402722000.0,
+    "anomaly_probability": 0.06429236382246017,
+    "severity_score": 4.780779789153956e-19
+  },
+  {
+    "center_time": "2014-06-14T10:20:00",
+    "center_ts": 1402741200.0,
+    "anomaly_probability": 0.06429840624332428,
+    "severity_score": 4.775093439430537e-19
+  },
+  {
+    "center_time": "2014-06-14T15:40:00",
+    "center_ts": 1402760400.0,
+    "anomaly_probability": 0.0643044114112854,
+    "severity_score": 4.769449482713511e-19
+  },
+  {
+    "center_time": "2014-06-14T21:00:00",
+    "center_ts": 1402779600.0,
+    "anomaly_probability": 0.06431026756763458,
+    "severity_score": 4.763867564542426e-19
+  },
+  {
+    "center_time": "2014-06-15T02:20:00",
+    "center_ts": 1402798800.0,
+    "anomaly_probability": 0.0643162950873375,
+    "severity_score": 4.758382323105434e-19
+  },
+  {
+    "center_time": "2014-06-15T07:40:00",
+    "center_ts": 1402818000.0,
+    "anomaly_probability": 0.06432200968265533,
+    "severity_score": 4.752921897086818e-19
+  },
+  {
+    "center_time": "2014-06-15T13:00:00",
+    "center_ts": 1402837200.0,
+    "anomaly_probability": 0.06432771682739258,
+    "severity_score": 4.747540053226395e-19
+  },
+  {
+    "center_time": "2014-06-15T18:20:00",
+    "center_ts": 1402856400.0,
+    "anomaly_probability": 0.06433334201574326,
+    "severity_score": 4.742200602372365e-19
+  },
+  {
+    "center_time": "2014-06-15T23:40:00",
+    "center_ts": 1402875600.0,
+    "anomaly_probability": 0.06433896720409393,
+    "severity_score": 4.736975405840444e-19
+  },
+  {
+    "center_time": "2014-06-16T05:00:00",
+    "center_ts": 1402894800.0,
+    "anomaly_probability": 0.06434440612792969,
+    "severity_score": 4.731755896175235e-19
+  },
+  {
+    "center_time": "2014-06-16T10:20:00",
+    "center_ts": 1402914000.0,
+    "anomaly_probability": 0.06434990465641022,
+    "severity_score": 4.726596357104435e-19
+  },
+  {
+    "center_time": "2014-06-16T15:40:00",
+    "center_ts": 1402933200.0,
+    "anomaly_probability": 0.06435521692037582,
+    "severity_score": 4.721496271640163e-19
+  },
+  {
+    "center_time": "2014-06-16T21:00:00",
+    "center_ts": 1402952400.0,
+    "anomaly_probability": 0.06436049938201904,
+    "severity_score": 4.716438062194401e-19
+  },
+  {
+    "center_time": "2014-06-17T02:20:00",
+    "center_ts": 1402971600.0,
+    "anomaly_probability": 0.06436578929424286,
+    "severity_score": 4.711438789367284e-19
+  },
+  {
+    "center_time": "2014-06-17T07:40:00",
+    "center_ts": 1402990800.0,
+    "anomaly_probability": 0.06437095254659653,
+    "severity_score": 4.706517064722593e-19
+  },
+  {
+    "center_time": "2014-06-17T13:00:00",
+    "center_ts": 1403010000.0,
+    "anomaly_probability": 0.06437601149082184,
+    "severity_score": 4.701671854284564e-19
+  },
+  {
+    "center_time": "2014-06-17T18:20:00",
+    "center_ts": 1403029200.0,
+    "anomaly_probability": 0.06438106298446655,
+    "severity_score": 4.696831813725363e-19
+  },
+  {
+    "center_time": "2014-06-17T23:40:00",
+    "center_ts": 1403048400.0,
+    "anomaly_probability": 0.06438615918159485,
+    "severity_score": 4.692050709784807e-19
+  },
+  {
+    "center_time": "2014-06-18T05:00:00",
+    "center_ts": 1403067600.0,
+    "anomaly_probability": 0.06439104676246643,
+    "severity_score": 4.687291836323213e-19
+  },
+  {
+    "center_time": "2014-06-18T10:20:00",
+    "center_ts": 1403086800.0,
+    "anomaly_probability": 0.064395971596241,
+    "severity_score": 4.682627054656296e-19
+  },
+  {
+    "center_time": "2014-06-18T15:40:00",
+    "center_ts": 1403106000.0,
+    "anomaly_probability": 0.06440082937479019,
+    "severity_score": 4.677985020456225e-19
+  },
+  {
+    "center_time": "2014-06-18T21:00:00",
+    "center_ts": 1403125200.0,
+    "anomaly_probability": 0.06440553814172745,
+    "severity_score": 4.673383311311016e-19
+  },
+  {
+    "center_time": "2014-06-19T02:20:00",
+    "center_ts": 1403144400.0,
+    "anomaly_probability": 0.06441030651330948,
+    "severity_score": 4.6688575993845855e-19
+  },
+  {
+    "center_time": "2014-06-19T07:40:00",
+    "center_ts": 1403163600.0,
+    "anomaly_probability": 0.06441493332386017,
+    "severity_score": 4.664371178537251e-19
+  },
+  {
+    "center_time": "2014-06-19T13:00:00",
+    "center_ts": 1403182800.0,
+    "anomaly_probability": 0.06441947817802429,
+    "severity_score": 4.659907505156762e-19
+  },
+  {
+    "center_time": "2014-06-19T18:20:00",
+    "center_ts": 1403202000.0,
+    "anomaly_probability": 0.06442413479089737,
+    "severity_score": 4.655518795019285e-19
+  },
+  {
+    "center_time": "2014-06-19T23:40:00",
+    "center_ts": 1403221200.0,
+    "anomaly_probability": 0.06442862004041672,
+    "severity_score": 4.651187470536804e-19
+  },
+  {
+    "center_time": "2014-06-20T05:00:00",
+    "center_ts": 1403240400.0,
+    "anomaly_probability": 0.06443311274051666,
+    "severity_score": 4.646860281957386e-19
+  },
+  {
+    "center_time": "2014-06-20T10:20:00",
+    "center_ts": 1403259600.0,
+    "anomaly_probability": 0.06443744152784348,
+    "severity_score": 4.6425723844570645e-19
+  },
+  {
+    "center_time": "2014-06-20T15:40:00",
+    "center_ts": 1403278800.0,
+    "anomaly_probability": 0.06444178521633148,
+    "severity_score": 4.638359450199755e-19
+  },
+  {
+    "center_time": "2014-06-20T21:00:00",
+    "center_ts": 1403298000.0,
+    "anomaly_probability": 0.06444601714611053,
+    "severity_score": 4.634150134857626e-19
+  },
+  {
+    "center_time": "2014-06-21T02:20:00",
+    "center_ts": 1403317200.0,
+    "anomaly_probability": 0.06445030868053436,
+    "severity_score": 4.630015265770627e-19
+  },
+  {
+    "center_time": "2014-06-21T07:40:00",
+    "center_ts": 1403336400.0,
+    "anomaly_probability": 0.06445454806089401,
+    "severity_score": 4.625902110174707e-19
+  },
+  {
+    "center_time": "2014-06-21T13:00:00",
+    "center_ts": 1403355600.0,
+    "anomaly_probability": 0.0644586831331253,
+    "severity_score": 4.621845306258017e-19
+  },
+  {
+    "center_time": "2014-06-21T18:20:00",
+    "center_ts": 1403374800.0,
+    "anomaly_probability": 0.06446279585361481,
+    "severity_score": 4.617844337032675e-19
+  },
+  {
+    "center_time": "2014-06-21T23:40:00",
+    "center_ts": 1403394000.0,
+    "anomaly_probability": 0.06446689367294312,
+    "severity_score": 4.613847503710395e-19
+  },
+  {
+    "center_time": "2014-06-22T05:00:00",
+    "center_ts": 1403413200.0,
+    "anomaly_probability": 0.06447086483240128,
+    "severity_score": 4.609889444479329e-19
+  },
+  {
+    "center_time": "2014-06-22T10:20:00",
+    "center_ts": 1403432400.0,
+    "anomaly_probability": 0.06447471678256989,
+    "severity_score": 4.60598721993961e-19
+  },
+  {
+    "center_time": "2014-06-22T15:40:00",
+    "center_ts": 1403451600.0,
+    "anomaly_probability": 0.06447876244783401,
+    "severity_score": 4.602088097327188e-19
+  },
+  {
+    "center_time": "2014-06-22T21:00:00",
+    "center_ts": 1403470800.0,
+    "anomaly_probability": 0.06448254734277725,
+    "severity_score": 4.59826238699413e-19
+  },
+  {
+    "center_time": "2014-06-23T02:20:00",
+    "center_ts": 1403490000.0,
+    "anomaly_probability": 0.06448645144701004,
+    "severity_score": 4.594457356176386e-19
+  },
+  {
+    "center_time": "2014-06-23T07:40:00",
+    "center_ts": 1403509200.0,
+    "anomaly_probability": 0.06449023634195328,
+    "severity_score": 4.590691099449856e-19
+  },
+  {
+    "center_time": "2014-06-23T13:00:00",
+    "center_ts": 1403528400.0,
+    "anomaly_probability": 0.06449403613805771,
+    "severity_score": 4.586962582838773e-19
+  },
+  {
+    "center_time": "2014-06-23T18:20:00",
+    "center_ts": 1403547600.0,
+    "anomaly_probability": 0.06449776142835617,
+    "severity_score": 4.583254228755121e-19
+  },
+  {
+    "center_time": "2014-06-23T23:40:00",
+    "center_ts": 1403566800.0,
+    "anomaly_probability": 0.06450142711400986,
+    "severity_score": 4.579601709362817e-19
+  },
+  {
+    "center_time": "2014-06-24T05:00:00",
+    "center_ts": 1403586000.0,
+    "anomaly_probability": 0.06450501084327698,
+    "severity_score": 4.575969352497943e-19
+  },
+  {
+    "center_time": "2014-06-24T10:20:00",
+    "center_ts": 1403605200.0,
+    "anomaly_probability": 0.06450856477022171,
+    "severity_score": 4.5723747357485175e-19
+  },
+  {
+    "center_time": "2014-06-24T15:40:00",
+    "center_ts": 1403624400.0,
+    "anomaly_probability": 0.06451211869716644,
+    "severity_score": 4.568818376102422e-19
+  },
+  {
+    "center_time": "2014-06-24T21:00:00",
+    "center_ts": 1403643600.0,
+    "anomaly_probability": 0.06451554596424103,
+    "severity_score": 4.565299239583892e-19
+  }
+]

@@ -1,0 +1,220 @@
+{
+  "n_events": 10,
+  "n_with_scores": 0,
+  "n_with_wqp_data": 0,
+  "n_with_exceedances": 0,
+  "per_event": {
+    "gold_king_mine": {
+      "event_id": "gold_king_mine",
+      "name": "Gold King Mine Spill",
+      "year": 2015,
+      "onset_date": "2015-08-05T10:30:00",
+      "official_detection_date": "2015-08-05T14:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [
+        {
+          "date": "2015-08-05",
+          "type": "Mine waste release",
+          "source": "EPA"
+        },
+        {
+          "date": "2015-08-06",
+          "type": "DO-NOT-USE advisory",
+          "source": "La Plata County"
+        }
+      ],
+      "scores_source": "embeddings_fallback",
+      "n_scores": 200,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "lake_erie_hab": {
+      "event_id": "lake_erie_hab",
+      "name": "Lake Erie Harmful Algal Bloom",
+      "year": 2023,
+      "onset_date": "2023-07-01T00:00:00",
+      "official_detection_date": "2023-07-15T12:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [],
+      "scores_source": "exp1",
+      "n_scores": 89,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "toledo_water_crisis": {
+      "event_id": "toledo_water_crisis",
+      "name": "Toledo Water Crisis",
+      "year": 2014,
+      "onset_date": "2014-07-28T00:00:00",
+      "official_detection_date": "2014-08-01T06:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [
+        {
+          "date": "2014-08-01",
+          "type": "Microcystin above 1 ug/L",
+          "source": "Toledo WTP"
+        },
+        {
+          "date": "2014-08-02",
+          "type": "Do-not-drink advisory",
+          "source": "City of Toledo"
+        }
+      ],
+      "scores_source": "embeddings_fallback",
+      "n_scores": 200,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "dan_river_coal_ash": {
+      "event_id": "dan_river_coal_ash",
+      "name": "Dan River Coal Ash Spill",
+      "year": 2014,
+      "onset_date": "2014-02-02T14:00:00",
+      "official_detection_date": "2014-02-02T17:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [],
+      "scores_source": "embeddings_fallback",
+      "n_scores": 200,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "elk_river_mchm": {
+      "event_id": "elk_river_mchm",
+      "name": "Elk River MCHM Spill",
+      "year": 2014,
+      "onset_date": "2014-01-09T06:00:00",
+      "official_detection_date": "2014-01-09T12:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [
+        {
+          "date": "2014-01-09",
+          "type": "MCHM detected at intake",
+          "source": "WV American Water"
+        },
+        {
+          "date": "2014-01-09",
+          "type": "Do-not-use order",
+          "source": "Governor"
+        }
+      ],
+      "scores_source": "exp1",
+      "n_scores": 178,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "houston_ship_channel": {
+      "event_id": "houston_ship_channel",
+      "name": "Houston Ship Channel Contamination",
+      "year": 2019,
+      "onset_date": "2019-03-17T10:00:00",
+      "official_detection_date": "2019-03-17T14:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [],
+      "scores_source": "exp1",
+      "n_scores": 172,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "flint_mi": {
+      "event_id": "flint_mi",
+      "name": "Flint Water Crisis",
+      "year": 2014,
+      "onset_date": "2014-04-25T00:00:00",
+      "official_detection_date": "2015-09-15T12:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [
+        {
+          "date": "2014-10-13",
+          "type": "Total coliform positive",
+          "source": "EPA"
+        },
+        {
+          "date": "2015-01-02",
+          "type": "TTHM exceedance",
+          "source": "EPA"
+        },
+        {
+          "date": "2015-09-15",
+          "type": "Lead action level exceeded",
+          "source": "MDHHS"
+        }
+      ],
+      "scores_source": "exp1",
+      "n_scores": 254,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "gulf_dead_zone": {
+      "event_id": "gulf_dead_zone",
+      "name": "Gulf of Mexico Dead Zone",
+      "year": 2023,
+      "onset_date": "2023-06-01T00:00:00",
+      "official_detection_date": "2023-07-24T12:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [],
+      "scores_source": "exp1",
+      "n_scores": 89,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "chesapeake_bay_blooms": {
+      "event_id": "chesapeake_bay_blooms",
+      "name": "Chesapeake Bay Algal Blooms",
+      "year": 2023,
+      "onset_date": "2023-05-15T00:00:00",
+      "official_detection_date": "2023-06-01T12:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [],
+      "scores_source": "embeddings_fallback",
+      "n_scores": 200,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    },
+    "east_palestine": {
+      "event_id": "east_palestine",
+      "name": "East Palestine Train Derailment",
+      "year": 2023,
+      "onset_date": "2023-02-03T21:00:00",
+      "official_detection_date": "2023-02-04T08:00:00",
+      "n_wqp_records": 0,
+      "n_exceedances": 0,
+      "exceedances": [],
+      "known_violations": [
+        {
+          "date": "2023-02-04",
+          "type": "Vinyl chloride detected",
+          "source": "EPA"
+        },
+        {
+          "date": "2023-02-06",
+          "type": "Controlled vent and burn",
+          "source": "NTSB"
+        }
+      ],
+      "scores_source": "exp1",
+      "n_scores": 180,
+      "sentinel_first_detection_ts": null,
+      "lead_time_hours": null
+    }
+  },
+  "lead_times": [],
+  "elapsed_seconds": 37.1727249622345
+}

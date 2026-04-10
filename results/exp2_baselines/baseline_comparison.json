@@ -1,0 +1,29 @@
+{
+  "Z-score": {
+    "auroc": 0.42153571428571424,
+    "scores_mean": 0.33127552451736675
+  },
+  "Isolation Forest": {
+    "auroc": 1.0,
+    "scores_mean": 0.5052106178492527
+  },
+  "ARIMA": {
+    "auroc": 1.0,
+    "scores_mean": 0.20238370376292014
+  },
+  "AquaSSM-only": {
+    "auroc": 0.5,
+    "scores_mean": 1.0
+  },
+  "SENTINEL": {
+    "auroc": 0.23126607142857145,
+    "scores_mean": 0.10055301739647984
+  },
+  "_meta": {
+    "n_total": 2000,
+    "n_normal": 1400,
+    "n_anomalous": 600,
+    "elapsed_seconds": 29.446354150772095,
+    "embeddings_path": "C:\\Users\\zhaoz\\AppData\\Local\\Temp\\SENTINEL-STOCKHOLM\\data\\real_embeddings\\sensor_embeddings.pt"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "experiment": "exp6_propagation",
+  "rivers": {
+    "animas": {
+      "river": "Animas River (Gold King Mine)",
+      "event_date": "2015-08-05",
+      "stations_found": 8,
+      "stations_with_data": 0,
+      "pairs_analyzed": 0,
+      "pair_details": []
+    },
+    "dan": {
+      "river": "Dan River (NC)",
+      "event_date": "2014-02-02",
+      "stations_found": 5,
+      "stations_with_data": 2,
+      "pairs_analyzed": 1,
+      "pair_details": [
+        {
+          "upstream": "02072000",
+          "downstream": "02072500",
+          "lag_hours": 0.0,
+          "max_correlation": 0.9428,
+          "distance_km": 3.16,
+          "velocity_kmh": null
+        }
+      ]
+    },
+    "elk": {
+      "river": "Elk River (WV)",
+      "event_date": "2014-01-09",
+      "stations_found": 3,
+      "stations_with_data": 0,
+      "pairs_analyzed": 0,
+      "pair_details": []
+    }
+  },
+  "elapsed_seconds": 164.2
+}

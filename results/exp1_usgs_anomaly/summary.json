@@ -1,0 +1,159 @@
+{
+  "gold_king_mine": {
+    "status": "no_data",
+    "stations": [
+      {
+        "site_no": "09358550",
+        "distance_km": 8.481271138660373
+      },
+      {
+        "site_no": "09358000",
+        "distance_km": 9.299014757140526
+      },
+      {
+        "site_no": "09359010",
+        "distance_km": 10.50428935615789
+      }
+    ]
+  },
+  "lake_erie_hab": {
+    "status": "success",
+    "station": {
+      "site_no": "412122083061400",
+      "name": "Sandusky River below Bradys Island at Fremont OH",
+      "lat": 41.3561111,
+      "lon": -83.10388889,
+      "distance_km": 16.455099076018907
+    },
+    "n_records": 5768,
+    "n_windows": 89,
+    "n_scores": 89,
+    "mean_anomaly_pre": 0.05392571640285579,
+    "mean_anomaly_during": 0.06101765359441439,
+    "max_anomaly": 0.08440855890512466,
+    "first_detection": {}
+  },
+  "toledo_water_crisis": {
+    "status": "no_data",
+    "stations": [
+      {
+        "site_no": "413849083315000",
+        "distance_km": 0.34288463216034715
+      },
+      {
+        "site_no": "413913083314200",
+        "distance_km": 0.42474351381880554
+      },
+      {
+        "site_no": "413922083310500",
+        "distance_km": 1.202731136701959
+      }
+    ]
+  },
+  "dan_river_coal_ash": {
+    "status": "insufficient_data",
+    "n_records": 11608
+  },
+  "elk_river_mchm": {
+    "status": "success",
+    "station": {
+      "site_no": "03200500",
+      "name": "COAL RIVER AT TORNADO, WV",
+      "lat": 38.33898309,
+      "lon": -81.841518,
+      "distance_km": 12.560201828102269
+    },
+    "n_records": 11509,
+    "n_windows": 178,
+    "n_scores": 178,
+    "mean_anomaly_pre": 0.05745638144964522,
+    "mean_anomaly_during": 0.06343629016644425,
+    "max_anomaly": 0.08440855890512466,
+    "first_detection": {}
+  },
+  "houston_ship_channel": {
+    "status": "success",
+    "station": {
+      "site_no": "08067074",
+      "name": "CWA Canal at Thompson Rd nr Baytown, TX",
+      "lat": 29.80674444,
+      "lon": -95.0323972,
+      "distance_km": 8.803160566312231
+    },
+    "n_records": 11096,
+    "n_windows": 172,
+    "n_scores": 172,
+    "mean_anomaly_pre": 0.05756588921778732,
+    "mean_anomaly_during": 0.06341600127336455,
+    "max_anomaly": 0.08440855890512466,
+    "first_detection": {}
+  },
+  "flint_mi": {
+    "status": "success",
+    "station": {
+      "site_no": "041482663",
+      "name": "ALGER CREEK AT HILL ROAD NEAR SWARTZ CREEK, MI",
+      "lat": 42.9419733,
+      "lon": -83.8460698,
+      "distance_km": 14.779413706454266
+    },
+    "n_records": 16352,
+    "n_windows": 254,
+    "n_scores": 254,
+    "mean_anomaly_pre": null,
+    "mean_anomaly_during": 0.06163391231845214,
+    "max_anomaly": 0.08440855890512466,
+    "first_detection": {}
+  },
+  "gulf_dead_zone": {
+    "status": "success",
+    "station": {
+      "site_no": "07380245",
+      "name": "Southwestern Louisiana Canal E of Leeville, LA",
+      "lat": 29.25938889,
+      "lon": -90.1399806,
+      "distance_km": 53.113022655251186
+    },
+    "n_records": 5807,
+    "n_windows": 89,
+    "n_scores": 89,
+    "mean_anomaly_pre": 0.05392571640285579,
+    "mean_anomaly_during": 0.06101765359441439,
+    "max_anomaly": 0.08440855890512466,
+    "first_detection": {}
+  },
+  "chesapeake_bay_blooms": {
+    "status": "no_data",
+    "stations": [
+      {
+        "site_no": "01490200",
+        "distance_km": 19.48681837898239
+      },
+      {
+        "site_no": "01653560",
+        "distance_km": 92.9085001703343
+      },
+      {
+        "site_no": "01658000",
+        "distance_km": 93.26943616196804
+      }
+    ]
+  },
+  "east_palestine": {
+    "status": "success",
+    "station": {
+      "site_no": "03099500",
+      "name": "Mahoning River at Lowellville OH",
+      "lat": 41.03672598,
+      "lon": -80.5361815,
+      "distance_km": 21.91711823626196
+    },
+    "n_records": 11602,
+    "n_windows": 180,
+    "n_scores": 180,
+    "mean_anomaly_pre": 0.057619481501015986,
+    "mean_anomaly_during": 0.06348600506447674,
+    "max_anomaly": 0.08440855890512466,
+    "first_detection": {}
+  }
+}
