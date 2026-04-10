@@ -1,0 +1,3718 @@
+{
+  "n_sites_processed": 32,
+  "n_sites_success": 32,
+  "total_windows": 27644,
+  "elapsed_s": 1853.8,
+  "top_sites_by_anomaly_score": [
+    {
+      "site": "ARIK",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 290
+    },
+    {
+      "site": "BARC",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 983
+    },
+    {
+      "site": "BIGC",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 264
+    },
+    {
+      "site": "BLDE",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 96
+    },
+    {
+      "site": "BLUE",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 102
+    },
+    {
+      "site": "BLWA",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 28
+    },
+    {
+      "site": "CARI",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 162
+    },
+    {
+      "site": "COMO",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 83
+    },
+    {
+      "site": "CRAM",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 894
+    },
+    {
+      "site": "CUPE",
+      "max_score": 0.0,
+      "mean_score": 0.0,
+      "n_label_anomaly": 244
+    }
+  ],
+  "per_site": {
+    "ARIK": {
+      "site": "ARIK",
+      "n_rows": 3027326,
+      "n_windows": 1065,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 290,
+      "label_anomaly_rate": 0.27230046948356806,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 54.9
+    },
+    "BARC": {
+      "site": "BARC",
+      "n_rows": 302445,
+      "n_windows": 983,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 983,
+      "label_anomaly_rate": 1.0,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 49.2
+    },
+    "BIGC": {
+      "site": "BIGC",
+      "n_rows": 3300930,
+      "n_windows": 1011,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 264,
+      "label_anomaly_rate": 0.26112759643916916,
+      "top_events": [
+        {
+          "window_start_sec": 288000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 60537600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 60480000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1785600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1843200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1900800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1958400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2016000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2073600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2131200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2188800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2246400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2304000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2361600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 58579200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 108.2
+    },
+    "BLDE": {
+      "site": "BLDE",
+      "n_rows": 3157199,
+      "n_windows": 1087,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 96,
+      "label_anomaly_rate": 0.08831646734130635,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62496000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62438400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62380800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62323200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62265600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62208000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 72.4
+    },
+    "BLUE": {
+      "site": "BLUE",
+      "n_rows": 1590061,
+      "n_windows": 582,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 102,
+      "label_anomaly_rate": 0.17525773195876287,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 60537600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 60480000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 60422400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 60364800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 60307200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4608000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4665600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4723200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4780800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4838400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4896000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4953600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 5011200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 13075200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 39.1
+    },
+    "BLWA": {
+      "site": "BLWA",
+      "n_rows": 350657,
+      "n_windows": 1048,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 28,
+      "label_anomaly_rate": 0.026717557251908396,
+      "top_events": [
+        {
+          "window_start_sec": 403200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62496000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62438400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62380800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62323200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62265600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1785600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1843200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1900800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1958400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2016000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2073600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2131200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2188800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2246400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2304000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2361600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2419200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 78.0
+    },
+    "CARI": {
+      "site": "CARI",
+      "n_rows": 3022973,
+      "n_windows": 962,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 162,
+      "label_anomaly_rate": 0.1683991683991684,
+      "top_events": [
+        {
+          "window_start_sec": 3340800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 66297600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4262400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4320000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4377600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 4435200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 4492800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4550400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4608000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4665600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4723200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4780800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4838400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4896000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 4953600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 5011200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 5068800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 5126400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 58924800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 58982400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 64.3
+    },
+    "COMO": {
+      "site": "COMO",
+      "n_rows": 3077732,
+      "n_windows": 1057,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 83,
+      "label_anomaly_rate": 0.07852412488174078,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1785600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 61113600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 61171200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 61228800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 66.1
+    },
+    "CRAM": {
+      "site": "CRAM",
+      "n_rows": 326454,
+      "n_windows": 948,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 894,
+      "label_anomaly_rate": 0.9430379746835443,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 96134400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 96076800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 96019200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 15840000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 15897600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 15955200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16012800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16070400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16128000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16185600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16243200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16300800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16358400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16416000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 16473600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 53.1
+    },
+    "CUPE": {
+      "site": "CUPE",
+      "n_rows": 3021628,
+      "n_windows": 1068,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 244,
+      "label_anomaly_rate": 0.22846441947565543,
+      "top_events": [
+        {
+          "window_start_sec": 7488000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69753600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69696000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 69638400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 69580800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69523200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69465600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69408000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69350400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69292800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69235200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 69177600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 8409600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 8467200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 8524800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 8582400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 8640000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 8697600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 8755200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 8812800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 67.9
+    },
+    "FLNT": {
+      "site": "FLNT",
+      "n_rows": 291638,
+      "n_windows": 1045,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 2,
+      "label_anomaly_rate": 0.0019138755980861245,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 64.0
+    },
+    "GUIL": {
+      "site": "GUIL",
+      "n_rows": 3244802,
+      "n_windows": 1039,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 256,
+      "label_anomaly_rate": 0.24639076034648702,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62496000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62438400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62380800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62323200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62265600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62208000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 75.6
+    },
+    "HOPB": {
+      "site": "HOPB",
+      "n_rows": 3201578,
+      "n_windows": 1092,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 41,
+      "label_anomaly_rate": 0.037545787545787544,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1785600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 72.3
+    },
+    "KING": {
+      "site": "KING",
+      "n_rows": 2761142,
+      "n_windows": 1094,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 324,
+      "label_anomaly_rate": 0.2961608775137112,
+      "top_events": [
+        {
+          "window_start_sec": 17049600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 80064000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 80006400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 79948800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 79891200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 79833600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 17971200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18028800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18086400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18144000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18201600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18259200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18316800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18374400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18432000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18489600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18547200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18604800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18662400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 18720000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 70.5
+    },
+    "LECO": {
+      "site": "LECO",
+      "n_rows": 3066244,
+      "n_windows": 1094,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 222,
+      "label_anomaly_rate": 0.20292504570383912,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 73.8
+    },
+    "LEWI": {
+      "site": "LEWI",
+      "n_rows": 3119563,
+      "n_windows": 1091,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 253,
+      "label_anomaly_rate": 0.23189734188817598,
+      "top_events": [
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 64166400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 64108800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2131200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2188800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2246400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2304000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2361600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2419200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2476800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2534400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2592000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2649600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2707200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2764800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2822400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2880000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2937600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2995200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62208000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 58.4
+    },
+    "LIRO": {
+      "site": "LIRO",
+      "n_rows": 293902,
+      "n_windows": 835,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 615,
+      "label_anomaly_rate": 0.7365269461077845,
+      "top_events": [
+        {
+          "window_start_sec": 5299200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 100857600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 100800000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 22464000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22521600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22579200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22636800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22694400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22752000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22809600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22867200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22924800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 22982400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 23040000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 23097600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 23270400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 23328000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 23385600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 23443200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 98438400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 42.5
+    },
+    "MART": {
+      "site": "MART",
+      "n_rows": 3198746,
+      "n_windows": 1094,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 20,
+      "label_anomaly_rate": 0.018281535648994516,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 59.0
+    },
+    "MAYF": {
+      "site": "MAYF",
+      "n_rows": 3728622,
+      "n_windows": 925,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 898,
+      "label_anomaly_rate": 0.9708108108108108,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62496000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62438400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62380800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62323200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 49.1
+    },
+    "MCDI": {
+      "site": "MCDI",
+      "n_rows": 3295167,
+      "n_windows": 1094,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 497,
+      "label_anomaly_rate": 0.45429616087751373,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 57.5
+    },
+    "MCRA": {
+      "site": "MCRA",
+      "n_rows": 3243388,
+      "n_windows": 1088,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 154,
+      "label_anomaly_rate": 0.14154411764705882,
+      "top_events": [
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1785600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 61171200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 61228800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 61286400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 61344000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 54.7
+    },
+    "OKSR": {
+      "site": "OKSR",
+      "n_rows": 2408078,
+      "n_windows": 662,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 95,
+      "label_anomaly_rate": 0.14350453172205438,
+      "top_events": [
+        {
+          "window_start_sec": 22752000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 156556800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 156499200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 156441600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 156384000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 156326400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 23673600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24480000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24537600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24595200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24652800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24710400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24768000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24825600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24883200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24940800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 24998400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 25056000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 25113600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 25171200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 35.3
+    },
+    "POSE": {
+      "site": "POSE",
+      "n_rows": 2811413,
+      "n_windows": 1077,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 94,
+      "label_anomaly_rate": 0.0872794800371402,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 54.8
+    },
+    "PRIN": {
+      "site": "PRIN",
+      "n_rows": 2892048,
+      "n_windows": 1071,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 333,
+      "label_anomaly_rate": 0.31092436974789917,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62496000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62438400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62380800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62323200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62265600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62208000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 54.0
+    },
+    "PRLA": {
+      "site": "PRLA",
+      "n_rows": 280679,
+      "n_windows": 857,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 115,
+      "label_anomaly_rate": 0.13418903150525088,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99705600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99648000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99590400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99532800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99475200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99417600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99360000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 99302400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 43.2
+    },
+    "PRPO": {
+      "site": "PRPO",
+      "n_rows": 276368,
+      "n_windows": 904,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 904,
+      "label_anomaly_rate": 1.0,
+      "top_events": [
+        {
+          "window_start_sec": 8524800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 107308800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 107251200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 107193600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 107136000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 107078400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 107020800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 106963200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9446400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9504000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9561600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9619200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9676800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9734400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9792000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9849600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9907200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 9964800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 10022400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 10080000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 45.7
+    },
+    "REDB": {
+      "site": "REDB",
+      "n_rows": 2893421,
+      "n_windows": 1035,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 285,
+      "label_anomaly_rate": 0.2753623188405797,
+      "top_events": [
+        {
+          "window_start_sec": 0.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62496000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 62438400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1036800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1094400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1152000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1209600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1267200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1324800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 62.8
+    },
+    "SUGG": {
+      "site": "SUGG",
+      "n_rows": 194326,
+      "n_windows": 575,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 575,
+      "label_anomaly_rate": 1.0,
+      "top_events": [
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62956800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62899200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62841600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62784000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62726400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62668800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62611200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62553600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62496000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62438400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62380800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62323200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62265600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 62208000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2361600.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2419200.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2476800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2534400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 2592000.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        }
+      ],
+      "elapsed_s": 31.3
+    },
+    "SYCA": {
+      "site": "SYCA",
+      "n_rows": 178711,
+      "n_windows": 46,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 0,
+      "label_anomaly_rate": 0.0,
+      "top_events": [
+        {
+          "window_start_sec": 35308800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 35251200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 35193600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 35136000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 35078400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 35020800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34963200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34905600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34848000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34790400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34732800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34675200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34617600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34560000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34502400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34444800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34387200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34329600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34272000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 34214400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 3.8
+    },
+    "TOMB": {
+      "site": "TOMB",
+      "n_rows": 9068,
+      "n_windows": 43,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 0,
+      "label_anomaly_rate": 0.0,
+      "top_events": [
+        {
+          "window_start_sec": 14860800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14803200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14745600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14688000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14630400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14572800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14515200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14457600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14400000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14342400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14284800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14227200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14169600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14112000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 14054400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 13996800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 13939200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 13881600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 13824000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 13766400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 3.3
+    },
+    "TOOK": {
+      "site": "TOOK",
+      "n_rows": 17996,
+      "n_windows": 33,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 0,
+      "label_anomaly_rate": 0.0,
+      "top_events": [
+        {
+          "window_start_sec": 2361600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2304000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2246400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2188800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2131200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2073600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2016000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1958400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1900800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1843200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1785600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 979200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 921600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 864000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 806400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 3.6
+    },
+    "WALK": {
+      "site": "WALK",
+      "n_rows": 86540,
+      "n_windows": 39,
+      "status": "success",
+      "mean_score": 0.0,
+      "max_score": 0.0,
+      "p95_score": 0.0,
+      "n_label_anomaly": 6,
+      "label_anomaly_rate": 0.15384615384615385,
+      "top_events": [
+        {
+          "window_start_sec": 2476800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2419200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2361600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2304000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2246400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2188800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2131200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2073600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 2016000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1958400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1900800.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1843200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1785600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1728000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1670400.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1612800.0,
+          "score": 0.0,
+          "labeled_anomaly": true
+        },
+        {
+          "window_start_sec": 1555200.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1497600.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1440000.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        },
+        {
+          "window_start_sec": 1382400.0,
+          "score": 0.0,
+          "labeled_anomaly": false
+        }
+      ],
+      "elapsed_s": 3.6
+    }
+  }
+}

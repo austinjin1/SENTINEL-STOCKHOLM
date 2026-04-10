@@ -46,3 +46,57 @@
 [19:45:22] INFO     [17/32] LIRO: 293,902 rows                                  
 [19:46:05] INFO       → 835 windows, max_score=0.0000, mean=0.0000  [42.5s]     
 [19:46:09] INFO     [18/32] MART: 3,198,746 rows                                
+[19:47:08] INFO       → 1094 windows, max_score=0.0000, mean=0.0000  [59.0s]    
+[19:47:11] INFO     [19/32] MAYF: 3,728,622 rows                                
+[19:48:00] INFO       → 925 windows, max_score=0.0000, mean=0.0000  [49.1s]     
+[19:48:04] INFO     [20/32] MCDI: 3,295,167 rows                                
+[19:49:01] INFO       → 1094 windows, max_score=0.0000, mean=0.0000  [57.5s]    
+[19:49:05] INFO     [21/32] MCRA: 3,243,388 rows                                
+[19:50:00] INFO       → 1088 windows, max_score=0.0000, mean=0.0000  [54.7s]    
+[19:50:03] INFO     [22/32] OKSR: 2,408,078 rows                                
+[19:50:38] INFO       → 662 windows, max_score=0.0000, mean=0.0000  [35.3s]     
+[19:50:42] INFO     [23/32] POSE: 2,811,413 rows                                
+[19:51:36] INFO       → 1077 windows, max_score=0.0000, mean=0.0000  [54.8s]    
+[19:51:40] INFO     [24/32] PRIN: 2,892,048 rows                                
+[19:52:34] INFO       → 1071 windows, max_score=0.0000, mean=0.0000  [54.0s]    
+[19:52:37] INFO     [25/32] PRLA: 280,679 rows                                  
+[19:53:20] INFO       → 857 windows, max_score=0.0000, mean=0.0000  [43.2s]     
+[19:53:24] INFO     [26/32] PRPO: 276,368 rows                                  
+[19:54:09] INFO       → 904 windows, max_score=0.0000, mean=0.0000  [45.7s]     
+[19:54:14] INFO     [27/32] REDB: 2,893,421 rows                                
+[19:55:17] INFO       → 1035 windows, max_score=0.0000, mean=0.0000  [62.8s]    
+[19:55:22] INFO     [28/32] SUGG: 194,326 rows                                  
+[19:55:54] INFO       → 575 windows, max_score=0.0000, mean=0.0000  [31.3s]     
+[19:56:01] INFO     [29/32] SYCA: 178,711 rows                                  
+[19:56:05] INFO       → 46 windows, max_score=0.0000, mean=0.0000  [3.8s]       
+[19:56:22] INFO     [30/32] TOMB: 9,068 rows                                    
+[19:56:26] INFO       → 43 windows, max_score=0.0000, mean=0.0000  [3.3s]       
+[19:56:30] INFO     [31/32] TOOK: 17,996 rows                                   
+[19:56:33] INFO       → 33 windows, max_score=0.0000, mean=0.0000  [3.6s]       
+[19:56:37] INFO     [32/32] WALK: 86,540 rows                                   
+[19:56:40] INFO       → 39 windows, max_score=0.0000, mean=0.0000  [3.6s]       
+           INFO                                                                 
+                    Results saved to                                            
+                    /home/bcheng/SENTINEL/results/neon_anomaly_scan/neon_scan_re
+                    sults.json                                                  
+           INFO                                                                 
+                    === TOP ANOMALOUS NEON SITES ===                            
+[19:56:41] INFO     Site          MaxScore  MeanScore  LabelRate  Windows       
+           INFO     -------------------------------------------------------     
+           INFO     ARIK            0.0000     0.0000      27.2%     1065       
+           INFO     BARC            0.0000     0.0000     100.0%      983       
+           INFO     BIGC            0.0000     0.0000      26.1%     1011       
+           INFO     BLDE            0.0000     0.0000       8.8%     1087       
+           INFO     BLUE            0.0000     0.0000      17.5%      582       
+           INFO     BLWA            0.0000     0.0000       2.7%     1048       
+           INFO     CARI            0.0000     0.0000      16.8%      962       
+           INFO     COMO            0.0000     0.0000       7.9%     1057       
+           INFO     CRAM            0.0000     0.0000      94.3%      948       
+           INFO     CUPE            0.0000     0.0000      22.8%     1068       
+           INFO     FLNT            0.0000     0.0000       0.2%     1045       
+           INFO     GUIL            0.0000     0.0000      24.6%     1039       
+           INFO     HOPB            0.0000     0.0000       3.8%     1092       
+           INFO     KING            0.0000     0.0000      29.6%     1094       
+           INFO     LECO            0.0000     0.0000      20.3%     1094       
+           INFO                                                                 
+                    Total elapsed: 1853.9s                                      
