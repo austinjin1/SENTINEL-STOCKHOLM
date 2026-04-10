@@ -28,9 +28,9 @@
     "n_records": 5768,
     "n_windows": 89,
     "n_scores": 89,
-    "mean_anomaly_pre": 0.05392571640285579,
-    "mean_anomaly_during": 0.06101765359441439,
-    "max_anomaly": 0.08440855890512466,
+    "mean_anomaly_pre": 0.053925717270679095,
+    "mean_anomaly_during": 0.061017683645089464,
+    "max_anomaly": 0.08440862596035004,
     "first_detection": {}
   },
   "toledo_water_crisis": {
@@ -66,9 +66,9 @@
     "n_records": 11509,
     "n_windows": 178,
     "n_scores": 178,
-    "mean_anomaly_pre": 0.05745638144964522,
-    "mean_anomaly_during": 0.06343629016644425,
-    "max_anomaly": 0.08440855890512466,
+    "mean_anomaly_pre": 0.05745639657305384,
+    "mean_anomaly_during": 0.06343634364505608,
+    "max_anomaly": 0.08440862596035004,
     "first_detection": {}
   },
   "houston_ship_channel": {
@@ -83,9 +83,9 @@
     "n_records": 11096,
     "n_windows": 172,
     "n_scores": 172,
-    "mean_anomaly_pre": 0.05756588921778732,
-    "mean_anomaly_during": 0.06341600127336455,
-    "max_anomaly": 0.08440855890512466,
+    "mean_anomaly_pre": 0.05756590532966786,
+    "mean_anomaly_during": 0.06341605215537839,
+    "max_anomaly": 0.08440862596035004,
     "first_detection": {}
   },
   "flint_mi": {
@@ -95,14 +95,14 @@
       "name": "ALGER CREEK AT HILL ROAD NEAR SWARTZ CREEK, MI",
       "lat": 42.9419733,
       "lon": -83.8460698,
-      "distance_km": 14.779413706454266
+      "distance_km": 14.779413706454262
     },
     "n_records": 16352,
     "n_windows": 254,
     "n_scores": 254,
     "mean_anomaly_pre": null,
-    "mean_anomaly_during": 0.06163391231845214,
-    "max_anomaly": 0.08440855890512466,
+    "mean_anomaly_during": 0.06163393941113916,
+    "max_anomaly": 0.08440862596035004,
     "first_detection": {}
   },
   "gulf_dead_zone": {
@@ -117,9 +117,9 @@
     "n_records": 5807,
     "n_windows": 89,
     "n_scores": 89,
-    "mean_anomaly_pre": 0.05392571640285579,
-    "mean_anomaly_during": 0.06101765359441439,
-    "max_anomaly": 0.08440855890512466,
+    "mean_anomaly_pre": 0.053925717270679095,
+    "mean_anomaly_during": 0.061017683645089464,
+    "max_anomaly": 0.08440862596035004,
     "first_detection": {}
   },
   "chesapeake_bay_blooms": {
@@ -151,9 +151,9 @@
     "n_records": 11602,
     "n_windows": 180,
     "n_scores": 180,
-    "mean_anomaly_pre": 0.057619481501015986,
-    "mean_anomaly_during": 0.06348600506447674,
-    "max_anomaly": 0.08440855890512466,
+    "mean_anomaly_pre": 0.0576194988277096,
+    "mean_anomaly_during": 0.06348605629768264,
+    "max_anomaly": 0.08440862596035004,
     "first_detection": {}
   }
 }

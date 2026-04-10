@@ -1,0 +1,37 @@
+[19:11:11] INFO     Device: cuda                                                
+           INFO     Output: /home/bcheng/SENTINEL/data/real_embeddings          
+           INFO     ============================================================
+           INFO     Extracting SATELLITE (HydroViT) embeddings                  
+           INFO     ============================================================
+[19:11:14] INFO     Loaded checkpoint: 0 missing, 0 unexpected keys             
+[19:11:57] INFO     Loaded 2861 satellite images: (2861, 10, 224, 224)          
+[19:11:58] INFO       Batch 50/358                                              
+[19:11:59] INFO       Batch 100/358                                             
+[19:12:00] INFO       Batch 150/358                                             
+[19:12:01] INFO       Batch 200/358                                             
+           INFO       Batch 250/358                                             
+[19:12:02] INFO       Batch 300/358                                             
+[19:12:03] INFO       Batch 350/358                                             
+           INFO     Saved torch.Size([2861, 256]) satellite embeddings in 5.5s  
+           INFO       Embedding stats: mean=0.0000, std=1.0000                  
+           INFO     ============================================================
+           INFO     Extracting SENSOR (AquaSSM) embeddings                      
+           INFO     ============================================================
+           INFO     Loaded: 313 missing, 2 unexpected                           
+[19:14:27] INFO     Saved torch.Size([2000, 256]) sensor embeddings in 144.2s   
+           INFO     ============================================================
+           INFO     Extracting MICROBIAL (MicroBiomeNet) embeddings             
+           INFO     ============================================================
+[19:14:30] INFO     Loaded: 0 missing, 1 unexpected                             
+[19:14:31] INFO     Saved torch.Size([5000, 256]) microbial embeddings in 1.2s  
+           INFO     ============================================================
+           INFO     Extracting MOLECULAR (ToxiGene) embeddings                  
+           INFO     ============================================================
+Traceback (most recent call last):
+  File "/home/bcheng/SENTINEL/scripts/extract_real_embeddings.py", line 381, in <module>
+    main()
+  File "/home/bcheng/SENTINEL/scripts/extract_real_embeddings.py", line 368, in main
+    extract_molecular()
+  File "/home/bcheng/SENTINEL/scripts/extract_real_embeddings.py", line 250, in extract_molecular
+    model = MolecularEncoder().to(DEVICE)
+TypeError: MolecularEncoder.__init__() missing 4 required positional arguments: 'gene_names', 'pathway_adj', 'process_adj', and 'outcome_adj'

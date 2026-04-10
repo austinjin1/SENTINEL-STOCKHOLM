@@ -32,12 +32,13 @@ with cosine decay.
 \paragraph{HydroViT.}
 MAE-pretrained on 2,986 real Sentinel-2 L2A tiles (10 spectral bands,
 224$\times$224 pixels) from Planetary Computer. Water quality regression
-head fine-tuned on 2,861 co-registered satellite--in situ WQ pairs: 847
-from GRQA (2015--2020) and EPA WQP spanning 170 geographic cells across
-105 countries, plus 2,014 new pairs collected from 195 USGS NWIS stations
-with GPS-precise ($\sim$10\,m) coordinates and tightly co-registered
-Sentinel-2 tiles ($\pm$1.5\,km, $\pm$3\,days). Training: masking ratio
-75\%, learning rate $3 \times 10^{-4}$, 200 epochs total.
+head fine-tuned on 4,202 co-registered satellite--in situ WQ pairs from
+GRQA (2015--2020) and EPA WQP spanning 170 geographic cells across 105
+countries, plus USGS NWIS stations with GPS-precise ($\sim$10\,m)
+coordinates and tightly co-registered Sentinel-2 tiles ($\pm$1.5\,km,
+$\pm$3\,days). Split: 2,941 train / 630 val / 631 test. Training:
+masking ratio 75\%, head LR $3 \times 10^{-4}$, backbone LR $5 \times
+10^{-5}$, 200 epochs total.
 
 \paragraph{MicroBiomeNet.}
 Trained on 20,288 real 16S rRNA OTU samples from the Earth Microbiome

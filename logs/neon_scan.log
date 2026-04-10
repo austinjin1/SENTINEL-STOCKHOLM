@@ -1,0 +1,48 @@
+[19:25:47] INFO     Device: cuda                                                
+           INFO     NEON parquet:                                               
+                    /home/bcheng/SENTINEL/data/raw/neon_aquatic/neon_DP1.20288.0
+                    01_consolidated.parquet                                     
+[19:25:49] INFO     AquaSSM loaded                                              
+[19:25:50] INFO     Fusion + AnomalyHead loaded                                 
+           INFO     Reading NEON parquet columns...                             
+[19:26:08] INFO     Loaded 62,670,845 rows in 17.5s                             
+[19:26:12] INFO     Sites: 32 — ['ARIK', 'BARC', 'BIGC', 'BLDE', 'BLUE', 'BLWA',
+                    'CARI', 'COMO', 'CRAM', 'CUPE', 'FLNT', 'GUIL', 'HOPB',     
+                    'KING', 'LECO', 'LEWI', 'LIRO', 'MART', 'MAYF', 'MCDI',     
+                    'MCRA', 'OKSR', 'POSE', 'PRIN', 'PRLA', 'PRPO', 'REDB',     
+                    'SUGG', 'SYCA', 'TOMB', 'TOOK', 'WALK']                     
+[19:26:15] INFO     [1/32] ARIK: 3,027,326 rows                                 
+[19:27:10] INFO       → 1065 windows, max_score=0.0000, mean=0.0000  [54.9s]    
+[19:27:14] INFO     [2/32] BARC: 302,445 rows                                   
+[19:28:03] INFO       → 983 windows, max_score=0.0000, mean=0.0000  [49.2s]     
+[19:28:07] INFO     [3/32] BIGC: 3,300,930 rows                                 
+[19:29:55] INFO       → 1011 windows, max_score=0.0000, mean=0.0000  [108.2s]   
+[19:30:02] INFO     [4/32] BLDE: 3,157,199 rows                                 
+[19:31:14] INFO       → 1087 windows, max_score=0.0000, mean=0.0000  [72.4s]    
+[19:31:19] INFO     [5/32] BLUE: 1,590,061 rows                                 
+[19:31:58] INFO       → 582 windows, max_score=0.0000, mean=0.0000  [39.1s]     
+[19:32:03] INFO     [6/32] BLWA: 350,657 rows                                   
+[19:33:21] INFO       → 1048 windows, max_score=0.0000, mean=0.0000  [78.0s]    
+[19:33:28] INFO     [7/32] CARI: 3,022,973 rows                                 
+[19:34:32] INFO       → 962 windows, max_score=0.0000, mean=0.0000  [64.3s]     
+[19:34:37] INFO     [8/32] COMO: 3,077,732 rows                                 
+[19:35:43] INFO       → 1057 windows, max_score=0.0000, mean=0.0000  [66.1s]    
+[19:35:47] INFO     [9/32] CRAM: 326,454 rows                                   
+[19:36:40] INFO       → 948 windows, max_score=0.0000, mean=0.0000  [53.1s]     
+[19:36:45] INFO     [10/32] CUPE: 3,021,628 rows                                
+[19:37:53] INFO       → 1068 windows, max_score=0.0000, mean=0.0000  [67.9s]    
+[19:37:57] INFO     [11/32] FLNT: 291,638 rows                                  
+[19:39:01] INFO       → 1045 windows, max_score=0.0000, mean=0.0000  [64.0s]    
+[19:39:08] INFO     [12/32] GUIL: 3,244,802 rows                                
+[19:40:23] INFO       → 1039 windows, max_score=0.0000, mean=0.0000  [75.6s]    
+[19:40:29] INFO     [13/32] HOPB: 3,201,578 rows                                
+[19:41:41] INFO       → 1092 windows, max_score=0.0000, mean=0.0000  [72.3s]    
+[19:41:46] INFO     [14/32] KING: 2,761,142 rows                                
+[19:42:56] INFO       → 1094 windows, max_score=0.0000, mean=0.0000  [70.5s]    
+[19:43:01] INFO     [15/32] LECO: 3,066,244 rows                                
+[19:44:15] INFO       → 1094 windows, max_score=0.0000, mean=0.0000  [73.8s]    
+[19:44:20] INFO     [16/32] LEWI: 3,119,563 rows                                
+[19:45:19] INFO       → 1091 windows, max_score=0.0000, mean=0.0000  [58.4s]    
+[19:45:22] INFO     [17/32] LIRO: 293,902 rows                                  
+[19:46:05] INFO       → 835 windows, max_score=0.0000, mean=0.0000  [42.5s]     
+[19:46:09] INFO     [18/32] MART: 3,198,746 rows                                

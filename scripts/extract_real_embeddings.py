@@ -25,11 +25,15 @@ from sentinel.utils.logging import get_logger
 logger = get_logger(__name__)
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-CKPT_BASE = Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints")
+CKPT_BASE = PROJECT_ROOT / "checkpoints"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "real_embeddings"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-PAIRED_DATA = PROJECT_ROOT / "data" / "processed" / "satellite" / "paired_wq_v4.npz"
+# Use v4 if available, else fall back to v3
+_sat_v4 = PROJECT_ROOT / "data" / "processed" / "satellite" / "paired_wq_v4.npz"
+_sat_v3 = PROJECT_ROOT / "data" / "processed" / "satellite" / "paired_wq_v3.npz"
+_sat_exp = PROJECT_ROOT / "data" / "processed" / "satellite" / "paired_wq_expanded.npz"
+PAIRED_DATA = _sat_v4 if _sat_v4.exists() else (_sat_v3 if _sat_v3.exists() else _sat_exp)
 
 
 # ---------------------------------------------------------------------------
@@ -283,9 +287,9 @@ def extract_molecular():
 # ---------------------------------------------------------------------------
 
 def extract_behavioral():
-    """Extract BioMotion embeddings from trajectory data."""
+    """Extract BioMotion embeddings from real ECOTOX Daphnia trajectories."""
     logger.info("=" * 60)
-    logger.info("Extracting BEHAVIORAL (BioMotion) embeddings")
+    logger.info("Extracting BEHAVIORAL (BioMotion) embeddings — real ECOTOX data")
     logger.info("=" * 60)
 
     from sentinel.models.biomotion.model import BioMotionEncoder
@@ -303,45 +307,42 @@ def extract_behavioral():
     logger.info(f"Loaded: {len(missing)} missing, {len(unexpected)} unexpected")
     model.eval()
 
-    rng = np.random.default_rng(42)
-    n_samples = 2000
-    T = 300  # 5 min at 1 Hz
-    n_keypoints = 12
-    n_features = 16
+    # Load real ECOTOX behavioral trajectories
+    real_dir = PROJECT_ROOT / "data" / "processed" / "behavioral_real"
+    traj_files = sorted(real_dir.glob("traj_*.npz"))
+    if not traj_files:
+        logger.warning("No real behavioral trajectories found, skipping")
+        return
+    logger.info(f"Found {len(traj_files)} real ECOTOX trajectories")
 
     embeddings = []
     t0 = time.time()
+    batch_kp, batch_feat = [], []
     with torch.no_grad():
-        for i in range(0, n_samples, 32):
-            bs = min(32, n_samples - i)
-            keypoints = rng.normal(0, 1, size=(bs, T, n_keypoints, 2)).astype(np.float32)
-            features = rng.normal(0, 1, size=(bs, T, n_features)).astype(np.float32)
-            kp = torch.from_numpy(keypoints).to(DEVICE)
-            feat = torch.from_numpy(features).to(DEVICE)
+        for i, f in enumerate(traj_files[:3000]):  # cap at 3K for speed
+            d = np.load(f)
+            batch_kp.append(d["keypoints"])    # (200, 12, 2)
+            batch_feat.append(d["features"])   # (200, 16)
 
-            try:
-                out = model.forward_single_species(
-                    species="daphnia",
-                    keypoints=kp,
-                    features=feat,
-                )
-                emb = out["embedding"].cpu()
-                embeddings.append(emb)
-            except Exception as e:
-                # Try organism_inputs dict format
+            if len(batch_kp) == 32 or i == min(2999, len(traj_files) - 1):
+                kp = torch.from_numpy(np.stack(batch_kp)).to(DEVICE)     # (B, 200, 12, 2)
+                feat = torch.from_numpy(np.stack(batch_feat)).to(DEVICE)  # (B, 200, 16)
                 try:
-                    organism_inputs = {
-                        "daphnia": {
-                            "keypoints": kp,
-                            "features": feat,
-                        }
-                    }
-                    out = model(organism_inputs)
-                    emb = out["embedding"].cpu()
-                    embeddings.append(emb)
-                except Exception as e2:
-                    logger.warning(f"Behavioral forward failed: {e2}")
-                    break
+                    out = model.forward_single_species(
+                        species="daphnia", keypoints=kp, features=feat)
+                    embeddings.append(out["embedding"].cpu())
+                except Exception:
+                    try:
+                        org = {"daphnia": {"keypoints": kp, "features": feat}}
+                        out = model(org)
+                        embeddings.append(out["embedding"].cpu())
+                    except Exception as e2:
+                        logger.warning(f"Behavioral forward failed: {e2}")
+                        break
+                batch_kp, batch_feat = [], []
+
+            if (i + 1) % 500 == 0:
+                logger.info(f"  {i+1}/{min(3000, len(traj_files))} trajectories")
 
     if embeddings:
         all_emb = torch.cat(embeddings, dim=0)
