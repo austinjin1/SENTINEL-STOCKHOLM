@@ -204,7 +204,9 @@ def run_quick_scan_subset() -> dict:
                     enc = sensor(x=va, timestamps=ta, delta_ts=da, masks=ma)
                     emb = enc["embedding"]
                     hout = head(emb)
-                    prob = getattr(hout, "anomaly_probability", None) or getattr(hout, "severity_score", None)
+                    prob = getattr(hout, "anomaly_probability", None)
+                    if prob is None:
+                        prob = getattr(hout, "severity_score", None)
                     if prob is not None:
                         if prob.dim() > 1: prob = prob[:, 1]
                         prob = torch.sigmoid(prob)
@@ -361,8 +363,15 @@ def main():
 
     # Try to use precomputed NEON scan results
     scan_results = load_scan_results()
+    # Check if loaded results are trivial (all-zero scores = broken scan)
+    if scan_results is not None:
+        per = scan_results.get("per_site", {})
+        all_scores = [r.get("max_score", 0) for r in per.values() if r.get("status") == "success"]
+        if all_scores and max(all_scores) < 0.01:
+            logger.info("Loaded NEON scan has all-zero scores (broken) — running quick 4-site scan...")
+            scan_results = None
     if scan_results is None:
-        logger.info("No precomputed scan — running quick 4-site scan...")
+        logger.info("No valid precomputed scan — running quick 4-site scan...")
         scan_results = run_quick_scan_subset()
 
     logger.info("\n--- Ecoregion patterns ---")
@@ -370,23 +379,45 @@ def main():
 
     per_site = scan_results.get("per_site", {})
     success = [(s, r) for s, r in per_site.items() if r.get("status") == "success"]
-    aurocs = [r.get("auroc", 0.5) for _, r in success]
 
-    if aurocs:
-        logger.info(f"\nOverall cross-site AUROC: {np.mean(aurocs):.4f} ± {np.std(aurocs):.4f}")
-        logger.info(f"Sites above 0.6 AUROC: {sum(a > 0.6 for a in aurocs)}/{len(aurocs)}")
-        logger.info(f"Sites above 0.5 AUROC (better than chance): {sum(a > 0.5 for a in aurocs)}/{len(aurocs)}")
+    # Cross-site Spearman correlation: model score vs independent label rate
+    # (More meaningful than per-site AUROC which requires per-window data not stored)
+    from scipy import stats as sp_stats
+    mean_scores   = [r.get("mean_score", 0.0) for _, r in success]
+    max_scores    = [r.get("max_score", 0.0) for _, r in success]
+    label_rates   = [r.get("label_anomaly_rate", 0.0) for _, r in success]
+
+    rho_mean, p_mean = sp_stats.spearmanr(mean_scores, label_rates) if len(success) > 2 else (0.0, 1.0)
+    rho_max,  p_max  = sp_stats.spearmanr(max_scores,  label_rates) if len(success) > 2 else (0.0, 1.0)
+
+    logger.info(f"\nCross-site Spearman ρ (mean_score vs label_rate): {rho_mean:.4f} (p={p_mean:.3f})")
+    logger.info(f"Cross-site Spearman ρ (max_score vs label_rate):  {rho_max:.4f} (p={p_max:.3f})")
+    logger.info(f"Sites processed: {len(success)}/32")
+    logger.info(f"Score range: [{min(mean_scores):.4f}, {max(mean_scores):.4f}] (mean)")
+    logger.info(f"Label rate range: [{min(label_rates):.3f}, {max(label_rates):.3f}]")
+
+    # Sites with notably high anomaly scores (top quartile)
+    p75 = np.percentile(mean_scores, 75)
+    high_sites = [(s, r["mean_score"], r["label_anomaly_rate"])
+                  for s, r in success if r.get("mean_score", 0) >= p75]
+    high_sites.sort(key=lambda x: -x[1])
+    logger.info(f"\nTop-quartile sites by mean_score (≥{p75:.4f}):")
+    for site, sc, lr in high_sites:
+        logger.info(f"  {site}: mean_score={sc:.4f}, label_rate={lr:.3f}")
 
     plot_cross_site(scan_results, eco_stats)
 
     summary = {
         "n_sites_analyzed": len(success),
-        "overall_auroc_mean": float(np.mean(aurocs)) if aurocs else None,
-        "overall_auroc_std": float(np.std(aurocs)) if aurocs else None,
+        "cross_site_spearman_mean_score": {"rho": float(rho_mean), "p_value": float(p_mean)},
+        "cross_site_spearman_max_score":  {"rho": float(rho_max),  "p_value": float(p_max)},
+        "score_range": {"min": float(min(mean_scores)), "max": float(max(mean_scores))},
+        "label_rate_range": {"min": float(min(label_rates)), "max": float(max(label_rates))},
         "ecoregion_stats": eco_stats,
         "per_site_results": {s: r for s, r in success},
         "critique_addressed": "Tests AquaSSM zero-shot cross-site generalization across "
-            "32 NEON sites and EPA ecoregions. Reveals which ecological contexts the "
+            "32 NEON sites and EPA ecoregions via Spearman correlation between model "
+            "scores and independent label rates. Reveals which ecological contexts the "
             "model generalizes to and which require site-specific fine-tuning.",
         "elapsed_s": round(time.time() - t0, 1),
     }

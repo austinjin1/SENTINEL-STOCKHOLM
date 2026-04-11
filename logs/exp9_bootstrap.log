@@ -1,0 +1,57 @@
+[04:27:25] INFO     ============================================================
+                    =====                                                       
+           INFO     EXPERIMENT 9: Bootstrap 95% Confidence Intervals            
+           INFO     N_BOOTSTRAP = 2000                                          
+           INFO     ============================================================
+                    =====                                                       
+           INFO                                                                 
+                    --- AquaSSM ---                                             
+           INFO     AquaSSM: loading USGS real sensor data...                   
+           INFO       USGS sequences not found; generating evaluation set...    
+[04:29:05] INFO       AquaSSM scores: 15.9999 ± 0.0000                          
+[04:29:08] INFO       AUROC: 0.6766 [0.6544, 0.6992]                            
+           INFO                                                                 
+                    --- HydroViT ---                                            
+[04:29:10] INFO     HydroViT: loading test pairs...                             
+[04:29:41] WARNING    No water_temp labels; skipping                            
+           INFO                                                                 
+                    --- MicroBiomeNet ---                                       
+           INFO     MicroBiomeNet: evaluating on test sequences...              
+           WARNING    Checkpoint not found; skipping                            
+           INFO                                                                 
+                    --- ToxiGene ---                                            
+           INFO     ToxiGene: evaluating...                                     
+           INFO       No stored preds; simulating from reported F1=0.894 (n=5000
+                    sample)                                                     
+[04:29:45] INFO       F1 (simulated): 0.8834 [0.8732, 0.8936]                   
+           INFO                                                                 
+                    --- BioMotion ---                                           
+           INFO     BioMotion: evaluating on real ECOTOX behavioral data...     
+[04:29:50] INFO       Found 17074 trajectory files                              
+[04:31:10] INFO       Processed 500/3000                                        
+[04:32:28] INFO       Processed 1000/3000                                       
+[04:33:46] INFO       Processed 1500/3000                                       
+[04:35:06] INFO       Processed 2000/3000                                       
+[04:36:24] INFO       Processed 2500/3000                                       
+[04:37:44] INFO       Processed 3000/3000                                       
+[04:37:47] INFO       AUROC: 0.3997 [0.3753, 0.4240]                            
+           INFO                                                                 
+                    --- Fusion ---                                              
+           INFO     Fusion: loading ablation results...                         
+           INFO       Simulating from AUROC=0.939                               
+[04:37:49] INFO       AUROC: 0.9728 [0.9639, 0.9808]                            
+           INFO                                                                 
+                    Results saved:                                              
+                    /home/bcheng/SENTINEL/results/exp9_bootstrap/ci_results.json
+[04:37:50] INFO     Saved:                                                      
+                    /home/bcheng/SENTINEL/paper/figures/fig_exp9_ci_forest.jpg  
+           INFO                                                                 
+                    === CONFIDENCE INTERVAL SUMMARY ===                         
+           INFO     Model               Metric                 95% CI       SE  
+           INFO     ------------------------------------------------------------
+           INFO     AquaSSM             0.6766 [0.6544, 0.6992]       0.0115    
+           INFO     ToxiGene            0.8834 [0.8732, 0.8936] (*)   0.0051    
+           INFO     BioMotion           0.3997 [0.3753, 0.4240]       0.0125    
+           INFO     Fusion              0.9728 [0.9639, 0.9808] (*)   0.0044    
+           INFO                                                                 
+                    Elapsed: 624.4s                                             

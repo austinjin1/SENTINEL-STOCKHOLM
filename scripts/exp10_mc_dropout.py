@@ -247,7 +247,9 @@ def eval_fusion_mc():
                                       else torch.zeros(1, 256, device=DEVICE))
         fused = torch.cat(fused_list, dim=0)
         h = head(fused)
-        p = getattr(h, "anomaly_probability", None) or getattr(h, "severity_score", None)
+        p = getattr(h, "anomaly_probability", None)
+        if p is None:
+            p = getattr(h, "severity_score", None)
         if p is not None:
             if p.dim() > 1: p = p[:, 1]
             return torch.sigmoid(p).cpu().numpy()

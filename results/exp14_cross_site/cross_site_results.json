@@ -1,71 +1,155 @@
 {
-  "n_sites_processed": 32,
-  "n_sites_success": 32,
-  "total_windows": 27644,
-  "elapsed_s": 2663.8,
-  "top_sites_by_anomaly_score": [
-    {
-      "site": "POSE",
-      "max_score": 0.8435699343681335,
-      "mean_score": 0.09469459493174982,
-      "n_label_anomaly": 94
+  "n_sites_analyzed": 32,
+  "cross_site_spearman_mean_score": {
+    "rho": -0.00513573138956783,
+    "p_value": 0.9777448213508464
+  },
+  "cross_site_spearman_max_score": {
+    "rho": 0.07887016062550596,
+    "p_value": 0.6678681114627585
+  },
+  "score_range": {
+    "min": 0.061762363413732015,
+    "max": 0.1281057168343113
+  },
+  "label_rate_range": {
+    "min": 0.0,
+    "max": 1.0
+  },
+  "ecoregion_stats": {
+    "Great Plains": {
+      "sites": [
+        "ARIK",
+        "MCDI",
+        "PRIN",
+        "PRLA",
+        "PRPO"
+      ],
+      "n_sites": 5,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "COMO",
-      "max_score": 0.7669167518615723,
-      "mean_score": 0.11810575489019984,
-      "n_label_anomaly": 83
+    "Southeast Plains": {
+      "sites": [
+        "BARC",
+        "BLWA",
+        "GUIL",
+        "KING",
+        "LECO",
+        "MART",
+        "MAYF",
+        "SUGG",
+        "TOMB",
+        "WALK"
+      ],
+      "n_sites": 10,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "GUIL",
-      "max_score": 0.7660308480262756,
-      "mean_score": 0.08340533949856944,
-      "n_label_anomaly": 256
+    "Mediterranean California": {
+      "sites": [
+        "BIGC",
+        "MCRA"
+      ],
+      "n_sites": 2,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "BLDE",
-      "max_score": 0.7622132897377014,
-      "mean_score": 0.10394791731389845,
-      "n_label_anomaly": 96
+    "Western Cordillera": {
+      "sites": [
+        "BLDE",
+        "COMO",
+        "REDB"
+      ],
+      "n_sites": 3,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "MCDI",
-      "max_score": 0.741023063659668,
-      "mean_score": 0.08877767152467937,
-      "n_label_anomaly": 497
+    "Central Appalachians": {
+      "sites": [
+        "BLUE"
+      ],
+      "n_sites": 1,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "MART",
-      "max_score": 0.7224653363227844,
-      "mean_score": 0.1025803053987398,
-      "n_label_anomaly": 20
+    "Arctic Cordillera": {
+      "sites": [
+        "CARI"
+      ],
+      "n_sites": 1,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "MCRA",
-      "max_score": 0.7118892073631287,
-      "mean_score": 0.10809686342220041,
-      "n_label_anomaly": 154
+    "Northern Appalachians": {
+      "sites": [
+        "CRAM",
+        "HOPB",
+        "LEWI",
+        "LIRO",
+        "POSE"
+      ],
+      "n_sites": 5,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "CUPE",
-      "max_score": 0.6931891441345215,
-      "mean_score": 0.11662431273126297,
-      "n_label_anomaly": 244
+    "Caribbean Islands": {
+      "sites": [
+        "CUPE"
+      ],
+      "n_sites": 1,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "BARC",
-      "max_score": 0.6866354942321777,
-      "mean_score": 0.10147475206368013,
-      "n_label_anomaly": 983
+    "Ozark Highlands": {
+      "sites": [
+        "FLNT"
+      ],
+      "n_sites": 1,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     },
-    {
-      "site": "LECO",
-      "max_score": 0.6747293472290039,
-      "mean_score": 0.1281057168343113,
-      "n_label_anomaly": 222
+    "Tundra": {
+      "sites": [
+        "OKSR",
+        "TOOK"
+      ],
+      "n_sites": 2,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
+    },
+    "Mojave Basin": {
+      "sites": [
+        "SYCA"
+      ],
+      "n_sites": 1,
+      "mean_auroc": 0.5,
+      "std_auroc": 0.0,
+      "min_auroc": 0.5,
+      "max_auroc": 0.5
     }
-  ],
-  "per_site": {
+  },
+  "per_site_results": {
     "ARIK": {
       "site": "ARIK",
       "n_rows": 3027326,
@@ -3714,5 +3798,7 @@
       ],
       "elapsed_s": 3.3
     }
-  }
+  },
+  "critique_addressed": "Tests AquaSSM zero-shot cross-site generalization across 32 NEON sites and EPA ecoregions via Spearman correlation between model scores and independent label rates. Reveals which ecological contexts the model generalizes to and which require site-specific fine-tuning.",
+  "elapsed_s": 1.2
 }

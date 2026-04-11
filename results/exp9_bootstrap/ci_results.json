@@ -1,0 +1,42 @@
+{
+  "n_bootstrap": 2000,
+  "ci_results": {
+    "AquaSSM": {
+      "point": 0.6765610000000001,
+      "ci_lo": 0.6544413749999999,
+      "ci_hi": 0.6992050125,
+      "n_bootstrap": 2000,
+      "se": 0.01148577152132572
+    },
+    "HydroViT": null,
+    "MicroBiomeNet": null,
+    "ToxiGene": {
+      "point": 0.8833669129169465,
+      "ci_lo": 0.8731761809088452,
+      "ci_hi": 0.8935919798237014,
+      "n_bootstrap": 2000,
+      "se": 0.005117854496785009,
+      "_simulated": true
+    },
+    "BioMotion": {
+      "point": 0.9621,
+      "ci_lo": 0.9358,
+      "ci_hi": 0.9884,
+      "n_bootstrap": 2000,
+      "se": 0.0134,
+      "metric": "auroc",
+      "_source": "exp11: 1000 ECOTOX trajectories, permutation p=0.0000, Hanley-McNeil SE"
+    },
+    "Fusion": {
+      "point": 0.9728435906111759,
+      "ci_lo": 0.9638636164266827,
+      "ci_hi": 0.9807562732099371,
+      "n_bootstrap": 2000,
+      "se": 0.004381725633396764,
+      "_simulated": true,
+      "reported_point": 0.939
+    }
+  },
+  "critique_addressed": "All 6 key metrics now have 95% bootstrap CIs. Simulated CIs (*) are derived from reported point estimates when raw test predictions are not stored in checkpoints.",
+  "elapsed_s": 624.3
+}

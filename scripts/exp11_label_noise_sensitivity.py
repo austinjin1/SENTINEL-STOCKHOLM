@@ -53,10 +53,13 @@ FIGURES_DIR = PROJECT_ROOT / "paper" / "figures"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
+import torch as _torch
+DEVICE = _torch.device("cuda" if _torch.cuda.is_available() else "cpu")
+
 REAL_DIR = PROJECT_ROOT / "data" / "processed" / "behavioral_real"
 CKPT_PATH = PROJECT_ROOT / "checkpoints" / "biomotion" / "phase2_best.pt"
 N_PERM   = 500   # permutation test iterations
-MAX_TRAJ = 3000  # max trajectories to load (for speed)
+MAX_TRAJ = 1000  # max trajectories to load (for speed)
 
 
 # ---------------------------------------------------------------------------
@@ -73,10 +76,10 @@ def load_scores_and_labels(max_n: int = MAX_TRAJ):
         logger.error("No behavioral trajectory files found")
         return None, None, None
 
-    # Load model
-    ckpt = torch.load(str(CKPT_PATH), map_location="cpu", weights_only=False)
+    # Load model on GPU
+    ckpt = torch.load(str(CKPT_PATH), map_location=DEVICE, weights_only=False)
     model_state = ckpt.get("model_state_dict", ckpt)
-    model = BioMotionEncoder()
+    model = BioMotionEncoder().to(DEVICE)
     model.load_state_dict(model_state, strict=False)
     model.eval()
 
@@ -85,8 +88,8 @@ def load_scores_and_labels(max_n: int = MAX_TRAJ):
         for i, tf in enumerate(traj_files):
             try:
                 d = np.load(str(tf))
-                kp   = torch.from_numpy(d["keypoints"].astype(np.float32)).unsqueeze(0)
-                feat = torch.from_numpy(d["features"].astype(np.float32)).unsqueeze(0)
+                kp   = torch.from_numpy(d["keypoints"].astype(np.float32)).unsqueeze(0).to(DEVICE)
+                feat = torch.from_numpy(d["features"].astype(np.float32)).unsqueeze(0).to(DEVICE)
                 label = int(d["is_anomaly"])
 
                 try:
@@ -95,16 +98,23 @@ def load_scores_and_labels(max_n: int = MAX_TRAJ):
                 except Exception:
                     out = model({"daphnia": {"keypoints": kp, "features": feat}})
 
-                emb = out.get("embedding", None) if isinstance(out, dict) else out
-                if emb is not None:
-                    score = float(emb.norm().item())
+                if isinstance(out, dict):
+                    # Prefer dedicated anomaly_score over embedding norm
+                    sc = out.get("anomaly_score", None)
+                    if sc is None:
+                        emb = out.get("embedding", None)
+                        sc = emb.norm() if emb is not None else None
+                else:
+                    sc = out.norm() if hasattr(out, "norm") else None
+                if sc is not None:
+                    score = float(sc.item()) if sc.numel() == 1 else float(sc.squeeze().item())
                     scores_list.append(score)
                     labels_list.append(label)
                     meta_list.append(tf.stem)
             except Exception:
                 pass
 
-            if (i + 1) % 500 == 0:
+            if (i + 1) % 200 == 0:
                 logger.info(f"  Loaded {i+1}/{len(traj_files)} trajectories")
 
     return np.array(scores_list), np.array(labels_list), meta_list

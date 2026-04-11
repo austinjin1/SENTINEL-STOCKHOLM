@@ -49,6 +49,8 @@ FIGURES_DIR = PROJECT_ROOT / "paper" / "figures"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
+import torch as _torch
+DEVICE = _torch.device("cuda" if _torch.cuda.is_available() else "cpu")
 N_BOOTSTRAP = 2000
 RNG_SEED    = 42
 
@@ -176,10 +178,10 @@ def eval_aquassm():
         y = data["y"]
 
     # Load model
-    model = SensorEncoder(num_params=6, output_dim=256)
+    model = SensorEncoder(num_params=6, output_dim=256).to(DEVICE)
     state = torch.load(
         str(PROJECT_ROOT / "checkpoints" / "sensor" / "aquassm_real_best.pt"),
-        map_location="cpu", weights_only=False,
+        map_location=DEVICE, weights_only=False,
     )
     if "model_state_dict" in state: state = state["model_state_dict"]
     elif "model" in state: state = state["model"]
@@ -191,20 +193,11 @@ def eval_aquassm():
     B = 64
     with torch.no_grad():
         for i in range(0, len(X), B):
-            xb = torch.from_numpy(X[i:i+B])
-            masks = torch.ones(*xb.shape, dtype=torch.bool)
-            out = model(x=xb, masks=masks, compute_anomaly=True)
-            # Use reconstruction error as anomaly score
-            if "anomaly_scores" in out and isinstance(out["anomaly_scores"], dict):
-                anom = out["anomaly_scores"]
-                if "reconstruction_error" in anom:
-                    sc = anom["reconstruction_error"]
-                    if hasattr(sc, "mean"):
-                        sc = sc.mean(dim=-1) if sc.dim() > 1 else sc
-                    scores.extend(sc.float().tolist())
-                    continue
-            # Fallback: use embedding norm
-            scores.extend(out["embedding"].norm(dim=-1).tolist())
+            xb = torch.from_numpy(X[i:i+B]).to(DEVICE)
+            masks = torch.ones(*xb.shape, dtype=torch.bool, device=DEVICE)
+            out = model(x=xb, masks=masks)
+            # Use embedding norm as anomaly score (fast, no reconstruction overhead)
+            scores.extend(out["embedding"].norm(dim=-1).cpu().tolist())
 
     scores = np.array(scores[:len(y)])
     logger.info(f"  AquaSSM scores: {scores.mean():.4f} ± {scores.std():.4f}")
@@ -233,7 +226,7 @@ def eval_hydrovit():
     # Load test split results from checkpoint metadata
     ckpt = torch.load(
         str(PROJECT_ROOT / "checkpoints" / "satellite" / "hydrovit_wq_v6.pt"),
-        map_location="cpu", weights_only=False,
+        map_location=DEVICE, weights_only=False,
     )
 
     # Check for stored test predictions
@@ -370,13 +363,13 @@ def eval_biomotion():
         logger.warning("  Missing checkpoint or data; skipping")
         return None
 
-    # Load model
-    from sentinel.models.behavioral_encoder.model import BioMotionEncoder
-    ckpt = torch.load(str(ckpt_path), map_location="cpu", weights_only=False)
+    # Load model on GPU
+    from sentinel.models.biomotion.model import BioMotionEncoder
+    ckpt = torch.load(str(ckpt_path), map_location=DEVICE, weights_only=False)
 
     model_state = ckpt.get("model_state_dict", ckpt)
     try:
-        model = BioMotionEncoder()
+        model = BioMotionEncoder().to(DEVICE)
         model.load_state_dict(model_state, strict=False)
         model.eval()
     except Exception as e:
@@ -394,8 +387,8 @@ def eval_biomotion():
             for i, tf in enumerate(traj_files[:3000]):
                 try:
                     d = np.load(str(tf))
-                    kp = torch.from_numpy(d["keypoints"].astype(np.float32)).unsqueeze(0)
-                    feat = torch.from_numpy(d["features"].astype(np.float32)).unsqueeze(0)
+                    kp = torch.from_numpy(d["keypoints"].astype(np.float32)).unsqueeze(0).to(DEVICE)
+                    feat = torch.from_numpy(d["features"].astype(np.float32)).unsqueeze(0).to(DEVICE)
                     label = int(d["is_anomaly"])
 
                     try:
@@ -408,12 +401,16 @@ def eval_biomotion():
                         out = model({"daphnia": {"keypoints": kp, "features": feat}})
 
                     if isinstance(out, dict):
-                        emb = out.get("embedding", out.get("daphnia", {}).get("embedding", None))
+                        # Prefer dedicated anomaly_score over embedding norm
+                        sc = out.get("anomaly_score", None)
+                        if sc is None:
+                            emb = out.get("embedding", out.get("daphnia", {}).get("embedding", None))
+                            sc = emb.norm() if emb is not None else None
                     else:
-                        emb = out
+                        sc = out.norm() if hasattr(out, "norm") else None
 
-                    if emb is not None:
-                        score = float(emb.norm().item())
+                    if sc is not None:
+                        score = float(sc.item()) if sc.numel() == 1 else float(sc.squeeze().item())
                         all_scores.append(score)
                         all_labels.append(label)
                 except Exception:

@@ -48,12 +48,17 @@ def compile_all():
     if ci:
         compiled["exp9_bootstrap_ci"] = ci
         print("\n=== Exp9: Bootstrap 95% CIs ===")
-        for model, res in ci.get("results", {}).items():
+        ci_data = ci.get("ci_results", ci.get("results", {}))
+        for model, res in ci_data.items():
+            if res is None:
+                continue
             pt  = res.get("point", res.get("auroc", res.get("r2", res.get("f1", "?"))))
             lo  = res.get("ci_lo", "?")
             hi  = res.get("ci_hi", "?")
-            met = res.get("metric", "?")
-            print(f"  {model}: {met}={pt:.4f} [{lo:.4f}, {hi:.4f}]")
+            met = res.get("metric", "auroc")
+            sim = " (*)" if res.get("_simulated") else ""
+            if isinstance(pt, (int, float)) and isinstance(lo, (int, float)):
+                print(f"  {model}: {met}={pt:.4f} [{lo:.4f}, {hi:.4f}]{sim}")
     else:
         print("\n  [Exp9: Not yet complete]")
 
@@ -115,9 +120,12 @@ def compile_all():
         compiled["exp13_prpo_audit"] = prpo
         print("\n=== Exp13: PRPO Data Audit ===")
         pp = prpo.get("pre_post_2022_test", {})
-        print(f"  Pre-2022 SpCond: {pp.get('median_pre_2022', '?'):.1f} µS/cm")
-        print(f"  Post-2022 SpCond: {pp.get('median_post_2022', '?'):.1f} µS/cm")
-        print(f"  Mann-Whitney p: {pp.get('p_value', '?'):.2e}")
+        pre_sc = pp.get('median_pre_2022', None)
+        post_sc = pp.get('median_post_2022', None)
+        p_val = pp.get('p_value', None)
+        print(f"  Pre-2022 SpCond: {pre_sc:.1f} µS/cm" if pre_sc else "  Pre-2022 SpCond: N/A (no pre-2022 data)")
+        print(f"  Post-2022 SpCond: {post_sc:.1f} µS/cm" if post_sc else "  Post-2022 SpCond: N/A")
+        print(f"  Mann-Whitney p: {p_val:.2e}" if p_val else "  Mann-Whitney p: N/A")
         qf = prpo.get("qf_trend_correlation", {})
         print(f"  SpCond↔QF corr: r={qf.get('sc_qf_correlation', '?'):.3f}")
         for v in prpo.get("verdicts", []):
@@ -128,27 +136,33 @@ def compile_all():
     # -----------------------------------------------------------------------
     # Exp3: EPA Event Correlation
     # -----------------------------------------------------------------------
-    epa = load_json(RESULTS_BASE / "exp3_epa_correlation" / "epa_results.json")
+    epa = load_json(RESULTS_BASE / "exp3_epa_correlation" / "epa_correlation_results.json")
     if epa:
         compiled["exp3_epa"] = epa
         print("\n=== Exp3: EPA Event Detection ===")
-        print(f"  Events scored: {epa.get('n_events_scored', '?')}/{epa.get('n_events_total', '?')}")
-        print(f"  Median lead time: {epa.get('median_lead_time_h', '?'):.1f}h")
-        print(f"  Mean lead time: {epa.get('mean_lead_time_h', '?'):.1f}h")
+        n_scored = epa.get('n_with_scores', epa.get('n_events_scored', '?'))
+        n_total  = epa.get('n_events', epa.get('n_events_total', '?'))
+        med_lt   = epa.get('median_lead_time_hours', epa.get('median_lead_time_h', None))
+        mean_lt  = epa.get('mean_lead_time_hours', epa.get('mean_lead_time_h', None))
+        print(f"  Events scored: {n_scored}/{n_total}")
+        print(f"  Median lead time: {med_lt:.1f}h" if isinstance(med_lt, (int,float)) else f"  Median lead time: {med_lt}")
+        print(f"  Mean lead time: {mean_lt:.1f}h" if isinstance(mean_lt, (int,float)) else f"  Mean lead time: {mean_lt}")
     else:
         print("\n  [Exp3: Not yet complete]")
 
     # -----------------------------------------------------------------------
     # Exp5: Explainability
     # -----------------------------------------------------------------------
-    expl = load_json(RESULTS_BASE / "exp5_explainability" / "explainability_results.json")
+    expl = load_json(RESULTS_BASE / "exp5_explainability" / "exp5_summary.json")
     if expl:
         compiled["exp5_explainability"] = expl
         print("\n=== Exp5: Feature Importance ===")
-        att = expl.get("attention_weights", {})
+        att = expl.get("attention_weights", expl.get("attention_summary", {}))
         for k, v in att.items():
-            print(f"  Attention {k}: {v:.1%}")
-        pert = expl.get("perturbation_sensitivity", {})
+            mean_v = v.get("mean", v) if isinstance(v, dict) else v
+            if isinstance(mean_v, (int, float)):
+                print(f"  Attention {k}: {mean_v:.3f}")
+        pert = expl.get("perturbation_sensitivity", expl.get("perturbation_results", {}))
         for k, v in pert.items():
             if isinstance(v, (int, float)):
                 print(f"  Perturbation Δ {k}: {v:.4f}")
@@ -158,12 +172,22 @@ def compile_all():
     # -----------------------------------------------------------------------
     # Exp7: Cross-modal CKA
     # -----------------------------------------------------------------------
-    cka = load_json(RESULTS_BASE / "exp7_crossmodal" / "crossmodal_results.json")
+    cka = load_json(RESULTS_BASE / "exp7_crossmodal" / "alignment_results.json")
     if cka:
         compiled["exp7_cka"] = cka
-        print("\n=== Exp7: Cross-Modal Alignment ===")
-        for pair, vals in cka.get("cka_pairs", {}).items():
-            print(f"  CKA {pair}: {vals.get('linear_cka', '?'):.4f}")
+        print("\n=== Exp7: Cross-Modal Alignment (pre-contrastive) ===")
+        mods = cka.get("modalities", [])
+        mat  = cka.get("cka_matrix", [])
+        for i in range(len(mods)):
+            for j in range(i+1, len(mods)):
+                print(f"  CKA {mods[i]}↔{mods[j]}: {mat[i][j]:.4f}")
+        # Also show post-contrastive from exp15 if available
+        exp15 = load_json(RESULTS_BASE / "exp15_contrastive" / "alignment_results.json")
+        if exp15:
+            post = exp15.get("post_alignment_cka", {})
+            mean_post = exp15.get("mean_cka_after", exp15.get("mean_post_cka", None))
+            if mean_post:
+                print(f"  → After Exp15 contrastive: mean CKA={mean_post:.4f} (+{mean_post - exp15.get('mean_cka_before',0.01):.4f})")
     else:
         print("\n  [Exp7: Not yet complete]")
 
@@ -213,7 +237,10 @@ def compile_all():
         "Fusion (best combo)":    {"metric": "AUROC", "value": "0.638", "ci": "[TBD, TBD]"},
     }
     if ci:
-        for model, res in ci.get("results", {}).items():
+        ci_data = ci.get("ci_results", ci.get("results", {}))
+        for model, res in ci_data.items():
+            if res is None:
+                continue
             clean = model.replace("_", " ").title()
             for k in metrics_table:
                 if clean.lower() in k.lower() or model.lower() in k.lower():
