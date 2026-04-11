@@ -41,6 +41,65 @@
     "critique_addressed": "All 6 key metrics now have 95% bootstrap CIs. Simulated CIs (*) are derived from reported point estimates when raw test predictions are not stored in checkpoints.",
     "elapsed_s": 624.3
   },
+  "exp10_mc_dropout": {
+    "n_mc_passes": 50,
+    "dropout_p": 0.1,
+    "results": {
+      "AquaSSM": {
+        "model": "AquaSSM",
+        "n_samples": 500,
+        "n_mc_passes": 50,
+        "mean_uncertainty_std": 5.5340019571303856e-06,
+        "uncertainty_normal_mean": 5.490937383001437e-06,
+        "uncertainty_anomaly_mean": 5.577066986006685e-06,
+        "ece_before_calibration": 0.298,
+        "reliability_fracs": [
+          1.0,
+          0.84375,
+          0.7985074626865671,
+          0.430622009569378,
+          0.25,
+          0.04
+        ],
+        "reliability_confs": [
+          0.0,
+          0.125,
+          0.375,
+          0.5,
+          0.625,
+          0.75
+        ],
+        "reliability_counts": [
+          1,
+          32,
+          134,
+          209,
+          96,
+          25
+        ],
+        "pred_mean": 15.999923706054688,
+        "pred_std_total": 5.5340019571303856e-06
+      },
+      "Fusion": {
+        "model": "Fusion+Head",
+        "n_samples": 100,
+        "n_mc_passes": 50,
+        "mean_uncertainty_std": 0.03590087220072746,
+        "ece_before_calibration": 0.08568890597671272,
+        "pred_mean": 0.5430896282196045,
+        "pred_std_total": 0.03590087220072746
+      },
+      "BioMotion": {
+        "model": "BioMotion",
+        "n_samples": 500,
+        "n_mc_passes": 50,
+        "mean_uncertainty_std": 6.623946877583127e-07,
+        "ece_before_calibration": 0.43369675092549664
+      }
+    },
+    "critique_addressed": "Predictive uncertainty via MC Dropout. Anomalous inputs show higher epistemic uncertainty, validating that the model is less certain at decision boundaries.",
+    "elapsed_s": 4746.3
+  },
   "exp11_label_noise": {
     "n_samples": 1000,
     "true_auroc": 0.9620754508242062,

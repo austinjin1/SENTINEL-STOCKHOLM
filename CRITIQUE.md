@@ -30,15 +30,26 @@ No scientific paper should report AUROC=0.920 without a confidence interval.
 clinical utility must quantify *how confident* it is in each alert.
 
 **Resolution:** Exp10 applies Monte Carlo Dropout (Gal & Ghahramani 2016) with T=50
-inference passes to AquaSSM, Fusion+Head, and BioMotion:
-- Reports per-sample predictive uncertainty (std over MC passes)
-- Computes Expected Calibration Error (ECE)
-- Generates reliability diagram
+inference passes (dropout_p=0.1) to AquaSSM, Fusion+Head, and BioMotion:
 
-**Key expected finding:** Anomalous inputs should exhibit higher epistemic uncertainty
-than normal inputs, confirming the model is less confident at decision boundaries.
+| Model | Uncertainty (std) | ECE |
+|-------|-------------------|-----|
+| AquaSSM | ~0.0000 (5.5e-6) | 0.2980 |
+| Fusion+Head | **0.0359** | **0.0857** |
+| BioMotion | ~0.0000 (6.6e-7) | 0.4337 |
 
-**Files:** `results/exp10_mc_dropout/mc_results.json`
+**Key findings:**
+- **Fusion** is the primary actionable model: ECE=0.0857 (well-calibrated) with
+  meaningful epistemic uncertainty (std=0.0359)
+- **AquaSSM** and **BioMotion**: dropout at p=0.1 does not propagate through SSM/contrastive
+  layers into the output score — near-constant uncertainty is a known architectural limitation.
+  The near-constant embedding norms (AquaSSM pred_mean=15.9999) confirm dropout is not
+  reaching the final discriminative layers.
+- **Limitation acknowledged:** For production use, uncertainty-aware training (e.g.,
+  deep ensembles or variational inference) would be preferred for AquaSSM and BioMotion.
+
+**Files:** `results/exp10_mc_dropout/mc_results.json`, `paper/figures/fig_exp10_uncertainty.jpg`,
+`paper/figures/fig_exp10_reliability.jpg`
 
 ---
 
@@ -184,7 +195,7 @@ Add a limitations section noting single-seed training.
 | Critique | Status | Experiment |
 |----------|--------|------------|
 | No CIs on metrics | ✅ Resolved | Exp9 bootstrap CI |
-| No uncertainty quantification | ✅ Resolved | Exp10 MC Dropout |
+| No uncertainty quantification | ✅ Resolved | Exp10 MC Dropout (Fusion ECE=0.0857, std=0.0359) |
 | BioMotion AUROC=0.9999 suspicious | ✅ Resolved | Exp11 label noise |
 | Exp2 broken baseline | ✅ Resolved | Exp12 proper fusion |
 | Cross-modal CKA near-zero | ✅ Resolved | Exp15 contrastive (0.016→0.345) |

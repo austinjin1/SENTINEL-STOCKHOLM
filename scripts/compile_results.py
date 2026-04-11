@@ -69,10 +69,10 @@ def compile_all():
     if mc:
         compiled["exp10_mc_dropout"] = mc
         print("\n=== Exp10: MC Dropout Uncertainty ===")
-        for model, res in mc.get("models", mc.items() if isinstance(mc, dict) else {}).items():
+        for model, res in mc.get("results", mc.get("models", {})).items():
             if isinstance(res, dict):
-                ece = res.get("ece", "?")
-                unc = res.get("mean_uncertainty", "?")
+                ece = res.get("ece_before_calibration", res.get("ece", "?"))
+                unc = res.get("mean_uncertainty_std", res.get("mean_uncertainty", "?"))
                 print(f"  {model}: ECE={ece}, uncertainty={unc}")
     else:
         print("\n  [Exp10: Not yet complete]")
