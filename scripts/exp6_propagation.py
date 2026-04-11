@@ -51,8 +51,8 @@ logger = get_logger(__name__)
 # Paths and constants
 # ---------------------------------------------------------------------------
 
-DEVICE = torch.device("cpu")
-CKPT_BASE = Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints")
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+CKPT_BASE = PROJECT_ROOT / "checkpoints"
 RESULTS_DIR = PROJECT_ROOT / "results" / "exp6_propagation"
 FIGURES_DIR = PROJECT_ROOT / "paper" / "figures"
 

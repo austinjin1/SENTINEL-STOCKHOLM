@@ -42,8 +42,8 @@ logger = get_logger(__name__)
 # Paths
 # ---------------------------------------------------------------------------
 
-DEVICE = torch.device("cpu")
-CKPT_BASE = Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints")
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+CKPT_BASE = PROJECT_ROOT / "checkpoints"
 EMBEDDINGS_DIR = PROJECT_ROOT / "data" / "real_embeddings"
 RESULTS_DIR = PROJECT_ROOT / "results" / "exp5_explainability"
 FIGURES_DIR = PROJECT_ROOT / "paper" / "figures"
@@ -83,22 +83,31 @@ def load_fusion_and_head():
 # ---------------------------------------------------------------------------
 
 def load_embeddings():
-    """Load real embeddings for sensor, satellite, and behavioral modalities."""
+    """Load real embeddings for sensor, satellite, and behavioral modalities.
+
+    The fusion projection bank expects satellite embeddings at 384-dim
+    (cls_token from SatelliteEncoder), but our saved satellite_embeddings.pt
+    is 256-dim (embedding head output). Zero-pad to 384 so fusion accepts it.
+    """
     sensor_emb = torch.load(
         str(EMBEDDINGS_DIR / "sensor_embeddings.pt"),
         map_location="cpu", weights_only=True,
     )
-    satellite_emb = torch.load(
+    satellite_emb_256 = torch.load(
         str(EMBEDDINGS_DIR / "satellite_embeddings.pt"),
         map_location="cpu", weights_only=True,
     )
+    # Pad 256 → 384 to match fusion projection_bank satellite input dim
+    pad = torch.zeros(satellite_emb_256.shape[0], 128)
+    satellite_emb = torch.cat([satellite_emb_256, pad], dim=1)  # [N, 384]
+
     behavioral_emb = torch.load(
         str(EMBEDDINGS_DIR / "behavioral_embeddings.pt"),
         map_location="cpu", weights_only=True,
     )
 
     logger.info(f"Loaded sensor embeddings:     {sensor_emb.shape}")
-    logger.info(f"Loaded satellite embeddings:  {satellite_emb.shape}")
+    logger.info(f"Loaded satellite embeddings:  {satellite_emb.shape} (padded 256→384)")
     logger.info(f"Loaded behavioral embeddings: {behavioral_emb.shape}")
 
     return sensor_emb, satellite_emb, behavioral_emb

@@ -1,0 +1,12 @@
+{
+  "importance": {
+    "sensor": 0.05903490923345089,
+    "satellite": 0.01107134684920311,
+    "behavioral": 0.006681960076093674,
+    "microbial": 0.0,
+    "molecular": 0.0
+  },
+  "baseline_anomaly_prob_mean": 0.1406045190244913,
+  "baseline_anomaly_prob_std": 0.09931725958976409,
+  "n_samples": 100
+}
