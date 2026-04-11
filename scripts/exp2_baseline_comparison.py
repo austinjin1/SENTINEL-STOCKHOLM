@@ -38,16 +38,17 @@ from sklearn.metrics import roc_auc_score
 
 from sentinel.models.fusion.model import PerceiverIOFusion
 from sentinel.models.fusion.heads import AnomalyDetectionHead
-from sentinel.evaluation.case_study import HISTORICAL_EVENTS
+# Avoid importing case_study (pulls in stable_baselines3 → TF conflict)
+# HISTORICAL_EVENTS not needed for baseline comparison
 from sentinel.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
-CKPT_BASE = Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints")
+CKPT_BASE = PROJECT_ROOT / "checkpoints"
 EMBEDDINGS_DIR = PROJECT_ROOT / "data" / "real_embeddings"
 OUTPUT_DIR = PROJECT_ROOT / "results" / "exp2_baselines"
 FIG_DIR = PROJECT_ROOT / "paper" / "figures"
-DEVICE = torch.device("cpu")
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Synthetic sensor parameters (5 water quality params)
 N_PARAMS = 5

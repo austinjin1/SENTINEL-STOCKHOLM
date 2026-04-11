@@ -1,0 +1,9 @@
+[19:15:48] INFO     Loaded: 386 missing, 76 unexpected                          
+           INFO     Found 17074 real ECOTOX trajectories                        
+[19:15:50] INFO     500/3000 done                                               
+[19:15:52] INFO     1000/3000 done                                              
+[19:15:54] INFO     1500/3000 done                                              
+[19:15:57] INFO     2000/3000 done                                              
+[19:15:59] INFO     2500/3000 done                                              
+[19:16:01] INFO     3000/3000 done                                              
+           INFO     Saved torch.Size([3000, 256]) behavioral embeddings in 12.7s

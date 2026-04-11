@@ -2,242 +2,242 @@
   {
     "center_time": "2023-05-03T12:15:00",
     "center_ts": 1683116100.0,
-    "anomaly_probability": 0.012186329811811447,
+    "anomaly_probability": 0.01218631211668253,
     "severity_score": 6.414901235984871e-06
   },
   {
     "center_time": "2023-05-04T20:15:00",
     "center_ts": 1683231300.0,
-    "anomaly_probability": 0.08440855890512466,
-    "severity_score": 9.73259739112109e-06
+    "anomaly_probability": 0.08440862596035004,
+    "severity_score": 9.732644684845582e-06
   },
   {
     "center_time": "2023-05-06T04:15:00",
     "center_ts": 1683346500.0,
-    "anomaly_probability": 0.06809395551681519,
-    "severity_score": 2.8139891128375893e-07
+    "anomaly_probability": 0.06809394806623459,
+    "severity_score": 2.8140078711658134e-07
   },
   {
     "center_time": "2023-05-07T12:15:00",
     "center_ts": 1683461700.0,
-    "anomaly_probability": 0.0589180588722229,
-    "severity_score": 1.144944472564191e-09
+    "anomaly_probability": 0.05891811102628708,
+    "severity_score": 1.1449553527498324e-09
   },
   {
     "center_time": "2023-05-08T20:15:00",
     "center_ts": 1683576900.0,
-    "anomaly_probability": 0.05458090454339981,
-    "severity_score": 1.2578915339900298e-11
+    "anomaly_probability": 0.05458080768585205,
+    "severity_score": 1.257898819828629e-11
   },
   {
     "center_time": "2023-05-10T04:15:00",
     "center_ts": 1683692100.0,
-    "anomaly_probability": 0.05131063237786293,
-    "severity_score": 4.383975279152741e-13
+    "anomaly_probability": 0.051310598850250244,
+    "severity_score": 4.384008618369545e-13
   },
   {
     "center_time": "2023-05-11T12:45:00",
     "center_ts": 1683809100.0,
-    "anomaly_probability": 0.04926037788391113,
-    "severity_score": 3.773048632424794e-14
+    "anomaly_probability": 0.04926036298274994,
+    "severity_score": 3.773062862578308e-14
   },
   {
     "center_time": "2023-05-12T20:45:00",
     "center_ts": 1683924300.0,
-    "anomaly_probability": 0.04816192388534546,
-    "severity_score": 6.183545073413154e-15
+    "anomaly_probability": 0.048161912709474564,
+    "severity_score": 6.183639517586773e-15
   },
   {
     "center_time": "2023-05-14T04:45:00",
     "center_ts": 1684039500.0,
-    "anomaly_probability": 0.04768292233347893,
-    "severity_score": 1.5829188664446018e-15
+    "anomaly_probability": 0.04768283665180206,
+    "severity_score": 1.582924901554351e-15
   },
   {
     "center_time": "2023-05-15T12:45:00",
     "center_ts": 1684154700.0,
     "anomaly_probability": 0.04760395362973213,
-    "severity_score": 5.528046710202904e-16
+    "severity_score": 5.528067886026585e-16
   },
   {
     "center_time": "2023-05-16T20:45:00",
     "center_ts": 1684269900.0,
-    "anomaly_probability": 0.04778671637177467,
+    "anomaly_probability": 0.04778672754764557,
     "severity_score": 2.407289341315995e-16
   },
   {
     "center_time": "2023-05-18T04:45:00",
     "center_ts": 1684385100.0,
     "anomaly_probability": 0.04813723266124725,
-    "severity_score": 1.2309732622588714e-16
+    "severity_score": 1.2309778944703017e-16
   },
   {
     "center_time": "2023-05-19T12:45:00",
     "center_ts": 1684500300.0,
     "anomaly_probability": 0.04859054088592529,
-    "severity_score": 7.095468605951676e-17
+    "severity_score": 7.095522868999859e-17
   },
   {
     "center_time": "2023-05-20T20:45:00",
     "center_ts": 1684615500.0,
-    "anomaly_probability": 0.0491013266146183,
-    "severity_score": 4.4808125627813743e-17
+    "anomaly_probability": 0.04910125583410263,
+    "severity_score": 4.4808297681381154e-17
   },
   {
     "center_time": "2023-05-22T04:45:00",
     "center_ts": 1684730700.0,
-    "anomaly_probability": 0.049639131873846054,
+    "anomaly_probability": 0.049639035016298294,
     "severity_score": 3.0377043325707467e-17
   },
   {
     "center_time": "2023-05-23T12:45:00",
     "center_ts": 1684845900.0,
-    "anomaly_probability": 0.05018369108438492,
-    "severity_score": 2.1782075932826198e-17
+    "anomaly_probability": 0.0501837395131588,
+    "severity_score": 2.178216030524868e-17
   },
   {
     "center_time": "2023-05-24T20:45:00",
     "center_ts": 1684961100.0,
-    "anomaly_probability": 0.05072232708334923,
-    "severity_score": 1.6338934680290432e-17
+    "anomaly_probability": 0.050722379237413406,
+    "severity_score": 1.6338871814563878e-17
   },
   {
     "center_time": "2023-05-26T04:45:00",
     "center_ts": 1685076300.0,
-    "anomaly_probability": 0.051246803253889084,
-    "severity_score": 1.27138098555125e-17
+    "anomaly_probability": 0.0512467585504055,
+    "severity_score": 1.2713858659168641e-17
   },
   {
     "center_time": "2023-05-27T12:45:00",
     "center_ts": 1685191500.0,
-    "anomaly_probability": 0.05175255984067917,
+    "anomaly_probability": 0.05175257846713066,
     "severity_score": 1.0196560285170729e-17
   },
   {
     "center_time": "2023-05-28T20:45:00",
     "center_ts": 1685306700.0,
-    "anomaly_probability": 0.0522368885576725,
+    "anomaly_probability": 0.052236877381801605,
     "severity_score": 8.386277996140265e-18
   },
   {
     "center_time": "2023-05-30T04:45:00",
     "center_ts": 1685421900.0,
-    "anomaly_probability": 0.05269883573055267,
-    "severity_score": 7.04494921178449e-18
+    "anomaly_probability": 0.05269889160990715,
+    "severity_score": 7.044922742004888e-18
   },
   {
     "center_time": "2023-05-31T12:45:00",
     "center_ts": 1685537100.0,
-    "anomaly_probability": 0.05313822254538536,
-    "severity_score": 6.025450761174108e-18
+    "anomaly_probability": 0.053138162940740585,
+    "severity_score": 6.02547392223126e-18
   },
   {
     "center_time": "2023-06-02T13:45:00",
     "center_ts": 1685713500.0,
-    "anomaly_probability": 0.05355529859662056,
+    "anomaly_probability": 0.05355532094836235,
     "severity_score": 5.233324822210159e-18
   },
   {
     "center_time": "2023-06-03T21:45:00",
     "center_ts": 1685828700.0,
-    "anomaly_probability": 0.053950849920511246,
-    "severity_score": 4.605919080936651e-18
+    "anomaly_probability": 0.05395089462399483,
+    "severity_score": 4.605901710143787e-18
   },
   {
     "center_time": "2023-06-05T05:45:00",
     "center_ts": 1685943900.0,
-    "anomaly_probability": 0.054326072335243225,
-    "severity_score": 4.10057624675453e-18
+    "anomaly_probability": 0.054326094686985016,
+    "severity_score": 4.100544813891253e-18
   },
   {
     "center_time": "2023-06-06T14:30:00",
     "center_ts": 1686061800.0,
     "anomaly_probability": 0.05468178912997246,
-    "severity_score": 3.687431377237876e-18
+    "severity_score": 3.687445439308289e-18
   },
   {
     "center_time": "2023-06-07T22:30:00",
     "center_ts": 1686177000.0,
-    "anomaly_probability": 0.05501924455165863,
-    "severity_score": 3.3452356500162733e-18
+    "anomaly_probability": 0.05501926690340042,
+    "severity_score": 3.3452224151264725e-18
   },
   {
     "center_time": "2023-06-09T06:30:00",
     "center_ts": 1686292200.0,
-    "anomaly_probability": 0.05533932149410248,
+    "anomaly_probability": 0.05533938482403755,
     "severity_score": 3.0584461345846976e-18
   },
   {
     "center_time": "2023-06-10T14:30:00",
     "center_ts": 1686407400.0,
-    "anomaly_probability": 0.05564326047897339,
+    "anomaly_probability": 0.05564334988594055,
     "severity_score": 2.815531106023547e-18
   },
   {
     "center_time": "2023-06-11T22:30:00",
     "center_ts": 1686522600.0,
-    "anomaly_probability": 0.05593211203813553,
-    "severity_score": 2.607847147317102e-18
+    "anomaly_probability": 0.05593212693929672,
+    "severity_score": 2.6078572802796057e-18
   },
   {
     "center_time": "2023-06-13T06:15:00",
     "center_ts": 1686636900.0,
-    "anomaly_probability": 0.05620674043893814,
-    "severity_score": 2.4287509641707957e-18
+    "anomaly_probability": 0.0562068335711956,
+    "severity_score": 2.4287416583889044e-18
   },
   {
     "center_time": "2023-06-14T14:15:00",
     "center_ts": 1686752100.0,
-    "anomaly_probability": 0.056468281894922256,
+    "anomaly_probability": 0.05646824464201927,
     "severity_score": 2.273104110619449e-18
   },
   {
     "center_time": "2023-06-15T23:45:00",
     "center_ts": 1686872700.0,
     "anomaly_probability": 0.056717075407505035,
-    "severity_score": 2.136866843346506e-18
+    "severity_score": 2.1368749083574783e-18
   },
   {
     "center_time": "2023-06-17T07:45:00",
     "center_ts": 1686987900.0,
-    "anomaly_probability": 0.05695435777306557,
+    "anomaly_probability": 0.056954316794872284,
     "severity_score": 2.0168801595926264e-18
   },
   {
     "center_time": "2023-06-18T15:45:00",
     "center_ts": 1687103100.0,
-    "anomaly_probability": 0.057180631905794144,
-    "severity_score": 1.9105564316065916e-18
+    "anomaly_probability": 0.05718061700463295,
+    "severity_score": 1.9105491937762318e-18
   },
   {
     "center_time": "2023-06-19T23:45:00",
     "center_ts": 1687218300.0,
-    "anomaly_probability": 0.057396821677684784,
-    "severity_score": 1.8158057875707862e-18
+    "anomaly_probability": 0.05739684775471687,
+    "severity_score": 1.8157989633307327e-18
   },
   {
     "center_time": "2023-06-21T07:45:00",
     "center_ts": 1687333500.0,
-    "anomaly_probability": 0.05760344862937927,
+    "anomaly_probability": 0.05760340020060539,
     "severity_score": 1.7309694201643117e-18
   },
   {
     "center_time": "2023-06-22T15:45:00",
     "center_ts": 1687448700.0,
-    "anomaly_probability": 0.057800885289907455,
-    "severity_score": 1.6546477397907284e-18
+    "anomaly_probability": 0.05780089646577835,
+    "severity_score": 1.6546539436453226e-18
   },
   {
     "center_time": "2023-06-23T23:45:00",
     "center_ts": 1687563900.0,
     "anomaly_probability": 0.057990044355392456,
-    "severity_score": 1.5856964454701457e-18
+    "severity_score": 1.5857085429866043e-18
   },
   {
     "center_time": "2023-06-25T07:45:00",
     "center_ts": 1687679100.0,
-    "anomaly_probability": 0.05817117169499397,
-    "severity_score": 1.5231586960289928e-18
+    "anomaly_probability": 0.05817118659615517,
+    "severity_score": 1.5231645896908573e-18
   },
   {
     "center_time": "2023-06-26T15:45:00",
@@ -248,98 +248,98 @@
   {
     "center_time": "2023-06-27T23:45:00",
     "center_ts": 1687909500.0,
-    "anomaly_probability": 0.05851137265563011,
+    "anomaly_probability": 0.05851132050156593,
     "severity_score": 1.4141834405894193e-18
   },
   {
     "center_time": "2023-06-29T07:45:00",
     "center_ts": 1688024700.0,
-    "anomaly_probability": 0.05867120623588562,
-    "severity_score": 1.3664865521083866e-18
+    "anomaly_probability": 0.058671243488788605,
+    "severity_score": 1.3664969952636201e-18
   },
   {
     "center_time": "2023-06-30T15:45:00",
     "center_ts": 1688139900.0,
-    "anomaly_probability": 0.058824822306632996,
-    "severity_score": 1.3226365704636084e-18
+    "anomaly_probability": 0.05882483720779419,
+    "severity_score": 1.3226416369448603e-18
   },
   {
     "center_time": "2023-07-01T23:45:00",
     "center_ts": 1688255100.0,
-    "anomaly_probability": 0.05897238850593567,
+    "anomaly_probability": 0.0589725486934185,
     "severity_score": 1.2822173204093938e-18
   },
   {
     "center_time": "2023-07-03T07:45:00",
     "center_ts": 1688370300.0,
-    "anomaly_probability": 0.05911468341946602,
-    "severity_score": 1.2448363047450865e-18
+    "anomaly_probability": 0.059114642441272736,
+    "severity_score": 1.2448458173221309e-18
   },
   {
     "center_time": "2023-07-04T15:45:00",
     "center_ts": 1688485500.0,
-    "anomaly_probability": 0.05925137177109718,
+    "anomaly_probability": 0.05925120785832405,
     "severity_score": 1.2102058714126712e-18
   },
   {
     "center_time": "2023-07-05T23:45:00",
     "center_ts": 1688600700.0,
-    "anomaly_probability": 0.05938310921192169,
+    "anomaly_probability": 0.059383049607276917,
     "severity_score": 1.1780298897528538e-18
   },
   {
     "center_time": "2023-07-07T07:45:00",
     "center_ts": 1688715900.0,
-    "anomaly_probability": 0.059510014951229095,
+    "anomaly_probability": 0.05951009690761566,
     "severity_score": 1.1480750948328944e-18
   },
   {
     "center_time": "2023-07-08T16:15:00",
     "center_ts": 1688832900.0,
-    "anomaly_probability": 0.05963243544101715,
+    "anomaly_probability": 0.05963246151804924,
     "severity_score": 1.1201203192365117e-18
   },
   {
     "center_time": "2023-07-10T00:15:00",
     "center_ts": 1688948100.0,
-    "anomaly_probability": 0.05975056067109108,
-    "severity_score": 1.0939807914943766e-18
+    "anomaly_probability": 0.0597505196928978,
+    "severity_score": 1.0939766555913139e-18
   },
   {
     "center_time": "2023-07-11T08:15:00",
     "center_ts": 1689063300.0,
-    "anomaly_probability": 0.059864647686481476,
-    "severity_score": 1.0695033797955903e-18
+    "anomaly_probability": 0.05986452475190163,
+    "severity_score": 1.0695155807096254e-18
   },
   {
     "center_time": "2023-07-12T16:15:00",
     "center_ts": 1689178500.0,
-    "anomaly_probability": 0.05997469648718834,
-    "severity_score": 1.0465352625219835e-18
+    "anomaly_probability": 0.059974826872348785,
+    "severity_score": 1.0465391916298931e-18
   },
   {
     "center_time": "2023-07-14T00:15:00",
     "center_ts": 1689293700.0,
-    "anomaly_probability": 0.06008110195398331,
-    "severity_score": 1.0249396446797553e-18
+    "anomaly_probability": 0.060081157833337784,
+    "severity_score": 1.0249358189694223e-18
   },
   {
     "center_time": "2023-07-15T08:15:00",
     "center_ts": 1689408900.0,
-    "anomaly_probability": 0.06018407270312309,
-    "severity_score": 1.0046057874644002e-18
+    "anomaly_probability": 0.06018400937318802,
+    "severity_score": 1.0046096131747333e-18
   },
   {
     "center_time": "2023-07-16T16:15:00",
     "center_ts": 1689524100.0,
-    "anomaly_probability": 0.06028362363576889,
-    "severity_score": 9.854417704303482e-19
+    "anomaly_probability": 0.060283541679382324,
+    "severity_score": 9.854454927431047e-19
   },
   {
     "center_time": "2023-07-18T00:15:00",
     "center_ts": 1689639300.0,
-    "anomaly_probability": 0.06037990376353264,
-    "severity_score": 9.673368547730939e-19
+    "anomaly_probability": 0.0603799931704998,
+    "severity_score": 9.67333235857914e-19
   },
   {
     "center_time": "2023-07-19T08:15:00",
@@ -350,8 +350,8 @@
   {
     "center_time": "2023-07-20T16:15:00",
     "center_ts": 1689869700.0,
-    "anomaly_probability": 0.060563452541828156,
-    "severity_score": 9.340089207127198e-19
+    "anomaly_probability": 0.06056356430053711,
+    "severity_score": 9.340124362303232e-19
   },
   {
     "center_time": "2023-07-22T00:15:00",
@@ -362,175 +362,175 @@
   {
     "center_time": "2023-07-23T08:15:00",
     "center_ts": 1690100100.0,
-    "anomaly_probability": 0.06073598936200142,
+    "anomaly_probability": 0.06073595955967903,
     "severity_score": 9.040473015527069e-19
   },
   {
     "center_time": "2023-07-24T16:15:00",
     "center_ts": 1690215300.0,
-    "anomaly_probability": 0.060818154364824295,
-    "severity_score": 8.901773438365709e-19
+    "anomaly_probability": 0.060818351805210114,
+    "severity_score": 8.90173931716544e-19
   },
   {
     "center_time": "2023-07-26T00:15:00",
     "center_ts": 1690330500.0,
-    "anomaly_probability": 0.06089813634753227,
-    "severity_score": 8.769817451148187e-19
+    "anomaly_probability": 0.0608980767428875,
+    "severity_score": 8.769851572348455e-19
   },
   {
     "center_time": "2023-07-27T08:15:00",
     "center_ts": 1690445700.0,
-    "anomaly_probability": 0.060975659638643265,
-    "severity_score": 8.644103058640261e-19
+    "anomaly_probability": 0.060975782573223114,
+    "severity_score": 8.644069971415758e-19
   },
   {
     "center_time": "2023-07-28T16:15:00",
     "center_ts": 1690560900.0,
-    "anomaly_probability": 0.061050958931446075,
-    "severity_score": 8.524222357402365e-19
+    "anomaly_probability": 0.061051029711961746,
+    "severity_score": 8.524287497875603e-19
   },
   {
     "center_time": "2023-07-30T00:15:00",
     "center_ts": 1690676100.0,
-    "anomaly_probability": 0.06112402305006981,
+    "anomaly_probability": 0.06112409383058548,
     "severity_score": 8.409820176758984e-19
   },
   {
     "center_time": "2023-07-31T08:15:00",
     "center_ts": 1690791300.0,
-    "anomaly_probability": 0.061195008456707,
+    "anomaly_probability": 0.06119503825902939,
     "severity_score": 8.300499987003976e-19
   },
   {
     "center_time": "2023-08-01T16:15:00",
     "center_ts": 1690906500.0,
-    "anomaly_probability": 0.06126408651471138,
+    "anomaly_probability": 0.06126421317458153,
     "severity_score": 8.195975376850244e-19
   },
   {
     "center_time": "2023-08-03T00:15:00",
     "center_ts": 1691021700.0,
-    "anomaly_probability": 0.06133132427930832,
+    "anomaly_probability": 0.061331138014793396,
     "severity_score": 8.095980097538122e-19
   },
   {
     "center_time": "2023-08-04T08:15:00",
     "center_ts": 1691136900.0,
-    "anomaly_probability": 0.061396609991788864,
+    "anomaly_probability": 0.06139666587114334,
     "severity_score": 8.000132612010072e-19
   },
   {
     "center_time": "2023-08-05T16:15:00",
     "center_ts": 1691252100.0,
-    "anomaly_probability": 0.06146013364195824,
-    "severity_score": 7.908255076434393e-19
+    "anomaly_probability": 0.061460163444280624,
+    "severity_score": 7.908316081004568e-19
   },
   {
     "center_time": "2023-08-07T00:15:00",
     "center_ts": 1691367300.0,
-    "anomaly_probability": 0.0615219883620739,
+    "anomaly_probability": 0.06152189522981644,
     "severity_score": 7.820087962893897e-19
   },
   {
     "center_time": "2023-08-08T08:15:00",
     "center_ts": 1691482500.0,
-    "anomaly_probability": 0.06158210709691048,
+    "anomaly_probability": 0.06158207729458809,
     "severity_score": 7.735469971169136e-19
   },
   {
     "center_time": "2023-08-09T16:15:00",
     "center_ts": 1691597700.0,
-    "anomaly_probability": 0.061640664935112,
-    "severity_score": 7.654132784548914e-19
+    "anomaly_probability": 0.06164072826504707,
+    "severity_score": 7.654103833227475e-19
   },
   {
     "center_time": "2023-08-11T00:15:00",
     "center_ts": 1691712900.0,
-    "anomaly_probability": 0.06169797107577324,
-    "severity_score": 7.5758758117346865e-19
+    "anomaly_probability": 0.061698026955127716,
+    "severity_score": 7.575905280044009e-19
   },
   {
     "center_time": "2023-08-12T08:15:00",
     "center_ts": 1691828100.0,
-    "anomaly_probability": 0.06175347790122032,
+    "anomaly_probability": 0.06175350397825241,
     "severity_score": 7.500649938877583e-19
   },
   {
     "center_time": "2023-08-13T16:15:00",
     "center_ts": 1691943300.0,
-    "anomaly_probability": 0.06180768460035324,
-    "severity_score": 7.428183230351226e-19
+    "anomaly_probability": 0.06180776283144951,
+    "severity_score": 7.428211664684783e-19
   },
   {
     "center_time": "2023-08-15T00:15:00",
     "center_ts": 1692058500.0,
-    "anomaly_probability": 0.06186061352491379,
-    "severity_score": 7.3583526430395e-19
+    "anomaly_probability": 0.06186051294207573,
+    "severity_score": 7.3584369120644035e-19
   },
   {
     "center_time": "2023-08-16T08:15:00",
     "center_ts": 1692173700.0,
-    "anomaly_probability": 0.061912063509225845,
-    "severity_score": 7.291014454310972e-19
+    "anomaly_probability": 0.061912260949611664,
+    "severity_score": 7.290986536965298e-19
   },
   {
     "center_time": "2023-08-17T16:15:00",
     "center_ts": 1692288900.0,
-    "anomaly_probability": 0.061962321400642395,
-    "severity_score": 7.226083878152856e-19
+    "anomaly_probability": 0.06196245551109314,
+    "severity_score": 7.2260564777950655e-19
   },
   {
     "center_time": "2023-08-19T00:15:00",
     "center_ts": 1692404100.0,
-    "anomaly_probability": 0.06201143190264702,
+    "anomaly_probability": 0.06201146915555,
     "severity_score": 7.163425463739847e-19
   },
   {
     "center_time": "2023-08-20T08:15:00",
     "center_ts": 1692519300.0,
-    "anomaly_probability": 0.06205933541059494,
-    "severity_score": 7.102881529767677e-19
+    "anomaly_probability": 0.0620594322681427,
+    "severity_score": 7.102827763027861e-19
   },
   {
     "center_time": "2023-08-21T16:15:00",
     "center_ts": 1692634500.0,
-    "anomaly_probability": 0.062106069177389145,
-    "severity_score": 7.0443812488963955e-19
+    "anomaly_probability": 0.062106162309646606,
+    "severity_score": 7.04435488251437e-19
   },
   {
     "center_time": "2023-08-23T00:15:00",
     "center_ts": 1692749700.0,
-    "anomaly_probability": 0.06215173006057739,
-    "severity_score": 6.987801578009886e-19
+    "anomaly_probability": 0.062151774764060974,
+    "severity_score": 6.9878553447497015e-19
   },
   {
     "center_time": "2023-08-24T08:15:00",
     "center_ts": 1692864900.0,
-    "anomaly_probability": 0.06219632178544998,
+    "anomaly_probability": 0.062196284532547,
     "severity_score": 6.933052561216532e-19
   },
   {
     "center_time": "2023-08-25T16:15:00",
     "center_ts": 1692980100.0,
-    "anomaly_probability": 0.06223982572555542,
+    "anomaly_probability": 0.06223990023136139,
     "severity_score": 6.8801223077950295e-19
   },
   {
     "center_time": "2023-08-27T00:15:00",
     "center_ts": 1693095300.0,
-    "anomaly_probability": 0.0622822642326355,
-    "severity_score": 6.828846415598633e-19
+    "anomaly_probability": 0.062282249331474304,
+    "severity_score": 6.828820566204491e-19
   },
   {
     "center_time": "2023-08-28T08:15:00",
     "center_ts": 1693210500.0,
-    "anomaly_probability": 0.062323734164237976,
-    "severity_score": 6.77914268355397e-19
+    "anomaly_probability": 0.06232389062643051,
+    "severity_score": 6.779168532948112e-19
   },
   {
     "center_time": "2023-08-29T16:15:00",
     "center_ts": 1693325700.0,
-    "anomaly_probability": 0.0623643659055233,
-    "severity_score": 6.73103282515212e-19
+    "anomaly_probability": 0.062364425510168076,
+    "severity_score": 6.731006975757978e-19
   }
 ]

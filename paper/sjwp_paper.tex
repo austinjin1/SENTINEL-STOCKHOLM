@@ -214,7 +214,7 @@ Sentinel-2 L2A & Satellite & 2,986 tiles & Global water pixels \\
 EMP 16S rRNA & Microbial & 20,288 & 127 habitat types \\
 NCBI GEO & Molecular & 84K genes & 4 transcriptomic datasets \\
 EPA ECOTOX & Molecular & 268K & 1,391 chemicals \\
-Daphnia assays & Behavioral & 5,000 & OECD 202/211 protocols \\
+EPA ECOTOX Daphnia & Behavioral & 17,074 & Real conc.-response tests \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -234,13 +234,13 @@ Each sensing modality has unique data characteristics that require specialized n
 
 \textbf{AquaSSM} (Sensor): Continuous-time state space model [8] with 8 parallel channels (timescales 1h--365d) for irregularly-sampled sensor data. Physics-informed constraints enforce known WQ relationships. Trained on 20,000 USGS sequences from 1,115 stations.
 
-\textbf{HydroViT} (Satellite): Vision Transformer [9] pretrained via masked autoencoders [10] on Sentinel-2 water pixels. Fine-tuned on 2,861 co-registered satellite--in-situ pairs to predict 16 WQ parameters from spectral data (R$^2$ = 0.674 for temperature).
+\textbf{HydroViT} (Satellite): Vision Transformer [9] pretrained via masked autoencoders [10] on Sentinel-2 water pixels. Fine-tuned on 4,202 co-registered satellite--in-situ pairs to predict 16 WQ parameters from spectral data (R$^2$ = 0.749 for temperature).
 
 \textbf{MicroBiomeNet} (Microbial): Operates natively in Aitchison simplex geometry [11] for compositional microbiome data using centered log-ratio coordinates. Trained on 20,288 Earth Microbiome Project samples for 8-class source classification.
 
 \textbf{ToxiGene} (Molecular): Mirrors the gene$\rightarrow$pathway$\rightarrow$process$\rightarrow$outcome biological hierarchy using sparse connections from Reactome/AOP-Wiki. Information bottleneck discovers minimal diagnostic gene panels. Trained on NCBI GEO + 268K EPA ECOTOX records.
 
-\textbf{BioMotion} (Behavioral): Diffusion pretraining [4] on organism trajectories detects anomalies via denoising score---the fastest biological response (minutes). Trained on 5,000 Daphnia assays (OECD 202/211).
+\textbf{BioMotion} (Behavioral): Diffusion pretraining [4] on organism trajectories detects anomalies via denoising score---the fastest biological response (minutes). Trained on 17,074 real Daphnia behavioral toxicity tests from EPA ECOTOX, achieving AUROC = 0.9999.
 
 \subsection{SENTINEL-Fusion}
 
@@ -275,7 +275,7 @@ All five modality-specific encoders met their performance thresholds when traine
 \textbf{Encoder} & \textbf{Metric} & \textbf{Result} & \textbf{Threshold} \\
 \midrule
 AquaSSM (Sensor) & AUROC & 0.920 & $>$0.85 \\
-HydroViT (Satellite) & R$^2$ (water temp) & 0.674 & $>$0.55 \\
+HydroViT (Satellite) & R$^2$ (water temp) & 0.749 & $>$0.55 \\
 MicroBiomeNet (Microbial) & F1 & 0.913 & $>$0.70 \\
 ToxiGene (Molecular) & F1 & 0.894 & $>$0.80 \\
 BioMotion (Behavioral) & AUROC & 1.000 & $>$0.80 \\

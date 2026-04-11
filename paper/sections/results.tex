@@ -18,7 +18,7 @@ $\dagger$~indicates threshold met.}
 \textbf{Encoder} & \textbf{Task} & \textbf{Metric} & \textbf{Baseline} & \textbf{$\Delta$} & \textbf{Threshold} \\
 \midrule
 AquaSSM & Sensor anomaly & \textbf{AUROC=0.920}$^\dagger$ & 0.500 & +0.420 & $>$0.85 \\
-HydroViT & Satellite WQ & \textbf{$R^2$=0.674}$^\dagger$ & N/A & N/A & $>$0.55 R$^2$ \\
+HydroViT & Satellite WQ & \textbf{$R^2$=0.749}$^\dagger$ & N/A & N/A & $>$0.55 R$^2$ \\
 MicroBiomeNet & Source attrib. & \textbf{F1=0.913}$^\dagger$ & 0.200 & +0.713 & $>$0.70 \\
 ToxiGene & Contaminant class. & \textbf{F1=0.894}$^\dagger$ & 0.125 & +0.769 & $>$0.80 \\
 BioMotion & Behavioral anom. & \textbf{AUROC=1.000}$^\dagger$ & 0.500 & +0.500 & $>$0.80 \\
@@ -39,22 +39,23 @@ anomaly classification fine-tuning. The AUROC of 0.920 exceeds the hard
 threshold of 0.85, demonstrating that continuous-time state space modeling
 effectively detects water quality anomalies from real sensor data.
 
-\paragraph{HydroViT (water temp $R^2 = 0.674$).}
+\paragraph{HydroViT (water temp $R^2 = 0.749$).}
 MAE-pretrained on 2,986 real Sentinel-2 L2A tiles from Planetary Computer.
-The water quality regression head is fine-tuned on 2,861 co-registered
-satellite--in situ pairs: 847 from GRQA (2015--2020) and EPA WQP spanning
-170 geographic cells across 105 countries, augmented by 2,014 new pairs
-from 195 USGS NWIS stations with GPS-precise ($\sim$10\,m) coordinates
-and tightly co-registered Sentinel-2 tiles ($\pm$1.5\,km, $\pm$3\,days).
-The 3.4$\times$ dataset expansion yields water temperature $R^2 = 0.674$,
-surpassing the 0.55 threshold. Seven parameters now exhibit positive
-predictive skill: water temperature ($R^2 = 0.674$), dissolved oxygen
-($R^2 = 0.240$), total phosphorus ($R^2 = 0.211$), TSS ($R^2 = 0.222$),
-turbidity ($R^2 = 0.092$), total nitrogen ($R^2 = 0.072$), and pH
-($R^2 = 0.037$). The USGS NWIS pairs contribute substantially more
-temperature signal due to their precise co-registration, whereas GRQA
-contributed broader geographic diversity. MAE pretraining loss converges
-to 0.008 after 100 epochs.
+The water quality regression head is fine-tuned on 4,202 co-registered
+satellite--in situ pairs from GRQA (2015--2020), EPA WQP (spanning
+170 geographic cells across 105 countries), and USGS NWIS stations
+with GPS-precise ($\sim$10\,m) coordinates and tightly co-registered
+Sentinel-2 tiles ($\pm$1.5\,km, $\pm$3\,days).
+This 4.9$\times$ dataset expansion over the original 847-pair baseline
+yields water temperature $R^2 = 0.749$, surpassing the 0.55 threshold.
+Nine parameters exhibit positive predictive skill: water temperature
+($R^2 = 0.749$), TSS ($R^2 = 0.160$), nitrate ($R^2 = 0.155$), total
+nitrogen ($R^2 = 0.140$), dissolved oxygen ($R^2 = 0.093$), ammonia
+($R^2 = 0.077$), phycocyanin ($R^2 = 0.052$), total phosphorus
+($R^2 = 0.028$), and turbidity ($R^2 = 0.020$). The USGS NWIS pairs
+contribute substantially more temperature signal due to their precise
+co-registration, whereas GRQA contributed broader geographic diversity.
+MAE pretraining loss converges to 0.008 after 100 epochs.
 
 \paragraph{MicroBiomeNet (F1 = 0.913).}
 Trained on 20,288 real 16S rRNA OTU samples from the Earth Microbiome

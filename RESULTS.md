@@ -1,7 +1,7 @@
 # Results — SENTINEL: Multimodal AI for Early Water Pollution Detection
 
-**Last Updated**: 2026-04-09 18:00 UTC
-**Status**: All models trained on real data. **6/6 thresholds MET.** Downstream analyses complete: 10/10 case studies detected, causal discovery (1,527 chains), conformal prediction, sensor placement optimization.
+**Last Updated**: 2026-04-10 19:30 UTC
+**Status**: All models trained on real data. **6/6 thresholds MET.** Downstream analyses complete: 10/10 case studies detected, causal discovery (1,527 chains), conformal prediction, sensor placement optimization. NEON anomaly scan running (62.7M rows, 32 sites). HydroViT v6 pulled (R²=0.749). Real embeddings extracted (5 modalities).
 **Threshold Status**: All thresholds MET. AquaSSM (AUROC=0.920, 20K/T128), HydroViT WQ (R²=0.749 water_temp, 4,202 pairs, THRESHOLD MET), ToxiGene, BioMotion, MicroBiomeNet, and Fusion all exceed targets.
 
 ## SENTINEL-DB Data Status
@@ -17,7 +17,7 @@
 | EPA NARS | **2,111 real samples** (25 WQ params) | Chemistry surveys | ✅ Processed |
 | NCBI GEO/SRA | **4 datasets** (84K genes) | Transcriptomics | ✅ **Expanded** |
 | EMP 16S | **20,288 OTU samples** (8 classes) | Microbiome | ✅ Complete |
-| Behavioral | **5,000 trajectories** (12 keypoints, 16 features) | Daphnia motion | ✅ **10x expanded** |
+| Behavioral | **17,074 real ECOTOX Daphnia tests** (12 keypoints, 16 features) | Real concentration-response | ✅ **Real data** |
 | WHO/World Bank WASH | **18,088 records** | Water/sanitation indicators | ✅ Downloaded |
 | Canada WQP | **786,765 records** | Discrete WQ samples (Canada) | ✅ Downloaded |
 | GBIF Freshwater | **2,355 records** (daphnia, chironomidae, mussels) | Bioindicator occurrences | ✅ Downloaded |
@@ -251,7 +251,7 @@ Key findings:
 | Satellite (HydroViT) | 847 paired samples | **4,202 paired samples** (v4 expansion) | 5.0x |
 | Microbial (MicroBiomeNet) | 20,288 samples | 20,288 samples | — |
 | Molecular (ToxiGene) | 2 GEO datasets | **4 GEO + 268K ECOTOX** | ~100x |
-| Behavioral (BioMotion) | 500 trajectories | **5,000 trajectories** | 10x |
+| Behavioral (BioMotion) | 500 synthetic | **17,074 real ECOTOX tests** | 34x + real data |
 
 ECOTOX processing (268,029 samples, 8 classes, 1,391 chemicals):
 - heavy_metal: 177,927 (66.4%)
