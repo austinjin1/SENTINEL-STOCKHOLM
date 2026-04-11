@@ -1,0 +1,3782 @@
+{
+  "n_sites": 32,
+  "cross_site_monthly": {
+    "1": {
+      "mean_exceedance_rate": 0.1075,
+      "std_exceedance_rate": 0.2449,
+      "n_sites": 23
+    },
+    "2": {
+      "mean_exceedance_rate": 0.1219,
+      "std_exceedance_rate": 0.2818,
+      "n_sites": 23
+    },
+    "3": {
+      "mean_exceedance_rate": 0.1076,
+      "std_exceedance_rate": 0.212,
+      "n_sites": 24
+    },
+    "4": {
+      "mean_exceedance_rate": 0.1324,
+      "std_exceedance_rate": 0.2781,
+      "n_sites": 28
+    },
+    "5": {
+      "mean_exceedance_rate": 0.1585,
+      "std_exceedance_rate": 0.3062,
+      "n_sites": 28
+    },
+    "6": {
+      "mean_exceedance_rate": 0.1746,
+      "std_exceedance_rate": 0.3195,
+      "n_sites": 28
+    },
+    "7": {
+      "mean_exceedance_rate": 0.1864,
+      "std_exceedance_rate": 0.2937,
+      "n_sites": 29
+    },
+    "8": {
+      "mean_exceedance_rate": 0.1783,
+      "std_exceedance_rate": 0.3019,
+      "n_sites": 29
+    },
+    "9": {
+      "mean_exceedance_rate": 0.1631,
+      "std_exceedance_rate": 0.2943,
+      "n_sites": 29
+    },
+    "10": {
+      "mean_exceedance_rate": 0.1557,
+      "std_exceedance_rate": 0.2986,
+      "n_sites": 28
+    },
+    "11": {
+      "mean_exceedance_rate": 0.1244,
+      "std_exceedance_rate": 0.273,
+      "n_sites": 27
+    },
+    "12": {
+      "mean_exceedance_rate": 0.1136,
+      "std_exceedance_rate": 0.2812,
+      "n_sites": 23
+    }
+  },
+  "peak_info": {
+    "peak_month": 7,
+    "peak_month_name": "Jul",
+    "peak_rate": 0.1864,
+    "trough_month": 1,
+    "trough_month_name": "Jan",
+    "trough_rate": 0.1075,
+    "peak_season": "Summer",
+    "seasonal_amplitude": 0.0789
+  },
+  "parameter_peaks": {
+    "pH": {
+      "peak_month": 4,
+      "peak_month_name": "Apr",
+      "peak_rate": 0.1137,
+      "peak_season": "Spring"
+    },
+    "dissolvedOxygen": {
+      "peak_month": 8,
+      "peak_month_name": "Aug",
+      "peak_rate": 0.0555,
+      "peak_season": "Summer"
+    },
+    "turbidity": {
+      "peak_month": 5,
+      "peak_month_name": "May",
+      "peak_rate": 0.0114,
+      "peak_season": "Spring"
+    },
+    "specificConductance": {
+      "peak_month": 6,
+      "peak_month_name": "Jun",
+      "peak_rate": 0.0394,
+      "peak_season": "Summer"
+    }
+  },
+  "site_peak_seasons": {
+    "ARIK": "Summer",
+    "BARC": "Spring",
+    "BIGC": "Summer",
+    "BLDE": "Spring",
+    "BLUE": "Spring",
+    "BLWA": "Spring",
+    "CARI": "Spring",
+    "COMO": "Winter",
+    "CRAM": "Fall",
+    "CUPE": "Summer",
+    "FLNT": "Spring",
+    "GUIL": "Summer",
+    "HOPB": "Summer",
+    "KING": "Summer",
+    "LECO": "Spring",
+    "LEWI": "Summer",
+    "LIRO": "Fall",
+    "MART": "Winter",
+    "MAYF": "Fall",
+    "MCDI": "Fall",
+    "MCRA": "Winter",
+    "OKSR": "Summer",
+    "POSE": "Spring",
+    "PRIN": "Spring",
+    "PRLA": "Summer",
+    "PRPO": "Summer",
+    "REDB": "Summer",
+    "SUGG": "Summer",
+    "SYCA": "Summer",
+    "TOMB": "Spring",
+    "TOOK": "Summer",
+    "WALK": "Fall"
+  },
+  "season_histogram": {
+    "Winter": 3,
+    "Spring": 10,
+    "Summer": 14,
+    "Fall": 5
+  },
+  "per_site_monthly": {
+    "ARIK": {
+      "1": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0828,
+        "exceedance_count": 22170,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0827,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0011,
+        "exceedance_count": 269,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0017,
+        "exceedance_count": 460,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0006,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0012,
+        "exceedance_count": 322,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 357121,
+        "exceedance_rate": 0.1685,
+        "exceedance_count": 60182,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.1682,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259236,
+        "exceedance_rate": 0.6544,
+        "exceedance_count": 169657,
+        "by_param": {
+          "pH": 0.0014,
+          "dissolvedOxygen": 0.653,
+          "turbidity": 0.0016,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 223248,
+        "exceedance_rate": 0.4705,
+        "exceedance_count": 105036,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.4193,
+          "turbidity": 0.0517,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 312518,
+        "exceedance_rate": 0.0213,
+        "exceedance_count": 6665,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0063,
+          "turbidity": 0.0144,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 143,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0008,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0319,
+        "exceedance_count": 7113,
+        "by_param": {
+          "pH": 0.0028,
+          "dissolvedOxygen": 0.0055,
+          "turbidity": 0.0236,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 216012,
+        "exceedance_rate": 0.0224,
+        "exceedance_count": 4845,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0206,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0013
+        }
+      },
+      "12": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 397,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0018,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "BARC": {
+      "1": {
+        "n_records": 26784,
+        "exceedance_rate": 0.6267,
+        "exceedance_count": 16785,
+        "by_param": {
+          "pH": 0.6267,
+          "dissolvedOxygen": 0.0504,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 16128,
+        "exceedance_rate": 0.8199,
+        "exceedance_count": 13224,
+        "by_param": {
+          "pH": 0.8199,
+          "dissolvedOxygen": 0.003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 26784,
+        "exceedance_rate": 0.7816,
+        "exceedance_count": 20935,
+        "by_param": {
+          "pH": 0.7816,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 17280,
+        "exceedance_rate": 0.9969,
+        "exceedance_count": 17227,
+        "by_param": {
+          "pH": 0.9969,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 35712,
+        "exceedance_rate": 0.9567,
+        "exceedance_count": 34166,
+        "by_param": {
+          "pH": 0.9567,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 17280,
+        "exceedance_rate": 0.9165,
+        "exceedance_count": 15837,
+        "by_param": {
+          "pH": 0.9165,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 17856,
+        "exceedance_rate": 0.9589,
+        "exceedance_count": 17122,
+        "by_param": {
+          "pH": 0.9589,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 35712,
+        "exceedance_rate": 0.9162,
+        "exceedance_count": 32720,
+        "by_param": {
+          "pH": 0.9162,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 25920,
+        "exceedance_rate": 0.9863,
+        "exceedance_count": 25565,
+        "by_param": {
+          "pH": 0.9863,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 26784,
+        "exceedance_rate": 0.948,
+        "exceedance_count": 25392,
+        "by_param": {
+          "pH": 0.948,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 17280,
+        "exceedance_rate": 0.9784,
+        "exceedance_count": 16907,
+        "by_param": {
+          "pH": 0.9784,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 35712,
+        "exceedance_rate": 0.8719,
+        "exceedance_count": 31138,
+        "by_param": {
+          "pH": 0.8718,
+          "dissolvedOxygen": 0.0743,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "BIGC": {
+      "1": {
+        "n_records": 312480,
+        "exceedance_rate": 0.002,
+        "exceedance_count": 636,
+        "by_param": {
+          "pH": 0.0016,
+          "dissolvedOxygen": 0.0016,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 120962,
+        "exceedance_rate": 0.1783,
+        "exceedance_count": 21567,
+        "by_param": {
+          "pH": 0.0059,
+          "dissolvedOxygen": 0.0052,
+          "turbidity": 0.1724,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 357122,
+        "exceedance_rate": 0.0436,
+        "exceedance_count": 15562,
+        "by_param": {
+          "pH": 0.0436,
+          "dissolvedOxygen": 0.0429,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 345600,
+        "exceedance_rate": 0.0825,
+        "exceedance_count": 28496,
+        "by_param": {
+          "pH": 0.0824,
+          "dissolvedOxygen": 0.0824,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 178566,
+        "exceedance_rate": 0.0196,
+        "exceedance_count": 3493,
+        "by_param": {
+          "pH": 0.0194,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0186
+        }
+      },
+      "6": {
+        "n_records": 259200,
+        "exceedance_rate": 0.1489,
+        "exceedance_count": 38607,
+        "by_param": {
+          "pH": 0.1485,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0,
+          "specificConductance": 0.059
+        }
+      },
+      "7": {
+        "n_records": 267840,
+        "exceedance_rate": 0.1542,
+        "exceedance_count": 41291,
+        "by_param": {
+          "pH": 0.0074,
+          "dissolvedOxygen": 0.1493,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 357120,
+        "exceedance_rate": 0.2145,
+        "exceedance_count": 76610,
+        "by_param": {
+          "pH": 0.0167,
+          "dissolvedOxygen": 0.2145,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 302400,
+        "exceedance_rate": 0.2052,
+        "exceedance_count": 62041,
+        "by_param": {
+          "pH": 0.0116,
+          "dissolvedOxygen": 0.2051,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267843,
+        "exceedance_rate": 0.0348,
+        "exceedance_count": 9309,
+        "by_param": {
+          "pH": 0.0096,
+          "dissolvedOxygen": 0.034,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 216000,
+        "exceedance_rate": 0.007,
+        "exceedance_count": 1504,
+        "by_param": {
+          "pH": 0.0068,
+          "dissolvedOxygen": 0.0065,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 558,
+        "by_param": {
+          "pH": 0.0017,
+          "dissolvedOxygen": 0.0014,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "BLDE": {
+      "1": {
+        "n_records": 357120,
+        "exceedance_rate": 0.002,
+        "exceedance_count": 698,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0006,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0024,
+        "exceedance_count": 569,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0011,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0011,
+        "exceedance_count": 237,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 302400,
+        "exceedance_rate": 0.0089,
+        "exceedance_count": 2704,
+        "by_param": {
+          "pH": 0.0087,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 178563,
+        "exceedance_rate": 0.0351,
+        "exceedance_count": 6272,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0341,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 158,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 223200,
+        "exceedance_rate": 0.001,
+        "exceedance_count": 215,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 275,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 302400,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 240,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0013,
+        "exceedance_count": 287,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0014,
+        "exceedance_count": 372,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 357120,
+        "exceedance_rate": 0.0012,
+        "exceedance_count": 418,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "BLUE": {
+      "1": {
+        "n_records": 133920,
+        "exceedance_rate": 0.0021,
+        "exceedance_count": 275,
+        "by_param": {
+          "pH": 0.002,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 40320,
+        "exceedance_rate": 0.0015,
+        "exceedance_count": 62,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 133920,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 97,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 86407,
+        "exceedance_rate": 0.0164,
+        "exceedance_count": 1414,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0159,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0042,
+        "exceedance_count": 758,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0042,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0002,
+        "exceedance_count": 30,
+        "by_param": {
+          "pH": 0.0002,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0069,
+        "exceedance_count": 1226,
+        "by_param": {
+          "pH": 0.0001,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0067,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 89280,
+        "exceedance_rate": 0.0003,
+        "exceedance_count": 25,
+        "by_param": {
+          "pH": 0.0002,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 86400,
+        "exceedance_rate": 0.0002,
+        "exceedance_count": 21,
+        "by_param": {
+          "pH": 0.0002,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0011,
+        "exceedance_count": 196,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 129600,
+        "exceedance_rate": 0.0011,
+        "exceedance_count": 137,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 292,
+        "by_param": {
+          "pH": 0.0016,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "BLWA": {
+      "1": {
+        "n_records": 17856,
+        "exceedance_rate": 0.0002,
+        "exceedance_count": 4,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 29952,
+        "exceedance_rate": 0.0001,
+        "exceedance_count": 2,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 35712,
+        "exceedance_rate": 0.0619,
+        "exceedance_count": 2210,
+        "by_param": {
+          "pH": 0.0616,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 25932,
+        "exceedance_rate": 0.0001,
+        "exceedance_count": 2,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 26784,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 34560,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 26784,
+        "exceedance_rate": 0.0002,
+        "exceedance_count": 6,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 35712,
+        "exceedance_rate": 0.0001,
+        "exceedance_count": 4,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 34560,
+        "exceedance_rate": 0.0002,
+        "exceedance_count": 8,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 17856,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 25920,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 35712,
+        "exceedance_rate": 0.0001,
+        "exceedance_count": 2,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "CARI": {
+      "1": {
+        "n_records": 267846,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 250,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 282240,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 262,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0022,
+        "exceedance_count": 492,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0008,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0282,
+        "exceedance_count": 6081,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0268,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 178572,
+        "exceedance_rate": 0.0013,
+        "exceedance_count": 233,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 172802,
+        "exceedance_rate": 0.0015,
+        "exceedance_count": 253,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0006,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0043,
+        "exceedance_count": 1148,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0033,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 357120,
+        "exceedance_rate": 0.0114,
+        "exceedance_count": 4084,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0102,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 259200,
+        "exceedance_rate": 0.001,
+        "exceedance_count": 253,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0046,
+        "exceedance_count": 1035,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0034,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0046,
+        "exceedance_count": 1193,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0035,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 312480,
+        "exceedance_rate": 0.001,
+        "exceedance_count": 316,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "COMO": {
+      "1": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0306,
+        "exceedance_count": 6821,
+        "by_param": {
+          "pH": 0.0018,
+          "dissolvedOxygen": 0.0297,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 161280,
+        "exceedance_rate": 0.0724,
+        "exceedance_count": 11675,
+        "by_param": {
+          "pH": 0.0021,
+          "dissolvedOxygen": 0.0715,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0021,
+        "exceedance_count": 369,
+        "by_param": {
+          "pH": 0.0021,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259202,
+        "exceedance_rate": 0.0161,
+        "exceedance_count": 4185,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0147,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0182,
+        "exceedance_count": 5696,
+        "by_param": {
+          "pH": 0.0014,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0168,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259201,
+        "exceedance_rate": 0.0075,
+        "exceedance_count": 1956,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0065,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 357123,
+        "exceedance_rate": 0.0112,
+        "exceedance_count": 3986,
+        "by_param": {
+          "pH": 0.0112,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 182,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0012,
+        "exceedance_count": 254,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 312482,
+        "exceedance_rate": 0.0015,
+        "exceedance_count": 461,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 259209,
+        "exceedance_rate": 0.0026,
+        "exceedance_count": 685,
+        "by_param": {
+          "pH": 0.002,
+          "dissolvedOxygen": 0.0018,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 312486,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 515,
+        "by_param": {
+          "pH": 0.0016,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "CRAM": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": {
+        "n_records": 33984,
+        "exceedance_rate": 0.0644,
+        "exceedance_count": 2188,
+        "by_param": {
+          "pH": 0.0333,
+          "dissolvedOxygen": 0.0337,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 52416,
+        "exceedance_rate": 0.1606,
+        "exceedance_count": 8416,
+        "by_param": {
+          "pH": 0.1602,
+          "dissolvedOxygen": 0.0221,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 25920,
+        "exceedance_rate": 0.1175,
+        "exceedance_count": 3046,
+        "by_param": {
+          "pH": 0.1175,
+          "dissolvedOxygen": 0.0741,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 53568,
+        "exceedance_rate": 0.1371,
+        "exceedance_count": 7344,
+        "by_param": {
+          "pH": 0.136,
+          "dissolvedOxygen": 0.1149,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 44640,
+        "exceedance_rate": 0.1498,
+        "exceedance_count": 6685,
+        "by_param": {
+          "pH": 0.1496,
+          "dissolvedOxygen": 0.1138,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 34560,
+        "exceedance_rate": 0.1516,
+        "exceedance_count": 5238,
+        "by_param": {
+          "pH": 0.1514,
+          "dissolvedOxygen": 0.1315,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 44640,
+        "exceedance_rate": 0.161,
+        "exceedance_count": 7188,
+        "by_param": {
+          "pH": 0.1598,
+          "dissolvedOxygen": 0.1095,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 33408,
+        "exceedance_rate": 0.0615,
+        "exceedance_count": 2055,
+        "by_param": {
+          "pH": 0.044,
+          "dissolvedOxygen": 0.0313,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": null
+    },
+    "CUPE": {
+      "1": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0012,
+        "exceedance_count": 262,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 430,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0008,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 418,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0008,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0017,
+        "exceedance_count": 430,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0007,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 178573,
+        "exceedance_rate": 0.0392,
+        "exceedance_count": 7004,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0382,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0019,
+        "exceedance_count": 494,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0008,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 178562,
+        "exceedance_rate": 0.0026,
+        "exceedance_count": 465,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0017,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 312489,
+        "exceedance_rate": 0.1331,
+        "exceedance_count": 41589,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0012,
+          "turbidity": 0.1319,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 216011,
+        "exceedance_rate": 0.0772,
+        "exceedance_count": 16670,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0763,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 357122,
+        "exceedance_rate": 0.0045,
+        "exceedance_count": 1604,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0035,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 345600,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 544,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0005,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 178561,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 315,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0006,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "FLNT": {
+      "1": {
+        "n_records": 26784,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 32256,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 17856,
+        "exceedance_rate": 0.0001,
+        "exceedance_count": 1,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 17295,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 13,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0008,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 17856,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 17280,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 17856,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 26784,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 25920,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 26784,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 25920,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 35712,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "GUIL": {
+      "1": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0013,
+        "exceedance_count": 414,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0012,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0111,
+        "exceedance_count": 2679,
+        "by_param": {
+          "pH": 0.0025,
+          "dissolvedOxygen": 0.0027,
+          "turbidity": 0.0083,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267840,
+        "exceedance_rate": 0.005,
+        "exceedance_count": 1336,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0041,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 345600,
+        "exceedance_rate": 0.0109,
+        "exceedance_count": 3766,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0098,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 223201,
+        "exceedance_rate": 0.0459,
+        "exceedance_count": 10240,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.045,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0039,
+        "exceedance_count": 843,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0032,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 357120,
+        "exceedance_rate": 0.197,
+        "exceedance_count": 70336,
+        "by_param": {
+          "pH": 0.1962,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0018,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 267842,
+        "exceedance_rate": 0.0354,
+        "exceedance_count": 9480,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0348,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 302400,
+        "exceedance_rate": 0.0057,
+        "exceedance_count": 1714,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0049,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267841,
+        "exceedance_rate": 0.0048,
+        "exceedance_count": 1277,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0037,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0399,
+        "exceedance_count": 8620,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.0019,
+          "turbidity": 0.0381,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0106,
+        "exceedance_count": 2372,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0012,
+          "turbidity": 0.0094,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "HOPB": {
+      "1": {
+        "n_records": 357120,
+        "exceedance_rate": 0.0054,
+        "exceedance_count": 1942,
+        "by_param": {
+          "pH": 0.005,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0068,
+        "exceedance_count": 1641,
+        "by_param": {
+          "pH": 0.0067,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 223207,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 160,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 207,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0004,
+        "exceedance_count": 80,
+        "by_param": {
+          "pH": 0.0004,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0005,
+        "exceedance_count": 81,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 312482,
+        "exceedance_rate": 0.1157,
+        "exceedance_count": 36143,
+        "by_param": {
+          "pH": 0.1156,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0885,
+        "exceedance_count": 27644,
+        "by_param": {
+          "pH": 0.0885,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 345600,
+        "exceedance_rate": 0.0004,
+        "exceedance_count": 124,
+        "by_param": {
+          "pH": 0.0003,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267842,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 179,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 185,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 267842,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 223,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "KING": {
+      "1": {
+        "n_records": 178649,
+        "exceedance_rate": 0.0764,
+        "exceedance_count": 13654,
+        "by_param": {
+          "pH": 0.0741,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0024,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267840,
+        "exceedance_rate": 0.2529,
+        "exceedance_count": 67750,
+        "by_param": {
+          "pH": 0.2528,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 172807,
+        "exceedance_rate": 0.0521,
+        "exceedance_count": 8999,
+        "by_param": {
+          "pH": 0.0195,
+          "dissolvedOxygen": 0.0311,
+          "turbidity": 0.0016,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 223220,
+        "exceedance_rate": 0.0048,
+        "exceedance_count": 1067,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0043,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0652,
+        "exceedance_count": 16895,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0641,
+          "turbidity": 0.008,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 178567,
+        "exceedance_rate": 0.2075,
+        "exceedance_count": 37051,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.2052,
+          "turbidity": 0.0225,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 267863,
+        "exceedance_rate": 0.4344,
+        "exceedance_count": 116362,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.4343,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 259240,
+        "exceedance_rate": 0.1176,
+        "exceedance_count": 30493,
+        "by_param": {
+          "pH": 0.0002,
+          "dissolvedOxygen": 0.1175,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267858,
+        "exceedance_rate": 0.171,
+        "exceedance_count": 45815,
+        "by_param": {
+          "pH": 0.0288,
+          "dissolvedOxygen": 0.1425,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 172815,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0122,
+        "exceedance_count": 3262,
+        "by_param": {
+          "pH": 0.0122,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "LECO": {
+      "1": {
+        "n_records": 312482,
+        "exceedance_rate": 0.0017,
+        "exceedance_count": 535,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.0012,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0022,
+        "exceedance_count": 537,
+        "by_param": {
+          "pH": 0.0017,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0005,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 178562,
+        "exceedance_rate": 0.1392,
+        "exceedance_count": 24860,
+        "by_param": {
+          "pH": 0.1389,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259200,
+        "exceedance_rate": 0.1168,
+        "exceedance_count": 30274,
+        "by_param": {
+          "pH": 0.1168,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 223206,
+        "exceedance_rate": 0.0014,
+        "exceedance_count": 311,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 302400,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 216,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0023,
+        "exceedance_count": 509,
+        "by_param": {
+          "pH": 0.0016,
+          "dissolvedOxygen": 0.0013,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 223210,
+        "exceedance_rate": 0.0709,
+        "exceedance_count": 15830,
+        "by_param": {
+          "pH": 0.0254,
+          "dissolvedOxygen": 0.0463,
+          "turbidity": 0.0,
+          "specificConductance": 0.0238
+        }
+      },
+      "9": {
+        "n_records": 345600,
+        "exceedance_rate": 0.0034,
+        "exceedance_count": 1168,
+        "by_param": {
+          "pH": 0.0032,
+          "dissolvedOxygen": 0.0012,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0015,
+        "exceedance_count": 460,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.0012,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 274,
+        "by_param": {
+          "pH": 0.0014,
+          "dissolvedOxygen": 0.0013,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0027,
+        "exceedance_count": 716,
+        "by_param": {
+          "pH": 0.0025,
+          "dissolvedOxygen": 0.0013,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "LEWI": {
+      "1": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 491,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.0012,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 161286,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 286,
+        "by_param": {
+          "pH": 0.0014,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0552,
+        "exceedance_count": 12320,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0043,
+          "turbidity": 0.0535,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259201,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 457,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0007,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 223214,
+        "exceedance_rate": 0.0199,
+        "exceedance_count": 4443,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.019,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0561,
+        "exceedance_count": 14546,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0015,
+          "turbidity": 0.055,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 267851,
+        "exceedance_rate": 0.1657,
+        "exceedance_count": 44374,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0358,
+          "turbidity": 0.1366,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0127,
+        "exceedance_count": 3399,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0039,
+          "turbidity": 0.0118,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 345600,
+        "exceedance_rate": 0.001,
+        "exceedance_count": 336,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0014,
+        "exceedance_count": 378,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0024,
+        "exceedance_count": 526,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.001,
+          "turbidity": 0.0012,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 357120,
+        "exceedance_rate": 0.0015,
+        "exceedance_count": 518,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "LIRO": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": {
+        "n_records": 16714,
+        "exceedance_rate": 0.0987,
+        "exceedance_count": 1650,
+        "by_param": {
+          "pH": 0.0656,
+          "dissolvedOxygen": 0.0909,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 33696,
+        "exceedance_rate": 0.0258,
+        "exceedance_count": 870,
+        "by_param": {
+          "pH": 0.0258,
+          "dissolvedOxygen": 0.0036,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 51840,
+        "exceedance_rate": 0.0733,
+        "exceedance_count": 3802,
+        "by_param": {
+          "pH": 0.0367,
+          "dissolvedOxygen": 0.0595,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 53568,
+        "exceedance_rate": 0.0786,
+        "exceedance_count": 4210,
+        "by_param": {
+          "pH": 0.0767,
+          "dissolvedOxygen": 0.0495,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 44641,
+        "exceedance_rate": 0.0765,
+        "exceedance_count": 3417,
+        "by_param": {
+          "pH": 0.0741,
+          "dissolvedOxygen": 0.0605,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 25920,
+        "exceedance_rate": 0.1492,
+        "exceedance_count": 3866,
+        "by_param": {
+          "pH": 0.0512,
+          "dissolvedOxygen": 0.1404,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 44642,
+        "exceedance_rate": 0.0392,
+        "exceedance_count": 1751,
+        "by_param": {
+          "pH": 0.0338,
+          "dissolvedOxygen": 0.0234,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 19584,
+        "exceedance_rate": 0.0307,
+        "exceedance_count": 601,
+        "by_param": {
+          "pH": 0.0294,
+          "dissolvedOxygen": 0.0013,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": null
+    },
+    "MART": {
+      "1": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0006,
+        "exceedance_count": 162,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 282240,
+        "exceedance_rate": 0.0021,
+        "exceedance_count": 595,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0014,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 206,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 187,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 196,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 185,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 357120,
+        "exceedance_rate": 0.0006,
+        "exceedance_count": 222,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 357120,
+        "exceedance_rate": 0.0006,
+        "exceedance_count": 222,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 148,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 151,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 302414,
+        "exceedance_rate": 0.001,
+        "exceedance_count": 289,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 267867,
+        "exceedance_rate": 0.0047,
+        "exceedance_count": 1252,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0041,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "MAYF": {
+      "1": {
+        "n_records": 357120,
+        "exceedance_rate": 0.6037,
+        "exceedance_count": 215579,
+        "by_param": {
+          "pH": 0.6036,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 325440,
+        "exceedance_rate": 0.687,
+        "exceedance_count": 223590,
+        "by_param": {
+          "pH": 0.687,
+          "dissolvedOxygen": 0.054,
+          "turbidity": 0.0619,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 312480,
+        "exceedance_rate": 0.5021,
+        "exceedance_count": 156909,
+        "by_param": {
+          "pH": 0.5021,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0014,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 216000,
+        "exceedance_rate": 0.743,
+        "exceedance_count": 160489,
+        "by_param": {
+          "pH": 0.743,
+          "dissolvedOxygen": 0.0198,
+          "turbidity": 0.0143,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 401760,
+        "exceedance_rate": 0.6151,
+        "exceedance_count": 247104,
+        "by_param": {
+          "pH": 0.6151,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0009,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259200,
+        "exceedance_rate": 0.6517,
+        "exceedance_count": 168915,
+        "by_param": {
+          "pH": 0.6517,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0265,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 312480,
+        "exceedance_rate": 0.2753,
+        "exceedance_count": 86020,
+        "by_param": {
+          "pH": 0.2753,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 401760,
+        "exceedance_rate": 0.3125,
+        "exceedance_count": 125568,
+        "by_param": {
+          "pH": 0.3125,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 388802,
+        "exceedance_rate": 0.5349,
+        "exceedance_count": 207983,
+        "by_param": {
+          "pH": 0.5349,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267840,
+        "exceedance_rate": 0.5445,
+        "exceedance_count": 145837,
+        "by_param": {
+          "pH": 0.5445,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 259200,
+        "exceedance_rate": 0.7673,
+        "exceedance_count": 198889,
+        "by_param": {
+          "pH": 0.7673,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 223200,
+        "exceedance_rate": 0.7204,
+        "exceedance_count": 160802,
+        "by_param": {
+          "pH": 0.7204,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "MCDI": {
+      "1": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0036,
+        "exceedance_count": 1114,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0029,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0159,
+        "exceedance_count": 3855,
+        "by_param": {
+          "pH": 0.0148,
+          "dissolvedOxygen": 0.0145,
+          "turbidity": 0.0011,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267850,
+        "exceedance_rate": 0.0586,
+        "exceedance_count": 15698,
+        "by_param": {
+          "pH": 0.0353,
+          "dissolvedOxygen": 0.0526,
+          "turbidity": 0.0071,
+          "specificConductance": 0.0002
+        }
+      },
+      "4": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0879,
+        "exceedance_count": 15183,
+        "by_param": {
+          "pH": 0.0847,
+          "dissolvedOxygen": 0.0855,
+          "turbidity": 0.0022,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 357120,
+        "exceedance_rate": 0.1452,
+        "exceedance_count": 51842,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.1409,
+          "turbidity": 0.0041,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0099,
+        "exceedance_count": 1717,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0053,
+          "turbidity": 0.0045,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 312480,
+        "exceedance_rate": 0.3229,
+        "exceedance_count": 100893,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.3189,
+          "turbidity": 0.0038,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 357120,
+        "exceedance_rate": 0.601,
+        "exceedance_count": 214616,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.6004,
+          "turbidity": 0.0005,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 259200,
+        "exceedance_rate": 0.7127,
+        "exceedance_count": 184738,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.7124,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 223200,
+        "exceedance_rate": 0.4659,
+        "exceedance_count": 103983,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.4655,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 302400,
+        "exceedance_rate": 0.0389,
+        "exceedance_count": 11771,
+        "by_param": {
+          "pH": 0.0004,
+          "dissolvedOxygen": 0.0387,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 218,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "MCRA": {
+      "1": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0444,
+        "exceedance_count": 11892,
+        "by_param": {
+          "pH": 0.0444,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 282269,
+        "exceedance_rate": 0.0021,
+        "exceedance_count": 583,
+        "by_param": {
+          "pH": 0.002,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 237,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 245,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 239,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 218,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 357120,
+        "exceedance_rate": 0.0007,
+        "exceedance_count": 260,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 253,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 302412,
+        "exceedance_rate": 0.001,
+        "exceedance_count": 295,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 160,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0012,
+        "exceedance_count": 215,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 312493,
+        "exceedance_rate": 0.018,
+        "exceedance_count": 5618,
+        "by_param": {
+          "pH": 0.0163,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0017,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "OKSR": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": {
+        "n_records": 20160,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 89280,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 220322,
+        "exceedance_rate": 0.0002,
+        "exceedance_count": 52,
+        "by_param": {
+          "pH": 0.0002,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 714240,
+        "exceedance_rate": 0.1012,
+        "exceedance_count": 72255,
+        "by_param": {
+          "pH": 0.0507,
+          "dissolvedOxygen": 0.0701,
+          "turbidity": 0.0309,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 758880,
+        "exceedance_rate": 0.0004,
+        "exceedance_count": 316,
+        "by_param": {
+          "pH": 0.0004,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 493920,
+        "exceedance_rate": 0.0212,
+        "exceedance_count": 10482,
+        "by_param": {
+          "pH": 0.0003,
+          "dissolvedOxygen": 0.0212,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 108000,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": null,
+      "12": null
+    },
+    "POSE": {
+      "1": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 203,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 201600,
+        "exceedance_rate": 0.001,
+        "exceedance_count": 205,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0035,
+        "exceedance_count": 937,
+        "by_param": {
+          "pH": 0.0032,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 172802,
+        "exceedance_rate": 0.0008,
+        "exceedance_count": 144,
+        "by_param": {
+          "pH": 0.0008,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 267850,
+        "exceedance_rate": 0.0128,
+        "exceedance_count": 3436,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0118,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 421,
+        "by_param": {
+          "pH": 0.0003,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0014,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 178562,
+        "exceedance_rate": 0.0027,
+        "exceedance_count": 482,
+        "by_param": {
+          "pH": 0.0002,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0025,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 312485,
+        "exceedance_rate": 0.0034,
+        "exceedance_count": 1057,
+        "by_param": {
+          "pH": 0.0003,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0031,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0018,
+        "exceedance_count": 317,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0014,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0009,
+        "exceedance_count": 252,
+        "by_param": {
+          "pH": 0.0005,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0005,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 216000,
+        "exceedance_rate": 0.0011,
+        "exceedance_count": 230,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0012,
+        "exceedance_count": 264,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "PRIN": {
+      "1": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0081,
+        "exceedance_count": 1800,
+        "by_param": {
+          "pH": 0.0007,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0073,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0013,
+        "exceedance_count": 323,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0004,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 312480,
+        "exceedance_rate": 0.0254,
+        "exceedance_count": 7927,
+        "by_param": {
+          "pH": 0.0018,
+          "dissolvedOxygen": 0.0244,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 302433,
+        "exceedance_rate": 0.087,
+        "exceedance_count": 26318,
+        "by_param": {
+          "pH": 0.0014,
+          "dissolvedOxygen": 0.07,
+          "turbidity": 0.0369,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 267857,
+        "exceedance_rate": 0.1492,
+        "exceedance_count": 39963,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.091,
+          "turbidity": 0.1243,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0374,
+        "exceedance_count": 6455,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0345,
+          "turbidity": 0.0034,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0198,
+        "exceedance_count": 3537,
+        "by_param": {
+          "pH": 0.0013,
+          "dissolvedOxygen": 0.0182,
+          "turbidity": 0.0014,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 267872,
+        "exceedance_rate": 0.0854,
+        "exceedance_count": 22889,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.0844,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 302400,
+        "exceedance_rate": 0.1168,
+        "exceedance_count": 35335,
+        "by_param": {
+          "pH": 0.0012,
+          "dissolvedOxygen": 0.1163,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0792,
+        "exceedance_count": 21213,
+        "by_param": {
+          "pH": 0.001,
+          "dissolvedOxygen": 0.0788,
+          "turbidity": 0.0003,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0743,
+        "exceedance_count": 12840,
+        "by_param": {
+          "pH": 0.0435,
+          "dissolvedOxygen": 0.0734,
+          "turbidity": 0.0008,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0031,
+        "exceedance_count": 559,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0024,
+          "turbidity": 0.0004,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "PRLA": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": {
+        "n_records": 17280,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 28,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0015
+        }
+      },
+      "5": {
+        "n_records": 39456,
+        "exceedance_rate": 0.0005,
+        "exceedance_count": 18,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0002
+        }
+      },
+      "6": {
+        "n_records": 25920,
+        "exceedance_rate": 0.024,
+        "exceedance_count": 623,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0231,
+          "turbidity": 0.0007,
+          "specificConductance": 0.0002
+        }
+      },
+      "7": {
+        "n_records": 26784,
+        "exceedance_rate": 0.0231,
+        "exceedance_count": 620,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0214,
+          "turbidity": 0.0011,
+          "specificConductance": 0.0007
+        }
+      },
+      "8": {
+        "n_records": 53568,
+        "exceedance_rate": 0.0166,
+        "exceedance_count": 888,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0158,
+          "turbidity": 0.0006,
+          "specificConductance": 0.0002
+        }
+      },
+      "9": {
+        "n_records": 69120,
+        "exceedance_rate": 0.0022,
+        "exceedance_count": 150,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0021,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 41184,
+        "exceedance_rate": 0.0013,
+        "exceedance_count": 55,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0013,
+          "turbidity": 0.0001,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 4032,
+        "exceedance_rate": 0.0002,
+        "exceedance_count": 1,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0002,
+          "specificConductance": 0.0
+        }
+      },
+      "12": null
+    },
+    "PRPO": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": {
+        "n_records": 8652,
+        "exceedance_rate": 0.2662,
+        "exceedance_count": 2303,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.2662
+        }
+      },
+      "5": {
+        "n_records": 33417,
+        "exceedance_rate": 0.972,
+        "exceedance_count": 32480,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0008,
+          "specificConductance": 0.972
+        }
+      },
+      "6": {
+        "n_records": 34562,
+        "exceedance_rate": 0.9795,
+        "exceedance_count": 33855,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0194,
+          "turbidity": 0.0001,
+          "specificConductance": 0.9795
+        }
+      },
+      "7": {
+        "n_records": 53568,
+        "exceedance_rate": 0.9962,
+        "exceedance_count": 53362,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0039,
+          "turbidity": 0.0171,
+          "specificConductance": 0.9962
+        }
+      },
+      "8": {
+        "n_records": 44640,
+        "exceedance_rate": 0.9921,
+        "exceedance_count": 44289,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0002,
+          "specificConductance": 0.9921
+        }
+      },
+      "9": {
+        "n_records": 43200,
+        "exceedance_rate": 0.9922,
+        "exceedance_count": 42865,
+        "by_param": {
+          "pH": 0.1205,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0001,
+          "specificConductance": 0.9922
+        }
+      },
+      "10": {
+        "n_records": 51266,
+        "exceedance_rate": 0.9165,
+        "exceedance_count": 46984,
+        "by_param": {
+          "pH": 0.1741,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0001,
+          "specificConductance": 0.9164
+        }
+      },
+      "11": {
+        "n_records": 3744,
+        "exceedance_rate": 0.6413,
+        "exceedance_count": 2401,
+        "by_param": {
+          "pH": 0.2799,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.6413
+        }
+      },
+      "12": null
+    },
+    "REDB": {
+      "1": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0424,
+        "exceedance_count": 9458,
+        "by_param": {
+          "pH": 0.024,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0235,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 241920,
+        "exceedance_rate": 0.0012,
+        "exceedance_count": 285,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 267841,
+        "exceedance_rate": 0.0116,
+        "exceedance_count": 3118,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0107,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 216008,
+        "exceedance_rate": 0.0288,
+        "exceedance_count": 6213,
+        "by_param": {
+          "pH": 0.0282,
+          "dissolvedOxygen": 0.0004,
+          "turbidity": 0.0005,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 267840,
+        "exceedance_rate": 0.0474,
+        "exceedance_count": 12696,
+        "by_param": {
+          "pH": 0.0328,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0145,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 259201,
+        "exceedance_rate": 0.1402,
+        "exceedance_count": 36339,
+        "by_param": {
+          "pH": 0.0755,
+          "dissolvedOxygen": 0.0005,
+          "turbidity": 0.0,
+          "specificConductance": 0.0646
+        }
+      },
+      "7": {
+        "n_records": 178560,
+        "exceedance_rate": 0.1542,
+        "exceedance_count": 27541,
+        "by_param": {
+          "pH": 0.1537,
+          "dissolvedOxygen": 0.0011,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 362,
+        "by_param": {
+          "pH": 0.0006,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.001,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 172800,
+        "exceedance_rate": 0.0025,
+        "exceedance_count": 433,
+        "by_param": {
+          "pH": 0.0009,
+          "dissolvedOxygen": 0.0009,
+          "turbidity": 0.0015,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 223200,
+        "exceedance_rate": 0.0162,
+        "exceedance_count": 3622,
+        "by_param": {
+          "pH": 0.0011,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0148,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 259200,
+        "exceedance_rate": 0.0016,
+        "exceedance_count": 421,
+        "by_param": {
+          "pH": 0.0015,
+          "dissolvedOxygen": 0.0007,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 357123,
+        "exceedance_rate": 0.0416,
+        "exceedance_count": 14850,
+        "by_param": {
+          "pH": 0.0413,
+          "dissolvedOxygen": 0.0008,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "SUGG": {
+      "1": {
+        "n_records": 17856,
+        "exceedance_rate": 0.9332,
+        "exceedance_count": 16664,
+        "by_param": {
+          "pH": 0.9332,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "2": {
+        "n_records": 24192,
+        "exceedance_rate": 0.9932,
+        "exceedance_count": 24028,
+        "by_param": {
+          "pH": 0.9932,
+          "dissolvedOxygen": 0.0002,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "3": {
+        "n_records": 26784,
+        "exceedance_rate": 0.6301,
+        "exceedance_count": 16877,
+        "by_param": {
+          "pH": 0.6301,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": {
+        "n_records": 8640,
+        "exceedance_rate": 0.9924,
+        "exceedance_count": 8574,
+        "by_param": {
+          "pH": 0.9924,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "5": {
+        "n_records": 17856,
+        "exceedance_rate": 0.9913,
+        "exceedance_count": 17700,
+        "by_param": {
+          "pH": 0.9913,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "6": {
+        "n_records": 17280,
+        "exceedance_rate": 0.9942,
+        "exceedance_count": 17180,
+        "by_param": {
+          "pH": 0.9942,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "7": {
+        "n_records": 17856,
+        "exceedance_rate": 0.9947,
+        "exceedance_count": 17762,
+        "by_param": {
+          "pH": 0.9947,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": {
+        "n_records": 8928,
+        "exceedance_rate": 0.99,
+        "exceedance_count": 8839,
+        "by_param": {
+          "pH": 0.99,
+          "dissolvedOxygen": 0.0193,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": {
+        "n_records": 8640,
+        "exceedance_rate": 0.6407,
+        "exceedance_count": 5536,
+        "by_param": {
+          "pH": 0.6407,
+          "dissolvedOxygen": 0.0255,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": {
+        "n_records": 17856,
+        "exceedance_rate": 0.926,
+        "exceedance_count": 16534,
+        "by_param": {
+          "pH": 0.926,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "11": {
+        "n_records": 8640,
+        "exceedance_rate": 0.6773,
+        "exceedance_count": 5852,
+        "by_param": {
+          "pH": 0.6773,
+          "dissolvedOxygen": 0.0006,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "12": {
+        "n_records": 17856,
+        "exceedance_rate": 0.9133,
+        "exceedance_count": 16308,
+        "by_param": {
+          "pH": 0.9133,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      }
+    },
+    "SYCA": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null,
+      "8": {
+        "n_records": 178560,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 2,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "9": null,
+      "10": null,
+      "11": null,
+      "12": null
+    },
+    "TOMB": {
+      "1": null,
+      "2": null,
+      "3": {
+        "n_records": 8928,
+        "exceedance_rate": 0.0,
+        "exceedance_count": 0,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null,
+      "8": null,
+      "9": null,
+      "10": null,
+      "11": null,
+      "12": null
+    },
+    "TOOK": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": {
+        "n_records": 17856,
+        "exceedance_rate": 0.0001,
+        "exceedance_count": 2,
+        "by_param": {
+          "pH": 0.0,
+          "dissolvedOxygen": 0.0001,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "8": null,
+      "9": null,
+      "10": null,
+      "11": null,
+      "12": null
+    },
+    "WALK": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null,
+      "8": null,
+      "9": {
+        "n_records": 86400,
+        "exceedance_rate": 0.0003,
+        "exceedance_count": 29,
+        "by_param": {
+          "pH": 0.0003,
+          "dissolvedOxygen": 0.0003,
+          "turbidity": 0.0,
+          "specificConductance": 0.0
+        }
+      },
+      "10": null,
+      "11": null,
+      "12": null
+    }
+  },
+  "elapsed_s": 92.7
+}

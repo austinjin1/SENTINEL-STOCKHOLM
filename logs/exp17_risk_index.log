@@ -1,0 +1,57 @@
+[13:42:19] INFO     ============================================================
+           INFO     EXP17: Composite Water Quality Risk Index                   
+           INFO     ============================================================
+           INFO     Saved:                                                      
+                    /home/bcheng/SENTINEL/results/exp17_risk_index/risk_index_re
+                    sults.json                                                  
+[13:42:20] INFO     Saved:                                                      
+                    /home/bcheng/SENTINEL/paper/figures/fig_exp17_risk_ranking.j
+                    pg                                                          
+           INFO                                                                 
+                    === COMPOSITE RISK RANKING (TOP 15) ===                     
+           INFO     Rank  Site   Score    Tier         AQ     Exc    Trend  Peak
+           INFO     ------------------------------------------------------------
+                    ----------                                                  
+           INFO       1   BARC   0.7908   Critical     0.798  1.000  0.500      
+                    0.808                                                       
+           INFO       2   SUGG   0.6687   High         0.581  1.000  0.500      
+                    0.577                                                       
+           INFO       3   PRPO   0.6349   High         0.564  1.000  0.200      
+                    0.738                                                       
+           INFO       4   MAYF   0.6122   High         0.739  0.971  0.000      
+                    0.555                                                       
+           INFO       5   LECO   0.5595   High         1.000  0.203  0.000      
+                    0.794                                                       
+           INFO       6   LIRO   0.5578   High         0.691  0.737  0.000      
+                    0.660                                                       
+           INFO       7   CRAM   0.5533   High         0.568  0.943  0.000      
+                    0.594                                                       
+           INFO       8   CUPE   0.5438   Elevated     0.924  0.229  0.000      
+                    0.816                                                       
+           INFO       9   MCDI   0.5143   Elevated     0.647  0.454  0.000      
+                    0.872                                                       
+           INFO       10  MCRA   0.5107   Elevated     0.879  0.141  0.000      
+                    0.838                                                       
+           INFO       11  COMO   0.5074   Elevated     0.878  0.079  0.000      
+                    0.902                                                       
+           INFO       12  BIGC   0.4964   Elevated     0.834  0.261  0.000      
+                    0.696                                                       
+           INFO       13  POSE   0.4796   Elevated     0.741  0.087  0.000      
+                    0.992                                                       
+           INFO       14  BLDE   0.4705   Elevated     0.769  0.088  0.000      
+                    0.897                                                       
+           INFO       15  GUIL   0.4634   Elevated     0.633  0.246  0.000      
+                    0.901                                                       
+           INFO                                                                 
+                    === TIER DISTRIBUTION ===                                   
+           INFO       Tier 5 (Critical): 1 sites — BARC                         
+           INFO       Tier 4 (High): 6 sites — CRAM, LECO, LIRO, MAYF, PRPO,    
+                    SUGG                                                        
+           INFO       Tier 3 (Elevated): 15 sites — ARIK, BIGC, BLDE, CARI,     
+                    COMO, CUPE, GUIL, LEWI, MART, MCDI, MCRA, OKSR, POSE, PRIN, 
+                    REDB                                                        
+           INFO       Tier 2 (Moderate): 10 sites — BLUE, BLWA, FLNT, HOPB,     
+                    KING, PRLA, SYCA, TOMB, TOOK, WALK                          
+           INFO       Tier 1 (Low): 0 sites —                                   
+           INFO                                                                 
+                    Elapsed: 0.0s                                               

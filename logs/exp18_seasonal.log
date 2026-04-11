@@ -1,0 +1,89 @@
+[13:42:19] INFO     ============================================================
+           INFO     EXP18: Seasonal Anomaly Pattern Analysis                    
+           INFO     ============================================================
+           INFO     Processing 32 sites                                         
+           INFO       [ 1/32] ARIK                                              
+[13:42:23] INFO         Peak month: Jun (rate=0.654)                            
+           INFO       [ 2/32] BARC                                              
+[13:42:24] INFO         Peak month: Apr (rate=0.997)                            
+           INFO       [ 3/32] BIGC                                              
+[13:42:29] INFO         Peak month: Aug (rate=0.214)                            
+           INFO       [ 4/32] BLDE                                              
+[13:42:34] INFO         Peak month: May (rate=0.035)                            
+           INFO       [ 5/32] BLUE                                              
+[13:42:37] INFO         Peak month: Apr (rate=0.016)                            
+           INFO       [ 6/32] BLWA                                              
+[13:42:38] INFO         Peak month: Mar (rate=0.062)                            
+           INFO       [ 7/32] CARI                                              
+[13:42:42] INFO         Peak month: Apr (rate=0.028)                            
+           INFO       [ 8/32] COMO                                              
+[13:42:46] INFO         Peak month: Feb (rate=0.072)                            
+           INFO       [ 9/32] CRAM                                              
+           INFO         Peak month: Oct (rate=0.161)                            
+           INFO       [10/32] CUPE                                              
+[13:42:50] INFO         Peak month: Aug (rate=0.133)                            
+           INFO       [11/32] FLNT                                              
+[13:42:51] INFO         Peak month: Apr (rate=0.001)                            
+           INFO       [12/32] GUIL                                              
+[13:42:56] INFO         Peak month: Jul (rate=0.197)                            
+           INFO       [13/32] HOPB                                              
+[13:43:00] INFO         Peak month: Jul (rate=0.116)                            
+           INFO       [14/32] KING                                              
+[13:43:04] INFO         Peak month: Aug (rate=0.434)                            
+           INFO       [15/32] LECO                                              
+[13:43:09] INFO         Peak month: Mar (rate=0.139)                            
+           INFO       [16/32] LEWI                                              
+[13:43:13] INFO         Peak month: Jul (rate=0.166)                            
+           INFO       [17/32] LIRO                                              
+[13:43:14] INFO         Peak month: Sep (rate=0.149)                            
+           INFO       [18/32] MART                                              
+[13:43:19] INFO         Peak month: Dec (rate=0.005)                            
+           INFO       [19/32] MAYF                                              
+[13:43:24] INFO         Peak month: Nov (rate=0.767)                            
+           INFO       [20/32] MCDI                                              
+[13:43:29] INFO         Peak month: Sep (rate=0.713)                            
+           INFO       [21/32] MCRA                                              
+[13:43:33] INFO         Peak month: Jan (rate=0.044)                            
+           INFO       [22/32] OKSR                                              
+[13:43:36] INFO         Peak month: Jul (rate=0.101)                            
+           INFO       [23/32] POSE                                              
+[13:43:41] INFO         Peak month: May (rate=0.013)                            
+           INFO       [24/32] PRIN                                              
+[13:43:46] INFO         Peak month: May (rate=0.149)                            
+           INFO       [25/32] PRLA                                              
+           INFO         Peak month: Jun (rate=0.024)                            
+           INFO       [26/32] PRPO                                              
+[13:43:47] INFO         Peak month: Jul (rate=0.996)                            
+           INFO       [27/32] REDB                                              
+[13:43:51] INFO         Peak month: Jul (rate=0.154)                            
+           INFO       [28/32] SUGG                                              
+           INFO         Peak month: Jul (rate=0.995)                            
+           INFO       [29/32] SYCA                                              
+[13:43:52] INFO         Peak month: Aug (rate=0.000)                            
+           INFO       [30/32] TOMB                                              
+           INFO         Peak month: Mar (rate=0.000)                            
+           INFO       [31/32] TOOK                                              
+           INFO         Peak month: Jul (rate=0.000)                            
+           INFO       [32/32] WALK                                              
+           INFO         Peak month: Sep (rate=0.000)                            
+           INFO     Saved:                                                      
+                    /home/bcheng/SENTINEL/results/exp18_seasonal/seasonal_result
+                    s.json                                                      
+[13:43:53] INFO     Saved:                                                      
+                    /home/bcheng/SENTINEL/paper/figures/fig_exp18_seasonal_patte
+                    rns.jpg                                                     
+           INFO                                                                 
+                    === SEASONAL SUMMARY ===                                    
+           INFO     Peak anomaly month: Jul (Summer)                            
+           INFO     Trough month:       Jan                                     
+           INFO     Seasonal amplitude: 0.0789                                  
+           INFO                                                                 
+                    Per-parameter peaks:                                        
+           INFO       pH                        peak:  Apr (Spring) rate=0.1137 
+           INFO       dissolvedOxygen           peak:  Aug (Summer) rate=0.0555 
+           INFO       turbidity                 peak:  May (Spring) rate=0.0114 
+           INFO       specificConductance       peak:  Jun (Summer) rate=0.0394 
+           INFO                                                                 
+                    Site peak-season histogram: {'Winter': 3, 'Spring': 10,     
+                    'Summer': 14, 'Fall': 5}                                    
+           INFO     Elapsed: 92.7s                                              

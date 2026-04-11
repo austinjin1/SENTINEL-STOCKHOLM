@@ -1,0 +1,462 @@
+{
+  "causal_chain_analysis": {
+    "n_chain_types": 91,
+    "n_total_instances": 375,
+    "n_novel": 44,
+    "n_sites_analyzed": 20,
+    "lag_stats": {
+      "mean_hours": 90.2,
+      "median_hours": 84.5,
+      "min_hours": 1.0,
+      "max_hours": 168.0
+    },
+    "strength_stats": {
+      "mean": 0.0941,
+      "median": 0.0952
+    },
+    "frequency_distribution": {
+      "1": 37,
+      "2": 10,
+      "4": 4,
+      "5": 8,
+      "6": 2,
+      "7": 7,
+      "8": 12,
+      "9": 5,
+      "10": 6
+    },
+    "top_trigger_params": [
+      [
+        "chemical oxygen demand",
+        56
+      ],
+      [
+        "total phosphorus",
+        54
+      ],
+      [
+        "ammonia",
+        50
+      ],
+      [
+        "nitrate",
+        48
+      ],
+      [
+        "total nitrogen",
+        46
+      ],
+      [
+        "dissolved oxygen",
+        45
+      ],
+      [
+        "biochemical oxygen demand",
+        37
+      ],
+      [
+        "dissolved organic carbon",
+        16
+      ]
+    ],
+    "top_target_params": [
+      [
+        "chemical oxygen demand",
+        56
+      ],
+      [
+        "total phosphorus",
+        54
+      ],
+      [
+        "ammonia",
+        49
+      ],
+      [
+        "total nitrogen",
+        48
+      ],
+      [
+        "nitrate",
+        47
+      ],
+      [
+        "dissolved oxygen",
+        44
+      ],
+      [
+        "biochemical oxygen demand",
+        39
+      ],
+      [
+        "dissolved organic carbon",
+        16
+      ]
+    ],
+    "top_novel_chains": [
+      {
+        "source": "chemical_oxygen_demand",
+        "target": "total_phosphorus",
+        "frequency": 10,
+        "mean_lag_hours": 147.1,
+        "mean_strength": 0.0801
+      },
+      {
+        "source": "total_phosphorus",
+        "target": "chemical_oxygen_demand",
+        "frequency": 10,
+        "mean_lag_hours": 101.2,
+        "mean_strength": 0.074
+      },
+      {
+        "source": "ammonia",
+        "target": "chemical_oxygen_demand",
+        "frequency": 10,
+        "mean_lag_hours": 80.8,
+        "mean_strength": 0.1077
+      },
+      {
+        "source": "chemical_oxygen_demand",
+        "target": "ammonia",
+        "frequency": 10,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.1041
+      },
+      {
+        "source": "total_nitrogen",
+        "target": "ammonia",
+        "frequency": 10,
+        "mean_lag_hours": 84.5,
+        "mean_strength": 0.091
+      }
+    ],
+    "max_lag_hours": 168
+  },
+  "epa_case_study_analysis": {
+    "n_events_total": 10,
+    "n_detected": 10,
+    "overall_detection_rate": 1.0,
+    "lead_time_stats": {
+      "all_lead_times_hours": [
+        -20.2,
+        324.2,
+        79.0,
+        -22.1,
+        -16.0,
+        -23.2,
+        12177.7,
+        1257.5,
+        392.7,
+        -13.9
+      ],
+      "mean": 1413.6,
+      "median": 32.6,
+      "n_detected_early": 5,
+      "n_detected_late": 5,
+      "max_lead_time_hours": 12177.7,
+      "max_lead_time_event": null
+    },
+    "by_event_type": {
+      "heavy_metal_spill": {
+        "n_events": 1,
+        "n_detected": 1,
+        "detection_rate": 1.0,
+        "mean_lead_time": -20.2,
+        "median_lead_time": -20.2
+      },
+      "harmful_algal_bloom": {
+        "n_events": 2,
+        "n_detected": 2,
+        "detection_rate": 1.0,
+        "mean_lead_time": 201.6,
+        "median_lead_time": 201.6
+      },
+      "industrial_spill": {
+        "n_events": 2,
+        "n_detected": 2,
+        "detection_rate": 1.0,
+        "mean_lead_time": -22.6,
+        "median_lead_time": -22.6
+      },
+      "chemical_spill": {
+        "n_events": 1,
+        "n_detected": 1,
+        "detection_rate": 1.0,
+        "mean_lead_time": -16.0,
+        "median_lead_time": -16.0
+      },
+      "unknown": {
+        "n_events": 2,
+        "n_detected": 2,
+        "detection_rate": 1.0,
+        "mean_lead_time": 6285.2,
+        "median_lead_time": 6285.2
+      },
+      "nutrient_pollution": {
+        "n_events": 1,
+        "n_detected": 1,
+        "detection_rate": 1.0,
+        "mean_lead_time": 1257.5,
+        "median_lead_time": 1257.5
+      },
+      "industrial_accident": {
+        "n_events": 1,
+        "n_detected": 1,
+        "detection_rate": 1.0,
+        "mean_lead_time": -13.9,
+        "median_lead_time": -13.9
+      }
+    },
+    "by_severity": {
+      "major": {
+        "n": 6,
+        "median_lead_time": -14.9
+      },
+      "significant": {
+        "n": 1,
+        "median_lead_time": -23.2
+      },
+      "unknown": {
+        "n": 2,
+        "median_lead_time": 6285.2
+      },
+      "chronic": {
+        "n": 1,
+        "median_lead_time": 1257.5
+      }
+    },
+    "tier_transitions": [
+      {
+        "event": "Gold King Mine Spill",
+        "mean_tier_pre": 0.985,
+        "mean_tier_during": 2.991,
+        "tier_jump": 2.006
+      },
+      {
+        "event": "Lake Erie Harmful Algal Bloom",
+        "mean_tier_pre": 0.473,
+        "mean_tier_during": 2.992,
+        "tier_jump": 2.519
+      },
+      {
+        "event": "Toledo Water Crisis",
+        "mean_tier_pre": 0.961,
+        "mean_tier_during": 2.99,
+        "tier_jump": 2.029
+      },
+      {
+        "event": "Dan River Coal Ash Spill",
+        "mean_tier_pre": 0.95,
+        "mean_tier_during": 2.998,
+        "tier_jump": 2.048
+      },
+      {
+        "event": "Elk River MCHM Spill",
+        "mean_tier_pre": 0.0,
+        "mean_tier_during": 2.984,
+        "tier_jump": 2.984
+      },
+      {
+        "event": "Houston Ship Channel Contamination",
+        "mean_tier_pre": 1.21,
+        "mean_tier_during": 2.994,
+        "tier_jump": 1.784
+      },
+      {
+        "event": "Flint Water Crisis",
+        "mean_tier_pre": 0.495,
+        "mean_tier_during": 2.992,
+        "tier_jump": 2.496
+      },
+      {
+        "event": "Gulf of Mexico Dead Zone",
+        "mean_tier_pre": 0.437,
+        "mean_tier_during": 2.992,
+        "tier_jump": 2.556
+      },
+      {
+        "event": "Chesapeake Bay Algal Blooms",
+        "mean_tier_pre": 1.641,
+        "mean_tier_during": 3.0,
+        "tier_jump": 1.359
+      },
+      {
+        "event": "East Palestine Train Derailment",
+        "mean_tier_pre": 0.441,
+        "mean_tier_during": 2.992,
+        "tier_jump": 2.551
+      }
+    ],
+    "avg_tier_jump": 2.233,
+    "enriched_events": [
+      {
+        "event_id": "gold_king_mine",
+        "event_name": "Gold King Mine Spill",
+        "detected": true,
+        "lead_time_hours": -20.19867552816868,
+        "source_pred": "heavy_metal",
+        "source_conf": 0.61795520556577,
+        "mean_tier_pre": 0.984777193468032,
+        "mean_tier_during": 2.991258498681837,
+        "event_type": "heavy_metal_spill",
+        "severity": "major",
+        "pollutants": [
+          "arsenic",
+          "lead",
+          "cadmium",
+          "zinc"
+        ],
+        "primary_impact": "river_contamination"
+      },
+      {
+        "event_id": "lake_erie_hab",
+        "event_name": "Lake Erie Harmful Algal Bloom",
+        "detected": true,
+        "lead_time_hours": 324.16944816145633,
+        "source_pred": "pharmaceutical",
+        "source_conf": 0.5598682556316855,
+        "mean_tier_pre": 0.47257617728531853,
+        "mean_tier_during": 2.9918237250554323,
+        "event_type": "harmful_algal_bloom",
+        "severity": "major",
+        "pollutants": [
+          "cyanobacteria",
+          "microcystin"
+        ],
+        "primary_impact": "drinking_water_ban"
+      },
+      {
+        "event_id": "toledo_water_crisis",
+        "event_name": "Toledo Water Crisis",
+        "detected": true,
+        "lead_time_hours": 78.9959000896083,
+        "source_pred": "heavy_metal",
+        "source_conf": 0.36043013480512465,
+        "mean_tier_pre": 0.9607300884955752,
+        "mean_tier_during": 2.9897563676633445,
+        "event_type": "harmful_algal_bloom",
+        "severity": "major",
+        "pollutants": [
+          "microcystin",
+          "cyanotoxin"
+        ],
+        "primary_impact": "water_system_shutdown"
+      },
+      {
+        "event_id": "dan_river_coal_ash",
+        "event_name": "Dan River Coal Ash Spill",
+        "detected": true,
+        "lead_time_hours": -22.08281513147884,
+        "source_pred": "other",
+        "source_conf": 0.4487047342392648,
+        "mean_tier_pre": 0.9500138850319356,
+        "mean_tier_during": 2.998201189982012,
+        "event_type": "industrial_spill",
+        "severity": "major",
+        "pollutants": [
+          "arsenic",
+          "selenium",
+          "coal_ash"
+        ],
+        "primary_impact": "river_contamination"
+      },
+      {
+        "event_id": "elk_river_mchm",
+        "event_name": "Elk River MCHM Spill",
+        "detected": true,
+        "lead_time_hours": -16.03367234620783,
+        "source_pred": "nutrient",
+        "source_conf": 0.545545692112336,
+        "mean_tier_pre": 0.0,
+        "mean_tier_during": 2.98442280945758,
+        "event_type": "chemical_spill",
+        "severity": "major",
+        "pollutants": [
+          "crude_MCHM",
+          "PPH"
+        ],
+        "primary_impact": "water_supply_disruption"
+      },
+      {
+        "event_id": "houston_ship_channel",
+        "event_name": "Houston Ship Channel Contamination",
+        "detected": true,
+        "lead_time_hours": -23.1604106474585,
+        "source_pred": "other",
+        "source_conf": 0.5401390682020489,
+        "mean_tier_pre": 1.2101026922009437,
+        "mean_tier_during": 2.9943118756936737,
+        "event_type": "industrial_spill",
+        "severity": "significant",
+        "pollutants": [
+          "benzene",
+          "butadiene"
+        ],
+        "primary_impact": "bayou_contamination"
+      },
+      {
+        "event_id": "flint_mi",
+        "event_name": "Flint Water Crisis",
+        "detected": true,
+        "lead_time_hours": 12177.71465095573,
+        "source_pred": "nutrient",
+        "source_conf": 0.3741469753097737,
+        "mean_tier_pre": 0.4952751528627015,
+        "mean_tier_during": 2.9916701374427324,
+        "event_type": "unknown",
+        "severity": "unknown",
+        "pollutants": [],
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "gulf_dead_zone",
+        "event_name": "Gulf of Mexico Dead Zone",
+        "detected": true,
+        "lead_time_hours": 1257.5484882701767,
+        "source_pred": "industrial_chemical",
+        "source_conf": 0.27100461211270027,
+        "mean_tier_pre": 0.4366860626212247,
+        "mean_tier_during": 2.9922405431619787,
+        "event_type": "nutrient_pollution",
+        "severity": "chronic",
+        "pollutants": [
+          "nitrogen",
+          "phosphorus"
+        ],
+        "primary_impact": "hypoxic_zone"
+      },
+      {
+        "event_id": "chesapeake_bay_blooms",
+        "event_name": "Chesapeake Bay Algal Blooms",
+        "detected": true,
+        "lead_time_hours": 392.6927149346802,
+        "source_pred": "petroleum_hydrocarbon",
+        "source_conf": 0.3309115467408769,
+        "mean_tier_pre": 1.640841173215274,
+        "mean_tier_during": 3.0,
+        "event_type": "unknown",
+        "severity": "unknown",
+        "pollutants": [],
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "east_palestine",
+        "event_name": "East Palestine Train Derailment",
+        "detected": true,
+        "lead_time_hours": -13.85254720568657,
+        "source_pred": "pharmaceutical",
+        "source_conf": 0.3756208982392029,
+        "mean_tier_pre": 0.4407675194660734,
+        "mean_tier_during": 2.9918066935147896,
+        "event_type": "industrial_accident",
+        "severity": "major",
+        "pollutants": [
+          "vinyl_chloride",
+          "butyl_acrylate"
+        ],
+        "primary_impact": "creek_contamination"
+      }
+    ]
+  },
+  "elapsed_s": 0.0
+}

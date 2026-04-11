@@ -1,0 +1,122 @@
+{
+  "n_trajectories": 1000,
+  "n_normal": 655,
+  "n_anomaly": 345,
+  "overall_auroc_point": 0.9019,
+  "kinematic_correlations": {
+    "mean_speed": {
+      "spearman_rho": 0.7459,
+      "p_value": 0.0
+    },
+    "max_speed": {
+      "spearman_rho": 0.7483,
+      "p_value": 0.0
+    },
+    "immobility_rate": {
+      "spearman_rho": -0.0918,
+      "p_value": 0.003661
+    },
+    "speed_cv": {
+      "spearman_rho": 0.6595,
+      "p_value": 0.0
+    },
+    "mean_turn_rad": {
+      "spearman_rho": -0.0919,
+      "p_value": 0.003625
+    },
+    "spatial_spread": {
+      "spearman_rho": 0.7242,
+      "p_value": 0.0
+    },
+    "speed_entropy": {
+      "spearman_rho": 0.1041,
+      "p_value": 0.000983
+    },
+    "mean_pairwise_dist": {
+      "spearman_rho": 0.7247,
+      "p_value": 0.0
+    },
+    "active_fraction": {
+      "spearman_rho": 0.0918,
+      "p_value": 0.003661
+    }
+  },
+  "top3_kinematic_predictors": [
+    "max_speed",
+    "mean_speed",
+    "mean_pairwise_dist"
+  ],
+  "group_stats": {
+    "mean_speed": {
+      "normal_mean": 0.00042,
+      "anomaly_mean": 0.00052,
+      "mann_whitney_p": 0.0,
+      "cohens_d": 1.8714
+    },
+    "max_speed": {
+      "normal_mean": 0.00506,
+      "anomaly_mean": 0.00622,
+      "mann_whitney_p": 0.0,
+      "cohens_d": 1.882
+    },
+    "immobility_rate": {
+      "normal_mean": 0.91721,
+      "anomaly_mean": 0.91694,
+      "mann_whitney_p": 0.494931,
+      "cohens_d": -0.0479
+    },
+    "speed_cv": {
+      "normal_mean": 3.29625,
+      "anomaly_mean": 3.3166,
+      "mann_whitney_p": 0.0,
+      "cohens_d": 0.1113
+    },
+    "mean_turn_rad": {
+      "normal_mean": 1.4409,
+      "anomaly_mean": 1.4401,
+      "mann_whitney_p": 0.492551,
+      "cohens_d": -0.1107
+    },
+    "spatial_spread": {
+      "normal_mean": 0.14263,
+      "anomaly_mean": 0.17409,
+      "mann_whitney_p": 0.0,
+      "cohens_d": 2.0223
+    },
+    "speed_entropy": {
+      "normal_mean": 0.28505,
+      "anomaly_mean": 0.2868,
+      "mann_whitney_p": 0.146325,
+      "cohens_d": 0.1108
+    },
+    "mean_pairwise_dist": {
+      "normal_mean": 0.08108,
+      "anomaly_mean": 0.09881,
+      "mann_whitney_p": 0.0,
+      "cohens_d": 1.7898
+    },
+    "active_fraction": {
+      "normal_mean": 0.08279,
+      "anomaly_mean": 0.08306,
+      "mann_whitney_p": 0.494931,
+      "cohens_d": 0.0479
+    }
+  },
+  "immobility_analysis": [
+    {
+      "bin_lo": 0.9,
+      "bin_hi": 1.0,
+      "n": 995,
+      "mean_score": 0.4454,
+      "frac_anomaly_label": 0.346
+    }
+  ],
+  "detection_mode_analysis": {
+    "trivial_immobility_auroc": 0.9019,
+    "subtle_kinematic_auroc": null,
+    "n_trivial": 1000,
+    "n_subtle_anomaly": 0,
+    "interpretation": "If trivial\u2248subtle, model detects subtle kinematics. If trivial>>subtle, model primarily detects immobility."
+  },
+  "elapsed_s": 607.0
+}

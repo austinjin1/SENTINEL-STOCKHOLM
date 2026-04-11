@@ -1,0 +1,45 @@
+[13:45:02] INFO     ============================================================
+           INFO     EXP20: Causal Cascade & EPA Event Analysis                  
+           INFO     ============================================================
+           INFO     === Part A: Causal Chain Analysis ===                       
+           INFO       375 chain instances, 91 unique types, 44 novel            
+           INFO       Lag: mean=90.2h, median=84.5h, range=[1.0, 168.0]h        
+           INFO       Top triggers: [('chemical oxygen demand', 56), ('total    
+                    phosphorus', 54), ('ammonia', 50)]                          
+           INFO       Top novel: ['chemical_oxygen_demand→total_phosphorus',    
+                    'total_phosphorus→chemical_oxygen_demand',                  
+                    'ammonia→chemical_oxygen_demand']                           
+           INFO     === Part B: EPA Case Study Analysis ===                     
+           INFO       Events: 10/10 detected                                    
+           INFO       Lead time: median=32.6h, mean=1413.6h                     
+           INFO       Detected EARLY (before official): 5/10                    
+           INFO       Max early warning: 12177.7h (None)                        
+           INFO       Avg tier jump (pre→during): 2.233                         
+           INFO                                                                 
+                      By event type:                                            
+           INFO         chemical_spill                 rate=1.00                
+                    median_lt=-16.0h                                            
+           INFO         harmful_algal_bloom            rate=1.00                
+                    median_lt=201.6h                                            
+           INFO         heavy_metal_spill              rate=1.00                
+                    median_lt=-20.2h                                            
+           INFO         industrial_accident            rate=1.00                
+                    median_lt=-13.9h                                            
+           INFO         industrial_spill               rate=1.00                
+                    median_lt=-22.6h                                            
+           INFO         nutrient_pollution             rate=1.00                
+                    median_lt=1257.5h                                           
+           INFO         unknown                        rate=1.00                
+                    median_lt=6285.2h                                           
+           INFO                                                                 
+                    Saved:                                                      
+                    /home/bcheng/SENTINEL/results/exp20_cascade/cascade_analysis
+                    _results.json                                               
+           INFO     Saved:                                                      
+                    /home/bcheng/SENTINEL/paper/figures/fig_exp20_epa_lead_time.
+                    jpg                                                         
+[13:45:03] INFO     Saved:                                                      
+                    /home/bcheng/SENTINEL/paper/figures/fig_exp20_cascade_depth.
+                    jpg                                                         
+           INFO                                                                 
+                    Elapsed: 0.0s                                               
