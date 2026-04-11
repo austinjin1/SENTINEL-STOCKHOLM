@@ -18,6 +18,7 @@ import json
 import sys
 import time
 import warnings
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -31,19 +32,134 @@ import matplotlib.pyplot as plt
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from sentinel.evaluation.case_study import HISTORICAL_EVENTS
 from sentinel.models.fusion.model import PerceiverIOFusion
 from sentinel.models.fusion.heads import AnomalyDetectionHead
 from sentinel.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
-CKPT_BASE = Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints")
+CKPT_BASE = PROJECT_ROOT / "checkpoints"
 EMBEDDINGS_DIR = PROJECT_ROOT / "data" / "real_embeddings"
 OUTPUT_DIR = PROJECT_ROOT / "results" / "exp3_epa_correlation"
 FIG_DIR = PROJECT_ROOT / "paper" / "figures"
 EXP1_DIR = PROJECT_ROOT / "results" / "exp1_usgs_anomaly"
-DEVICE = torch.device("cpu")
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# ---------------------------------------------------------------------------
+# Inline HISTORICAL_EVENTS (avoids stable_baselines3 → TF import conflict)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class HistoricalEvent:
+    event_id: str; name: str; year: int; location_name: str; state: str
+    latitude: float; longitude: float; bbox: Tuple[float, float, float, float]
+    contaminant_class: str; contaminant_detail: str
+    onset_date: str; official_detection_date: str; official_notification_date: str
+    description: str; recurring: bool = False; recurring_years: Tuple[int, ...] = ()
+    available_modalities: Tuple[str, ...] = ("sensor", "satellite"); severity: str = "major"
+
+HISTORICAL_EVENTS: Dict[str, HistoricalEvent] = {
+    "gold_king_mine": HistoricalEvent(
+        event_id="gold_king_mine", name="Gold King Mine Spill", year=2015,
+        location_name="Animas River", state="CO", latitude=37.8924, longitude=-107.6344,
+        bbox=(-107.90, 37.20, -107.55, 37.95), contaminant_class="heavy_metal",
+        contaminant_detail="arsenic, cadmium, lead, zinc",
+        onset_date="2015-08-05T10:30:00", official_detection_date="2015-08-05T14:00:00",
+        official_notification_date="2015-08-06T09:00:00",
+        description="EPA crew released 3M gallons of mine waste into Animas River.",
+        available_modalities=("sensor", "satellite", "behavioral"), severity="major",
+    ),
+    "lake_erie_hab": HistoricalEvent(
+        event_id="lake_erie_hab", name="Lake Erie Harmful Algal Bloom", year=2023,
+        location_name="Western Lake Erie", state="OH", latitude=41.5, longitude=-83.15,
+        bbox=(-83.5, 41.3, -82.8, 41.8), contaminant_class="cyanotoxin",
+        contaminant_detail="microcystin from Microcystis aeruginosa",
+        onset_date="2023-07-01T00:00:00", official_detection_date="2023-07-15T12:00:00",
+        official_notification_date="2023-07-18T09:00:00",
+        description="Annual HAB in western Lake Erie from phosphorus runoff.",
+        recurring=True, available_modalities=("sensor", "satellite", "microbial", "behavioral"), severity="major",
+    ),
+    "toledo_water_crisis": HistoricalEvent(
+        event_id="toledo_water_crisis", name="Toledo Water Crisis", year=2014,
+        location_name="Lake Erie / Toledo WTP", state="OH", latitude=41.65, longitude=-83.53,
+        bbox=(-83.8, 41.5, -83.3, 41.8), contaminant_class="cyanotoxin",
+        contaminant_detail="microcystin-LR above 1 ug/L",
+        onset_date="2014-07-28T00:00:00", official_detection_date="2014-08-01T06:00:00",
+        official_notification_date="2014-08-02T06:00:00",
+        description="Microcystin triggered do-not-drink advisory for 500K residents.",
+        available_modalities=("sensor", "satellite", "microbial", "behavioral"), severity="catastrophic",
+    ),
+    "dan_river_coal_ash": HistoricalEvent(
+        event_id="dan_river_coal_ash", name="Dan River Coal Ash Spill", year=2014,
+        location_name="Dan River", state="NC", latitude=36.50, longitude=-79.77,
+        bbox=(-80.0, 36.35, -79.55, 36.65), contaminant_class="coal_ash",
+        contaminant_detail="arsenic, selenium, chromium in coal ash slurry",
+        onset_date="2014-02-02T14:00:00", official_detection_date="2014-02-02T17:00:00",
+        official_notification_date="2014-02-03T10:00:00",
+        description="Collapsed pipe released 39K tons of coal ash into Dan River.",
+        available_modalities=("sensor", "satellite", "behavioral"), severity="major",
+    ),
+    "elk_river_mchm": HistoricalEvent(
+        event_id="elk_river_mchm", name="Elk River MCHM Spill", year=2014,
+        location_name="Elk River", state="WV", latitude=38.36, longitude=-81.70,
+        bbox=(-81.85, 38.30, -81.55, 38.45), contaminant_class="industrial_chemical",
+        contaminant_detail="4-methylcyclohexanemethanol (MCHM)",
+        onset_date="2014-01-09T06:00:00", official_detection_date="2014-01-09T12:00:00",
+        official_notification_date="2014-01-09T18:00:00",
+        description="Freedom Industries MCHM leak contaminated water for 300K residents.",
+        available_modalities=("sensor", "behavioral"), severity="catastrophic",
+    ),
+    "houston_ship_channel": HistoricalEvent(
+        event_id="houston_ship_channel", name="Houston Ship Channel Contamination", year=2019,
+        location_name="Houston Ship Channel", state="TX", latitude=29.73, longitude=-95.01,
+        bbox=(-95.25, 29.60, -94.80, 29.85), contaminant_class="petroleum_hydrocarbon",
+        contaminant_detail="benzene, toluene, xylenes from ITC tank farm fire",
+        onset_date="2019-03-17T10:00:00", official_detection_date="2019-03-17T14:00:00",
+        official_notification_date="2019-03-18T08:00:00",
+        description="ITC petrochemical fire released benzene into Houston Ship Channel.",
+        available_modalities=("sensor", "satellite", "behavioral"), severity="major",
+    ),
+    "flint_mi": HistoricalEvent(
+        event_id="flint_mi", name="Flint Water Crisis", year=2014,
+        location_name="Flint River / Flint WTP", state="MI", latitude=43.01, longitude=-83.69,
+        bbox=(-83.80, 42.95, -83.60, 43.08), contaminant_class="heavy_metal",
+        contaminant_detail="lead, copper from corroded pipes; Legionella",
+        onset_date="2014-04-25T00:00:00", official_detection_date="2015-09-15T12:00:00",
+        official_notification_date="2016-01-05T12:00:00",
+        description="Source switch without corrosion control caused lead leaching.",
+        available_modalities=("sensor", "microbial", "behavioral"), severity="catastrophic",
+    ),
+    "gulf_dead_zone": HistoricalEvent(
+        event_id="gulf_dead_zone", name="Gulf of Mexico Dead Zone", year=2023,
+        location_name="Northern Gulf of Mexico", state="LA", latitude=28.90, longitude=-90.50,
+        bbox=(-93.0, 28.0, -88.0, 30.0), contaminant_class="nutrient",
+        contaminant_detail="hypoxia from N/P-driven eutrophication",
+        onset_date="2023-06-01T00:00:00", official_detection_date="2023-07-24T12:00:00",
+        official_notification_date="2023-08-01T12:00:00",
+        description="Annual hypoxic zone (~3,275 sq mi) at Mississippi River outflow.",
+        recurring=True, available_modalities=("sensor", "satellite", "microbial", "behavioral"), severity="major",
+    ),
+    "chesapeake_bay_blooms": HistoricalEvent(
+        event_id="chesapeake_bay_blooms", name="Chesapeake Bay Algal Blooms", year=2023,
+        location_name="Chesapeake Bay", state="MD", latitude=38.15, longitude=-76.15,
+        bbox=(-76.5, 36.8, -75.8, 39.5), contaminant_class="cyanotoxin",
+        contaminant_detail="Karlodinium veneficum, Prorocentrum minimum blooms",
+        onset_date="2023-05-15T00:00:00", official_detection_date="2023-06-01T12:00:00",
+        official_notification_date="2023-06-05T12:00:00",
+        description="Seasonal HABs from Susquehanna/Potomac nutrient loading.",
+        recurring=True, available_modalities=("sensor", "satellite", "microbial", "behavioral"), severity="moderate",
+    ),
+    "east_palestine": HistoricalEvent(
+        event_id="east_palestine", name="East Palestine Train Derailment", year=2023,
+        location_name="Sulphur Run / Ohio River", state="OH", latitude=40.84, longitude=-80.52,
+        bbox=(-80.60, 40.78, -80.45, 40.90), contaminant_class="industrial_chemical",
+        contaminant_detail="vinyl chloride, butyl acrylate, ethylhexyl acrylate",
+        onset_date="2023-02-03T21:00:00", official_detection_date="2023-02-04T08:00:00",
+        official_notification_date="2023-02-05T12:00:00",
+        description="Norfolk Southern derailment released vinyl chloride into local waterways.",
+        available_modalities=("sensor", "satellite", "behavioral"), severity="catastrophic",
+    ),
+}
 
 # ---------------------------------------------------------------------------
 # EPA MCL thresholds

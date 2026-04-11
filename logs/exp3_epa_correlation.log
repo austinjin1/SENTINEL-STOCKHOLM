@@ -1,0 +1,189 @@
+[21:12:53] INFO     Loaded sensor embeddings: torch.Size([2000, 256])           
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Gold King Mine Spill (2015)                          
+           INFO     ============================================================
+[21:12:54] INFO       Pulling WQP data for gold_king_mine:                      
+                    bbox=-107.90,37.20,-107.55,37.95, start=2015-05-07,         
+                    end=2015-11-03                                              
+[21:12:55] WARNING    WQP query failed for gold_king_mine: Bad Request, check   
+                    that your parameters are correct. URL:                      
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-107
+                    .90%2C37.20%2C-107.55%2C37.95&startDateLo=2015-05-07&startDa
+                    teHi=2015-11-03&mimeType=csv                                
+[21:12:57] INFO       No MCL exceedances found in WQP data                      
+           INFO       2 known violation(s):                                     
+           INFO         2015-08-05: Mine waste release (EPA)                    
+           INFO         2015-08-06: DO-NOT-USE advisory (La Plata County)       
+           INFO     Loading fusion model for fallback scoring...                
+[21:17:33] INFO       SENTINEL lead time: 3.4 hours before violation            
+                    (2015-08-05)                                                
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Lake Erie Harmful Algal Bloom (2023)                 
+           INFO     ============================================================
+           INFO       Pulling WQP data for lake_erie_hab:                       
+                    bbox=-83.50,41.30,-82.80,41.80, start=2023-04-02,           
+                    end=2023-09-29                                              
+           WARNING    WQP query failed for lake_erie_hab: Bad Request, check    
+                    that your parameters are correct. URL:                      
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-83.
+                    50%2C41.30%2C-82.80%2C41.80&startDateLo=2023-04-02&startDate
+                    Hi=2023-09-29&mimeType=csv                                  
+[21:17:35] INFO       No MCL exceedances found in WQP data                      
+           INFO       SENTINEL did not detect anomaly above threshold           
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Toledo Water Crisis (2014)                           
+           INFO     ============================================================
+           INFO       Pulling WQP data for toledo_water_crisis:                 
+                    bbox=-83.80,41.50,-83.30,41.80, start=2014-04-29,           
+                    end=2014-10-26                                              
+[21:17:36] WARNING    WQP query failed for toledo_water_crisis: Bad Request,    
+                    check that your parameters are correct. URL:                
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-83.
+                    80%2C41.50%2C-83.30%2C41.80&startDateLo=2014-04-29&startDate
+                    Hi=2014-10-26&mimeType=csv                                  
+[21:17:38] INFO       No MCL exceedances found in WQP data                      
+           INFO       2 known violation(s):                                     
+           INFO         2014-08-01: Microcystin above 1 ug/L (Toledo WTP)       
+           INFO         2014-08-02: Do-not-drink advisory (City of Toledo)      
+[21:21:15] INFO       SENTINEL lead time: 100.5 hours before violation          
+                    (2014-08-01)                                                
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Dan River Coal Ash Spill (2014)                      
+           INFO     ============================================================
+           INFO       Pulling WQP data for dan_river_coal_ash:                  
+                    bbox=-80.00,36.35,-79.55,36.65, start=2013-11-04,           
+                    end=2014-05-03                                              
+[21:21:16] WARNING    WQP query failed for dan_river_coal_ash: Bad Request,     
+                    check that your parameters are correct. URL:                
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-80.
+                    00%2C36.35%2C-79.55%2C36.65&startDateLo=2013-11-04&startDate
+                    Hi=2014-05-03&mimeType=csv                                  
+[21:21:18] INFO       No MCL exceedances found in WQP data                      
+[21:23:32] INFO       SENTINEL lead time: 3.0 hours before violation            
+                    (2014-02-02T17:00:00)                                       
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Elk River MCHM Spill (2014)                          
+           INFO     ============================================================
+           INFO       Pulling WQP data for elk_river_mchm:                      
+                    bbox=-81.85,38.30,-81.55,38.45, start=2013-10-11,           
+                    end=2014-04-09                                              
+[21:23:33] WARNING    WQP query failed for elk_river_mchm: Bad Request, check   
+                    that your parameters are correct. URL:                      
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-81.
+                    85%2C38.30%2C-81.55%2C38.45&startDateLo=2013-10-11&startDate
+                    Hi=2014-04-09&mimeType=csv                                  
+[21:23:35] INFO       No MCL exceedances found in WQP data                      
+           INFO       2 known violation(s):                                     
+           INFO         2014-01-09: MCHM detected at intake (WV American Water) 
+           INFO         2014-01-09: Do-not-use order (Governor)                 
+           INFO       SENTINEL did not detect anomaly above threshold           
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Houston Ship Channel Contamination (2019)            
+           INFO     ============================================================
+           INFO       Pulling WQP data for houston_ship_channel:                
+                    bbox=-95.25,29.60,-94.80,29.85, start=2018-12-17,           
+                    end=2019-06-15                                              
+           WARNING    WQP query failed for houston_ship_channel: Bad Request,   
+                    check that your parameters are correct. URL:                
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-95.
+                    25%2C29.60%2C-94.80%2C29.85&startDateLo=2018-12-17&startDate
+                    Hi=2019-06-15&mimeType=csv                                  
+[21:23:37] INFO       No MCL exceedances found in WQP data                      
+           INFO       SENTINEL did not detect anomaly above threshold           
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Flint Water Crisis (2014)                            
+           INFO     ============================================================
+           INFO       Pulling WQP data for flint_mi:                            
+                    bbox=-83.80,42.95,-83.60,43.08, start=2014-01-25,           
+                    end=2014-07-24                                              
+           WARNING    WQP query failed for flint_mi: Bad Request, check that    
+                    your parameters are correct. URL:                           
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-83.
+                    80%2C42.95%2C-83.60%2C43.08&startDateLo=2014-01-25&startDate
+                    Hi=2014-07-24&mimeType=csv                                  
+[21:23:39] INFO       No MCL exceedances found in WQP data                      
+           INFO       3 known violation(s):                                     
+           INFO         2014-10-13: Total coliform positive (EPA)               
+           INFO         2015-01-02: TTHM exceedance (EPA)                       
+           INFO         2015-09-15: Lead action level exceeded (MDHHS)          
+           INFO       SENTINEL did not detect anomaly above threshold           
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Gulf of Mexico Dead Zone (2023)                      
+           INFO     ============================================================
+           INFO       Pulling WQP data for gulf_dead_zone:                      
+                    bbox=-93.00,28.00,-88.00,30.00, start=2023-03-03,           
+                    end=2023-08-30                                              
+[21:23:40] WARNING    WQP query failed for gulf_dead_zone: Bad Request, check   
+                    that your parameters are correct. URL:                      
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-93.
+                    00%2C28.00%2C-88.00%2C30.00&startDateLo=2023-03-03&startDate
+                    Hi=2023-08-30&mimeType=csv                                  
+[21:23:42] INFO       No MCL exceedances found in WQP data                      
+           INFO       SENTINEL did not detect anomaly above threshold           
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: Chesapeake Bay Algal Blooms (2023)                   
+           INFO     ============================================================
+           INFO       Pulling WQP data for chesapeake_bay_blooms:               
+                    bbox=-76.50,36.80,-75.80,39.50, start=2023-02-14,           
+                    end=2023-08-13                                              
+           WARNING    WQP query failed for chesapeake_bay_blooms: Bad Request,  
+                    check that your parameters are correct. URL:                
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-76.
+                    50%2C36.80%2C-75.80%2C39.50&startDateLo=2023-02-14&startDate
+                    Hi=2023-08-13&mimeType=csv                                  
+[21:23:44] INFO       No MCL exceedances found in WQP data                      
+[21:24:22] INFO       SENTINEL lead time: 413.7 hours before violation          
+                    (2023-06-01T12:00:00)                                       
+           INFO                                                                 
+                    ============================================================
+           INFO     Event: East Palestine Train Derailment (2023)               
+           INFO     ============================================================
+           INFO       Pulling WQP data for east_palestine:                      
+                    bbox=-80.60,40.78,-80.45,40.90, start=2022-11-05,           
+                    end=2023-05-04                                              
+           WARNING    WQP query failed for east_palestine: Bad Request, check   
+                    that your parameters are correct. URL:                      
+                    https://www.waterqualitydata.us/data/Result/Search?bBox=-80.
+                    60%2C40.78%2C-80.45%2C40.90&startDateLo=2022-11-05&startDate
+                    Hi=2023-05-04&mimeType=csv                                  
+[21:24:24] INFO       No MCL exceedances found in WQP data                      
+           INFO       2 known violation(s):                                     
+           INFO         2023-02-04: Vinyl chloride detected (EPA)               
+           INFO         2023-02-06: Controlled vent and burn (NTSB)             
+           INFO       SENTINEL did not detect anomaly above threshold           
+           INFO                                                                 
+                    Mean lead time: 130.1 hours                                 
+           INFO     Median lead time: 52.0 hours                                
+           INFO                                                                 
+                    Results saved to                                            
+                    /home/bcheng/SENTINEL/results/exp3_epa_correlation/epa_corre
+                    lation_results.json                                         
+           INFO     Figure saved to                                             
+                    /home/bcheng/SENTINEL/paper/figures/fig_exp3_epa_correlation
+                    .jpg                                                        
+           INFO                                                                 
+                    ============================================================
+           INFO     EPA VIOLATION CORRELATION SUMMARY                           
+           INFO     ============================================================
+           INFO     Events analyzed: 10                                         
+           INFO     Events with SENTINEL scores: 4                              
+           INFO     Events with WQP data: 0                                     
+           INFO     Events with MCL exceedances: 0                              
+           INFO                                                                 
+                    Event                                 Lead (h)              
+           INFO     ---------------------------------------------               
+           INFO     Gold King Mine Spill                       3.4              
+           INFO     Toledo Water Crisis                      100.5              
+           INFO     Dan River Coal Ash Spill                   3.0              
+           INFO     Chesapeake Bay Algal Blooms              413.7              
+           INFO     ============================================================
+           INFO     Elapsed: 690.7s                                             

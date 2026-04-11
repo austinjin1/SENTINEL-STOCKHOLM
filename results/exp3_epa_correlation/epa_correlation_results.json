@@ -1,8 +1,12 @@
 {
   "n_events": 10,
-  "n_with_scores": 0,
+  "n_with_scores": 4,
   "n_with_wqp_data": 0,
   "n_with_exceedances": 0,
+  "mean_lead_time_hours": 130.143125,
+  "median_lead_time_hours": 51.95875,
+  "min_lead_time_hours": 2.955,
+  "max_lead_time_hours": 413.7,
   "per_event": {
     "gold_king_mine": {
       "event_id": "gold_king_mine",
@@ -27,8 +31,9 @@
       ],
       "scores_source": "embeddings_fallback",
       "n_scores": 200,
-      "sentinel_first_detection_ts": null,
-      "lead_time_hours": null
+      "sentinel_first_detection_ts": 2700.0,
+      "violation_date": "2015-08-05",
+      "lead_time_hours": 3.4475
     },
     "lake_erie_hab": {
       "event_id": "lake_erie_hab",
@@ -68,8 +73,9 @@
       ],
       "scores_source": "embeddings_fallback",
       "n_scores": 200,
-      "sentinel_first_detection_ts": null,
-      "lead_time_hours": null
+      "sentinel_first_detection_ts": 2700.0,
+      "violation_date": "2014-08-01",
+      "lead_time_hours": 100.47
     },
     "dan_river_coal_ash": {
       "event_id": "dan_river_coal_ash",
@@ -83,8 +89,9 @@
       "known_violations": [],
       "scores_source": "embeddings_fallback",
       "n_scores": 200,
-      "sentinel_first_detection_ts": null,
-      "lead_time_hours": null
+      "sentinel_first_detection_ts": 2700.0,
+      "violation_date": "2014-02-02T17:00:00",
+      "lead_time_hours": 2.955
     },
     "elk_river_mchm": {
       "event_id": "elk_river_mchm",
@@ -185,8 +192,9 @@
       "known_violations": [],
       "scores_source": "embeddings_fallback",
       "n_scores": 200,
-      "sentinel_first_detection_ts": null,
-      "lead_time_hours": null
+      "sentinel_first_detection_ts": 2700.0,
+      "violation_date": "2023-06-01T12:00:00",
+      "lead_time_hours": 413.7
     },
     "east_palestine": {
       "event_id": "east_palestine",
@@ -215,6 +223,31 @@
       "lead_time_hours": null
     }
   },
-  "lead_times": [],
-  "elapsed_seconds": 37.1727249622345
+  "lead_times": [
+    {
+      "event_id": "gold_king_mine",
+      "name": "Gold King Mine Spill",
+      "lead_time_hours": 3.4475,
+      "violation_date": "2015-08-05"
+    },
+    {
+      "event_id": "toledo_water_crisis",
+      "name": "Toledo Water Crisis",
+      "lead_time_hours": 100.47,
+      "violation_date": "2014-08-01"
+    },
+    {
+      "event_id": "dan_river_coal_ash",
+      "name": "Dan River Coal Ash Spill",
+      "lead_time_hours": 2.955,
+      "violation_date": "2014-02-02T17:00:00"
+    },
+    {
+      "event_id": "chesapeake_bay_blooms",
+      "name": "Chesapeake Bay Algal Blooms",
+      "lead_time_hours": 413.7,
+      "violation_date": "2023-06-01T12:00:00"
+    }
+  ],
+  "elapsed_seconds": 690.722207069397
 }
