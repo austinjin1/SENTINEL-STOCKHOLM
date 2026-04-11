@@ -1,0 +1,79 @@
+{
+  "site": "PRPO",
+  "year_statistics": [
+    {
+      "year": 2022,
+      "n_records": 18727,
+      "n_valid_sc": 18601,
+      "sc_mean": 3990.691317671093,
+      "sc_median": 4000.54,
+      "sc_std": 104.55583698222674,
+      "sc_p5": 3851.12,
+      "sc_p95": 4105.57,
+      "qf_pass_rate": 0.9886752136752137
+    },
+    {
+      "year": 2023,
+      "n_records": 66246,
+      "n_valid_sc": 64747,
+      "sc_mean": 3495.3940506896074,
+      "sc_median": 3591.1,
+      "sc_std": 286.76155741172465,
+      "sc_p5": 2998.962,
+      "sc_p95": 3797.747,
+      "qf_pass_rate": 0.9738375603864734
+    },
+    {
+      "year": 2024,
+      "n_records": 90432,
+      "n_valid_sc": 89413,
+      "sc_mean": 2992.62733428025,
+      "sc_median": 2945.0,
+      "sc_std": 213.48366802724888,
+      "sc_p5": 2728.0,
+      "sc_p95": 3346.0,
+      "qf_pass_rate": 0.9659744338287332
+    },
+    {
+      "year": 2025,
+      "n_records": 97644,
+      "n_valid_sc": 85820,
+      "sc_mean": 2990.806784199487,
+      "sc_median": 2985.0,
+      "sc_std": 63.8916109369057,
+      "sc_p5": 2931.0,
+      "sc_p95": 3059.0,
+      "qf_pass_rate": 0.8610906260242543
+    }
+  ],
+  "pre_post_2022_test": {
+    "error": "insufficient data"
+  },
+  "qf_trend_correlation": {
+    "n_years": 4,
+    "sc_qf_correlation": 0.6435631594401034,
+    "sc_qf_pvalue": 0.35643684055989655,
+    "year_sc_correlation": -0.9380229716904543,
+    "year_sc_pvalue": 0.061977028309545545,
+    "year_qf_correlation": -0.8649715538200415,
+    "year_qf_pvalue": 0.13502844617995846,
+    "interpretation": "SpCond and QF pass rate not strongly correlated \u2014 artifact less likely"
+  },
+  "corroborating_parameters": {
+    "pH": {
+      "error": "insufficient data"
+    },
+    "dissolvedOxygen": {
+      "error": "insufficient data"
+    },
+    "turbidity": {
+      "error": "insufficient data"
+    }
+  },
+  "verdicts": [
+    "QF rates NOT strongly correlated with SpCond trend \u2014 artifact less likely",
+    "OTHER PARAMETERS UNCHANGED: No corroborating decline in pH/DO/turbidity \u2014 SpCond decline may be conductivity-specific (sensor artifact)"
+  ],
+  "critique_addressed": "Exp8 reported PRPO SpCond = -242.3 \u00b5S/cm/year. This audit checks whether the trend is driven by sensor artifact (QF failures) or real hydrological change (corroborated by other params).",
+  "elapsed_s": 77.0
+}

@@ -1,0 +1,186 @@
+{
+  "n_eval": 726,
+  "n_modalities_available": 4,
+  "modalities": [
+    "sensor",
+    "satellite",
+    "microbial",
+    "behavioral"
+  ],
+  "per_combo": {
+    "fusion_sensor": {
+      "modalities": [
+        "sensor"
+      ],
+      "n_modalities": 1,
+      "method": "fusion",
+      "auroc": 0.521002663752476,
+      "mean_prob": 0.5264800786972046,
+      "std_prob": 0.006395907606929541
+    },
+    "fusion_satellite": {
+      "modalities": [
+        "satellite"
+      ],
+      "n_modalities": 1,
+      "method": "fusion",
+      "auroc": 0.5004781094187555,
+      "mean_prob": 0.5223348140716553,
+      "std_prob": 0.022083278745412827
+    },
+    "fusion_microbial": {
+      "modalities": [
+        "microbial"
+      ],
+      "n_modalities": 1,
+      "method": "fusion",
+      "auroc": 0.5140055703541804,
+      "mean_prob": 0.5461264848709106,
+      "std_prob": 0.03753615543246269
+    },
+    "fusion_behavioral": {
+      "modalities": [
+        "behavioral"
+      ],
+      "n_modalities": 1,
+      "method": "fusion",
+      "auroc": 0.5213479649993549,
+      "mean_prob": 0.5548614859580994,
+      "std_prob": 0.0035793904680758715
+    },
+    "fusion_sensor+satellite": {
+      "modalities": [
+        "sensor",
+        "satellite"
+      ],
+      "n_modalities": 2,
+      "method": "fusion",
+      "auroc": 0.4766295562689252,
+      "mean_prob": 0.5328950881958008,
+      "std_prob": 0.015648292377591133
+    },
+    "fusion_sensor+microbial": {
+      "modalities": [
+        "sensor",
+        "microbial"
+      ],
+      "n_modalities": 2,
+      "method": "fusion",
+      "auroc": 0.5465701340983083,
+      "mean_prob": 0.5379620790481567,
+      "std_prob": 0.02224789373576641
+    },
+    "fusion_sensor+behavioral": {
+      "modalities": [
+        "sensor",
+        "behavioral"
+      ],
+      "n_modalities": 2,
+      "method": "fusion",
+      "auroc": 0.6380066631757091,
+      "mean_prob": 0.5771469473838806,
+      "std_prob": 0.010535425506532192
+    },
+    "fusion_satellite+microbial": {
+      "modalities": [
+        "satellite",
+        "microbial"
+      ],
+      "n_modalities": 2,
+      "method": "fusion",
+      "auroc": 0.5056955733139054,
+      "mean_prob": 0.5297441482543945,
+      "std_prob": 0.019727589562535286
+    },
+    "fusion_satellite+behavioral": {
+      "modalities": [
+        "satellite",
+        "behavioral"
+      ],
+      "n_modalities": 2,
+      "method": "fusion",
+      "auroc": 0.502200821133954,
+      "mean_prob": 0.5457625985145569,
+      "std_prob": 0.023796724155545235
+    },
+    "fusion_microbial+behavioral": {
+      "modalities": [
+        "microbial",
+        "behavioral"
+      ],
+      "n_modalities": 2,
+      "method": "fusion",
+      "auroc": 0.518634883773877,
+      "mean_prob": 0.5454534888267517,
+      "std_prob": 0.023162541911005974
+    },
+    "fusion_sensor+satellite+microbial": {
+      "modalities": [
+        "sensor",
+        "satellite",
+        "microbial"
+      ],
+      "n_modalities": 3,
+      "method": "fusion",
+      "auroc": 0.5204866091417557,
+      "mean_prob": 0.5349874496459961,
+      "std_prob": 0.015517826192080975
+    },
+    "fusion_sensor+satellite+behavioral": {
+      "modalities": [
+        "sensor",
+        "satellite",
+        "behavioral"
+      ],
+      "n_modalities": 3,
+      "method": "fusion",
+      "auroc": 0.5042840121728176,
+      "mean_prob": 0.5587608814239502,
+      "std_prob": 0.01763259992003441
+    },
+    "fusion_sensor+microbial+behavioral": {
+      "modalities": [
+        "sensor",
+        "microbial",
+        "behavioral"
+      ],
+      "n_modalities": 3,
+      "method": "fusion",
+      "auroc": 0.5569443495814645,
+      "mean_prob": 0.5569102764129639,
+      "std_prob": 0.020496197044849396
+    },
+    "fusion_satellite+microbial+behavioral": {
+      "modalities": [
+        "satellite",
+        "microbial",
+        "behavioral"
+      ],
+      "n_modalities": 3,
+      "method": "fusion",
+      "auroc": 0.5149466111149056,
+      "mean_prob": 0.5397838950157166,
+      "std_prob": 0.018269363790750504
+    },
+    "fusion_sensor+satellite+microbial+behavioral": {
+      "modalities": [
+        "sensor",
+        "satellite",
+        "microbial",
+        "behavioral"
+      ],
+      "n_modalities": 4,
+      "method": "fusion",
+      "auroc": 0.5330616457588659,
+      "mean_prob": 0.5490694046020508,
+      "std_prob": 0.015947865322232246
+    }
+  },
+  "marginal_modality_gains": {
+    "satellite": -0.04437310748355072,
+    "microbial": 0.0255674703458324,
+    "behavioral": 0.11700399942323314
+  },
+  "critique_addressed": "Proper multi-modal fusion test with real embeddings and EPA-proxy labels. Tests all modality subsets to show information gain from each additional modality.",
+  "elapsed_s": 2.5
+}

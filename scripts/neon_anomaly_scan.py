@@ -219,10 +219,11 @@ def run_site(site_id: str, df_site: pd.DataFrame, sensor, fusion, head) -> dict:
         values    = torch.from_numpy(vals_arr.astype(np.float32)).to(DEVICE)
         timestamps= torch.from_numpy(ts_arr.astype(np.float32)).to(DEVICE)
         delta_ts  = torch.from_numpy(dt_arr.astype(np.float32)).to(DEVICE)
-        masks     = torch.ones(B, T, dtype=torch.bool, device=DEVICE)
+        # masks must be [B, T, num_params] for per-parameter validity
+        masks     = torch.ones(B, T, values.shape[2], dtype=torch.bool, device=DEVICE)
 
         try:
-            enc = sensor(timestamps=timestamps, values=values,
+            enc = sensor(x=values, timestamps=timestamps,
                          delta_ts=delta_ts, masks=masks)
             emb = enc["embedding"]  # (B, 256)
         except Exception:
@@ -233,16 +234,28 @@ def run_site(site_id: str, df_site: pd.DataFrame, sensor, fusion, head) -> dict:
                 logger.warning(f"  Sensor forward failed: {e}")
                 continue
 
-        # Fuse (sensor-only; single modality)
+        # Fuse sensor embedding — try PerceiverIO API first, fall back to raw emb
         try:
-            fout = fusion(sensor_embedding=emb)
-            fused = fout.fused_state  # (B, 256)
+            fout = fusion(modality_id="sensor", raw_embedding=emb,
+                          timestamp=timestamps[:, 0], confidence=0.9)
+            fused = getattr(fout, "fused_state", emb)
         except Exception:
-            fused = emb  # fallback: use raw embedding
+            try:
+                fout = fusion(sensor_embedding=emb)
+                fused = getattr(fout, "fused_state", emb)
+            except Exception:
+                fused = emb  # fallback: use raw sensor embedding
 
         try:
             hout = head(fused)
-            prob = hout.get("anomaly_probability", hout.get("logits"))
+            # AnomalyOutput is a dataclass, not a dict — use getattr
+            prob = getattr(hout, "anomaly_probability", None)
+            if prob is None:
+                prob = getattr(hout, "severity_score", None)
+            if prob is None:
+                logits = getattr(hout, "logits", None)
+                if logits is not None:
+                    prob = logits[:, 1] if logits.dim() > 1 else logits
             if prob is not None:
                 if prob.dim() > 1:
                     prob = prob[:, 1]  # take anomaly class
@@ -250,7 +263,8 @@ def run_site(site_id: str, df_site: pd.DataFrame, sensor, fusion, head) -> dict:
                 scores.extend(prob.cpu().tolist())
             else:
                 scores.extend([0.0] * B)
-        except Exception:
+        except Exception as e:
+            logger.warning(f"  Head forward failed: {e}")
             scores.extend([0.0] * B)
 
         times.extend(win_ts[b_start:b_start + B])
