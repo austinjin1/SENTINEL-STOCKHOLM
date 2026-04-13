@@ -223,14 +223,7 @@ Harmonizing these sources required resolving differences in temporal resolution 
 
 \subsection{Modality-Specific Encoders}
 
-Each sensing modality requires a specialized neural architecture (Figure~\ref{fig:architecture}). All encoders produce 256-dimensional embeddings for cross-modal fusion. Total system: 223.1M parameters trained on a single NVIDIA RTX 4060 (8\,GB) in $\sim$72 hours.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\textwidth]{fig6_system_architecture.jpg}
-\caption{SENTINEL architecture. Five modality-specific encoders project heterogeneous environmental data into a shared 256-D space. Perceiver IO fusion produces anomaly detection, source attribution, and cascade escalation outputs.}
-\label{fig:architecture}
-\end{figure}
+Each sensing modality requires a specialized neural architecture. SENTINEL's pipeline operates in three stages: (1) five modality-specific encoders independently project their respective data types into a shared 256-dimensional embedding space; (2) a Perceiver IO fusion module with 64 learned latents performs cross-modal temporal attention across all available embeddings; and (3) four output heads produce calibrated anomaly probability, 8-class type classification, 8-class source attribution, and 5-tier cascade escalation. The total system comprises 223.1M parameters (189.5M encoders + 33.6M fusion), all trained on a single NVIDIA RTX 4060 (8\,GB) in $\sim$72 hours. The individual encoder architectures, each designed to address the unique data challenges of its modality, are described below.
 
 \textbf{AquaSSM} (Sensor): Environmental sensor data presents two challenges: irregular sampling intervals (maintenance gaps, telemetry failures) and multi-timescale dynamics (acute spills unfold over hours, eutrophication over months). AquaSSM addresses both with a continuous-time SSM [8] that parameterizes state transitions as $\mathbf{h}(t) = \exp(\mathbf{A} \cdot \Delta t) \mathbf{h}(t-1)$, naturally handling arbitrary time gaps. Eight parallel channels span 1 hour to 365 days (Figure~\ref{fig:enc_sensor}a): short channels capture rapid conductance spikes, long channels track seasonal oxygen decline. Trained on 291,855 real USGS NWIS sequences from 1,130 stations.
 
@@ -377,8 +370,8 @@ PCMCI+ causal discovery analysis on 20 GRQA monitoring sites (18 million records
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{fig5_causal_network.jpg}
-\caption{Causal chains from real GRQA data (PCMCI+). Green = positive, red = negative. Labels show lag in hours. The TP$\rightarrow$COD chain quantifies the 6-day eutrophication timescale.}
+\includegraphics[width=0.85\textwidth]{fig_causal_network_v2.jpg}
+\caption{Causal chains from real GRQA data (PCMCI+). 375 chains across 91 types from 20 sites. Node size distinguishes nutrients (large) from oxygen-demand-related parameters (medium). Solid arrows = known mechanisms; dashed = novel (44 chains not in existing databases). Arrow color: green = positive, red = negative. Labels show lag in hours. Mean causal lag: 90.2h.}
 \label{fig:causal}
 \end{figure}
 
