@@ -385,12 +385,18 @@ def compile_all():
     print("=" * 65)
 
     # Default values — from real held-out test set evaluations on expanded datasets
-    # Updated 2026-04-13: expanded data, re-evaluated on real test sets
+    # Updated 2026-04-13 (v3): architecture investigation + extended training
+    #   MicroBiomeNet: v5 validates v2 (SparseOTUAttn+PhyloEmbed+GlobalPool)
+    #     v2=0.8989, v5=0.8980 (same arch, io.BytesIO safe loading)
+    #     v3 regression (0.7742) traced to Conv1d tokenization destroying per-OTU identity
+    #   ToxiGene: v3 multi-label BCE transformer F1=0.8527 (best new; v2 multi-task=0.8770)
+    #     v2 advantage: multi-task pathway supervision; v3 single-task approach plateau ~0.85
+    #   HydroViT v8: SpectralBandAttention+ViT-S/16, confirmed R²=0.8707 (correct split)
     metrics_table = {
         "AquaSSM (USGS sensor)": {"metric": "AUROC", "value": "0.9386",  "ci": "[TBD, TBD]"},
-        "HydroViT (water temp)": {"metric": "R²",    "value": "0.760",   "ci": "[TBD, TBD]"},
-        "MicroBiomeNet":         {"metric": "F1",    "value": "0.913",   "ci": "[TBD, TBD]"},
-        "ToxiGene":              {"metric": "F1",    "value": "0.9293",  "ci": "[TBD, TBD]"},
+        "HydroViT v8 (water temp)": {"metric": "R²",   "value": "0.8707",  "ci": "[TBD, TBD]"},
+        "MicroBiomeNet v5":      {"metric": "F1",    "value": "0.8980",  "ci": "[TBD, TBD]"},
+        "ToxiGene v3":           {"metric": "F1",    "value": "0.8527",  "ci": "[TBD, TBD]"},
         "BioMotion (ECOTOX)":    {"metric": "AUROC", "value": "0.9999",  "ci": "[TBD, TBD]"},
         "Fusion (real data)":    {"metric": "AUROC", "value": "0.9728",  "ci": "[TBD, TBD]"},
     }
