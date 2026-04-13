@@ -1,0 +1,149 @@
+[08:43:23] INFO     ============================================================
+                    ==========                                                  
+           INFO     AquaSSM FULL Training -- 291K Real USGS (epoch subsampling) 
+           INFO     ============================================================
+                    ==========                                                  
+           INFO     Device: cuda | Torch 2.6.0+cu124                            
+           INFO     Hyperparams: MAX_LEN=128, BATCH=512, EPOCHS=50,             
+                    SAMPLES_PER_EPOCH=20,000, LR_BB=0.0003, LR_HEAD=0.001 (~1   
+                    min/epoch on contested A100)                                
+           INFO     pos_weight=4.0 | patience=10 | seed=42                      
+[08:43:24] INFO     Found 291,855 files in real/                                
+           INFO     Split: train_pool=233,484, val=29,185, test=29,186          
+           INFO     PretrainDataset: 162 files | anomaly=63, normal=99          
+           INFO       Loading 233,484 files into RAM ...                        
+[08:43:55] INFO         50,000/233,484 files loaded...                          
+[08:44:26] INFO         100,000/233,484 files loaded...                         
+[08:44:57] INFO         150,000/233,484 files loaded...                         
+[08:45:27] INFO         200,000/233,484 files loaded...                         
+[08:45:48] INFO       RAM cache ready: 0.72 GB | anomaly=40,201, normal=193,283 
+           INFO       Loading 29,185 files into RAM ...                         
+[08:46:06] INFO       RAM cache ready: 0.09 GB | anomaly=4,997, normal=24,188   
+           INFO       Loading 29,186 files into RAM ...                         
+[08:46:23] INFO       RAM cache ready: 0.09 GB | anomaly=5,007, normal=24,179   
+           INFO     Pool: 233,484 train + 162 pretrain | val=29,185 |           
+                    test=29,186                                                 
+[08:46:25] INFO     Total parameters: 4,642,112                                 
+[08:46:27] INFO     Training: 50 epochs x 20,000 samples/epoch (~1.0M total     
+                    sample-epochs)                                              
+[08:49:10] INFO     Ep   1/50 [163s] cov=9% | TrLoss=0.7182 TrAUC=0.8475 |      
+                    VaLoss=0.6051 VaAUC=0.8903 VaF1=0.6778 | LR=3.00e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[08:51:40] INFO     Ep   2/50 [151s] cov=17% | TrLoss=0.6476 TrAUC=0.8766 |     
+                    VaLoss=0.5968 VaAUC=0.8932 VaF1=0.6760 | LR=2.99e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[08:54:12] INFO     Ep   3/50 [151s] cov=26% | TrLoss=0.6213 TrAUC=0.8861 |     
+                    VaLoss=0.5752 VaAUC=0.8994 VaF1=0.6644 | LR=2.97e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[08:56:45] INFO     Ep   4/50 [154s] cov=34% | TrLoss=0.5874 TrAUC=0.8972 |     
+                    VaLoss=0.5307 VaAUC=0.9132 VaF1=0.7169 | LR=2.95e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[08:59:12] INFO     Ep   5/50 [146s] cov=43% | TrLoss=0.5695 TrAUC=0.9028 |     
+                    VaLoss=0.5315 VaAUC=0.9120 VaF1=0.7286 | LR=2.93e-04        
+                    Pat=1/10 NaN=0                                              
+[09:01:10] INFO     Ep   6/50 [118s] cov=51% | TrLoss=0.5604 TrAUC=0.9064 |     
+                    VaLoss=0.5153 VaAUC=0.9204 VaF1=0.7258 | LR=2.89e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:05:16] INFO     Ep   8/50 [124s] cov=69% | TrLoss=0.5471 TrAUC=0.9101 |     
+                    VaLoss=0.4991 VaAUC=0.9258 VaF1=0.7326 | LR=2.81e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:09:18] INFO     Ep  10/50 [120s] cov=86% | TrLoss=0.5349 TrAUC=0.9139 |     
+                    VaLoss=0.4891 VaAUC=0.9252 VaF1=0.7331 | LR=2.71e-04        
+                    Pat=2/10 NaN=0                                              
+[09:11:07] INFO     Ep  11/50 [108s] cov=94% | TrLoss=0.5209 TrAUC=0.9178 |     
+                    VaLoss=0.4910 VaAUC=0.9282 VaF1=0.7215 | LR=2.66e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:14:35] INFO     Ep  13/50 [104s] cov=100% | TrLoss=0.5328 TrAUC=0.9129 |    
+                    VaLoss=0.4799 VaAUC=0.9296 VaF1=0.7575 | LR=2.53e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:17:53] INFO     Ep  15/50 [95s] cov=100% | TrLoss=0.5079 TrAUC=0.9212 |     
+                    VaLoss=0.4692 VaAUC=0.9324 VaF1=0.7528 | LR=2.38e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:19:27] INFO     Ep  16/50 [94s] cov=100% | TrLoss=0.5005 TrAUC=0.9230 |     
+                    VaLoss=0.4735 VaAUC=0.9328 VaF1=0.7410 | LR=2.30e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:21:00] INFO     Ep  17/50 [94s] cov=100% | TrLoss=0.5012 TrAUC=0.9233 |     
+                    VaLoss=0.4538 VaAUC=0.9349 VaF1=0.7553 | LR=2.22e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:26:02] INFO     Ep  20/50 [104s] cov=100% | TrLoss=0.4891 TrAUC=0.9279 |    
+                    VaLoss=0.4697 VaAUC=0.9298 VaF1=0.7667 | LR=1.96e-04        
+                    Pat=3/10 NaN=0                                              
+[09:29:32] INFO     Ep  22/50 [103s] cov=100% | TrLoss=0.4771 TrAUC=0.9301 |    
+                    VaLoss=0.4465 VaAUC=0.9356 VaF1=0.7624 | LR=1.78e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:31:07] INFO     Ep  23/50 [95s] cov=100% | TrLoss=0.4743 TrAUC=0.9310 |     
+                    VaLoss=0.4430 VaAUC=0.9361 VaF1=0.7643 | LR=1.69e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:34:25] INFO     Ep  25/50 [100s] cov=100% | TrLoss=0.4695 TrAUC=0.9321 |    
+                    VaLoss=0.4492 VaAUC=0.9360 VaF1=0.7656 | LR=1.50e-04        
+                    Pat=2/10 NaN=0                                              
+[09:39:12] INFO     Ep  28/50 [95s] cov=100% | TrLoss=0.4676 TrAUC=0.9319 |     
+                    VaLoss=0.4464 VaAUC=0.9364 VaF1=0.7786 | LR=1.22e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:40:42] INFO     Ep  29/50 [90s] cov=100% | TrLoss=0.4627 TrAUC=0.9347 |     
+                    VaLoss=0.4346 VaAUC=0.9389 VaF1=0.7651 | LR=1.13e-04        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:42:11] INFO     Ep  30/50 [89s] cov=100% | TrLoss=0.4594 TrAUC=0.9349 |     
+                    VaLoss=0.4385 VaAUC=0.9384 VaF1=0.7639 | LR=1.04e-04        
+                    Pat=1/10 NaN=0                                              
+[09:43:39] INFO     Ep  31/50 [88s] cov=100% | TrLoss=0.4624 TrAUC=0.9331 |     
+                    VaLoss=0.4378 VaAUC=0.9392 VaF1=0.7727 | LR=9.48e-05        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:49:40] INFO     Ep  35/50 [90s] cov=100% | TrLoss=0.4496 TrAUC=0.9388 |     
+                    VaLoss=0.4288 VaAUC=0.9398 VaF1=0.7663 | LR=6.18e-05        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:51:08] INFO     Ep  36/50 [89s] cov=100% | TrLoss=0.4401 TrAUC=0.9402 |     
+                    VaLoss=0.4247 VaAUC=0.9407 VaF1=0.7715 | LR=5.44e-05        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:52:37] INFO     Ep  37/50 [89s] cov=100% | TrLoss=0.4523 TrAUC=0.9395 |     
+                    VaLoss=0.4261 VaAUC=0.9411 VaF1=0.7713 | LR=4.73e-05        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:56:58] INFO     Ep  40/50 [87s] cov=100% | TrLoss=0.4384 TrAUC=0.9406 |     
+                    VaLoss=0.4245 VaAUC=0.9414 VaF1=0.7799 | LR=2.86e-05        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[09:59:53] INFO     Ep  42/50 [88s] cov=100% | TrLoss=0.4418 TrAUC=0.9400 |     
+                    VaLoss=0.4236 VaAUC=0.9417 VaF1=0.7784 | LR=1.86e-05        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[10:01:19] INFO     Ep  43/50 [86s] cov=100% | TrLoss=0.4377 TrAUC=0.9421 |     
+                    VaLoss=0.4218 VaAUC=0.9419 VaF1=0.7749 | LR=1.43e-05        
+                    Pat=0/10 NaN=0 *BEST*                                       
+[10:04:09] INFO     Ep  45/50 [83s] cov=100% | TrLoss=0.4308 TrAUC=0.9434 |     
+                    VaLoss=0.4218 VaAUC=0.9414 VaF1=0.7821 | LR=7.34e-06        
+                    Pat=2/10 NaN=0                                              
+[10:10:54] INFO     Ep  50/50 [81s] cov=100% | TrLoss=0.4438 TrAUC=0.9389 |     
+                    VaLoss=0.4216 VaAUC=0.9416 VaF1=0.7808 | LR=0.00e+00        
+                    Pat=7/10 NaN=0                                              
+           INFO     Best val AUROC: 0.9419 at epoch 43                          
+           INFO     ============================================================
+                    ==========                                                  
+           INFO     TEST EVALUATION                                             
+           INFO     ============================================================
+                    ==========                                                  
+[10:11:35] INFO     Test AUROC:  0.9386  (baseline=0.920)                       
+           INFO     Test AUPRC:  0.8747                                         
+           INFO     Test F1@0.5: 0.7770                                         
+           INFO     Test F1 opt: 0.8043 (thresh=0.70)                           
+           INFO     Test Acc:    0.9179                                         
+           INFO     N_test=29,186, N_pos=5,007, N_neg=24,179                    
+           INFO     *** BEATS BASELINE: 0.9386 > 0.920 ***                      
+           INFO     Results saved to                                            
+                    /home/bcheng/SENTINEL/checkpoints/sensor/results_full.json  
+           INFO     Checkpoint:                                                 
+                    /home/bcheng/SENTINEL/checkpoints/sensor/aquassm_full_best.p
+                    t                                                           
+           INFO     Total time: 88.2 minutes                                    
+
+=================================================================
+=== AquaSSM FULL (291K Real USGS) -- Final Results ===
+  Data pool:      233,484 train + 162 pretrain
+  Samples/epoch:  20,000
+  Val/Test:       29,185 / 29,186 (full, fixed)
+  Epochs:         50/50 (patience=10)
+  Baseline AUROC: 0.9200 (aquassm_real_best, 20K samples)
+  Test AUROC:     0.9386  *** BEATS BASELINE ***
+  Test AUPRC:     0.8747
+  Test F1@0.5:    0.7770
+  Test F1 opt:    0.8043 (thresh=0.70)
+  Test Accuracy:  0.9179
+  Time:           88.2 min
+=================================================================

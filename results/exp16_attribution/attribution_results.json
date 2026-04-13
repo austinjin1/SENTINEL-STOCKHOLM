@@ -2,627 +2,627 @@
   "n_sites": 20,
   "parameter_summary": {
     "pH": {
-      "top_driver_count": 6,
-      "mean_attribution_delta": 0.0446,
-      "std_attribution_delta": 0.0851
+      "top_driver_count": 14,
+      "mean_attribution_delta": 0.0442,
+      "std_attribution_delta": 0.071
     },
     "DO": {
-      "top_driver_count": 9,
-      "mean_attribution_delta": 0.0641,
-      "std_attribution_delta": 0.0654
+      "top_driver_count": 5,
+      "mean_attribution_delta": 0.0094,
+      "std_attribution_delta": 0.0772
     },
     "Turbidity": {
-      "top_driver_count": 2,
-      "mean_attribution_delta": -0.0104,
-      "std_attribution_delta": 0.081
+      "top_driver_count": 1,
+      "mean_attribution_delta": 0.0171,
+      "std_attribution_delta": 0.0402
     },
     "SpCond": {
-      "top_driver_count": 3,
-      "mean_attribution_delta": 0.0032,
-      "std_attribution_delta": 0.0561
+      "top_driver_count": 0,
+      "mean_attribution_delta": -0.0249,
+      "std_attribution_delta": 0.0698
     }
   },
   "site_results": {
-    "POSE": {
+    "PRPO": {
       "rank": 1,
-      "max_score_scan": 0.8436,
-      "baseline_attribution_score": 0.1994,
-      "window_start_sec": 40896000.0,
+      "max_score_scan": 0.809,
+      "baseline_attribution_score": 0.2728,
+      "window_start_sec": 103507200.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.1994,
-          "occluded_score": 0.2228,
-          "delta": -0.0234
+          "baseline_score": 0.2728,
+          "occluded_score": 0.0093,
+          "delta": 0.2635
         },
         "DO": {
-          "baseline_score": 0.1994,
-          "occluded_score": 0.2039,
-          "delta": -0.0045
+          "baseline_score": 0.2728,
+          "occluded_score": 0.1445,
+          "delta": 0.1283
         },
         "Turbidity": {
-          "baseline_score": 0.1994,
-          "occluded_score": 0.1493,
-          "delta": 0.0501
+          "baseline_score": 0.2728,
+          "occluded_score": 0.11,
+          "delta": 0.1628
         },
         "SpCond": {
-          "baseline_score": 0.1994,
-          "occluded_score": 0.1243,
-          "delta": 0.0751
-        }
-      },
-      "top_parameter": "SpCond",
-      "top_parameter_delta": 0.0751
-    },
-    "COMO": {
-      "rank": 2,
-      "max_score_scan": 0.7669,
-      "baseline_attribution_score": 0.1892,
-      "window_start_sec": 55584000.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.1892,
-          "occluded_score": 0.1847,
-          "delta": 0.0046
-        },
-        "DO": {
-          "baseline_score": 0.1892,
-          "occluded_score": 0.0947,
-          "delta": 0.0945
-        },
-        "Turbidity": {
-          "baseline_score": 0.1892,
-          "occluded_score": 0.116,
-          "delta": 0.0732
-        },
-        "SpCond": {
-          "baseline_score": 0.1892,
-          "occluded_score": 0.2652,
-          "delta": -0.076
-        }
-      },
-      "top_parameter": "DO",
-      "top_parameter_delta": 0.0945
-    },
-    "GUIL": {
-      "rank": 3,
-      "max_score_scan": 0.766,
-      "baseline_attribution_score": 0.1635,
-      "window_start_sec": 55411200.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.1635,
-          "occluded_score": 0.0463,
-          "delta": 0.1173
-        },
-        "DO": {
-          "baseline_score": 0.1635,
-          "occluded_score": 0.1548,
-          "delta": 0.0087
-        },
-        "Turbidity": {
-          "baseline_score": 0.1635,
-          "occluded_score": 0.246,
-          "delta": -0.0825
-        },
-        "SpCond": {
-          "baseline_score": 0.1635,
-          "occluded_score": 0.0702,
-          "delta": 0.0934
+          "baseline_score": 0.2728,
+          "occluded_score": 0.2292,
+          "delta": 0.0436
         }
       },
       "top_parameter": "pH",
-      "top_parameter_delta": 0.1173
-    },
-    "BLDE": {
-      "rank": 4,
-      "max_score_scan": 0.7622,
-      "baseline_attribution_score": 0.2691,
-      "window_start_sec": 22694400.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.2691,
-          "occluded_score": 0.2657,
-          "delta": 0.0033
-        },
-        "DO": {
-          "baseline_score": 0.2691,
-          "occluded_score": 0.0706,
-          "delta": 0.1984
-        },
-        "Turbidity": {
-          "baseline_score": 0.2691,
-          "occluded_score": 0.2712,
-          "delta": -0.0022
-        },
-        "SpCond": {
-          "baseline_score": 0.2691,
-          "occluded_score": 0.2071,
-          "delta": 0.062
-        }
-      },
-      "top_parameter": "DO",
-      "top_parameter_delta": 0.1984
-    },
-    "MCDI": {
-      "rank": 5,
-      "max_score_scan": 0.741,
-      "baseline_attribution_score": 0.1932,
-      "window_start_sec": 18489600.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.1932,
-          "occluded_score": 0.1458,
-          "delta": 0.0474
-        },
-        "DO": {
-          "baseline_score": 0.1932,
-          "occluded_score": 0.1682,
-          "delta": 0.0251
-        },
-        "Turbidity": {
-          "baseline_score": 0.1932,
-          "occluded_score": 0.1214,
-          "delta": 0.0718
-        },
-        "SpCond": {
-          "baseline_score": 0.1932,
-          "occluded_score": 0.2035,
-          "delta": -0.0102
-        }
-      },
-      "top_parameter": "Turbidity",
-      "top_parameter_delta": 0.0718
-    },
-    "MART": {
-      "rank": 6,
-      "max_score_scan": 0.7225,
-      "baseline_attribution_score": 0.1613,
-      "window_start_sec": 31737600.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.1613,
-          "occluded_score": 0.0147,
-          "delta": 0.1466
-        },
-        "DO": {
-          "baseline_score": 0.1613,
-          "occluded_score": 0.1665,
-          "delta": -0.0052
-        },
-        "Turbidity": {
-          "baseline_score": 0.1613,
-          "occluded_score": 0.2476,
-          "delta": -0.0864
-        },
-        "SpCond": {
-          "baseline_score": 0.1613,
-          "occluded_score": 0.2645,
-          "delta": -0.1033
-        }
-      },
-      "top_parameter": "pH",
-      "top_parameter_delta": 0.1466
+      "top_parameter_delta": 0.2635
     },
     "MCRA": {
-      "rank": 7,
-      "max_score_scan": 0.7119,
-      "baseline_attribution_score": 0.224,
-      "window_start_sec": 55468800.0,
+      "rank": 2,
+      "max_score_scan": 0.8046,
+      "baseline_attribution_score": 0.0827,
+      "window_start_sec": 13420800.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.224,
-          "occluded_score": 0.01,
-          "delta": 0.214
+          "baseline_score": 0.0827,
+          "occluded_score": 0.0618,
+          "delta": 0.0208
         },
         "DO": {
-          "baseline_score": 0.224,
-          "occluded_score": 0.0975,
-          "delta": 0.1264
+          "baseline_score": 0.0827,
+          "occluded_score": 0.2345,
+          "delta": -0.1519
         },
         "Turbidity": {
-          "baseline_score": 0.224,
-          "occluded_score": 0.2437,
-          "delta": -0.0198
+          "baseline_score": 0.0827,
+          "occluded_score": 0.0625,
+          "delta": 0.0202
         },
         "SpCond": {
-          "baseline_score": 0.224,
-          "occluded_score": 0.2462,
-          "delta": -0.0223
+          "baseline_score": 0.0827,
+          "occluded_score": 0.1642,
+          "delta": -0.0815
         }
       },
       "top_parameter": "pH",
-      "top_parameter_delta": 0.214
+      "top_parameter_delta": 0.0208
     },
-    "CUPE": {
-      "rank": 8,
-      "max_score_scan": 0.6932,
-      "baseline_attribution_score": 0.1703,
-      "window_start_sec": 64915200.0,
+    "MCDI": {
+      "rank": 3,
+      "max_score_scan": 0.7495,
+      "baseline_attribution_score": 0.1132,
+      "window_start_sec": 11520000.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.1703,
-          "occluded_score": 0.2376,
-          "delta": -0.0673
+          "baseline_score": 0.1132,
+          "occluded_score": 0.0208,
+          "delta": 0.0925
         },
         "DO": {
-          "baseline_score": 0.1703,
-          "occluded_score": 0.0766,
-          "delta": 0.0937
+          "baseline_score": 0.1132,
+          "occluded_score": 0.0366,
+          "delta": 0.0767
         },
         "Turbidity": {
-          "baseline_score": 0.1703,
-          "occluded_score": 0.1848,
-          "delta": -0.0145
+          "baseline_score": 0.1132,
+          "occluded_score": 0.0988,
+          "delta": 0.0145
         },
         "SpCond": {
-          "baseline_score": 0.1703,
-          "occluded_score": 0.199,
-          "delta": -0.0287
+          "baseline_score": 0.1132,
+          "occluded_score": 0.2997,
+          "delta": -0.1864
         }
       },
-      "top_parameter": "DO",
-      "top_parameter_delta": 0.0937
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0925
+    },
+    "CARI": {
+      "rank": 4,
+      "max_score_scan": 0.744,
+      "baseline_attribution_score": 0.0654,
+      "window_start_sec": 11289600.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.0654,
+          "occluded_score": 0.0559,
+          "delta": 0.0096
+        },
+        "DO": {
+          "baseline_score": 0.0654,
+          "occluded_score": 0.1453,
+          "delta": -0.0799
+        },
+        "Turbidity": {
+          "baseline_score": 0.0654,
+          "occluded_score": 0.0675,
+          "delta": -0.0021
+        },
+        "SpCond": {
+          "baseline_score": 0.0654,
+          "occluded_score": 0.1109,
+          "delta": -0.0455
+        }
+      },
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0096
     },
     "BARC": {
-      "rank": 9,
-      "max_score_scan": 0.6866,
-      "baseline_attribution_score": 0.1643,
-      "window_start_sec": 45331200.0,
+      "rank": 5,
+      "max_score_scan": 0.7404,
+      "baseline_attribution_score": 0.1287,
+      "window_start_sec": 41472000.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.1643,
-          "occluded_score": 0.1674,
-          "delta": -0.003
+          "baseline_score": 0.1287,
+          "occluded_score": 0.0996,
+          "delta": 0.029
         },
         "DO": {
-          "baseline_score": 0.1643,
-          "occluded_score": 0.0817,
-          "delta": 0.0826
+          "baseline_score": 0.1287,
+          "occluded_score": 0.0273,
+          "delta": 0.1014
         },
         "Turbidity": {
-          "baseline_score": 0.1643,
-          "occluded_score": 0.1218,
-          "delta": 0.0426
+          "baseline_score": 0.1287,
+          "occluded_score": 0.1106,
+          "delta": 0.0181
         },
         "SpCond": {
-          "baseline_score": 0.1643,
-          "occluded_score": 0.191,
-          "delta": -0.0266
+          "baseline_score": 0.1287,
+          "occluded_score": 0.076,
+          "delta": 0.0526
         }
       },
       "top_parameter": "DO",
-      "top_parameter_delta": 0.0826
+      "top_parameter_delta": 0.1014
     },
-    "LECO": {
-      "rank": 10,
-      "max_score_scan": 0.6747,
-      "baseline_attribution_score": 0.1025,
-      "window_start_sec": 3916800.0,
+    "BLWA": {
+      "rank": 6,
+      "max_score_scan": 0.729,
+      "baseline_attribution_score": 0.087,
+      "window_start_sec": 36691200.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.1025,
-          "occluded_score": 0.0336,
-          "delta": 0.0689
+          "baseline_score": 0.087,
+          "occluded_score": 0.0544,
+          "delta": 0.0326
         },
         "DO": {
-          "baseline_score": 0.1025,
-          "occluded_score": 0.0445,
-          "delta": 0.058
+          "baseline_score": 0.087,
+          "occluded_score": 0.1707,
+          "delta": -0.0837
         },
         "Turbidity": {
-          "baseline_score": 0.1025,
-          "occluded_score": 0.1264,
-          "delta": -0.0239
+          "baseline_score": 0.087,
+          "occluded_score": 0.0605,
+          "delta": 0.0265
         },
         "SpCond": {
-          "baseline_score": 0.1025,
-          "occluded_score": 0.0181,
-          "delta": 0.0845
-        }
-      },
-      "top_parameter": "SpCond",
-      "top_parameter_delta": 0.0845
-    },
-    "PRLA": {
-      "rank": 11,
-      "max_score_scan": 0.6615,
-      "baseline_attribution_score": 0.2197,
-      "window_start_sec": 60134400.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.2197,
-          "occluded_score": 0.0103,
-          "delta": 0.2094
-        },
-        "DO": {
-          "baseline_score": 0.2197,
-          "occluded_score": 0.0134,
-          "delta": 0.2064
-        },
-        "Turbidity": {
-          "baseline_score": 0.2197,
-          "occluded_score": 0.2637,
-          "delta": -0.0439
-        },
-        "SpCond": {
-          "baseline_score": 0.2197,
-          "occluded_score": 0.2198,
-          "delta": -0.0
+          "baseline_score": 0.087,
+          "occluded_score": 0.204,
+          "delta": -0.117
         }
       },
       "top_parameter": "pH",
-      "top_parameter_delta": 0.2094
+      "top_parameter_delta": 0.0326
     },
-    "LEWI": {
-      "rank": 12,
-      "max_score_scan": 0.6561,
-      "baseline_attribution_score": 0.2139,
-      "window_start_sec": 50630400.0,
+    "PRIN": {
+      "rank": 7,
+      "max_score_scan": 0.723,
+      "baseline_attribution_score": 0.1235,
+      "window_start_sec": 57600000.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.2139,
-          "occluded_score": 0.2376,
-          "delta": -0.0237
+          "baseline_score": 0.1235,
+          "occluded_score": 0.0069,
+          "delta": 0.1166
         },
         "DO": {
-          "baseline_score": 0.2139,
-          "occluded_score": 0.1829,
-          "delta": 0.031
+          "baseline_score": 0.1235,
+          "occluded_score": 0.0382,
+          "delta": 0.0853
         },
         "Turbidity": {
-          "baseline_score": 0.2139,
-          "occluded_score": 0.3336,
-          "delta": -0.1196
+          "baseline_score": 0.1235,
+          "occluded_score": 0.089,
+          "delta": 0.0345
         },
         "SpCond": {
-          "baseline_score": 0.2139,
-          "occluded_score": 0.168,
-          "delta": 0.0459
+          "baseline_score": 0.1235,
+          "occluded_score": 0.0439,
+          "delta": 0.0796
         }
       },
-      "top_parameter": "SpCond",
-      "top_parameter_delta": 0.0459
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.1166
     },
-    "KING": {
-      "rank": 13,
-      "max_score_scan": 0.642,
-      "baseline_attribution_score": 0.2535,
-      "window_start_sec": 19929600.0,
+    "OKSR": {
+      "rank": 8,
+      "max_score_scan": 0.6994,
+      "baseline_attribution_score": 0.0995,
+      "window_start_sec": 92332800.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.2535,
-          "occluded_score": 0.2535,
-          "delta": 0.0
+          "baseline_score": 0.0995,
+          "occluded_score": 0.0456,
+          "delta": 0.054
         },
         "DO": {
-          "baseline_score": 0.2535,
-          "occluded_score": 0.2535,
-          "delta": 0.0
+          "baseline_score": 0.0995,
+          "occluded_score": 0.0646,
+          "delta": 0.035
         },
         "Turbidity": {
-          "baseline_score": 0.2535,
-          "occluded_score": 0.119,
-          "delta": 0.1345
+          "baseline_score": 0.0995,
+          "occluded_score": 0.0979,
+          "delta": 0.0016
         },
         "SpCond": {
-          "baseline_score": 0.2535,
-          "occluded_score": 0.269,
-          "delta": -0.0154
+          "baseline_score": 0.0995,
+          "occluded_score": 0.0732,
+          "delta": 0.0263
+        }
+      },
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.054
+    },
+    "PRLA": {
+      "rank": 9,
+      "max_score_scan": 0.698,
+      "baseline_attribution_score": 0.0477,
+      "window_start_sec": 63302400.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.0477,
+          "occluded_score": 0.0135,
+          "delta": 0.0342
+        },
+        "DO": {
+          "baseline_score": 0.0477,
+          "occluded_score": 0.1416,
+          "delta": -0.0939
+        },
+        "Turbidity": {
+          "baseline_score": 0.0477,
+          "occluded_score": 0.0442,
+          "delta": 0.0035
+        },
+        "SpCond": {
+          "baseline_score": 0.0477,
+          "occluded_score": 0.1818,
+          "delta": -0.1341
+        }
+      },
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0342
+    },
+    "HOPB": {
+      "rank": 10,
+      "max_score_scan": 0.6927,
+      "baseline_attribution_score": 0.101,
+      "window_start_sec": 6508800.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.101,
+          "occluded_score": 0.0399,
+          "delta": 0.0612
+        },
+        "DO": {
+          "baseline_score": 0.101,
+          "occluded_score": 0.2157,
+          "delta": -0.1147
+        },
+        "Turbidity": {
+          "baseline_score": 0.101,
+          "occluded_score": 0.0654,
+          "delta": 0.0357
+        },
+        "SpCond": {
+          "baseline_score": 0.101,
+          "occluded_score": 0.1034,
+          "delta": -0.0024
+        }
+      },
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0612
+    },
+    "FLNT": {
+      "rank": 11,
+      "max_score_scan": 0.6881,
+      "baseline_attribution_score": 0.0504,
+      "window_start_sec": 25977600.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.0504,
+          "occluded_score": 0.0953,
+          "delta": -0.0448
+        },
+        "DO": {
+          "baseline_score": 0.0504,
+          "occluded_score": 0.0699,
+          "delta": -0.0194
+        },
+        "Turbidity": {
+          "baseline_score": 0.0504,
+          "occluded_score": 0.0936,
+          "delta": -0.0431
+        },
+        "SpCond": {
+          "baseline_score": 0.0504,
+          "occluded_score": 0.1143,
+          "delta": -0.0639
+        }
+      },
+      "top_parameter": "DO",
+      "top_parameter_delta": -0.0194
+    },
+    "KING": {
+      "rank": 12,
+      "max_score_scan": 0.6859,
+      "baseline_attribution_score": 0.0795,
+      "window_start_sec": 49420800.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.0795,
+          "occluded_score": 0.0759,
+          "delta": 0.0036
+        },
+        "DO": {
+          "baseline_score": 0.0795,
+          "occluded_score": 0.0926,
+          "delta": -0.0131
+        },
+        "Turbidity": {
+          "baseline_score": 0.0795,
+          "occluded_score": 0.0868,
+          "delta": -0.0073
+        },
+        "SpCond": {
+          "baseline_score": 0.0795,
+          "occluded_score": 0.0883,
+          "delta": -0.0088
+        }
+      },
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0036
+    },
+    "MAYF": {
+      "rank": 13,
+      "max_score_scan": 0.6828,
+      "baseline_attribution_score": 0.0449,
+      "window_start_sec": 7027200.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.0449,
+          "occluded_score": 0.0695,
+          "delta": -0.0246
+        },
+        "DO": {
+          "baseline_score": 0.0449,
+          "occluded_score": 0.0312,
+          "delta": 0.0137
+        },
+        "Turbidity": {
+          "baseline_score": 0.0449,
+          "occluded_score": 0.0564,
+          "delta": -0.0114
+        },
+        "SpCond": {
+          "baseline_score": 0.0449,
+          "occluded_score": 0.0515,
+          "delta": -0.0066
+        }
+      },
+      "top_parameter": "DO",
+      "top_parameter_delta": 0.0137
+    },
+    "BIGC": {
+      "rank": 14,
+      "max_score_scan": 0.682,
+      "baseline_attribution_score": 0.0895,
+      "window_start_sec": 49996800.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.0895,
+          "occluded_score": 0.0648,
+          "delta": 0.0247
+        },
+        "DO": {
+          "baseline_score": 0.0895,
+          "occluded_score": 0.0669,
+          "delta": 0.0225
+        },
+        "Turbidity": {
+          "baseline_score": 0.0895,
+          "occluded_score": 0.107,
+          "delta": -0.0175
+        },
+        "SpCond": {
+          "baseline_score": 0.0895,
+          "occluded_score": 0.0897,
+          "delta": -0.0002
+        }
+      },
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0247
+    },
+    "REDB": {
+      "rank": 15,
+      "max_score_scan": 0.6804,
+      "baseline_attribution_score": 0.0294,
+      "window_start_sec": 6393600.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.0294,
+          "occluded_score": 0.119,
+          "delta": -0.0896
+        },
+        "DO": {
+          "baseline_score": 0.0294,
+          "occluded_score": 0.0484,
+          "delta": -0.019
+        },
+        "Turbidity": {
+          "baseline_score": 0.0294,
+          "occluded_score": 0.0297,
+          "delta": -0.0003
+        },
+        "SpCond": {
+          "baseline_score": 0.0294,
+          "occluded_score": 0.1006,
+          "delta": -0.0713
         }
       },
       "top_parameter": "Turbidity",
-      "top_parameter_delta": 0.1345
+      "top_parameter_delta": -0.0003
     },
-    "ARIK": {
-      "rank": 14,
-      "max_score_scan": 0.6325,
-      "baseline_attribution_score": 0.2435,
-      "window_start_sec": 31507200.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.2435,
-          "occluded_score": 0.0871,
-          "delta": 0.1564
-        },
-        "DO": {
-          "baseline_score": 0.2435,
-          "occluded_score": 0.1749,
-          "delta": 0.0686
-        },
-        "Turbidity": {
-          "baseline_score": 0.2435,
-          "occluded_score": 0.1259,
-          "delta": 0.1176
-        },
-        "SpCond": {
-          "baseline_score": 0.2435,
-          "occluded_score": 0.1835,
-          "delta": 0.06
-        }
-      },
-      "top_parameter": "pH",
-      "top_parameter_delta": 0.1564
-    },
-    "PRPO": {
-      "rank": 15,
-      "max_score_scan": 0.627,
-      "baseline_attribution_score": 0.1628,
-      "window_start_sec": 44697600.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.1628,
-          "occluded_score": 0.1251,
-          "delta": 0.0377
-        },
-        "DO": {
-          "baseline_score": 0.1628,
-          "occluded_score": 0.0639,
-          "delta": 0.0989
-        },
-        "Turbidity": {
-          "baseline_score": 0.1628,
-          "occluded_score": 0.1936,
-          "delta": -0.0308
-        },
-        "SpCond": {
-          "baseline_score": 0.1628,
-          "occluded_score": 0.1689,
-          "delta": -0.0061
-        }
-      },
-      "top_parameter": "DO",
-      "top_parameter_delta": 0.0989
-    },
-    "OKSR": {
+    "COMO": {
       "rank": 16,
-      "max_score_scan": 0.6177,
-      "baseline_attribution_score": 0.0182,
-      "window_start_sec": 152121600.0,
+      "max_score_scan": 0.6759,
+      "baseline_attribution_score": 0.1462,
+      "window_start_sec": 6220800.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.0182,
-          "occluded_score": 0.1373,
-          "delta": -0.1191
+          "baseline_score": 0.1462,
+          "occluded_score": 0.036,
+          "delta": 0.1102
         },
         "DO": {
-          "baseline_score": 0.0182,
-          "occluded_score": 0.0166,
-          "delta": 0.0016
+          "baseline_score": 0.1462,
+          "occluded_score": 0.0659,
+          "delta": 0.0803
         },
         "Turbidity": {
-          "baseline_score": 0.0182,
-          "occluded_score": 0.2185,
-          "delta": -0.2003
+          "baseline_score": 0.1462,
+          "occluded_score": 0.078,
+          "delta": 0.0683
         },
         "SpCond": {
-          "baseline_score": 0.0182,
-          "occluded_score": 0.0429,
-          "delta": -0.0247
-        }
-      },
-      "top_parameter": "DO",
-      "top_parameter_delta": 0.0016
-    },
-    "CARI": {
-      "rank": 17,
-      "max_score_scan": 0.6118,
-      "baseline_attribution_score": 0.2078,
-      "window_start_sec": 8697600.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.2078,
-          "occluded_score": 0.2235,
-          "delta": -0.0157
-        },
-        "DO": {
-          "baseline_score": 0.2078,
-          "occluded_score": 0.1512,
-          "delta": 0.0566
-        },
-        "Turbidity": {
-          "baseline_score": 0.2078,
-          "occluded_score": 0.3153,
-          "delta": -0.1076
-        },
-        "SpCond": {
-          "baseline_score": 0.2078,
-          "occluded_score": 0.1887,
-          "delta": 0.0191
-        }
-      },
-      "top_parameter": "DO",
-      "top_parameter_delta": 0.0566
-    },
-    "BIGC": {
-      "rank": 18,
-      "max_score_scan": 0.5917,
-      "baseline_attribution_score": 0.1112,
-      "window_start_sec": 37152000.0,
-      "parameter_attribution": {
-        "pH": {
-          "baseline_score": 0.1112,
-          "occluded_score": 0.0519,
-          "delta": 0.0593
-        },
-        "DO": {
-          "baseline_score": 0.1112,
-          "occluded_score": 0.1667,
-          "delta": -0.0555
-        },
-        "Turbidity": {
-          "baseline_score": 0.1112,
-          "occluded_score": 0.1247,
-          "delta": -0.0136
-        },
-        "SpCond": {
-          "baseline_score": 0.1112,
-          "occluded_score": 0.1802,
-          "delta": -0.069
+          "baseline_score": 0.1462,
+          "occluded_score": 0.1673,
+          "delta": -0.0211
         }
       },
       "top_parameter": "pH",
-      "top_parameter_delta": 0.0593
+      "top_parameter_delta": 0.1102
     },
-    "HOPB": {
+    "LECO": {
+      "rank": 17,
+      "max_score_scan": 0.6499,
+      "baseline_attribution_score": 0.137,
+      "window_start_sec": 24595200.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.137,
+          "occluded_score": 0.0701,
+          "delta": 0.0669
+        },
+        "DO": {
+          "baseline_score": 0.137,
+          "occluded_score": 0.1033,
+          "delta": 0.0337
+        },
+        "Turbidity": {
+          "baseline_score": 0.137,
+          "occluded_score": 0.1249,
+          "delta": 0.0121
+        },
+        "SpCond": {
+          "baseline_score": 0.137,
+          "occluded_score": 0.2025,
+          "delta": -0.0655
+        }
+      },
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0669
+    },
+    "GUIL": {
+      "rank": 18,
+      "max_score_scan": 0.6419,
+      "baseline_attribution_score": 0.1142,
+      "window_start_sec": 36921600.0,
+      "parameter_attribution": {
+        "pH": {
+          "baseline_score": 0.1142,
+          "occluded_score": 0.0953,
+          "delta": 0.0189
+        },
+        "DO": {
+          "baseline_score": 0.1142,
+          "occluded_score": 0.0375,
+          "delta": 0.0767
+        },
+        "Turbidity": {
+          "baseline_score": 0.1142,
+          "occluded_score": 0.1092,
+          "delta": 0.005
+        },
+        "SpCond": {
+          "baseline_score": 0.1142,
+          "occluded_score": 0.0378,
+          "delta": 0.0764
+        }
+      },
+      "top_parameter": "DO",
+      "top_parameter_delta": 0.0767
+    },
+    "POSE": {
       "rank": 19,
-      "max_score_scan": 0.5714,
-      "baseline_attribution_score": 0.1638,
-      "window_start_sec": 33408000.0,
+      "max_score_scan": 0.6387,
+      "baseline_attribution_score": 0.1398,
+      "window_start_sec": 115200.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.1638,
-          "occluded_score": 0.1235,
-          "delta": 0.0404
+          "baseline_score": 0.1398,
+          "occluded_score": 0.0419,
+          "delta": 0.0979
         },
         "DO": {
-          "baseline_score": 0.1638,
-          "occluded_score": 0.0683,
-          "delta": 0.0955
+          "baseline_score": 0.1398,
+          "occluded_score": 0.0748,
+          "delta": 0.065
         },
         "Turbidity": {
-          "baseline_score": 0.1638,
-          "occluded_score": 0.1168,
-          "delta": 0.047
+          "baseline_score": 0.1398,
+          "occluded_score": 0.1189,
+          "delta": 0.0209
         },
         "SpCond": {
-          "baseline_score": 0.1638,
-          "occluded_score": 0.222,
-          "delta": -0.0582
+          "baseline_score": 0.1398,
+          "occluded_score": 0.0895,
+          "delta": 0.0503
         }
       },
-      "top_parameter": "DO",
-      "top_parameter_delta": 0.0955
+      "top_parameter": "pH",
+      "top_parameter_delta": 0.0979
     },
-    "PRIN": {
+    "BLDE": {
       "rank": 20,
-      "max_score_scan": 0.5693,
-      "baseline_attribution_score": 0.2894,
-      "window_start_sec": 20620800.0,
+      "max_score_scan": 0.6252,
+      "baseline_attribution_score": 0.079,
+      "window_start_sec": 45158400.0,
       "parameter_attribution": {
         "pH": {
-          "baseline_score": 0.2894,
-          "occluded_score": 0.2505,
-          "delta": 0.0388
+          "baseline_score": 0.079,
+          "occluded_score": 0.0731,
+          "delta": 0.0059
         },
         "DO": {
-          "baseline_score": 0.2894,
-          "occluded_score": 0.1875,
-          "delta": 0.1019
+          "baseline_score": 0.079,
+          "occluded_score": 0.034,
+          "delta": 0.045
         },
         "Turbidity": {
-          "baseline_score": 0.2894,
-          "occluded_score": 0.2886,
-          "delta": 0.0008
+          "baseline_score": 0.079,
+          "occluded_score": 0.0787,
+          "delta": 0.0003
         },
         "SpCond": {
-          "baseline_score": 0.2894,
-          "occluded_score": 0.2248,
-          "delta": 0.0646
+          "baseline_score": 0.079,
+          "occluded_score": 0.1004,
+          "delta": -0.0215
         }
       },
       "top_parameter": "DO",
-      "top_parameter_delta": 0.1019
+      "top_parameter_delta": 0.045
     }
   },
-  "elapsed_s": 414.2
+  "elapsed_s": 373.6
 }

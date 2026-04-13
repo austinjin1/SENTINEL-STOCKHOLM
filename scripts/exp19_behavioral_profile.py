@@ -35,7 +35,9 @@ from sentinel.utils.logging import get_logger
 logger = get_logger(__name__)
 
 DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-CKPT_PATH  = PROJECT_ROOT / "checkpoints" / "biomotion" / "phase2_best.pt"
+_expanded = PROJECT_ROOT / "checkpoints" / "biomotion" / "biomotion_expanded_best.pt"
+_phase2   = PROJECT_ROOT / "checkpoints" / "biomotion" / "phase2_best.pt"
+CKPT_PATH  = _expanded if _expanded.exists() else _phase2
 DATA_DIR   = PROJECT_ROOT / "data" / "processed" / "behavioral_real"
 OUTPUT_DIR = PROJECT_ROOT / "results" / "exp19_behavioral_profile"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

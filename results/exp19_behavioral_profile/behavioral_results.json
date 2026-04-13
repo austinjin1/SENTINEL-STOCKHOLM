@@ -2,49 +2,49 @@
   "n_trajectories": 1000,
   "n_normal": 655,
   "n_anomaly": 345,
-  "overall_auroc_point": 0.9019,
+  "overall_auroc_point": 0.9569,
   "kinematic_correlations": {
     "mean_speed": {
-      "spearman_rho": 0.7459,
+      "spearman_rho": 0.6515,
       "p_value": 0.0
     },
     "max_speed": {
-      "spearman_rho": 0.7483,
+      "spearman_rho": 0.6526,
       "p_value": 0.0
     },
     "immobility_rate": {
-      "spearman_rho": -0.0918,
-      "p_value": 0.003661
+      "spearman_rho": 0.0999,
+      "p_value": 0.001554
     },
     "speed_cv": {
-      "spearman_rho": 0.6595,
+      "spearman_rho": 0.7308,
       "p_value": 0.0
     },
     "mean_turn_rad": {
-      "spearman_rho": -0.0919,
-      "p_value": 0.003625
+      "spearman_rho": 0.0999,
+      "p_value": 0.001557
     },
     "spatial_spread": {
-      "spearman_rho": 0.7242,
+      "spearman_rho": 0.678,
       "p_value": 0.0
     },
     "speed_entropy": {
-      "spearman_rho": 0.1041,
-      "p_value": 0.000983
+      "spearman_rho": -0.0844,
+      "p_value": 0.00759
     },
     "mean_pairwise_dist": {
-      "spearman_rho": 0.7247,
+      "spearman_rho": 0.6783,
       "p_value": 0.0
     },
     "active_fraction": {
-      "spearman_rho": 0.0918,
-      "p_value": 0.003661
+      "spearman_rho": -0.0999,
+      "p_value": 0.001554
     }
   },
   "top3_kinematic_predictors": [
-    "max_speed",
-    "mean_speed",
-    "mean_pairwise_dist"
+    "speed_cv",
+    "mean_pairwise_dist",
+    "spatial_spread"
   ],
   "group_stats": {
     "mean_speed": {
@@ -107,16 +107,16 @@
       "bin_lo": 0.9,
       "bin_hi": 1.0,
       "n": 995,
-      "mean_score": 0.4454,
+      "mean_score": 1.0332,
       "frac_anomaly_label": 0.346
     }
   ],
   "detection_mode_analysis": {
-    "trivial_immobility_auroc": 0.9019,
+    "trivial_immobility_auroc": 0.9569,
     "subtle_kinematic_auroc": null,
     "n_trivial": 1000,
     "n_subtle_anomaly": 0,
     "interpretation": "If trivial\u2248subtle, model detects subtle kinematics. If trivial>>subtle, model primarily detects immobility."
   },
-  "elapsed_s": 607.0
+  "elapsed_s": 300.2
 }

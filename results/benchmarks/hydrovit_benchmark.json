@@ -1,0 +1,20 @@
+{
+  "SENTINEL_HydroViT_v7": {
+    "water_temp_r2": 0.7200483083724976,
+    "mean_r2": 0.11662845686078072
+  },
+  "Ridge": {
+    "water_temp_r2": 0.5554091930389404
+  },
+  "RandomForest": {
+    "water_temp_r2": 0.6148335220462141
+  },
+  "ViT_no_pretrain": {
+    "water_temp_r2": 0.670642614364624,
+    "mean_r2": 0.06605137512087822
+  },
+  "CNN_baseline": {
+    "water_temp_r2": 0.7252088785171509,
+    "mean_r2": 0.21274802088737488
+  }
+}

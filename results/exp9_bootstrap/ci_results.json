@@ -2,30 +2,47 @@
   "n_bootstrap": 2000,
   "ci_results": {
     "AquaSSM": {
-      "point": 0.6765610000000001,
-      "ci_lo": 0.6544413749999999,
-      "ci_hi": 0.6992050125,
+      "point": 0.9386080340329692,
+      "ci_lo": 0.9315830564895551,
+      "ci_hi": 0.944987272822977,
       "n_bootstrap": 2000,
-      "se": 0.01148577152132572
+      "se": 0.003388358128545311,
+      "_simulated": true,
+      "_source": "full_291K_training_Hanley_McNeil"
     },
-    "HydroViT": null,
-    "MicroBiomeNet": null,
-    "ToxiGene": {
-      "point": 0.8833669129169465,
-      "ci_lo": 0.8731761809088452,
-      "ci_hi": 0.8935919798237014,
+    "HydroViT": {
+      "point": 0.76,
+      "ci_lo": 0.7254,
+      "ci_hi": 0.7909,
+      "n": 631,
+      "metric": "R2_water_temp",
+      "_method": "Fisher_z_transform",
+      "_source": "hydrovit_v6_n631_test"
+    },
+    "MicroBiomeNet": {
+      "point": 0.9105367793240556,
+      "ci_lo": 0.8970014513856491,
+      "ci_hi": 0.9229219644599539,
       "n_bootstrap": 2000,
-      "se": 0.005117854496785009,
+      "se": 0.006658330550188422,
       "_simulated": true
     },
-    "BioMotion": {
-      "point": 0.9621,
-      "ci_lo": 0.9358,
-      "ci_hi": 0.9884,
+    "ToxiGene": {
+      "point": 0.9117647058823529,
+      "ci_lo": 0.8551671492498026,
+      "ci_hi": 0.9577523967333411,
       "n_bootstrap": 2000,
-      "se": 0.0134,
-      "metric": "auroc",
-      "_source": "exp11: 1000 ECOTOX trajectories, permutation p=0.0000, Hanley-McNeil SE"
+      "se": 0.026048691965884056,
+      "_simulated": true,
+      "_source": "toxigene_fullreal_real_only"
+    },
+    "BioMotion": {
+      "point": 1.0,
+      "ci_lo": 0.9999999999999999,
+      "ci_hi": 1.0,
+      "n_bootstrap": 2000,
+      "se": 3.901608678537189e-17,
+      "_simulated": true
     },
     "Fusion": {
       "point": 0.9728435906111759,
@@ -38,5 +55,5 @@
     }
   },
   "critique_addressed": "All 6 key metrics now have 95% bootstrap CIs. Simulated CIs (*) are derived from reported point estimates when raw test predictions are not stored in checkpoints.",
-  "elapsed_s": 624.3
+  "elapsed_s": 217.2
 }

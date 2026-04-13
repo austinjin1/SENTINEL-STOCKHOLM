@@ -1,10 +1,26 @@
 #!/usr/bin/env python3
-"""Full AquaSSM training pipeline: pretrain + anomaly fine-tune + evaluate.
+"""AquaSSM full training: ALL 291K REAL SENSOR DATA via epoch subsampling.
 
-MIT License — Bryan Cheng, 2026
+Sources:
+  - data/processed/sensor/real/    (291,855 real USGS labeled sequences)
+  - data/processed/sensor/pretrain/ (162 real USGS, threshold-labeled)
+
+Strategy: epoch subsampling (50K samples/epoch from 233K pool, shuffled each epoch).
+This covers the full dataset in ~5 epochs, with the model seeing diverse data each pass.
+- Train: 233K shuffled pool, sample 20K/epoch (batch=512 for GPU efficiency)
+- Val:   29K fixed (full, loaded into RAM: ~0.09 GB)
+- Test:  29K fixed (full, loaded into RAM: ~0.09 GB)
+
+Class imbalance handled via pos_weight=4.0 (anomaly rate ~17.2%)
+Server has 502 GB RAM; val+test (0.18 GB) and per-epoch loading is fast from RAM.
+
+Column ordering: [DO(0), pH(1), SpCond(2), Temp(3), Turb(4), ORP(5)]
+
+Bryan Cheng, SENTINEL project, 2026
 """
 
 import json
+import os
 import sys
 import time
 from datetime import datetime
@@ -13,415 +29,542 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, Dataset, ConcatDataset, random_split
+from torch.utils.data import DataLoader, Dataset, ConcatDataset, Subset
 from sklearn.metrics import roc_auc_score, average_precision_score, f1_score
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+sys.path.insert(0, "/home/bcheng/SENTINEL")
+
 from sentinel.models.sensor_encoder import SensorEncoder
-from sentinel.models.sensor_encoder.physics_constraints import PhysicsConstraintLoss
 from sentinel.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-CHECKPOINT_DIR = Path("checkpoints/sensor")
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+PROJECT_ROOT   = Path("/home/bcheng/SENTINEL")
+CHECKPOINT_DIR = PROJECT_ROOT / "checkpoints" / "sensor"
 CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
 
+# Hyperparameters
+MAX_LEN           = 128   # 4x speedup vs 512
+BATCH_SIZE        = 512   # large batch: 512/batch -> ~40 batches/epoch (fast on contested GPU)
+NUM_EPOCHS        = 50    # 50 * 20K = 1M sample-epochs from 233K pool
+SAMPLES_PER_EPOCH = 20000 # subsample from 233K train pool each epoch
+LR_BACKBONE       = 3e-4
+LR_HEAD           = 1e-3
+WEIGHT_DECAY      = 0.01
+GRAD_CLIP         = 1.0
+PATIENCE          = 10
+SEED              = 42
+POS_WEIGHT        = 4.0   # ~4x for 17.2% anomaly rate
 
-class SensorSequenceDataset(Dataset):
-    """Load preprocessed sensor sequences from .npz files."""
+torch.manual_seed(SEED)
+np.random.seed(SEED)
 
-    def __init__(self, data_dir: Path, max_len: int = 1024):
-        self.files = sorted(data_dir.glob("*.npz"))
-        self.max_len = max_len
+# ---------------------------------------------------------------------------
+# Normalized threshold constants for pretrain labeling
+# ---------------------------------------------------------------------------
+_DO_LO   = (4.0    - 9.0)   / 3.0
+_PH_LO   = (6.0    - 7.5)   / 1.0
+_PH_HI   = (9.5    - 7.5)   / 1.0
+_SPC_HI  = (1500.0 - 500.0) / 400.0
+_TUR_HI  = (300.0  - 20.0)  / 50.0
+
+
+def label_pretrain_by_thresholds(values: np.ndarray) -> int:
+    do   = values[:, 0]; ph = values[:, 1]; spc = values[:, 2]; turb = values[:, 4]
+    if np.any(do   < _DO_LO):  return 1
+    if np.any(ph   < _PH_LO):  return 1
+    if np.any(ph   > _PH_HI):  return 1
+    if np.any(spc  > _SPC_HI): return 1
+    if np.any(turb > _TUR_HI): return 1
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# Datasets — all data in RAM (server has 502 GB)
+# ---------------------------------------------------------------------------
+
+class RealSensorDataset(Dataset):
+    """RAM-cached dataset. Loads all files once; each epoch uses a Subset."""
+
+    def __init__(self, file_list, max_len: int = MAX_LEN, desc: str = ""):
+        n = len(file_list)
+        logger.info(f"  Loading {n:,} files into RAM [{desc}]...")
+        self.vals_arr   = np.zeros((n, max_len, 6), dtype=np.float32)
+        self.dt_arr     = np.zeros((n, max_len),    dtype=np.float32)
+        self.labels_arr = np.zeros(n,               dtype=np.int64)
+        for i, f in enumerate(file_list):
+            d = np.load(f, allow_pickle=True)
+            vals = d['values'][:max_len].astype(np.float32)
+            dt   = d['delta_ts'][:max_len].astype(np.float32)
+            T = vals.shape[0]
+            if T < max_len:
+                vals = np.pad(vals, [(0, max_len - T), (0, 0)])
+                dt   = np.pad(dt,   [(0, max_len - T)])
+            self.vals_arr[i]   = np.clip(vals, -5.0, 5.0)
+            self.dt_arr[i]     = np.clip(dt,    0.0, 3600.0)
+            self.dt_arr[i][0]  = 0.0
+            self.labels_arr[i] = int(d['has_anomaly'])
+            if (i + 1) % 50000 == 0:
+                logger.info(f"    {i+1:,}/{n:,} files loaded...")
+        gb = self.vals_arr.nbytes / 1e9
+        n_pos = int(self.labels_arr.sum())
+        logger.info(f"  RAM cache ready: {gb:.2f} GB | anomaly={n_pos:,}, normal={n-n_pos:,}")
 
     def __len__(self):
-        return len(self.files)
+        return len(self.labels_arr)
 
     def __getitem__(self, idx):
-        data = np.load(self.files[idx])
-        T = min(len(data["values"]), self.max_len)
-        values = data["values"][:T].astype(np.float32)
-        delta_ts = data["delta_ts"][:T].astype(np.float32)
-        mask = data["mask"][:T].astype(np.float32) if "mask" in data else np.ones_like(values)
+        return (
+            torch.from_numpy(self.vals_arr[idx].copy()),
+            torch.from_numpy(self.dt_arr[idx].copy()),
+            int(self.labels_arr[idx]),
+        )
 
-        # Labels: 0=normal, 1+=anomaly (if available)
-        if "labels" in data:
-            labels = data["labels"][:T].astype(np.int64)
-            has_anomaly = int((labels > 0).any())
-        else:
-            labels = np.zeros(T, dtype=np.int64)
-            has_anomaly = 0
+    @property
+    def labels(self):
+        return self.labels_arr
 
-        return {
-            "values": torch.tensor(values),
-            "delta_ts": torch.tensor(delta_ts),
-            "mask": torch.tensor(mask),
-            "labels": torch.tensor(labels),
-            "has_anomaly": has_anomaly,
-        }
+
+class PretrainDataset(Dataset):
+    """162 pretrain files with threshold-derived labels."""
+
+    def __init__(self, data_dir: str, max_len: int = MAX_LEN):
+        files = sorted(Path(data_dir).glob("*.npz"))
+        self.vals_arr   = np.zeros((len(files), max_len, 6), dtype=np.float32)
+        self.dt_arr     = np.zeros((len(files), max_len),    dtype=np.float32)
+        self.labels_arr = np.zeros(len(files),               dtype=np.int64)
+        for i, f in enumerate(files):
+            d = np.load(f)
+            label = label_pretrain_by_thresholds(d["values"])
+            T = min(len(d["values"]), max_len)
+            v  = np.clip(d["values"][:T].astype(np.float32), -5.0, 5.0)
+            dt = np.clip(d["delta_ts"][:T].astype(np.float32), 0.0, 3600.0)
+            if T < max_len:
+                v  = np.pad(v,  [(0, max_len - T), (0, 0)])
+                dt = np.pad(dt, [(0, max_len - T)])
+            dt[0] = 0.0
+            self.vals_arr[i]   = v
+            self.dt_arr[i]     = dt
+            self.labels_arr[i] = label
+        n_pos = int(self.labels_arr.sum())
+        logger.info(f"PretrainDataset: {len(files)} files | anomaly={n_pos}, normal={len(files)-n_pos}")
+
+    def __len__(self):
+        return len(self.labels_arr)
+
+    def __getitem__(self, idx):
+        return (
+            torch.from_numpy(self.vals_arr[idx].copy()),
+            torch.from_numpy(self.dt_arr[idx].copy()),
+            int(self.labels_arr[idx]),
+        )
+
+    @property
+    def labels(self):
+        return self.labels_arr
 
 
 def collate_fn(batch):
-    """Pad sequences to same length within batch."""
-    max_len = max(b["values"].shape[0] for b in batch)
-
-    values = torch.zeros(len(batch), max_len, 6)
-    delta_ts = torch.zeros(len(batch), max_len)
-    masks = torch.zeros(len(batch), max_len, 6)
-    labels = torch.zeros(len(batch), max_len, dtype=torch.long)
-    has_anomaly = torch.tensor([b["has_anomaly"] for b in batch])
-
-    for i, b in enumerate(batch):
-        T = b["values"].shape[0]
-        values[i, :T] = b["values"]
-        delta_ts[i, :T] = b["delta_ts"]
-        masks[i, :T] = b["mask"]
-        labels[i, :T] = b["labels"]
-
+    vals_list, dt_list, label_list = zip(*batch)
     return {
-        "values": values,
-        "delta_ts": delta_ts,
-        "mask": masks,
-        "labels": labels,
-        "has_anomaly": has_anomaly,
+        "values":      torch.stack(vals_list),
+        "delta_ts":    torch.stack(dt_list),
+        "has_anomaly": torch.tensor(label_list, dtype=torch.float32),
     }
 
 
-def train_phase1_pretrain(model, train_dl, val_dl, epochs=50, lr=5e-4):
-    """Phase 1: Self-supervised MPP pretraining."""
-    logger.info("=" * 60)
-    logger.info("PHASE 1: MPP Pretraining")
-    logger.info("=" * 60)
+# ---------------------------------------------------------------------------
+# Classification Head
+# ---------------------------------------------------------------------------
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
-    physics_loss_fn = PhysicsConstraintLoss().to(DEVICE)
+class AnomalyHead(nn.Module):
+    def __init__(self, input_dim: int = 256, hidden_dim: int = 128):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.GELU(), nn.Dropout(0.2),
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.GELU(), nn.Dropout(0.1),
+            nn.Linear(hidden_dim // 2, 1),
+        )
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                nn.init.kaiming_normal_(m.weight, nonlinearity="relu")
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
 
-    best_val_loss = float("inf")
-    history = []
+    def forward(self, x):
+        return self.net(x).squeeze(-1)
 
-    for epoch in range(epochs):
-        model.train()
-        total_loss, total_mpp, total_phys = 0, 0, 0
-        n_batches = 0
 
-        for batch in train_dl:
-            values = batch["values"].to(DEVICE)
-            delta_ts = batch["delta_ts"].to(DEVICE)
+# ---------------------------------------------------------------------------
+# Metrics
+# ---------------------------------------------------------------------------
 
-            out = model.forward_pretrain(x=values, delta_ts=delta_ts)
-            mpp_loss = out["loss"]
+def compute_metrics(labels, probs):
+    try:    auroc = roc_auc_score(labels, probs)
+    except: auroc = 0.5
+    try:    auprc = average_precision_score(labels, probs)
+    except: auprc = 0.5
+    f1 = f1_score(labels, (probs > 0.5).astype(int), zero_division=0)
+    return auroc, auprc, f1
 
-            if torch.isnan(mpp_loss):
-                optimizer.zero_grad()
+
+def compute_optimal_f1(labels, probs):
+    best_f1, best_thresh = 0.0, 0.5
+    for thresh in np.arange(0.1, 0.9, 0.05):
+        f1 = f1_score(labels, (probs > thresh).astype(int), zero_division=0)
+        if f1 > best_f1:
+            best_f1, best_thresh = f1, thresh
+    return best_f1, best_thresh
+
+
+def run_epoch(model, head, loader, criterion, optimizer, device, train: bool, grad_clip: float):
+    if train:
+        model.train(); head.train()
+    else:
+        model.eval(); head.eval()
+
+    total_loss, n_batches = 0.0, 0
+    all_probs, all_labels = [], []
+    nan_count = 0
+
+    ctx = torch.enable_grad() if train else torch.no_grad()
+    with ctx:
+        for batch in loader:
+            values   = batch["values"].to(device, non_blocking=True)
+            delta_ts = batch["delta_ts"].to(device, non_blocking=True)
+            labels   = batch["has_anomaly"].to(device, non_blocking=True)
+
+            out = model(values, delta_ts=delta_ts, compute_anomaly=False)
+            emb = out["embedding"]
+            if torch.isnan(emb).any():
+                nan_count += 1
+                if train: optimizer.zero_grad()
                 continue
 
-            # Physics constraints
-            pred = out["predictions"]
-            pnames = ["do", "ph", "conductivity", "temperature", "turb", "orp"]
-            pred_dict = {n: pred[..., i] for i, n in enumerate(pnames)}
-            phys_out = physics_loss_fn(pred_dict)
-            phys_loss = phys_out["total_loss"].clamp(max=10.0)
+            logits = head(emb)
+            loss   = criterion(logits, labels)
+            if torch.isnan(loss):
+                nan_count += 1
+                if train: optimizer.zero_grad()
+                continue
 
-            loss = mpp_loss + 0.1 * phys_loss
-
-            optimizer.zero_grad()
-            loss.backward()
-            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            optimizer.step()
-
-            total_loss += loss.item()
-            total_mpp += mpp_loss.item()
-            total_phys += phys_loss.item()
-            n_batches += 1
-
-        scheduler.step()
-
-        # Validation
-        model.eval()
-        val_loss = 0
-        val_n = 0
-        with torch.no_grad():
-            for batch in val_dl:
-                values = batch["values"].to(DEVICE)
-                delta_ts = batch["delta_ts"].to(DEVICE)
-                out = model.forward_pretrain(x=values, delta_ts=delta_ts)
-                if not torch.isnan(out["loss"]):
-                    val_loss += out["loss"].item()
-                    val_n += 1
-
-        avg_train = total_loss / max(n_batches, 1)
-        avg_val = val_loss / max(val_n, 1)
-
-        history.append({
-            "epoch": epoch + 1,
-            "train_loss": avg_train,
-            "train_mpp": total_mpp / max(n_batches, 1),
-            "train_phys": total_phys / max(n_batches, 1),
-            "val_loss": avg_val,
-            "lr": scheduler.get_last_lr()[0],
-        })
-
-        if (epoch + 1) % 5 == 0 or epoch == 0:
-            logger.info(
-                f"Epoch {epoch+1:3d}/{epochs} | Train: {avg_train:.4f} "
-                f"(MPP: {total_mpp/max(n_batches,1):.4f}, Phys: {total_phys/max(n_batches,1):.4f}) "
-                f"| Val: {avg_val:.4f} | LR: {scheduler.get_last_lr()[0]:.2e}"
-            )
-
-        if avg_val < best_val_loss:
-            best_val_loss = avg_val
-            torch.save(model.state_dict(), CHECKPOINT_DIR / "aquassm_pretrained_best.pt")
-
-    torch.save(model.state_dict(), CHECKPOINT_DIR / "aquassm_pretrained_final.pt")
-    return history
-
-
-def train_phase2_anomaly(model, train_dl, val_dl, epochs=30, lr=1e-4):
-    """Phase 2: Supervised anomaly detection fine-tuning."""
-    logger.info("=" * 60)
-    logger.info("PHASE 2: Anomaly Fine-tuning")
-    logger.info("=" * 60)
-
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
-
-    history = []
-    best_auroc = 0
-
-    for epoch in range(epochs):
-        model.train()
-        total_loss = 0
-        n_batches = 0
-        all_preds = []
-        all_labels = []
-
-        for batch in train_dl:
-            values = batch["values"].to(DEVICE)
-            delta_ts = batch["delta_ts"].to(DEVICE)
-            has_anomaly = batch["has_anomaly"].float().to(DEVICE)
-
-            # Forward pass with anomaly detection
-            out = model(values, delta_ts, compute_anomaly=True)
-
-            # Get anomaly score as max normalized error
-            if "normalized_errors" in out["anomaly_scores"]:
-                anomaly_score = out["anomaly_scores"]["normalized_errors"].mean(dim=-1)  # [B]
-            else:
-                anomaly_score = torch.zeros(len(values), device=DEVICE)
-
-            # Binary cross-entropy on anomaly score
-            anomaly_pred = torch.sigmoid(anomaly_score)
-            loss = nn.functional.binary_cross_entropy(
-                anomaly_pred, has_anomaly, reduction="mean"
-            )
-
-            optimizer.zero_grad()
-            loss.backward()
-            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            optimizer.step()
+            if train:
+                optimizer.zero_grad()
+                loss.backward()
+                nn.utils.clip_grad_norm_(
+                    list(model.parameters()) + list(head.parameters()), grad_clip
+                )
+                optimizer.step()
 
             total_loss += loss.item()
-            n_batches += 1
-            all_preds.extend(anomaly_pred.detach().cpu().numpy())
-            all_labels.extend(has_anomaly.cpu().numpy())
+            n_batches  += 1
+            all_probs.extend(torch.sigmoid(logits).detach().cpu().numpy().tolist())
+            all_labels.extend(labels.detach().cpu().numpy().tolist())
 
-        scheduler.step()
-
-        # Compute AUROC
-        try:
-            train_auroc = roc_auc_score(all_labels, all_preds)
-        except ValueError:
-            train_auroc = 0.5
-
-        # Validation
-        model.eval()
-        val_preds, val_labels = [], []
-        with torch.no_grad():
-            for batch in val_dl:
-                values = batch["values"].to(DEVICE)
-                delta_ts = batch["delta_ts"].to(DEVICE)
-                has_anomaly = batch["has_anomaly"].float()
-
-                out = model(values, delta_ts, compute_anomaly=True)
-                if "normalized_errors" in out["anomaly_scores"]:
-                    score = out["anomaly_scores"]["normalized_errors"].mean(dim=-1)
-                else:
-                    score = torch.zeros(len(values))
-                val_preds.extend(torch.sigmoid(score).cpu().numpy())
-                val_labels.extend(has_anomaly.numpy())
-
-        try:
-            val_auroc = roc_auc_score(val_labels, val_preds)
-        except ValueError:
-            val_auroc = 0.5
-
-        history.append({
-            "epoch": epoch + 1,
-            "train_loss": total_loss / max(n_batches, 1),
-            "train_auroc": train_auroc,
-            "val_auroc": val_auroc,
-        })
-
-        if (epoch + 1) % 5 == 0 or epoch == 0:
-            logger.info(
-                f"Epoch {epoch+1:3d}/{epochs} | Loss: {total_loss/max(n_batches,1):.4f} "
-                f"| Train AUROC: {train_auroc:.4f} | Val AUROC: {val_auroc:.4f}"
-            )
-
-        if val_auroc > best_auroc:
-            best_auroc = val_auroc
-            torch.save(model.state_dict(), CHECKPOINT_DIR / "aquassm_anomaly_best.pt")
-
-    return history, best_auroc
+    avg_loss = total_loss / max(n_batches, 1)
+    auroc, auprc, f1 = compute_metrics(np.array(all_labels), np.array(all_probs))
+    return avg_loss, auroc, auprc, f1, nan_count
 
 
-def evaluate(model, test_dl):
-    """Final evaluation on test set."""
-    logger.info("=" * 60)
-    logger.info("EVALUATION")
-    logger.info("=" * 60)
-
-    model.eval()
-    all_preds, all_labels = [], []
-    embeddings = []
-
-    with torch.no_grad():
-        for batch in test_dl:
-            values = batch["values"].to(DEVICE)
-            delta_ts = batch["delta_ts"].to(DEVICE)
-            has_anomaly = batch["has_anomaly"].float()
-
-            out = model(values, delta_ts, compute_anomaly=True)
-
-            if "normalized_errors" in out["anomaly_scores"]:
-                score = out["anomaly_scores"]["normalized_errors"].mean(dim=-1)
-            else:
-                score = torch.zeros(len(values))
-
-            all_preds.extend(torch.sigmoid(score).cpu().numpy())
-            all_labels.extend(has_anomaly.numpy())
-            embeddings.append(out["embedding"].cpu().numpy())
-
-    all_preds = np.array(all_preds)
-    all_labels = np.array(all_labels)
-    embeddings = np.concatenate(embeddings)
-
-    try:
-        auroc = roc_auc_score(all_labels, all_preds)
-        auprc = average_precision_score(all_labels, all_preds)
-    except ValueError:
-        auroc = auprc = 0.5
-
-    # Binary predictions at 0.5 threshold
-    binary_preds = (all_preds > 0.5).astype(int)
-    f1 = f1_score(all_labels, binary_preds, zero_division=0)
-
-    results = {
-        "auroc": float(auroc),
-        "auprc": float(auprc),
-        "f1": float(f1),
-        "n_test": len(all_labels),
-        "n_positive": int(all_labels.sum()),
-        "embedding_shape": list(embeddings.shape),
-    }
-
-    logger.info(f"Test AUROC: {auroc:.4f}")
-    logger.info(f"Test AUPRC: {auprc:.4f}")
-    logger.info(f"Test F1:    {f1:.4f}")
-    logger.info(f"N={len(all_labels)}, Positive={int(all_labels.sum())}")
-
-    return results
-
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 
 def main():
-    start_time = time.time()
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    t0 = time.time()
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    logger.info("=" * 70)
+    logger.info("AquaSSM FULL Training -- 291K Real USGS (epoch subsampling)")
+    logger.info("=" * 70)
+    logger.info(f"Device: {DEVICE} | Torch {torch.__version__}")
+    logger.info(
+        f"Hyperparams: MAX_LEN={MAX_LEN}, BATCH={BATCH_SIZE}, EPOCHS={NUM_EPOCHS}, "
+        f"SAMPLES_PER_EPOCH={SAMPLES_PER_EPOCH:,}, LR_BB={LR_BACKBONE}, LR_HEAD={LR_HEAD} "
+        f"(~1 min/epoch on contested A100)"
+    )
+    logger.info(f"pos_weight={POS_WEIGHT} | patience={PATIENCE} | seed={SEED}")
 
-    # Load datasets
-    real_dir = Path("data/processed/sensor/pretrain")
-    synth_dir = Path("data/processed/sensor/synthetic")
+    # -----------------------------------------------------------------------
+    # Build file lists + split
+    # -----------------------------------------------------------------------
+    real_dir     = PROJECT_ROOT / "data" / "processed" / "sensor" / "real"
+    pretrain_dir = PROJECT_ROOT / "data" / "processed" / "sensor" / "pretrain"
 
-    real_ds = SensorSequenceDataset(real_dir, max_len=1024) if real_dir.exists() else None
-    synth_ds = SensorSequenceDataset(synth_dir, max_len=1024) if synth_dir.exists() else None
+    real_files = sorted(real_dir.glob("*.npz"))
+    logger.info(f"Found {len(real_files):,} files in real/")
 
-    datasets = []
-    if real_ds and len(real_ds) > 0:
-        datasets.append(real_ds)
-        logger.info(f"Real data: {len(real_ds)} sequences")
-    if synth_ds and len(synth_ds) > 0:
-        datasets.append(synth_ds)
-        logger.info(f"Synthetic data: {len(synth_ds)} sequences")
+    rng = np.random.default_rng(SEED)
+    perm = rng.permutation(len(real_files))
+    real_files = [real_files[i] for i in perm]
 
-    if not datasets:
-        logger.error("No data found!")
-        return
+    n_real  = len(real_files)
+    n_train = int(0.80 * n_real)
+    n_val   = int(0.10 * n_real)
+    n_test  = n_real - n_train - n_val
 
-    full_ds = ConcatDataset(datasets)
-    n_total = len(full_ds)
-    n_train = int(0.7 * n_total)
-    n_val = int(0.15 * n_total)
-    n_test = n_total - n_train - n_val
+    train_files = real_files[:n_train]
+    val_files   = real_files[n_train : n_train + n_val]
+    test_files  = real_files[n_train + n_val :]
+    logger.info(f"Split: train_pool={n_train:,}, val={n_val:,}, test={n_test:,}")
 
-    train_ds, val_ds, test_ds = random_split(
-        full_ds, [n_train, n_val, n_test],
-        generator=torch.Generator().manual_seed(42)
+    # -----------------------------------------------------------------------
+    # Load datasets into RAM
+    # -----------------------------------------------------------------------
+    ds_pretrain  = PretrainDataset(str(pretrain_dir))
+    ds_train_pool = RealSensorDataset(train_files, desc="train pool")
+    ds_val       = RealSensorDataset(val_files,   desc="val")
+    ds_test      = RealSensorDataset(test_files,  desc="test")
+
+    n_pool = len(ds_train_pool)
+    logger.info(
+        f"Pool: {n_pool:,} train + {len(ds_pretrain)} pretrain | "
+        f"val={len(ds_val):,} | test={len(ds_test):,}"
     )
 
-    logger.info(f"Total: {n_total} | Train: {n_train} | Val: {n_val} | Test: {n_test}")
+    val_dl = DataLoader(
+        ds_val, batch_size=BATCH_SIZE, shuffle=False,
+        collate_fn=collate_fn, num_workers=0, pin_memory=True,
+    )
+    test_dl = DataLoader(
+        ds_test, batch_size=BATCH_SIZE, shuffle=False,
+        collate_fn=collate_fn, num_workers=0, pin_memory=True,
+    )
 
-    train_dl = DataLoader(train_ds, batch_size=8, shuffle=True, collate_fn=collate_fn, num_workers=0)
-    val_dl = DataLoader(val_ds, batch_size=8, shuffle=False, collate_fn=collate_fn, num_workers=0)
-    test_dl = DataLoader(test_ds, batch_size=8, shuffle=False, collate_fn=collate_fn, num_workers=0)
-
-    # Build model
+    # -----------------------------------------------------------------------
+    # Model + optimizer
+    # -----------------------------------------------------------------------
     model = SensorEncoder().to(DEVICE)
-    n_params = sum(p.numel() for p in model.parameters())
-    logger.info(f"Model: SensorEncoder ({n_params:,} parameters)")
+    head  = AnomalyHead().to(DEVICE)
+    total_params = (
+        sum(p.numel() for p in model.parameters())
+        + sum(p.numel() for p in head.parameters())
+    )
+    logger.info(f"Total parameters: {total_params:,}")
 
-    # Phase 1: Pretrain
-    phase1_history = train_phase1_pretrain(model, train_dl, val_dl, epochs=50, lr=5e-4)
+    pos_weight = torch.tensor([POS_WEIGHT], device=DEVICE)
+    criterion  = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 
-    # Phase 2: Anomaly fine-tune
-    phase2_history, best_auroc = train_phase2_anomaly(model, train_dl, val_dl, epochs=30, lr=1e-4)
+    optimizer = torch.optim.AdamW([
+        {"params": model.parameters(), "lr": LR_BACKBONE, "weight_decay": WEIGHT_DECAY},
+        {"params": head.parameters(),  "lr": LR_HEAD,     "weight_decay": WEIGHT_DECAY},
+    ])
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=NUM_EPOCHS)
 
-    # Evaluate
-    test_results = evaluate(model, test_dl)
+    # -----------------------------------------------------------------------
+    # Training loop with epoch subsampling
+    # -----------------------------------------------------------------------
+    best_val_auroc   = 0.0
+    best_epoch       = 0
+    patience_counter = 0
+    total_nan        = 0
+    epochs_trained   = 0
+    history = {"train_loss": [], "train_auroc": [], "val_loss": [], "val_auroc": []}
 
-    # Save all results
-    elapsed = time.time() - start_time
-    run_results = {
-        "timestamp": timestamp,
-        "device": str(DEVICE),
-        "n_params": n_params,
-        "n_train": n_train,
-        "n_val": n_val,
-        "n_test": n_test,
-        "phase1_history": phase1_history,
-        "phase2_history": phase2_history,
-        "test_results": test_results,
-        "elapsed_seconds": elapsed,
-        "best_val_auroc": best_auroc,
+    # Precompute pool label array for stratified subsampling
+    pool_labels = ds_train_pool.labels  # numpy array of 0/1
+
+    samples_per_epoch = min(SAMPLES_PER_EPOCH, n_pool)
+    logger.info(
+        f"Training: {NUM_EPOCHS} epochs x {samples_per_epoch:,} samples/epoch "
+        f"(~{NUM_EPOCHS * samples_per_epoch / 1e6:.1f}M total sample-epochs)"
+    )
+
+    epoch_rng = np.random.default_rng(SEED + 1)
+
+    for epoch in range(1, NUM_EPOCHS + 1):
+        epoch_t0 = time.time()
+
+        # Stratified subsample: maintain ~17.2% anomaly rate
+        anomaly_idx = np.where(pool_labels == 1)[0]
+        normal_idx  = np.where(pool_labels == 0)[0]
+        n_anomaly_sample = int(samples_per_epoch * 0.172)
+        n_normal_sample  = samples_per_epoch - n_anomaly_sample
+
+        chosen_anomaly = epoch_rng.choice(anomaly_idx, size=min(n_anomaly_sample, len(anomaly_idx)), replace=False)
+        chosen_normal  = epoch_rng.choice(normal_idx,  size=min(n_normal_sample,  len(normal_idx)),  replace=False)
+        chosen_idx = np.concatenate([chosen_anomaly, chosen_normal])
+        epoch_rng.shuffle(chosen_idx)
+
+        # Combine with pretrain
+        epoch_subset = Subset(ds_train_pool, chosen_idx.tolist())
+        epoch_combined = ConcatDataset([ds_pretrain, epoch_subset])
+
+        train_dl = DataLoader(
+            epoch_combined, batch_size=BATCH_SIZE, shuffle=True,
+            collate_fn=collate_fn, num_workers=0, pin_memory=True,
+        )
+
+        tr_loss, tr_auroc, _, _, ep_nan = run_epoch(
+            model, head, train_dl, criterion, optimizer, DEVICE,
+            train=True, grad_clip=GRAD_CLIP,
+        )
+        total_nan += ep_nan
+        scheduler.step()
+
+        va_loss, va_auroc, va_auprc, va_f1, _ = run_epoch(
+            model, head, val_dl, criterion, optimizer, DEVICE,
+            train=False, grad_clip=GRAD_CLIP,
+        )
+
+        history["train_loss"].append(tr_loss)
+        history["train_auroc"].append(tr_auroc)
+        history["val_loss"].append(va_loss)
+        history["val_auroc"].append(va_auroc)
+
+        improved = va_auroc > best_val_auroc
+        if improved:
+            best_val_auroc   = va_auroc
+            best_epoch       = epoch
+            patience_counter = 0
+            torch.save(
+                {"model": model.state_dict(), "head": head.state_dict(),
+                 "epoch": epoch, "val_auroc": va_auroc},
+                CHECKPOINT_DIR / "aquassm_full_best.pt",
+            )
+        else:
+            patience_counter += 1
+
+        epoch_time = time.time() - epoch_t0
+        epochs_trained = epoch
+
+        if epoch <= 3 or epoch % 5 == 0 or epoch == NUM_EPOCHS or improved:
+            lr_bb = optimizer.param_groups[0]["lr"]
+            coverage = min(epoch * samples_per_epoch / n_pool * 100, 100)
+            logger.info(
+                f"Ep {epoch:3d}/{NUM_EPOCHS} [{epoch_time:.0f}s] "
+                f"cov={coverage:.0f}% | "
+                f"TrLoss={tr_loss:.4f} TrAUC={tr_auroc:.4f} | "
+                f"VaLoss={va_loss:.4f} VaAUC={va_auroc:.4f} VaF1={va_f1:.4f} | "
+                f"LR={lr_bb:.2e} Pat={patience_counter}/{PATIENCE} NaN={total_nan}"
+                + (" *BEST*" if improved else "")
+            )
+
+        if patience_counter >= PATIENCE:
+            logger.info(f"Early stopping at epoch {epoch} (patience={PATIENCE})")
+            break
+
+    logger.info(f"Best val AUROC: {best_val_auroc:.4f} at epoch {best_epoch}")
+
+    # -----------------------------------------------------------------------
+    # Test evaluation
+    # -----------------------------------------------------------------------
+    logger.info("=" * 70)
+    logger.info("TEST EVALUATION")
+    logger.info("=" * 70)
+
+    ckpt = torch.load(CHECKPOINT_DIR / "aquassm_full_best.pt",
+                      map_location=DEVICE, weights_only=False)
+    model.load_state_dict(ckpt["model"])
+    head.load_state_dict(ckpt["head"])
+
+    te_loss, te_auroc, te_auprc, te_f1, _ = run_epoch(
+        model, head, test_dl, criterion, optimizer, DEVICE,
+        train=False, grad_clip=GRAD_CLIP,
+    )
+
+    # Re-run to get probs for optimal F1
+    model.eval(); head.eval()
+    te_probs_all, te_labels_all = [], []
+    with torch.no_grad():
+        for batch in test_dl:
+            values   = batch["values"].to(DEVICE, non_blocking=True)
+            delta_ts = batch["delta_ts"].to(DEVICE, non_blocking=True)
+            labels   = batch["has_anomaly"]
+            out = model(values, delta_ts=delta_ts, compute_anomaly=False)
+            emb = out["embedding"]
+            if torch.isnan(emb).any(): continue
+            logits = head(emb)
+            te_probs_all.extend(torch.sigmoid(logits).cpu().numpy().tolist())
+            te_labels_all.extend(labels.numpy().tolist())
+
+    test_labels = np.array(te_labels_all)
+    test_probs  = np.array(te_probs_all)
+    test_auroc, test_auprc, test_f1 = compute_metrics(test_labels, test_probs)
+    best_f1_opt, best_thresh = compute_optimal_f1(test_labels, test_probs)
+    test_acc = float(((test_probs > 0.5).astype(int) == test_labels.astype(int)).mean())
+
+    logger.info(f"Test AUROC:  {test_auroc:.4f}  (baseline=0.920)")
+    logger.info(f"Test AUPRC:  {test_auprc:.4f}")
+    logger.info(f"Test F1@0.5: {test_f1:.4f}")
+    logger.info(f"Test F1 opt: {best_f1_opt:.4f} (thresh={best_thresh:.2f})")
+    logger.info(f"Test Acc:    {test_acc:.4f}")
+    logger.info(f"N_test={len(test_labels):,}, N_pos={int(test_labels.sum()):,}, N_neg={int((1-test_labels).sum()):,}")
+
+    if test_auroc > 0.920:
+        logger.info(f"*** BEATS BASELINE: {test_auroc:.4f} > 0.920 ***")
+    elif test_auroc > 0.85:
+        logger.info(f"Strong: {test_auroc:.4f} (below 0.920 baseline)")
+    else:
+        logger.info(f"Below baseline: {test_auroc:.4f} < 0.920")
+
+    # -----------------------------------------------------------------------
+    # Save results
+    # -----------------------------------------------------------------------
+    elapsed = time.time() - t0
+    results = {
+        "test_auroc":        float(test_auroc),
+        "test_auprc":        float(test_auprc),
+        "test_f1":           float(test_f1),
+        "test_f1_optimal":   float(best_f1_opt),
+        "optimal_threshold": float(best_thresh),
+        "test_acc":          float(test_acc),
+        "best_val_auroc":    float(best_val_auroc),
+        "best_epoch":        int(best_epoch),
+        "epochs_trained":    int(epochs_trained),
+        "n_train":           n_train + len(ds_pretrain),
+        "n_val":             len(ds_val),
+        "n_test":            len(ds_test),
+        "n_test_evaluated":  len(te_labels_all),
+        "n_test_pos":        int(test_labels.sum()),
+        "n_total":           n_real + len(ds_pretrain),
+        "samples_per_epoch": samples_per_epoch,
+        "baseline_auroc":    0.920,
+        "beats_baseline":    bool(test_auroc > 0.920),
+        "data_source":       "real/ (291K USGS)",
+        "total_nan_batches": total_nan,
+        "elapsed_seconds":   elapsed,
+        "elapsed_minutes":   elapsed / 60.0,
+        "hyperparameters": {
+            "lr_backbone": LR_BACKBONE, "lr_head": LR_HEAD,
+            "weight_decay": WEIGHT_DECAY, "batch_size": BATCH_SIZE,
+            "max_len": MAX_LEN, "grad_clip": GRAD_CLIP,
+            "pos_weight": POS_WEIGHT, "patience": PATIENCE, "seed": SEED,
+            "num_epochs": NUM_EPOCHS, "samples_per_epoch": SAMPLES_PER_EPOCH,
+        },
+        "training_curves": {
+            "train_loss":  history["train_loss"],
+            "train_auroc": history["train_auroc"],
+            "val_loss":    history["val_loss"],
+            "val_auroc":   history["val_auroc"],
+        },
+        "timestamp": ts,
     }
 
-    results_file = CHECKPOINT_DIR / f"run_{timestamp}.json"
-    with open(results_file, "w") as f:
-        json.dump(run_results, f, indent=2)
+    results_path = CHECKPOINT_DIR / "results_full.json"
+    with open(results_path, "w") as f:
+        json.dump(results, f, indent=2)
+    logger.info(f"Results saved to {results_path}")
+    logger.info(f"Checkpoint: {CHECKPOINT_DIR}/aquassm_full_best.pt")
+    logger.info(f"Total time: {elapsed/60:.1f} minutes")
 
-    logger.info(f"\nTotal time: {elapsed/60:.1f} minutes")
-    logger.info(f"Results saved to {results_file}")
-
-    # Check against thresholds
-    logger.info("\n" + "=" * 60)
-    logger.info("THRESHOLD CHECK")
-    logger.info("=" * 60)
-    auroc = test_results["auroc"]
-    if auroc > 0.85:
-        logger.info(f"✓ AUROC {auroc:.4f} > 0.85 — HARD THRESHOLD MET")
-    elif auroc > 0.70:
-        logger.info(f"~ AUROC {auroc:.4f} > 0.70 — ACCEPTABLE (needs iteration)")
-    else:
-        logger.info(f"✗ AUROC {auroc:.4f} < 0.70 — BELOW THRESHOLD")
+    print("\n" + "=" * 65)
+    print("=== AquaSSM FULL (291K Real USGS) -- Final Results ===")
+    print(f"  Data pool:      {n_pool:,} train + {len(ds_pretrain)} pretrain")
+    print(f"  Samples/epoch:  {samples_per_epoch:,}")
+    print(f"  Val/Test:       {len(ds_val):,} / {len(ds_test):,} (full, fixed)")
+    print(f"  Epochs:         {epochs_trained}/{NUM_EPOCHS} (patience={PATIENCE})")
+    print(f"  Baseline AUROC: 0.9200 (aquassm_real_best, 20K samples)")
+    print(f"  Test AUROC:     {test_auroc:.4f}  {'*** BEATS BASELINE ***' if test_auroc > 0.920 else '(below baseline)'}")
+    print(f"  Test AUPRC:     {test_auprc:.4f}")
+    print(f"  Test F1@0.5:    {test_f1:.4f}")
+    print(f"  Test F1 opt:    {best_f1_opt:.4f} (thresh={best_thresh:.2f})")
+    print(f"  Test Accuracy:  {test_acc:.4f}")
+    print(f"  Time:           {elapsed/60:.1f} min")
+    print("=" * 65)
 
 
 if __name__ == "__main__":

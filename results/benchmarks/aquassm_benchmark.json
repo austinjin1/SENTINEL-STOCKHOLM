@@ -1,0 +1,53 @@
+{
+  "timestamp": "20260413_104755",
+  "n_total": 762,
+  "max_len": 128,
+  "models": {
+    "AquaSSM": {
+      "auroc": 0.9157475490196079,
+      "f1": 0.8521739130434782,
+      "n_test": 115
+    },
+    "LSTM": {
+      "auroc": 0.836703431372549,
+      "f1": 0.7592592592592593,
+      "n_test": 115,
+      "config": {
+        "hidden": 128,
+        "layers": 2,
+        "epochs": 50
+      }
+    },
+    "Transformer": {
+      "auroc": 0.8339460784313726,
+      "f1": 0.7586206896551724,
+      "n_test": 115,
+      "config": {
+        "d_model": 64,
+        "nhead": 4,
+        "epochs": 50
+      }
+    },
+    "IsolationForest": {
+      "auroc": 0.7279411764705882,
+      "f1": 0.42696629213483145,
+      "n_test": 115,
+      "config": {
+        "n_estimators": 200,
+        "features": "mean+std per channel (12-dim)"
+      }
+    },
+    "OneClassSVM": {
+      "auroc": 0.8501838235294118,
+      "f1": 0.6804123711340206,
+      "n_test": 115,
+      "config": {
+        "nu": 0.1,
+        "kernel": "rbf",
+        "gamma": "auto"
+      }
+    }
+  },
+  "elapsed_seconds": 39.49458456039429,
+  "elapsed_minutes": 0.6582430760065715
+}

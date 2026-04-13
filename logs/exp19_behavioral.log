@@ -1,42 +1,41 @@
-[13:45:48] INFO     ============================================================
+[10:46:04] INFO     ============================================================
            INFO     EXP19: BioMotion Behavioral Profile Analysis                
            INFO     ============================================================
-[13:45:51] INFO     BioMotion loaded on cuda                                    
+[10:46:05] INFO     BioMotion loaded on cuda                                    
            INFO     Processing 1000 trajectories                                
            INFO       0/1000...                                                 
-[13:46:51] INFO       100/1000...                                               
-[13:47:55] INFO       200/1000...                                               
-[13:48:59] INFO       300/1000...                                               
-[13:50:04] INFO       400/1000...                                               
-[13:51:08] INFO       500/1000...                                               
-[13:52:14] INFO       600/1000...                                               
-[13:53:17] INFO       700/1000...                                               
-[13:54:04] INFO       800/1000...                                               
-[13:54:59] INFO       900/1000...                                               
-[13:55:54] INFO     GPU mode: negated anomaly_score for analysis                
-           INFO     Labels: 655 normal, 345 anomaly                             
-[13:55:55] INFO     Saved:                                                      
+[10:46:35] INFO       100/1000...                                               
+[10:47:04] INFO       200/1000...                                               
+[10:47:33] INFO       300/1000...                                               
+[10:48:01] INFO       400/1000...                                               
+[10:48:35] INFO       500/1000...                                               
+[10:49:05] INFO       600/1000...                                               
+[10:49:34] INFO       700/1000...                                               
+[10:50:04] INFO       800/1000...                                               
+[10:50:34] INFO       900/1000...                                               
+[10:51:04] INFO     Labels: 655 normal, 345 anomaly                             
+           INFO     Saved:                                                      
                     /home/bcheng/SENTINEL/results/exp19_behavioral_profile/behav
                     ioral_results.json                                          
-[13:55:56] INFO     Saved:                                                      
+[10:51:05] INFO     Saved:                                                      
                     /home/bcheng/SENTINEL/paper/figures/fig_exp19_behavioral_pro
                     files.jpg                                                   
            INFO                                                                 
                     === BEHAVIORAL ANALYSIS SUMMARY ===                         
-           INFO     Overall AUROC:  0.9019                                      
-           INFO     Top 3 kinematic predictors: ['max_speed', 'mean_speed',     
-                    'mean_pairwise_dist']                                       
+           INFO     Overall AUROC:  0.9569                                      
+           INFO     Top 3 kinematic predictors: ['speed_cv',                    
+                    'mean_pairwise_dist', 'spatial_spread']                     
            INFO                                                                 
                     Kinematic correlations with anomaly score:                  
-           INFO       max_speed                 ρ=+0.7483  p=0.0000             
-           INFO       mean_speed                ρ=+0.7459  p=0.0000             
-           INFO       mean_pairwise_dist        ρ=+0.7247  p=0.0000             
-           INFO       spatial_spread            ρ=+0.7242  p=0.0000             
-           INFO       speed_cv                  ρ=+0.6595  p=0.0000             
-           INFO       speed_entropy             ρ=+0.1041  p=0.0010 *           
-           INFO       mean_turn_rad             ρ=-0.0919  p=0.0036 *           
-           INFO       immobility_rate           ρ=-0.0918  p=0.0037 *           
-           INFO       active_fraction           ρ=+0.0918  p=0.0037 *           
+           INFO       speed_cv                  ρ=+0.7308  p=0.0000             
+           INFO       mean_pairwise_dist        ρ=+0.6783  p=0.0000             
+           INFO       spatial_spread            ρ=+0.6780  p=0.0000             
+           INFO       max_speed                 ρ=+0.6526  p=0.0000             
+           INFO       mean_speed                ρ=+0.6515  p=0.0000             
+           INFO       immobility_rate           ρ=+0.0999  p=0.0016 *           
+           INFO       mean_turn_rad             ρ=+0.0999  p=0.0016 *           
+           INFO       active_fraction           ρ=-0.0999  p=0.0016 *           
+           INFO       speed_entropy             ρ=-0.0844  p=0.0076 *           
            INFO                                                                 
-                    Detection mode: trivial AUROC=0.9019, subtle AUROC=None     
-           INFO     Elapsed: 607.0s                                             
+                    Detection mode: trivial AUROC=0.9569, subtle AUROC=None     
+           INFO     Elapsed: 300.2s                                             
