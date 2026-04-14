@@ -171,14 +171,6 @@ def fig_case_studies():
     for e in cat_c:
         e['_cat'] = 'c'
 
-    # Add Flint as simulated event
-    flint = {
-        "event_id": "flint_water_crisis_2014",
-        "event_name": "Flint Water Crisis (2014)",
-        "lead_time_hours": 507 * 24,  # 507 days
-        "_cat": "sim",
-    }
-
     # Add 6 real USGS inference events (from case_studies_real.json)
     # These override the estimated lead times for matching events
     real_usgs = {
@@ -197,7 +189,7 @@ def fig_case_studies():
                 e["lead_time_hours"] = real_usgs[e["event_id"]]
                 e["_cat"] = "real"  # override to gold/real category
 
-    all_events = cat_a + cat_b + cat_c + [flint]
+    all_events = cat_a + cat_b + cat_c
     all_events.sort(key=lambda e: e["lead_time_hours"])
 
     short_names = {
@@ -232,7 +224,6 @@ def fig_case_studies():
         "clear_lake_hab_2024": "Clear L. HAB '24",
         "tar_creek_amd_oklahoma": "Tar Creek AMD (OK)",
         "lake_winnebago_hab": "L. Winneb. HAB",
-        "flint_water_crisis_2014": "Flint, MI (simulated)",
     }
 
     names = []
@@ -246,17 +237,11 @@ def fig_case_studies():
 
     fig, ax = plt.subplots(figsize=(12, 5))
 
-    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#1565c0', 'sim': '#c62828', 'real': '#e6a817'}
+    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#1565c0', 'real': '#e6a817'}
     colors = [color_map[c] for c in cats]
 
     x = np.arange(len(names))
     bars = ax.bar(x, days, color=colors, edgecolor='black', linewidth=0.3, width=0.8)
-
-    # Hatch the Flint bar to mark it as simulated
-    for i, c in enumerate(cats):
-        if c == 'sim':
-            bars[i].set_hatch('//')
-            bars[i].set_edgecolor('#333')
 
     # Value labels on top
     for i, d in enumerate(days):
@@ -269,7 +254,7 @@ def fig_case_studies():
     ax.set_xticks(x)
     ax.set_xticklabels(names, fontsize=5.5, rotation=60, ha='right')
     ax.set_ylabel('Detection Lead Time (days before official report)')
-    ax.set_title('SENTINEL Early Warning: 32 Events (31 Real + 1 Simulated) — All Detected Before Official Report',
+    ax.set_title('SENTINEL Early Warning: 31 Events — All Detected Before Official Report',
                   fontweight='bold', fontsize=11)
 
     # Mean line (31 real events only, excluding Flint)
@@ -284,10 +269,8 @@ def fig_case_studies():
     neon_patch = mpatches.Patch(color='#00796b', label='NEON real sensor (6)')
     new_patch = mpatches.Patch(color='#1565c0', label='Research-validated (21)')
     hist_patch = mpatches.Patch(color='#2e7d32', label='Historical estimate')
-    sim_patch = mpatches.Patch(facecolor='#c62828', edgecolor='#333', hatch='//',
-                                label='Simulated (Flint, MI — 507 days)')
-    ax.legend(handles=[real_patch, neon_patch, new_patch, hist_patch, sim_patch],
-              loc='upper left', framealpha=0.9, fontsize=7)
+    ax.legend(handles=[real_patch, neon_patch, new_patch, hist_patch],
+              loc='upper left', framealpha=0.9, fontsize=7.5)
 
     ax.set_xlim(-0.5, len(names) - 0.5)
     ax.set_ylim(0, max(days) * 1.08)
