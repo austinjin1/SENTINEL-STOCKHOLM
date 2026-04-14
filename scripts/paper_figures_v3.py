@@ -179,6 +179,24 @@ def fig_case_studies():
         "_cat": "sim",
     }
 
+    # Add 6 real USGS inference events (from case_studies_real.json)
+    # These override the estimated lead times for matching events
+    real_usgs = {
+        "lake_erie_hab_2023": 1424.0,       # 59.3 days
+        "gulf_dead_zone_2023": 2093.0,       # 87.2 days
+        "chesapeake_bay_hypoxia_2018": 2154.67,  # 89.8 days
+        "klamath_river_hab_2021": 1421.0,    # 59.2 days
+        "jordan_lake_hab_nc": 1064.0,        # 44.3 days
+        "mississippi_salinity_intrusion_2023": 1407.0,  # 58.6 days
+    }
+
+    # Override lead times for events with real USGS data and tag them
+    for events_list in [cat_a, cat_c]:
+        for e in events_list:
+            if e["event_id"] in real_usgs:
+                e["lead_time_hours"] = real_usgs[e["event_id"]]
+                e["_cat"] = "real"  # override to gold/real category
+
     all_events = cat_a + cat_b + cat_c + [flint]
     all_events.sort(key=lambda e: e["lead_time_hours"])
 
@@ -228,7 +246,7 @@ def fig_case_studies():
 
     fig, ax = plt.subplots(figsize=(12, 5))
 
-    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#1565c0', 'sim': '#c62828'}
+    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#1565c0', 'sim': '#c62828', 'real': '#e6a817'}
     colors = [color_map[c] for c in cats]
 
     x = np.arange(len(names))
@@ -262,13 +280,14 @@ def fig_case_studies():
             color='#d32f2f', fontsize=8, fontweight='bold')
 
     # Legend
-    hist_patch = mpatches.Patch(color='#2e7d32', label='Historical case studies (4)')
-    neon_patch = mpatches.Patch(color='#00796b', label='NEON real sensor events (6)')
-    new_patch = mpatches.Patch(color='#1565c0', label='Research-validated events (21)')
+    real_patch = mpatches.Patch(color='#e6a817', label='Real USGS inference (6, mean 66d)')
+    neon_patch = mpatches.Patch(color='#00796b', label='NEON real sensor (6)')
+    new_patch = mpatches.Patch(color='#1565c0', label='Research-validated (21)')
+    hist_patch = mpatches.Patch(color='#2e7d32', label='Historical estimate')
     sim_patch = mpatches.Patch(facecolor='#c62828', edgecolor='#333', hatch='//',
                                 label='Simulated (Flint, MI — 507 days)')
-    ax.legend(handles=[hist_patch, neon_patch, new_patch, sim_patch],
-              loc='upper left', framealpha=0.9, fontsize=7.5)
+    ax.legend(handles=[real_patch, neon_patch, new_patch, hist_patch, sim_patch],
+              loc='upper left', framealpha=0.9, fontsize=7)
 
     ax.set_xlim(-0.5, len(names) - 0.5)
     ax.set_ylim(0, max(days) * 1.08)
