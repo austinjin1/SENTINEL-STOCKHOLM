@@ -1,0 +1,610 @@
+{
+  "experiment": "A: Early Warning ROC at Multiple Lead Times",
+  "n_events": 6,
+  "thresholds": [
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    0.99
+  ],
+  "threshold_table": {
+    "thresh_0.50": {
+      "threshold": 0.5,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1585.94,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.55": {
+      "threshold": 0.55,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1585.94,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.60": {
+      "threshold": 0.6,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1585.94,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.65": {
+      "threshold": 0.65,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1585.94,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.70": {
+      "threshold": 0.7,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1561.94,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.75": {
+      "threshold": 0.75,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1561.94,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.80": {
+      "threshold": 0.8,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1543.28,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.85": {
+      "threshold": 0.85,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1527.28,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2146.67,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.90": {
+      "threshold": 0.9,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1526.39,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2141.33,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.95": {
+      "threshold": 0.95,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1440.99,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2085.0,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    },
+    "thresh_0.99": {
+      "threshold": 0.99,
+      "events_detected": 6,
+      "total_events": 6,
+      "tpr": 1.0,
+      "mean_lead_hours": 1381.36,
+      "min_lead_hours": 1056.0,
+      "max_lead_hours": 2085.0,
+      "detected_events": [
+        "lake_erie_hab_2023",
+        "jordan_lake_hab_nc",
+        "klamath_river_hab_2021",
+        "gulf_dead_zone_2023",
+        "chesapeake_hypoxia_2018",
+        "mississippi_salinity_2023"
+      ]
+    }
+  },
+  "per_event": {
+    "lake_erie_hab_2023": {
+      "event_type": "HAB",
+      "advisory_date": "2023-07-15T00:00:00+00:00",
+      "n_pre_event_windows": 89,
+      "max_pre_event_score": 0.9973,
+      "first_crossing_t0.5": {
+        "lead_hours": 1416.0,
+        "crossing_time": "2023-05-16T20:00:00"
+      },
+      "threshold_sweep": {
+        "thresh_0.50": {
+          "detected": true,
+          "lead_hours": 1416.0,
+          "crossing_time": "2023-05-16T20:00:00"
+        },
+        "thresh_0.55": {
+          "detected": true,
+          "lead_hours": 1416.0,
+          "crossing_time": "2023-05-16T20:00:00"
+        },
+        "thresh_0.60": {
+          "detected": true,
+          "lead_hours": 1416.0,
+          "crossing_time": "2023-05-16T20:00:00"
+        },
+        "thresh_0.65": {
+          "detected": true,
+          "lead_hours": 1416.0,
+          "crossing_time": "2023-05-16T20:00:00"
+        },
+        "thresh_0.70": {
+          "detected": true,
+          "lead_hours": 1272.0,
+          "crossing_time": "2023-05-22T20:00:00"
+        },
+        "thresh_0.75": {
+          "detected": true,
+          "lead_hours": 1272.0,
+          "crossing_time": "2023-05-22T20:00:00"
+        },
+        "thresh_0.80": {
+          "detected": true,
+          "lead_hours": 1160.0,
+          "crossing_time": "2023-05-27T12:00:00"
+        },
+        "thresh_0.85": {
+          "detected": true,
+          "lead_hours": 1064.0,
+          "crossing_time": "2023-05-31T12:00:00"
+        },
+        "thresh_0.90": {
+          "detected": true,
+          "lead_hours": 1064.0,
+          "crossing_time": "2023-05-31T12:00:00"
+        },
+        "thresh_0.95": {
+          "detected": true,
+          "lead_hours": 1064.0,
+          "crossing_time": "2023-05-31T12:00:00"
+        },
+        "thresh_0.99": {
+          "detected": true,
+          "lead_hours": 1064.0,
+          "crossing_time": "2023-05-31T12:00:00"
+        }
+      }
+    },
+    "jordan_lake_hab_nc": {
+      "event_type": "HAB",
+      "advisory_date": "2022-07-15T00:00:00+00:00",
+      "n_pre_event_windows": 66,
+      "max_pre_event_score": 0.9929,
+      "first_crossing_t0.5": {
+        "lead_hours": 1056.0,
+        "crossing_time": "2022-05-31T20:00:00"
+      },
+      "threshold_sweep": {
+        "thresh_0.50": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.55": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.60": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.65": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.70": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.75": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.80": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.85": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.90": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.95": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        },
+        "thresh_0.99": {
+          "detected": true,
+          "lead_hours": 1056.0,
+          "crossing_time": "2022-05-31T20:00:00"
+        }
+      }
+    },
+    "klamath_river_hab_2021": {
+      "event_type": "HAB",
+      "advisory_date": "2021-08-01T00:00:00+00:00",
+      "n_pre_event_windows": 89,
+      "max_pre_event_score": 0.9929,
+      "first_crossing_t0.5": {
+        "lead_hours": 1413.0,
+        "crossing_time": "2021-06-02T23:00:00"
+      },
+      "threshold_sweep": {
+        "thresh_0.50": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.55": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.60": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.65": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.70": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.75": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.80": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.85": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.90": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.95": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        },
+        "thresh_0.99": {
+          "detected": true,
+          "lead_hours": 1413.0,
+          "crossing_time": "2021-06-02T23:00:00"
+        }
+      }
+    },
+    "gulf_dead_zone_2023": {
+      "event_type": "hypoxia",
+      "advisory_date": "2023-07-01T00:00:00+00:00",
+      "n_pre_event_windows": 31,
+      "max_pre_event_score": 0.9929,
+      "first_crossing_t0.5": {
+        "lead_hours": 2085.0,
+        "crossing_time": "2023-04-04T23:00:00"
+      },
+      "threshold_sweep": {
+        "thresh_0.50": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.55": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.60": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.65": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.70": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.75": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.80": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.85": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.90": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.95": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        },
+        "thresh_0.99": {
+          "detected": true,
+          "lead_hours": 2085.0,
+          "crossing_time": "2023-04-04T23:00:00"
+        }
+      }
+    },
+    "chesapeake_hypoxia_2018": {
+      "event_type": "hypoxia",
+      "advisory_date": "2018-07-20T00:00:00+00:00",
+      "n_pre_event_windows": 403,
+      "max_pre_event_score": 0.9981,
+      "first_crossing_t0.5": {
+        "lead_hours": 2146.67,
+        "crossing_time": "2018-04-21T09:20:00"
+      },
+      "threshold_sweep": {
+        "thresh_0.50": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.55": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.60": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.65": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.70": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.75": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.80": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.85": {
+          "detected": true,
+          "lead_hours": 2146.67,
+          "crossing_time": "2018-04-21T09:20:00"
+        },
+        "thresh_0.90": {
+          "detected": true,
+          "lead_hours": 2141.33,
+          "crossing_time": "2018-04-21T14:40:00"
+        },
+        "thresh_0.95": {
+          "detected": true,
+          "lead_hours": 1628.92,
+          "crossing_time": "2018-05-12T23:05:00"
+        },
+        "thresh_0.99": {
+          "detected": true,
+          "lead_hours": 1271.17,
+          "crossing_time": "2018-05-27T20:50:00"
+        }
+      }
+    },
+    "mississippi_salinity_2023": {
+      "event_type": "salinity",
+      "advisory_date": "2023-10-01T00:00:00+00:00",
+      "n_pre_event_windows": 41,
+      "max_pre_event_score": 0.9929,
+      "first_crossing_t0.5": {
+        "lead_hours": 1399.0,
+        "crossing_time": "2023-08-03T13:00:00"
+      },
+      "threshold_sweep": {
+        "thresh_0.50": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.55": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.60": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.65": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.70": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.75": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.80": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.85": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.90": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.95": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        },
+        "thresh_0.99": {
+          "detected": true,
+          "lead_hours": 1399.0,
+          "crossing_time": "2023-08-03T13:00:00"
+        }
+      }
+    }
+  }
+}

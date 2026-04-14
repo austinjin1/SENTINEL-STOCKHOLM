@@ -1,0 +1,577 @@
+{
+  "model": "ToxiGene v7 (toxigene_v7_best.pt)",
+  "published_test_f1_macro": 0.886,
+  "outcome_names": [
+    "reproductive_impairment",
+    "growth_inhibition",
+    "immunosuppression",
+    "neurotoxicity",
+    "hepatotoxicity",
+    "oxidative_damage",
+    "endocrine_disruption"
+  ],
+  "per_class_thresholds": {
+    "reproductive_impairment": 0.30000000000000004,
+    "growth_inhibition": 0.2,
+    "immunosuppression": 0.6000000000000001,
+    "neurotoxicity": 0.675,
+    "hepatotoxicity": 0.6000000000000001,
+    "oxidative_damage": 0.7000000000000002,
+    "endocrine_disruption": 0.55
+  },
+  "case_studies": [
+    {
+      "study_id": "GSE109496",
+      "contaminant_type": "pharmaceutical_NSAID",
+      "contaminant_name": "Naproxen",
+      "contaminant_class": "pharmaceutical",
+      "environmental_relevance": "NSAID detected at 1\u201310 \u00b5g/L in surface waters receiving wastewater effluent",
+      "n_samples": 198,
+      "toxicity_positive_rate": 1.0,
+      "mean_toxicity_score": 0.9991949796676636,
+      "per_outcome_stats": {
+        "reproductive_impairment": {
+          "positive_rate": 0.0,
+          "mean_probability": 2.1288620700943284e-05,
+          "label_positive_rate": 0.0
+        },
+        "growth_inhibition": {
+          "positive_rate": 0.7171717286109924,
+          "mean_probability": 0.7031030654907227,
+          "label_positive_rate": 0.691919207572937
+        },
+        "immunosuppression": {
+          "positive_rate": 0.0,
+          "mean_probability": 1.9890949261025526e-06,
+          "label_positive_rate": 0.0
+        },
+        "neurotoxicity": {
+          "positive_rate": 0.0,
+          "mean_probability": 0.0004707059415522963,
+          "label_positive_rate": 0.0
+        },
+        "hepatotoxicity": {
+          "positive_rate": 0.6717171669006348,
+          "mean_probability": 0.6680988073348999,
+          "label_positive_rate": 0.6818181872367859
+        },
+        "oxidative_damage": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9989391565322876,
+          "label_positive_rate": 1.0
+        },
+        "endocrine_disruption": {
+          "positive_rate": 0.3232323229312897,
+          "mean_probability": 0.32652372121810913,
+          "label_positive_rate": 0.3181818127632141
+        }
+      },
+      "sample_details": [
+        {
+          "sample_id": "GSM2944403",
+          "title": "Naproxen_C5_48_T",
+          "concentration_info": "source: whole embryo, exposed to Naproxen, 24hpf-72hpf, 309.14 micromol per lite",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999750852584839,
+          "outcomes_triggered": [
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM2944404",
+          "title": "Naproxen_Control_48_C",
+          "concentration_info": "source: whole embryo, exposed to Naproxen, 24hpf-72hpf, 0 micromol per liter",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9987269043922424,
+          "outcomes_triggered": [
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM2944405",
+          "title": "Naproxen_Control_48_C.1",
+          "concentration_info": "source: whole embryo, exposed to Naproxen, 24hpf-72hpf, 0 micromol per liter",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9998154044151306,
+          "outcomes_triggered": [
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM2944406",
+          "title": "Naproxen_C1_72_R",
+          "concentration_info": "source: whole embryo, exposed to Naproxen, 24hpf-96hpf, 134.58 micromol per lite",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999960660934448,
+          "outcomes_triggered": [
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM2944407",
+          "title": "Naproxen_C1_72_R.1",
+          "concentration_info": "source: whole embryo, exposed to Naproxen, 24hpf-96hpf, 134.58 micromol per lite",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999998807907104,
+          "outcomes_triggered": [
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        }
+      ],
+      "reference": "GEO GSE109496 \u2014 time/concentration-dependent transcriptome ZFE"
+    },
+    {
+      "study_id": "GSE117260",
+      "contaminant_type": "herbicide_pesticide",
+      "contaminant_name": "Atrazine",
+      "contaminant_class": "pesticide",
+      "environmental_relevance": "Most commonly detected herbicide in US surface water; EPA MCL 3 \u00b5g/L",
+      "n_samples": 12,
+      "toxicity_positive_rate": 1.0,
+      "mean_toxicity_score": 0.9996371865272522,
+      "per_outcome_stats": {
+        "reproductive_impairment": {
+          "positive_rate": 0.0,
+          "mean_probability": 7.364344014604285e-07,
+          "label_positive_rate": 0.0
+        },
+        "growth_inhibition": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9977540969848633,
+          "label_positive_rate": 1.0
+        },
+        "immunosuppression": {
+          "positive_rate": 0.0,
+          "mean_probability": 2.8240262963663554e-06,
+          "label_positive_rate": 0.0
+        },
+        "neurotoxicity": {
+          "positive_rate": 0.0,
+          "mean_probability": 3.3131418604170904e-05,
+          "label_positive_rate": 0.0
+        },
+        "hepatotoxicity": {
+          "positive_rate": 0.0,
+          "mean_probability": 0.000327342189848423,
+          "label_positive_rate": 0.0
+        },
+        "oxidative_damage": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9996371865272522,
+          "label_positive_rate": 1.0
+        },
+        "endocrine_disruption": {
+          "positive_rate": 0.0,
+          "mean_probability": 0.0004606805741786957,
+          "label_positive_rate": 0.0
+        }
+      },
+      "sample_details": [
+        {
+          "sample_id": "GSM3290055",
+          "title": "Brain_female_0ppb_rep1",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9996377229690552,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM3290056",
+          "title": "Brain_female_0.3ppb_rep1",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9996300935745239,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM3290057",
+          "title": "Brain_female_3ppb_rep1",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9996358156204224,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM3290058",
+          "title": "Brain_female_30ppb_rep1",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9996395111083984,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM3290059",
+          "title": "Brain_female_0ppb_rep2",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9996378421783447,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "oxidative_damage"
+          ]
+        }
+      ],
+      "reference": "GEO GSE117260 \u2014 developmental origins of neurotoxicity"
+    },
+    {
+      "study_id": "GSE3048",
+      "contaminant_type": "heavy_metal_metalloid",
+      "contaminant_name": "Arsenic (As(III))",
+      "contaminant_class": "heavy_metal",
+      "environmental_relevance": "Naturally elevated As in groundwater; WHO guideline 10 \u00b5g/L; Bangladesh/India crisis",
+      "n_samples": 24,
+      "toxicity_positive_rate": 1.0,
+      "mean_toxicity_score": 0.949938952922821,
+      "per_outcome_stats": {
+        "reproductive_impairment": {
+          "positive_rate": 0.2083333283662796,
+          "mean_probability": 0.18920063972473145,
+          "label_positive_rate": 0.0
+        },
+        "growth_inhibition": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9492454528808594,
+          "label_positive_rate": 1.0
+        },
+        "immunosuppression": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.8935969471931458,
+          "label_positive_rate": 1.0
+        },
+        "neurotoxicity": {
+          "positive_rate": 0.0,
+          "mean_probability": 0.22709839046001434,
+          "label_positive_rate": 0.0
+        },
+        "hepatotoxicity": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.7752324938774109,
+          "label_positive_rate": 1.0
+        },
+        "oxidative_damage": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9444337487220764,
+          "label_positive_rate": 1.0
+        },
+        "endocrine_disruption": {
+          "positive_rate": 0.0,
+          "mean_probability": 0.3224729597568512,
+          "label_positive_rate": 0.0
+        }
+      },
+      "sample_details": [
+        {
+          "sample_id": "GSM67011",
+          "title": "AS_24hr.2_M",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.8955649137496948,
+          "outcomes_triggered": [
+            "reproductive_impairment",
+            "growth_inhibition",
+            "immunosuppression",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM67012",
+          "title": "As_24hr.1_M",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9037952423095703,
+          "outcomes_triggered": [
+            "reproductive_impairment",
+            "growth_inhibition",
+            "immunosuppression",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM67013",
+          "title": "As_24hr.3_M",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.8797886371612549,
+          "outcomes_triggered": [
+            "reproductive_impairment",
+            "growth_inhibition",
+            "immunosuppression",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM67014",
+          "title": "As_48h.1_M",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9252737760543823,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "immunosuppression",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM67015",
+          "title": "As_48h.2_M",
+          "concentration_info": "",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9926115870475769,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "immunosuppression",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        }
+      ],
+      "reference": "GEO GSE3048 \u2014 arsenic-induced adaptive response transcriptome kinetics"
+    },
+    {
+      "study_id": "GSE50648",
+      "contaminant_type": "multi_metal_exposure",
+      "contaminant_name": "Heavy metals (Cd, Zn, Cu, Pb)",
+      "contaminant_class": "heavy_metal",
+      "environmental_relevance": "Industrial effluent and mining drainage; common co-contaminants in impaired watersheds",
+      "n_samples": 48,
+      "toxicity_positive_rate": 1.0,
+      "mean_toxicity_score": 0.9999300837516785,
+      "per_outcome_stats": {
+        "reproductive_impairment": {
+          "positive_rate": 0.0,
+          "mean_probability": 1.5923733087674918e-07,
+          "label_positive_rate": 0.0
+        },
+        "growth_inhibition": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9994673728942871,
+          "label_positive_rate": 1.0
+        },
+        "immunosuppression": {
+          "positive_rate": 0.0,
+          "mean_probability": 9.40943536420491e-08,
+          "label_positive_rate": 0.0
+        },
+        "neurotoxicity": {
+          "positive_rate": 0.0,
+          "mean_probability": 5.3923042287351564e-05,
+          "label_positive_rate": 0.0
+        },
+        "hepatotoxicity": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9998509287834167,
+          "label_positive_rate": 1.0
+        },
+        "oxidative_damage": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9999300837516785,
+          "label_positive_rate": 1.0
+        },
+        "endocrine_disruption": {
+          "positive_rate": 0.0,
+          "mean_probability": 0.0002501647686585784,
+          "label_positive_rate": 0.0
+        }
+      },
+      "sample_details": [
+        {
+          "sample_id": "GSM1225329",
+          "title": "chromium_low_rep1",
+          "concentration_info": "chemical concentration (measured): 56.5 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999288320541382,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1225330",
+          "title": "chromium_low_rep2",
+          "concentration_info": "chemical concentration (measured): 56.5 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999293088912964,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1225331",
+          "title": "chromium_low_rep3",
+          "concentration_info": "chemical concentration (measured): 56.5 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999274015426636,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1225332",
+          "title": "chromium_low_rep4",
+          "concentration_info": "chemical concentration (measured): 56.5 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999276399612427,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1225333",
+          "title": "chromium_mid_rep1",
+          "concentration_info": "chemical concentration (measured): 69.9 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9999278783798218,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        }
+      ],
+      "reference": "GEO GSE50648 \u2014 whole-organism metal transcriptome profiling"
+    },
+    {
+      "study_id": "GSE66257",
+      "contaminant_type": "organophosphate_pesticide",
+      "contaminant_name": "Dichlorvos (DDVP)",
+      "contaminant_class": "pesticide",
+      "environmental_relevance": "Organophosphate insecticide; AChE inhibitor; detected in agricultural runoff",
+      "n_samples": 32,
+      "toxicity_positive_rate": 1.0,
+      "mean_toxicity_score": 0.9997106790542603,
+      "per_outcome_stats": {
+        "reproductive_impairment": {
+          "positive_rate": 0.0,
+          "mean_probability": 1.526937739981804e-05,
+          "label_positive_rate": 0.0
+        },
+        "growth_inhibition": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.999428391456604,
+          "label_positive_rate": 1.0
+        },
+        "immunosuppression": {
+          "positive_rate": 0.0,
+          "mean_probability": 5.8319856179878116e-06,
+          "label_positive_rate": 0.0
+        },
+        "neurotoxicity": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.8659311532974243,
+          "label_positive_rate": 0.625
+        },
+        "hepatotoxicity": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9994742274284363,
+          "label_positive_rate": 1.0
+        },
+        "oxidative_damage": {
+          "positive_rate": 1.0,
+          "mean_probability": 0.9997106790542603,
+          "label_positive_rate": 1.0
+        },
+        "endocrine_disruption": {
+          "positive_rate": 0.0,
+          "mean_probability": 0.00013821336324326694,
+          "label_positive_rate": 0.0
+        }
+      },
+      "sample_details": [
+        {
+          "sample_id": "GSM1618073",
+          "title": "Dichlorvos_control1_rep1",
+          "concentration_info": "concentration: 0 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9997153878211975,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "neurotoxicity",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1618074",
+          "title": "Dichlorvos_control1_rep2",
+          "concentration_info": "concentration: 0 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.999722421169281,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "neurotoxicity",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1618075",
+          "title": "Dichlorvos_control1_rep3",
+          "concentration_info": "concentration: 0 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.99970942735672,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "neurotoxicity",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1618076",
+          "title": "Dichlorvos_control1_rep4",
+          "concentration_info": "concentration: 0 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9997108578681946,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "neurotoxicity",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        },
+        {
+          "sample_id": "GSM1618077",
+          "title": "Dichlorvos_low_rep1",
+          "concentration_info": "concentration: 6 mg/L",
+          "toxicity_positive": true,
+          "max_outcome_prob": 0.9997485280036926,
+          "outcomes_triggered": [
+            "growth_inhibition",
+            "neurotoxicity",
+            "hepatotoxicity",
+            "oxidative_damage"
+          ]
+        }
+      ],
+      "reference": "GEO GSE66257 \u2014 large-scale energy metabolism disruption"
+    }
+  ]
+}

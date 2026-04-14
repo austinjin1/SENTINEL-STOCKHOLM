@@ -1,0 +1,210 @@
+{
+  "model": "BioMotion (TrajectoryDiffusionEncoder + AnomalyClassifier)",
+  "checkpoint": "biomotion_expanded_best.pt",
+  "published_test_auroc": 0.9999995590158115,
+  "published_test_f1": 0.9989401165871754,
+  "n_real_trajectories": 17074,
+  "baseline_overall_detection_rate": 0.26127445238374136,
+  "case_studies": [
+    {
+      "chemical_name": "Heavy Metals (Cu, Pb, Cd, Cr, Hg)",
+      "chemical_id": "heavy_metals",
+      "contaminant_class": "heavy_metal",
+      "source_event": "Industrial effluent and mining drainage",
+      "environmental_context": "Metal contamination from acid mine drainage (AMD) and industrial point sources; Daphnia immobility EC50 for Cu: 0.01\u20130.1 mg/L",
+      "mode_of_action": "ATPase inhibition, oxidative stress, gill damage \u2192 reduced locomotion, immobility",
+      "case_chemicals": [
+        "Copper sulfate",
+        "Lead acetate",
+        "Cadmium chloride",
+        "Chromium chloride"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 183,
+        "example_ecotox_chemicals": [
+          "Chromium chloride (CrCl3)",
+          "Ethylbenzene",
+          "Ethenylbenzene"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.54,
+      "exposed_detection_rate": 0.5428571428571428,
+      "control_detection_rate": 0.5333333333333333,
+      "mean_anomaly_prob": 0.5213159322738647,
+      "mean_exposed_prob": 0.5217695236206055,
+      "mean_control_prob": 0.5202575922012329,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "LOCO (locomotion)": -0.6,
+        "SWIM (swimming velocity)": -0.7,
+        "ACTV (general activity)": -0.5,
+        "NMVM (immobility)": 0.8
+      }
+    },
+    {
+      "chemical_name": "Pesticides / Herbicides (atrazine, chlorpyrifos, 2,4-D)",
+      "chemical_id": "pesticides_agricultural_runoff",
+      "contaminant_class": "pesticide",
+      "source_event": "Agricultural runoff \u2014 corn/soy belt, spring flush events",
+      "environmental_context": "Atrazine is the most detected herbicide in US surface water (USGS NAWQA); chlorpyrifos EC50 for Daphnia: 0.001\u20130.01 mg/L; 2,4-D up to 50 \u00b5g/L in farm runoff",
+      "mode_of_action": "AChE inhibition (OPs), photosynthesis disruption (triazines) \u2192 erratic swimming, altered phototaxis",
+      "case_chemicals": [
+        "Atrazine",
+        "Chlorpyrifos",
+        "2,4-Dichlorophenol",
+        "Malathion"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 32,
+        "example_ecotox_chemicals": [
+          "6-Chloro-N-ethyl-1,3,5-triazine-2,4-diamine",
+          "1-[2-(2,4-Dichlorophenyl)-3-(1,1,2,2-tetrafluoroethoxy)propyl]-1H-1,2,4-triazole",
+          "2,4-Dichlorophenol"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.62,
+      "exposed_detection_rate": 0.6857142857142857,
+      "control_detection_rate": 0.4666666666666667,
+      "mean_anomaly_prob": 0.6086574792861938,
+      "mean_exposed_prob": 0.6695697903633118,
+      "mean_control_prob": 0.46652886271476746,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "SWIM (swimming velocity)": -0.4,
+        "ACTV (general activity)": -0.3,
+        "PHTR (phototaxis)": 0.5,
+        "GBHV (general behavior)": 0.4
+      }
+    },
+    {
+      "chemical_name": "Pharmaceuticals (NSAIDs, antibiotics, EDCs)",
+      "chemical_id": "pharmaceuticals_wastewater",
+      "contaminant_class": "pharmaceutical",
+      "source_event": "Wastewater treatment plant effluent \u2014 WWTP discharge zones",
+      "environmental_context": "17\u03b1-ethinylestradiol detected at 1\u2013100 ng/L downstream WWTPs; Naproxen EC50 for Daphnia: 10\u201350 mg/L; antibiotic disruption of gut microbiome",
+      "mode_of_action": "Endocrine disruption, reproductive impairment \u2192 altered reproductive behavior, reduced feeding",
+      "case_chemicals": [
+        "Naproxen",
+        "Ibuprofen",
+        "Erythromycin",
+        "17\u03b1-Ethinylestradiol"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 52,
+        "example_ecotox_chemicals": [
+          "N-(4-Hydroxyphenyl)acetamide",
+          "(Z)-2-[4-(1,2-Diphenyl-1-butenyl)phenoxy-N,N-dimethylethanamine",
+          "Gentamicin"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.0,
+      "exposed_detection_rate": 0.0,
+      "control_detection_rate": 0.0,
+      "mean_anomaly_prob": 0.0001496490731369704,
+      "mean_exposed_prob": 0.0001967551070265472,
+      "mean_control_prob": 3.973495768150315e-05,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "MOTL (motility)": -0.4,
+        "FLTR (filter feeding)": -0.5,
+        "ACTP (active time)": -0.3,
+        "SEBH (secondary behavior)": 0.3
+      }
+    },
+    {
+      "chemical_name": "PAHs / Petroleum Hydrocarbons (naphthalene, pyrene, benzene)",
+      "chemical_id": "pah_petroleum_hydrocarbons",
+      "contaminant_class": "pah",
+      "source_event": "Oil spill / urban stormwater runoff",
+      "environmental_context": "PAH contamination from oil spills (Deepwater Horizon), urban stormwater; naphthalene EC50 Daphnia: 0.5\u20135 mg/L; narcosis mode of action",
+      "mode_of_action": "Narcosis, oxidative stress, lipid peroxidation \u2192 anesthetic effects, reduced swimming speed",
+      "case_chemicals": [
+        "Naphthalene",
+        "Pyrene",
+        "Benzene",
+        "Phenanthrene"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 47,
+        "example_ecotox_chemicals": [
+          "Benzonitrile",
+          "4-Hydroxybenzoic acid, 2-[[4-(1-Methylethyl)phenyl]methylene]hydrazide",
+          "4-(5,6,7,8-Tetrahydroimidazo[1,5-a]pyridin-5-yl)benzonitrile hydrochloride (1:1)"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.61,
+      "exposed_detection_rate": 0.6,
+      "control_detection_rate": 0.6333333333333333,
+      "mean_anomaly_prob": 0.6111013293266296,
+      "mean_exposed_prob": 0.5991542935371399,
+      "mean_control_prob": 0.6389778256416321,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "LOCO (locomotion)": -0.5,
+        "SWIM (swimming velocity)": -0.6,
+        "EQUL (equilibrium)": 0.4,
+        "NMVM (immobility)": 0.5
+      }
+    },
+    {
+      "chemical_name": "PFAS (PFOA, PFOS, GenX)",
+      "chemical_id": "pfas_industrial",
+      "contaminant_class": "pfas",
+      "source_event": "Industrial PFAS contamination \u2014 manufacturing sites, firefighting foam",
+      "environmental_context": "PFAS detected in 40%+ of US drinking water sources; PFOS EC50 for Daphnia: 0.4\u201310 mg/L; chronic effects at ng/L concentrations; AFF (aqueous film-forming foam) runoff from military bases and airports",
+      "mode_of_action": "Lipid metabolism disruption, mitochondrial dysfunction \u2192 altered feeding, reduced reproduction",
+      "case_chemicals": [
+        "PFOS",
+        "PFOA",
+        "GenX (HFPO-DA)",
+        "PFHxS"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 91,
+        "example_ecotox_chemicals": [
+          "cis-3-(2,5-Dimethylphenyl)-8-methoxy-2-oxo-1-azaspiro[4.5]dec-3-en-4-yl ethyl ester carbonic acid mixt. with N2-[1,1-dimethyl-2-(methylsulfonyl)ethyl]-3-iodo-N1-[2-methyl-4-[1,2,2,2-tetrafluoro-1-(trifluoromethyl)ethyl]phenyl]-1,2-benzenedicarboxamide",
+          "N-[[[2,5-Dichloro-4-(1,1,2,3,3,3-hexafluoropropoxy)phenyl]amino]carbonyl]-2,6-difluorobenzamide",
+          "3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-Heneicosafluoro-1-dodecanesulfonic acid, sodium salt (1:1)"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.01,
+      "exposed_detection_rate": 0.0,
+      "control_detection_rate": 0.03333333333333333,
+      "mean_anomaly_prob": 0.005973553750663996,
+      "mean_exposed_prob": 4.2091443901881576e-05,
+      "mean_control_prob": 0.01981363259255886,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "ACTV (general activity)": -0.3,
+        "MOTL (motility)": -0.4,
+        "FLTR (filter feeding)": -0.6,
+        "VACL (valve activity)": -0.3
+      }
+    }
+  ],
+  "model_sensitivity_notes": {
+    "primary_anomaly_discriminant": "feature_2_EQUL (equilibrium loss)",
+    "explanation": "BioMotion is trained on ECOTOX Daphnia data where equilibrium loss is the primary measured behavioral endpoint (>20% effect threshold). Chemicals causing equilibrium disruption (heavy metals, PAHs, pesticides at high doses) are detected at higher rates. Pharmaceuticals and PFAS typically cause subtler chronic effects (altered filter feeding, reproductive endpoints) without equilibrium loss, leading to lower detection rates at environmentally relevant concentrations. This reflects the model's training distribution.",
+    "detection_by_mode": {
+      "equilibrium_disruption": "high detection (54-62%)",
+      "locomotion_inhibition": "moderate detection",
+      "filter_feeding_impairment": "low detection (model not trained on this endpoint)",
+      "endocrine_disruption": "low detection (no equilibrium signal)"
+    }
+  }
+}
