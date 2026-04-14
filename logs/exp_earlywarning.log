@@ -1,0 +1,36 @@
+============================================================
+Experiment A: Early Warning ROC at Multiple Lead Times
+============================================================
+  lake_erie_hab_2023: 89 pre-event windows, advisory 2023-07-15
+  jordan_lake_hab_nc: 66 pre-event windows, advisory 2022-07-15
+  klamath_river_hab_2021: 89 pre-event windows, advisory 2021-08-01
+  gulf_dead_zone_2023: 31 pre-event windows, advisory 2023-07-01
+  chesapeake_hypoxia_2018: 403 pre-event windows, advisory 2018-07-20
+  mississippi_salinity_2023: 41 pre-event windows, advisory 2023-10-01
+  t=0.50: 6/6 detected  TPR=1.000  mean_lead=1585.9h  min=1056.0h  max=2146.7h
+  t=0.55: 6/6 detected  TPR=1.000  mean_lead=1585.9h  min=1056.0h  max=2146.7h
+  t=0.60: 6/6 detected  TPR=1.000  mean_lead=1585.9h  min=1056.0h  max=2146.7h
+  t=0.65: 6/6 detected  TPR=1.000  mean_lead=1585.9h  min=1056.0h  max=2146.7h
+  t=0.70: 6/6 detected  TPR=1.000  mean_lead=1561.9h  min=1056.0h  max=2146.7h
+  t=0.75: 6/6 detected  TPR=1.000  mean_lead=1561.9h  min=1056.0h  max=2146.7h
+  t=0.80: 6/6 detected  TPR=1.000  mean_lead=1543.3h  min=1056.0h  max=2146.7h
+  t=0.85: 6/6 detected  TPR=1.000  mean_lead=1527.3h  min=1056.0h  max=2146.7h
+  t=0.90: 6/6 detected  TPR=1.000  mean_lead=1526.4h  min=1056.0h  max=2141.3h
+  t=0.95: 6/6 detected  TPR=1.000  mean_lead=1441.0h  min=1056.0h  max=2085.0h
+  t=0.99: 6/6 detected  TPR=1.000  mean_lead=1381.4h  min=1056.0h  max=2085.0h
+
+Saved to /home/bcheng/SENTINEL/results/exp_earlywarning/early_warning_results.json
+
+--- Summary Table ---
+ Threshold   Detected     TPR   Mean Lead (h)  Min Lead (h)  Max Lead (h)
+  0.50    6/6    1.000           1585.9         1056.0         2146.7
+  0.55    6/6    1.000           1585.9         1056.0         2146.7
+  0.60    6/6    1.000           1585.9         1056.0         2146.7
+  0.65    6/6    1.000           1585.9         1056.0         2146.7
+  0.70    6/6    1.000           1561.9         1056.0         2146.7
+  0.75    6/6    1.000           1561.9         1056.0         2146.7
+  0.80    6/6    1.000           1543.3         1056.0         2146.7
+  0.85    6/6    1.000           1527.3         1056.0         2146.7
+  0.90    6/6    1.000           1526.4         1056.0         2141.3
+  0.95    6/6    1.000           1441.0         1056.0         2085.0
+  0.99    6/6    1.000           1381.4         1056.0         2085.0

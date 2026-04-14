@@ -1,0 +1,73 @@
+============================================================
+Experiment C: Parameter Attribution for Case Study Events
+============================================================
+Models loaded on cuda
+  Batch-reading NEON parquet for proxy sites: ['PRPO', 'LEWI', 'FLNT', 'POSE', 'SUGG', 'BLWA', 'LECO', 'KING', 'BARC']
+  Read 13173796 rows in 5.6s
+
+  [lake_erie_hab_2023] type=HAB, advisory=2023-07-15
+    Stored peak probability: 0.9973
+    NEON proxy site: BARC, proxy baseline score: 0.6401
+    Window param means: {'pH': 5.6851, 'DO': 7.1741, 'Turbidity': 1.0893, 'SpCond': 26.852}
+    Ranked importance (delta drop when occluded):
+      1. pH: delta=0.0313  (32.7%)
+      2. DO: delta=0.0136  (14.2%)
+      3. SpCond: delta=0.0056  (5.9%)
+      4. Turbidity: delta=-0.0433  (0.0%)
+
+  [jordan_lake_hab_nc] type=HAB, advisory=2022-07-15
+    Stored peak probability: 0.9929
+    NEON proxy site: BARC, proxy baseline score: 0.6401
+    Window param means: {'pH': 5.6851, 'DO': 7.1741, 'Turbidity': 1.0893, 'SpCond': 26.852}
+    Ranked importance (delta drop when occluded):
+      1. pH: delta=0.0313  (32.7%)
+      2. DO: delta=0.0136  (14.2%)
+      3. SpCond: delta=0.0056  (5.9%)
+      4. Turbidity: delta=-0.0433  (0.0%)
+
+  [klamath_river_hab_2021] type=HAB, advisory=2021-08-01
+    Stored peak probability: 0.9929
+    NEON proxy site: BARC, proxy baseline score: 0.6401
+    Window param means: {'pH': 5.6851, 'DO': 7.1741, 'Turbidity': 1.0893, 'SpCond': 26.852}
+    Ranked importance (delta drop when occluded):
+      1. pH: delta=0.0313  (32.7%)
+      2. DO: delta=0.0136  (14.2%)
+      3. SpCond: delta=0.0056  (5.9%)
+      4. Turbidity: delta=-0.0433  (0.0%)
+
+  [gulf_dead_zone_2023] type=hypoxia, advisory=2023-07-01
+    Stored peak probability: 0.9929
+    NEON proxy site: POSE, proxy baseline score: 0.6112
+    Window param means: {'pH': 7.6218, 'DO': 11.6232, 'Turbidity': 7.2732, 'SpCond': 92.1972}
+    Ranked importance (delta drop when occluded):
+      1. pH: delta=0.0469  (39.4%)
+      2. DO: delta=0.0172  (14.4%)
+      3. Turbidity: delta=0.0076  (6.4%)
+      4. SpCond: delta=-0.0246  (0.0%)
+
+  [chesapeake_hypoxia_2018] type=hypoxia, advisory=2018-07-20
+    Stored peak probability: 0.9989
+    NEON proxy site: POSE, proxy baseline score: 0.6112
+    Window param means: {'pH': 7.6218, 'DO': 11.6232, 'Turbidity': 7.2732, 'SpCond': 92.1972}
+    Ranked importance (delta drop when occluded):
+      1. pH: delta=0.0469  (39.4%)
+      2. DO: delta=0.0172  (14.4%)
+      3. Turbidity: delta=0.0076  (6.4%)
+      4. SpCond: delta=-0.0246  (0.0%)
+
+  [mississippi_salinity_2023] type=salinity, advisory=2023-10-01
+    Stored peak probability: 0.9929
+    NEON proxy site: KING, proxy baseline score: 0.5308
+    Window param means: {'pH': 7.814, 'DO': 5.7241, 'Turbidity': 148.8892, 'SpCond': 448.9042}
+    Ranked importance (delta drop when occluded):
+      1. SpCond: delta=0.0136  (31.4%)
+      2. DO: delta=0.0045  (10.3%)
+      3. Turbidity: delta=-0.0419  (0.0%)
+      4. pH: delta=-0.0438  (0.0%)
+
+--- Top Driver by Event Type ---
+  HAB: pH ({'pH': 3})
+  hypoxia: pH ({'pH': 2})
+  salinity: SpCond ({'SpCond': 1})
+
+Saved to /home/bcheng/SENTINEL/results/exp_case_attribution/attribution_results.json

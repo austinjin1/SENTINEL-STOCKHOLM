@@ -1,0 +1,57 @@
+============================================================
+Experiment E: Pollution Type Fingerprint
+============================================================
+Models loaded on cuda
+Processing 32 NEON sites...
+  Batch-reading NEON parquet for all sites...
+  Read 62670845 rows in 25.5s
+  ARIK: 1065 windows  groups_so_far={'HAB': 0, 'Hypoxia': 380, 'HighConductance': 0, 'Normal': 685}  (86.8s)
+  BARC: 983 windows  groups_so_far={'HAB': 0, 'Hypoxia': 383, 'HighConductance': 0, 'Normal': 1665}  (76.7s)
+  BIGC: 1011 windows  groups_so_far={'HAB': 2, 'Hypoxia': 463, 'HighConductance': 22, 'Normal': 2573}  (83.7s)
+  BLDE: 1087 windows  groups_so_far={'HAB': 2, 'Hypoxia': 463, 'HighConductance': 22, 'Normal': 3660}  (87.9s)
+  BLUE: 582 windows  groups_so_far={'HAB': 2, 'Hypoxia': 463, 'HighConductance': 22, 'Normal': 4242}  (50.1s)
+  BLWA: 1048 windows  groups_so_far={'HAB': 18, 'Hypoxia': 463, 'HighConductance': 22, 'Normal': 5274}  (82.4s)
+  CARI: 962 windows  groups_so_far={'HAB': 18, 'Hypoxia': 463, 'HighConductance': 22, 'Normal': 6236}  (79.1s)
+  COMO: 1057 windows  groups_so_far={'HAB': 18, 'Hypoxia': 463, 'HighConductance': 22, 'Normal': 7293}  (85.8s)
+  CRAM: 948 windows  groups_so_far={'HAB': 18, 'Hypoxia': 473, 'HighConductance': 22, 'Normal': 8231}  (73.8s)
+  CUPE: 1068 windows  groups_so_far={'HAB': 18, 'Hypoxia': 473, 'HighConductance': 22, 'Normal': 9299}  (86.0s)
+  FLNT: 1045 windows  groups_so_far={'HAB': 18, 'Hypoxia': 473, 'HighConductance': 22, 'Normal': 10344}  (80.2s)
+  GUIL: 1039 windows  groups_so_far={'HAB': 59, 'Hypoxia': 473, 'HighConductance': 22, 'Normal': 11342}  (84.9s)
+  HOPB: 1092 windows  groups_so_far={'HAB': 59, 'Hypoxia': 473, 'HighConductance': 22, 'Normal': 12434}  (90.0s)
+  KING: 1094 windows  groups_so_far={'HAB': 69, 'Hypoxia': 1131, 'HighConductance': 22, 'Normal': 12860}  (88.4s)
+  LECO: 1094 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1135, 'HighConductance': 30, 'Normal': 13942}  (90.9s)
+  LEWI: 1091 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1135, 'HighConductance': 30, 'Normal': 15033}  (90.3s)
+  LIRO: 835 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1144, 'HighConductance': 30, 'Normal': 15859}  (67.7s)
+  MART: 1094 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1144, 'HighConductance': 30, 'Normal': 16953}  (90.3s)
+  MAYF: 925 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1147, 'HighConductance': 30, 'Normal': 17875}  (75.1s)
+  MCDI: 1094 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1421, 'HighConductance': 30, 'Normal': 18695}  (88.6s)
+  MCRA: 1088 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1421, 'HighConductance': 30, 'Normal': 19783}  (87.0s)
+  OKSR: 662 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1436, 'HighConductance': 30, 'Normal': 20430}  (54.7s)
+  POSE: 1077 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1436, 'HighConductance': 30, 'Normal': 21507}  (87.4s)
+  PRIN: 1071 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1470, 'HighConductance': 30, 'Normal': 22544}  (87.2s)
+  PRLA: 857 windows  groups_so_far={'HAB': 77, 'Hypoxia': 1475, 'HighConductance': 30, 'Normal': 23396}  (66.7s)
+  PRPO: 904 windows  groups_so_far={'HAB': 159, 'Hypoxia': 1478, 'HighConductance': 934, 'Normal': 23396}  (71.4s)
+  REDB: 1035 windows  groups_so_far={'HAB': 212, 'Hypoxia': 1478, 'HighConductance': 955, 'Normal': 24361}  (82.5s)
+  SUGG: 575 windows  groups_so_far={'HAB': 212, 'Hypoxia': 1478, 'HighConductance': 955, 'Normal': 24936}  (45.4s)
+  SYCA: 46 windows  groups_so_far={'HAB': 212, 'Hypoxia': 1524, 'HighConductance': 955, 'Normal': 24936}  (7.8s)
+  TOMB: 43 windows  groups_so_far={'HAB': 212, 'Hypoxia': 1524, 'HighConductance': 955, 'Normal': 24979}  (7.5s)
+  TOOK: 33 windows  groups_so_far={'HAB': 212, 'Hypoxia': 1524, 'HighConductance': 955, 'Normal': 25012}  (7.6s)
+  WALK: 39 windows  groups_so_far={'HAB': 212, 'Hypoxia': 1524, 'HighConductance': 955, 'Normal': 25051}  (7.5s)
+
+  HAB (pH > 9 (HAB proxy)):
+    n_windows=212  mean=0.0839  median=0.0531  p90=0.2085  max=0.4711
+    Top sites: [('PRPO', 82), ('REDB', 53), ('GUIL', 41)]
+
+  Hypoxia (DO < 4 mg/L):
+    n_windows=1524  mean=0.0522  median=0.0263  p90=0.1302  max=0.7411
+    Top sites: [('KING', 658), ('ARIK', 380), ('MCDI', 274)]
+
+  HighConductance (SpCond > 1500 µS/cm):
+    n_windows=955  mean=0.0722  median=0.0439  p90=0.1693  max=0.6531
+    Top sites: [('PRPO', 904), ('BIGC', 22), ('REDB', 21)]
+
+  Normal (Normal):
+    n_windows=25051  mean=0.0772  median=0.0475  p90=0.1815  max=0.6931
+    Top sites: [('MART', 1094), ('HOPB', 1092), ('LEWI', 1091)]
+
+Saved to /home/bcheng/SENTINEL/results/exp_pollution_fingerprint/fingerprint_results.json

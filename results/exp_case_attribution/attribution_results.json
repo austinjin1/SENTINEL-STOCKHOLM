@@ -1,0 +1,307 @@
+{
+  "experiment": "C: Parameter Attribution for Case Study Events",
+  "channel_names": [
+    "pH",
+    "DO",
+    "Turbidity",
+    "SpCond",
+    "Temp(padded)",
+    "ORP(padded)"
+  ],
+  "per_event": {
+    "lake_erie_hab_2023": {
+      "event_type": "HAB",
+      "advisory_date": "2023-07-15",
+      "stored_peak_prob": 0.9973,
+      "stored_peak_time": "2023-06-16T12:00:00",
+      "neon_proxy_site": "BARC",
+      "neon_proxy_baseline": 0.6401,
+      "window_param_means": {
+        "pH": 5.6851,
+        "DO": 7.1741,
+        "Turbidity": 1.0893,
+        "SpCond": 26.852
+      },
+      "attribution": {
+        "pH": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0645,
+          "delta": 0.0313,
+          "importance_pct": 32.68
+        },
+        "DO": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0822,
+          "delta": 0.0136,
+          "importance_pct": 14.17
+        },
+        "Turbidity": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.139,
+          "delta": -0.0433,
+          "importance_pct": 0.0
+        },
+        "SpCond": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0901,
+          "delta": 0.0056,
+          "importance_pct": 5.87
+        }
+      },
+      "ranked_parameters": [
+        "pH",
+        "DO",
+        "SpCond",
+        "Turbidity"
+      ],
+      "top_driver": "pH"
+    },
+    "jordan_lake_hab_nc": {
+      "event_type": "HAB",
+      "advisory_date": "2022-07-15",
+      "stored_peak_prob": 0.9929,
+      "stored_peak_time": "2022-05-31T20:00:00",
+      "neon_proxy_site": "BARC",
+      "neon_proxy_baseline": 0.6401,
+      "window_param_means": {
+        "pH": 5.6851,
+        "DO": 7.1741,
+        "Turbidity": 1.0893,
+        "SpCond": 26.852
+      },
+      "attribution": {
+        "pH": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0645,
+          "delta": 0.0313,
+          "importance_pct": 32.68
+        },
+        "DO": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0822,
+          "delta": 0.0136,
+          "importance_pct": 14.17
+        },
+        "Turbidity": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.139,
+          "delta": -0.0433,
+          "importance_pct": 0.0
+        },
+        "SpCond": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0901,
+          "delta": 0.0056,
+          "importance_pct": 5.87
+        }
+      },
+      "ranked_parameters": [
+        "pH",
+        "DO",
+        "SpCond",
+        "Turbidity"
+      ],
+      "top_driver": "pH"
+    },
+    "klamath_river_hab_2021": {
+      "event_type": "HAB",
+      "advisory_date": "2021-08-01",
+      "stored_peak_prob": 0.9929,
+      "stored_peak_time": "2021-06-02T23:00:00",
+      "neon_proxy_site": "BARC",
+      "neon_proxy_baseline": 0.6401,
+      "window_param_means": {
+        "pH": 5.6851,
+        "DO": 7.1741,
+        "Turbidity": 1.0893,
+        "SpCond": 26.852
+      },
+      "attribution": {
+        "pH": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0645,
+          "delta": 0.0313,
+          "importance_pct": 32.68
+        },
+        "DO": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0822,
+          "delta": 0.0136,
+          "importance_pct": 14.17
+        },
+        "Turbidity": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.139,
+          "delta": -0.0433,
+          "importance_pct": 0.0
+        },
+        "SpCond": {
+          "baseline_score": 0.0958,
+          "occluded_score": 0.0901,
+          "delta": 0.0056,
+          "importance_pct": 5.87
+        }
+      },
+      "ranked_parameters": [
+        "pH",
+        "DO",
+        "SpCond",
+        "Turbidity"
+      ],
+      "top_driver": "pH"
+    },
+    "gulf_dead_zone_2023": {
+      "event_type": "hypoxia",
+      "advisory_date": "2023-07-01",
+      "stored_peak_prob": 0.9929,
+      "stored_peak_time": "2023-04-04T23:00:00",
+      "neon_proxy_site": "POSE",
+      "neon_proxy_baseline": 0.6112,
+      "window_param_means": {
+        "pH": 7.6218,
+        "DO": 11.6232,
+        "Turbidity": 7.2732,
+        "SpCond": 92.1972
+      },
+      "attribution": {
+        "pH": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.0721,
+          "delta": 0.0469,
+          "importance_pct": 39.43
+        },
+        "DO": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.1019,
+          "delta": 0.0172,
+          "importance_pct": 14.42
+        },
+        "Turbidity": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.1114,
+          "delta": 0.0076,
+          "importance_pct": 6.42
+        },
+        "SpCond": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.1436,
+          "delta": -0.0246,
+          "importance_pct": 0.0
+        }
+      },
+      "ranked_parameters": [
+        "pH",
+        "DO",
+        "Turbidity",
+        "SpCond"
+      ],
+      "top_driver": "pH"
+    },
+    "chesapeake_hypoxia_2018": {
+      "event_type": "hypoxia",
+      "advisory_date": "2018-07-20",
+      "stored_peak_prob": 0.9989,
+      "stored_peak_time": "2018-07-22T16:05:00",
+      "neon_proxy_site": "POSE",
+      "neon_proxy_baseline": 0.6112,
+      "window_param_means": {
+        "pH": 7.6218,
+        "DO": 11.6232,
+        "Turbidity": 7.2732,
+        "SpCond": 92.1972
+      },
+      "attribution": {
+        "pH": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.0721,
+          "delta": 0.0469,
+          "importance_pct": 39.43
+        },
+        "DO": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.1019,
+          "delta": 0.0172,
+          "importance_pct": 14.42
+        },
+        "Turbidity": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.1114,
+          "delta": 0.0076,
+          "importance_pct": 6.42
+        },
+        "SpCond": {
+          "baseline_score": 0.119,
+          "occluded_score": 0.1436,
+          "delta": -0.0246,
+          "importance_pct": 0.0
+        }
+      },
+      "ranked_parameters": [
+        "pH",
+        "DO",
+        "Turbidity",
+        "SpCond"
+      ],
+      "top_driver": "pH"
+    },
+    "mississippi_salinity_2023": {
+      "event_type": "salinity",
+      "advisory_date": "2023-10-01",
+      "stored_peak_prob": 0.9929,
+      "stored_peak_time": "2023-08-03T13:00:00",
+      "neon_proxy_site": "KING",
+      "neon_proxy_baseline": 0.5308,
+      "window_param_means": {
+        "pH": 7.814,
+        "DO": 5.7241,
+        "Turbidity": 148.8892,
+        "SpCond": 448.9042
+      },
+      "attribution": {
+        "pH": {
+          "baseline_score": 0.0434,
+          "occluded_score": 0.0873,
+          "delta": -0.0438,
+          "importance_pct": 0.0
+        },
+        "DO": {
+          "baseline_score": 0.0434,
+          "occluded_score": 0.0389,
+          "delta": 0.0045,
+          "importance_pct": 10.34
+        },
+        "Turbidity": {
+          "baseline_score": 0.0434,
+          "occluded_score": 0.0853,
+          "delta": -0.0419,
+          "importance_pct": 0.0
+        },
+        "SpCond": {
+          "baseline_score": 0.0434,
+          "occluded_score": 0.0298,
+          "delta": 0.0136,
+          "importance_pct": 31.41
+        }
+      },
+      "ranked_parameters": [
+        "SpCond",
+        "DO",
+        "Turbidity",
+        "pH"
+      ],
+      "top_driver": "SpCond"
+    }
+  },
+  "type_drivers": {
+    "HAB": {
+      "pH": 3
+    },
+    "hypoxia": {
+      "pH": 2
+    },
+    "salinity": {
+      "SpCond": 1
+    }
+  },
+  "elapsed_s": 479.4
+}
