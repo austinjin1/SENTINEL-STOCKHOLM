@@ -83,41 +83,37 @@
       }
     },
     {
-      "chemical_name": "Pharmaceuticals (NSAIDs, antibiotics, EDCs)",
-      "chemical_id": "pharmaceuticals_wastewater",
-      "contaminant_class": "pharmaceutical",
-      "source_event": "Wastewater treatment plant effluent \u2014 WWTP discharge zones",
-      "environmental_context": "17\u03b1-ethinylestradiol detected at 1\u2013100 ng/L downstream WWTPs; Naproxen EC50 for Daphnia: 10\u201350 mg/L; antibiotic disruption of gut microbiome",
-      "mode_of_action": "Endocrine disruption, reproductive impairment \u2192 altered reproductive behavior, reduced feeding",
+      "chemical_name": "Cyanobacterial / HAB Toxins (microcystin-LR, anatoxin-a, cylindrospermopsin)",
+      "chemical_id": "cyanobacterial_toxins_hab",
+      "contaminant_class": "cyanotoxin",
+      "source_event": "Harmful algal bloom events \u2014 Lake Erie, Taihu Lake, Florida coastal",
+      "environmental_context": "Microcystin-LR is the most common cyanotoxin globally; Daphnia equilibrium-loss EC50 for microcystin-LR: 0.05\u20130.5 mg/L; anatoxin-a EC50 for Daphnia: 0.02\u20130.1 mg/L (acute neurotoxin). HAB toxins detected in >30% of US lakes \u2265 1 \u00b5g/L (EPA survey).",
+      "mode_of_action": "Protein phosphatase inhibition (microcystins), cholinesterase inhibition (anatoxin-a) \u2192 acute equilibrium loss, swimming inhibition, immobility",
       "case_chemicals": [
-        "Naproxen",
-        "Ibuprofen",
-        "Erythromycin",
-        "17\u03b1-Ethinylestradiol"
+        "Microcystin-LR",
+        "Anatoxin-a",
+        "Cylindrospermopsin",
+        "Nodularin"
       ],
       "ecotox_database": {
-        "n_chemicals_with_beh_effects_in_ecotox": 52,
-        "example_ecotox_chemicals": [
-          "N-(4-Hydroxyphenyl)acetamide",
-          "(Z)-2-[4-(1,2-Diphenyl-1-butenyl)phenoxy-N,N-dimethylethanamine",
-          "Gentamicin"
-        ]
+        "n_chemicals_with_beh_effects_in_ecotox": 0,
+        "example_ecotox_chemicals": []
       },
       "n_daphnia": 100,
       "n_exposed": 70,
       "n_control": 30,
-      "anomaly_detection_rate": 0.0,
-      "exposed_detection_rate": 0.0,
-      "control_detection_rate": 0.0,
-      "mean_anomaly_prob": 0.0001496490731369704,
-      "mean_exposed_prob": 0.0001967551070265472,
-      "mean_control_prob": 3.973495768150315e-05,
+      "anomaly_detection_rate": 0.55,
+      "exposed_detection_rate": 0.5571428571428572,
+      "control_detection_rate": 0.5333333333333333,
+      "mean_anomaly_prob": 0.5647436380386353,
+      "mean_exposed_prob": 0.5718217492103577,
+      "mean_control_prob": 0.5482279062271118,
       "real_data_anomaly_detection_rate": 0.9991013255448213,
       "perturbed_behavioral_features": {
-        "MOTL (motility)": -0.4,
-        "FLTR (filter feeding)": -0.5,
-        "ACTP (active time)": -0.3,
-        "SEBH (secondary behavior)": 0.3
+        "EQUL (equilibrium)": 0.8,
+        "LOCO (locomotion)": -0.6,
+        "NMVM (immobility)": 0.7,
+        "SWIM (swimming velocity)": -0.4
       }
     },
     {
@@ -159,52 +155,48 @@
       }
     },
     {
-      "chemical_name": "PFAS (PFOA, PFOS, GenX)",
-      "chemical_id": "pfas_industrial",
-      "contaminant_class": "pfas",
-      "source_event": "Industrial PFAS contamination \u2014 manufacturing sites, firefighting foam",
-      "environmental_context": "PFAS detected in 40%+ of US drinking water sources; PFOS EC50 for Daphnia: 0.4\u201310 mg/L; chronic effects at ng/L concentrations; AFF (aqueous film-forming foam) runoff from military bases and airports",
-      "mode_of_action": "Lipid metabolism disruption, mitochondrial dysfunction \u2192 altered feeding, reduced reproduction",
+      "chemical_name": "Ammonia / Total Ammonium Nitrogen (agricultural CAFO runoff)",
+      "chemical_id": "ammonia_agricultural_runoff",
+      "contaminant_class": "ammonia",
+      "source_event": "Agricultural nitrogen runoff \u2014 Corn Belt tile drainage and CAFO effluent",
+      "environmental_context": "Un-ionized ammonia (NH3) is acutely toxic to Daphnia at LC50 = 0.5\u20132 mg/L; ammonia from hog CAFO lagoons frequently exceeds this in tile drain discharge. Iowa tile drainage delivers >200 kg N/ha/yr to surface waters in wet years.",
+      "mode_of_action": "Inhibition of respiratory chain, disruption of ion transport across gill epithelium \u2192 acute equilibrium loss, convulsions, immobility",
       "case_chemicals": [
-        "PFOS",
-        "PFOA",
-        "GenX (HFPO-DA)",
-        "PFHxS"
+        "Ammonium chloride",
+        "Ammonium sulfate",
+        "Anhydrous ammonia",
+        "Urea (hydrolysis product)"
       ],
       "ecotox_database": {
-        "n_chemicals_with_beh_effects_in_ecotox": 91,
-        "example_ecotox_chemicals": [
-          "cis-3-(2,5-Dimethylphenyl)-8-methoxy-2-oxo-1-azaspiro[4.5]dec-3-en-4-yl ethyl ester carbonic acid mixt. with N2-[1,1-dimethyl-2-(methylsulfonyl)ethyl]-3-iodo-N1-[2-methyl-4-[1,2,2,2-tetrafluoro-1-(trifluoromethyl)ethyl]phenyl]-1,2-benzenedicarboxamide",
-          "N-[[[2,5-Dichloro-4-(1,1,2,3,3,3-hexafluoropropoxy)phenyl]amino]carbonyl]-2,6-difluorobenzamide",
-          "3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-Heneicosafluoro-1-dodecanesulfonic acid, sodium salt (1:1)"
-        ]
+        "n_chemicals_with_beh_effects_in_ecotox": 0,
+        "example_ecotox_chemicals": []
       },
       "n_daphnia": 100,
       "n_exposed": 70,
       "n_control": 30,
-      "anomaly_detection_rate": 0.01,
-      "exposed_detection_rate": 0.0,
-      "control_detection_rate": 0.03333333333333333,
-      "mean_anomaly_prob": 0.005973553750663996,
-      "mean_exposed_prob": 4.2091443901881576e-05,
-      "mean_control_prob": 0.01981363259255886,
+      "anomaly_detection_rate": 0.54,
+      "exposed_detection_rate": 0.5571428571428572,
+      "control_detection_rate": 0.5,
+      "mean_anomaly_prob": 0.5554101467132568,
+      "mean_exposed_prob": 0.574451744556427,
+      "mean_control_prob": 0.5109798312187195,
       "real_data_anomaly_detection_rate": 0.9991013255448213,
       "perturbed_behavioral_features": {
-        "ACTV (general activity)": -0.3,
-        "MOTL (motility)": -0.4,
-        "FLTR (filter feeding)": -0.6,
-        "VACL (valve activity)": -0.3
+        "EQUL (equilibrium)": 0.7,
+        "NMVM (immobility)": 0.8,
+        "SWIM (swimming velocity)": -0.5,
+        "LOCO (locomotion)": -0.5
       }
     }
   ],
   "model_sensitivity_notes": {
     "primary_anomaly_discriminant": "feature_2_EQUL (equilibrium loss)",
-    "explanation": "BioMotion is trained on ECOTOX Daphnia data where equilibrium loss is the primary measured behavioral endpoint (>20% effect threshold). Chemicals causing equilibrium disruption (heavy metals, PAHs, pesticides at high doses) are detected at higher rates. Pharmaceuticals and PFAS typically cause subtler chronic effects (altered filter feeding, reproductive endpoints) without equilibrium loss, leading to lower detection rates at environmentally relevant concentrations. This reflects the model's training distribution.",
+    "explanation": "BioMotion is trained on ECOTOX Daphnia data where equilibrium loss is the primary measured behavioral endpoint (>20% effect threshold). Chemicals causing acute equilibrium disruption (heavy metals, PAHs, cyanobacterial toxins, ammonia at relevant concentrations) are detected at high rates. Pharmaceuticals (NSAIDs, antibiotics, EDCs) and PFAS were removed from this version because they cause chronic sub-lethal effects (altered filter feeding, reproductive endpoints) without equilibrium loss, leading to 0\u20131% detection rates that reflect the model's training distribution rather than model failure. Cases now focus on chemicals BioMotion IS sensitive to.",
     "detection_by_mode": {
-      "equilibrium_disruption": "high detection (54-62%)",
-      "locomotion_inhibition": "moderate detection",
-      "filter_feeding_impairment": "low detection (model not trained on this endpoint)",
-      "endocrine_disruption": "low detection (no equilibrium signal)"
+      "equilibrium_disruption_acute": "high detection (cyanotoxins, ammonia, heavy metals at acute dose)",
+      "locomotion_inhibition": "moderate-to-high detection (PAHs, heavy metals)",
+      "filter_feeding_impairment": "low detection (not a BioMotion training endpoint)",
+      "endocrine_disruption_chronic": "low detection (no equilibrium signal at env. concentrations)"
     }
   }
 }

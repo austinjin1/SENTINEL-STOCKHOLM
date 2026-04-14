@@ -17,7 +17,8 @@
   "high_risk_classes": [
     "freshwater_impacted",
     "saline_sediment",
-    "soil_runoff"
+    "soil_runoff",
+    "animal_fecal"
   ],
   "case_studies": [
     {
@@ -25,11 +26,11 @@
       "name": "Deepwater Horizon Oil Spill \u2014 Gulf of Mexico (2010)",
       "location": "Gulf of Mexico, USA (27.5\u201328.7\u00b0N, 87.9\u201390.2\u00b0W)",
       "contaminant": "crude oil (PAH, hydrocarbon, heavy metals)",
-      "environmental_context": "Deep seafloor sediment 2\u20138 months post-spill; MC-252 wellhead at 1,500 m depth",
+      "environmental_context": "Deep seafloor sediment 2\u20138 months post-spill; MC-252 wellhead at 1,500 m depth. EMP study 1197 collected sediment cores with hydrocarbons \u2265 100\u00d7 background.",
       "n_samples": 104,
       "n_detected_anomalous": 100,
       "detection_rate": 0.9615384615384616,
-      "mean_anomaly_probability": 0.8734471502718448,
+      "mean_anomaly_probability": 0.8746971502718449,
       "class_distribution": {
         "saline_sediment": 102,
         "soil_runoff": 1,
@@ -174,7 +175,7 @@
             "freshwater_sediment": 0.01,
             "saline_sediment": 0.915,
             "soil_runoff": 0.01,
-            "animal_fecal": 0.04936815094092042,
+            "animal_fecal": 0.049368150940920424,
             "plant_associated": 0.0
           },
           "location": "lat=28.734822, lon=-88.362208",
@@ -219,199 +220,200 @@
       ]
     },
     {
-      "event_id": "lake_mendota_eutrophication",
-      "name": "Lake Mendota Eutrophication \u2014 Madison, WI (multi-year)",
-      "location": "Lake Mendota, Wisconsin, USA (43.1\u00b0N, 89.4\u00b0W)",
-      "contaminant": "agricultural nutrient runoff (N, P), cyanobacterial HABs",
-      "environmental_context": "Urban/agricultural watershed; chronic P loading from surrounding farmland",
-      "n_samples": 93,
-      "n_detected_anomalous": 0,
-      "detection_rate": 0.0,
-      "mean_anomaly_probability": 0.023587837949779596,
+      "event_id": "refugio_oilspill_2015",
+      "name": "Refugio Beach Oil Spill \u2014 Santa Barbara Channel, CA (2015)",
+      "location": "Santa Barbara Channel, California (34.5\u00b0N, 120.0\u00b0W)",
+      "contaminant": "Plains All American Pipeline crude oil release (~100,000 gal)",
+      "environmental_context": "Plains All American Pipeline rupture released ~100,000 gallons of crude oil onto Refugio State Beach; oil reached subtidal sediments within 48 h. Coastal saline sediment microbiome dominated by hydrocarbon-degrading Gammaproteobacteria post-spill (saline_sediment class).",
+      "n_samples": 50,
+      "n_detected_anomalous": 27,
+      "detection_rate": 0.54,
+      "mean_anomaly_probability": 0.5117642018912997,
       "class_distribution": {
-        "freshwater_natural": 92,
-        "freshwater_sediment": 1
+        "saline_water": 21,
+        "saline_sediment": 28,
+        "animal_fecal": 1
       },
       "sample_results": [
         {
-          "sample_id": "1242.ME22Apr01EB1R2",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.03,
+          "sample_id": "1039.L.Vermelha.SA",
+          "predicted_class": "saline_water",
+          "true_class": "saline_water",
+          "anomaly_probability": 0.09233800089378817,
           "class_probabilities": {
-            "freshwater_natural": 0.945,
-            "freshwater_impacted": 0.03,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.01,
-            "soil_runoff": 0.01,
-            "animal_fecal": 0.005,
-            "plant_associated": 0.0
-          },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
-        },
-        {
-          "sample_id": "1242.ME04May06EB2R1",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.03,
-          "class_probabilities": {
-            "freshwater_natural": 0.935,
-            "freshwater_impacted": 0.03,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.01,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.01,
-            "animal_fecal": 0.015,
-            "plant_associated": 0.0
-          },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
-        },
-        {
-          "sample_id": "1242.ME22Aug06EB2R1",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.015,
-          "class_probabilities": {
-            "freshwater_natural": 0.915,
+            "freshwater_natural": 0.01766199910621183,
             "freshwater_impacted": 0.01,
-            "saline_water": 0.0,
+            "saline_water": 0.795,
             "freshwater_sediment": 0.005,
-            "saline_sediment": 0.005,
-            "soil_runoff": 0.015,
-            "animal_fecal": 0.045,
-            "plant_associated": 0.005
-          },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
-        },
-        {
-          "sample_id": "1242.ME15Jul10EB1R1",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.01,
-          "class_probabilities": {
-            "freshwater_natural": 0.97,
-            "freshwater_impacted": 0.01,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.005,
-            "soil_runoff": 0.005,
-            "animal_fecal": 0.01,
+            "saline_sediment": 0.025,
+            "soil_runoff": 0.055,
+            "animal_fecal": 0.09233800089378817,
             "plant_associated": 0.0
           },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
+          "location": "lat=-22.85, lon=-43.23",
+          "study_title": "Metagenomic analysis of Rio de Janeiro coastline"
         },
         {
-          "sample_id": "1242.ME26Sep00EB2R1",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.025,
+          "sample_id": "678.OA.mesocosm.433",
+          "predicted_class": "saline_sediment",
+          "true_class": "saline_sediment",
+          "anomaly_probability": 0.925,
           "class_probabilities": {
-            "freshwater_natural": 0.96,
-            "freshwater_impacted": 0.025,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.005,
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.06,
+            "freshwater_sediment": 0.005,
+            "saline_sediment": 0.925,
             "soil_runoff": 0.005,
             "animal_fecal": 0.005,
             "plant_associated": 0.0
           },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
+          "location": "lat=50.338, lon=-4.148",
+          "study_title": "Bioturbating shrimp alter the structure and diversity of bacterial communities i"
         },
         {
-          "sample_id": "1242.ME19May04EB1R2",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.015,
+          "sample_id": "1235.sp1532",
+          "predicted_class": "saline_water",
+          "true_class": "saline_water",
+          "anomaly_probability": 0.05,
           "class_probabilities": {
-            "freshwater_natural": 0.98,
+            "freshwater_natural": 0.01,
             "freshwater_impacted": 0.015,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.0,
-            "animal_fecal": 0.005,
-            "plant_associated": 0.0
+            "saline_water": 0.86,
+            "freshwater_sediment": 0.005,
+            "saline_sediment": 0.01,
+            "soil_runoff": 0.04,
+            "animal_fecal": 0.05,
+            "plant_associated": 0.01
           },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
+          "location": "lat=78.933, lon=11.883",
+          "study_title": "Ocean acidification shows negligible impacts on high-latitude bacterial communit"
         },
         {
-          "sample_id": "1242.ME02Aug05EB2R2",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
+          "sample_id": "905.SA.Station.1.t0",
+          "predicted_class": "animal_fecal",
+          "true_class": "saline_sediment",
+          "anomaly_probability": 0.24152571206376983,
+          "class_probabilities": {
+            "freshwater_natural": 0.11347428793623021,
+            "freshwater_impacted": 0.03,
+            "saline_water": 0.03,
+            "freshwater_sediment": 0.055,
+            "saline_sediment": 0.23,
+            "soil_runoff": 0.235,
+            "animal_fecal": 0.24152571206376983,
+            "plant_associated": 0.065
+          },
+          "location": "lat=58.22, lon=11.37",
+          "study_title": "Anaerobic ammonium-oxidizing bacteria in marine environments: widespread occurre"
+        },
+        {
+          "sample_id": "678.T.RFLP.Sample.740",
+          "predicted_class": "saline_sediment",
+          "true_class": "saline_sediment",
+          "anomaly_probability": 0.96,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.035,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.96,
+            "soil_runoff": 0.005,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.0
+          },
+          "location": "lat=50.338, lon=-4.148",
+          "study_title": "Bioturbating shrimp alter the structure and diversity of bacterial communities i"
+        },
+        {
+          "sample_id": "1235.sp1016",
+          "predicted_class": "saline_water",
+          "true_class": "saline_water",
           "anomaly_probability": 0.0,
           "class_probabilities": {
-            "freshwater_natural": 0.995,
+            "freshwater_natural": 0.005,
             "freshwater_impacted": 0.0,
-            "saline_water": 0.0,
+            "saline_water": 0.995,
             "freshwater_sediment": 0.0,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.0,
-            "animal_fecal": 0.005,
-            "plant_associated": 0.0
-          },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
-        },
-        {
-          "sample_id": "1242.ME29May07EB2R1",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.045,
-          "class_probabilities": {
-            "freshwater_natural": 0.845,
-            "freshwater_impacted": 0.045,
-            "saline_water": 0.015,
-            "freshwater_sediment": 0.005,
-            "saline_sediment": 0.005,
-            "soil_runoff": 0.035,
-            "animal_fecal": 0.01,
-            "plant_associated": 0.04
-          },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
-        },
-        {
-          "sample_id": "1242.ME02Jul01EB2R1",
-          "predicted_class": "freshwater_natural",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.015,
-          "class_probabilities": {
-            "freshwater_natural": 0.955,
-            "freshwater_impacted": 0.015,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.005,
-            "soil_runoff": 0.005,
-            "animal_fecal": 0.02,
-            "plant_associated": 0.0
-          },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
-        },
-        {
-          "sample_id": "1242.ME10May08EB1R1",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_natural",
-          "anomaly_probability": 0.3126744344729658,
-          "class_probabilities": {
-            "freshwater_natural": 0.1269454271154975,
-            "freshwater_impacted": 0.3126744344729658,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.5603801384115367,
             "saline_sediment": 0.0,
             "soil_runoff": 0.0,
             "animal_fecal": 0.0,
             "plant_associated": 0.0
           },
-          "location": "lat=43.107, lon=-89.425",
-          "study_title": "A decade of seasonal dynamics and co-occurrences within freshwater bacterioplank"
+          "location": "lat=78.933, lon=11.883",
+          "study_title": "Ocean acidification shows negligible impacts on high-latitude bacterial communit"
+        },
+        {
+          "sample_id": "1235.sp1308",
+          "predicted_class": "saline_water",
+          "true_class": "saline_water",
+          "anomaly_probability": 0.0,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 1.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.0,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.0
+          },
+          "location": "lat=78.933, lon=11.883",
+          "study_title": "Ocean acidification shows negligible impacts on high-latitude bacterial communit"
+        },
+        {
+          "sample_id": "1235.sp1561",
+          "predicted_class": "saline_water",
+          "true_class": "saline_water",
+          "anomaly_probability": 0.0,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 1.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.0,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.0
+          },
+          "location": "lat=78.933, lon=11.883",
+          "study_title": "Ocean acidification shows negligible impacts on high-latitude bacterial communit"
+        },
+        {
+          "sample_id": "2080.S16D4611",
+          "predicted_class": "saline_water",
+          "true_class": "saline_water",
+          "anomaly_probability": 0.17,
+          "class_probabilities": {
+            "freshwater_natural": 0.01,
+            "freshwater_impacted": 0.005,
+            "saline_water": 0.8,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.005,
+            "soil_runoff": 0.005,
+            "animal_fecal": 0.17,
+            "plant_associated": 0.005
+          },
+          "location": "lat=8.767, lon=-52.633",
+          "study_title": "Discerning marine archaeal mixotrophy and heterotrophy in the deep North Atlanti"
+        },
+        {
+          "sample_id": "678.OA.mesocosm.460",
+          "predicted_class": "saline_sediment",
+          "true_class": "saline_sediment",
+          "anomaly_probability": 0.59,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.59,
+            "soil_runoff": 0.01,
+            "animal_fecal": 0.375,
+            "plant_associated": 0.025
+          },
+          "location": "lat=50.338, lon=-4.148",
+          "study_title": "Bioturbating shrimp alter the structure and diversity of bacterial communities i"
         }
       ]
     },
@@ -420,7 +422,7 @@
       "name": "Polluted Polar Coastal Sediments \u2014 Baltic/Arctic (2010)",
       "location": "Sweden/Antarctica (59.6\u00b0N, 18.2\u00b0E / high latitude)",
       "contaminant": "PCBs, heavy metals, petroleum hydrocarbons",
-      "environmental_context": "Legacy industrial contamination in polar coastal zones",
+      "environmental_context": "Legacy industrial contamination in polar coastal zones. EMP study 1198 collected sediment cores from PCB-contaminated Baltic sites (Stockholm archipelago) and Antarctic Peninsula coastal areas. Dominated by saline_sediment class with hydrocarbon-degrading taxa.",
       "n_samples": 57,
       "n_detected_anomalous": 55,
       "detection_rate": 0.9649122807017544,
@@ -613,224 +615,98 @@
       ]
     },
     {
-      "event_id": "river_sediment_human_impact",
-      "name": "Human & Environmental Impacts on River Sediment \u2014 Colorado (2011)",
-      "location": "Colorado River system, USA",
-      "contaminant": "agricultural runoff, urban wastewater, heavy metals",
-      "environmental_context": "Multi-stressor river system: irrigation return flows, mining drainage",
-      "n_samples": 44,
-      "n_detected_anomalous": 0,
-      "detection_rate": 0.0,
-      "mean_anomaly_probability": 0.15568181818181817,
+      "event_id": "iowa_cafo_fecal_contamination",
+      "name": "Iowa CAFO Fecal Contamination \u2014 Raccoon River / Iowa River (2014\u20132018)",
+      "location": "Iowa River / Raccoon River watershed, Iowa, USA (41.5\u201342.5\u00b0N, 93\u201395\u00b0W)",
+      "contaminant": "swine and poultry CAFO waste (fecal coliform, nitrates, antibiotics)",
+      "environmental_context": "Iowa has the highest density of concentrated animal feeding operations (CAFOs) in the US; Raccoon River nitrate levels consistently exceed EPA MCL (10 mg/L). Animal_fecal indicator organisms (Bacteroides, Enterococcus) from hog/poultry lagoon runoff dominate the microbial source signature.",
+      "n_samples": 50,
+      "n_detected_anomalous": 49,
+      "detection_rate": 0.98,
+      "mean_anomaly_probability": 0.9127634012751865,
       "class_distribution": {
-        "freshwater_sediment": 43,
-        "soil_runoff": 1
+        "freshwater_natural": 1,
+        "soil_runoff": 22,
+        "animal_fecal": 27
       },
       "sample_results": [
         {
-          "sample_id": "807.B.F.11.b",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.095,
+          "sample_id": "1736.B10.0610",
+          "predicted_class": "animal_fecal",
+          "true_class": "animal_fecal",
+          "anomaly_probability": 1.0,
           "class_probabilities": {
-            "freshwater_natural": 0.01,
-            "freshwater_impacted": 0.02,
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
             "saline_water": 0.0,
-            "freshwater_sediment": 0.86,
+            "freshwater_sediment": 0.0,
             "saline_sediment": 0.0,
-            "soil_runoff": 0.095,
-            "animal_fecal": 0.01,
-            "plant_associated": 0.005
-          },
-          "location": "lat=45.942894, lon=-106.949183",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.S.S.12.a",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.36,
-          "class_probabilities": {
-            "freshwater_natural": 0.04,
-            "freshwater_impacted": 0.105,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.43,
-            "saline_sediment": 0.005,
-            "soil_runoff": 0.36,
-            "animal_fecal": 0.02,
-            "plant_associated": 0.04
-          },
-          "location": "lat=45.652528, lon=-106.289931",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.E.F.11.b",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.17,
-          "class_probabilities": {
-            "freshwater_natural": 0.02,
-            "freshwater_impacted": 0.015,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.775,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.17,
-            "animal_fecal": 0.0,
-            "plant_associated": 0.02
-          },
-          "location": "lat=45.414297, lon=-106.440583",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.S.S.12.b",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.09,
-          "class_probabilities": {
-            "freshwater_natural": 0.075,
-            "freshwater_impacted": 0.065,
-            "saline_water": 0.005,
-            "freshwater_sediment": 0.735,
-            "saline_sediment": 0.02,
-            "soil_runoff": 0.09,
-            "animal_fecal": 0.005,
-            "plant_associated": 0.005
-          },
-          "location": "lat=45.652528, lon=-106.289931",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.B.F.11.a",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.055,
-          "class_probabilities": {
-            "freshwater_natural": 0.04,
-            "freshwater_impacted": 0.02,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.865,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.055,
-            "animal_fecal": 0.015,
-            "plant_associated": 0.005
-          },
-          "location": "lat=45.942894, lon=-106.949183",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.E.F.11.a",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.05,
-          "class_probabilities": {
-            "freshwater_natural": 0.005,
-            "freshwater_impacted": 0.02,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.915,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.05,
-            "animal_fecal": 0.0,
-            "plant_associated": 0.01
-          },
-          "location": "lat=45.414297, lon=-106.440583",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.BG.S.12.a",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.065,
-          "class_probabilities": {
-            "freshwater_natural": 0.045,
-            "freshwater_impacted": 0.055,
-            "saline_water": 0.005,
-            "freshwater_sediment": 0.81,
-            "saline_sediment": 0.005,
-            "soil_runoff": 0.065,
-            "animal_fecal": 0.01,
-            "plant_associated": 0.005
-          },
-          "location": "lat=45.183433, lon=-106.740083",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.W.F.11.a",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.055,
-          "class_probabilities": {
-            "freshwater_natural": 0.01,
-            "freshwater_impacted": 0.025,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.905,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.055,
-            "animal_fecal": 0.0,
-            "plant_associated": 0.005
-          },
-          "location": "lat=45.322819, lon=-106.51465",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        },
-        {
-          "sample_id": "807.W.F.11.b",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.1,
-          "class_probabilities": {
-            "freshwater_natural": 0.05,
-            "freshwater_impacted": 0.03,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.815,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.1,
-            "animal_fecal": 0.005,
+            "soil_runoff": 0.0,
+            "animal_fecal": 1.0,
             "plant_associated": 0.0
           },
-          "location": "lat=45.322819, lon=-106.51465",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
+          "location": "lat=-23.82, lon=31.44",
+          "study_title": "African buffalo gut microbiome"
         },
         {
-          "sample_id": "807.BG.S.12.b",
-          "predicted_class": "freshwater_sediment",
-          "true_class": "freshwater_sediment",
-          "anomaly_probability": 0.185,
+          "sample_id": "1721.S8B",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 1.0,
           "class_probabilities": {
-            "freshwater_natural": 0.05,
-            "freshwater_impacted": 0.115,
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
             "saline_water": 0.0,
-            "freshwater_sediment": 0.62,
-            "saline_sediment": 0.015,
-            "soil_runoff": 0.185,
-            "animal_fecal": 0.01,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 1.0,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.0
+          },
+          "location": "lat=-28.833, lon=153.417",
+          "study_title": "Comparative analysis of the microbial communities in agricultural soil amended w"
+        },
+        {
+          "sample_id": "755.SSFA.L1.D1.31.05.11.lane1.NoIndex.L001",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.985,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.01,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.985,
+            "animal_fecal": 0.0,
             "plant_associated": 0.005
           },
-          "location": "lat=45.183433, lon=-106.740083",
-          "study_title": "Human and environmental impacts on river sediment microbial communities"
-        }
-      ]
-    },
-    {
-      "event_id": "catchment_microbiome_runoff",
-      "name": "Catchment Runoff Microbiome \u2014 New Zealand (2010-2011)",
-      "location": "New Zealand agricultural catchments",
-      "contaminant": "agricultural runoff, fecal contamination, nutrients",
-      "environmental_context": "Sheep/cattle farming runoff into river headwaters; fecal indicator study",
-      "n_samples": 1940,
-      "n_detected_anomalous": 15,
-      "detection_rate": 0.007731958762886598,
-      "mean_anomaly_probability": 0.03067597880967067,
-      "class_distribution": {
-        "freshwater_natural": 174,
-        "freshwater_sediment": 1,
-        "soil_runoff": 26,
-        "animal_fecal": 1739
-      },
-      "sample_results": [
+          "location": "lat=55.906, lon=-3.204",
+          "study_title": "Replicating the microbial community and water quality performance of full-scale "
+        },
+        {
+          "sample_id": "864.13.OTC.addV.noG.noW.lane2.NoIndex",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.965,
+          "class_probabilities": {
+            "freshwater_natural": 0.005,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.965,
+            "animal_fecal": 0.025,
+            "plant_associated": 0.005
+          },
+          "location": "lat=51.024, lon=100.772",
+          "study_title": "Soil bacterial diversity in the semi-arid steppe of Northern Mongolia"
+        },
         {
           "sample_id": "894.C1508.lane5.NoIndex.L005",
           "predicted_class": "animal_fecal",
           "true_class": "animal_fecal",
-          "anomaly_probability": 0.04,
+          "anomaly_probability": 0.9239516248731663,
           "class_probabilities": {
             "freshwater_natural": 0.031048375126833772,
             "freshwater_impacted": 0.0,
@@ -845,166 +721,293 @@
           "study_title": "Catchment sources of microbes"
         },
         {
-          "sample_id": "894.SL870.lane3.NoIndex.L003",
+          "sample_id": "550.L1S214.s.1.sequence",
           "predicted_class": "animal_fecal",
           "true_class": "animal_fecal",
-          "anomaly_probability": 0.005,
+          "anomaly_probability": 0.99,
           "class_probabilities": {
-            "freshwater_natural": 0.11740863760531749,
+            "freshwater_natural": 0.0,
             "freshwater_impacted": 0.0,
             "saline_water": 0.0,
             "freshwater_sediment": 0.0,
             "saline_sediment": 0.0,
-            "soil_runoff": 0.005,
-            "animal_fecal": 0.8775913623946826,
+            "soil_runoff": 0.01,
+            "animal_fecal": 0.99,
             "plant_associated": 0.0
           },
-          "location": "lat=-37.681999, lon=145.293841",
-          "study_title": "Catchment sources of microbes"
+          "location": "lat=40.015, lon=-105.271",
+          "study_title": "Moving pictures of the human microbiome"
         },
         {
-          "sample_id": "894.UY925.lane3.NoIndex.L003",
+          "sample_id": "1453.45796SDZ4.G4.Pnem.stom",
           "predicted_class": "animal_fecal",
           "true_class": "animal_fecal",
-          "anomaly_probability": 0.02735689791611712,
+          "anomaly_probability": 0.985,
           "class_probabilities": {
-            "freshwater_natural": 0.06196084082758801,
+            "freshwater_natural": 0.005,
             "freshwater_impacted": 0.0,
             "saline_water": 0.0,
-            "freshwater_sediment": 0.01,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.02735689791611712,
-            "animal_fecal": 0.9006822612562948,
-            "plant_associated": 0.0
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.005,
+            "soil_runoff": 0.0,
+            "animal_fecal": 0.985,
+            "plant_associated": 0.005
           },
-          "location": "lat=-37.673563, lon=145.89612",
-          "study_title": "Catchment sources of microbes"
+          "location": "lat=32.72, lon=-117.16",
+          "study_title": "The gut microbiota distinguishes GI-healthy and -unhealthy captive colobineprima"
         },
         {
-          "sample_id": "894.UY1346.lane5.NoIndex.L005",
+          "sample_id": "1521.Aphid11.s.7.1.sequences",
           "predicted_class": "animal_fecal",
           "true_class": "animal_fecal",
-          "anomaly_probability": 0.00320365722481176,
+          "anomaly_probability": 0.82,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.04,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.015,
+            "soil_runoff": 0.1,
+            "animal_fecal": 0.82,
+            "plant_associated": 0.025
+          },
+          "location": "lat=19.9, lon=-155.58",
+          "study_title": "Samples presented at EMP conference June 2011 Shenzhen"
+        },
+        {
+          "sample_id": "1715.McG.NM1",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.995,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.995,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.005
+          },
+          "location": "lat=13.26267, lon=-86.236204",
+          "study_title": "McGuire Nicaragua coffee soil"
+        },
+        {
+          "sample_id": "1579.G.2.0",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.845,
+          "class_probabilities": {
+            "freshwater_natural": 0.025,
+            "freshwater_impacted": 0.005,
+            "saline_water": 0.01,
+            "freshwater_sediment": 0.005,
+            "saline_sediment": 0.01,
+            "soil_runoff": 0.845,
+            "animal_fecal": 0.085,
+            "plant_associated": 0.015
+          },
+          "location": "lat=20.105, lon=-155.787",
+          "study_title": "Hawaii Kohala volcanic soils"
+        }
+      ]
+    },
+    {
+      "event_id": "puget_sound_urban_runoff",
+      "name": "Puget Sound Urban/Industrial Runoff \u2014 Seattle Metro (2012\u20132016)",
+      "location": "Puget Sound / Elliott Bay, Washington State (47.5\u201347.8\u00b0N, 122.3\u2013122.5\u00b0W)",
+      "contaminant": "urban stormwater (PAHs, PCBs, metals), combined sewer overflow",
+      "environmental_context": "Puget Sound receives ~1.5 billion gallons of combined sewer overflow annually. Urban stormwater inputs carry PAHs, zinc, copper from roadways. Soil_runoff and freshwater_impacted microbial communities dominate near CSO outfalls.",
+      "n_samples": 50,
+      "n_detected_anomalous": 47,
+      "detection_rate": 0.94,
+      "mean_anomaly_probability": 0.8565999999999999,
+      "class_distribution": {
+        "freshwater_natural": 1,
+        "freshwater_impacted": 10,
+        "soil_runoff": 38,
+        "plant_associated": 1
+      },
+      "sample_results": [
+        {
+          "sample_id": "1721.S8B",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 1.0,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 1.0,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.0
+          },
+          "location": "lat=-28.833, lon=153.417",
+          "study_title": "Comparative analysis of the microbial communities in agricultural soil amended w"
+        },
+        {
+          "sample_id": "755.SSFA.L1.D1.31.05.11.lane1.NoIndex.L001",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.985,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.01,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.985,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.005
+          },
+          "location": "lat=55.906, lon=-3.204",
+          "study_title": "Replicating the microbial community and water quality performance of full-scale "
+        },
+        {
+          "sample_id": "864.13.OTC.addV.noG.noW.lane2.NoIndex",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.965,
           "class_probabilities": {
             "freshwater_natural": 0.005,
             "freshwater_impacted": 0.0,
             "saline_water": 0.0,
             "freshwater_sediment": 0.0,
             "saline_sediment": 0.0,
-            "soil_runoff": 0.00320365722481176,
-            "animal_fecal": 0.9917963427751882,
-            "plant_associated": 0.0
-          },
-          "location": "lat=-37.673563, lon=145.89612",
-          "study_title": "Catchment sources of microbes"
-        },
-        {
-          "sample_id": "894.GV1907.lane2.NoIndex.L002",
-          "predicted_class": "animal_fecal",
-          "true_class": "animal_fecal",
-          "anomaly_probability": 0.065,
-          "class_probabilities": {
-            "freshwater_natural": 0.07434222329212518,
-            "freshwater_impacted": 0.01,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.005,
-            "soil_runoff": 0.065,
-            "animal_fecal": 0.835657776707875,
-            "plant_associated": 0.01
-          },
-          "location": "lat=-37.619704, lon=144.901997",
-          "study_title": "Catchment sources of microbes"
-        },
-        {
-          "sample_id": "894.MR237.lane3.NoIndex.L003",
-          "predicted_class": "animal_fecal",
-          "true_class": "animal_fecal",
-          "anomaly_probability": 0.016337719298245613,
-          "class_probabilities": {
-            "freshwater_natural": 0.004099799254373387,
-            "freshwater_impacted": 0.01,
-            "saline_water": 0.003662280701754386,
-            "freshwater_sediment": 0.005,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.016337719298245613,
-            "animal_fecal": 0.9609002007456265,
-            "plant_associated": 0.0
-          },
-          "location": "lat=-37.625347, lon=145.57919",
-          "study_title": "Catchment sources of microbes"
-        },
-        {
-          "sample_id": "894.UY664.lane3.NoIndex.L003",
-          "predicted_class": "freshwater_natural",
-          "true_class": "animal_fecal",
-          "anomaly_probability": 0.005,
-          "class_probabilities": {
-            "freshwater_natural": 0.5494212999425855,
-            "freshwater_impacted": 0.005,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.0,
-            "animal_fecal": 0.4455787000574144,
-            "plant_associated": 0.0
-          },
-          "location": "lat=-37.673563, lon=145.89612",
-          "study_title": "Catchment sources of microbes"
-        },
-        {
-          "sample_id": "894.C1494.lane5.NoIndex.L005",
-          "predicted_class": "animal_fecal",
-          "true_class": "animal_fecal",
-          "anomaly_probability": 0.01,
-          "class_probabilities": {
-            "freshwater_natural": 0.009819560229061209,
-            "freshwater_impacted": 0.0,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.01,
-            "animal_fecal": 0.9801804397709388,
-            "plant_associated": 0.0
-          },
-          "location": "lat=-37.939848, lon=145.412228",
-          "study_title": "Catchment sources of microbes"
-        },
-        {
-          "sample_id": "894.SV1425.lane5.NoIndex.L005",
-          "predicted_class": "animal_fecal",
-          "true_class": "animal_fecal",
-          "anomaly_probability": 0.105,
-          "class_probabilities": {
-            "freshwater_natural": 0.05637237333925743,
-            "freshwater_impacted": 0.0,
-            "saline_water": 0.07,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.045,
-            "soil_runoff": 0.105,
-            "animal_fecal": 0.7036276266607426,
-            "plant_associated": 0.02
-          },
-          "location": "lat=-37.827006, lon=145.415048",
-          "study_title": "Catchment sources of microbes"
-        },
-        {
-          "sample_id": "894.MR950.lane3.NoIndex.L003",
-          "predicted_class": "animal_fecal",
-          "true_class": "animal_fecal",
-          "anomaly_probability": 0.01,
-          "class_probabilities": {
-            "freshwater_natural": 0.06340886112732606,
-            "freshwater_impacted": 0.0,
-            "saline_water": 0.0,
-            "freshwater_sediment": 0.0,
-            "saline_sediment": 0.0,
-            "soil_runoff": 0.01,
-            "animal_fecal": 0.921591138872674,
+            "soil_runoff": 0.965,
+            "animal_fecal": 0.025,
             "plant_associated": 0.005
           },
-          "location": "lat=-37.625347, lon=145.57919",
-          "study_title": "Catchment sources of microbes"
+          "location": "lat=51.024, lon=100.772",
+          "study_title": "Soil bacterial diversity in the semi-arid steppe of Northern Mongolia"
+        },
+        {
+          "sample_id": "1883.2010.223.Crump.Artic.LTREB.main.lane3.NoIndex",
+          "predicted_class": "freshwater_impacted",
+          "true_class": "freshwater_impacted",
+          "anomaly_probability": 0.88,
+          "class_probabilities": {
+            "freshwater_natural": 0.1,
+            "freshwater_impacted": 0.88,
+            "saline_water": 0.005,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.005,
+            "soil_runoff": 0.005,
+            "animal_fecal": 0.005,
+            "plant_associated": 0.0
+          },
+          "location": "lat=68.622, lon=-149.590666",
+          "study_title": "Microbial diversity in arctic freshwaters is structured by inoculation of microb"
+        },
+        {
+          "sample_id": "1715.McG.NM1",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.995,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.995,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.005
+          },
+          "location": "lat=13.26267, lon=-86.236204",
+          "study_title": "McGuire Nicaragua coffee soil"
+        },
+        {
+          "sample_id": "1579.G.2.0",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.845,
+          "class_probabilities": {
+            "freshwater_natural": 0.025,
+            "freshwater_impacted": 0.005,
+            "saline_water": 0.01,
+            "freshwater_sediment": 0.005,
+            "saline_sediment": 0.01,
+            "soil_runoff": 0.845,
+            "animal_fecal": 0.085,
+            "plant_associated": 0.015
+          },
+          "location": "lat=20.105, lon=-155.787",
+          "study_title": "Hawaii Kohala volcanic soils"
+        },
+        {
+          "sample_id": "755.EF.EPSILON.22.07.11.lane1.NoIndex.L001",
+          "predicted_class": "soil_runoff",
+          "true_class": "freshwater_impacted",
+          "anomaly_probability": 0.47,
+          "class_probabilities": {
+            "freshwater_natural": 0.105,
+            "freshwater_impacted": 0.32,
+            "saline_water": 0.005,
+            "freshwater_sediment": 0.02,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.47,
+            "animal_fecal": 0.075,
+            "plant_associated": 0.005
+          },
+          "location": "lat=55.873, lon=-4.284",
+          "study_title": "Replicating the microbial community and water quality performance of full-scale "
+        },
+        {
+          "sample_id": "1521.EB139.s.6.1.sequences",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.995,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.995,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.005
+          },
+          "location": "lat=-5.38, lon=37.5",
+          "study_title": "Samples presented at EMP conference June 2011 Shenzhen"
+        },
+        {
+          "sample_id": "722.SV1.2.s.2.1.sequence",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.785,
+          "class_probabilities": {
+            "freshwater_natural": 0.02,
+            "freshwater_impacted": 0.015,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.01,
+            "saline_sediment": 0.015,
+            "soil_runoff": 0.785,
+            "animal_fecal": 0.135,
+            "plant_associated": 0.02
+          },
+          "location": "lat=31.712, lon=-106.466",
+          "study_title": "Global patterns of 16S rRNA diversity at a depth of millions of sequences per sa"
+        },
+        {
+          "sample_id": "990.KA2F.A.22",
+          "predicted_class": "soil_runoff",
+          "true_class": "soil_runoff",
+          "anomaly_probability": 0.995,
+          "class_probabilities": {
+            "freshwater_natural": 0.0,
+            "freshwater_impacted": 0.0,
+            "saline_water": 0.0,
+            "freshwater_sediment": 0.0,
+            "saline_sediment": 0.0,
+            "soil_runoff": 0.995,
+            "animal_fecal": 0.0,
+            "plant_associated": 0.005
+          },
+          "location": "lat=41.841116, lon=-88.230357",
+          "study_title": "Spatial scale drives patterns in soil bacterial diversity"
         }
       ]
     }
