@@ -496,15 +496,15 @@ See **Section 3.1** for full bootstrap CI table. No simulated CIs — all are re
 **Script**: `scripts/exp10_mc_dropout.py`  
 **Output**: `results/exp10_mc_dropout/mc_results.json`
 
-50 MC dropout passes (dropout p=0.1) over 500 samples per model to estimate epistemic uncertainty.
+50 MC dropout passes (dropout p=0.1) over 500 real NEON sensor windows (250 normal + 250 anomalous by threshold exceedance) per model. AquaSSM inputs are real NEON windows, not synthetic noise.
 
-| Model | ECE (before calibration) | Uncertainty std | Notes |
+| Model | ECE (before calibration) | Uncertainty std | Data |
 |---|---|---|---|
-| AquaSSM | 0.298 | 5.53 × 10⁻⁶ | Anomalous uncertainty slightly > normal (5.58 × 10⁻⁶ vs 5.49 × 10⁻⁶) |
-| Fusion+Head | **0.086** | 0.0359 | Best calibrated; pred_mean=0.543 |
-| BioMotion | 0.434 | 6.62 × 10⁻⁷ | Highest ECE; near-perfect discriminator |
+| AquaSSM | 0.187 | 0.00515 | 500 real NEON windows |
+| Fusion+Head | 0.109 | 0.0361 | 100 samples |
+| BioMotion | 0.381 | 6.37 × 10⁻⁷ | Real trajectory files |
 
-The Fusion model achieves the lowest ECE (0.086), indicating well-calibrated uncertainty. AquaSSM shows slightly higher uncertainty for anomalous inputs vs normal (as expected), validating that epistemic uncertainty tracks decision-boundary proximity. BioMotion's very high ECE (0.434) reflects the near-perfect AUROC (1.0) — the model assigns extreme probabilities with low diversity across MC passes. Elapsed: 4,746 s.
+AquaSSM ECE=0.187 on real NEON data (previously 0.298 with synthetic inputs). Uncertainty std=0.00515 (previously 5.5×10⁻⁶ with constant fake inputs). Fusion is best-calibrated (ECE=0.109). BioMotion retains low calibration quality reflecting near-perfect AUROC. Elapsed: 2,182 s.
 
 ---
 
