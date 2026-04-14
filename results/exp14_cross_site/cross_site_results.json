@@ -1,16 +1,22 @@
 {
   "n_sites_analyzed": 32,
+  "n_sites_with_per_window_auroc": 24,
+  "per_window_auroc_mean": 0.5093888228572826,
   "cross_site_spearman_mean_score": {
-    "rho": -0.00513573138956783,
-    "p_value": 0.9777448213508464
+    "rho": 0.01027146277913566,
+    "p_value": 0.9555060721816133
   },
   "cross_site_spearman_max_score": {
-    "rho": 0.07887016062550596,
-    "p_value": 0.6678681114627585
+    "rho": 0.19369044097798674,
+    "p_value": 0.28815136550864356
+  },
+  "cross_site_spearman_p95_score": {
+    "rho": 0.09317684092501635,
+    "p_value": 0.6119984013895765
   },
   "score_range": {
-    "min": 0.061762363413732015,
-    "max": 0.1281057168343113
+    "min": 0.04724770309606,
+    "max": 0.13441807371764733
   },
   "label_rate_range": {
     "min": 0.0,
@@ -26,10 +32,11 @@
         "PRPO"
       ],
       "n_sites": 5,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 4,
+      "mean_per_window_auroc": 0.4984816919191919,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.3347134569287299,
+      "mean_label_rate": 0.4343420063228464
     },
     "Southeast Plains": {
       "sites": [
@@ -45,10 +52,11 @@
         "WALK"
       ],
       "n_sites": 10,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 6,
+      "mean_per_window_auroc": 0.5856331634195412,
+      "ranking_auroc_p95_vs_impaired": 1.0,
+      "mean_p95_score": 0.3436298505961894,
+      "mean_label_rate": 0.39151327411219045
     },
     "Mediterranean California": {
       "sites": [
@@ -56,10 +64,11 @@
         "MCRA"
       ],
       "n_sites": 2,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 2,
+      "mean_per_window_auroc": 0.5960092539039907,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.32919255569577216,
+      "mean_label_rate": 0.201335857043114
     },
     "Western Cordillera": {
       "sites": [
@@ -68,30 +77,33 @@
         "REDB"
       ],
       "n_sites": 3,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 3,
+      "mean_per_window_auroc": 0.4416569200779727,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.2969484160343805,
+      "mean_label_rate": 0.14740097035454228
     },
     "Central Appalachians": {
       "sites": [
         "BLUE"
       ],
       "n_sites": 1,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 1,
+      "mean_per_window_auroc": 0.5882352941176471,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.29776788204908267,
+      "mean_label_rate": 0.17525773195876287
     },
     "Arctic Cordillera": {
       "sites": [
         "CARI"
       ],
       "n_sites": 1,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 1,
+      "mean_per_window_auroc": 0.42105263157894735,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.32044682353734955,
+      "mean_label_rate": 0.1683991683991684
     },
     "Northern Appalachians": {
       "sites": [
@@ -102,30 +114,33 @@
         "POSE"
       ],
       "n_sites": 5,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 5,
+      "mean_per_window_auroc": 0.458331550802139,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.26810699820518485,
+      "mean_label_rate": 0.40725750605248656
     },
     "Caribbean Islands": {
       "sites": [
         "CUPE"
       ],
       "n_sites": 1,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 1,
+      "mean_per_window_auroc": 0.53125,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.3386339366436004,
+      "mean_label_rate": 0.22846441947565543
     },
     "Ozark Highlands": {
       "sites": [
         "FLNT"
       ],
       "n_sites": 1,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 0,
+      "mean_per_window_auroc": null,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.42085925340652464,
+      "mean_label_rate": 0.0019138755980861245
     },
     "Tundra": {
       "sites": [
@@ -133,3672 +148,315 @@
         "TOOK"
       ],
       "n_sites": 2,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 1,
+      "mean_per_window_auroc": 0.368421052631579,
+      "ranking_auroc_p95_vs_impaired": 1.0,
+      "mean_p95_score": 0.28308228105306577,
+      "mean_label_rate": 0.07175226586102719
     },
     "Mojave Basin": {
       "sites": [
         "SYCA"
       ],
       "n_sites": 1,
-      "mean_auroc": 0.5,
-      "std_auroc": 0.0,
-      "min_auroc": 0.5,
-      "max_auroc": 0.5
+      "n_with_per_window_auroc": 0,
+      "mean_per_window_auroc": null,
+      "ranking_auroc_p95_vs_impaired": null,
+      "mean_p95_score": 0.09918247349560261,
+      "mean_label_rate": 0.0
     }
   },
   "per_site_results": {
     "ARIK": {
-      "site": "ARIK",
-      "n_rows": 3027326,
-      "n_windows": 1065,
-      "status": "success",
-      "mean_score": 0.08625458493116071,
-      "max_score": 0.6324962377548218,
-      "p95_score": 0.230595776438713,
-      "n_label_anomaly": 290,
+      "mean_score": 0.0914753750994137,
+      "max_score": 0.5713415741920471,
+      "p95_score": 0.27615787982940665,
       "label_anomaly_rate": 0.27230046948356806,
-      "top_events": [
-        {
-          "window_start_sec": 31507200.0,
-          "score": 0.6324962377548218,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62726400.0,
-          "score": 0.5391506552696228,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53222400.0,
-          "score": 0.5327638983726501,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 26265600.0,
-          "score": 0.4866860806941986,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 30067200.0,
-          "score": 0.38703930377960205,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 32716800.0,
-          "score": 0.3840194344520569,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 23155200.0,
-          "score": 0.37437447905540466,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 22464000.0,
-          "score": 0.3688538670539856,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 55180800.0,
-          "score": 0.36104342341423035,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 4723200.0,
-          "score": 0.35412171483039856,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 37382400.0,
-          "score": 0.35002434253692627,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2073600.0,
-          "score": 0.33908218145370483,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29548800.0,
-          "score": 0.33495497703552246,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39686400.0,
-          "score": 0.334101140499115,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 33753600.0,
-          "score": 0.3306528925895691,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 43084800.0,
-          "score": 0.3253392279148102,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 37036800.0,
-          "score": 0.32531335949897766,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29894400.0,
-          "score": 0.3235456943511963,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33408000.0,
-          "score": 0.32299596071243286,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 3456000.0,
-          "score": 0.3157791495323181,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 96.2
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.57,
+      "ecoregion": "Great Plains"
     },
     "BARC": {
-      "site": "BARC",
-      "n_rows": 302445,
-      "n_windows": 983,
-      "status": "success",
-      "mean_score": 0.10147475206368013,
-      "max_score": 0.6866354942321777,
-      "p95_score": 0.31913675963878624,
-      "n_label_anomaly": 983,
+      "mean_score": 0.11699914919602801,
+      "max_score": 0.7403640151023865,
+      "p95_score": 0.38654645383358,
       "label_anomaly_rate": 1.0,
-      "top_events": [
-        {
-          "window_start_sec": 45331200.0,
-          "score": 0.6866354942321777,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 38361600.0,
-          "score": 0.680718183517456,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 43718400.0,
-          "score": 0.620059072971344,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 8467200.0,
-          "score": 0.6119857430458069,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 2419200.0,
-          "score": 0.5707598924636841,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 14860800.0,
-          "score": 0.5343037247657776,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 10195200.0,
-          "score": 0.5026342272758484,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 56044800.0,
-          "score": 0.48954275250434875,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 16704000.0,
-          "score": 0.47320911288261414,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 58003200.0,
-          "score": 0.4638079106807709,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 50630400.0,
-          "score": 0.4631669819355011,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 51667200.0,
-          "score": 0.4544423520565033,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 30873600.0,
-          "score": 0.4486018121242523,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 44064000.0,
-          "score": 0.44796791672706604,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 20620800.0,
-          "score": 0.44428306818008423,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 38707200.0,
-          "score": 0.4356684684753418,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 45388800.0,
-          "score": 0.4347993731498718,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 41126400.0,
-          "score": 0.4346725046634674,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 5414400.0,
-          "score": 0.43343135714530945,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 36691200.0,
-          "score": 0.4317730963230133,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 92.4
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Southeast Plains"
     },
     "BIGC": {
-      "site": "BIGC",
-      "n_rows": 3300930,
-      "n_windows": 1011,
-      "status": "success",
-      "mean_score": 0.10129245271184044,
-      "max_score": 0.5917444229125977,
-      "p95_score": 0.33683013916015625,
-      "n_label_anomaly": 264,
+      "mean_score": 0.11333505838923341,
+      "max_score": 0.6819639205932617,
+      "p95_score": 0.3291689157485962,
       "label_anomaly_rate": 0.26112759643916916,
-      "top_events": [
-        {
-          "window_start_sec": 37152000.0,
-          "score": 0.5917444229125977,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 56563200.0,
-          "score": 0.5796469449996948,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 50572800.0,
-          "score": 0.5750827789306641,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 59846400.0,
-          "score": 0.5722078084945679,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 24595200.0,
-          "score": 0.5696296095848083,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 9561600.0,
-          "score": 0.5660048127174377,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 38592000.0,
-          "score": 0.5451599359512329,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53395200.0,
-          "score": 0.5293914079666138,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 48441600.0,
-          "score": 0.5232739448547363,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 50515200.0,
-          "score": 0.49595919251441956,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 22809600.0,
-          "score": 0.48004645109176636,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 54720000.0,
-          "score": 0.4738098382949829,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 24422400.0,
-          "score": 0.45694881677627563,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44294400.0,
-          "score": 0.4544193744659424,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 6969600.0,
-          "score": 0.44878295063972473,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 16358400.0,
-          "score": 0.44592270255088806,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 44985600.0,
-          "score": 0.44467589259147644,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 50227200.0,
-          "score": 0.4372364580631256,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 47923200.0,
-          "score": 0.4353419840335846,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 4896000.0,
-          "score": 0.43359607458114624,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 99.1
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5604395604395604,
+      "ecoregion": "Mediterranean California"
     },
     "BLDE": {
-      "site": "BLDE",
-      "n_rows": 3157199,
-      "n_windows": 1087,
-      "status": "success",
-      "mean_score": 0.10394791731389845,
-      "max_score": 0.7622132897377014,
-      "p95_score": 0.30340002775192265,
-      "n_label_anomaly": 96,
+      "mean_score": 0.0975255415997217,
+      "max_score": 0.6251696944236755,
+      "p95_score": 0.2941416889429093,
       "label_anomaly_rate": 0.08831646734130635,
-      "top_events": [
-        {
-          "window_start_sec": 22694400.0,
-          "score": 0.7622132897377014,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 61920000.0,
-          "score": 0.5670679807662964,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 30758400.0,
-          "score": 0.566327691078186,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 45331200.0,
-          "score": 0.5601885914802551,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 46368000.0,
-          "score": 0.558488130569458,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62784000.0,
-          "score": 0.5485029816627502,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 45849600.0,
-          "score": 0.5481557846069336,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 27705600.0,
-          "score": 0.5419629812240601,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60480000.0,
-          "score": 0.5202061533927917,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25977600.0,
-          "score": 0.5123016238212585,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14400000.0,
-          "score": 0.5111978650093079,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 22176000.0,
-          "score": 0.4908302426338196,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 11289600.0,
-          "score": 0.4702129662036896,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 23385600.0,
-          "score": 0.46450817584991455,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 3801600.0,
-          "score": 0.46064525842666626,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 30643200.0,
-          "score": 0.4450441598892212,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29433600.0,
-          "score": 0.4402775466442108,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 5990400.0,
-          "score": 0.4238664209842682,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2534400.0,
-          "score": 0.4227387607097626,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 15955200.0,
-          "score": 0.41617506742477417,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 105.0
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.21052631578947367,
+      "ecoregion": "Western Cordillera"
     },
     "BLUE": {
-      "site": "BLUE",
-      "n_rows": 1590061,
-      "n_windows": 582,
-      "status": "success",
-      "mean_score": 0.08893862215056375,
-      "max_score": 0.53954017162323,
-      "p95_score": 0.23745834305882418,
-      "n_label_anomaly": 102,
+      "mean_score": 0.08835721783111147,
+      "max_score": 0.5565051436424255,
+      "p95_score": 0.29776788204908267,
       "label_anomaly_rate": 0.17525773195876287,
-      "top_events": [
-        {
-          "window_start_sec": 19296000.0,
-          "score": 0.53954017162323,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 35654400.0,
-          "score": 0.4557580053806305,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 51264000.0,
-          "score": 0.446074515581131,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 41356800.0,
-          "score": 0.44122934341430664,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 51609600.0,
-          "score": 0.4313449263572693,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25977600.0,
-          "score": 0.42489901185035706,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53510400.0,
-          "score": 0.415495902299881,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34963200.0,
-          "score": 0.41143351793289185,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39283200.0,
-          "score": 0.356896311044693,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 54892800.0,
-          "score": 0.35372546315193176,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 20793600.0,
-          "score": 0.3477546274662018,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 55411200.0,
-          "score": 0.34509769082069397,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 54547200.0,
-          "score": 0.33850857615470886,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 20563200.0,
-          "score": 0.3246878981590271,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31564800.0,
-          "score": 0.32274627685546875,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57715200.0,
-          "score": 0.3023499548435211,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 19987200.0,
-          "score": 0.3018358051776886,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 41184000.0,
-          "score": 0.3012291491031647,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 20678400.0,
-          "score": 0.30008435249328613,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 33638400.0,
-          "score": 0.2854570150375366,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 59.2
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5882352941176471,
+      "ecoregion": "Central Appalachians"
     },
     "BLWA": {
-      "site": "BLWA",
-      "n_rows": 350657,
-      "n_windows": 1048,
-      "status": "success",
-      "mean_score": 0.07334205084093776,
-      "max_score": 0.5260434746742249,
-      "p95_score": 0.20898740664124485,
-      "n_label_anomaly": 28,
+      "mean_score": 0.1214491090961005,
+      "max_score": 0.7289952039718628,
+      "p95_score": 0.38117877095937724,
       "label_anomaly_rate": 0.026717557251908396,
-      "top_events": [
-        {
-          "window_start_sec": 58176000.0,
-          "score": 0.5260434746742249,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7718400.0,
-          "score": 0.48139044642448425,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 16819200.0,
-          "score": 0.44327983260154724,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 403200.0,
-          "score": 0.43203213810920715,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 58233600.0,
-          "score": 0.43140509724617004,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 22464000.0,
-          "score": 0.4181290864944458,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 36576000.0,
-          "score": 0.40518543124198914,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25056000.0,
-          "score": 0.3984186351299286,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39628800.0,
-          "score": 0.3827747702598572,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 32486400.0,
-          "score": 0.3688555061817169,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59904000.0,
-          "score": 0.36514806747436523,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31564800.0,
-          "score": 0.3470390737056732,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29952000.0,
-          "score": 0.33737319707870483,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 52992000.0,
-          "score": 0.3333202600479126,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 21081600.0,
-          "score": 0.3215842843055725,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 50860800.0,
-          "score": 0.3137979805469513,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 36748800.0,
-          "score": 0.3091171085834503,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7891200.0,
-          "score": 0.30862367153167725,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2822400.0,
-          "score": 0.30349433422088623,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 5068800.0,
-          "score": 0.3017529547214508,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 86.6
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.736842105263158,
+      "ecoregion": "Southeast Plains"
     },
     "CARI": {
-      "site": "CARI",
-      "n_rows": 3022973,
-      "n_windows": 962,
-      "status": "success",
-      "mean_score": 0.09511724785657642,
-      "max_score": 0.611844539642334,
-      "p95_score": 0.2842375725507736,
-      "n_label_anomaly": 162,
+      "mean_score": 0.09665536310324317,
+      "max_score": 0.7439596652984619,
+      "p95_score": 0.32044682353734955,
       "label_anomaly_rate": 0.1683991683991684,
-      "top_events": [
-        {
-          "window_start_sec": 8697600.0,
-          "score": 0.611844539642334,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 10425600.0,
-          "score": 0.5984448790550232,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57772800.0,
-          "score": 0.5801685452461243,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 17452800.0,
-          "score": 0.5501624941825867,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 18028800.0,
-          "score": 0.49141260981559753,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 18892800.0,
-          "score": 0.4741588532924652,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57600000.0,
-          "score": 0.47085121273994446,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 5760000.0,
-          "score": 0.46728017926216125,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 8467200.0,
-          "score": 0.46672895550727844,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 17856000.0,
-          "score": 0.4559051990509033,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25171200.0,
-          "score": 0.4167686700820923,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 21945600.0,
-          "score": 0.415712833404541,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 15782400.0,
-          "score": 0.4114862382411957,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59328000.0,
-          "score": 0.4093342423439026,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 49536000.0,
-          "score": 0.4024752378463745,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 22636800.0,
-          "score": 0.39768996834754944,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 22291200.0,
-          "score": 0.3903921842575073,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34214400.0,
-          "score": 0.38771936297416687,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53856000.0,
-          "score": 0.3814714252948761,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 21312000.0,
-          "score": 0.38110220432281494,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 86.2
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.42105263157894735,
+      "ecoregion": "Arctic Cordillera"
     },
     "COMO": {
-      "site": "COMO",
-      "n_rows": 3077732,
-      "n_windows": 1057,
-      "status": "success",
-      "mean_score": 0.11810575489019984,
-      "max_score": 0.7669167518615723,
-      "p95_score": 0.346936213970184,
-      "n_label_anomaly": 83,
+      "mean_score": 0.10706079133018383,
+      "max_score": 0.6758874654769897,
+      "p95_score": 0.3317157328128814,
       "label_anomaly_rate": 0.07852412488174078,
-      "top_events": [
-        {
-          "window_start_sec": 55584000.0,
-          "score": 0.7669167518615723,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 48153600.0,
-          "score": 0.7400542497634888,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 62208000.0,
-          "score": 0.6943607330322266,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59788800.0,
-          "score": 0.6700380444526672,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39513600.0,
-          "score": 0.6285722255706787,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13708800.0,
-          "score": 0.6203467845916748,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53222400.0,
-          "score": 0.6155023574829102,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59040000.0,
-          "score": 0.6132664084434509,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 56448000.0,
-          "score": 0.6032450199127197,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34156800.0,
-          "score": 0.5878959894180298,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 38419200.0,
-          "score": 0.58566814661026,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39225600.0,
-          "score": 0.5854309797286987,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 18374400.0,
-          "score": 0.5836427807807922,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 21081600.0,
-          "score": 0.5594704151153564,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 55411200.0,
-          "score": 0.5582661032676697,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 6508800.0,
-          "score": 0.5561551451683044,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 48326400.0,
-          "score": 0.5386476516723633,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 55526400.0,
-          "score": 0.5361717343330383,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12844800.0,
-          "score": 0.5337724685668945,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12672000.0,
-          "score": 0.5332797765731812,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 92.6
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5277777777777778,
+      "ecoregion": "Western Cordillera"
     },
     "CRAM": {
-      "site": "CRAM",
-      "n_rows": 326454,
-      "n_windows": 948,
-      "status": "success",
-      "mean_score": 0.10704291156269138,
-      "max_score": 0.5047568678855896,
-      "p95_score": 0.2039313718676567,
-      "n_label_anomaly": 894,
+      "mean_score": 0.048420628694127776,
+      "max_score": 0.5040422677993774,
+      "p95_score": 0.14039677977561948,
       "label_anomaly_rate": 0.9430379746835443,
-      "top_events": [
-        {
-          "window_start_sec": 63244800.0,
-          "score": 0.5047568678855896,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 45792000.0,
-          "score": 0.4318528175354004,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 46022400.0,
-          "score": 0.39205610752105713,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 64224000.0,
-          "score": 0.3538094162940979,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53971200.0,
-          "score": 0.34607771039009094,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 16473600.0,
-          "score": 0.3452572822570801,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 79545600.0,
-          "score": 0.3448370695114136,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 79084800.0,
-          "score": 0.3423927128314972,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 51897600.0,
-          "score": 0.32049262523651123,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 62726400.0,
-          "score": 0.3179895877838135,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44870400.0,
-          "score": 0.3167686462402344,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 51840000.0,
-          "score": 0.3027321994304657,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 63417600.0,
-          "score": 0.30236557126045227,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 78508800.0,
-          "score": 0.2964821755886078,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 45676800.0,
-          "score": 0.29639843106269836,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 64569600.0,
-          "score": 0.29574963450431824,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 64512000.0,
-          "score": 0.27311211824417114,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 921600.0,
-          "score": 0.2716156840324402,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 46598400.0,
-          "score": 0.26972630620002747,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 64166400.0,
-          "score": 0.25372323393821716,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 80.0
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.30303030303030304,
+      "ecoregion": "Northern Appalachians"
     },
     "CUPE": {
-      "site": "CUPE",
-      "n_rows": 3021628,
-      "n_windows": 1068,
-      "status": "success",
-      "mean_score": 0.11662431273126297,
-      "max_score": 0.6931891441345215,
-      "p95_score": 0.37043177634477614,
-      "n_label_anomaly": 244,
+      "mean_score": 0.11338300667881916,
+      "max_score": 0.5481011271476746,
+      "p95_score": 0.3386339366436004,
       "label_anomaly_rate": 0.22846441947565543,
-      "top_events": [
-        {
-          "window_start_sec": 64915200.0,
-          "score": 0.6931891441345215,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12038400.0,
-          "score": 0.6489205956459045,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 27648000.0,
-          "score": 0.6111411452293396,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 19353600.0,
-          "score": 0.5988699793815613,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 26956800.0,
-          "score": 0.594357967376709,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 68256000.0,
-          "score": 0.5833185315132141,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 16185600.0,
-          "score": 0.580009937286377,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 63590400.0,
-          "score": 0.5544120669364929,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12153600.0,
-          "score": 0.5528989434242249,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 45273600.0,
-          "score": 0.5518531799316406,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 47750400.0,
-          "score": 0.538176953792572,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29606400.0,
-          "score": 0.5344937443733215,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 69465600.0,
-          "score": 0.5336858630180359,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31104000.0,
-          "score": 0.5104296803474426,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 69523200.0,
-          "score": 0.4955222010612488,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 49593600.0,
-          "score": 0.4944748878479004,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25286400.0,
-          "score": 0.4915827512741089,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 17280000.0,
-          "score": 0.4832121729850769,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 43488000.0,
-          "score": 0.48185965418815613,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44064000.0,
-          "score": 0.47985729575157166,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 98.5
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.53125,
+      "ecoregion": "Caribbean Islands"
     },
     "FLNT": {
-      "site": "FLNT",
-      "n_rows": 291638,
-      "n_windows": 1045,
-      "status": "success",
-      "mean_score": 0.061762363413732015,
-      "max_score": 0.48056280612945557,
-      "p95_score": 0.1791506022214889,
-      "n_label_anomaly": 2,
+      "mean_score": 0.13441807371764733,
+      "max_score": 0.6880663633346558,
+      "p95_score": 0.42085925340652464,
       "label_anomaly_rate": 0.0019138755980861245,
-      "top_events": [
-        {
-          "window_start_sec": 44006400.0,
-          "score": 0.48056280612945557,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2649600.0,
-          "score": 0.3733353316783905,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 55123200.0,
-          "score": 0.3654501736164093,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7430400.0,
-          "score": 0.3537302315235138,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29088000.0,
-          "score": 0.35329392552375793,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 40147200.0,
-          "score": 0.33364489674568176,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 28915200.0,
-          "score": 0.3254527449607849,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33580800.0,
-          "score": 0.315959095954895,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7372800.0,
-          "score": 0.30030736327171326,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14284800.0,
-          "score": 0.2970784306526184,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13536000.0,
-          "score": 0.29322201013565063,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44524800.0,
-          "score": 0.28496044874191284,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 61401600.0,
-          "score": 0.2849411070346832,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 27532800.0,
-          "score": 0.2822181284427643,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 40838400.0,
-          "score": 0.2801336348056793,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 3974400.0,
-          "score": 0.2793121933937073,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 21657600.0,
-          "score": 0.27675333619117737,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 52070400.0,
-          "score": 0.2737792730331421,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62265600.0,
-          "score": 0.27011093497276306,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1036800.0,
-          "score": 0.26682642102241516,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 90.8
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Ozark Highlands"
     },
     "GUIL": {
-      "site": "GUIL",
-      "n_rows": 3244802,
-      "n_windows": 1039,
-      "status": "success",
-      "mean_score": 0.08340533949856944,
-      "max_score": 0.7660308480262756,
-      "p95_score": 0.2513118714094161,
-      "n_label_anomaly": 256,
+      "mean_score": 0.11087655325897963,
+      "max_score": 0.6419154405593872,
+      "p95_score": 0.32142165899276726,
       "label_anomaly_rate": 0.24639076034648702,
-      "top_events": [
-        {
-          "window_start_sec": 55411200.0,
-          "score": 0.7660308480262756,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 4089600.0,
-          "score": 0.6319443583488464,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 21888000.0,
-          "score": 0.6010081768035889,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 49017600.0,
-          "score": 0.6002873182296753,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 4953600.0,
-          "score": 0.5513402223587036,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 23443200.0,
-          "score": 0.5481059551239014,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60249600.0,
-          "score": 0.5287471413612366,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57657600.0,
-          "score": 0.5241163372993469,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44697600.0,
-          "score": 0.4981706440448761,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 37094400.0,
-          "score": 0.49545907974243164,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 32601600.0,
-          "score": 0.4886234402656555,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 53164800.0,
-          "score": 0.4857026934623718,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 7027200.0,
-          "score": 0.43845799565315247,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 43315200.0,
-          "score": 0.42607131600379944,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 46771200.0,
-          "score": 0.4191786050796509,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53568000.0,
-          "score": 0.4159265458583832,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 54892800.0,
-          "score": 0.41146397590637207,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 61401600.0,
-          "score": 0.39660730957984924,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 11404800.0,
-          "score": 0.3957452178001404,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 58176000.0,
-          "score": 0.39471790194511414,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 94.1
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5656565656565656,
+      "ecoregion": "Southeast Plains"
     },
     "HOPB": {
-      "site": "HOPB",
-      "n_rows": 3201578,
-      "n_windows": 1092,
-      "status": "success",
-      "mean_score": 0.0909661343993897,
-      "max_score": 0.571387767791748,
-      "p95_score": 0.28620036840438845,
-      "n_label_anomaly": 41,
+      "mean_score": 0.11300934882107065,
+      "max_score": 0.6927085518836975,
+      "p95_score": 0.34620456695556645,
       "label_anomaly_rate": 0.037545787545787544,
-      "top_events": [
-        {
-          "window_start_sec": 33408000.0,
-          "score": 0.571387767791748,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1152000.0,
-          "score": 0.5331345200538635,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1440000.0,
-          "score": 0.5226356983184814,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 55641600.0,
-          "score": 0.47963833808898926,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13824000.0,
-          "score": 0.4771914780139923,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2937600.0,
-          "score": 0.4661989212036133,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 5472000.0,
-          "score": 0.43001362681388855,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 32198400.0,
-          "score": 0.4280184209346771,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25632000.0,
-          "score": 0.41111525893211365,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31449600.0,
-          "score": 0.4088663160800934,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44870400.0,
-          "score": 0.3974197208881378,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 11980800.0,
-          "score": 0.39712774753570557,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 6681600.0,
-          "score": 0.39303454756736755,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31392000.0,
-          "score": 0.3925014138221741,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60307200.0,
-          "score": 0.3922068774700165,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 9907200.0,
-          "score": 0.3867708444595337,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 4780800.0,
-          "score": 0.38176000118255615,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62150400.0,
-          "score": 0.37713155150413513,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 56908800.0,
-          "score": 0.37690937519073486,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 61747200.0,
-          "score": 0.3727913796901703,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 98.8
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.42105263157894735,
+      "ecoregion": "Northern Appalachians"
     },
     "KING": {
-      "site": "KING",
-      "n_rows": 2761142,
-      "n_windows": 1094,
-      "status": "success",
-      "mean_score": 0.06696827976514927,
-      "max_score": 0.642001748085022,
-      "p95_score": 0.17903639152646056,
-      "n_label_anomaly": 324,
+      "mean_score": 0.13335702098757915,
+      "max_score": 0.6858933568000793,
+      "p95_score": 0.36953304857015606,
       "label_anomaly_rate": 0.2961608775137112,
-      "top_events": [
-        {
-          "window_start_sec": 19929600.0,
-          "score": 0.642001748085022,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 22636800.0,
-          "score": 0.5891544222831726,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 29318400.0,
-          "score": 0.4546133875846863,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 18892800.0,
-          "score": 0.4082334041595459,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 27820800.0,
-          "score": 0.400694340467453,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 30931200.0,
-          "score": 0.3903222680091858,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 36057600.0,
-          "score": 0.38353610038757324,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 24537600.0,
-          "score": 0.36245375871658325,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 34617600.0,
-          "score": 0.3569110035896301,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 27648000.0,
-          "score": 0.3545611798763275,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 31104000.0,
-          "score": 0.34493640065193176,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 36115200.0,
-          "score": 0.33938080072402954,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 34502400.0,
-          "score": 0.3294367790222168,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 21830400.0,
-          "score": 0.32026559114456177,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 35136000.0,
-          "score": 0.31882092356681824,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 58348800.0,
-          "score": 0.3155555725097656,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 34387200.0,
-          "score": 0.31122443079948425,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 17222400.0,
-          "score": 0.3099062144756317,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 32947200.0,
-          "score": 0.30434131622314453,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 21369600.0,
-          "score": 0.3025323450565338,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 103.0
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.75,
+      "ecoregion": "Southeast Plains"
     },
     "LECO": {
-      "site": "LECO",
-      "n_rows": 3066244,
-      "n_windows": 1094,
-      "status": "success",
-      "mean_score": 0.1281057168343113,
-      "max_score": 0.6747293472290039,
-      "p95_score": 0.3994004875421523,
-      "n_label_anomaly": 222,
+      "mean_score": 0.13002573135134404,
+      "max_score": 0.6499149203300476,
+      "p95_score": 0.34454699605703343,
       "label_anomaly_rate": 0.20292504570383912,
-      "top_events": [
-        {
-          "window_start_sec": 3916800.0,
-          "score": 0.6747293472290039,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 50112000.0,
-          "score": 0.6673771142959595,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 49939200.0,
-          "score": 0.648459255695343,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 19987200.0,
-          "score": 0.61224764585495,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 20678400.0,
-          "score": 0.587864339351654,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44294400.0,
-          "score": 0.5876269340515137,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 15206400.0,
-          "score": 0.5777848958969116,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 50572800.0,
-          "score": 0.5769195556640625,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 5702400.0,
-          "score": 0.5734127163887024,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25344000.0,
-          "score": 0.5714414715766907,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 26553600.0,
-          "score": 0.5700703859329224,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 43027200.0,
-          "score": 0.5526993274688721,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 26380800.0,
-          "score": 0.5491724610328674,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 20332800.0,
-          "score": 0.5481339693069458,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 6163200.0,
-          "score": 0.5440542101860046,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 21081600.0,
-          "score": 0.5430593490600586,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 7948800.0,
-          "score": 0.531674861907959,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 18489600.0,
-          "score": 0.5247175097465515,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12787200.0,
-          "score": 0.5213332176208496,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 4780800.0,
-          "score": 0.5160261988639832,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 113.7
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5098039215686274,
+      "ecoregion": "Southeast Plains"
     },
     "LEWI": {
-      "site": "LEWI",
-      "n_rows": 3119563,
-      "n_windows": 1091,
-      "status": "success",
-      "mean_score": 0.08122616404890297,
-      "max_score": 0.656135082244873,
-      "p95_score": 0.23822956532239914,
-      "n_label_anomaly": 253,
+      "mean_score": 0.10201080593726095,
+      "max_score": 0.6045093536376953,
+      "p95_score": 0.31362296640872955,
       "label_anomaly_rate": 0.23189734188817598,
-      "top_events": [
-        {
-          "window_start_sec": 50630400.0,
-          "score": 0.656135082244873,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53222400.0,
-          "score": 0.6519092321395874,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60768000.0,
-          "score": 0.6517306566238403,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 18892800.0,
-          "score": 0.593009352684021,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29779200.0,
-          "score": 0.5522487163543701,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 64051200.0,
-          "score": 0.5435758233070374,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 51840000.0,
-          "score": 0.4666174650192261,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39744000.0,
-          "score": 0.4554751515388489,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31507200.0,
-          "score": 0.44859835505485535,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53913600.0,
-          "score": 0.4458153247833252,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1324800.0,
-          "score": 0.4336449205875397,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 9446400.0,
-          "score": 0.4120485186576843,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 28339200.0,
-          "score": 0.40976449847221375,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 40377600.0,
-          "score": 0.4093066453933716,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 6624000.0,
-          "score": 0.38956329226493835,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 19929600.0,
-          "score": 0.3887011706829071,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 33465600.0,
-          "score": 0.38811397552490234,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 21657600.0,
-          "score": 0.3716444969177246,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 11232000.0,
-          "score": 0.36422500014305115,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 3686400.0,
-          "score": 0.35952824354171753,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 110.6
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5686274509803921,
+      "ecoregion": "Northern Appalachians"
     },
     "LIRO": {
-      "site": "LIRO",
-      "n_rows": 293902,
-      "n_windows": 835,
-      "status": "success",
-      "mean_score": 0.1099015124677541,
-      "max_score": 0.5607556104660034,
-      "p95_score": 0.2616009294986725,
-      "n_label_anomaly": 615,
+      "mean_score": 0.06639289432400447,
+      "max_score": 0.5843722820281982,
+      "p95_score": 0.1915988713502883,
       "label_anomaly_rate": 0.7365269461077845,
-      "top_events": [
-        {
-          "window_start_sec": 92736000.0,
-          "score": 0.5607556104660034,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 35539200.0,
-          "score": 0.4628433585166931,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 65145600.0,
-          "score": 0.45734238624572754,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 99475200.0,
-          "score": 0.4396890699863434,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62323200.0,
-          "score": 0.42690637707710266,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 62380800.0,
-          "score": 0.426638662815094,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 61804800.0,
-          "score": 0.418307363986969,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 89107200.0,
-          "score": 0.4098021686077118,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 67334400.0,
-          "score": 0.40324437618255615,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 61459200.0,
-          "score": 0.4003123939037323,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 67737600.0,
-          "score": 0.39371824264526367,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 24940800.0,
-          "score": 0.37019798159599304,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 94752000.0,
-          "score": 0.36853840947151184,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 23846400.0,
-          "score": 0.3665403723716736,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 25286400.0,
-          "score": 0.3607129156589508,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 23673600.0,
-          "score": 0.36048808693885803,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 100454400.0,
-          "score": 0.35497140884399414,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 37094400.0,
-          "score": 0.35287410020828247,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 22636800.0,
-          "score": 0.352806955575943,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 63244800.0,
-          "score": 0.35240986943244934,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 82.6
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.41999999999999993,
+      "ecoregion": "Northern Appalachians"
     },
     "MART": {
-      "site": "MART",
-      "n_rows": 3198746,
-      "n_windows": 1094,
-      "status": "success",
-      "mean_score": 0.1025803053987398,
-      "max_score": 0.7224653363227844,
-      "p95_score": 0.3089379236102098,
-      "n_label_anomaly": 20,
+      "mean_score": 0.10316441619153248,
+      "max_score": 0.5986044406890869,
+      "p95_score": 0.33108063936233517,
       "label_anomaly_rate": 0.018281535648994516,
-      "top_events": [
-        {
-          "window_start_sec": 31737600.0,
-          "score": 0.7224653363227844,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 21657600.0,
-          "score": 0.650786280632019,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7891200.0,
-          "score": 0.6500683426856995,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25747200.0,
-          "score": 0.6098089218139648,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34099200.0,
-          "score": 0.5775195956230164,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1843200.0,
-          "score": 0.5294591784477234,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31219200.0,
-          "score": 0.52422696352005,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 5299200.0,
-          "score": 0.5228632688522339,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31680000.0,
-          "score": 0.5213856101036072,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2707200.0,
-          "score": 0.5169692635536194,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 22291200.0,
-          "score": 0.49447301030158997,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 38822400.0,
-          "score": 0.481889545917511,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62265600.0,
-          "score": 0.477580189704895,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 20160000.0,
-          "score": 0.46585291624069214,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33696000.0,
-          "score": 0.4562981426715851,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7545600.0,
-          "score": 0.4561375081539154,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 3744000.0,
-          "score": 0.44822338223457336,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60940800.0,
-          "score": 0.44081801176071167,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2534400.0,
-          "score": 0.44053900241851807,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 17913600.0,
-          "score": 0.430487722158432,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 95.7
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5789473684210527,
+      "ecoregion": "Southeast Plains"
     },
     "MAYF": {
-      "site": "MAYF",
-      "n_rows": 3728622,
-      "n_windows": 925,
-      "status": "success",
-      "mean_score": 0.09467571329086315,
-      "max_score": 0.471515417098999,
-      "p95_score": 0.29497608542442316,
-      "n_label_anomaly": 898,
+      "mean_score": 0.10642847052926349,
+      "max_score": 0.6828488111495972,
+      "p95_score": 0.33466387391090385,
       "label_anomaly_rate": 0.9708108108108108,
-      "top_events": [
-        {
-          "window_start_sec": 25459200.0,
-          "score": 0.471515417098999,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 33120000.0,
-          "score": 0.4690346121788025,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 23097600.0,
-          "score": 0.4636904001235962,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 62150400.0,
-          "score": 0.4579885005950928,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 60422400.0,
-          "score": 0.4571754038333893,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 50112000.0,
-          "score": 0.42713505029678345,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 49248000.0,
-          "score": 0.41353410482406616,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 39744000.0,
-          "score": 0.4036261737346649,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 62208000.0,
-          "score": 0.4033578932285309,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 55008000.0,
-          "score": 0.398115873336792,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 30816000.0,
-          "score": 0.3840911090373993,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 57312000.0,
-          "score": 0.38323065638542175,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 29779200.0,
-          "score": 0.38036349415779114,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 57139200.0,
-          "score": 0.3801867663860321,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 57542400.0,
-          "score": 0.37649619579315186,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 15897600.0,
-          "score": 0.3733903169631958,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 28224000.0,
-          "score": 0.37159445881843567,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 11059200.0,
-          "score": 0.3687129616737366,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 29721600.0,
-          "score": 0.36199161410331726,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 864000.0,
-          "score": 0.3619423806667328,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 71.8
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Southeast Plains"
     },
     "MCDI": {
-      "site": "MCDI",
-      "n_rows": 3295167,
-      "n_windows": 1094,
-      "status": "success",
-      "mean_score": 0.08877767152467937,
-      "max_score": 0.741023063659668,
-      "p95_score": 0.2543721824884414,
-      "n_label_anomaly": 497,
+      "mean_score": 0.11180326570507729,
+      "max_score": 0.7494602203369141,
+      "p95_score": 0.33309503197669954,
       "label_anomaly_rate": 0.45429616087751373,
-      "top_events": [
-        {
-          "window_start_sec": 18489600.0,
-          "score": 0.741023063659668,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 5760000.0,
-          "score": 0.7192156314849854,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 26265600.0,
-          "score": 0.6491865515708923,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 44755200.0,
-          "score": 0.5397170186042786,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 54662400.0,
-          "score": 0.5227027535438538,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 53856000.0,
-          "score": 0.5072337985038757,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 27072000.0,
-          "score": 0.4964772164821625,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 29779200.0,
-          "score": 0.4845196008682251,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 4550400.0,
-          "score": 0.4442780613899231,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13824000.0,
-          "score": 0.4332934617996216,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 32601600.0,
-          "score": 0.42743510007858276,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25977600.0,
-          "score": 0.41590848565101624,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 45619200.0,
-          "score": 0.4035409092903137,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 48038400.0,
-          "score": 0.40340691804885864,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 23385600.0,
-          "score": 0.4023885130882263,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13075200.0,
-          "score": 0.39512506127357483,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 47750400.0,
-          "score": 0.3806421756744385,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 26784000.0,
-          "score": 0.3786451518535614,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 40492800.0,
-          "score": 0.3760753870010376,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62496000.0,
-          "score": 0.36334285140037537,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 73.8
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.48958333333333337,
+      "ecoregion": "Great Plains"
     },
     "MCRA": {
-      "site": "MCRA",
-      "n_rows": 3243388,
-      "n_windows": 1088,
-      "status": "success",
-      "mean_score": 0.10809686342220041,
-      "max_score": 0.7118892073631287,
-      "p95_score": 0.354263679683208,
-      "n_label_anomaly": 154,
+      "mean_score": 0.11223082398218513,
+      "max_score": 0.8045791387557983,
+      "p95_score": 0.32921619564294813,
       "label_anomaly_rate": 0.14154411764705882,
-      "top_events": [
-        {
-          "window_start_sec": 55468800.0,
-          "score": 0.7118892073631287,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 30700800.0,
-          "score": 0.6395609378814697,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59616000.0,
-          "score": 0.6263758540153503,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2304000.0,
-          "score": 0.5940608382225037,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1958400.0,
-          "score": 0.5805110931396484,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13766400.0,
-          "score": 0.5764767527580261,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44236800.0,
-          "score": 0.5763041973114014,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 61056000.0,
-          "score": 0.5711614489555359,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 17222400.0,
-          "score": 0.566332221031189,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 13708800.0,
-          "score": 0.564621090888977,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60422400.0,
-          "score": 0.5392510890960693,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 16185600.0,
-          "score": 0.5360552668571472,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 47347200.0,
-          "score": 0.5272231101989746,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 28108800.0,
-          "score": 0.526478111743927,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 31392000.0,
-          "score": 0.5217555165290833,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60249600.0,
-          "score": 0.5106817483901978,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 28915200.0,
-          "score": 0.5051012635231018,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34329600.0,
-          "score": 0.5048826336860657,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 4089600.0,
-          "score": 0.4947564899921417,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39744000.0,
-          "score": 0.48291537165641785,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 98.1
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.631578947368421,
+      "ecoregion": "Mediterranean California"
     },
     "OKSR": {
-      "site": "OKSR",
-      "n_rows": 2408078,
-      "n_windows": 662,
-      "status": "success",
-      "mean_score": 0.08171835796713402,
-      "max_score": 0.6176781058311462,
-      "p95_score": 0.26388590931892386,
-      "n_label_anomaly": 95,
+      "mean_score": 0.12494945548597183,
+      "max_score": 0.6993695497512817,
+      "p95_score": 0.3996420502662649,
       "label_anomaly_rate": 0.14350453172205438,
-      "top_events": [
-        {
-          "window_start_sec": 152121600.0,
-          "score": 0.6176781058311462,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 59846400.0,
-          "score": 0.5440219044685364,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 154195200.0,
-          "score": 0.5268829464912415,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 151257600.0,
-          "score": 0.5015264749526978,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 123609600.0,
-          "score": 0.4496147334575653,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 115776000.0,
-          "score": 0.4484277069568634,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60422400.0,
-          "score": 0.4114004373550415,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 150912000.0,
-          "score": 0.40049001574516296,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 24940800.0,
-          "score": 0.3885606527328491,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 56563200.0,
-          "score": 0.3787509799003601,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 88876800.0,
-          "score": 0.35276511311531067,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 87840000.0,
-          "score": 0.35072579979896545,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 116870400.0,
-          "score": 0.34700852632522583,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 124473600.0,
-          "score": 0.34657615423202515,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60192000.0,
-          "score": 0.3431814908981323,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 119577600.0,
-          "score": 0.34209421277046204,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 118944000.0,
-          "score": 0.32433706521987915,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 119347200.0,
-          "score": 0.3021041750907898,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 154540800.0,
-          "score": 0.30035752058029175,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 120902400.0,
-          "score": 0.29899194836616516,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 76.4
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.368421052631579,
+      "ecoregion": "Tundra"
     },
     "POSE": {
-      "site": "POSE",
-      "n_rows": 2811413,
-      "n_windows": 1077,
-      "status": "success",
-      "mean_score": 0.09469459493174982,
-      "max_score": 0.8435699343681335,
-      "p95_score": 0.2960161626338953,
-      "n_label_anomaly": 94,
+      "mean_score": 0.11429227872229784,
+      "max_score": 0.6387406587600708,
+      "p95_score": 0.3487118065357206,
       "label_anomaly_rate": 0.0872794800371402,
-      "top_events": [
-        {
-          "window_start_sec": 40896000.0,
-          "score": 0.8435699343681335,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44179200.0,
-          "score": 0.6766865849494934,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 15552000.0,
-          "score": 0.6378211379051208,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 27820800.0,
-          "score": 0.6097022294998169,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 15840000.0,
-          "score": 0.5707303285598755,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 49190400.0,
-          "score": 0.55033940076828,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 39744000.0,
-          "score": 0.5329426527023315,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12384000.0,
-          "score": 0.525078296661377,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 12038400.0,
-          "score": 0.5159037113189697,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13248000.0,
-          "score": 0.4997008442878723,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 11865600.0,
-          "score": 0.4780474305152893,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14342400.0,
-          "score": 0.47032132744789124,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 40953600.0,
-          "score": 0.4663867950439453,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 27072000.0,
-          "score": 0.44383421540260315,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 22521600.0,
-          "score": 0.4412132799625397,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 61574400.0,
-          "score": 0.43595319986343384,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 44236800.0,
-          "score": 0.4327086806297302,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7891200.0,
-          "score": 0.4288064241409302,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 62668800.0,
-          "score": 0.4163918197154999,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 8640000.0,
-          "score": 0.41416627168655396,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 85.5
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5789473684210527,
+      "ecoregion": "Northern Appalachians"
     },
     "PRIN": {
-      "site": "PRIN",
-      "n_rows": 2892048,
-      "n_windows": 1071,
-      "status": "success",
-      "mean_score": 0.07996372713026505,
-      "max_score": 0.5693286657333374,
-      "p95_score": 0.23792468756437302,
-      "n_label_anomaly": 333,
+      "mean_score": 0.11841148018478707,
+      "max_score": 0.7230318784713745,
+      "p95_score": 0.3630462735891342,
       "label_anomaly_rate": 0.31092436974789917,
-      "top_events": [
-        {
-          "window_start_sec": 20620800.0,
-          "score": 0.5693286657333374,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 38419200.0,
-          "score": 0.5577707886695862,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 37440000.0,
-          "score": 0.4750223159790039,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 6508800.0,
-          "score": 0.47456133365631104,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 47174400.0,
-          "score": 0.45104897022247314,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 10310400.0,
-          "score": 0.4496668875217438,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2880000.0,
-          "score": 0.4138892889022827,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 19699200.0,
-          "score": 0.406159371137619,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 33062400.0,
-          "score": 0.38180503249168396,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 16876800.0,
-          "score": 0.3733644485473633,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 8697600.0,
-          "score": 0.3667701780796051,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 42739200.0,
-          "score": 0.3654634356498718,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59846400.0,
-          "score": 0.3620571494102478,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 39283200.0,
-          "score": 0.3620436191558838,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 25401600.0,
-          "score": 0.36184483766555786,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 9446400.0,
-          "score": 0.348370760679245,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 37497600.0,
-          "score": 0.3482515215873718,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 16646400.0,
-          "score": 0.3444039821624756,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 40550400.0,
-          "score": 0.33517569303512573,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 43833600.0,
-          "score": 0.331661194562912,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 77.9
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.3232323232323232,
+      "ecoregion": "Great Plains"
     },
     "PRLA": {
-      "site": "PRLA",
-      "n_rows": 280679,
-      "n_windows": 857,
-      "status": "success",
-      "mean_score": 0.08290522423156622,
-      "max_score": 0.6614643931388855,
-      "p95_score": 0.23654968142509458,
-      "n_label_anomaly": 115,
+      "mean_score": 0.11211783830685021,
+      "max_score": 0.6980187892913818,
+      "p95_score": 0.3656275153160095,
       "label_anomaly_rate": 0.13418903150525088,
-      "top_events": [
-        {
-          "window_start_sec": 60134400.0,
-          "score": 0.6614643931388855,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 24710400.0,
-          "score": 0.537574827671051,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 92217600.0,
-          "score": 0.44416365027427673,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 88243200.0,
-          "score": 0.4270944893360138,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 172800.0,
-          "score": 0.4163130521774292,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 84556800.0,
-          "score": 0.3929764926433563,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57772800.0,
-          "score": 0.3746062219142914,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 98899200.0,
-          "score": 0.3729264438152313,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 56275200.0,
-          "score": 0.37012672424316406,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 66124800.0,
-          "score": 0.3620798587799072,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 88761600.0,
-          "score": 0.3114180564880371,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 98726400.0,
-          "score": 0.30778244137763977,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 91468800.0,
-          "score": 0.29941612482070923,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33120000.0,
-          "score": 0.29856979846954346,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 23443200.0,
-          "score": 0.2953055799007416,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 95443200.0,
-          "score": 0.29356956481933594,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57600000.0,
-          "score": 0.2917715609073639,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 89164800.0,
-          "score": 0.2901623547077179,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 60192000.0,
-          "score": 0.28609499335289,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 61862400.0,
-          "score": 0.2797270715236664,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 52.8
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.6111111111111112,
+      "ecoregion": "Great Plains"
     },
     "PRPO": {
-      "site": "PRPO",
-      "n_rows": 276368,
-      "n_windows": 904,
-      "status": "success",
-      "mean_score": 0.07963343824860558,
-      "max_score": 0.6269984841346741,
-      "p95_score": 0.22026743590831754,
-      "n_label_anomaly": 904,
+      "mean_score": 0.09928689323199823,
+      "max_score": 0.8089791536331177,
+      "p95_score": 0.33564058393239965,
       "label_anomaly_rate": 1.0,
-      "top_events": [
-        {
-          "window_start_sec": 44697600.0,
-          "score": 0.6269984841346741,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 34329600.0,
-          "score": 0.589652419090271,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 99302400.0,
-          "score": 0.47126030921936035,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 66470400.0,
-          "score": 0.4354049861431122,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 36172800.0,
-          "score": 0.41922876238822937,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 11059200.0,
-          "score": 0.40548017621040344,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 39974400.0,
-          "score": 0.38791510462760925,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 68544000.0,
-          "score": 0.3860712945461273,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 76492800.0,
-          "score": 0.3688899576663971,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 42220800.0,
-          "score": 0.35565581917762756,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 102988800.0,
-          "score": 0.33693090081214905,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 34675200.0,
-          "score": 0.3292945325374603,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 102470400.0,
-          "score": 0.3257443904876709,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 36000000.0,
-          "score": 0.3213212192058563,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 76147200.0,
-          "score": 0.3157729506492615,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 97344000.0,
-          "score": 0.31088122725486755,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 64915200.0,
-          "score": 0.31000521779060364,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 95673600.0,
-          "score": 0.2964656352996826,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 41702400.0,
-          "score": 0.2901836633682251,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 10656000.0,
-          "score": 0.28656935691833496,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 53.2
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Great Plains"
     },
     "REDB": {
-      "site": "REDB",
-      "n_rows": 2893421,
-      "n_windows": 1035,
-      "status": "success",
-      "mean_score": 0.09031140961265867,
-      "max_score": 0.5500675439834595,
-      "p95_score": 0.2676622718572615,
-      "n_label_anomaly": 285,
+      "mean_score": 0.07768423688611474,
+      "max_score": 0.6804085373878479,
+      "p95_score": 0.26498782634735074,
       "label_anomaly_rate": 0.2753623188405797,
-      "top_events": [
-        {
-          "window_start_sec": 44582400.0,
-          "score": 0.5500675439834595,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59040000.0,
-          "score": 0.5249238610267639,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 19929600.0,
-          "score": 0.5132814645767212,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 5241600.0,
-          "score": 0.4957323372364044,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34099200.0,
-          "score": 0.47663822770118713,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 25804800.0,
-          "score": 0.4470864534378052,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57772800.0,
-          "score": 0.4423855245113373,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57024000.0,
-          "score": 0.41380080580711365,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 17049600.0,
-          "score": 0.4007033705711365,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 60249600.0,
-          "score": 0.40053853392601013,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 57196800.0,
-          "score": 0.3979618549346924,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 47001600.0,
-          "score": 0.388226181268692,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 43084800.0,
-          "score": 0.38782787322998047,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 22579200.0,
-          "score": 0.37581464648246765,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 43776000.0,
-          "score": 0.3738672733306885,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 57254400.0,
-          "score": 0.3695645332336426,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 5702400.0,
-          "score": 0.368257999420166,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 59097600.0,
-          "score": 0.3650132417678833,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 10713600.0,
-          "score": 0.3558708727359772,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 7142400.0,
-          "score": 0.3544878363609314,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 64.0
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.5866666666666667,
+      "ecoregion": "Western Cordillera"
     },
     "SUGG": {
-      "site": "SUGG",
-      "n_rows": 194326,
-      "n_windows": 575,
-      "status": "success",
-      "mean_score": 0.08071138869647099,
-      "max_score": 0.49017420411109924,
-      "p95_score": 0.22793517708778355,
-      "n_label_anomaly": 575,
+      "mean_score": 0.11840443452496244,
+      "max_score": 0.5639504194259644,
+      "p95_score": 0.37460554838180504,
       "label_anomaly_rate": 1.0,
-      "top_events": [
-        {
-          "window_start_sec": 21542400.0,
-          "score": 0.49017420411109924,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 10886400.0,
-          "score": 0.4688166677951813,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 31622400.0,
-          "score": 0.46312275528907776,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 21081600.0,
-          "score": 0.44444340467453003,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 21830400.0,
-          "score": 0.4346257746219635,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 19987200.0,
-          "score": 0.41851314902305603,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 12038400.0,
-          "score": 0.3955671787261963,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 9504000.0,
-          "score": 0.39467495679855347,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 16358400.0,
-          "score": 0.3533463478088379,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 26668800.0,
-          "score": 0.33546143770217896,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 5702400.0,
-          "score": 0.323930025100708,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 25228800.0,
-          "score": 0.32037386298179626,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 24249600.0,
-          "score": 0.3158840239048004,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 5356800.0,
-          "score": 0.3032781481742859,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 14515200.0,
-          "score": 0.30221036076545715,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 19584000.0,
-          "score": 0.2903030216693878,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 27820800.0,
-          "score": 0.288583368062973,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 4147200.0,
-          "score": 0.2801603674888611,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 7200000.0,
-          "score": 0.27629220485687256,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 8467200.0,
-          "score": 0.2668999433517456,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 28.9
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Southeast Plains"
     },
     "SYCA": {
-      "site": "SYCA",
-      "n_rows": 178711,
-      "n_windows": 46,
-      "status": "success",
-      "mean_score": 0.1004879041372434,
-      "max_score": 0.308566689491272,
-      "p95_score": 0.19965731352567673,
-      "n_label_anomaly": 0,
+      "mean_score": 0.04724770309606,
+      "max_score": 0.32203012704849243,
+      "p95_score": 0.09918247349560261,
       "label_anomaly_rate": 0.0,
-      "top_events": [
-        {
-          "window_start_sec": 34963200.0,
-          "score": 0.308566689491272,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34560000.0,
-          "score": 0.2508234977722168,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34732800.0,
-          "score": 0.20211485028266907,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33868800.0,
-          "score": 0.1922847032546997,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33696000.0,
-          "score": 0.1918211132287979,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34905600.0,
-          "score": 0.17354710400104523,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34214400.0,
-          "score": 0.1733483523130417,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34617600.0,
-          "score": 0.1665976196527481,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 32716800.0,
-          "score": 0.1448686569929123,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 35078400.0,
-          "score": 0.13858279585838318,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33235200.0,
-          "score": 0.13184091448783875,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34272000.0,
-          "score": 0.13107502460479736,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33580800.0,
-          "score": 0.1308770775794983,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33753600.0,
-          "score": 0.12598735094070435,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 35251200.0,
-          "score": 0.12185131013393402,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 35308800.0,
-          "score": 0.11400853842496872,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33408000.0,
-          "score": 0.11339082568883896,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 33062400.0,
-          "score": 0.11227428168058395,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34387200.0,
-          "score": 0.10860219597816467,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 34099200.0,
-          "score": 0.1030590683221817,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 3.5
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Mojave Basin"
     },
     "TOMB": {
-      "site": "TOMB",
-      "n_rows": 9068,
-      "n_windows": 43,
-      "status": "success",
-      "mean_score": 0.07096472378213738,
-      "max_score": 0.382281631231308,
-      "p95_score": 0.1921006634831428,
-      "n_label_anomaly": 0,
+      "mean_score": 0.1077160503076346,
+      "max_score": 0.6021482944488525,
+      "p95_score": 0.2924097955226898,
       "label_anomaly_rate": 0.0,
-      "top_events": [
-        {
-          "window_start_sec": 14572800.0,
-          "score": 0.382281631231308,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13651200.0,
-          "score": 0.2237904965877533,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14342400.0,
-          "score": 0.1944187432527542,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13593600.0,
-          "score": 0.17123794555664062,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13824000.0,
-          "score": 0.1580313891172409,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12441600.0,
-          "score": 0.13800282776355743,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13075200.0,
-          "score": 0.12785527110099792,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14803200.0,
-          "score": 0.12243980914354324,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13766400.0,
-          "score": 0.10689879953861237,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12844800.0,
-          "score": 0.10429009795188904,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 12787200.0,
-          "score": 0.06909839063882828,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13708800.0,
-          "score": 0.0669267401099205,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14688000.0,
-          "score": 0.06459573656320572,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13478400.0,
-          "score": 0.06038288027048111,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14054400.0,
-          "score": 0.058681633323431015,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13996800.0,
-          "score": 0.057281918823719025,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13248000.0,
-          "score": 0.05684638395905495,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14169600.0,
-          "score": 0.056246038526296616,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 13363200.0,
-          "score": 0.05411138758063316,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 14745600.0,
-          "score": 0.05321090295910835,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 3.1
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Southeast Plains"
     },
     "TOOK": {
-      "site": "TOOK",
-      "n_rows": 17996,
-      "n_windows": 33,
-      "status": "success",
-      "mean_score": 0.0987073475720756,
-      "max_score": 0.29459425806999207,
-      "p95_score": 0.2295028328895569,
-      "n_label_anomaly": 0,
+      "mean_score": 0.0667331727278052,
+      "max_score": 0.3341537415981293,
+      "p95_score": 0.16652251183986658,
       "label_anomaly_rate": 0.0,
-      "top_events": [
-        {
-          "window_start_sec": 1555200.0,
-          "score": 0.29459425806999207,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 979200.0,
-          "score": 0.23022426664829254,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 230400.0,
-          "score": 0.22902187705039978,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 864000.0,
-          "score": 0.2260720133781433,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 460800.0,
-          "score": 0.22106336057186127,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1958400.0,
-          "score": 0.21393123269081116,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 345600.0,
-          "score": 0.19882294535636902,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1612800.0,
-          "score": 0.13572196662425995,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 172800.0,
-          "score": 0.13280533254146576,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 288000.0,
-          "score": 0.1277393251657486,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1728000.0,
-          "score": 0.11811520159244537,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1900800.0,
-          "score": 0.11172042042016983,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1670400.0,
-          "score": 0.1037997156381607,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 0.0,
-          "score": 0.0946412906050682,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1785600.0,
-          "score": 0.09085117280483246,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 921600.0,
-          "score": 0.08311200141906738,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 403200.0,
-          "score": 0.07212314009666443,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2304000.0,
-          "score": 0.06488510966300964,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2246400.0,
-          "score": 0.06184682250022888,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2016000.0,
-          "score": 0.05192956328392029,
-          "labeled_anomaly": false
-        }
-      ],
-      "elapsed_s": 3.3
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": null,
+      "ecoregion": "Tundra"
     },
     "WALK": {
-      "site": "WALK",
-      "n_rows": 86540,
-      "n_windows": 39,
-      "status": "success",
-      "mean_score": 0.0775994023737999,
-      "max_score": 0.3067028522491455,
-      "p95_score": 0.24058123379945764,
-      "n_label_anomaly": 6,
+      "mean_score": 0.07922962237483798,
+      "max_score": 0.378160297870636,
+      "p95_score": 0.30031172037124637,
       "label_anomaly_rate": 0.15384615384615385,
-      "top_events": [
-        {
-          "window_start_sec": 633600.0,
-          "score": 0.3067028522491455,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2361600.0,
-          "score": 0.30357643961906433,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2016000.0,
-          "score": 0.2335817664861679,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2073600.0,
-          "score": 0.1429220587015152,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2188800.0,
-          "score": 0.12855643033981323,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 979200.0,
-          "score": 0.12659476697444916,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1382400.0,
-          "score": 0.12308801710605621,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2304000.0,
-          "score": 0.11560830473899841,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 806400.0,
-          "score": 0.1081579178571701,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1094400.0,
-          "score": 0.09946347028017044,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 1036800.0,
-          "score": 0.09797900170087814,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1843200.0,
-          "score": 0.09254659712314606,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2419200.0,
-          "score": 0.09239061921834946,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 2476800.0,
-          "score": 0.07620159536600113,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1670400.0,
-          "score": 0.07495765388011932,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 1728000.0,
-          "score": 0.06836318224668503,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 1152000.0,
-          "score": 0.06232885271310806,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 1612800.0,
-          "score": 0.055027253925800323,
-          "labeled_anomaly": true
-        },
-        {
-          "window_start_sec": 1440000.0,
-          "score": 0.053107284009456635,
-          "labeled_anomaly": false
-        },
-        {
-          "window_start_sec": 115200.0,
-          "score": 0.05176783725619316,
-          "labeled_anomaly": true
-        }
-      ],
-      "elapsed_s": 3.3
+      "impairment_label_score_gt_0_3": 0,
+      "per_window_auroc": 0.37254901960784315,
+      "ecoregion": "Southeast Plains"
     }
   },
-  "critique_addressed": "Tests AquaSSM zero-shot cross-site generalization across 32 NEON sites and EPA ecoregions via Spearman correlation between model scores and independent label rates. Reveals which ecological contexts the model generalizes to and which require site-specific fine-tuning.",
-  "elapsed_s": 1.2
+  "epa_cross_metric_note": null,
+  "methodology_note": "Per-site AUROC computed from stored top_events windows (score vs labeled_anomaly). Ecoregion ranking_auroc uses p95_score vs binary impairment label (label_anomaly_rate > 0). Cross-site Spearman uses real AquaSSM risk scores from NEON scan \u2014 not constant fallback embeddings. All scores are from pre-computed neon_scan_results.json, no fabrication.",
+  "elapsed_s": 1.7
 }

@@ -182,5 +182,5 @@
     "behavioral": 0.11700399942323314
   },
   "critique_addressed": "Proper multi-modal fusion test with real embeddings and EPA-proxy labels. Tests all modality subsets to show information gain from each additional modality.",
-  "elapsed_s": 2.5
+  "elapsed_s": 1.9
 }

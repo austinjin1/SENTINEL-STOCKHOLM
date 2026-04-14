@@ -20,7 +20,7 @@
           "upstream": "02072000",
           "downstream": "02072500",
           "lag_hours": 0.0,
-          "max_correlation": 0.6902,
+          "max_correlation": 0.9023,
           "distance_km": 3.16,
           "velocity_kmh": null
         }
@@ -35,5 +35,5 @@
       "pair_details": []
     }
   },
-  "elapsed_seconds": 618.8
+  "elapsed_seconds": 955.0
 }

@@ -1,0 +1,374 @@
+{
+  "generated": "2026-04-14T13:37:16.413102Z",
+  "checkpoint": "/home/bcheng/SENTINEL/checkpoints/sensor/aquassm_full_best.pt",
+  "n_events_attempted": 10,
+  "n_events_with_data": 8,
+  "n_events_detected": 6,
+  "detection_threshold": 0.1,
+  "events": [
+    {
+      "event_id": "lake_erie_hab_2023",
+      "name": "Lake Erie HAB 2023",
+      "advisory_date": "2023-07-15",
+      "usgs_site": "04199500",
+      "n_records": 7199,
+      "n_windows": 111,
+      "status": "detected",
+      "first_detection_time": "2023-05-16T20:00:00",
+      "lead_time_hours": 1424.0,
+      "lead_time_days": 59.33,
+      "max_anomaly_prob": 0.9929,
+      "n_pre_event_windows": 89,
+      "anomaly_scores_pre_event": [
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929
+      ],
+      "threshold_sweep": {
+        "thresh_0_08": {
+          "status": "detected",
+          "lead_time_hours": 1424.0
+        },
+        "thresh_0_1": {
+          "status": "detected",
+          "lead_time_hours": 1424.0
+        },
+        "thresh_0_12": {
+          "status": "detected",
+          "lead_time_hours": 1424.0
+        }
+      }
+    },
+    {
+      "event_id": "gulf_dead_zone_2023",
+      "name": "Gulf Dead Zone 2023",
+      "advisory_date": "2023-07-01",
+      "usgs_site": "07374000",
+      "n_records": 3486,
+      "n_windows": 53,
+      "status": "detected",
+      "first_detection_time": "2023-04-04T23:00:00",
+      "lead_time_hours": 2093.0,
+      "lead_time_days": 87.21,
+      "max_anomaly_prob": 0.9929,
+      "n_pre_event_windows": 31,
+      "anomaly_scores_pre_event": [
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929
+      ],
+      "threshold_sweep": {
+        "thresh_0_08": {
+          "status": "detected",
+          "lead_time_hours": 2093.0
+        },
+        "thresh_0_1": {
+          "status": "detected",
+          "lead_time_hours": 2093.0
+        },
+        "thresh_0_12": {
+          "status": "detected",
+          "lead_time_hours": 2093.0
+        }
+      }
+    },
+    {
+      "event_id": "chesapeake_hypoxia_2018",
+      "name": "Chesapeake Bay Hypoxia 2018",
+      "advisory_date": "2018-07-20",
+      "usgs_site": "01589485",
+      "n_records": 34831,
+      "n_windows": 543,
+      "status": "detected",
+      "first_detection_time": "2018-04-21T09:20:00",
+      "lead_time_hours": 2154.67,
+      "lead_time_days": 89.78,
+      "max_anomaly_prob": 0.9929,
+      "n_pre_event_windows": 404,
+      "anomaly_scores_pre_event": [
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929
+      ],
+      "threshold_sweep": {
+        "thresh_0_08": {
+          "status": "detected",
+          "lead_time_hours": 2154.67
+        },
+        "thresh_0_1": {
+          "status": "detected",
+          "lead_time_hours": 2154.67
+        },
+        "thresh_0_12": {
+          "status": "detected",
+          "lead_time_hours": 2154.67
+        }
+      }
+    },
+    {
+      "event_id": "iowa_nitrate_2015",
+      "name": "Iowa/Des Moines Nitrate Crisis 2015",
+      "advisory_date": "2015-05-01",
+      "usgs_site": "05482000",
+      "status": "insufficient_data",
+      "n_windows": 0,
+      "n_records": 7196,
+      "max_anomaly_prob": null,
+      "first_detection_time": null,
+      "lead_time_hours": null,
+      "lead_time_days": null,
+      "anomaly_scores_pre_event": []
+    },
+    {
+      "event_id": "neuse_river_hypoxia_2022",
+      "name": "Neuse River Hypoxia 2022",
+      "advisory_date": "2022-08-15",
+      "usgs_site": "none_found",
+      "status": "no_data",
+      "n_windows": 0,
+      "max_anomaly_prob": null,
+      "first_detection_time": null,
+      "lead_time_hours": null,
+      "lead_time_days": null,
+      "anomaly_scores_pre_event": []
+    },
+    {
+      "event_id": "klamath_river_hab_2021",
+      "name": "Klamath River HAB 2021",
+      "advisory_date": "2021-08-01",
+      "usgs_site": "11530500",
+      "n_records": 7200,
+      "n_windows": 102,
+      "status": "detected",
+      "first_detection_time": "2021-06-02T23:00:00",
+      "lead_time_hours": 1421.0,
+      "lead_time_days": 59.21,
+      "max_anomaly_prob": 0.9929,
+      "n_pre_event_windows": 89,
+      "anomaly_scores_pre_event": [
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929
+      ],
+      "threshold_sweep": {
+        "thresh_0_08": {
+          "status": "detected",
+          "lead_time_hours": 1421.0
+        },
+        "thresh_0_1": {
+          "status": "detected",
+          "lead_time_hours": 1421.0
+        },
+        "thresh_0_12": {
+          "status": "detected",
+          "lead_time_hours": 1421.0
+        }
+      }
+    },
+    {
+      "event_id": "jordan_lake_hab_nc",
+      "name": "Jordan Lake HAB NC",
+      "advisory_date": "2022-07-15",
+      "usgs_site": "02101726",
+      "n_records": 5755,
+      "n_windows": 88,
+      "status": "detected",
+      "first_detection_time": "2022-05-31T20:00:00",
+      "lead_time_hours": 1064.0,
+      "lead_time_days": 44.33,
+      "max_anomaly_prob": 0.9929,
+      "n_pre_event_windows": 67,
+      "anomaly_scores_pre_event": [
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929
+      ],
+      "threshold_sweep": {
+        "thresh_0_08": {
+          "status": "detected",
+          "lead_time_hours": 1064.0
+        },
+        "thresh_0_1": {
+          "status": "detected",
+          "lead_time_hours": 1064.0
+        },
+        "thresh_0_12": {
+          "status": "detected",
+          "lead_time_hours": 1064.0
+        }
+      }
+    },
+    {
+      "event_id": "mississippi_salinity_2023",
+      "name": "Mississippi River Salinity Intrusion 2023",
+      "advisory_date": "2023-10-01",
+      "usgs_site": "07374000",
+      "n_records": 4168,
+      "n_windows": 64,
+      "status": "detected",
+      "first_detection_time": "2023-08-03T13:00:00",
+      "lead_time_hours": 1407.0,
+      "lead_time_days": 58.62,
+      "max_anomaly_prob": 0.9929,
+      "n_pre_event_windows": 41,
+      "anomaly_scores_pre_event": [
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929,
+        0.9929
+      ],
+      "threshold_sweep": {
+        "thresh_0_08": {
+          "status": "detected",
+          "lead_time_hours": 1407.0
+        },
+        "thresh_0_1": {
+          "status": "detected",
+          "lead_time_hours": 1407.0
+        },
+        "thresh_0_12": {
+          "status": "detected",
+          "lead_time_hours": 1407.0
+        }
+      }
+    },
+    {
+      "event_id": "dan_river_coal_ash_2014",
+      "name": "Dan River Coal Ash Spill 2014",
+      "advisory_date": "2014-02-02",
+      "usgs_site": "02077200",
+      "status": "insufficient_data",
+      "n_windows": 0,
+      "n_records": 3456,
+      "max_anomaly_prob": null,
+      "first_detection_time": null,
+      "lead_time_hours": null,
+      "lead_time_days": null,
+      "anomaly_scores_pre_event": []
+    },
+    {
+      "event_id": "toledo_water_crisis_2014",
+      "name": "Toledo Water Crisis 2014",
+      "advisory_date": "2014-08-02",
+      "usgs_site": "none_found",
+      "status": "no_data",
+      "n_windows": 0,
+      "max_anomaly_prob": null,
+      "first_detection_time": null,
+      "lead_time_hours": null,
+      "lead_time_days": null,
+      "anomaly_scores_pre_event": []
+    }
+  ],
+  "statistics": {
+    "mean_lead_time_hours": 1593.94,
+    "median_lead_time_hours": 1422.5,
+    "min_lead_time_hours": 1064.0,
+    "max_lead_time_hours": 2154.67,
+    "detection_rate": 0.6,
+    "n_events_with_data": 8,
+    "n_events_detected": 6,
+    "n_events_attempted": 10
+  }
+}

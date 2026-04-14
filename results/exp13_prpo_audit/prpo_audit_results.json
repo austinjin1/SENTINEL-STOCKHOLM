@@ -75,5 +75,5 @@
     "OTHER PARAMETERS UNCHANGED: No corroborating decline in pH/DO/turbidity \u2014 SpCond decline may be conductivity-specific (sensor artifact)"
   ],
   "critique_addressed": "Exp8 reported PRPO SpCond = -242.3 \u00b5S/cm/year. This audit checks whether the trend is driven by sensor artifact (QF failures) or real hydrological change (corroborated by other params).",
-  "elapsed_s": 77.0
+  "elapsed_s": 122.9
 }

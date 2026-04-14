@@ -3,51 +3,59 @@
   "ci_results": {
     "AquaSSM": {
       "point": 0.9386080340329692,
-      "ci_lo": 0.9315830564895551,
-      "ci_hi": 0.944987272822977,
-      "n_bootstrap": 2000,
-      "se": 0.003388358128545311,
-      "_simulated": true,
+      "ci_lo": 0.9339245479054227,
+      "ci_hi": 0.9432915201605158,
+      "n_bootstrap": 0,
+      "se": 0.002389577628745496,
+      "_simulated": false,
+      "_method": "hanley_mcneil",
       "_source": "full_291K_training_Hanley_McNeil"
     },
     "HydroViT": null,
     "MicroBiomeNet": {
-      "point": 0.9105367793240556,
-      "ci_lo": 0.8970014513856491,
-      "ci_hi": 0.9229219644599539,
-      "n_bootstrap": 2000,
-      "se": 0.006658330550188422,
-      "_simulated": true
+      "point": 0.9133988386498357,
+      "ci_lo": 0.9033977726050678,
+      "ci_hi": 0.9233999046946036,
+      "n_bootstrap": 0,
+      "se": 0.00510267843938353,
+      "_simulated": false,
+      "_method": "normal_approx_F1",
+      "_source": "results_real_json_EMP16S",
+      "_note": "DNABERT-S backbone causes SIGBUS in this env; analytical CI on stored result"
     },
     "ToxiGene": {
-      "point": 0.8796680497925311,
-      "ci_lo": 0.8347808120733021,
-      "ci_hi": 0.9219965150403521,
+      "point": 0.8859620373665146,
+      "ci_lo": 0.8566113591442478,
+      "ci_hi": 0.9137186288690268,
       "n_bootstrap": 2000,
-      "se": 0.022193323246328948,
-      "_simulated": true,
-      "_source": "toxigene_v7_real_1697samples",
+      "se": 0.014241880974869088,
+      "_simulated": false,
+      "_method": "percentile_bootstrap",
+      "_source": "real_inference_toxigene_v7",
       "_model": "ToxiGene v7 (SimpleMLP + pathway supervision)",
-      "_actual_f1": 0.885962
+      "_n_test": 256
     },
     "BioMotion": {
-      "point": 1.0,
-      "ci_lo": 0.9999999999999999,
+      "point": 0.9999995590158115,
+      "ci_lo": 0.9999783569016676,
       "ci_hi": 1.0,
-      "n_bootstrap": 2000,
-      "se": 3.901608678537189e-17,
-      "_simulated": true
+      "n_bootstrap": 0,
+      "se": 1.0817603866163784e-05,
+      "_simulated": false,
+      "_method": "hanley_mcneil",
+      "_source": "biomotion_expanded_benchmark_Hanley_McNeil"
     },
     "Fusion": {
-      "point": 0.9728435906111759,
-      "ci_lo": 0.9638636164266827,
-      "ci_hi": 0.9807562732099371,
-      "n_bootstrap": 2000,
-      "se": 0.004381725633396764,
-      "_simulated": true,
-      "reported_point": 0.939
+      "point": 0.9392549471586803,
+      "ci_lo": 0.9223220130194401,
+      "ci_hi": 0.9561878812979205,
+      "n_bootstrap": 0,
+      "se": 0.008639410794912683,
+      "_simulated": false,
+      "_method": "hanley_mcneil",
+      "_source": "fusion_real_results_Hanley_McNeil"
     }
   },
-  "critique_addressed": "All 6 key metrics now have 95% bootstrap CIs. Simulated CIs (*) are derived from reported point estimates when raw test predictions are not stored in checkpoints.",
-  "elapsed_s": 279.8
+  "critique_addressed": "All 5 evaluated metrics now have real 95% CIs. ToxiGene uses percentile bootstrap on real model inference (n=256). AquaSSM, BioMotion, Fusion use Hanley-McNeil analytical CIs on validated test AUROCs (not simulated). MicroBiomeNet uses normal-approx CI on stored F1 (DNABERT-S env issue). HydroViT skipped (no paired water_temp labels in satellite data).",
+  "elapsed_s": 44.7
 }

@@ -1,12 +1,18 @@
 {
   "n_events": 10,
-  "n_with_scores": 4,
+  "n_with_lead_time_computed": 0,
   "n_with_wqp_data": 0,
   "n_with_exceedances": 0,
-  "mean_lead_time_hours": 130.143125,
-  "median_lead_time_hours": 51.95875,
-  "min_lead_time_hours": 2.955,
-  "max_lead_time_hours": 413.7,
+  "n_with_neon_detection": 5,
+  "neon_vs_enforcement_correlation": {
+    "n_pairs": 5,
+    "note": "Correlation between NEON max_score of nearest site and event enforcement date. Events are from different years/seasons so a high correlation would suggest systematic geographic bias, not necessarily detection quality.",
+    "spearman_rho": 0.11180339887498948,
+    "spearman_pval": 0.8579446176050993,
+    "pearson_r": -0.3498623824963798,
+    "pearson_pval": 0.563803624003835
+  },
+  "data_availability_note": "WQP data: unavailable (network or package issue). exp1 USGS scores: available for 6 events but all max anomaly_probability \u2264 0.116 (model saturation on USGS data \u2014 never exceeds detection threshold). NEON scan data: used for geographic proximity matching. Lead times are computed only where USGS scores exceed 0.3; NEON detections are reported as supporting evidence but not converted to lead times (NEON scan timestamps are relative, not calendar-aligned to event dates).",
   "per_event": {
     "gold_king_mine": {
       "event_id": "gold_king_mine",
@@ -29,11 +35,12 @@
           "source": "La Plata County"
         }
       ],
-      "scores_source": "embeddings_fallback",
-      "n_scores": 200,
-      "sentinel_first_detection_ts": 2700.0,
+      "nearby_neon_sites": [],
+      "neon_detection": null,
+      "scores_source": "none",
+      "detection_note": "No exp1 USGS scores and no nearby NEON site. No detection.",
       "violation_date": "2015-08-05",
-      "lead_time_hours": 3.4475
+      "lead_time_hours": null
     },
     "lake_erie_hab": {
       "event_id": "lake_erie_hab",
@@ -45,9 +52,32 @@
       "n_exceedances": 0,
       "exceedances": [],
       "known_violations": [],
-      "scores_source": "exp1",
-      "n_scores": 89,
-      "sentinel_first_detection_ts": null,
+      "nearby_neon_sites": [
+        [
+          "FLNT",
+          169.5
+        ]
+      ],
+      "neon_detection": {
+        "site": "FLNT",
+        "threshold_used": 0.3,
+        "earliest_window_start_sec": 1900800.0,
+        "earliest_window_score": 0.5839769244194031,
+        "labeled_anomaly": false,
+        "mean_score": 0.13441807371764733,
+        "max_score": 0.6880663633346558,
+        "p95_score": 0.42085925340652464,
+        "n_windows_above_threshold": 20,
+        "distance_km": 169.5394784062845
+      },
+      "neon_site_used": "FLNT",
+      "neon_site_distance_km": 169.5,
+      "neon_max_score": 0.6880663633346558,
+      "n_usgs_scores": 89,
+      "usgs_max_anomaly_probability": 0.11644231528043747,
+      "scores_source": "neon_scan_FLNT_dist170km",
+      "detection_note": "Nearest NEON site FLNT (170 km) has max_score=0.6881 (threshold=0.3). NEON timestamps are relative to parquet epoch \u2014 absolute lead time vs event date is not computable without aligning NEON timestamps to calendar dates. Reporting NEON detection as evidence but not fabricating lead time.",
+      "violation_date": "2023-07-15T12:00:00",
       "lead_time_hours": null
     },
     "toledo_water_crisis": {
@@ -71,11 +101,31 @@
           "source": "City of Toledo"
         }
       ],
-      "scores_source": "embeddings_fallback",
-      "n_scores": 200,
-      "sentinel_first_detection_ts": 2700.0,
+      "nearby_neon_sites": [
+        [
+          "FLNT",
+          148.6
+        ]
+      ],
+      "neon_detection": {
+        "site": "FLNT",
+        "threshold_used": 0.3,
+        "earliest_window_start_sec": 1900800.0,
+        "earliest_window_score": 0.5839769244194031,
+        "labeled_anomaly": false,
+        "mean_score": 0.13441807371764733,
+        "max_score": 0.6880663633346558,
+        "p95_score": 0.42085925340652464,
+        "n_windows_above_threshold": 20,
+        "distance_km": 148.61744590908353
+      },
+      "neon_site_used": "FLNT",
+      "neon_site_distance_km": 148.6,
+      "neon_max_score": 0.6880663633346558,
+      "scores_source": "neon_scan_FLNT_dist149km",
+      "detection_note": "Nearest NEON site FLNT (149 km) has max_score=0.6881 (threshold=0.3). NEON timestamps are relative to parquet epoch \u2014 absolute lead time vs event date is not computable without aligning NEON timestamps to calendar dates. Reporting NEON detection as evidence but not fabricating lead time.",
       "violation_date": "2014-08-01",
-      "lead_time_hours": 100.47
+      "lead_time_hours": null
     },
     "dan_river_coal_ash": {
       "event_id": "dan_river_coal_ash",
@@ -87,11 +137,31 @@
       "n_exceedances": 0,
       "exceedances": [],
       "known_violations": [],
-      "scores_source": "embeddings_fallback",
-      "n_scores": 200,
-      "sentinel_first_detection_ts": 2700.0,
+      "nearby_neon_sites": [
+        [
+          "GUIL",
+          93.4
+        ]
+      ],
+      "neon_detection": {
+        "site": "GUIL",
+        "threshold_used": 0.3,
+        "earliest_window_start_sec": 1152000.0,
+        "earliest_window_score": 0.4368215799331665,
+        "labeled_anomaly": true,
+        "mean_score": 0.11087655325897963,
+        "max_score": 0.6419154405593872,
+        "p95_score": 0.32142165899276726,
+        "n_windows_above_threshold": 20,
+        "distance_km": 93.43192457916919
+      },
+      "neon_site_used": "GUIL",
+      "neon_site_distance_km": 93.4,
+      "neon_max_score": 0.6419154405593872,
+      "scores_source": "neon_scan_GUIL_dist93km",
+      "detection_note": "Nearest NEON site GUIL (93 km) has max_score=0.6419 (threshold=0.3). NEON timestamps are relative to parquet epoch \u2014 absolute lead time vs event date is not computable without aligning NEON timestamps to calendar dates. Reporting NEON detection as evidence but not fabricating lead time.",
       "violation_date": "2014-02-02T17:00:00",
-      "lead_time_hours": 2.955
+      "lead_time_hours": null
     },
     "elk_river_mchm": {
       "event_id": "elk_river_mchm",
@@ -114,9 +184,13 @@
           "source": "Governor"
         }
       ],
-      "scores_source": "exp1",
-      "n_scores": 178,
-      "sentinel_first_detection_ts": null,
+      "nearby_neon_sites": [],
+      "neon_detection": null,
+      "n_usgs_scores": 178,
+      "usgs_max_anomaly_probability": 0.11644231528043747,
+      "scores_source": "exp1_usgs_below_threshold",
+      "detection_note": "exp1 USGS scores available (n=178) but max anomaly_probability=0.1164 never exceeds 0.3 threshold. No NEON site within 200 km. No detection computed.",
+      "violation_date": "2014-01-09",
       "lead_time_hours": null
     },
     "houston_ship_channel": {
@@ -129,9 +203,13 @@
       "n_exceedances": 0,
       "exceedances": [],
       "known_violations": [],
-      "scores_source": "exp1",
-      "n_scores": 172,
-      "sentinel_first_detection_ts": null,
+      "nearby_neon_sites": [],
+      "neon_detection": null,
+      "n_usgs_scores": 172,
+      "usgs_max_anomaly_probability": 0.11644231528043747,
+      "scores_source": "exp1_usgs_below_threshold",
+      "detection_note": "exp1 USGS scores available (n=172) but max anomaly_probability=0.1164 never exceeds 0.3 threshold. No NEON site within 200 km. No detection computed.",
+      "violation_date": "2019-03-17T14:00:00",
       "lead_time_hours": null
     },
     "flint_mi": {
@@ -160,9 +238,32 @@
           "source": "MDHHS"
         }
       ],
-      "scores_source": "exp1",
-      "n_scores": 254,
-      "sentinel_first_detection_ts": null,
+      "nearby_neon_sites": [
+        [
+          "FLNT",
+          6.6
+        ]
+      ],
+      "neon_detection": {
+        "site": "FLNT",
+        "threshold_used": 0.3,
+        "earliest_window_start_sec": 1900800.0,
+        "earliest_window_score": 0.5839769244194031,
+        "labeled_anomaly": false,
+        "mean_score": 0.13441807371764733,
+        "max_score": 0.6880663633346558,
+        "p95_score": 0.42085925340652464,
+        "n_windows_above_threshold": 20,
+        "distance_km": 6.555407980687602
+      },
+      "neon_site_used": "FLNT",
+      "neon_site_distance_km": 6.6,
+      "neon_max_score": 0.6880663633346558,
+      "n_usgs_scores": 254,
+      "usgs_max_anomaly_probability": 0.11644231528043747,
+      "scores_source": "neon_scan_FLNT_dist7km",
+      "detection_note": "Nearest NEON site FLNT (7 km) has max_score=0.6881 (threshold=0.3). NEON timestamps are relative to parquet epoch \u2014 absolute lead time vs event date is not computable without aligning NEON timestamps to calendar dates. Reporting NEON detection as evidence but not fabricating lead time.",
+      "violation_date": "2014-10-13",
       "lead_time_hours": null
     },
     "gulf_dead_zone": {
@@ -175,9 +276,13 @@
       "n_exceedances": 0,
       "exceedances": [],
       "known_violations": [],
-      "scores_source": "exp1",
-      "n_scores": 89,
-      "sentinel_first_detection_ts": null,
+      "nearby_neon_sites": [],
+      "neon_detection": null,
+      "n_usgs_scores": 89,
+      "usgs_max_anomaly_probability": 0.11644231528043747,
+      "scores_source": "exp1_usgs_below_threshold",
+      "detection_note": "exp1 USGS scores available (n=89) but max anomaly_probability=0.1164 never exceeds 0.3 threshold. No NEON site within 200 km. No detection computed.",
+      "violation_date": "2023-07-24T12:00:00",
       "lead_time_hours": null
     },
     "chesapeake_bay_blooms": {
@@ -190,11 +295,35 @@
       "n_exceedances": 0,
       "exceedances": [],
       "known_violations": [],
-      "scores_source": "embeddings_fallback",
-      "n_scores": 200,
-      "sentinel_first_detection_ts": 2700.0,
+      "nearby_neon_sites": [
+        [
+          "LEWI",
+          111.1
+        ],
+        [
+          "POSE",
+          181.2
+        ]
+      ],
+      "neon_detection": {
+        "site": "LEWI",
+        "threshold_used": 0.3,
+        "earliest_window_start_sec": 2476800.0,
+        "earliest_window_score": 0.517398476600647,
+        "labeled_anomaly": true,
+        "mean_score": 0.10201080593726095,
+        "max_score": 0.6045093536376953,
+        "p95_score": 0.31362296640872955,
+        "n_windows_above_threshold": 20,
+        "distance_km": 111.05664634547661
+      },
+      "neon_site_used": "LEWI",
+      "neon_site_distance_km": 111.1,
+      "neon_max_score": 0.6045093536376953,
+      "scores_source": "neon_scan_LEWI_dist111km",
+      "detection_note": "Nearest NEON site LEWI (111 km) has max_score=0.6045 (threshold=0.3). NEON timestamps are relative to parquet epoch \u2014 absolute lead time vs event date is not computable without aligning NEON timestamps to calendar dates. Reporting NEON detection as evidence but not fabricating lead time.",
       "violation_date": "2023-06-01T12:00:00",
-      "lead_time_hours": 413.7
+      "lead_time_hours": null
     },
     "east_palestine": {
       "event_id": "east_palestine",
@@ -217,37 +346,16 @@
           "source": "NTSB"
         }
       ],
-      "scores_source": "exp1",
-      "n_scores": 180,
-      "sentinel_first_detection_ts": null,
+      "nearby_neon_sites": [],
+      "neon_detection": null,
+      "n_usgs_scores": 180,
+      "usgs_max_anomaly_probability": 0.11644231528043747,
+      "scores_source": "exp1_usgs_below_threshold",
+      "detection_note": "exp1 USGS scores available (n=180) but max anomaly_probability=0.1164 never exceeds 0.3 threshold. No NEON site within 200 km. No detection computed.",
+      "violation_date": "2023-02-04",
       "lead_time_hours": null
     }
   },
-  "lead_times": [
-    {
-      "event_id": "gold_king_mine",
-      "name": "Gold King Mine Spill",
-      "lead_time_hours": 3.4475,
-      "violation_date": "2015-08-05"
-    },
-    {
-      "event_id": "toledo_water_crisis",
-      "name": "Toledo Water Crisis",
-      "lead_time_hours": 100.47,
-      "violation_date": "2014-08-01"
-    },
-    {
-      "event_id": "dan_river_coal_ash",
-      "name": "Dan River Coal Ash Spill",
-      "lead_time_hours": 2.955,
-      "violation_date": "2014-02-02T17:00:00"
-    },
-    {
-      "event_id": "chesapeake_bay_blooms",
-      "name": "Chesapeake Bay Algal Blooms",
-      "lead_time_hours": 413.7,
-      "violation_date": "2023-06-01T12:00:00"
-    }
-  ],
-  "elapsed_seconds": 690.722207069397
+  "lead_times": [],
+  "elapsed_seconds": 3.6168363094329834
 }

@@ -41,5 +41,5 @@
   "baseline_anomaly_prob_mean": 0.1406045190244913,
   "n_temporal_steps": 200,
   "n_perturbation_samples": 100,
-  "elapsed_seconds": 58.3
+  "elapsed_seconds": 1152.6
 }

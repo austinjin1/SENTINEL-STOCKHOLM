@@ -1,0 +1,447 @@
+{
+  "event_id": "jordan_lake_hab_nc",
+  "advisory_date": "2022-07-15",
+  "usgs_site": "02101726",
+  "scores": [
+    {
+      "center_time": "2022-05-31T20:00:00",
+      "center_ts": 1654027200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-01T12:00:00",
+      "center_ts": 1654084800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-02T04:00:00",
+      "center_ts": 1654142400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-02T20:00:00",
+      "center_ts": 1654200000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-03T12:00:00",
+      "center_ts": 1654257600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-04T04:00:00",
+      "center_ts": 1654315200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-04T20:00:00",
+      "center_ts": 1654372800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-05T12:00:00",
+      "center_ts": 1654430400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-06T04:00:00",
+      "center_ts": 1654488000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-06T20:00:00",
+      "center_ts": 1654545600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-07T12:00:00",
+      "center_ts": 1654603200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-08T04:00:00",
+      "center_ts": 1654660800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-08T20:00:00",
+      "center_ts": 1654718400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-09T12:00:00",
+      "center_ts": 1654776000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-10T04:00:00",
+      "center_ts": 1654833600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-10T20:00:00",
+      "center_ts": 1654891200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-11T12:00:00",
+      "center_ts": 1654948800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-12T04:00:00",
+      "center_ts": 1655006400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-12T20:00:00",
+      "center_ts": 1655064000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-13T12:00:00",
+      "center_ts": 1655121600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-14T04:00:00",
+      "center_ts": 1655179200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-14T20:00:00",
+      "center_ts": 1655236800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-15T12:00:00",
+      "center_ts": 1655294400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-16T04:00:00",
+      "center_ts": 1655352000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-16T20:00:00",
+      "center_ts": 1655409600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-17T12:00:00",
+      "center_ts": 1655467200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-18T04:00:00",
+      "center_ts": 1655524800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-18T20:00:00",
+      "center_ts": 1655582400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-19T12:00:00",
+      "center_ts": 1655640000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-20T04:00:00",
+      "center_ts": 1655697600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-20T20:00:00",
+      "center_ts": 1655755200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-21T12:00:00",
+      "center_ts": 1655812800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-22T04:00:00",
+      "center_ts": 1655870400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-22T20:00:00",
+      "center_ts": 1655928000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-23T12:00:00",
+      "center_ts": 1655985600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-24T04:00:00",
+      "center_ts": 1656043200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-24T20:00:00",
+      "center_ts": 1656100800.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-25T12:00:00",
+      "center_ts": 1656158400.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-26T04:00:00",
+      "center_ts": 1656216000.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-26T20:00:00",
+      "center_ts": 1656273600.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-27T12:00:00",
+      "center_ts": 1656331200.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-28T04:15:00",
+      "center_ts": 1656389700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-28T20:15:00",
+      "center_ts": 1656447300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-29T12:15:00",
+      "center_ts": 1656504900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-30T04:15:00",
+      "center_ts": 1656562500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-06-30T20:15:00",
+      "center_ts": 1656620100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-01T12:15:00",
+      "center_ts": 1656677700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-02T04:15:00",
+      "center_ts": 1656735300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-02T20:15:00",
+      "center_ts": 1656792900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-03T12:15:00",
+      "center_ts": 1656850500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-04T04:15:00",
+      "center_ts": 1656908100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-04T20:15:00",
+      "center_ts": 1656965700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-05T12:15:00",
+      "center_ts": 1657023300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-06T04:15:00",
+      "center_ts": 1657080900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-06T20:15:00",
+      "center_ts": 1657138500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-07T12:15:00",
+      "center_ts": 1657196100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-08T04:15:00",
+      "center_ts": 1657253700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-08T20:15:00",
+      "center_ts": 1657311300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-09T12:15:00",
+      "center_ts": 1657368900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-10T05:15:00",
+      "center_ts": 1657430100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-10T21:15:00",
+      "center_ts": 1657487700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-11T13:15:00",
+      "center_ts": 1657545300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-12T05:15:00",
+      "center_ts": 1657602900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-12T21:15:00",
+      "center_ts": 1657660500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-13T13:15:00",
+      "center_ts": 1657718100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-14T05:15:00",
+      "center_ts": 1657775700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-14T21:15:00",
+      "center_ts": 1657833300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-15T13:15:00",
+      "center_ts": 1657890900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-16T05:15:00",
+      "center_ts": 1657948500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-16T21:15:00",
+      "center_ts": 1658006100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-17T13:15:00",
+      "center_ts": 1658063700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-18T05:15:00",
+      "center_ts": 1658121300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-18T21:15:00",
+      "center_ts": 1658178900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-19T13:15:00",
+      "center_ts": 1658236500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-20T05:15:00",
+      "center_ts": 1658294100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-20T21:15:00",
+      "center_ts": 1658351700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-21T13:15:00",
+      "center_ts": 1658409300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-22T05:15:00",
+      "center_ts": 1658466900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-22T21:15:00",
+      "center_ts": 1658524500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-23T13:15:00",
+      "center_ts": 1658582100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-24T05:15:00",
+      "center_ts": 1658639700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-24T21:15:00",
+      "center_ts": 1658697300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-25T13:15:00",
+      "center_ts": 1658754900.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-26T05:15:00",
+      "center_ts": 1658812500.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-26T21:15:00",
+      "center_ts": 1658870100.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-27T13:15:00",
+      "center_ts": 1658927700.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-28T05:15:00",
+      "center_ts": 1658985300.0,
+      "anomaly_probability": 0.9929454922676086
+    },
+    {
+      "center_time": "2022-07-28T21:15:00",
+      "center_ts": 1659042900.0,
+      "anomaly_probability": 0.9929454922676086
+    }
+  ]
+}

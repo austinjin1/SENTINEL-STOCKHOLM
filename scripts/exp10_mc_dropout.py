@@ -126,14 +126,124 @@ def reliability_diagram_data(probs: np.ndarray, labels: np.ndarray,
 # Model evaluations
 # ---------------------------------------------------------------------------
 
+def _load_neon_windows_for_mc(n_normal: int = 250, n_anomaly: int = 250):
+    """Load real NEON windows for MC dropout evaluation.
+
+    Uses the same NEON parquet and threshold labelling as exp16.
+    Returns (X_tensor [N, 128, 6], labels [N]) on CPU.
+    """
+    import pyarrow.parquet as pq
+    import pandas as pd
+
+    NEON_PARQUET = PROJECT_ROOT / "data" / "raw" / "neon_aquatic" / "neon_DP1.20288.001_consolidated.parquet"
+    NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
+    NEON_QF_COLS    = ["pHFinalQF", "dissolvedOxygenFinalQF", "turbidityFinalQF", "specificCondFinalQF"]
+    ANOMALY_THRESHOLDS = {
+        "pH":                  (6.0, 9.0),
+        "dissolvedOxygen":     (4.0, None),
+        "turbidity":           (None, 300.0),
+        "specificConductance": (None, 1500.0),
+    }
+    T_WIN  = 128
+    STRIDE = 64
+
+    read_cols = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
+    table = pq.read_table(str(NEON_PARQUET), columns=read_cols)
+    df    = table.to_pandas()
+    df["ts"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
+    df = df.dropna(subset=["ts"]).sort_values(["source_site", "ts"]).reset_index(drop=True)
+
+    normal_wins  = []
+    anomaly_wins = []
+    col_map      = {"pH": 0, "dissolvedOxygen": 1, "turbidity": 2, "specificConductance": 3}
+
+    for site in df["source_site"].dropna().unique():
+        if len(normal_wins) >= n_normal * 2 and len(anomaly_wins) >= n_anomaly * 2:
+            break
+        df_site = df[df["source_site"] == site].copy().set_index("ts")
+        agg = {c: "mean" for c in NEON_VALUE_COLS}
+        agg.update({c: "min" for c in NEON_QF_COLS})
+        try:
+            df_site = df_site[NEON_VALUE_COLS + NEON_QF_COLS].resample("15min").agg(agg).reset_index()
+        except Exception:
+            continue
+        if len(df_site) < T_WIN * 2:
+            continue
+
+        qf_passes = np.zeros((len(df_site), len(NEON_QF_COLS)), dtype=np.float32)
+        for j, qf in enumerate(NEON_QF_COLS):
+            if qf in df_site.columns:
+                qf_passes[:, j] = (df_site[qf].fillna(1.0).astype(float) == 0).astype(float)
+        good_mask = (
+            (qf_passes.sum(axis=1) >= 2) |
+            (df_site[NEON_VALUE_COLS].notna().sum(axis=1).values >= 2)
+        )
+        vals = df_site[NEON_VALUE_COLS].astype(float).values  # [N, 4]
+
+        for start in range(0, len(df_site) - T_WIN + 1, STRIDE):
+            end   = start + T_WIN
+            w_raw = vals[start:end].copy()
+            if good_mask[start:end].mean() < 0.3:
+                continue
+            has_valid = False
+            for c in range(4):
+                col   = w_raw[:, c]
+                valid = np.isfinite(col)
+                if valid.any():
+                    w_raw[~valid, c] = col[valid].mean()
+                    has_valid = True
+                else:
+                    w_raw[:, c] = 0.0
+            if not has_valid:
+                continue
+
+            is_anom = False
+            for param, (lo, hi) in ANOMALY_THRESHOLDS.items():
+                ci  = col_map[param]
+                fin = w_raw[:, ci][np.isfinite(w_raw[:, ci])]
+                if len(fin) == 0:
+                    continue
+                if lo is not None and np.any(fin < lo):
+                    is_anom = True; break
+                if hi is not None and np.any(fin > hi):
+                    is_anom = True; break
+
+            # Per-window z-score norm + pad to 6 channels
+            w6 = np.zeros((T_WIN, 6), dtype=np.float32)
+            m  = w_raw.mean(axis=0, keepdims=True)
+            s  = w_raw.std(axis=0, keepdims=True) + 1e-8
+            w6[:, :4] = ((w_raw - m) / s).astype(np.float32)
+
+            if is_anom:
+                if len(anomaly_wins) < n_anomaly * 2:
+                    anomaly_wins.append(w6)
+            else:
+                if len(normal_wins) < n_normal * 2:
+                    normal_wins.append(w6)
+
+    rng      = np.random.RandomState(42)
+    n_norm   = min(len(normal_wins),  n_normal)
+    n_anom   = min(len(anomaly_wins), n_anomaly)
+    norm_idx = rng.choice(len(normal_wins),  n_norm,  replace=False)
+    anom_idx = rng.choice(len(anomaly_wins), n_anom,  replace=False)
+
+    norm_arr = np.stack([normal_wins[i]  for i in norm_idx], axis=0)
+    anom_arr = np.stack([anomaly_wins[i] for i in anom_idx], axis=0)
+
+    X_np  = np.concatenate([norm_arr, anom_arr], axis=0).astype(np.float32)
+    labs  = np.array([0] * n_norm + [1] * n_anom, dtype=int)
+    perm  = rng.permutation(len(labs))
+    return torch.from_numpy(X_np[perm]), labs[perm]
+
+
 def eval_sensor_mc():
-    """MC Dropout on AquaSSM sensor encoder."""
+    """MC Dropout on AquaSSM sensor encoder using real NEON data."""
     logger.info("AquaSSM MC Dropout...")
     from sentinel.models.sensor_encoder.model import SensorEncoder
 
     model = SensorEncoder(num_params=6, output_dim=256).to(DEVICE)
     state = torch.load(
-        str(PROJECT_ROOT / "checkpoints" / "sensor" / "aquassm_real_best.pt"),
+        str(PROJECT_ROOT / "checkpoints" / "sensor" / "aquassm_full_best.pt"),
         map_location=DEVICE, weights_only=False,
     )
     if "model_state_dict" in state: state = state["model_state_dict"]
@@ -142,29 +252,34 @@ def eval_sensor_mc():
     model.eval()
     enable_mc_dropout(model)
 
-    rng = np.random.default_rng(42)
-    N = N_EVAL
-    # Generate eval set: normal and anomalous sequences
-    x_norm = torch.from_numpy(
-        rng.normal([7.5, 8.0, 0.3, 400.0, 15.0, 100.0],
-                   [0.3, 0.5, 0.05, 50.0, 2.0, 20.0],
-                   (N // 2, 128, 6)).astype(np.float32)
-    ).to(DEVICE)
-    x_anom = torch.from_numpy(
-        rng.normal([5.0, 2.5, 0.4, 1600.0, 15.0, 100.0],
-                   [0.5, 0.5, 0.05, 100.0, 2.0, 20.0],
-                   (N // 2, 128, 6)).astype(np.float32)
-    ).to(DEVICE)
-    X = torch.cat([x_norm, x_anom], dim=0)
-    labels = np.array([0] * (N // 2) + [1] * (N // 2))
+    logger.info("  Loading real NEON windows (250 normal + 250 anomalous)...")
+    X_cpu, labels = _load_neon_windows_for_mc(n_normal=250, n_anomaly=250)
+    N = len(labels)
+    X = X_cpu.to(DEVICE)
+    logger.info(f"  Loaded {N} windows")
 
     masks = torch.ones(N, 128, 6, dtype=torch.bool, device=DEVICE)
 
-    def sensor_pass(model):
-        # Use compute_anomaly=False for speed (50 passes * N=500 would be prohibitive)
-        # Use embedding norm as anomaly score proxy instead
-        out = model(x=X, masks=masks)
-        return out["embedding"].norm(dim=-1).cpu().numpy()
+    def sensor_pass(mdl):
+        # Keep model in train() mode so dropout stays active (MC Dropout)
+        mdl.train()
+        # Re-enable all Dropout layers explicitly after train() call
+        for m in mdl.modules():
+            if isinstance(m, (nn.Dropout, nn.Dropout2d)):
+                m.train()
+        with torch.no_grad():
+            try:
+                out = mdl(x=X, masks=masks)
+            except Exception:
+                try:
+                    t_delta = torch.zeros(N, 128, dtype=torch.float32, device=DEVICE)
+                    out = mdl(X, t_delta, masks)
+                except Exception:
+                    out = mdl(X)
+            emb = out["embedding"] if isinstance(out, dict) else out
+            if emb.dim() == 3:
+                emb = emb[:, -1, :]
+            return emb.norm(dim=-1).cpu().numpy()
 
     all_preds = mc_forward(model, sensor_pass, T_MC)  # (T, N)
     mean_pred = all_preds.mean(axis=0)
@@ -180,19 +295,24 @@ def eval_sensor_mc():
     ece = compute_ece(probs, labels)
     rel_fracs, rel_confs, rel_counts = reliability_diagram_data(probs, labels)
 
+    # Uncertainty split using actual labels (data was shuffled)
+    normal_mask  = labels == 0
+    anomaly_mask = labels == 1
+
     result = {
         "model": "AquaSSM",
         "n_samples": N,
         "n_mc_passes": T_MC,
         "mean_uncertainty_std": float(std_pred.mean()),
-        "uncertainty_normal_mean": float(std_pred[:N//2].mean()),
-        "uncertainty_anomaly_mean": float(std_pred[N//2:].mean()),
+        "uncertainty_normal_mean": float(std_pred[normal_mask].mean()) if normal_mask.any() else 0.0,
+        "uncertainty_anomaly_mean": float(std_pred[anomaly_mask].mean()) if anomaly_mask.any() else 0.0,
         "ece_before_calibration": ece,
         "reliability_fracs": rel_fracs,
         "reliability_confs": rel_confs,
         "reliability_counts": rel_counts,
         "pred_mean": float(mean_pred.mean()),
         "pred_std_total": float(std_pred.mean()),
+        "data_source": "real_neon_neon_DP1.20288.001",
     }
     logger.info(f"  Mean uncertainty (std): {result['mean_uncertainty_std']:.4f}")
     logger.info(f"  ECE: {ece:.4f}")

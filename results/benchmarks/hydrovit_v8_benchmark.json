@@ -1,0 +1,156 @@
+{
+  "HydroViT_v8": {
+    "water_temp_r2": 0.8716158270835876,
+    "mean_r2": 0.6621862378987399,
+    "per_param_r2": {
+      "chl_a": 0.3636651039123535,
+      "turbidity": 0.7331258058547974,
+      "secchi_depth": null,
+      "cdom": null,
+      "tss": 0.7467244863510132,
+      "total_nitrogen": 0.6319786310195923,
+      "total_phosphorus": 0.7376263737678528,
+      "dissolved_oxygen": 0.7720829248428345,
+      "ammonia": 0.5574628114700317,
+      "nitrate": 0.7463552355766296,
+      "ph": 0.6564568281173706,
+      "water_temp": 0.8716158270835876,
+      "phycocyanin": 0.4669545888900757,
+      "oil_probability": null,
+      "acdom": null,
+      "pollution_anomaly_index": null
+    }
+  },
+  "HydroViT_v6": {
+    "water_temp_r2": 0.6569901704788208,
+    "mean_r2": 0.06227367574518377,
+    "note": "evaluated on v5 test split (same seed=42)"
+  },
+  "CNN_baseline": {
+    "water_temp_r2": 0.853963315486908,
+    "mean_r2": 0.36602701382203534,
+    "per_param_r2": {
+      "chl_a": -0.6602307558059692,
+      "turbidity": 0.5611224174499512,
+      "secchi_depth": null,
+      "cdom": null,
+      "tss": 0.5862845182418823,
+      "total_nitrogen": 0.41811662912368774,
+      "total_phosphorus": 0.3952433466911316,
+      "dissolved_oxygen": 0.5930001735687256,
+      "ammonia": 0.13835614919662476,
+      "nitrate": 0.5212759971618652,
+      "ph": 0.3030790686607361,
+      "water_temp": 0.853963315486908,
+      "phycocyanin": 0.3160862922668457,
+      "oil_probability": null,
+      "acdom": null,
+      "pollution_anomaly_index": null
+    }
+  },
+  "ViT_no_pretrain": {
+    "water_temp_r2": 0.7499257326126099,
+    "mean_r2": 0.05474000627344305
+  },
+  "Ridge": {
+    "water_temp_r2": 0.6458796262741089
+  },
+  "RandomForest": {
+    "water_temp_r2": 0.8010499826048909
+  },
+  "metadata": {
+    "dataset": "/home/bcheng/SENTINEL/data/processed/satellite/paired_wq_v5.npz",
+    "n_total": 5464,
+    "n_train": 3826,
+    "n_val": 819,
+    "n_test": 819,
+    "split_seed": 42,
+    "elapsed_seconds": 2784.6345031261444
+  },
+  "DenseNet121 (HydroVision-style)": {
+    "water_temp_r2": 0.884,
+    "mean_r2": 0.7029,
+    "per_param_r2": {
+      "chl_a": 0.7806,
+      "turbidity": 0.7783,
+      "secchi_depth": NaN,
+      "cdom": NaN,
+      "tss": 0.6634,
+      "total_nitrogen": 0.713,
+      "total_phosphorus": 0.7584,
+      "dissolved_oxygen": 0.7721,
+      "ammonia": 0.5783,
+      "nitrate": 0.822,
+      "ph": 0.6352,
+      "water_temp": 0.884,
+      "phycocyanin": 0.3464,
+      "oil_probability": NaN,
+      "acdom": NaN,
+      "pollution_anomaly_index": NaN
+    },
+    "n_params": 7242320,
+    "reference": "arXiv 2509.01882 \u2014 HydroVision: Predicting Optically Active Parameters, Sep 2025",
+    "note": "ImageNet pretrained, first conv adapted 3\u219210 channels"
+  },
+  "ResNet50 (ImageNet pretrained)": {
+    "water_temp_r2": 0.8115,
+    "mean_r2": 0.5433,
+    "per_param_r2": {
+      "chl_a": 0.5461,
+      "turbidity": 0.6974,
+      "secchi_depth": NaN,
+      "cdom": NaN,
+      "tss": 0.5975,
+      "total_nitrogen": 0.5343,
+      "total_phosphorus": 0.3338,
+      "dissolved_oxygen": 0.6646,
+      "ammonia": 0.3491,
+      "nitrate": 0.5917,
+      "ph": 0.5392,
+      "water_temp": 0.8115,
+      "phycocyanin": 0.311,
+      "oil_probability": NaN,
+      "acdom": NaN,
+      "pollution_anomaly_index": NaN
+    },
+    "n_params": 24058640,
+    "note": "ImageNet pretrained, first conv adapted 3\u219210 channels"
+  },
+  "HydroViT_v9": {
+    "water_temp_r2": 0.8926961421966553,
+    "mean_r2": 0.6524179848757657,
+    "per_param_r2": {
+      "chl_a": 0.14218521118164062,
+      "turbidity": 0.762812614440918,
+      "secchi_depth": null,
+      "cdom": null,
+      "tss": 0.7628881931304932,
+      "total_nitrogen": 0.6532710194587708,
+      "total_phosphorus": 0.7483524680137634,
+      "dissolved_oxygen": 0.7760170102119446,
+      "ammonia": 0.573620617389679,
+      "nitrate": 0.7770363092422485,
+      "ph": 0.6440635919570923,
+      "water_temp": 0.8926961421966553,
+      "phycocyanin": 0.4436546564102173,
+      "oil_probability": null,
+      "acdom": null,
+      "pollution_anomaly_index": null
+    },
+    "n_params": 41973805,
+    "architecture": "LocalCNNExtractor + CNNToViTAdapter + SatelliteEncoder (ViT-S/16) + MultiScaleCNNAgg + DeepWQHeadV2",
+    "vs_densenet121": {
+      "densenet_mean_r2": 0.7029,
+      "densenet_water_temp_r2": 0.884,
+      "delta_mean_r2": -0.0505,
+      "delta_water_temp_r2": 0.0087
+    },
+    "vs_hydrovit_v8": {
+      "v8_mean_r2": 0.6622,
+      "v8_water_temp_r2": 0.8716,
+      "delta_mean_r2": -0.0098,
+      "delta_water_temp_r2": 0.0211
+    },
+    "elapsed_seconds": 6254.3
+  }
+}
