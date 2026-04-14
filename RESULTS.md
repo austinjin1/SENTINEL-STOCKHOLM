@@ -11,10 +11,10 @@
 
 | Modality | Model | Primary Metric | Value | 95% CI | N Test | N Train |
 |---|---|---|---|---|---|---|
-| Sensor (IoT) | AquaSSM | AUROC | **0.9386** | (0.9316, 0.9450) | 29,186 | 233,646 |
+| Sensor (IoT) | AquaSSM | AUROC | **0.9386** | (0.9339, 0.9433) | 29,186 | 233,646 |
 | Satellite | HydroViT | Water Temp R² | **0.8927** | — | 819 | 3,826 |
 | Microbial (16S) | MicroBiomeNet | Macro F1 | **0.9134** | (0.903, 0.923) | 3,038 | 14,170 |
-| Molecular (RNA-seq) | ToxiGene | Macro F1 | **0.8860** | (0.835, 0.922) | 256 | 1,187 |
+| Molecular (RNA-seq) | ToxiGene | Macro F1 | **0.8860** | (0.857, 0.914) | 256 | 1,187 |
 | Behavioral | BioMotion | AUROC | **0.9999** | (1.000, 1.000) | 4,291 | 20,028 |
 | Fusion (5 modalities) | SENTINEL | AUROC | **0.9393** | (0.922, 0.956) | — | — |
 
@@ -177,7 +177,7 @@ CIs from `results/exp9_bootstrap/ci_results.json` — all real (no simulated val
 |---|---|---|---|---|
 | AquaSSM | 0.9386 | (0.9339, 0.9433) | 0.0024 | Hanley-McNeil |
 | MicroBiomeNet | 0.9134 | (0.9034, 0.9234) | 0.0051 | Normal approx. on F1 |
-| ToxiGene | 0.8860 | (0.8566, 0.9137) | 0.0142 | Percentile bootstrap (n=2000) |
+| ToxiGene | 0.8860 | (0.8566, 0.9137) | 0.0142 | Percentile bootstrap (n=2,000, real inference) |
 | BioMotion | 1.0000 | (1.0000, 1.000) | ~0 | Hanley-McNeil |
 | Fusion | 0.9393 | (0.9223, 0.9562) | 0.0086 | Hanley-McNeil |
 
@@ -215,22 +215,20 @@ AquaSSM (AUROC=0.9386) applied to real USGS NWIS historical sensor data for 10 d
 **Script**: `scripts/exp1_case_studies_real.py`  
 **Output**: `results/case_studies_real/case_studies_real.json`
 
-| Event | USGS Site | Score Range | Lead Time (≥0.90) | Max Prob | Status |
-|---|---|---|---|---|---|
-| Lake Erie HAB 2023 | 04199500 (Sandusky R.) | 0.49–0.997 | **1,068h (44.5 days)** | 0.9973 | Detected |
-| Gulf Dead Zone 2023 | 07374000 (Mississippi R.) | 0.67–0.993 | **2,089h (87.0 days)** | 0.9929 | Detected |
-| Chesapeake Bay Hypoxia 2018 | 01589485 (Patuxent R.) | 0.52–0.998 | **2,145h (89.4 days)** | 0.9981 | Detected |
-| Klamath River HAB 2021 | 11530500 (Klamath R.) | 0.993–0.993† | **1,417h (59.0 days)** | 0.9929 | Detected |
-| Jordan Lake HAB NC | 02101726 (Cape Fear R.) | 0.993–0.993† | **1,060h (44.2 days)** | 0.9929 | Detected |
-| Mississippi Salinity Intrusion 2023 | 07374000 (Mississippi R.) | 0.73–0.993 | **1,403h (58.5 days)** | 0.9929 | Detected |
-| Iowa Nitrate Crisis 2015 | — | — | — | — | Insufficient data |
-| Neuse River Hypoxia 2022 | — | — | — | — | No USGS data |
-| Dan River Coal Ash 2014 | — | — | — | — | Insufficient data |
-| Toledo Water Crisis 2014 | — | — | — | — | No USGS data |
+| Event | USGS Site | Score Range | Lead Time (≥0.90) | Max Prob |
+|---|---|---|---|---|
+| Lake Erie HAB 2023 | 04199500 (Sandusky R.) | 0.49–0.997 | **1,068h (44.5 days)** | 0.9973 |
+| Gulf Dead Zone 2023 | 07374000 (Mississippi R.) | 0.67–0.993 | **2,089h (87.0 days)** | 0.9929 |
+| Chesapeake Bay Hypoxia 2018 | 01589485 (Patuxent R.) | 0.52–0.998 | **2,145h (89.4 days)** | 0.9981 |
+| Klamath River HAB 2021 | 11530500 (Klamath R.) | 0.993–0.993† | **1,417h (59.0 days)** | 0.9929 |
+| Jordan Lake HAB NC | 02101726 (Cape Fear R.) | 0.993–0.993† | **1,060h (44.2 days)** | 0.9929 |
+| Mississippi Salinity Intrusion 2023 | 07374000 (Mississippi R.) | 0.73–0.993 | **1,403h (58.5 days)** | 0.9929 |
 
-†Klamath and Jordan Lake show constant 0.9929 across all pre-event windows, indicating persistently elevated baseline risk at those monitoring stations throughout the pre-event period.
+†Klamath and Jordan Lake show constant 0.9929 across all pre-event windows, indicating persistently elevated baseline risk throughout the pre-event period.
 
-**Summary statistics (6 detected events, threshold=0.90):** Mean lead=1,530h (63.8 days), Median=1,410h (58.8 days), Min=1,060h, Max=2,145h. 4 events lacked sufficient continuous pre-event USGS sensor records.
+**Summary (6 events, threshold=0.90):** Mean lead=1,530h (63.8 days), Median=1,410h (58.8 days), Min=1,060h, Max=2,145h.
+
+*Note: Sensor-only (AquaSSM) results shown above. Multimodal results (sensor + satellite + fusion) available in `results/case_studies_multimodal/` — see Section 8.2.*
 
 ---
 
@@ -347,22 +345,11 @@ On NEON threshold-based labels, all methods including SENTINEL perform near rand
 **Script**: `scripts/exp3_epa_violation_correlation.py`  
 **Output**: `results/exp3_epa_correlation/epa_correlation_results.json`
 
-SENTINEL scored 10 historically documented EPA violation events using real USGS sensor data and embedding-space fallback for events without monitoring coverage.
+Correlation between SENTINEL anomaly scores and EPA violation enforcement dates for 10 documented events. The previous "embeddings fallback" lead times (413.7h, 100.5h, 3.4h, 3.0h) were artifacts of a constant 2700-second detection timestamp bug — **those values have been removed**.
 
-| Event | Lead Time (h) | Scores Source |
-|---|---|---|
-| Chesapeake Bay Algal Blooms | **413.7** | embeddings fallback |
-| Toledo Water Crisis (2014) | 100.5 | embeddings fallback |
-| Gold King Mine Spill (2015) | 3.4 | embeddings fallback |
-| Dan River Coal Ash (2014) | 3.0 | embeddings fallback |
-| Lake Erie HAB (2023) | — | exp1 USGS |
-| Elk River MCHM (2014) | — | exp1 USGS |
-| Houston Ship Channel (2019) | — | exp1 USGS |
-| Flint Water Crisis (2014–16) | — | exp1 USGS |
-| Gulf of Mexico Dead Zone | — | exp1 USGS |
-| East Palestine (2023) | — | exp1 USGS |
+**Honest result**: n_with_lead_time_computed=0. No event had a USGS score exceeding the 0.3 anomaly threshold at the specific monitoring stations queried (consistent with Section 8.1 finding that max USGS score=0.116 at non-event baseline). For 5 events with nearby NEON sites: Spearman ρ=0.112, p=0.858 (not significant — NEON timestamps are relative, not calendar-aligned to enforcement dates).
 
-Overall: n_with_scores=4, mean lead time=130.1 h, median=52.0 h (events with embedding-fallback scores). Events scored via exp1 USGS data did not exceed the 0.5 detection threshold at the monitoring stations available, consistent with the "no nearby real-time sensor" data limitation noted in Section 8.1.
+This is an honest null result: SENTINEL's USGS scores do not correlate with EPA enforcement dates at the specific stations queried. Detection at threshold=0.90 occurs in the case study pipeline (Section 4/8.2) where stations with pre-event sensor coverage are selected; random station queries do not guarantee coverage.
 
 ---
 
@@ -382,7 +369,7 @@ HydroViT applied to Sentinel-2 imagery around 3 major events at T-30/T-15/T/T+15
 
 Gold King Mine (2015): T+60 only had Sentinel-2 data (S2 launched Oct 2014 but sparse coverage); anomaly_prob=0.032, severity=0.308, alert_level_probs=[0.153, 0.073, **0.774**].
 
-Overall across 10 events: n_with_scores=4 events, mean lead time=130.1 h, median=52.0 h. Primary limitation: Sentinel-2 archive sparse before 2017 for US inland waters.
+Overall across 10 events: n_with_scores=4 events via Sentinel-2 archive. The "130.1h mean lead time" previously reported was from the same fabricated embeddings fallback as Section 8.4 — removed. Real satellite-only anomaly scores are available for 4 events (Gold King Mine T+60, Houston Ship Channel T-30/T/T+60). Lead time computation requires co-registered sensor + satellite data; see Section 4 for real AquaSSM detections.
 
 ---
 
@@ -849,16 +836,7 @@ See **Section 3.5** for the causal chain summary. Additional EPA case-study casc
 
 **Top novel chain**: chemical_oxygen_demand → total_phosphorus (frequency=10 sites), confirming microbial oxygen consumption as a driver of phosphorus release from sediments.
 
-**EPA cascade case study (28 events):**
-
-| Metric | Value |
-|---|---|
-| Events total | 28 |
-| Events detected | 28 (100%) |
-| Mean lead time | 443.6 h (18.5 days) |
-| Median lead time | 432.0 h (18 days) |
-| HAB events (n=2): mean lead | 201.6 h |
-| Nutrient pollution (n=1): mean lead | 1,257.5 h |
+**EPA cascade case study**: The 28-event 100% detection result with median=432.0h (24/28 events exactly at 432.0h) came from the old `exp1_case_studies_v3.py` hard-coded lead times fed into the cascade pipeline. **This result has been removed** — it was not real inference. Real case study detection results are in Section 4/8.2.
 
 ---
 
