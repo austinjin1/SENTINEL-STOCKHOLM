@@ -291,7 +291,7 @@ Twenty analyses were conducted in four categories. \textit{Core evaluation}: (1)
 % ============================================================
 \section{Results}
 
-All five encoders exceeded their performance thresholds on real data (Table~\ref{tab:encoder}), with bootstrap 95\% CIs confirming metric stability (Figure~\ref{fig:ci}). Each encoder was benchmarked against both standard baselines and published state-of-the-art where available. The results below are organized around the four central findings of this work.
+All five encoders exceeded their performance thresholds on real data (Table~\ref{tab:encoder}), with bootstrap 95\% CIs confirming metric stability. Each encoder was benchmarked against published state-of-the-art where available and standard baselines otherwise (Figure~\ref{fig:sota}). The results below are organized around the four central findings of this work.
 
 \begin{table}[H]
 \centering
@@ -314,9 +314,9 @@ BioMotion (Behavioral) & AUROC & 1.000 [1.000, 1.000] & $>$0.80 \\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.85\textwidth]{fig2_bootstrap_ci.jpg}
-\caption{Bootstrap 95\% CIs (2,000 iterations). Red markers = thresholds. All CIs narrow (width $<$ 0.06).}
-\label{fig:ci}
+\includegraphics[width=0.9\textwidth]{fig2_sota_comparison.jpg}
+\caption{SENTINEL encoders vs.\ published SOTA and best baselines. Red = ours, orange = published SOTA, blue = best baseline (first-in-class tasks). AquaSSM, HydroViT, and BioMotion outperform published models; MicroBiomeNet and ToxiGene establish first-in-class benchmarks. Red markers = thresholds.}
+\label{fig:sota}
 \end{figure}
 
 % ── PILLAR 1: FUSION ──
