@@ -1,0 +1,113 @@
+{
+  "dataset": "expression_matrix_fullreal.npy",
+  "n_real_samples": 1000,
+  "n_train": 700,
+  "n_val": 150,
+  "n_test": 150,
+  "seed": 42,
+  "outcome_names": [
+    "reproductive_impairment",
+    "growth_inhibition",
+    "immunosuppression",
+    "neurotoxicity",
+    "hepatotoxicity",
+    "oxidative_damage",
+    "endocrine_disruption"
+  ],
+  "models": {
+    "SENTINEL_ToxiGene": {
+      "f1_macro": 0.9292520161607308,
+      "accuracy": 0.9447619047619048,
+      "auroc_macro": 0.9894390496174096,
+      "per_class_f1": {
+        "reproductive_impairment": 0.9230769230769231,
+        "growth_inhibition": 0.8951048951048951,
+        "immunosuppression": 0.9655172413793104,
+        "neurotoxicity": 0.9213483146067416,
+        "hepatotoxicity": 0.9493670886075949,
+        "oxidative_damage": 0.9272727272727272,
+        "endocrine_disruption": 0.9230769230769231
+      },
+      "checkpoint": "toxigene_fullreal_best.pt"
+    },
+    "RandomForest": {
+      "f1_macro": 0.9064073835369749,
+      "accuracy": 0.9304761904761905,
+      "auroc_macro": 0.9821152693735611,
+      "per_class_f1": {
+        "reproductive_impairment": 0.8928571428571429,
+        "growth_inhibition": 0.9019607843137255,
+        "immunosuppression": 0.875,
+        "neurotoxicity": 0.9318181818181818,
+        "hepatotoxicity": 0.9554140127388535,
+        "oxidative_damage": 0.8703703703703703,
+        "endocrine_disruption": 0.9174311926605505
+      },
+      "fit_time_s": 5.37
+    },
+    "XGBoost": {
+      "f1_macro": 0.9005295827076198,
+      "accuracy": 0.9257142857142857,
+      "auroc_macro": null,
+      "per_class_f1": {
+        "reproductive_impairment": 0.896551724137931,
+        "growth_inhibition": 0.9090909090909091,
+        "immunosuppression": 0.9,
+        "neurotoxicity": 0.9195402298850575,
+        "hepatotoxicity": 0.9426751592356688,
+        "oxidative_damage": 0.8301886792452831,
+        "endocrine_disruption": 0.9056603773584906
+      },
+      "model": "GradientBoosting(sklearn)",
+      "fit_time_s": 122.45
+    },
+    "LogisticRegression": {
+      "f1_macro": 0.941839255445667,
+      "accuracy": 0.9542857142857143,
+      "auroc_macro": 0.990038151805518,
+      "per_class_f1": {
+        "reproductive_impairment": 0.9482758620689655,
+        "growth_inhibition": 0.9103448275862069,
+        "immunosuppression": 0.9662921348314607,
+        "neurotoxicity": 0.9782608695652174,
+        "hepatotoxicity": 0.9681528662420382,
+        "oxidative_damage": 0.9056603773584906,
+        "endocrine_disruption": 0.9158878504672897
+      },
+      "fit_time_s": 7.83
+    },
+    "SimpleMLP": {
+      "f1_macro": 0.9447606386134669,
+      "accuracy": 0.9571428571428572,
+      "auroc_macro": 0.9898787473321587,
+      "per_class_f1": {
+        "reproductive_impairment": 0.9401709401709402,
+        "growth_inhibition": 0.9395973154362416,
+        "immunosuppression": 0.9662921348314607,
+        "neurotoxicity": 0.967741935483871,
+        "hepatotoxicity": 0.9746835443037974,
+        "oxidative_damage": 0.9074074074074074,
+        "endocrine_disruption": 0.9174311926605505
+      },
+      "fit_time_s": 4.95,
+      "note": "2-layer MLP, no pathway hierarchy"
+    },
+    "PCA_LR": {
+      "f1_macro": 0.9334557123716563,
+      "accuracy": 0.9495238095238095,
+      "auroc_macro": 0.9899262067405719,
+      "per_class_f1": {
+        "reproductive_impairment": 0.9565217391304348,
+        "growth_inhibition": 0.920863309352518,
+        "immunosuppression": 0.9662921348314607,
+        "neurotoxicity": 0.9213483146067416,
+        "hepatotoxicity": 0.9419354838709677,
+        "oxidative_damage": 0.9056603773584906,
+        "endocrine_disruption": 0.9215686274509803
+      },
+      "fit_time_s": 9.87,
+      "note": "PCA(50 components) + LogisticRegression"
+    }
+  },
+  "benchmark_elapsed_s": 151.83
+}

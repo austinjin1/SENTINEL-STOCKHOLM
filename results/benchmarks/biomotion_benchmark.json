@@ -1,0 +1,96 @@
+{
+  "benchmark": "BioMotion vs Baselines",
+  "data_dir": "/home/bcheng/SENTINEL/data/processed/behavioral_fullreal",
+  "n_train": 20028,
+  "n_val": 4291,
+  "n_test": 4291,
+  "seed": 42,
+  "split": "test=0.15, val=0.15, stratified by class",
+  "baseline_auroc_original_17k": 0.9621,
+  "results": [
+    {
+      "method": "StatisticalThreshold (DaphTox-style)",
+      "pop_mean_speed": 0.0,
+      "threshold_30pct": 0.0,
+      "auroc": 0.4936339522546419,
+      "f1": 0.6102024291497976,
+      "precision": 0.43916083916083914,
+      "recall": 0.9994694960212201,
+      "accuracy": 0.4390584945234211
+    },
+    {
+      "method": "LSTM (BiLSTM, hidden=128)",
+      "n_params": 561281,
+      "auroc": 0.9999389236898911,
+      "f1": 0.9965508092332184,
+      "precision": 0.9968152866242038,
+      "recall": 0.9962864721485412,
+      "accuracy": 0.9969704031694244
+    },
+    {
+      "method": "Transformer (2-layer, CLS token)",
+      "n_params": 275585,
+      "auroc": 0.9990898086349115,
+      "f1": 0.997344662772172,
+      "precision": 0.9984051036682615,
+      "recall": 0.9962864721485412,
+      "accuracy": 0.9976695408995572
+    },
+    {
+      "method": "Isolation Forest (mean/std/max + keypoint stats)",
+      "auroc": 0.8896611257003381,
+      "f1": 0.338368580060423,
+      "precision": 0.9074074074074074,
+      "recall": 0.2079575596816976,
+      "accuracy": 0.6427406199021207
+    },
+    {
+      "method": "VAE Reconstruction Error (normal-only)",
+      "n_params": 1720256,
+      "auroc": 0.9523452641605534,
+      "f1": 0.005288207297726071,
+      "precision": 0.8333333333333334,
+      "recall": 0.002652519893899204,
+      "accuracy": 0.5616406432067117
+    },
+    {
+      "method": "BioMotion (original 17k)",
+      "auroc": 0.9904009869226139,
+      "f1": 0.9818659658344284,
+      "precision": 0.9729166666666667,
+      "recall": 0.9909814323607427,
+      "accuracy": 0.9839198322069448
+    },
+    {
+      "method": "BioMotion (expanded)",
+      "auroc": 0.9999995590158115,
+      "f1": 0.9989401165871754,
+      "precision": 0.9978824775013234,
+      "recall": 1.0,
+      "accuracy": 0.9990678163598229
+    },
+    {
+      "method": "DeepAutoencoder (PLOS CompBio 2024 reimpl.)",
+      "auroc": 0.9582769424802274,
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "accuracy": 0.5602423677464461,
+      "n_params": 3629504,
+      "reference": "PMC10515950 \u2014 Deep Autoencoder for Zebrafish Behavioral Anomaly, PLOS CompBio 2024",
+      "published_auroc_range": "0.740\u20130.922 (6 phase-specific models on 2,719 larvae)",
+      "note": "Our reimpl. on 28,610 ECOTOX trajectories (10\u00d7 larger dataset)"
+    },
+    {
+      "method": "LSTMAutoencoder",
+      "auroc": 0.9203002661339577,
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "accuracy": 0.5604754136564903,
+      "n_params": 823472,
+      "note": "BiLSTM encoder \u2192 bottleneck(32) \u2192 LSTM decoder, trained normal-only"
+    }
+  ],
+  "elapsed_seconds": 474.39475202560425
+}

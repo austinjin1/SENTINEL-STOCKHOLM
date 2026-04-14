@@ -1,0 +1,57 @@
+{
+  "SENTINEL_ToxiGene": {
+    "f1_macro": 0.9519776948399167,
+    "accuracy": 0.9687830687830687
+  },
+  "SimpleMLP": {
+    "f1_macro": 0.9522371534833949,
+    "accuracy": 0.9074074074074074
+  },
+  "RandomForest": {
+    "f1_macro": 0.9224951232729227,
+    "accuracy": 0.8592592592592593
+  },
+  "XGBoost": {
+    "f1_macro": 0.9227807420216629,
+    "accuracy": 0.8740740740740741,
+    "model": "XGBoost(GBT)"
+  },
+  "LogisticRegression": {
+    "f1_macro": 0.9397423324213884,
+    "accuracy": 0.8740740740740741
+  },
+  "PCA_LR": {
+    "f1_macro": 0.9460504181095276,
+    "accuracy": 0.8888888888888888
+  },
+  "SENTINEL_ToxiGene_v2": {
+    "f1_macro": 0.8770246982789578,
+    "accuracy": 0.9084821428571429,
+    "auroc_macro": 0.9563366585650867,
+    "per_class_f1": {
+      "reproductive_impairment": 0.8227848101265823,
+      "growth_inhibition": 0.8924050632911392,
+      "immunosuppression": 0.8888888888888888,
+      "neurotoxicity": 0.8735632183908046,
+      "hepatotoxicity": 0.9155844155844156,
+      "oxidative_damage": 0.911660777385159,
+      "endocrine_disruption": 0.8342857142857143
+    },
+    "n_samples": 1697,
+    "n_genes": 61479,
+    "architecture": "Transformer-6L-512d-8h + PathwayPooling",
+    "checkpoint": "toxigene_v2_best.pt"
+  },
+  "SimpleMLP_v2_same_split": {
+    "f1_macro": 0.8895764011470707,
+    "accuracy": 0.91796875,
+    "auroc_macro": 0.9641325665731354,
+    "note": "Trained on same expanded dataset and test split as ToxiGene v2"
+  },
+  "SENTINEL_ToxiGene_fullreal": {
+    "f1_macro": 0.9293,
+    "accuracy": 0.9448,
+    "auroc_macro": 0.9894,
+    "note": "1000 real samples, 1000-gene space (prior version)"
+  }
+}

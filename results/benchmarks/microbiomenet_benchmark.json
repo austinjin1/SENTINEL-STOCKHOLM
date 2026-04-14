@@ -1,0 +1,113 @@
+{
+  "benchmark_version": "v2_apples_to_apples",
+  "benchmark_date": "2026-04-13",
+  "dataset": "emp_16s_only",
+  "n_train": 17980,
+  "n_val": 3852,
+  "n_test": 3854,
+  "split": "70/15/15",
+  "random_state": 42,
+  "split_method": "torch.random_split(seed=42) \u2014 identical to train_microbiomenet_emp.py",
+  "n_classes": 8,
+  "class_names": [
+    "freshwater_natural",
+    "freshwater_impacted",
+    "saline_water",
+    "freshwater_sediment",
+    "saline_sediment",
+    "soil_runoff",
+    "animal_fecal",
+    "plant_associated"
+  ],
+  "fairness_note": "FIXED: All models evaluated on the SAME EMP-only test split. Previous benchmark compared MicroBiomeNet on EMP-only (n=3038) vs baselines on consolidated (n=12347) \u2014 that was wrong.",
+  "results": {
+    "MicroBiomeNet": {
+      "macro_f1": 0.8988562775325641,
+      "accuracy": 0.9234561494551116,
+      "per_class_f1": {
+        "freshwater_natural": 0.8890479599141017,
+        "freshwater_impacted": 0.7196652719665272,
+        "saline_water": 0.944954128440367,
+        "freshwater_sediment": 0.9017341040462428,
+        "saline_sediment": 0.91,
+        "soil_runoff": 0.9325373134328359,
+        "animal_fecal": 0.9445910290237467,
+        "plant_associated": 0.9483204134366925
+      },
+      "n_test": 3854,
+      "n_train": 17980,
+      "source": "stored_results_v2_json_same_seed42_split"
+    },
+    "RandomForest": {
+      "macro_f1": 0.8346374447375311,
+      "accuracy": 0.8687078360145304,
+      "per_class_f1": {
+        "freshwater_natural": 0.8487084870848709,
+        "freshwater_impacted": 0.6260869565217392,
+        "saline_water": 0.8679245283018868,
+        "freshwater_sediment": 0.8553459119496856,
+        "saline_sediment": 0.8187134502923976,
+        "soil_runoff": 0.8508557457212714,
+        "animal_fecal": 0.8970861748295103,
+        "plant_associated": 0.9123783031988874
+      },
+      "n_train": 17980,
+      "n_test": 3854,
+      "elapsed_seconds": 5.599059581756592,
+      "note": "top-500 variance features, class_weight=balanced"
+    },
+    "ExtraTrees_GradientBoosting": {
+      "macro_f1": 0.8428924168519228,
+      "accuracy": 0.878308251167618,
+      "per_class_f1": {
+        "freshwater_natural": 0.8638018936635106,
+        "freshwater_impacted": 0.6497890295358649,
+        "saline_water": 0.8720379146919431,
+        "freshwater_sediment": 0.9024390243902439,
+        "saline_sediment": 0.7727272727272727,
+        "soil_runoff": 0.8581818181818182,
+        "animal_fecal": 0.9086310464748656,
+        "plant_associated": 0.9155313351498637
+      },
+      "n_train": 17980,
+      "n_test": 3854,
+      "elapsed_seconds": 1.0748770236968994,
+      "note": "top-300 variance features, class_weight=balanced"
+    },
+    "LogisticRegression": {
+      "macro_f1": 0.8756527783578667,
+      "accuracy": 0.8920601971977167,
+      "per_class_f1": {
+        "freshwater_natural": 0.8658008658008658,
+        "freshwater_impacted": 0.6329113924050633,
+        "saline_water": 0.9488372093023256,
+        "freshwater_sediment": 0.9090909090909091,
+        "saline_sediment": 0.9381443298969072,
+        "soil_runoff": 0.8730538922155688,
+        "animal_fecal": 0.9201694362984686,
+        "plant_associated": 0.9172141918528253
+      },
+      "n_train": 17980,
+      "n_test": 3854,
+      "elapsed_seconds": 71.19225335121155
+    },
+    "SimpleMLP": {
+      "macro_f1": 0.9048213752445573,
+      "accuracy": 0.9229372080954852,
+      "per_class_f1": {
+        "freshwater_natural": 0.8872620790629575,
+        "freshwater_impacted": 0.7137546468401487,
+        "saline_water": 0.9626168224299065,
+        "freshwater_sediment": 0.9195402298850575,
+        "saline_sediment": 0.9319371727748691,
+        "soil_runoff": 0.9247058823529412,
+        "animal_fecal": 0.9458745874587459,
+        "plant_associated": 0.9528795811518325
+      },
+      "n_train": 17980,
+      "n_test": 3854,
+      "elapsed_seconds": 54.17993497848511
+    }
+  },
+  "elapsed_seconds": 143.85455298423767
+}

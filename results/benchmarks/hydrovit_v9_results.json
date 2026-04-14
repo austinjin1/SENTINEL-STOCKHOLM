@@ -1,0 +1,57 @@
+{
+  "model": "HydroViT_v9",
+  "architecture": "LocalCNNExtractor + CNNToViTAdapter + SatelliteEncoder (ViT-S/16) + MultiScaleCNNAgg + DeepWQHeadV2",
+  "key_changes_vs_v8": [
+    "CNN-ViT hybrid: 3-layer stride-1 CNN (10\u219232\u219264\u2192128ch) before ViT",
+    "CNNToViTAdapter: fuses raw spectral + CNN features into 13ch ViT input",
+    "MultiScaleCNNAggregator: pools all 3 CNN feature maps into 256-dim",
+    "DeepWQHeadV2: dual-stream (ViT 256 + CNN 256) with 3 residual blocks",
+    "PerParamBandAttention: physics-initialized band weights (Chl-a: bands 2,3,4)",
+    "Weighted loss: chl_a=3x, water_temp=3x, turbidity=2x, phycocyanin=2x",
+    "120 epochs fine-tune (vs 80 in v8) with cosine annealing",
+    "Grad accum 4x (effective batch=32)",
+    "Best model saved by mean R\u00b2 across all params (not just water_temp)"
+  ],
+  "n_params": 41973805,
+  "data": "data/processed/satellite/paired_wq_v5.npz",
+  "n_train": 3826,
+  "n_val": 819,
+  "n_test": 819,
+  "water_temp_r2": 0.8926961421966553,
+  "mean_r2": 0.6524179848757657,
+  "per_param_r2": {
+    "chl_a": 0.14218521118164062,
+    "turbidity": 0.762812614440918,
+    "secchi_depth": null,
+    "cdom": null,
+    "tss": 0.7628881931304932,
+    "total_nitrogen": 0.6532710194587708,
+    "total_phosphorus": 0.7483524680137634,
+    "dissolved_oxygen": 0.7760170102119446,
+    "ammonia": 0.573620617389679,
+    "nitrate": 0.7770363092422485,
+    "ph": 0.6440635919570923,
+    "water_temp": 0.8926961421966553,
+    "phycocyanin": 0.4436546564102173,
+    "oil_probability": null,
+    "acdom": null,
+    "pollution_anomaly_index": null
+  },
+  "best_val_wt_r2_phase1": 0.8709884881973267,
+  "best_val_mean_r2_phase1": 0.5394639535383745,
+  "best_val_wt_r2_phase2": 0.8838033676147461,
+  "best_val_mean_r2_phase2": 0.6724708080291748,
+  "vs_densenet121": {
+    "densenet_mean_r2": 0.7029,
+    "densenet_water_temp_r2": 0.884,
+    "delta_mean_r2": -0.0505,
+    "delta_water_temp_r2": 0.0087
+  },
+  "vs_hydrovit_v8": {
+    "v8_mean_r2": 0.6622,
+    "v8_water_temp_r2": 0.8716,
+    "delta_mean_r2": -0.0098,
+    "delta_water_temp_r2": 0.0211
+  },
+  "elapsed_seconds": 6254.3
+}

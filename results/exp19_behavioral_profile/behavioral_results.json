@@ -2,48 +2,48 @@
   "n_trajectories": 1000,
   "n_normal": 655,
   "n_anomaly": 345,
-  "overall_auroc_point": 0.9569,
+  "overall_auroc_point": 0.9127,
   "kinematic_correlations": {
     "mean_speed": {
-      "spearman_rho": 0.6515,
+      "spearman_rho": 0.8616,
       "p_value": 0.0
     },
     "max_speed": {
-      "spearman_rho": 0.6526,
+      "spearman_rho": 0.8616,
       "p_value": 0.0
     },
     "immobility_rate": {
-      "spearman_rho": 0.0999,
-      "p_value": 0.001554
+      "spearman_rho": -0.108,
+      "p_value": 0.000622
     },
     "speed_cv": {
-      "spearman_rho": 0.7308,
+      "spearman_rho": 0.6935,
       "p_value": 0.0
     },
     "mean_turn_rad": {
-      "spearman_rho": 0.0999,
-      "p_value": 0.001557
+      "spearman_rho": -0.1081,
+      "p_value": 0.000618
     },
     "spatial_spread": {
-      "spearman_rho": 0.678,
+      "spearman_rho": 0.834,
       "p_value": 0.0
     },
     "speed_entropy": {
-      "spearman_rho": -0.0844,
-      "p_value": 0.00759
+      "spearman_rho": 0.1093,
+      "p_value": 0.000534
     },
     "mean_pairwise_dist": {
-      "spearman_rho": 0.6783,
+      "spearman_rho": 0.8339,
       "p_value": 0.0
     },
     "active_fraction": {
-      "spearman_rho": -0.0999,
-      "p_value": 0.001554
+      "spearman_rho": 0.108,
+      "p_value": 0.000622
     }
   },
   "top3_kinematic_predictors": [
-    "speed_cv",
-    "mean_pairwise_dist",
+    "mean_speed",
+    "max_speed",
     "spatial_spread"
   ],
   "group_stats": {
@@ -107,16 +107,16 @@
       "bin_lo": 0.9,
       "bin_hi": 1.0,
       "n": 995,
-      "mean_score": 1.0332,
+      "mean_score": 0.0695,
       "frac_anomaly_label": 0.346
     }
   ],
   "detection_mode_analysis": {
-    "trivial_immobility_auroc": 0.9569,
+    "trivial_immobility_auroc": 0.9127,
     "subtle_kinematic_auroc": null,
     "n_trivial": 1000,
     "n_subtle_anomaly": 0,
     "interpretation": "If trivial\u2248subtle, model detects subtle kinematics. If trivial>>subtle, model primarily detects immobility."
   },
-  "elapsed_s": 300.2
+  "elapsed_s": 392.5
 }

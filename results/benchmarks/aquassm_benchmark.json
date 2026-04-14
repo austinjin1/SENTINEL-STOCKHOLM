@@ -46,6 +46,16 @@
         "kernel": "rbf",
         "gamma": "auto"
       }
+    },
+    "MCN-LSTM (Sensors 2023)": {
+      "auroc": 0.8636642156862746,
+      "f1": 0.7967479674796748,
+      "n_test": 115,
+      "n_params": 659713,
+      "elapsed_s": 14.1,
+      "reference": "PMC10610887 \u2014 Real-Time Anomaly Detection for Water Quality Sensor Monitoring, Sensors 2023",
+      "architecture": "3\u00d7ConvColumn(k=3,5,7,64ch) + BiLSTM(h=128,L=2) + Linear",
+      "note": "Reimplementation on USGS 5-param data; published F1=0.93 on 3-param Madison River"
     }
   },
   "elapsed_seconds": 39.49458456039429,

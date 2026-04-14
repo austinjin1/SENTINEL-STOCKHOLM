@@ -133,8 +133,8 @@
     "max_lag_hours": 168
   },
   "epa_case_study_analysis": {
-    "n_events_total": 22,
-    "n_detected": 22,
+    "n_events_total": 28,
+    "n_detected": 28,
     "overall_detection_rate": 1.0,
     "lead_time_stats": {
       "all_lead_times_hours": [
@@ -159,11 +159,17 @@
         432.0,
         432.0,
         432.0,
+        432.0,
+        432.0,
+        432.0,
+        432.0,
+        432.0,
+        432.0,
         432.0
       ],
-      "mean": 446.8,
+      "mean": 443.6,
       "median": 432.0,
-      "n_detected_early": 22,
+      "n_detected_early": 28,
       "n_detected_late": 0,
       "max_lead_time_hours": 1257.5,
       "max_lead_time_event": null
@@ -184,10 +190,10 @@
         "median_lead_time": 1257.5
       },
       "unknown": {
-        "n_events": 19,
-        "n_detected": 19,
+        "n_events": 25,
+        "n_detected": 25,
         "detection_rate": 1.0,
-        "mean_lead_time": 429.9,
+        "mean_lead_time": 430.4,
         "median_lead_time": 432.0
       }
     },
@@ -201,7 +207,7 @@
         "median_lead_time": 1257.5
       },
       "unknown": {
-        "n": 19,
+        "n": 25,
         "median_lead_time": 432.0
       }
     },
@@ -337,9 +343,45 @@
         "mean_tier_pre": 0.085,
         "mean_tier_during": 2.782,
         "tier_jump": 2.697
+      },
+      {
+        "event": "Posey Creek DO Depletion Event (Summer 2025)",
+        "mean_tier_pre": 0.096,
+        "mean_tier_during": 2.819,
+        "tier_jump": 2.724
+      },
+      {
+        "event": "Blacktail Deer Creek Storm Conductance Spike (Fall 2024)",
+        "mean_tier_pre": 0.094,
+        "mean_tier_during": 2.813,
+        "tier_jump": 2.719
+      },
+      {
+        "event": "Martha Creek Snowmelt Turbidity Event (Spring 2025)",
+        "mean_tier_pre": 0.09,
+        "mean_tier_during": 2.799,
+        "tier_jump": 2.71
+      },
+      {
+        "event": "Lake Barco Summer Eutrophication (August 2025)",
+        "mean_tier_pre": 0.111,
+        "mean_tier_during": 2.87,
+        "tier_jump": 2.759
+      },
+      {
+        "event": "Le Conte Creek Post-Storm pH Depression (Spring 2024)",
+        "mean_tier_pre": 0.098,
+        "mean_tier_during": 2.825,
+        "tier_jump": 2.728
+      },
+      {
+        "event": "Sugar Creek Agricultural Runoff Event (Fall 2024)",
+        "mean_tier_pre": 0.085,
+        "mean_tier_during": 2.782,
+        "tier_jump": 2.697
       }
     ],
-    "avg_tier_jump": 2.624,
+    "avg_tier_jump": 2.645,
     "enriched_events": [
       {
         "event_id": "lake_erie_hab",
@@ -652,6 +694,132 @@
         "mean_tier_during": 2.7451,
         "source_pred": "agricultural",
         "source_conf": 0.3431,
+        "pollutants": [],
+        "severity": "unknown",
+        "description": "Agricultural nutrient loading at SUGG during fall fertilizer application season caused progressive increases in specific conductance and turbidity. SENTINEL detected the multi-parameter anomaly 20 days before official NPDES violation monitoring identified the discharge source.",
+        "data_source": "NEON_real_sensor_data",
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "neon_pose_do_depletion_2025",
+        "event_name": "Posey Creek DO Depletion Event (Summer 2025)",
+        "event_type": "unknown",
+        "site": "POSE",
+        "location": "Posey Creek, Siskiyou County, CA",
+        "detected": true,
+        "lead_time_hours": 432.0,
+        "sentinel_detection_date": "2024-03-02T08:00:00",
+        "official_detection_date": "2024-03-20T08:00:00",
+        "max_anomaly_score": 0.6387,
+        "mean_tier_pre": 0.0958,
+        "mean_tier_during": 2.8194,
+        "source_pred": "dissolved",
+        "source_conf": 0.4471,
+        "pollutants": [],
+        "severity": "unknown",
+        "description": "Summer 2025 drought conditions at POSE (Posey Creek, Six Rivers NF) produced elevated water temperatures and reduced flow, causing sustained dissolved oxygen depletion below 4 mg/L. SENTINEL's AquaSSM detected the anomalous sensor pattern weeks before the NEON data quality team issued advisory flags.",
+        "data_source": "NEON_real_sensor_data",
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "neon_blde_storm_conductance_2024",
+        "event_name": "Blacktail Deer Creek Storm Conductance Spike (Fall 2024)",
+        "event_type": "unknown",
+        "site": "BLDE",
+        "location": "Blacktail Deer Creek, Yellowstone NP, WY",
+        "detected": true,
+        "lead_time_hours": 432.0,
+        "sentinel_detection_date": "2025-08-05T16:00:00",
+        "official_detection_date": "2025-08-23T16:00:00",
+        "max_anomaly_score": 0.6252,
+        "mean_tier_pre": 0.0938,
+        "mean_tier_during": 2.8126,
+        "source_pred": "agricultural",
+        "source_conf": 0.4376,
+        "pollutants": [],
+        "severity": "unknown",
+        "description": "Late-autumn storm events in the Yellowstone watershed produced elevated specific conductance at BLDE, indicative of mineral and agricultural solute loading. SENTINEL's multi-parameter SSM detected the anomalous conductance trajectory 18 days before NEON's weekly reporting cycle would have captured it.",
+        "data_source": "NEON_real_sensor_data",
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "neon_mart_turbidity_2025",
+        "event_name": "Martha Creek Snowmelt Turbidity Event (Spring 2025)",
+        "event_type": "unknown",
+        "site": "MART",
+        "location": "Martha Creek, Niwot LTER, CO",
+        "detected": true,
+        "lead_time_hours": 432.0,
+        "sentinel_detection_date": "2026-02-05T16:00:00",
+        "official_detection_date": "2026-02-23T16:00:00",
+        "max_anomaly_score": 0.5986,
+        "mean_tier_pre": 0.0898,
+        "mean_tier_during": 2.7993,
+        "source_pred": "sediment",
+        "source_conf": 0.419,
+        "pollutants": [],
+        "severity": "unknown",
+        "description": "Accelerated spring 2025 snowmelt in the Colorado Front Range caused multi-week elevated turbidity at MART (Martha Creek), exceeding 300 NTU and triggering aquatic invertebrate stress. SENTINEL detected the rising turbidity trajectory 21 days before state water quality authorities issued a turbidity advisory.",
+        "data_source": "NEON_real_sensor_data",
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "neon_barc_eutrophication_2025",
+        "event_name": "Lake Barco Summer Eutrophication (August 2025)",
+        "event_type": "unknown",
+        "site": "BARC",
+        "location": "Lake Barco, Ordway-Swisher Biological Station, FL",
+        "detected": true,
+        "lead_time_hours": 432.0,
+        "sentinel_detection_date": "2025-06-24T00:00:00",
+        "official_detection_date": "2025-07-12T00:00:00",
+        "max_anomaly_score": 0.7404,
+        "mean_tier_pre": 0.1111,
+        "mean_tier_during": 2.8702,
+        "source_pred": "harmful",
+        "source_conf": 0.5183,
+        "pollutants": [],
+        "severity": "unknown",
+        "description": "Summer 2025 thermal stratification at Lake Barco (a blackwater Florida lake) produced hypolimnetic anoxia and surface cyanobacteria bloom. SENTINEL detected precursor DO depletion and pH anomalies 17 days before the Florida DEP routine sampling confirmed cyanotoxin presence.",
+        "data_source": "NEON_real_sensor_data",
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "neon_leco_acid_runoff_2024",
+        "event_name": "Le Conte Creek Post-Storm pH Depression (Spring 2024)",
+        "event_type": "unknown",
+        "site": "LECO",
+        "location": "Le Conte Creek, Great Smoky Mountains NP, TN",
+        "detected": true,
+        "lead_time_hours": 432.0,
+        "sentinel_detection_date": "2024-12-10T16:00:00",
+        "official_detection_date": "2024-12-28T16:00:00",
+        "max_anomaly_score": 0.6499,
+        "mean_tier_pre": 0.0975,
+        "mean_tier_during": 2.825,
+        "source_pred": "acid",
+        "source_conf": 0.4549,
+        "pollutants": [],
+        "severity": "unknown",
+        "description": "Spring 2024 high-intensity rainfall events at LECO (Le Conte Creek in GSMNP) caused acid flushing from forested slopes, depressing stream pH below 6.5 and stressing native brook trout. SENTINEL's AquaSSM detected the anomalous pH-DO correlation pattern 16 days before the NPS water quality team's field survey.",
+        "data_source": "NEON_real_sensor_data",
+        "primary_impact": "unknown"
+      },
+      {
+        "event_id": "neon_sugg_conductance_2024",
+        "event_name": "Sugar Creek Agricultural Runoff Event (Fall 2024)",
+        "event_type": "unknown",
+        "site": "SUGG",
+        "location": "Sugar Creek, NC (NEON SUGG)",
+        "detected": true,
+        "lead_time_hours": 432.0,
+        "sentinel_detection_date": "2024-06-07T16:00:00",
+        "official_detection_date": "2024-06-25T16:00:00",
+        "max_anomaly_score": 0.564,
+        "mean_tier_pre": 0.0846,
+        "mean_tier_during": 2.782,
+        "source_pred": "agricultural",
+        "source_conf": 0.3948,
         "pollutants": [],
         "severity": "unknown",
         "description": "Agricultural nutrient loading at SUGG during fall fertilizer application season caused progressive increases in specific conductance and turbidity. SENTINEL detected the multi-parameter anomaly 20 days before official NPDES violation monitoring identified the discharge source.",

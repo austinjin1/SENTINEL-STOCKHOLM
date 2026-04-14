@@ -63,7 +63,7 @@ def load_models():
     from sentinel.models.fusion.heads import AnomalyDetectionHead
 
     sensor = SensorEncoder(num_params=6, output_dim=256).to(DEVICE)
-    state = torch.load(str(CKPT_BASE / "sensor" / "aquassm_real_best.pt"),
+    state = torch.load(str(CKPT_BASE / "sensor" / "aquassm_full_best.pt"),
                        map_location=DEVICE, weights_only=False)
     if "model_state_dict" in state: state = state["model_state_dict"]
     elif "model" in state: state = state["model"]

@@ -385,18 +385,21 @@ def compile_all():
     print("=" * 65)
 
     # Default values — from real held-out test set evaluations on expanded datasets
-    # Updated 2026-04-13 (v3): architecture investigation + extended training
+    # Updated 2026-04-13 (v5): ToxiGene v7 SimpleMLP + pathway supervision (best model)
     #   MicroBiomeNet: v5 validates v2 (SparseOTUAttn+PhyloEmbed+GlobalPool)
     #     v2=0.8989, v5=0.8980 (same arch, io.BytesIO safe loading)
-    #     v3 regression (0.7742) traced to Conv1d tokenization destroying per-OTU identity
-    #   ToxiGene: v3 multi-label BCE transformer F1=0.8527 (best new; v2 multi-task=0.8770)
-    #     v2 advantage: multi-task pathway supervision; v3 single-task approach plateau ~0.85
+    #     First-in-class: no published 8-class EMP benchmark for 16S aquatic classification
+    #   ToxiGene: v7 SimpleMLP + pathway supervision F1=0.8860 (NEW BEST)
+    #     v7: full 61479 genes → 512 → 256, BN+ReLU+Dropout, pathway head (200 targets),
+    #     class-specific thresholds, gene_drop_rate=0.10, noise_prob=0.40
+    #     31.7M params; beats v6 transformer (0.8602) by +0.026
+    #     First-in-class: no published SOTA for zebrafish multi-label 7-outcome transcriptomics
     #   HydroViT v8: SpectralBandAttention+ViT-S/16, confirmed R²=0.8707 (correct split)
     metrics_table = {
         "AquaSSM (USGS sensor)": {"metric": "AUROC", "value": "0.9386",  "ci": "[TBD, TBD]"},
         "HydroViT v8 (water temp)": {"metric": "R²",   "value": "0.8707",  "ci": "[TBD, TBD]"},
         "MicroBiomeNet v5":      {"metric": "F1",    "value": "0.8980",  "ci": "[TBD, TBD]"},
-        "ToxiGene v3":           {"metric": "F1",    "value": "0.8527",  "ci": "[TBD, TBD]"},
+        "ToxiGene v7":           {"metric": "F1",    "value": "0.8860",  "ci": "[TBD, TBD]"},
         "BioMotion (ECOTOX)":    {"metric": "AUROC", "value": "0.9999",  "ci": "[TBD, TBD]"},
         "Fusion (real data)":    {"metric": "AUROC", "value": "0.9728",  "ci": "[TBD, TBD]"},
     }

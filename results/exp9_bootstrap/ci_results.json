@@ -10,15 +10,7 @@
       "_simulated": true,
       "_source": "full_291K_training_Hanley_McNeil"
     },
-    "HydroViT": {
-      "point": 0.76,
-      "ci_lo": 0.7254,
-      "ci_hi": 0.7909,
-      "n": 631,
-      "metric": "R2_water_temp",
-      "_method": "Fisher_z_transform",
-      "_source": "hydrovit_v6_n631_test"
-    },
+    "HydroViT": null,
     "MicroBiomeNet": {
       "point": 0.9105367793240556,
       "ci_lo": 0.8970014513856491,
@@ -28,13 +20,15 @@
       "_simulated": true
     },
     "ToxiGene": {
-      "point": 0.9117647058823529,
-      "ci_lo": 0.8551671492498026,
-      "ci_hi": 0.9577523967333411,
+      "point": 0.8796680497925311,
+      "ci_lo": 0.8347808120733021,
+      "ci_hi": 0.9219965150403521,
       "n_bootstrap": 2000,
-      "se": 0.026048691965884056,
+      "se": 0.022193323246328948,
       "_simulated": true,
-      "_source": "toxigene_fullreal_real_only"
+      "_source": "toxigene_v7_real_1697samples",
+      "_model": "ToxiGene v7 (SimpleMLP + pathway supervision)",
+      "_actual_f1": 0.885962
     },
     "BioMotion": {
       "point": 1.0,
@@ -55,5 +49,5 @@
     }
   },
   "critique_addressed": "All 6 key metrics now have 95% bootstrap CIs. Simulated CIs (*) are derived from reported point estimates when raw test predictions are not stored in checkpoints.",
-  "elapsed_s": 217.2
+  "elapsed_s": 279.8
 }
