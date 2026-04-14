@@ -1,0 +1,434 @@
+{
+  "experiment": "E: Pollution Type Fingerprint",
+  "pollution_definitions": {
+    "HAB": "pH > 9 (HAB proxy)",
+    "Hypoxia": "DO < 4 mg/L",
+    "HighConductance": "SpCond > 1500 \u00b5S/cm"
+  },
+  "group_statistics": {
+    "HAB": {
+      "n_windows": 212,
+      "mean_score": 0.0839,
+      "median": 0.0531,
+      "p25": 0.0255,
+      "p75": 0.1008,
+      "p90": 0.2085,
+      "p95": 0.2612,
+      "max_score": 0.4711,
+      "std_score": 0.0835,
+      "top_sites": [
+        {
+          "site": "PRPO",
+          "n": 82
+        },
+        {
+          "site": "REDB",
+          "n": 53
+        },
+        {
+          "site": "GUIL",
+          "n": 41
+        },
+        {
+          "site": "BLWA",
+          "n": 16
+        },
+        {
+          "site": "KING",
+          "n": 10
+        }
+      ]
+    },
+    "Hypoxia": {
+      "n_windows": 1524,
+      "mean_score": 0.0522,
+      "median": 0.0263,
+      "p25": 0.0124,
+      "p75": 0.0587,
+      "p90": 0.1302,
+      "p95": 0.1898,
+      "max_score": 0.7411,
+      "std_score": 0.0731,
+      "top_sites": [
+        {
+          "site": "KING",
+          "n": 658
+        },
+        {
+          "site": "ARIK",
+          "n": 380
+        },
+        {
+          "site": "MCDI",
+          "n": 274
+        },
+        {
+          "site": "BIGC",
+          "n": 80
+        },
+        {
+          "site": "SYCA",
+          "n": 46
+        }
+      ]
+    },
+    "HighConductance": {
+      "n_windows": 955,
+      "mean_score": 0.0722,
+      "median": 0.0439,
+      "p25": 0.0216,
+      "p75": 0.0905,
+      "p90": 0.1693,
+      "p95": 0.2366,
+      "max_score": 0.6531,
+      "std_score": 0.0804,
+      "top_sites": [
+        {
+          "site": "PRPO",
+          "n": 904
+        },
+        {
+          "site": "BIGC",
+          "n": 22
+        },
+        {
+          "site": "REDB",
+          "n": 21
+        },
+        {
+          "site": "LECO",
+          "n": 8
+        }
+      ]
+    },
+    "Normal": {
+      "n_windows": 25051,
+      "mean_score": 0.0772,
+      "median": 0.0475,
+      "p25": 0.023,
+      "p75": 0.099,
+      "p90": 0.1815,
+      "p95": 0.2489,
+      "max_score": 0.6931,
+      "std_score": 0.0833,
+      "top_sites": [
+        {
+          "site": "MART",
+          "n": 1094
+        },
+        {
+          "site": "HOPB",
+          "n": 1092
+        },
+        {
+          "site": "LEWI",
+          "n": 1091
+        },
+        {
+          "site": "MCRA",
+          "n": 1088
+        },
+        {
+          "site": "BLDE",
+          "n": 1087
+        }
+      ]
+    },
+    "TempAnomaly": {
+      "n_windows": 0,
+      "note": "Water temperature column absent from NEON DP1.20288.001; temperature anomaly group cannot be computed from this dataset.",
+      "threshold_definition": "waterTemp > 30\u00b0C"
+    }
+  },
+  "site_contributions": {
+    "ARIK": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 380,
+        "HighConductance": 0,
+        "Normal": 685
+      },
+      "dominant_type": "Normal"
+    },
+    "BARC": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 3,
+        "HighConductance": 0,
+        "Normal": 980
+      },
+      "dominant_type": "Normal"
+    },
+    "BIGC": {
+      "window_type_counts": {
+        "HAB": 2,
+        "Hypoxia": 80,
+        "HighConductance": 22,
+        "Normal": 908
+      },
+      "dominant_type": "Normal"
+    },
+    "BLDE": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1087
+      },
+      "dominant_type": "Normal"
+    },
+    "BLUE": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 582
+      },
+      "dominant_type": "Normal"
+    },
+    "BLWA": {
+      "window_type_counts": {
+        "HAB": 16,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1032
+      },
+      "dominant_type": "Normal"
+    },
+    "CARI": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 962
+      },
+      "dominant_type": "Normal"
+    },
+    "COMO": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1057
+      },
+      "dominant_type": "Normal"
+    },
+    "CRAM": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 10,
+        "HighConductance": 0,
+        "Normal": 938
+      },
+      "dominant_type": "Normal"
+    },
+    "CUPE": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1068
+      },
+      "dominant_type": "Normal"
+    },
+    "FLNT": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1045
+      },
+      "dominant_type": "Normal"
+    },
+    "GUIL": {
+      "window_type_counts": {
+        "HAB": 41,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 998
+      },
+      "dominant_type": "Normal"
+    },
+    "HOPB": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1092
+      },
+      "dominant_type": "Normal"
+    },
+    "KING": {
+      "window_type_counts": {
+        "HAB": 10,
+        "Hypoxia": 658,
+        "HighConductance": 0,
+        "Normal": 426
+      },
+      "dominant_type": "Hypoxia"
+    },
+    "LECO": {
+      "window_type_counts": {
+        "HAB": 8,
+        "Hypoxia": 4,
+        "HighConductance": 8,
+        "Normal": 1082
+      },
+      "dominant_type": "Normal"
+    },
+    "LEWI": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1091
+      },
+      "dominant_type": "Normal"
+    },
+    "LIRO": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 9,
+        "HighConductance": 0,
+        "Normal": 826
+      },
+      "dominant_type": "Normal"
+    },
+    "MART": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1094
+      },
+      "dominant_type": "Normal"
+    },
+    "MAYF": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 3,
+        "HighConductance": 0,
+        "Normal": 922
+      },
+      "dominant_type": "Normal"
+    },
+    "MCDI": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 274,
+        "HighConductance": 0,
+        "Normal": 820
+      },
+      "dominant_type": "Normal"
+    },
+    "MCRA": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1088
+      },
+      "dominant_type": "Normal"
+    },
+    "OKSR": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 15,
+        "HighConductance": 0,
+        "Normal": 647
+      },
+      "dominant_type": "Normal"
+    },
+    "POSE": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 1077
+      },
+      "dominant_type": "Normal"
+    },
+    "PRIN": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 34,
+        "HighConductance": 0,
+        "Normal": 1037
+      },
+      "dominant_type": "Normal"
+    },
+    "PRLA": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 5,
+        "HighConductance": 0,
+        "Normal": 852
+      },
+      "dominant_type": "Normal"
+    },
+    "PRPO": {
+      "window_type_counts": {
+        "HAB": 82,
+        "Hypoxia": 3,
+        "HighConductance": 904,
+        "Normal": 0
+      },
+      "dominant_type": "HighConductance"
+    },
+    "REDB": {
+      "window_type_counts": {
+        "HAB": 53,
+        "Hypoxia": 0,
+        "HighConductance": 21,
+        "Normal": 965
+      },
+      "dominant_type": "Normal"
+    },
+    "SUGG": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 575
+      },
+      "dominant_type": "Normal"
+    },
+    "SYCA": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 46,
+        "HighConductance": 0,
+        "Normal": 0
+      },
+      "dominant_type": "Hypoxia"
+    },
+    "TOMB": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 43
+      },
+      "dominant_type": "Normal"
+    },
+    "TOOK": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 33
+      },
+      "dominant_type": "Normal"
+    },
+    "WALK": {
+      "window_type_counts": {
+        "HAB": 0,
+        "Hypoxia": 0,
+        "HighConductance": 0,
+        "Normal": 39
+      },
+      "dominant_type": "Normal"
+    }
+  },
+  "elapsed_s": 2279.4
+}

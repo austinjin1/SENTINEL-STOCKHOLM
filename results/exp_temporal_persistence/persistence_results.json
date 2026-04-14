@@ -1,0 +1,98 @@
+{
+  "experiment": "D: Temporal Persistence Analysis",
+  "threshold": 0.9,
+  "case_study_events": {
+    "lake_erie_hab_2023": {
+      "event_type": "HAB",
+      "advisory_date": "2023-07-15",
+      "n_pre_event_windows": 89,
+      "n_above_threshold": 18,
+      "max_consecutive_above_threshold": 7,
+      "mean_score_in_peak_run": 0.982,
+      "run_start_time": "2023-07-10T12:15:00",
+      "run_end_time": "2023-07-14T12:15:00"
+    },
+    "jordan_lake_hab_nc": {
+      "event_type": "HAB",
+      "advisory_date": "2022-07-15",
+      "n_pre_event_windows": 66,
+      "n_above_threshold": 66,
+      "max_consecutive_above_threshold": 66,
+      "mean_score_in_peak_run": 0.9929,
+      "run_start_time": "2022-05-31T20:00:00",
+      "run_end_time": "2022-07-14T05:15:00"
+    },
+    "klamath_river_hab_2021": {
+      "event_type": "HAB",
+      "advisory_date": "2021-08-01",
+      "n_pre_event_windows": 89,
+      "n_above_threshold": 89,
+      "max_consecutive_above_threshold": 89,
+      "mean_score_in_peak_run": 0.9929,
+      "run_start_time": "2021-06-02T23:00:00",
+      "run_end_time": "2021-07-31T15:00:00"
+    },
+    "gulf_dead_zone_2023": {
+      "event_type": "hypoxia",
+      "advisory_date": "2023-07-01",
+      "n_pre_event_windows": 31,
+      "n_above_threshold": 10,
+      "max_consecutive_above_threshold": 7,
+      "mean_score_in_peak_run": 0.9223,
+      "run_start_time": "2023-05-15T07:00:00",
+      "run_end_time": "2023-05-31T08:00:00"
+    },
+    "chesapeake_hypoxia_2018": {
+      "event_type": "hypoxia",
+      "advisory_date": "2018-07-20",
+      "n_pre_event_windows": 403,
+      "n_above_threshold": 33,
+      "max_consecutive_above_threshold": 7,
+      "mean_score_in_peak_run": 0.962,
+      "run_start_time": "2018-05-27T15:30:00",
+      "run_end_time": "2018-05-28T23:30:00"
+    },
+    "mississippi_salinity_2023": {
+      "event_type": "salinity",
+      "advisory_date": "2023-10-01",
+      "n_pre_event_windows": 41,
+      "n_above_threshold": 26,
+      "max_consecutive_above_threshold": 12,
+      "mean_score_in_peak_run": 0.9929,
+      "run_start_time": "2023-09-15T09:00:00",
+      "run_end_time": "2023-09-30T01:00:00"
+    }
+  },
+  "neon_clean_sites": {
+    "SYCA": {
+      "n_windows": 46,
+      "n_above_threshold": 0,
+      "max_consecutive_above_threshold": 0,
+      "mean_score_in_peak_run": 0.0,
+      "mean_score_all": 0.0133,
+      "max_score": 0.0662
+    },
+    "TOOK": {
+      "n_windows": 33,
+      "n_above_threshold": 0,
+      "max_consecutive_above_threshold": 0,
+      "mean_score_in_peak_run": 0.0,
+      "mean_score_all": 0.0327,
+      "max_score": 0.188
+    },
+    "TOMB": {
+      "n_windows": 43,
+      "n_above_threshold": 0,
+      "max_consecutive_above_threshold": 0,
+      "mean_score_in_peak_run": 0.0,
+      "mean_score_all": 0.0689,
+      "max_score": 0.3498
+    }
+  },
+  "summary": {
+    "case_mean_max_consecutive": 31.33,
+    "neon_max_consecutive": 0,
+    "persistence_ratio": 31.33
+  },
+  "elapsed_s": 17.6
+}

@@ -1,0 +1,140 @@
+{
+  "experiment": "B: False Positive Rate at Non-Event Sites",
+  "threshold": 0.9,
+  "non_event_sites": {
+    "SYCA": {
+      "n_windows": 46,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0133,
+      "max_score": 0.0662,
+      "p95_score": 0.0353
+    },
+    "TOOK": {
+      "n_windows": 33,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0327,
+      "max_score": 0.188,
+      "p95_score": 0.0712
+    },
+    "TOMB": {
+      "n_windows": 43,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0689,
+      "max_score": 0.3498,
+      "p95_score": 0.1601
+    },
+    "FLNT": {
+      "n_windows": 1045,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0912,
+      "max_score": 0.5654,
+      "p95_score": 0.2915
+    },
+    "MART": {
+      "n_windows": 1094,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0723,
+      "max_score": 0.641,
+      "p95_score": 0.2293
+    },
+    "BLWA": {
+      "n_windows": 1048,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0798,
+      "max_score": 0.6264,
+      "p95_score": 0.2361
+    },
+    "HOPB": {
+      "n_windows": 1092,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0968,
+      "max_score": 0.6464,
+      "p95_score": 0.2954
+    },
+    "COMO": {
+      "n_windows": 1057,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0698,
+      "max_score": 0.4938,
+      "p95_score": 0.2245
+    },
+    "POSE": {
+      "n_windows": 1077,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.087,
+      "max_score": 0.6272,
+      "p95_score": 0.2696
+    },
+    "BLDE": {
+      "n_windows": 1087,
+      "n_above_thresh": 0,
+      "fpr": 0.0,
+      "mean_score": 0.0841,
+      "max_score": 0.6013,
+      "p95_score": 0.2568
+    }
+  },
+  "mean_fpr": 0.0,
+  "specificity": 1.0,
+  "case_study_sites": {
+    "lake_erie_hab_2023": {
+      "event_type": "HAB",
+      "n_windows": 111,
+      "n_above_thresh": 40,
+      "high_score_rate": 0.3604,
+      "mean_score": 0.804,
+      "max_score": 0.9973
+    },
+    "jordan_lake_hab_nc": {
+      "event_type": "HAB",
+      "n_windows": 88,
+      "n_above_thresh": 88,
+      "high_score_rate": 1.0,
+      "mean_score": 0.9929,
+      "max_score": 0.9929
+    },
+    "klamath_river_hab_2021": {
+      "event_type": "HAB",
+      "n_windows": 102,
+      "n_above_thresh": 102,
+      "high_score_rate": 1.0,
+      "mean_score": 0.9929,
+      "max_score": 0.9929
+    },
+    "gulf_dead_zone_2023": {
+      "event_type": "hypoxia",
+      "n_windows": 53,
+      "n_above_thresh": 14,
+      "high_score_rate": 0.2642,
+      "mean_score": 0.8506,
+      "max_score": 0.9929
+    },
+    "chesapeake_hypoxia_2018": {
+      "event_type": "hypoxia",
+      "n_windows": 543,
+      "n_above_thresh": 54,
+      "high_score_rate": 0.0994,
+      "mean_score": 0.7757,
+      "max_score": 0.9989
+    },
+    "mississippi_salinity_2023": {
+      "event_type": "salinity",
+      "n_windows": 64,
+      "n_above_thresh": 49,
+      "high_score_rate": 0.7656,
+      "mean_score": 0.9397,
+      "max_score": 0.9929
+    }
+  },
+  "mean_case_high_score_rate": 0.5816,
+  "elapsed_s": 621.5
+}

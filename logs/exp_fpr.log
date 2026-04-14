@@ -1,0 +1,29 @@
+============================================================
+Experiment B: False Positive Rate at Non-Event Sites
+============================================================
+Non-event sites selected (10): ['SYCA', 'TOOK', 'TOMB', 'FLNT', 'MART', 'BLWA', 'HOPB', 'COMO', 'POSE', 'BLDE']
+Models loaded on cuda
+  Batch-reading NEON parquet for non-event sites...
+  Read 16294738 rows in 5.2s
+  SYCA: 46 windows, 0 above 0.9 -> FPR=0.0000  (6.3s)
+  TOOK: 33 windows, 0 above 0.9 -> FPR=0.0000  (5.7s)
+  TOMB: 43 windows, 0 above 0.9 -> FPR=0.0000  (5.6s)
+  FLNT: 1045 windows, 0 above 0.9 -> FPR=0.0000  (80.6s)
+  MART: 1094 windows, 0 above 0.9 -> FPR=0.0000  (88.7s)
+  BLWA: 1048 windows, 0 above 0.9 -> FPR=0.0000  (79.9s)
+  HOPB: 1092 windows, 0 above 0.9 -> FPR=0.0000  (88.4s)
+  COMO: 1057 windows, 0 above 0.9 -> FPR=0.0000  (85.4s)
+  POSE: 1077 windows, 0 above 0.9 -> FPR=0.0000  (86.7s)
+  BLDE: 1087 windows, 0 above 0.9 -> FPR=0.0000  (86.8s)
+  [case] lake_erie_hab_2023: 40/111 above 0.9 -> rate=0.3604
+  [case] jordan_lake_hab_nc: 88/88 above 0.9 -> rate=1.0000
+  [case] klamath_river_hab_2021: 102/102 above 0.9 -> rate=1.0000
+  [case] gulf_dead_zone_2023: 14/53 above 0.9 -> rate=0.2642
+  [case] chesapeake_hypoxia_2018: 54/543 above 0.9 -> rate=0.0994
+  [case] mississippi_salinity_2023: 49/64 above 0.9 -> rate=0.7656
+
+  Mean FPR (non-event sites):   0.000000
+  Specificity at t=0.9:          1.000000
+  Mean high-score rate (events): 0.5816
+
+Saved to /home/bcheng/SENTINEL/results/exp_false_positive/false_positive_results.json
