@@ -156,7 +156,7 @@ def fig_sota_comparison():
 
 
 def fig_case_studies():
-    """Fig 4: Vertical bar chart — all 31 events sorted by lead time."""
+    """Fig 4: Vertical bar chart — all 31 events + Flint (simulated), in days."""
     with open(RESULTS / "case_studies_v3" / "case_studies_v3.json") as f:
         data = json.load(f)
 
@@ -164,7 +164,6 @@ def fig_case_studies():
     cat_b = data["events"]["category_b"]
     cat_c = data["events"]["category_c"]
 
-    # Tag each event with its category
     for e in cat_a:
         e['_cat'] = 'a'
     for e in cat_b:
@@ -172,91 +171,107 @@ def fig_case_studies():
     for e in cat_c:
         e['_cat'] = 'c'
 
-    all_events = cat_a + cat_b + cat_c
+    # Add Flint as simulated event
+    flint = {
+        "event_id": "flint_water_crisis_2014",
+        "event_name": "Flint Water Crisis (2014)",
+        "lead_time_hours": 507 * 24,  # 507 days
+        "_cat": "sim",
+    }
+
+    all_events = cat_a + cat_b + cat_c + [flint]
     all_events.sort(key=lambda e: e["lead_time_hours"])
 
     short_names = {
-        "lake_erie_hab_2023": "Lake Erie\nHAB '23",
-        "toledo_water_crisis_2014": "Toledo\nCrisis '14",
-        "gulf_dead_zone_2023": "Gulf Dead\nZone '23",
-        "chesapeake_bay_blooms_2023": "Ches. Bay\nBlooms '23",
-        "neon_pose_do_depletion_2025": "POSE\nDO Depl.",
-        "neon_blde_storm_conductance_2024": "BLDE\nStorm",
-        "neon_mart_turbidity_2025": "MART\nTurbidity",
-        "neon_barc_eutrophication_2025": "BARC\nEutroph.",
-        "neon_leco_acid_runoff_2024": "LECO\nAcid",
-        "neon_sugg_conductance_2024": "SUGG\nAgri.",
-        "grand_lake_st_marys_hab_2009": "Grand Lake\nHAB '09",
-        "lake_erie_hab_2015": "L. Erie\nHAB '15",
-        "lake_okeechobee_hab_2016": "L. Okee.\nHAB '16",
-        "lake_okeechobee_hab_2018": "L. Okee.\nHAB '18",
-        "sf_bay_heterosigma_2022": "SF Bay\nFish Kill",
-        "klamath_river_hab_2021": "Klamath\nHAB '21",
-        "utah_lake_hab_2016": "Utah Lake\nHAB '16",
-        "utah_lake_hab_2018": "Utah Lake\nHAB '18",
-        "mississippi_salinity_intrusion_2023": "Mississippi\nSalt. '23",
-        "delaware_river_salinity_2022": "Delaware\nSalt. '22",
-        "animas_river_amd_2015": "Animas\nAMD '15",
-        "neuse_river_hypoxia_2020_2022": "Neuse R.\nHypoxia",
-        "jordan_lake_hab_nc": "Jordan L.\nHAB (NC)",
-        "iowa_nitrate_crisis": "Iowa\nNitrate",
-        "chesapeake_bay_hypoxia_2018": "Ches. Bay\nHypoxia '18",
-        "green_bay_hypoxia": "Green Bay\nHypoxia",
-        "saginaw_bay_hab": "Saginaw\nHAB",
-        "hudson_river_hab_2025": "Hudson R.\nHAB '25",
-        "clear_lake_hab_2024": "Clear L.\nHAB '24",
-        "tar_creek_amd_oklahoma": "Tar Creek\nAMD (OK)",
-        "lake_winnebago_hab": "L. Winneb.\nHAB",
+        "lake_erie_hab_2023": "Lake Erie HAB '23",
+        "toledo_water_crisis_2014": "Toledo Crisis '14",
+        "gulf_dead_zone_2023": "Gulf Dead Zone '23",
+        "chesapeake_bay_blooms_2023": "Ches. Bay Blooms '23",
+        "neon_pose_do_depletion_2025": "POSE DO Depl.",
+        "neon_blde_storm_conductance_2024": "BLDE Storm",
+        "neon_mart_turbidity_2025": "MART Turbidity",
+        "neon_barc_eutrophication_2025": "BARC Eutroph.",
+        "neon_leco_acid_runoff_2024": "LECO Acid",
+        "neon_sugg_conductance_2024": "SUGG Agri.",
+        "grand_lake_st_marys_hab_2009": "Grand Lake HAB '09",
+        "lake_erie_hab_2015": "L. Erie HAB '15",
+        "lake_okeechobee_hab_2016": "L. Okee. HAB '16",
+        "lake_okeechobee_hab_2018": "L. Okee. HAB '18",
+        "sf_bay_heterosigma_2022": "SF Bay Fish Kill",
+        "klamath_river_hab_2021": "Klamath HAB '21",
+        "utah_lake_hab_2016": "Utah Lake HAB '16",
+        "utah_lake_hab_2018": "Utah Lake HAB '18",
+        "mississippi_salinity_intrusion_2023": "Mississippi Salt. '23",
+        "delaware_river_salinity_2022": "Delaware Salt. '22",
+        "animas_river_amd_2015": "Animas AMD '15",
+        "neuse_river_hypoxia_2020_2022": "Neuse R. Hypoxia",
+        "jordan_lake_hab_nc": "Jordan L. HAB (NC)",
+        "iowa_nitrate_crisis": "Iowa Nitrate",
+        "chesapeake_bay_hypoxia_2018": "Ches. Bay Hypoxia '18",
+        "green_bay_hypoxia": "Green Bay Hypoxia",
+        "saginaw_bay_hab": "Saginaw HAB",
+        "hudson_river_hab_2025": "Hudson R. HAB '25",
+        "clear_lake_hab_2024": "Clear L. HAB '24",
+        "tar_creek_amd_oklahoma": "Tar Creek AMD (OK)",
+        "lake_winnebago_hab": "L. Winneb. HAB",
+        "flint_water_crisis_2014": "Flint, MI (simulated)",
     }
 
     names = []
-    times = []
+    days = []
     cats = []
     for e in all_events:
         eid = e["event_id"]
-        names.append(short_names.get(eid, eid[:12]))
-        times.append(e["lead_time_hours"])
+        names.append(short_names.get(eid, eid[:15]))
+        days.append(e["lead_time_hours"] / 24.0)
         cats.append(e['_cat'])
 
-    fig, ax = plt.subplots(figsize=(11, 4.5))
+    fig, ax = plt.subplots(figsize=(12, 5))
 
-    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#1565c0'}
+    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#1565c0', 'sim': '#c62828'}
     colors = [color_map[c] for c in cats]
 
     x = np.arange(len(names))
-    ax.bar(x, times, color=colors, edgecolor='black', linewidth=0.3, width=0.8)
+    bars = ax.bar(x, days, color=colors, edgecolor='black', linewidth=0.3, width=0.8)
 
-    # Value labels on top of bars (days for long, hours for short)
-    for i, t in enumerate(times):
-        if t >= 480:
-            label = f'{t / 24:.0f}d'
-        else:
-            label = f'{t:.0f}h'
-        ax.text(i, t + max(times) * 0.015, label, ha='center', va='bottom',
-                fontsize=5.5, color='#1b5e20', fontweight='bold', rotation=0)
+    # Hatch the Flint bar to mark it as simulated
+    for i, c in enumerate(cats):
+        if c == 'sim':
+            bars[i].set_hatch('//')
+            bars[i].set_edgecolor('#333')
+
+    # Value labels on top
+    for i, d in enumerate(days):
+        label = f'{d:.0f}d'
+        if d < 5:
+            label = f'{d:.1f}d'
+        ax.text(i, d + max(days) * 0.012, label, ha='center', va='bottom',
+                fontsize=5, color='#1b5e20', fontweight='bold')
 
     ax.set_xticks(x)
-    ax.set_xticklabels(names, fontsize=5.5, ha='center')
-    ax.set_ylabel('Lead Time (hours)')
-    ax.set_title('SENTINEL Early Warning: 31/31 Events Detected Before Official Report',
-                  fontweight='bold', fontsize=12)
+    ax.set_xticklabels(names, fontsize=5.5, rotation=60, ha='right')
+    ax.set_ylabel('Detection Lead Time (days before official report)')
+    ax.set_title('SENTINEL Early Warning: 32 Events (31 Real + 1 Simulated) — All Detected Before Official Report',
+                  fontweight='bold', fontsize=11)
 
-    # Mean and median lines
-    mean_lt = data["statistics"]["all_events"]["mean_lead_time_hours"]
-    median_lt = data["statistics"]["all_events"]["median_lead_time_hours"]
-    ax.axhline(y=mean_lt, color='#d32f2f', linestyle='--', alpha=0.8, linewidth=1.2)
-    ax.text(len(names) - 0.5, mean_lt + 30, f'Mean: {mean_lt:.0f}h ({mean_lt/24:.0f}d)',
-            color='#d32f2f', fontsize=8, ha='right', fontweight='bold')
+    # Mean line (31 real events only, excluding Flint)
+    real_days = [d for d, c in zip(days, cats) if c != 'sim']
+    mean_d = np.mean(real_days)
+    ax.axhline(y=mean_d, color='#d32f2f', linestyle='--', alpha=0.8, linewidth=1.2)
+    ax.text(0.5, mean_d + 3, f'Mean (31 real): {mean_d:.0f} days',
+            color='#d32f2f', fontsize=8, fontweight='bold')
 
     # Legend
-    hist_patch = mpatches.Patch(color='#2e7d32', label='Historical (4)')
-    neon_patch = mpatches.Patch(color='#00796b', label='NEON real sensor (6)')
-    new_patch = mpatches.Patch(color='#1565c0', label='Research-validated (21)')
-    ax.legend(handles=[hist_patch, neon_patch, new_patch], loc='upper left',
-              framealpha=0.9, fontsize=8)
+    hist_patch = mpatches.Patch(color='#2e7d32', label='Historical case studies (4)')
+    neon_patch = mpatches.Patch(color='#00796b', label='NEON real sensor events (6)')
+    new_patch = mpatches.Patch(color='#1565c0', label='Research-validated events (21)')
+    sim_patch = mpatches.Patch(facecolor='#c62828', edgecolor='#333', hatch='//',
+                                label='Simulated (Flint, MI — 507 days)')
+    ax.legend(handles=[hist_patch, neon_patch, new_patch, sim_patch],
+              loc='upper left', framealpha=0.9, fontsize=7.5)
 
     ax.set_xlim(-0.5, len(names) - 0.5)
-    ax.set_ylim(0, max(times) * 1.12)
+    ax.set_ylim(0, max(days) * 1.08)
 
     plt.tight_layout()
     out = FIGOUT / "fig4_case_studies.jpg"
