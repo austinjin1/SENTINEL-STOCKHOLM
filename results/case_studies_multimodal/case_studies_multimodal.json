@@ -1,0 +1,1171 @@
+{
+  "generated": "2026-04-14T16:39:12.716374Z",
+  "sensor_checkpoint": "/home/bcheng/SENTINEL/checkpoints/sensor/aquassm_full_best.pt",
+  "satellite_checkpoint": "/home/bcheng/SENTINEL/checkpoints/satellite/hydrovit_wq_v9.pt",
+  "fusion_checkpoint": "/home/bcheng/SENTINEL/checkpoints/fusion/fusion_real_best.pt",
+  "n_events": 6,
+  "statistics": {
+    "sensor_mean_lead_h": 2131.93,
+    "sensor_median_lead_h": 2141.0,
+    "sensor_n_detected": 5,
+    "satellite_mean_lead_h": 1104.0,
+    "satellite_n_detected": 6,
+    "fusion_mean_lead_h": 1858.81,
+    "fusion_n_detected": 4,
+    "n_events": 6,
+    "detection_threshold": 0.1
+  },
+  "events": [
+    {
+      "event_id": "lake_erie_hab_2023",
+      "name": "Lake Erie HAB 2023",
+      "advisory_date": "2023-07-15",
+      "usgs_site": "04199500",
+      "lat": 41.5,
+      "lon": -82.9,
+      "sensor_lead_time_h": 2144.0,
+      "sensor_max_prob": 0.9973,
+      "sensor_scores_sample": [
+        {
+          "center_time": "2023-07-09T21:00:00",
+          "anomaly_probability": 0.7594
+        },
+        {
+          "center_time": "2023-07-10T13:00:00",
+          "anomaly_probability": 0.776
+        },
+        {
+          "center_time": "2023-07-11T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-11T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-12T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-13T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-13T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-14T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-15T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-15T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-16T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-17T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-17T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-18T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-19T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-19T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-20T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-21T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-21T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-22T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-23T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-23T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-24T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-25T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-25T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-26T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-27T05:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-27T21:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-28T13:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-07-29T05:00:00",
+          "anomaly_probability": 0.9929
+        }
+      ],
+      "sensor_status": "ok",
+      "n_s2_tiles_found": 6,
+      "satellite_lead_time_h": 1128.0,
+      "satellite_max_prob": 0.4028,
+      "satellite_scores": [
+        {
+          "date": "2023-05-29",
+          "anomaly_probability": 0.2599
+        },
+        {
+          "date": "2023-06-18",
+          "anomaly_probability": 0.396
+        },
+        {
+          "date": "2023-05-24",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2023-06-03",
+          "anomaly_probability": 0.2732
+        },
+        {
+          "date": "2023-04-19",
+          "anomaly_probability": 0.3371
+        },
+        {
+          "date": "2023-05-29",
+          "anomaly_probability": 0.2419
+        }
+      ],
+      "s2_status": "ok",
+      "fusion_lead_time_h": 2079.25,
+      "fusion_max_prob": 0.1946,
+      "fusion_scores_sample": [
+        {
+          "center_time": "2023-04-18T20:45:00",
+          "fusion_anomaly_prob": 0.0958,
+          "matched_sat_date": "2023-04-19",
+          "time_diff_h": 7.25
+        },
+        {
+          "center_time": "2023-04-19T12:45:00",
+          "fusion_anomaly_prob": 0.1018,
+          "matched_sat_date": "2023-04-19",
+          "time_diff_h": 8.75
+        },
+        {
+          "center_time": "2023-05-24T04:45:00",
+          "fusion_anomaly_prob": 0.0704,
+          "matched_sat_date": "2023-05-24",
+          "time_diff_h": 0.75
+        },
+        {
+          "center_time": "2023-05-28T20:45:00",
+          "fusion_anomaly_prob": 0.1037,
+          "matched_sat_date": "2023-05-29",
+          "time_diff_h": 7.25
+        },
+        {
+          "center_time": "2023-05-29T12:45:00",
+          "fusion_anomaly_prob": 0.109,
+          "matched_sat_date": "2023-05-29",
+          "time_diff_h": 8.75
+        },
+        {
+          "center_time": "2023-06-03T04:45:00",
+          "fusion_anomaly_prob": 0.0642,
+          "matched_sat_date": "2023-06-03",
+          "time_diff_h": 0.75
+        },
+        {
+          "center_time": "2023-06-17T20:45:00",
+          "fusion_anomaly_prob": 0.1946,
+          "matched_sat_date": "2023-06-18",
+          "time_diff_h": 7.25
+        },
+        {
+          "center_time": "2023-06-18T12:45:00",
+          "fusion_anomaly_prob": 0.1482,
+          "matched_sat_date": "2023-06-18",
+          "time_diff_h": 8.75
+        }
+      ],
+      "fusion_status": "ok"
+    },
+    {
+      "event_id": "gulf_dead_zone_2023",
+      "name": "Gulf Dead Zone 2023",
+      "advisory_date": "2023-07-01",
+      "usgs_site": "07374000",
+      "lat": 29.5,
+      "lon": -90.5,
+      "sensor_lead_time_h": 2093.0,
+      "sensor_max_prob": 0.9929,
+      "sensor_scores_sample": [
+        {
+          "center_time": "2023-05-04T14:00:00",
+          "anomaly_probability": 0.8772
+        },
+        {
+          "center_time": "2023-05-07T06:00:00",
+          "anomaly_probability": 0.6702
+        },
+        {
+          "center_time": "2023-05-09T22:00:00",
+          "anomaly_probability": 0.8078
+        },
+        {
+          "center_time": "2023-05-12T14:00:00",
+          "anomaly_probability": 0.8558
+        },
+        {
+          "center_time": "2023-05-15T07:00:00",
+          "anomaly_probability": 0.9071
+        },
+        {
+          "center_time": "2023-05-17T23:00:00",
+          "anomaly_probability": 0.9379
+        },
+        {
+          "center_time": "2023-05-20T15:00:00",
+          "anomaly_probability": 0.9365
+        },
+        {
+          "center_time": "2023-05-23T07:00:00",
+          "anomaly_probability": 0.9355
+        },
+        {
+          "center_time": "2023-05-25T23:00:00",
+          "anomaly_probability": 0.9182
+        },
+        {
+          "center_time": "2023-05-28T16:00:00",
+          "anomaly_probability": 0.9186
+        },
+        {
+          "center_time": "2023-05-31T08:00:00",
+          "anomaly_probability": 0.9026
+        },
+        {
+          "center_time": "2023-06-03T00:00:00",
+          "anomaly_probability": 0.8845
+        },
+        {
+          "center_time": "2023-06-05T16:00:00",
+          "anomaly_probability": 0.831
+        },
+        {
+          "center_time": "2023-06-08T09:00:00",
+          "anomaly_probability": 0.8858
+        },
+        {
+          "center_time": "2023-06-11T02:00:00",
+          "anomaly_probability": 0.8149
+        },
+        {
+          "center_time": "2023-06-13T19:00:00",
+          "anomaly_probability": 0.783
+        },
+        {
+          "center_time": "2023-06-26T19:30:00",
+          "anomaly_probability": 0.7957
+        },
+        {
+          "center_time": "2023-06-28T03:30:00",
+          "anomaly_probability": 0.7846
+        },
+        {
+          "center_time": "2023-06-29T11:30:00",
+          "anomaly_probability": 0.7873
+        },
+        {
+          "center_time": "2023-06-30T19:30:00",
+          "anomaly_probability": 0.7829
+        },
+        {
+          "center_time": "2023-07-02T03:30:00",
+          "anomaly_probability": 0.7672
+        },
+        {
+          "center_time": "2023-07-03T11:30:00",
+          "anomaly_probability": 0.7311
+        },
+        {
+          "center_time": "2023-07-04T19:30:00",
+          "anomaly_probability": 0.7707
+        },
+        {
+          "center_time": "2023-07-06T03:30:00",
+          "anomaly_probability": 0.7792
+        },
+        {
+          "center_time": "2023-07-07T11:30:00",
+          "anomaly_probability": 0.7671
+        },
+        {
+          "center_time": "2023-07-08T19:30:00",
+          "anomaly_probability": 0.7665
+        },
+        {
+          "center_time": "2023-07-10T03:30:00",
+          "anomaly_probability": 0.8197
+        },
+        {
+          "center_time": "2023-07-11T11:30:00",
+          "anomaly_probability": 0.8351
+        },
+        {
+          "center_time": "2023-07-12T19:30:00",
+          "anomaly_probability": 0.8629
+        },
+        {
+          "center_time": "2023-07-14T03:30:00",
+          "anomaly_probability": 0.8389
+        }
+      ],
+      "sensor_status": "ok",
+      "n_s2_tiles_found": 6,
+      "satellite_lead_time_h": 1680.0,
+      "satellite_max_prob": 0.4028,
+      "satellite_scores": [
+        {
+          "date": "2023-04-22",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2023-07-01",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2023-06-11",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2023-06-21",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2023-06-01",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2023-06-14",
+          "anomaly_probability": 0.3329
+        }
+      ],
+      "s2_status": "ok",
+      "fusion_lead_time_h": null,
+      "fusion_max_prob": 0.0724,
+      "fusion_scores_sample": [
+        {
+          "center_time": "2023-06-11T02:00:00",
+          "fusion_anomaly_prob": 0.0589,
+          "matched_sat_date": "2023-06-11",
+          "time_diff_h": 2.0
+        },
+        {
+          "center_time": "2023-06-13T19:00:00",
+          "fusion_anomaly_prob": 0.0713,
+          "matched_sat_date": "2023-06-14",
+          "time_diff_h": 9.0
+        },
+        {
+          "center_time": "2023-06-30T19:30:00",
+          "fusion_anomaly_prob": 0.0724,
+          "matched_sat_date": "2023-07-01",
+          "time_diff_h": 8.5
+        }
+      ],
+      "fusion_status": "ok"
+    },
+    {
+      "event_id": "chesapeake_hypoxia_2018",
+      "name": "Chesapeake Bay Hypoxia 2018",
+      "advisory_date": "2018-07-20",
+      "usgs_site": "01589485",
+      "lat": 39.2,
+      "lon": -76.5,
+      "sensor_lead_time_h": 2154.67,
+      "sensor_max_prob": 0.9989,
+      "sensor_scores_sample": [
+        {
+          "center_time": "2018-07-28T10:45:00",
+          "anomaly_probability": 0.9516
+        },
+        {
+          "center_time": "2018-07-28T16:05:00",
+          "anomaly_probability": 0.8846
+        },
+        {
+          "center_time": "2018-07-28T21:25:00",
+          "anomaly_probability": 0.8585
+        },
+        {
+          "center_time": "2018-07-29T02:45:00",
+          "anomaly_probability": 0.7702
+        },
+        {
+          "center_time": "2018-07-29T08:05:00",
+          "anomaly_probability": 0.8113
+        },
+        {
+          "center_time": "2018-07-29T13:25:00",
+          "anomaly_probability": 0.8477
+        },
+        {
+          "center_time": "2018-07-29T18:45:00",
+          "anomaly_probability": 0.8705
+        },
+        {
+          "center_time": "2018-07-30T00:05:00",
+          "anomaly_probability": 0.8685
+        },
+        {
+          "center_time": "2018-07-30T05:25:00",
+          "anomaly_probability": 0.8684
+        },
+        {
+          "center_time": "2018-07-30T10:45:00",
+          "anomaly_probability": 0.7988
+        },
+        {
+          "center_time": "2018-07-30T16:05:00",
+          "anomaly_probability": 0.7737
+        },
+        {
+          "center_time": "2018-07-30T21:25:00",
+          "anomaly_probability": 0.8937
+        },
+        {
+          "center_time": "2018-07-31T02:45:00",
+          "anomaly_probability": 0.8093
+        },
+        {
+          "center_time": "2018-07-31T08:05:00",
+          "anomaly_probability": 0.8041
+        },
+        {
+          "center_time": "2018-07-31T13:25:00",
+          "anomaly_probability": 0.6899
+        },
+        {
+          "center_time": "2018-07-31T18:45:00",
+          "anomaly_probability": 0.6617
+        },
+        {
+          "center_time": "2018-08-01T00:05:00",
+          "anomaly_probability": 0.7038
+        },
+        {
+          "center_time": "2018-08-01T05:25:00",
+          "anomaly_probability": 0.7509
+        },
+        {
+          "center_time": "2018-08-01T10:45:00",
+          "anomaly_probability": 0.7646
+        },
+        {
+          "center_time": "2018-08-01T16:05:00",
+          "anomaly_probability": 0.654
+        },
+        {
+          "center_time": "2018-08-01T21:25:00",
+          "anomaly_probability": 0.7173
+        },
+        {
+          "center_time": "2018-08-02T02:45:00",
+          "anomaly_probability": 0.8342
+        },
+        {
+          "center_time": "2018-08-02T08:05:00",
+          "anomaly_probability": 0.7984
+        },
+        {
+          "center_time": "2018-08-02T13:25:00",
+          "anomaly_probability": 0.7335
+        },
+        {
+          "center_time": "2018-08-02T18:45:00",
+          "anomaly_probability": 0.7761
+        },
+        {
+          "center_time": "2018-08-03T00:05:00",
+          "anomaly_probability": 0.807
+        },
+        {
+          "center_time": "2018-08-03T05:25:00",
+          "anomaly_probability": 0.822
+        },
+        {
+          "center_time": "2018-08-03T10:45:00",
+          "anomaly_probability": 0.8492
+        },
+        {
+          "center_time": "2018-08-03T16:05:00",
+          "anomaly_probability": 0.8597
+        },
+        {
+          "center_time": "2018-08-03T21:25:00",
+          "anomaly_probability": 0.7576
+        }
+      ],
+      "sensor_status": "ok",
+      "n_s2_tiles_found": 6,
+      "satellite_lead_time_h": 240.0,
+      "satellite_max_prob": 0.5374,
+      "satellite_scores": [
+        {
+          "date": "2018-07-10",
+          "anomaly_probability": 0.2937
+        },
+        {
+          "date": "2018-05-01",
+          "anomaly_probability": 0.5374
+        },
+        {
+          "date": "2018-06-15",
+          "anomaly_probability": 0.2501
+        },
+        {
+          "date": "2018-04-26",
+          "anomaly_probability": 0.4827
+        },
+        {
+          "date": "2018-05-26",
+          "anomaly_probability": 0.1881
+        },
+        {
+          "date": "2018-05-21",
+          "anomaly_probability": 0.1247
+        }
+      ],
+      "s2_status": "ok",
+      "fusion_lead_time_h": 2048.0,
+      "fusion_max_prob": 0.1113,
+      "fusion_scores_sample": [
+        {
+          "center_time": "2018-05-01T09:20:00",
+          "fusion_anomaly_prob": 0.0597,
+          "matched_sat_date": "2018-05-01",
+          "time_diff_h": 5.33
+        },
+        {
+          "center_time": "2018-05-01T14:40:00",
+          "fusion_anomaly_prob": 0.0629,
+          "matched_sat_date": "2018-05-01",
+          "time_diff_h": 10.67
+        },
+        {
+          "center_time": "2018-05-20T17:45:00",
+          "fusion_anomaly_prob": 0.1026,
+          "matched_sat_date": "2018-05-21",
+          "time_diff_h": 10.25
+        },
+        {
+          "center_time": "2018-05-20T23:05:00",
+          "fusion_anomaly_prob": 0.0908,
+          "matched_sat_date": "2018-05-21",
+          "time_diff_h": 4.92
+        },
+        {
+          "center_time": "2018-05-21T04:25:00",
+          "fusion_anomaly_prob": 0.0837,
+          "matched_sat_date": "2018-05-21",
+          "time_diff_h": 0.42
+        },
+        {
+          "center_time": "2018-05-21T09:45:00",
+          "fusion_anomaly_prob": 0.0895,
+          "matched_sat_date": "2018-05-21",
+          "time_diff_h": 5.75
+        },
+        {
+          "center_time": "2018-05-21T15:30:00",
+          "fusion_anomaly_prob": 0.0953,
+          "matched_sat_date": "2018-05-21",
+          "time_diff_h": 11.5
+        },
+        {
+          "center_time": "2018-05-25T20:50:00",
+          "fusion_anomaly_prob": 0.0836,
+          "matched_sat_date": "2018-05-26",
+          "time_diff_h": 7.17
+        },
+        {
+          "center_time": "2018-05-26T02:10:00",
+          "fusion_anomaly_prob": 0.0797,
+          "matched_sat_date": "2018-05-26",
+          "time_diff_h": 1.83
+        },
+        {
+          "center_time": "2018-05-26T07:30:00",
+          "fusion_anomaly_prob": 0.0761,
+          "matched_sat_date": "2018-05-26",
+          "time_diff_h": 3.5
+        },
+        {
+          "center_time": "2018-05-26T12:50:00",
+          "fusion_anomaly_prob": 0.0799,
+          "matched_sat_date": "2018-05-26",
+          "time_diff_h": 8.83
+        },
+        {
+          "center_time": "2018-06-14T21:10:00",
+          "fusion_anomaly_prob": 0.0872,
+          "matched_sat_date": "2018-06-15",
+          "time_diff_h": 6.83
+        },
+        {
+          "center_time": "2018-06-15T02:30:00",
+          "fusion_anomaly_prob": 0.0765,
+          "matched_sat_date": "2018-06-15",
+          "time_diff_h": 1.5
+        },
+        {
+          "center_time": "2018-06-15T07:50:00",
+          "fusion_anomaly_prob": 0.0746,
+          "matched_sat_date": "2018-06-15",
+          "time_diff_h": 3.83
+        },
+        {
+          "center_time": "2018-06-15T13:10:00",
+          "fusion_anomaly_prob": 0.0765,
+          "matched_sat_date": "2018-06-15",
+          "time_diff_h": 9.17
+        },
+        {
+          "center_time": "2018-07-09T18:30:00",
+          "fusion_anomaly_prob": 0.0568,
+          "matched_sat_date": "2018-07-10",
+          "time_diff_h": 9.5
+        },
+        {
+          "center_time": "2018-07-09T23:50:00",
+          "fusion_anomaly_prob": 0.0557,
+          "matched_sat_date": "2018-07-10",
+          "time_diff_h": 4.17
+        },
+        {
+          "center_time": "2018-07-10T05:10:00",
+          "fusion_anomaly_prob": 0.0526,
+          "matched_sat_date": "2018-07-10",
+          "time_diff_h": 1.17
+        },
+        {
+          "center_time": "2018-07-10T10:30:00",
+          "fusion_anomaly_prob": 0.0498,
+          "matched_sat_date": "2018-07-10",
+          "time_diff_h": 6.5
+        },
+        {
+          "center_time": "2018-07-10T15:50:00",
+          "fusion_anomaly_prob": 0.0547,
+          "matched_sat_date": "2018-07-10",
+          "time_diff_h": 11.83
+        }
+      ],
+      "fusion_status": "ok"
+    },
+    {
+      "event_id": "klamath_river_hab_2021",
+      "name": "Klamath River HAB 2021",
+      "advisory_date": "2021-08-01",
+      "usgs_site": "11530500",
+      "lat": 41.55,
+      "lon": -122.3,
+      "sensor_lead_time_h": 2141.0,
+      "sensor_max_prob": 0.9929,
+      "sensor_scores_sample": [
+        {
+          "center_time": "2021-07-20T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-21T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-22T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-22T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-23T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-24T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-24T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-25T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-26T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-26T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-27T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-28T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-28T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-29T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-30T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-30T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-07-31T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-01T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-01T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-02T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-03T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-09T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-10T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-11T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-11T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-12T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-13T07:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-13T23:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-14T15:00:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2021-08-15T07:00:00",
+          "anomaly_probability": 0.9929
+        }
+      ],
+      "sensor_status": "ok",
+      "n_s2_tiles_found": 6,
+      "satellite_lead_time_h": 456.0,
+      "satellite_max_prob": 0.4028,
+      "satellite_scores": [
+        {
+          "date": "2021-07-13",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2021-07-08",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2021-05-29",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2021-07-11",
+          "anomaly_probability": 0.1716
+        },
+        {
+          "date": "2021-06-23",
+          "anomaly_probability": 0.4028
+        },
+        {
+          "date": "2021-08-07",
+          "anomaly_probability": 0.4028
+        }
+      ],
+      "s2_status": "ok",
+      "fusion_lead_time_h": 1533.0,
+      "fusion_max_prob": 0.1157,
+      "fusion_scores_sample": [
+        {
+          "center_time": "2021-05-29T07:00:00",
+          "fusion_anomaly_prob": 0.1089,
+          "matched_sat_date": "2021-05-29",
+          "time_diff_h": 3.0
+        },
+        {
+          "center_time": "2021-06-22T23:00:00",
+          "fusion_anomaly_prob": 0.1099,
+          "matched_sat_date": "2021-06-23",
+          "time_diff_h": 5.0
+        },
+        {
+          "center_time": "2021-06-23T15:00:00",
+          "fusion_anomaly_prob": 0.1089,
+          "matched_sat_date": "2021-06-23",
+          "time_diff_h": 11.0
+        },
+        {
+          "center_time": "2021-07-08T07:00:00",
+          "fusion_anomaly_prob": 0.1089,
+          "matched_sat_date": "2021-07-08",
+          "time_diff_h": 3.0
+        },
+        {
+          "center_time": "2021-07-10T23:00:00",
+          "fusion_anomaly_prob": 0.1157,
+          "matched_sat_date": "2021-07-11",
+          "time_diff_h": 5.0
+        },
+        {
+          "center_time": "2021-07-11T15:00:00",
+          "fusion_anomaly_prob": 0.1148,
+          "matched_sat_date": "2021-07-11",
+          "time_diff_h": 11.0
+        },
+        {
+          "center_time": "2021-07-12T23:00:00",
+          "fusion_anomaly_prob": 0.1099,
+          "matched_sat_date": "2021-07-13",
+          "time_diff_h": 5.0
+        },
+        {
+          "center_time": "2021-07-13T15:00:00",
+          "fusion_anomaly_prob": 0.1089,
+          "matched_sat_date": "2021-07-13",
+          "time_diff_h": 11.0
+        }
+      ],
+      "fusion_status": "ok"
+    },
+    {
+      "event_id": "jordan_lake_hab_nc",
+      "name": "Jordan Lake HAB NC",
+      "advisory_date": "2022-07-15",
+      "usgs_site": "02097517",
+      "lat": 35.78,
+      "lon": -79.06,
+      "sensor_status": "no_data",
+      "n_s2_tiles_found": 6,
+      "satellite_lead_time_h": 1992.0,
+      "satellite_max_prob": 0.2224,
+      "satellite_scores": [
+        {
+          "date": "2022-04-23",
+          "anomaly_probability": 0.1484
+        },
+        {
+          "date": "2022-04-28",
+          "anomaly_probability": 0.127
+        },
+        {
+          "date": "2022-05-28",
+          "anomaly_probability": 0.1747
+        },
+        {
+          "date": "2022-06-02",
+          "anomaly_probability": 0.2224
+        },
+        {
+          "date": "2022-06-17",
+          "anomaly_probability": 0.2127
+        },
+        {
+          "date": "2022-05-18",
+          "anomaly_probability": 0.197
+        }
+      ],
+      "s2_status": "ok",
+      "fusion_status": "skipped_no_sensor_data",
+      "fusion_lead_time_h": null
+    },
+    {
+      "event_id": "mississippi_salinity_2023",
+      "name": "Mississippi Salinity Intrusion 2023",
+      "advisory_date": "2023-10-01",
+      "usgs_site": "07374000",
+      "lat": 29.95,
+      "lon": -90.06,
+      "sensor_lead_time_h": 2127.0,
+      "sensor_max_prob": 0.9929,
+      "sensor_scores_sample": [
+        {
+          "center_time": "2023-09-05T11:30:00",
+          "anomaly_probability": 0.8799
+        },
+        {
+          "center_time": "2023-09-06T19:30:00",
+          "anomaly_probability": 0.894
+        },
+        {
+          "center_time": "2023-09-08T03:30:00",
+          "anomaly_probability": 0.8602
+        },
+        {
+          "center_time": "2023-09-09T11:30:00",
+          "anomaly_probability": 0.7963
+        },
+        {
+          "center_time": "2023-09-10T19:30:00",
+          "anomaly_probability": 0.738
+        },
+        {
+          "center_time": "2023-09-12T03:30:00",
+          "anomaly_probability": 0.7532
+        },
+        {
+          "center_time": "2023-09-13T11:30:00",
+          "anomaly_probability": 0.7543
+        },
+        {
+          "center_time": "2023-09-14T19:30:00",
+          "anomaly_probability": 0.7153
+        },
+        {
+          "center_time": "2023-09-16T03:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-17T11:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-18T19:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-20T03:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-21T11:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-22T19:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-24T03:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-25T11:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-26T19:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-28T03:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-29T11:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-09-30T19:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-02T03:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-03T11:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-04T19:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-06T03:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-07T11:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-08T19:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-10T03:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-11T11:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-12T19:30:00",
+          "anomaly_probability": 0.9929
+        },
+        {
+          "center_time": "2023-10-14T03:30:00",
+          "anomaly_probability": 0.9929
+        }
+      ],
+      "sensor_status": "ok",
+      "n_s2_tiles_found": 6,
+      "satellite_lead_time_h": 1128.0,
+      "satellite_max_prob": 0.4028,
+      "satellite_scores": [
+        {
+          "date": "2023-08-15",
+          "anomaly_probability": 0.2197
+        },
+        {
+          "date": "2023-09-19",
+          "anomaly_probability": 0.3009
+        },
+        {
+          "date": "2023-07-24",
+          "anomaly_probability": 0.1175
+        },
+        {
+          "date": "2023-07-19",
+          "anomaly_probability": 0.2032
+        },
+        {
+          "date": "2023-08-23",
+          "anomaly_probability": 0.0845
+        },
+        {
+          "date": "2023-09-09",
+          "anomaly_probability": 0.4028
+        }
+      ],
+      "s2_status": "ok",
+      "fusion_lead_time_h": 1775.0,
+      "fusion_max_prob": 0.1464,
+      "fusion_scores_sample": [
+        {
+          "center_time": "2023-07-19T05:00:00",
+          "fusion_anomaly_prob": 0.1099,
+          "matched_sat_date": "2023-07-19",
+          "time_diff_h": 1.0
+        },
+        {
+          "center_time": "2023-07-24T13:00:00",
+          "fusion_anomaly_prob": 0.084,
+          "matched_sat_date": "2023-07-24",
+          "time_diff_h": 9.0
+        },
+        {
+          "center_time": "2023-08-15T03:30:00",
+          "fusion_anomaly_prob": 0.1464,
+          "matched_sat_date": "2023-08-15",
+          "time_diff_h": 0.5
+        },
+        {
+          "center_time": "2023-08-23T03:30:00",
+          "fusion_anomaly_prob": 0.1373,
+          "matched_sat_date": "2023-08-23",
+          "time_diff_h": 0.5
+        },
+        {
+          "center_time": "2023-09-09T11:30:00",
+          "fusion_anomaly_prob": 0.0814,
+          "matched_sat_date": "2023-09-09",
+          "time_diff_h": 7.5
+        },
+        {
+          "center_time": "2023-09-18T19:30:00",
+          "fusion_anomaly_prob": 0.1089,
+          "matched_sat_date": "2023-09-19",
+          "time_diff_h": 8.5
+        }
+      ],
+      "fusion_status": "ok"
+    }
+  ]
+}
