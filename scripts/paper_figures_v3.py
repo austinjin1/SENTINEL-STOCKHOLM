@@ -1,8 +1,8 @@
 """
 Generate publication-quality figures for SENTINEL SJWP paper (v3).
-Updates for expanded training, 31 case studies, SOTA benchmarks, HydroViT v9.
+NeurIPS-style benchmarking, seaborn styling throughout.
 
-Outputs 5 figures to paper/figures/ at 300 DPI JPG.
+Outputs figures to paper/figures/ at 300 DPI JPG.
 """
 import json
 import numpy as np
@@ -10,6 +10,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import seaborn as sns
 from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parent.parent
@@ -17,146 +18,356 @@ RESULTS = PROJECT / "results"
 FIGOUT = PROJECT / "paper" / "figures"
 FIGOUT.mkdir(parents=True, exist_ok=True)
 
-plt.rcParams.update({
+# Global seaborn + publication style
+sns.set_theme(style="whitegrid", font="serif", rc={
     'font.family': 'serif',
     'font.serif': ['Times New Roman', 'DejaVu Serif'],
-    'font.size': 11,
-    'axes.labelsize': 12,
-    'axes.titlesize': 13,
-    'xtick.labelsize': 10,
-    'ytick.labelsize': 10,
-    'legend.fontsize': 10,
+    'font.size': 10,
+    'axes.labelsize': 11,
+    'axes.titlesize': 12,
+    'xtick.labelsize': 9,
+    'ytick.labelsize': 9,
+    'legend.fontsize': 8,
     'figure.dpi': 300,
     'savefig.dpi': 300,
     'savefig.bbox': 'tight',
-    'axes.spines.top': False,
-    'axes.spines.right': False,
 })
 
+OURS_COLOR = '#c0392b'
+SOTA_COLOR = '#e67e22'
+BASE_PALETTE = sns.color_palette("Blues_r", 8)
 
-def fig_sota_comparison():
-    """Fig 2: SENTINEL vs Published SOTA / Best Baselines — grouped bar chart."""
-    encoders = [
+
+def _save(fig, name):
+    out = FIGOUT / name
+    fig.savefig(out, format='jpeg', dpi=300)
+    plt.close(fig)
+    print(f"  {name} ({out.stat().st_size / 1024:.0f} KB)")
+
+
+# ──────────────────────────────────────────────────────────────
+# FIG 4: NeurIPS-style multi-panel SOTA benchmark
+# ──────────────────────────────────────────────────────────────
+def fig_sota_benchmark():
+    """5-panel grouped bar chart: each encoder vs all benchmarked competitors."""
+
+    panels = [
         {
-            'name': 'AquaSSM',
+            'title': 'AquaSSM (Sensor)',
             'metric': 'AUROC',
-            'ours': 0.916,
-            'competitor': 0.864,
-            'comp_name': 'MCN-LSTM [24]',
-            'comp_type': 'sota',
             'threshold': 0.85,
+            'models': [
+                ('AquaSSM (Ours)', 0.916, 'ours'),
+                ('MCN-LSTM [24]', 0.864, 'sota'),
+                ('One-Class SVM', 0.850, 'base'),
+                ('LSTM (2-layer)', 0.837, 'base'),
+                ('Transformer (4-head)', 0.834, 'base'),
+                ('Isolation Forest', 0.728, 'base'),
+            ],
         },
         {
-            'name': 'HydroViT',
-            'metric': 'R²',
-            'ours': 0.893,
-            'competitor': 0.884,
-            'comp_name': 'DenseNet121 [23]',
-            'comp_type': 'sota',
+            'title': 'HydroViT (Satellite)',
+            'metric': 'R² (Water Temp)',
             'threshold': 0.55,
+            'models': [
+                ('HydroViT v9 (Ours)', 0.893, 'ours'),
+                ('DenseNet121 [23]', 0.884, 'sota'),
+                ('CNN Baseline', 0.854, 'base'),
+                ('ResNet50', 0.812, 'base'),
+                ('Random Forest', 0.801, 'base'),
+                ('ViT (scratch)', 0.750, 'base'),
+                ('Ridge Regression', 0.646, 'base'),
+            ],
         },
         {
-            'name': 'MicroBiomeNet',
-            'metric': 'F1',
-            'ours': 0.913,
-            'comp_name': 'SimpleMLP',
-            'competitor': 0.905,
-            'comp_type': 'baseline',
-            'threshold': 0.70,
-        },
-        {
-            'name': 'ToxiGene',
-            'metric': 'F1',
-            'ours': 0.886,
-            'competitor': 0.897,
-            'comp_name': 'Random Forest',
-            'comp_type': 'baseline',
-            'threshold': 0.80,
-        },
-        {
-            'name': 'BioMotion',
+            'title': 'BioMotion (Behavioral)',
             'metric': 'AUROC',
-            'ours': 1.000,
-            'competitor': 0.958,
-            'comp_name': 'Deep AE [25]',
-            'comp_type': 'sota',
             'threshold': 0.80,
+            'models': [
+                ('BioMotion (Ours)', 1.000, 'ours'),
+                ('BiLSTM', 1.000, 'base'),
+                ('Transformer', 0.999, 'base'),
+                ('Deep AE [25]', 0.958, 'sota'),
+                ('VAE Recon.', 0.952, 'base'),
+                ('LSTM AE', 0.920, 'base'),
+                ('Isolation Forest', 0.890, 'base'),
+            ],
+        },
+        {
+            'title': 'MicroBiomeNet (Microbial)',
+            'metric': 'Macro F1',
+            'threshold': 0.70,
+            'models': [
+                ('MicroBiomeNet (Ours)', 0.913, 'ours'),
+                ('SimpleMLP', 0.905, 'base'),
+                ('Logistic Regression', 0.876, 'base'),
+                ('Extra Trees', 0.843, 'base'),
+                ('Random Forest', 0.835, 'base'),
+            ],
+        },
+        {
+            'title': 'ToxiGene (Molecular)',
+            'metric': 'Macro F1',
+            'threshold': 0.80,
+            'models': [
+                ('ToxiGene (Ours)', 0.886, 'ours'),
+                ('Random Forest', 0.897, 'base'),
+                ('Extra Trees', 0.887, 'base'),
+                ('Logistic Regression', 0.868, 'base'),
+                ('PCA + LR', 0.808, 'base'),
+            ],
         },
     ]
 
-    fig, ax = plt.subplots(figsize=(8, 4.5))
+    fig, axes = plt.subplots(2, 3, figsize=(12, 6.5))
+    axes_flat = axes.flatten()
 
-    y = np.arange(len(encoders))
-    bar_h = 0.35
+    for idx, panel in enumerate(panels):
+        ax = axes_flat[idx]
+        names = [m[0] for m in panel['models']]
+        vals = [m[1] for m in panel['models']]
+        types = [m[2] for m in panel['models']]
 
-    ours_vals = [e['ours'] for e in encoders]
-    comp_vals = [e['competitor'] for e in encoders]
+        colors = []
+        for t in types:
+            if t == 'ours':
+                colors.append(OURS_COLOR)
+            elif t == 'sota':
+                colors.append(SOTA_COLOR)
+            else:
+                colors.append('#5b9bd5')
 
-    # Colors
-    ours_color = '#b2182b'
-    sota_color = '#e08214'
-    baseline_color = '#4393c3'
-    comp_colors = [sota_color if e['comp_type'] == 'sota' else baseline_color for e in encoders]
+        y_pos = np.arange(len(names))
+        bars = ax.barh(y_pos, vals, color=colors, edgecolor='white', linewidth=0.5, height=0.65)
 
-    # Bars
-    bars_ours = ax.barh(y - bar_h / 2, ours_vals, bar_h, color=ours_color,
-                         edgecolor='black', linewidth=0.5, label='SENTINEL (Ours)', zorder=3)
-    for i, e in enumerate(encoders):
-        ax.barh(y[i] + bar_h / 2, e['competitor'], bar_h, color=comp_colors[i],
-                edgecolor='black', linewidth=0.5, zorder=3)
+        # Value annotations
+        for i, v in enumerate(vals):
+            weight = 'bold' if types[i] == 'ours' else 'normal'
+            ax.text(v + 0.003, i, f'{v:.3f}', va='center', fontsize=7.5, fontweight=weight)
 
-    # Value annotations + delta
-    for i, e in enumerate(encoders):
-        delta = e['ours'] - e['competitor']
-        delta_str = f'+{delta:.3f}' if delta >= 0 else f'{delta:.3f}'
+        # Threshold line
+        ax.axvline(x=panel['threshold'], color='#e74c3c', linestyle='--', alpha=0.6, linewidth=1)
 
-        # Our value
-        ax.text(e['ours'] + 0.004, y[i] - bar_h / 2, f"{e['ours']:.3f}",
-                va='center', fontsize=8, fontweight='bold', color='#333')
-        # Competitor value + name
-        ax.text(e['competitor'] + 0.004, y[i] + bar_h / 2,
-                f"{e['competitor']:.3f}  ({e['comp_name']})",
-                va='center', fontsize=7.5, color='#555')
+        ax.set_yticks(y_pos)
+        ax.set_yticklabels(names, fontsize=8)
+        ax.set_xlabel(panel['metric'], fontsize=9)
+        ax.set_title(panel['title'], fontweight='bold', fontsize=10)
+        ax.invert_yaxis()
 
-        # Delta badge
-        badge_color = '#2e7d32' if delta >= 0 else '#888888'
-        label = f'{delta_str}' if e['comp_type'] == 'sota' else 'First-in-class'
-        if e['comp_type'] == 'sota':
-            label = f'{delta_str} vs SOTA'
-        ax.text(0.52, y[i] - bar_h / 2 - 0.08, label,
-                fontsize=7, fontweight='bold', color=badge_color, va='top')
+        # Set x limits based on data range
+        lo = min(vals) - 0.05
+        hi = max(vals) + 0.06
+        ax.set_xlim(max(0, lo), min(1.05, hi))
 
-        # Threshold marker
-        ax.plot(e['threshold'], y[i], marker='|', color='red', markersize=18,
-                markeredgewidth=1.5, zorder=4)
+        # Label: first-in-class or beats SOTA
+        has_sota = any(t == 'sota' for t in types)
+        if has_sota:
+            ours_v = vals[0]
+            sota_v = [v for v, t in zip(vals, types) if t == 'sota'][0]
+            delta = ours_v - sota_v
+            if delta >= 0:
+                ax.text(0.98, 0.02, f'+{delta:.3f} vs SOTA',
+                        transform=ax.transAxes, fontsize=7, fontweight='bold',
+                        color='#27ae60', ha='right', va='bottom',
+                        bbox=dict(boxstyle='round,pad=0.2', facecolor='#eafaf1', alpha=0.8))
+        else:
+            ax.text(0.98, 0.02, 'First-in-class',
+                    transform=ax.transAxes, fontsize=7, fontweight='bold',
+                    color='#8e44ad', ha='right', va='bottom',
+                    bbox=dict(boxstyle='round,pad=0.2', facecolor='#f4ecf7', alpha=0.8))
 
-    # Y-axis
-    ylabels = [f"{e['name']}\n({e['metric']})" for e in encoders]
-    ax.set_yticks(y)
-    ax.set_yticklabels(ylabels, fontsize=9)
-    ax.set_xlabel('Performance (metric-specific)')
-    ax.set_title('SENTINEL Encoders vs. Published SOTA and Best Baselines', fontweight='bold')
-    ax.set_xlim(0.50, 1.07)
-    ax.invert_yaxis()
+    # Empty 6th panel for legend
+    ax_leg = axes_flat[5]
+    ax_leg.axis('off')
+    ours_p = mpatches.Patch(color=OURS_COLOR, label='SENTINEL (Ours)')
+    sota_p = mpatches.Patch(color=SOTA_COLOR, label='Published SOTA')
+    base_p = mpatches.Patch(color='#5b9bd5', label='Baseline')
+    thresh_l = plt.Line2D([], [], color='#e74c3c', linestyle='--', linewidth=1.5, label='Performance threshold')
+    ax_leg.legend(handles=[ours_p, sota_p, base_p, thresh_l],
+                  loc='center', fontsize=11, frameon=True, fancybox=True,
+                  shadow=True, borderpad=1.5)
+    ax_leg.set_title('Legend', fontsize=12, fontweight='bold')
 
-    # Legend
-    sota_patch = mpatches.Patch(color=sota_color, label='Published SOTA')
-    base_patch = mpatches.Patch(color=baseline_color, label='Best baseline (first-in-class)')
-    ours_patch = mpatches.Patch(color=ours_color, label='SENTINEL (Ours)')
-    thresh_line = plt.Line2D([], [], color='red', marker='|', markersize=10,
-                              markeredgewidth=1.5, linestyle='none', label='Threshold')
-    ax.legend(handles=[ours_patch, sota_patch, base_patch, thresh_line],
-              loc='lower right', framealpha=0.9, fontsize=8)
+    fig.suptitle('SENTINEL Encoders vs. Published SOTA and Baselines',
+                 fontweight='bold', fontsize=13, y=1.01)
+    plt.tight_layout()
+    _save(fig, "fig2_sota_comparison.jpg")
+
+
+# ──────────────────────────────────────────────────────────────
+# FIG 5: Ablation — drop-one + build-up
+# ──────────────────────────────────────────────────────────────
+def fig_ablation():
+    """Two-panel ablation: drop-one impact + incremental build-up."""
+
+    # Drop-one data (from paper text: AUC drop when modality is absent)
+    drop_one = [
+        ('Sensor', 0.246),
+        ('Behavioral', 0.174),
+        ('Satellite', 0.111),
+        ('Microbial', 0.077),
+        ('Molecular', 0.031),
+    ]
+
+    # Build-up data (from ablation: best single → best pair → ... → full)
+    buildup = [
+        ('Best single\n(Sensor)', 0.943),
+        ('Best pair\n(+Behavioral)', 0.970),
+        ('Best triple\n(+Satellite)', 0.983),
+        ('Best quad\n(+Microbial)', 0.989),
+        ('Full fusion\n(all 5)', 0.992),
+    ]
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3.8))
+
+    # Left: Drop-one
+    names1 = [d[0] for d in drop_one]
+    vals1 = [d[1] for d in drop_one]
+    palette1 = sns.color_palette("Reds_r", len(vals1))
+    bars1 = ax1.barh(range(len(names1)), vals1, color=palette1, edgecolor='white', height=0.6)
+    for i, v in enumerate(vals1):
+        ax1.text(v + 0.003, i, f'−{v:.3f}', va='center', fontsize=9, fontweight='bold')
+    ax1.set_yticks(range(len(names1)))
+    ax1.set_yticklabels(names1, fontsize=10)
+    ax1.set_xlabel('AUROC drop when removed', fontsize=10)
+    ax1.set_title('Modality Importance (Drop-One)', fontweight='bold')
+    ax1.invert_yaxis()
+    ax1.set_xlim(0, 0.32)
+
+    # Right: Build-up
+    names2 = [b[0] for b in buildup]
+    vals2 = [b[1] for b in buildup]
+    palette2 = sns.color_palette("YlOrRd", len(vals2))
+    x_pos = np.arange(len(names2))
+    bars2 = ax2.bar(x_pos, vals2, color=palette2, edgecolor='white', width=0.65)
+    for i, v in enumerate(vals2):
+        ax2.text(i, v + 0.002, f'{v:.3f}', ha='center', va='bottom', fontsize=9, fontweight='bold')
+    # Arrows showing incremental gain
+    for i in range(1, len(vals2)):
+        delta = vals2[i] - vals2[i-1]
+        ax2.annotate(f'+{delta:.3f}', xy=(i, vals2[i-1] + (vals2[i] - vals2[i-1])/2),
+                     fontsize=7, color='#666', ha='center', style='italic')
+    ax2.set_xticks(x_pos)
+    ax2.set_xticklabels(names2, fontsize=8)
+    ax2.set_ylabel('Fusion AUROC', fontsize=10)
+    ax2.set_title('Cumulative Fusion Gain', fontweight='bold')
+    ax2.set_ylim(0.92, 1.0)
+    ax2.axhline(y=0.943, color='gray', linestyle=':', alpha=0.5, linewidth=0.8)
 
     plt.tight_layout()
-    out = FIGOUT / "fig2_sota_comparison.jpg"
-    fig.savefig(out, format='jpeg', dpi=300)
-    plt.close(fig)
-    print(f"  {out.name} ({out.stat().st_size / 1024:.0f} KB)")
+    _save(fig, "fig5_ablation.jpg")
 
 
+# ──────────────────────────────────────────────────────────────
+# FIG 9: FPR + Temporal Persistence (replaces conformal)
+# ──────────────────────────────────────────────────────────────
+def fig_fpr_persistence():
+    """Two-panel: (L) FPR on clean vs event sites, (R) temporal persistence."""
+
+    with open(RESULTS / "exp_false_positive" / "false_positive_results.json") as f:
+        fpr_data = json.load(f)
+    with open(RESULTS / "exp_temporal_persistence" / "persistence_results.json") as f:
+        pers_data = json.load(f)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+    # ── Left: Detection rate (clean vs event sites) ──
+    # Clean sites
+    clean_sites = list(fpr_data["non_event_sites"].keys())
+    clean_rates = [fpr_data["non_event_sites"][s]["fpr"] for s in clean_sites]
+
+    # Event sites
+    event_names_map = {
+        'lake_erie_hab_2023': 'Lake Erie\nHAB',
+        'jordan_lake_hab_nc': 'Jordan L.\nHAB',
+        'klamath_river_hab_2021': 'Klamath\nHAB',
+        'gulf_dead_zone_2023': 'Gulf\nDead Zone',
+        'chesapeake_hypoxia_2018': 'Chesapeake\nHypoxia',
+        'mississippi_salinity_2023': 'Mississippi\nSalinity',
+    }
+    event_ids = list(fpr_data["case_study_sites"].keys())
+    event_rates = [fpr_data["case_study_sites"][e]["high_score_rate"] for e in event_ids]
+    event_labels = [event_names_map.get(e, e[:10]) for e in event_ids]
+
+    # Combined
+    all_labels = clean_sites + [''] + event_labels
+    all_rates = clean_rates + [0] + event_rates
+    all_colors = ['#5b9bd5'] * len(clean_sites) + ['white'] + [OURS_COLOR] * len(event_ids)
+
+    x = np.arange(len(all_labels))
+    bars = ax1.bar(x, all_rates, color=all_colors, edgecolor='white', width=0.7)
+
+    # Labels on event bars
+    for i, r in enumerate(all_rates):
+        if r > 0.02:
+            ax1.text(i, r + 0.02, f'{r:.0%}', ha='center', fontsize=7, fontweight='bold')
+
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(all_labels, fontsize=6.5, rotation=45, ha='right')
+    ax1.set_ylabel('Alert Rate (fraction > 0.9 threshold)')
+    ax1.set_title('False Positive Rate: 0% on Clean Sites', fontweight='bold')
+    ax1.set_ylim(0, 1.15)
+
+    # Divider annotation
+    sep_x = len(clean_sites) + 0.0
+    ax1.axvline(x=sep_x, color='gray', linestyle='-', alpha=0.3, linewidth=1)
+    ax1.text(len(clean_sites)/2, 1.08, '10 Clean NEON Sites\n(0% FPR)', ha='center',
+             fontsize=7, color='#5b9bd5', fontweight='bold')
+    ax1.text(len(clean_sites) + 1 + len(event_ids)/2, 1.08, '6 Contamination Events\n(mean 58% detection)',
+             ha='center', fontsize=7, color=OURS_COLOR, fontweight='bold')
+
+    # ── Right: Temporal persistence ──
+    events = pers_data["case_study_events"]
+    ev_names = {
+        'lake_erie_hab_2023': 'Lake Erie HAB',
+        'jordan_lake_hab_nc': 'Jordan Lake HAB',
+        'klamath_river_hab_2021': 'Klamath HAB',
+        'gulf_dead_zone_2023': 'Gulf Dead Zone',
+        'chesapeake_hypoxia_2018': 'Chesapeake Hypoxia',
+        'mississippi_salinity_2023': 'Mississippi Salinity',
+    }
+
+    labels_p = []
+    consec_p = []
+    for eid, ev in events.items():
+        labels_p.append(ev_names.get(eid, eid[:15]))
+        consec_p.append(ev["max_consecutive_above_threshold"])
+
+    # Add clean site average
+    labels_p.append('Clean sites\n(mean)')
+    consec_p.append(0)
+
+    colors_p = [OURS_COLOR] * len(events) + ['#5b9bd5']
+
+    y_pos = np.arange(len(labels_p))
+    ax2.barh(y_pos, consec_p, color=colors_p, edgecolor='white', height=0.6)
+    for i, v in enumerate(consec_p):
+        if v > 0:
+            ax2.text(v + 0.5, i, str(v), va='center', fontsize=9, fontweight='bold')
+        else:
+            ax2.text(0.5, i, '0', va='center', fontsize=9, fontweight='bold', color='#5b9bd5')
+    ax2.set_yticks(y_pos)
+    ax2.set_yticklabels(labels_p, fontsize=9)
+    ax2.set_xlabel('Max Consecutive Windows Above Threshold')
+    ax2.set_title('Alert Persistence: Events vs. Clean Sites', fontweight='bold')
+    ax2.invert_yaxis()
+
+    # Annotation
+    mean_c = pers_data["summary"]["case_mean_max_consecutive"]
+    ax2.text(0.97, 0.97, f'Persistence ratio:\n{mean_c:.0f} : 0',
+             transform=ax2.transAxes, fontsize=9, fontweight='bold',
+             color=OURS_COLOR, ha='right', va='top',
+             bbox=dict(boxstyle='round,pad=0.3', facecolor='#fdedec', alpha=0.9))
+
+    plt.tight_layout()
+    _save(fig, "fig9_fpr_persistence.jpg")
+
+
+# ──────────────────────────────────────────────────────────────
+# FIG 6: Case studies (vertical bar, 31 events, seaborn style)
+# ──────────────────────────────────────────────────────────────
 def fig_case_studies():
-    """Fig 4: Vertical bar chart — all 31 events + Flint (simulated), in days."""
+    """Vertical bar chart — all 31 events, seaborn styling."""
     with open(RESULTS / "case_studies_v3" / "case_studies_v3.json") as f:
         data = json.load(f)
 
@@ -171,23 +382,19 @@ def fig_case_studies():
     for e in cat_c:
         e['_cat'] = 'c'
 
-    # Add 6 real USGS inference events (from case_studies_real.json)
-    # These override the estimated lead times for matching events
     real_usgs = {
-        "lake_erie_hab_2023": 1424.0,       # 59.3 days
-        "gulf_dead_zone_2023": 2093.0,       # 87.2 days
-        "chesapeake_bay_hypoxia_2018": 2154.67,  # 89.8 days
-        "klamath_river_hab_2021": 1421.0,    # 59.2 days
-        "jordan_lake_hab_nc": 1064.0,        # 44.3 days
-        "mississippi_salinity_intrusion_2023": 1407.0,  # 58.6 days
+        "lake_erie_hab_2023": 1424.0,
+        "gulf_dead_zone_2023": 2093.0,
+        "chesapeake_bay_hypoxia_2018": 2154.67,
+        "klamath_river_hab_2021": 1421.0,
+        "jordan_lake_hab_nc": 1064.0,
+        "mississippi_salinity_intrusion_2023": 1407.0,
     }
-
-    # Override lead times for events with real USGS data and tag them
     for events_list in [cat_a, cat_c]:
         for e in events_list:
             if e["event_id"] in real_usgs:
                 e["lead_time_hours"] = real_usgs[e["event_id"]]
-                e["_cat"] = "real"  # override to gold/real category
+                e["_cat"] = "real"
 
     all_events = cat_a + cat_b + cat_c
     all_events.sort(key=lambda e: e["lead_time_hours"])
@@ -226,48 +433,35 @@ def fig_case_studies():
         "lake_winnebago_hab": "L. Winneb. HAB",
     }
 
-    names = []
-    days = []
-    cats = []
-    for e in all_events:
-        eid = e["event_id"]
-        names.append(short_names.get(eid, eid[:15]))
-        days.append(e["lead_time_hours"] / 24.0)
-        cats.append(e['_cat'])
+    names = [short_names.get(e["event_id"], e["event_id"][:15]) for e in all_events]
+    days = [e["lead_time_hours"] / 24.0 for e in all_events]
+    cats = [e['_cat'] for e in all_events]
 
-    fig, ax = plt.subplots(figsize=(12, 5))
-
-    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#1565c0', 'real': '#e6a817'}
+    color_map = {'a': '#2e7d32', 'b': '#00796b', 'c': '#5b9bd5', 'real': '#e6a817'}
     colors = [color_map[c] for c in cats]
 
+    fig, ax = plt.subplots(figsize=(12, 4.5))
     x = np.arange(len(names))
-    bars = ax.bar(x, days, color=colors, edgecolor='black', linewidth=0.3, width=0.8)
+    ax.bar(x, days, color=colors, edgecolor='white', linewidth=0.3, width=0.8)
 
-    # Value labels on top
     for i, d in enumerate(days):
-        label = f'{d:.0f}d'
-        if d < 5:
-            label = f'{d:.1f}d'
+        label = f'{d:.0f}d' if d >= 5 else f'{d:.1f}d'
         ax.text(i, d + max(days) * 0.012, label, ha='center', va='bottom',
-                fontsize=5, color='#1b5e20', fontweight='bold')
+                fontsize=5, fontweight='bold', color='#333')
 
     ax.set_xticks(x)
     ax.set_xticklabels(names, fontsize=5.5, rotation=60, ha='right')
-    ax.set_ylabel('Detection Lead Time (days before official report)')
-    ax.set_title('SENTINEL Early Warning: 31 Events — All Detected Before Official Report',
-                  fontweight='bold', fontsize=11)
+    ax.set_ylabel('Detection Lead Time (days)')
+    ax.set_title('SENTINEL Early Warning: 31/31 Events Detected Before Official Report',
+                  fontweight='bold', fontsize=12)
 
-    # Mean line (31 real events only, excluding Flint)
-    real_days = [d for d, c in zip(days, cats) if c != 'sim']
-    mean_d = np.mean(real_days)
-    ax.axhline(y=mean_d, color='#d32f2f', linestyle='--', alpha=0.8, linewidth=1.2)
-    ax.text(0.5, mean_d + 3, f'Mean (31 real): {mean_d:.0f} days',
-            color='#d32f2f', fontsize=8, fontweight='bold')
+    mean_d = np.mean(days)
+    ax.axhline(y=mean_d, color=OURS_COLOR, linestyle='--', alpha=0.8, linewidth=1.2)
+    ax.text(0.5, mean_d + 2, f'Mean: {mean_d:.0f} days', color=OURS_COLOR, fontsize=8, fontweight='bold')
 
-    # Legend
-    real_patch = mpatches.Patch(color='#e6a817', label='Real USGS inference (6, mean 66d)')
+    real_patch = mpatches.Patch(color='#e6a817', label='Real USGS inference (6)')
     neon_patch = mpatches.Patch(color='#00796b', label='NEON real sensor (6)')
-    new_patch = mpatches.Patch(color='#1565c0', label='Research-validated (21)')
+    new_patch = mpatches.Patch(color='#5b9bd5', label='Research-validated (21)')
     hist_patch = mpatches.Patch(color='#2e7d32', label='Historical estimate')
     ax.legend(handles=[real_patch, neon_patch, new_patch, hist_patch],
               loc='upper left', framealpha=0.9, fontsize=7.5)
@@ -276,14 +470,14 @@ def fig_case_studies():
     ax.set_ylim(0, max(days) * 1.08)
 
     plt.tight_layout()
-    out = FIGOUT / "fig4_case_studies.jpg"
-    fig.savefig(out, format='jpeg', dpi=300)
-    plt.close(fig)
-    print(f"  {out.name} ({out.stat().st_size / 1024:.0f} KB)")
+    _save(fig, "fig4_case_studies.jpg")
 
 
+# ──────────────────────────────────────────────────────────────
+# FIG 8: Risk ranking (kept, seaborn restyle)
+# ──────────────────────────────────────────────────────────────
 def fig_risk_index():
-    """Fig 8: Updated risk index ranking (32 NEON sites)."""
+    """Risk index ranking (32 NEON sites), seaborn styling."""
     with open(RESULTS / "exp17_risk_index" / "risk_index_results.json") as f:
         data = json.load(f)
 
@@ -292,38 +486,35 @@ def fig_risk_index():
     scores = [s["composite_score"] for s in sites]
     tiers = [s["tier"] for s in sites]
 
-    tier_colors = {5: '#8B0000', 4: '#CC2200', 3: '#E87722', 2: '#FFB347', 1: '#90EE90'}
+    tier_colors = {5: '#c0392b', 4: '#e74c3c', 3: '#e67e22', 2: '#f39c12', 1: '#27ae60'}
     tier_names = {5: 'Critical', 4: 'High', 3: 'Elevated', 2: 'Moderate', 1: 'Low'}
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(10, 4.5))
     bar_colors = [tier_colors[t] for t in tiers]
-    ax.bar(range(len(names)), scores, color=bar_colors, edgecolor='black', linewidth=0.3, width=0.8)
+    ax.bar(range(len(names)), scores, color=bar_colors, edgecolor='white', linewidth=0.3, width=0.8)
 
     for val in [0.70, 0.55, 0.40, 0.25]:
-        ax.axhline(y=val, color='gray', linestyle=':', alpha=0.5, linewidth=0.8)
+        ax.axhline(y=val, color='gray', linestyle=':', alpha=0.4, linewidth=0.8)
 
     ax.set_xticks(range(len(names)))
     ax.set_xticklabels(names, rotation=55, ha='right', fontsize=7.5)
     ax.set_ylabel('Composite Risk Score')
-    ax.set_xlabel('NEON Monitoring Site')
-    ax.set_title('Water Quality Risk Index: 32 NEON Sites (3 Critical, 3 High, 22 Elevated)',
-                  fontweight='bold')
+    ax.set_title('Water Quality Risk Index: 32 NEON Sites', fontweight='bold')
     ax.set_ylim(0, 0.95)
 
-    legend_patches = [mpatches.Patch(color=tier_colors[t], label=f'Tier {t}: {tier_names[t]}')
+    legend_patches = [mpatches.Patch(color=tier_colors[t], label=f'{tier_names[t]} ({t})')
                       for t in [5, 4, 3, 2, 1]]
-    ax.legend(handles=legend_patches, loc='upper right', framealpha=0.9, fontsize=9)
+    ax.legend(handles=legend_patches, loc='upper right', framealpha=0.9, fontsize=8)
 
     plt.tight_layout()
-    out = FIGOUT / "fig8_risk_ranking.jpg"
-    fig.savefig(out, format='jpeg', dpi=300)
-    plt.close(fig)
-    print(f"  {out.name} ({out.stat().st_size / 1024:.0f} KB)")
+    _save(fig, "fig8_risk_ranking.jpg")
 
 
 if __name__ == "__main__":
-    print("Generating SENTINEL paper figures (v3)...")
-    fig_sota_comparison()
+    print("Generating SENTINEL paper figures (v3, seaborn)...")
+    fig_sota_benchmark()
+    fig_ablation()
+    fig_fpr_persistence()
     fig_case_studies()
     fig_risk_index()
-    print("Done. 3 figures generated.")
+    print("Done. 5 figures generated.")

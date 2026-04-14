@@ -326,8 +326,8 @@ The core scientific claim of this work is that jointly reasoning across five sen
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.85\textwidth]{fig8_ablation_bar_chart.jpg}
-\caption{Detection AUROC across all 31 modality combinations. Full 5-modal fusion (0.992) significantly outperforms any single modality ($p = 0.002$). Marginal gains: sensor +0.201, behavioral +0.101, satellite +0.041, microbial +0.017.}
+\includegraphics[width=0.92\textwidth]{fig5_ablation.jpg}
+\caption{\textbf{Left}: AUROC drop when each modality is removed---sensors and behavioral monitoring are most critical. \textbf{Right}: Cumulative gain from best single (0.943) to full 5-modal fusion (0.992, $p = 0.002$).}
 \label{fig:ablation}
 \end{figure}
 
@@ -393,13 +393,13 @@ Everything described above---fusion, early detection, causal discovery---is scie
 
 The guarantee is distribution-free: it holds regardless of the underlying data distribution, requiring only that calibration and test data are exchangeable (a weaker condition than i.i.d.). At $\alpha = 0.05$, the conformal prediction set must achieve $\geq$ 95\% coverage---meaning that if SENTINEL says a reading is normal, there is at most a 5\% chance it is actually anomalous.
 
-Critically, the guarantee must be calibrated on \textit{real} data. Initial calibration on synthetic embeddings produced coverage as low as 0.375 (satellite) and 0.000 (microbial). Recalibrating on 13,202 real encoder embeddings (Figure~\ref{fig:conformal}) resolved this: satellite coverage jumped to \textbf{0.963}, microbial to \textbf{0.917}, and all modalities with $n > 1{,}000$ now meet the 0.95 target. This synthetic-to-real gap demonstrates that conformal prediction in environmental AI \textit{must} be calibrated on real data.
+Critically, the guarantee must be calibrated on \textit{real} data. Initial calibration on synthetic embeddings produced coverage as low as 0.375 (satellite) and 0.000 (microbial). Recalibrating on 13,202 real encoder embeddings resolved this: satellite coverage jumped to \textbf{0.963}, microbial to \textbf{0.917}, and all modalities with $n > 1{,}000$ now meet the 0.95 target.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{fig4_conformal_coverage.jpg}
-\caption{Conformal coverage: synthetic (hatched) vs.\ real embeddings (solid). Real embeddings meet the 0.95 target (dashed). The synthetic-to-real gap (especially satellite: $0.375 \rightarrow 0.963$) demonstrates that conformal calibration on synthetic data is dangerously misleading.}
-\label{fig:conformal}
+\includegraphics[width=0.92\textwidth]{fig9_fpr_persistence.jpg}
+\caption{\textbf{Left}: Alert rate at threshold 0.9---zero false positives across 10 clean NEON sites (8,739 windows), while contamination events trigger 10--100\% detection. \textbf{Right}: Temporal persistence---real events sustain up to 89 consecutive above-threshold windows vs.\ 0 for clean sites (ratio 31:0).}
+\label{fig:fpr}
 \end{figure}
 
 Empirical false positive testing on 10 clean NEON sites (sites with no known contamination events during the monitoring period) produced \textbf{zero false alerts} at the operational threshold of 0.9---a specificity of 1.0. Meanwhile, confirmed contamination events sustained a mean of 31 consecutive windows above threshold, with a persistence ratio of 31:0 (case events vs.\ clean sites). This separation confirms that SENTINEL alerts are not noise: when the system fires, the signal persists.
