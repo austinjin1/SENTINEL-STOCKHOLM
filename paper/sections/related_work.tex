@@ -36,6 +36,18 @@ Prithvi-EO-2.0~\citep{Jakubik2024} and Clay provide general-purpose
 Earth observation models. HydroViT differs by pretraining exclusively
 on water pixels with water-specific spectral constraints.
 
+\paragraph{Molecular Toxicogenomics.}
+Several methods analyze transcriptomic responses to toxicants, but none
+performs supervised multi-label contaminant classification from RNA-seq.
+Lin et al.~\citep{Lin2024} (MTForestNet) predict chemical--gene
+interactions from molecular fingerprints using multi-task random forests.
+Senn et al.~\citep{Senn2021} cluster zebrafish transcriptomic responses
+to identify co-expression modules but do not classify contaminant types.
+Gagn{\'e} et al.~\citep{Gagne2025} apply unsupervised pathway enrichment
+to municipal effluent exposure in fish. ToxiGene fills the gap by
+performing supervised 8-class contaminant classification directly from
+gene expression via a biologically-constrained neural hierarchy.
+
 \paragraph{Behavioral Ecotoxicology.}
 Commercial biomonitor systems (DaphTox, MFB) use statistical thresholds
 for behavioral anomaly detection. Guo et al.~\citep{Guo2024} introduced

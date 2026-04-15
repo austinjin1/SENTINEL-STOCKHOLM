@@ -14,6 +14,14 @@ within hours, microbial community shifts within days, and satellite-visible
 changes within weeks. Fusion leverages this temporal hierarchy for both
 rapid initial detection and sustained diagnostic specificity.
 
+ToxiGene represents, to our knowledge, the first supervised method for
+multi-label toxicity classification from RNA-seq. Its P-NET biological
+hierarchy provides interpretability absent from black-box alternatives:
+parameter attribution traces predictions to specific genes, pathways, and
+biological processes, enabling mechanistic insight into detected
+contamination. The 31.3$\times$ temporal persistence ratio and FPR = 0.000
+on clean reference sites confirm operational reliability.
+
 \subsection{Limitations}
 
 Several limitations should be noted:
@@ -41,6 +49,16 @@ Several limitations should be noted:
     \item \textbf{Computational cost}: The full 189.5M-parameter system
     requires GPU acceleration for training; inference is more modest
     ($\sim$50ms per forward pass on A100).
+
+    \item \textbf{BioMotion chronic endpoints}: BioMotion achieves 0\%
+    detection on PFAS and pharmaceutical exposures, which produce chronic
+    rather than acute behavioral effects. These endpoints fall outside the
+    training distribution of acute ECOTOX assays.
+
+    \item \textbf{EPA regulatory correlation}: Correlation between
+    SENTINEL alert scores and EPA violation counts is non-significant
+    ($\rho = 0.112$, $p = 0.858$), likely because EPA violations reflect
+    compliance sampling frequency rather than true contamination prevalence.
 \end{itemize}
 
 \subsection{Broader Impact}
@@ -54,7 +72,11 @@ analysis and regulatory oversight.
 
 \subsection{Future Work}
 
-Future directions include: (1) extending to additional water body types
-(groundwater, coastal, deep ocean), (2) active learning for optimal
-sampling strategies, (3) integration with real-time alert systems, and
-(4) deployment in resource-limited settings through model distillation.
+A preliminary discovery scan across 18 US water bodies flagged 8 of 9
+known-impaired sites as ALERT, providing early evidence of deployment
+readiness. Future directions include: (1) extending to additional water
+body types (groundwater, coastal, deep ocean), (2) active learning for
+optimal sampling strategies, (3) integration with real-time alert systems,
+(4) deployment in resource-limited settings through model distillation,
+and (5) extending BioMotion training to chronic exposure assays for PFAS
+and pharmaceutical detection.

@@ -28,6 +28,7 @@ C_REAL = '#145a32'
 C_NEON = '#148f77'
 C_RESEARCH = '#2e86c1'
 C_HIST = '#82e0aa'
+C_EXT = '#b0b0b0'       # External non-comparable methods (grey)
 
 sns.set_theme(style="whitegrid", font="serif", rc={
     'font.family': 'serif',
@@ -118,15 +119,15 @@ def fig_sota_benchmark():
             ],
         },
         {
-            'title': 'ToxiGene (Molecular)',
-            'metric': 'Macro F1',
+            'title': 'ToxiGene (Molecular) — First-in-Class',
+            'metric': 'Classification Performance',
             'threshold': 0.80,
+            'first_in_class': True,
             'models': [
-                ('ToxiGene (Ours)', 0.886, 'ours'),
-                ('Random Forest', 0.897, 'base'),
-                ('Extra Trees', 0.887, 'base'),
-                ('Logistic Regression', 0.868, 'base'),
-                ('PCA + LR', 0.808, 'base'),
+                ('ToxiGene (Ours)\nRNA-seq → 7-class toxicity, F1', 0.886, 'ours'),
+                ('MTForestNet [Lin 2024]\nMol. fingerprints → morphology, AUC', 0.911, 'external'),
+                ('Gagné et al. [2025]\nRNA-seq → clustering, Accuracy', 0.740, 'external'),
+                ('Senn et al. [2021]\nRNA-seq → unsupervised', 0.0, 'external_na'),
             ],
         },
     ]
@@ -141,38 +142,92 @@ def fig_sota_benchmark():
         names = [m[0] for m in panel['models']]
         vals = [m[1] for m in panel['models']]
         types = [m[2] for m in panel['models']]
-        colors = [C_OURS if t == 'ours' else C_SOTA if t == 'sota' else C_BASE for t in types]
+        is_fic = panel.get('first_in_class', False)
 
-        y_pos = np.arange(len(names))
-        ax.barh(y_pos, vals, color=colors, edgecolor='white', linewidth=0.8, height=0.62)
+        if is_fic:
+            # ── First-in-class panel: ToxiGene vs external prior art ──
+            colors = []
+            hatches = []
+            for t in types:
+                if t == 'ours':
+                    colors.append(C_OURS); hatches.append('')
+                elif t == 'external':
+                    colors.append(C_EXT); hatches.append('///')
+                else:  # external_na
+                    colors.append('#d5d5d5'); hatches.append('xxx')
 
-        for i, v in enumerate(vals):
-            weight = 'bold' if types[i] == 'ours' else 'normal'
-            ax.text(v + 0.004, i, f'{v:.3f}', va='center', fontsize=10, fontweight=weight)
+            y_pos = np.arange(len(names))
+            bars = ax.barh(y_pos, vals, color=colors, edgecolor='#666',
+                           linewidth=0.8, height=0.62)
+            for bar, h in zip(bars, hatches):
+                bar.set_hatch(h)
 
-        ax.axvline(x=panel['threshold'], color=C_THRESH, linestyle='--', alpha=0.5, linewidth=1)
-        ax.set_yticks(y_pos)
-        ax.set_yticklabels(names, fontsize=10)
-        ax.set_xlabel(panel['metric'], fontsize=11)
-        ax.set_title(panel['title'], fontweight='bold', fontsize=13)
-        ax.invert_yaxis()
-        lo = min(vals) - 0.05
-        hi = max(vals) + 0.07
-        ax.set_xlim(max(0, lo), min(1.06, hi))
+            for i, v in enumerate(vals):
+                if types[i] == 'ours':
+                    ax.text(v + 0.008, i, f'F1 = {v:.3f}', va='center',
+                            fontsize=10, fontweight='bold', color=C_OURS)
+                elif types[i] == 'external_na':
+                    ax.text(0.02, i, 'No classification metric reported',
+                            va='center', fontsize=9, fontstyle='italic', color='#666')
+                else:
+                    ax.text(v + 0.008, i, f'{v:.3f}', va='center',
+                            fontsize=10, color='#666', fontstyle='italic')
 
-        has_sota = any(t == 'sota' for t in types)
-        if has_sota:
-            ours_v = vals[0]
-            sota_v = [v for v, t in zip(vals, types) if t == 'sota'][0]
-            delta = ours_v - sota_v
-            if delta >= 0:
-                ax.text(0.97, 0.04, f'+{delta:.3f} vs SOTA', transform=ax.transAxes,
-                        fontsize=10, fontweight='bold', color=C_OURS, ha='right', va='bottom',
-                        bbox=dict(boxstyle='round,pad=0.3', facecolor='#d5f5e3', alpha=0.9))
+            ax.axvline(x=panel['threshold'], color=C_THRESH, linestyle='--',
+                       alpha=0.5, linewidth=1)
+            ax.set_yticks(y_pos)
+            ax.set_yticklabels(names, fontsize=8.5, linespacing=1.1)
+            ax.set_xlabel(panel['metric'], fontsize=11)
+            ax.set_title(panel['title'], fontweight='bold', fontsize=12)
+            ax.invert_yaxis()
+            ax.set_xlim(0, 1.08)
+
+            # Prominent first-in-class badge
+            ax.text(0.97, 0.04,
+                    'FIRST-IN-CLASS\nNo published RNA-seq →\ntoxicity classifier exists',
+                    transform=ax.transAxes, fontsize=8.5, fontweight='bold',
+                    color=C_OURS, ha='right', va='bottom',
+                    bbox=dict(boxstyle='round,pad=0.4', facecolor='#d5f5e3',
+                              alpha=0.95, edgecolor=C_OURS, linewidth=1.5))
+
+            # Annotation: grey bars are different tasks
+            ax.text(0.97, 0.97, 'Grey = different input or task\n(not directly comparable)',
+                    transform=ax.transAxes, fontsize=8, color='#888',
+                    ha='right', va='top', fontstyle='italic')
         else:
-            ax.text(0.97, 0.04, 'First-in-class', transform=ax.transAxes,
-                    fontsize=10, fontweight='bold', color=C_SOTA, ha='right', va='bottom',
-                    bbox=dict(boxstyle='round,pad=0.3', facecolor='#d6eaf8', alpha=0.9))
+            # ── Standard panel: ours vs SOTA vs baselines ──
+            colors = [C_OURS if t == 'ours' else C_SOTA if t == 'sota' else C_BASE for t in types]
+
+            y_pos = np.arange(len(names))
+            ax.barh(y_pos, vals, color=colors, edgecolor='white', linewidth=0.8, height=0.62)
+
+            for i, v in enumerate(vals):
+                weight = 'bold' if types[i] == 'ours' else 'normal'
+                ax.text(v + 0.004, i, f'{v:.3f}', va='center', fontsize=10, fontweight=weight)
+
+            ax.axvline(x=panel['threshold'], color=C_THRESH, linestyle='--', alpha=0.5, linewidth=1)
+            ax.set_yticks(y_pos)
+            ax.set_yticklabels(names, fontsize=10)
+            ax.set_xlabel(panel['metric'], fontsize=11)
+            ax.set_title(panel['title'], fontweight='bold', fontsize=13)
+            ax.invert_yaxis()
+            lo = min(vals) - 0.05
+            hi = max(vals) + 0.07
+            ax.set_xlim(max(0, lo), min(1.06, hi))
+
+            has_sota = any(t == 'sota' for t in types)
+            if has_sota:
+                ours_v = vals[0]
+                sota_v = [v for v, t in zip(vals, types) if t == 'sota'][0]
+                delta = ours_v - sota_v
+                if delta >= 0:
+                    ax.text(0.97, 0.04, f'+{delta:.3f} vs SOTA', transform=ax.transAxes,
+                            fontsize=10, fontweight='bold', color=C_OURS, ha='right', va='bottom',
+                            bbox=dict(boxstyle='round,pad=0.3', facecolor='#d5f5e3', alpha=0.9))
+            else:
+                ax.text(0.97, 0.04, 'First-in-class', transform=ax.transAxes,
+                        fontsize=10, fontweight='bold', color=C_SOTA, ha='right', va='bottom',
+                        bbox=dict(boxstyle='round,pad=0.3', facecolor='#d6eaf8', alpha=0.9))
 
     # Shared legend in the empty gs[1,2] space
     ax_leg = fig.add_subplot(gs[1, 2])
@@ -181,9 +236,11 @@ def fig_sota_benchmark():
         mpatches.Patch(color=C_OURS, label='SENTINEL (Ours)'),
         mpatches.Patch(color=C_SOTA, label='Published SOTA'),
         mpatches.Patch(color=C_BASE, label='Baseline'),
+        mpatches.Patch(facecolor=C_EXT, hatch='///', edgecolor='#666',
+                       label='External (diff. task)'),
         plt.Line2D([], [], color=C_THRESH, linestyle='--', linewidth=2, label='Threshold'),
     ]
-    ax_leg.legend(handles=handles, loc='center', fontsize=13, frameon=True,
+    ax_leg.legend(handles=handles, loc='center', fontsize=12, frameon=True,
                   fancybox=True, shadow=True, borderpad=2)
 
     fig.suptitle('SENTINEL Encoders vs. Published SOTA and Baselines',

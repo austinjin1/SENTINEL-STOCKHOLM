@@ -80,6 +80,17 @@ producing degradation curves.
 For events where all modalities are available, we compare how far in
 advance each individual modality versus the fused system detects the event.
 
+\paragraph{ToxiGene Downstream Validation.}
+Four additional experiments assess ToxiGene's operational reliability:
+(1)~\emph{False positive rate}: inference on 10 clean NEON reference sites
+to measure FPR under baseline conditions;
+(2)~\emph{Parameter attribution}: gradient-based attribution through the
+P-NET hierarchy to recover known gene--pathway--contaminant associations;
+(3)~\emph{Temporal persistence}: signal-to-noise ratio between contaminated
+and clean temporal windows on held-out time series;
+(4)~\emph{Pollution fingerprinting}: discriminating contaminant mixtures
+from single-contaminant exposures on held-out samples.
+
 \subsection{Implementation Details}
 
 All encoders project to a shared 256-dimensional embedding space.
