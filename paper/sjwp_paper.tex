@@ -1,10 +1,9 @@
 \documentclass[12pt]{article}
 
-% === SJWP FORMATTING ===
+% === SJWP FORMATTING (matching USA template style) ===
 \usepackage{times}                          % Times New Roman
 \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
-\usepackage{setspace}\onehalfspacing        % 1.5 spacing
-\raggedright                                % Left-aligned
+\usepackage{setspace}\setstretch{1.08}      % Near-single spacing
 
 % === PACKAGES ===
 \usepackage[utf8]{inputenc}
@@ -21,6 +20,7 @@
 \usepackage{tabularx}
 \usepackage{array}
 \usepackage{multicol}
+\usepackage{wrapfig}
 
 % Page numbering at bottom center
 \pagestyle{fancy}
@@ -28,22 +28,24 @@
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
 
-% Reduce figure caption spacing
-\captionsetup{font=small, skip=2pt}
+% Figure caption style
+\captionsetup{font=small, skip=4pt}
 
 % Tight spacing for lists
 \setlist{nosep, leftmargin=*}
 
-% Reduce space around floats and sections
-\setlength{\intextsep}{2pt plus 1pt minus 1pt}
-\setlength{\floatsep}{2pt plus 1pt minus 1pt}
-\setlength{\textfloatsep}{3pt plus 1pt minus 1pt}
-\setlength{\abovecaptionskip}{2pt}
-\setlength{\belowcaptionskip}{0pt}
+% Natural float spacing
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
 \usepackage{titlesec}
-\titlespacing*{\section}{0pt}{8pt plus 2pt minus 2pt}{4pt plus 2pt minus 2pt}
-\titlespacing*{\subsection}{0pt}{6pt plus 2pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing*{\section}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 2pt minus 2pt}
+\titlespacing*{\subsection}{0pt}{8pt plus 2pt minus 2pt}{3pt plus 1pt minus 1pt}
 
+\tolerance=400
+\emergencystretch=1em
 \graphicspath{{figures/}}
 
 \begin{document}
@@ -103,11 +105,11 @@ IV. Abbreviations and Acronyms & 2 \\
 V. Acknowledgements & 3 \\
 VI. Biography & 3 \\
 1. Introduction & 3 \\
-2. Materials and Methods & 5 \\
-3. Results & 8 \\
-4. Discussion & 15 \\
-5. Conclusions & 17 \\
-6. References & 18 \\
+2. Materials and Methods & 4 \\
+3. Results & 7 \\
+4. Discussion & 12 \\
+5. Conclusions & 14 \\
+6. References & 14 \\
 \end{tabular}
 
 % ============================================================
@@ -224,47 +226,49 @@ Each sensing modality requires a specialized neural architecture. SENTINEL's pip
 
 \textbf{HydroViT} (Satellite): Satellite remote sensing fills the spatial gaps between point sensors, but paired satellite--in-situ training data is scarce and many pollutants are optically invisible. HydroViT v9 is a CNN-ViT hybrid (Figure~\ref{fig:enc_sensor}b): a 3-layer stride-1 CNN ($10 \rightarrow 32 \rightarrow 64 \rightarrow 128$ channels) extracts local spectral features before a ViT-S/16 encoder captures global spatial relationships. Per-parameter band attention weights are physics-initialized (e.g., chlorophyll-a prioritizes bands 2--4). Training proceeds in two phases: CNN+head training with frozen ViT (80 epochs), then full fine-tuning (120 epochs) with cosine annealing. Trained on 5,464 co-registered Sentinel-2/in-situ pairs for 11 WQ parameters, HydroViT achieves water temperature R$^2$ = 0.893, outperforming DenseNet121 (HydroVision-style [23], R$^2$ = 0.884, +0.009) and excelling on TSS (+0.100) and phycocyanin (+0.097).
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[t]{\textwidth}
 \centering
-\includegraphics[width=0.78\textwidth]{fig_encoder_aquassm.jpg}
-\caption{AquaSSM sensor encoder. Eight parallel continuous-time state-space model (CT-SSM) channels spanning 1 hour to 365 days process irregularly-sampled multi-parameter sensor data. Short channels capture rapid conductance spikes from acute contamination; long channels track seasonal dissolved oxygen decline. State transitions are parameterized as $\mathbf{h}(t) = \exp(\mathbf{A} \cdot \Delta t) \mathbf{h}(t-1)$, naturally handling arbitrary time gaps from maintenance or telemetry failures. Trained on 291,855 real USGS NWIS sequences from 1,130 stations (AUROC = 0.939).}
+\includegraphics[width=0.58\textwidth]{fig_encoder_aquassm.jpg}
+\caption{AquaSSM: eight parallel CT-SSM channels (1h--365d) for irregularly-sampled sensor data (AUROC = 0.939).}
 \end{subfigure}
-\vspace{4pt}
+\vspace{2pt}
 \begin{subfigure}[t]{\textwidth}
 \centering
-\includegraphics[width=0.78\textwidth]{fig_encoder_hydrovit.jpg}
-\caption{HydroViT v9 satellite encoder. A CNN-ViT hybrid: 3-layer stride-1 CNN ($10 \rightarrow 32 \rightarrow 64 \rightarrow 128$ channels) extracts local spectral features, followed by ViT-S/16 for global spatial relationships. Per-parameter band attention weights are physics-initialized (e.g., chlorophyll-a prioritizes bands 2--4). Two-phase training: self-supervised MAE pretraining on 2,986 Sentinel-2 patches (75\% masking), then supervised fine-tuning on 5,464 paired satellite--in-situ samples for 11 water quality parameters (water temperature R$^2$ = 0.893, beating DenseNet121 by +0.009).}
+\includegraphics[width=0.58\textwidth]{fig_encoder_hydrovit.jpg}
+\caption{HydroViT v9: CNN-ViT hybrid with MAE pretraining on Sentinel-2 (water temp R$^2$ = 0.893).}
 \end{subfigure}
-\caption{Sensor and satellite encoder architectures. Both encoders address the core challenge of their modality: AquaSSM handles irregular temporal sampling with continuous-time dynamics, while HydroViT overcomes paired-data scarcity with self-supervised pretraining.}
+\caption{Sensor and satellite encoder architectures.}
 \label{fig:enc_sensor}
 \end{figure}
 
-\textbf{MicroBiomeNet} (Microbial): Microbiome data is compositional---OTU abundances sum to a constant, creating spurious correlations if analyzed with standard methods [11]. MicroBiomeNet operates natively in Aitchison simplex geometry (Figure~\ref{fig:enc_micro}): a CLR transform maps compositional data to Euclidean space, followed by an MLP and Neural ODE modeling temporal community dynamics. Trained on 20,288 EMP 16S rRNA samples spanning 127 habitats, it classifies aquatic sources into 8 categories (F1 = 0.913, per-class range 0.72--0.95).
-
-\begin{figure}[H]
+\begin{wrapfigure}{r}{0.38\textwidth}
 \centering
-\includegraphics[width=0.38\textwidth]{fig_encoder_microbiomenet.jpg}
-\caption{MicroBiomeNet encoder. Compositional 16S rRNA amplicon data is mapped from the Aitchison simplex to Euclidean space via CLR transform, then processed by an MLP and Neural ODE modeling temporal community dynamics. The architecture respects the compositional constraint that standard methods violate (F1 = 0.913 on 20,288 EMP samples).}
+\vspace{-10pt}
+\includegraphics[width=0.36\textwidth]{fig_encoder_microbiomenet.jpg}
+\caption{MicroBiomeNet encoder: CLR transform + MLP + Neural ODE for compositional 16S data (F1 = 0.913).}
 \label{fig:enc_micro}
-\end{figure}
+\vspace{-8pt}
+\end{wrapfigure}
+
+\textbf{MicroBiomeNet} (Microbial): Microbiome data is compositional---OTU abundances sum to a constant, creating spurious correlations if analyzed with standard methods [11]. MicroBiomeNet operates natively in Aitchison simplex geometry (Figure~\ref{fig:enc_micro}): a CLR transform maps compositional data to Euclidean space, followed by an MLP and Neural ODE modeling temporal community dynamics. Trained on 20,288 EMP 16S rRNA samples spanning 127 habitats, it classifies aquatic sources into 8 categories (F1 = 0.913, per-class range 0.72--0.95).
 
 \textbf{ToxiGene} (Molecular): Gene expression data is high-dimensional ($\sim$84K genes) but structured: genes participate in pathways, pathways drive processes, and processes cause adverse outcomes. ToxiGene mirrors this hierarchy (Figure~\ref{fig:enc_toxi}) using sparse Reactome/AOP-Wiki connections, constraining 145.2M parameters to mechanistically plausible relationships. Trained on 84K genes from NCBI GEO plus 268K EPA ECOTOX records across 1,391 chemicals. To our knowledge, ToxiGene is the first supervised method for multi-label toxicity classification directly from RNA-seq expression profiles. Closest prior art addresses different problems: MTForestNet [26] predicts chemical--gene interactions from molecular fingerprints (not transcriptomics), Senn et al.\ [27] cluster transcriptomic responses without contaminant labels, and Gagn\'e et al.\ [28] use unsupervised pathway enrichment for effluent characterization.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{fig_encoder_toxigene.jpg}
-\caption{ToxiGene molecular encoder (145.2M parameters). \textbf{Left}: Hierarchical sparse architecture mirrors the biological gene $\rightarrow$ pathway $\rightarrow$ process $\rightarrow$ adverse outcome hierarchy, with sparse connections constrained by Reactome and AOP-Wiki. \textbf{Right}: Full-scale network with biologically-informed sparsity---268K EPA ECOTOX records provide pathway supervision ($\lambda = 0.3$).}
+\includegraphics[width=0.52\textwidth]{fig_encoder_toxigene.jpg}
+\caption{ToxiGene encoder (145.2M params). Hierarchical gene $\rightarrow$ pathway $\rightarrow$ process $\rightarrow$ outcome architecture with Reactome/AOP-Wiki sparse constraints.}
 \label{fig:enc_toxi}
 \end{figure}
 
 \textbf{BioMotion} (Behavioral): Organismal behavior is the fastest biological response to contamination---invertebrates alter swimming within minutes, before chemical sensors register a change [4]. BioMotion uses diffusion pretraining (Figure~\ref{fig:biomotion}): a denoising U-Net learns the distribution of healthy \textit{Daphnia magna} trajectories by reconstructing clean data from progressively corrupted inputs. At inference, toxicant-exposed trajectories produce high reconstruction error as the anomaly score---avoiding threshold tuning entirely. Trained on 28,610 real EPA ECOTOX concentration-response tests spanning 1,391 chemicals (AUROC = 1.000, Cohen's $d$ = 2.655).
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{fig_encoder_biomotion.jpg}
-\caption{BioMotion behavioral encoder. A denoising diffusion U-Net learns healthy \textit{Daphnia magna} trajectory distributions; toxicant-exposed trajectories produce high reconstruction error as the anomaly score. Trained on 28,610 real EPA ECOTOX tests spanning 1,391 chemicals. AUROC = 1.000, outperforming the Deep Autoencoder [25] by +0.042 on 10$\times$ more data.}
+\includegraphics[width=0.52\textwidth]{fig_encoder_biomotion.jpg}
+\caption{BioMotion encoder. Diffusion U-Net learns healthy \textit{Daphnia magna} trajectory distributions; anomaly = reconstruction error (AUROC = 1.000).}
 \label{fig:biomotion}
 \end{figure}
 
@@ -304,8 +308,8 @@ BioMotion (Behavioral) & AUROC & 1.000 [1.000, 1.000] & $>$0.80 \\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.88\textwidth]{fig2_sota_comparison.jpg}
-\caption{SENTINEL encoders vs.\ published state-of-the-art and baselines on standardized benchmark splits. Dark green = SENTINEL (ours); navy = published SOTA with citations; blue = ML/DL baselines; grey hatched = external methods on different tasks (not directly comparable). Dashed red lines mark performance thresholds. AquaSSM outperforms MCN-LSTM [24] by +0.052 AUROC on USGS sensor data ($n = 762$). HydroViT v9 outperforms DenseNet121/HydroVision [23] by +0.009 R$^2$ on water temperature ($n = 5{,}464$). BioMotion outperforms the Deep Autoencoder [25] by +0.042 AUROC on behavioral data ($n = 28{,}610$). MicroBiomeNet establishes a first-in-class benchmark for 8-class EMP aquatic source classification. ToxiGene is the first supervised method for multi-label toxicity classification from RNA-seq---closest prior art either uses molecular fingerprints as input (MTForestNet [26], AUC = 0.911 on a different task) or performs unsupervised clustering without classification metrics [27, 28].}
+\includegraphics[width=0.78\textwidth]{fig2_sota_comparison.jpg}
+\caption{SENTINEL encoders vs.\ published SOTA and baselines. Green = ours; navy = published SOTA; blue = baselines; grey hatched = external methods on different tasks. AquaSSM +0.052 vs MCN-LSTM [24]; HydroViT +0.009 vs DenseNet121 [23]; BioMotion +0.042 vs Deep AE [25]. ToxiGene is first-in-class [26--28].}
 \label{fig:sota}
 \end{figure}
 
@@ -314,10 +318,10 @@ BioMotion (Behavioral) & AUROC & 1.000 [1.000, 1.000] & $>$0.80 \\
 
 The core scientific claim of this work is that jointly reasoning across five sensing modalities detects contamination that no single modality can catch alone. The 31-condition ablation study---evaluating every non-empty subset of the 5 modalities ($2^5 - 1 = 31$ conditions)---provides comprehensive evidence (Figure~\ref{fig:ablation}). Full fusion achieves AUROC = 0.992, significantly outperforming the best single modality (sensor-only, 0.943) with $p = 0.002$ by paired permutation test. This is not a marginal improvement: the gap between sensor-only and full fusion corresponds to the difference between missing 1 in 20 contamination events and missing fewer than 1 in 100.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{fig5_ablation.jpg}
-\caption{Modality ablation analysis. \textbf{Left}: AUROC drop when each modality is removed from the full 5-modal fusion, revealing that sensor data ($-0.246$) and behavioral monitoring ($-0.174$) are the most critical inputs---removing either degrades performance more than removing all other modalities combined. \textbf{Right}: Cumulative build-up from the best single modality (sensor-only, 0.943) to full 5-modal fusion (0.992, $p = 0.002$ by paired permutation test), showing diminishing but statistically significant returns as each modality is added.}
+\includegraphics[width=0.72\textwidth]{fig5_ablation.jpg}
+\caption{Modality ablation. \textbf{Left}: AUROC drop when each modality is removed. \textbf{Right}: Cumulative build-up from sensor-only (0.943) to full fusion (0.992, $p = 0.002$).}
 \label{fig:ablation}
 \end{figure}
 
@@ -332,19 +336,19 @@ SENTINEL also degrades gracefully when not all modalities are available. Across 
 
 The strongest evidence for SENTINEL's early warning capability comes from \textit{real inference on downloaded USGS sensor data}. AquaSSM was run directly on continuous 15-minute sensor records from USGS NWIS stations near 10 major contamination events. Of the 8 events with sufficient multi-parameter sensor coverage, \textbf{6 were detected before official reports} with a mean lead time of \textbf{66.4 days} (Figure~\ref{fig:detection}): Chesapeake Bay Hypoxia 2018 (\textbf{89.8 days}, 34,831 records, max $p = 0.999$), Gulf of Mexico Dead Zone 2023 (\textbf{87.2 days}), Lake Erie HAB 2023 (\textbf{59.3 days}, max $p = 0.997$), Klamath River HAB 2021 (\textbf{59.2 days}), Mississippi Salinity Intrusion 2023 (\textbf{58.6 days}), and Jordan Lake HAB (\textbf{44.3 days}).
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.60\textwidth]{fig4_case_studies.jpg}
-\caption{Detection lead time for all 31 validated contamination events, sorted by lead time. Dark green bars (6 events) indicate real USGS inference---AquaSSM was run directly on downloaded 15-minute sensor records from USGS NWIS stations, producing lead times of 44--90 days with max anomaly probabilities $\geq 0.993$. Teal bars (6 events) are real NEON sensor detections at sites never seen during training. Blue bars (21 events) are research-validated from published EPA, USGS, and state agency records. Light green bars are historical estimates. Mean lead time across all 31 events: 32 days. Dashed red line marks the mean.}
+\includegraphics[width=0.50\textwidth]{fig4_case_studies.jpg}
+\caption{Detection lead time for 31 contamination events. Green = real USGS inference (6); teal = real NEON (6); blue = research-validated (21). Mean lead: 32 days.}
 \label{fig:detection}
 \end{figure}
 
 Figure~\ref{fig:timeline} illustrates the full pipeline on the Lake Erie HAB 2023. HydroViT detects subtle chlorophyll-a elevation 10 days before the official report---before any visible bloom in RGB imagery. AquaSSM activates 5 days later as dissolved oxygen declines. By Day $-3$, fusion crosses $p = 0.80$, conformal prediction excludes ``normal,'' and the cascade escalator issues an Alert while the TP $\rightarrow$ COD causal chain identifies the eutrophication mechanism.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{fig_lake_erie_timeline.jpg}
-\caption{SENTINEL multi-modal detection timeline for the Lake Erie HAB 2023 case study, illustrating how each modality contributes at a different timescale. \textbf{Row 1}: Sentinel-2 satellite imagery and HydroViT anomaly score detect subtle chlorophyll-a spectral elevation at Day $-10$, before any visible bloom in RGB imagery. \textbf{Row 2}: USGS sensor data (DO, pH, turbidity) and AquaSSM's 12-hour channel activate at Day $-5$ as dissolved oxygen begins declining. \textbf{Row 3}: SENTINEL-Fusion anomaly probability crosses 0.80 at Day $-3$; conformal prediction band excludes ``normal''; cascade escalation progresses from Monitor $\rightarrow$ Investigate $\rightarrow$ Alert $\rightarrow$ Emergency. \textbf{Row 4}: Causal chain (TP $\rightarrow$ COD, 147-hour eutrophication lag) fires concurrently, identifying the active pollution mechanism. Total early warning lead time: +201.6 hours before EPA report.}
+\includegraphics[width=0.68\textwidth]{fig_lake_erie_timeline.jpg}
+\caption{Lake Erie HAB 2023 multi-modal detection timeline. Satellite detects chlorophyll-a at Day $-10$; sensors activate at Day $-5$; fusion crosses 0.80 at Day $-3$; causal chain identifies eutrophication mechanism. Lead time: +201.6 hours.}
 \label{fig:timeline}
 \end{figure}
 
@@ -363,10 +367,10 @@ PCMCI+ causal discovery analysis [14] on 20 GRQA monitoring sites (18 million re
 
 \textbf{NH4 $\rightarrow$ COD (81-hour lag):} Nitrification consumes oxygen as bacteria convert ammonia to nitrate. SENTINEL recovers this 3.4-day lag, consistent with known kinetics in temperate surface waters.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{fig_causal_network_v2.jpg}
-\caption{Causal pollution chain network discovered from 18 million real GRQA records across 20 monitoring sites using PCMCI+ conditional independence testing [14]. 375 total chain instances across 91 unique types. Solid arrows represent known biogeochemical mechanisms (e.g., TP $\rightarrow$ COD eutrophication, NH4 $\rightarrow$ COD nitrification); dashed arrows represent 44 novel chains absent from existing environmental databases---testable hypotheses for environmental scientists. Node size reflects trigger frequency (nutrients largest). Arrow color: green = positive causal effect, red = negative. Mean propagation lag: 90.2 hours ($\approx$3.8 days), directly translating to management response windows.}
+\includegraphics[width=0.68\textwidth]{fig_causal_network_v2.jpg}
+\caption{Causal pollution chain network from 18M real GRQA records (PCMCI+ [14]). 375 chains across 91 types; solid = known mechanisms, dashed = 44 novel chains. Mean lag: 90.2 hours.}
 \label{fig:causal}
 \end{figure}
 
@@ -381,10 +385,10 @@ The guarantee is distribution-free: it holds regardless of the underlying data d
 
 Critically, the guarantee must be calibrated on \textit{real} data. Initial calibration on synthetic embeddings produced coverage as low as 0.375 (satellite) and 0.000 (microbial). Recalibrating on 13,202 real encoder embeddings resolved this: satellite coverage jumped to \textbf{0.963}, microbial to \textbf{0.917}, and all modalities with $n > 1{,}000$ now meet the 0.95 target.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{fig9_fpr_persistence.jpg}
-\caption{Empirical false positive and alert persistence analysis. \textbf{Left}: Alert rate at the operational threshold of 0.9. Ten clean NEON monitoring sites (8,739 total windows) produce exactly zero false alerts---specificity = 1.0. In contrast, 6 real contamination events trigger detection rates of 10--100\%, with Jordan Lake and Klamath HABs sustaining continuous above-threshold scores throughout the entire pre-event monitoring period. \textbf{Right}: Maximum consecutive windows above threshold for each event. Real contamination events sustain alerts for up to 89 consecutive windows (Klamath HAB, spanning 59 days), while clean sites never produce even a single above-threshold window. The persistence ratio of 31:0 confirms that SENTINEL alerts are sustained signals, not transient noise.}
+\includegraphics[width=0.72\textwidth]{fig9_fpr_persistence.jpg}
+\caption{False positive and alert persistence. \textbf{Left}: Zero false alerts on 10 clean NEON sites (specificity = 1.0) vs.\ 10--100\% detection on contamination events. \textbf{Right}: Persistence ratio of 31:0 (event vs.\ clean consecutive windows above threshold).}
 \label{fig:fpr}
 \end{figure}
 
