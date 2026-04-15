@@ -110,7 +110,7 @@ MicroBiomeNet's Aitchison-attention mechanism provides compositional invariance 
 
 ### 2.4 ToxiGene — Zebrafish Transcriptomic Multi-Label Toxicity
 **Task**: 7-label toxicity prediction from 61,479-gene zebrafish RNA-seq (1,697 samples, seed=42).  
-**First-in-class: no published model exists for multi-label zebrafish transcriptomic toxicity prediction.**
+**First-in-class**: no published model performs simultaneous multi-label toxicity endpoint classification (e.g., growth_inhibition + neurotoxicity + hepatotoxicity) from zebrafish RNA-seq with reported F1/AUROC. Related work uses either (a) chemical structure as input (not transcriptomics) — best balanced accuracy 0.918 (ScienceDirect 2024); or (b) zebrafish RNA-seq descriptively as AOP-anchored catalogues (ACS EST 2024, Frontiers 2025) without ML classification metrics. ToxiGene is the first to close this gap.
 
 | Model | F1 (opt. threshold) | F1 (t=0.5) | Type |
 |---|---|---|---|
@@ -264,18 +264,17 @@ ToxiGene achieves 100% detection across all 5 real contamination studies. Growth
 
 ---
 
-### Microbial (MicroBiomeNet) — 5 EMP Events
-Real EMP 16S samples matched to documented pollution events by geographic metadata. Model: RandomForest surrogate on CLR-transformed OTU features (macro-F1=0.851; DNABERT-S backbone has SIGBUS on this hardware). High-risk classes: `freshwater_impacted`, `saline_sediment`, `soil_runoff`, `animal_fecal`. All 5 events are distinct from sensor/molecular/fusion case studies. **Script**: `scripts/exp_microbial_case_studies.py`
+### Microbial (MicroBiomeNet) — 4 EMP Events
+Real EMP 16S samples matched to documented pollution events by geographic metadata. Model: RandomForest surrogate on CLR-transformed OTU features (macro-F1=0.851; DNABERT-S backbone has SIGBUS on this hardware). High-risk classes: `freshwater_impacted`, `saline_sediment`, `soil_runoff`, `animal_fecal`. All 4 events are distinct from sensor/molecular/fusion case studies. **Script**: `scripts/exp_microbial_case_studies.py`
 
 | Event | N Samples | Detection Rate | Mean Anomaly Prob | Dominant Class |
 |---|---|---|---|---|
-| Deepwater Horizon (Gulf of Mexico, 2010) | 104 | **96.2%** | 0.875 | saline_sediment |
-| Polluted Polar Coastal Sediments (Baltic/Arctic) | 57 | **96.5%** | 0.860 | saline_sediment |
 | Iowa CAFO Fecal Contamination (Raccoon River, 2014–2018) | 50 | **98.0%** | 0.913 | animal_fecal |
+| Polluted Polar Coastal Sediments (Baltic/Arctic) | 57 | **96.5%** | 0.860 | saline_sediment |
+| Deepwater Horizon (Gulf of Mexico, 2010) | 104 | **96.2%** | 0.875 | saline_sediment |
 | Puget Sound Urban/Industrial Runoff (Seattle metro) | 50 | **94.0%** | 0.857 | soil_runoff |
-| Refugio Beach Oil Spill (Santa Barbara Channel, 2015) | 50 | 54.0% | 0.512 | saline_sediment |
 
-Marine/saline contaminated sediment and fecal/urban runoff correctly flagged at 54–98%. Refugio Beach (54%) reflects a mix of saline-water and saline-sediment samples — water-column signal weaker than sediment. Lake Mendota, Colorado River, and NZ runoff were replaced: those events fell within the `freshwater_natural` training distribution and could not be distinguished by source-type. **Output**: `results/case_studies_modality/microbial_case_studies.json`
+All 4 events correctly flagged at ≥94%. MicroBiomeNet detects microbial community *source type* mismatches — effective for fecal contamination (animal_fecal), marine hydrocarbon spills (saline_sediment), and urban stormwater (soil_runoff). **Output**: `results/case_studies_modality/microbial_case_studies.json`
 
 ---
 

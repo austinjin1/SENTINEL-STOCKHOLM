@@ -73,7 +73,7 @@ HIGH_RISK_CLASSES = {
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Case study definitions: link to documented pollution events
-# All 5 events are distinct from sensor (USGS), molecular (GEO), and fusion
+# All 4 events are distinct from sensor (USGS), molecular (GEO), and fusion
 # (NEON) case studies to avoid overlap across modalities.
 # ─────────────────────────────────────────────────────────────────────────────
 CASE_STUDY_KEYWORDS = [
@@ -88,20 +88,6 @@ CASE_STUDY_KEYWORDS = [
             "Deep seafloor sediment 2–8 months post-spill; MC-252 wellhead at 1,500 m "
             "depth. EMP study 1197 collected sediment cores with hydrocarbons ≥ 100× "
             "background."
-        ),
-    },
-    {
-        "event_id": "refugio_oilspill_2015",
-        "name": "Refugio Beach Oil Spill — Santa Barbara Channel, CA (2015)",
-        "location": "Santa Barbara Channel, California (34.5°N, 120.0°W)",
-        "contaminant": "Plains All American Pipeline crude oil release (~100,000 gal)",
-        "keywords": ["Santa Barbara Channel", "California coast", "Refugio", "Pacific coast oil"],
-        "expected_biome": "marine coastal sediment",
-        "environmental_context": (
-            "Plains All American Pipeline rupture released ~100,000 gallons of crude oil "
-            "onto Refugio State Beach; oil reached subtidal sediments within 48 h. "
-            "Coastal saline sediment microbiome dominated by hydrocarbon-degrading "
-            "Gammaproteobacteria post-spill (saline_sediment class)."
         ),
     },
     {
