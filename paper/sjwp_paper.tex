@@ -243,28 +243,28 @@ Each sensing modality requires a specialized neural architecture. SENTINEL's pip
 
 \textbf{MicroBiomeNet} (Microbial): Microbiome data is compositional---OTU abundances sum to a constant, creating spurious correlations if analyzed with standard methods [11]. MicroBiomeNet operates natively in Aitchison simplex geometry (Figure~\ref{fig:enc_micro}): a CLR transform maps compositional data to Euclidean space, followed by an MLP and Neural ODE modeling temporal community dynamics. Trained on 20,288 EMP 16S rRNA samples spanning 127 habitats, it classifies aquatic sources into 8 categories (F1 = 0.913, per-class range 0.72--0.95).
 
-\textbf{ToxiGene} (Molecular): Gene expression data is high-dimensional ($\sim$84K genes) but structured: genes participate in pathways, pathways drive processes, and processes cause adverse outcomes. ToxiGene mirrors this hierarchy (Figure~\ref{fig:enc_toxi}) using sparse connections from Reactome/AOP-Wiki, constraining 145.2M parameters to mechanistically plausible relationships. An information bottleneck discovers minimal diagnostic gene panels. Trained on 84K genes from NCBI GEO plus 268K EPA ECOTOX records across 1,391 chemicals and 8 toxicity classes.
-
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.25\textwidth]{fig_encoder_microbiomenet.jpg}
+\includegraphics[width=0.38\textwidth]{fig_encoder_microbiomenet.jpg}
 \caption{MicroBiomeNet encoder. Compositional 16S rRNA amplicon data is mapped from the Aitchison simplex to Euclidean space via CLR transform, then processed by an MLP and Neural ODE modeling temporal community dynamics. The architecture respects the compositional constraint that standard methods violate (F1 = 0.913 on 20,288 EMP samples).}
 \label{fig:enc_micro}
 \end{figure}
 
+\textbf{ToxiGene} (Molecular): Gene expression data is high-dimensional ($\sim$84K genes) but structured: genes participate in pathways, pathways drive processes, and processes cause adverse outcomes. ToxiGene mirrors this hierarchy (Figure~\ref{fig:enc_toxi}) using sparse Reactome/AOP-Wiki connections, constraining 145.2M parameters to mechanistically plausible relationships. Trained on 84K genes from NCBI GEO plus 268K EPA ECOTOX records across 1,391 chemicals.
+
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{fig_encoder_toxigene.jpg}
-\caption{ToxiGene molecular encoder (145.2M parameters). \textbf{Left}: Hierarchical sparse architecture mirrors the biological gene $\rightarrow$ pathway $\rightarrow$ process $\rightarrow$ adverse outcome hierarchy, with sparse connections constrained by Reactome and AOP-Wiki. \textbf{Right}: Full-scale network with biologically-informed sparsity---268K EPA ECOTOX records provide pathway supervision ($\lambda = 0.3$). Trained on 84K genes across 1,391 chemicals and 7 toxicity classes.}
+\includegraphics[width=0.72\textwidth]{fig_encoder_toxigene.jpg}
+\caption{ToxiGene molecular encoder (145.2M parameters). \textbf{Left}: Hierarchical sparse architecture mirrors the biological gene $\rightarrow$ pathway $\rightarrow$ process $\rightarrow$ adverse outcome hierarchy, with sparse connections constrained by Reactome and AOP-Wiki. \textbf{Right}: Full-scale network with biologically-informed sparsity---268K EPA ECOTOX records provide pathway supervision ($\lambda = 0.3$).}
 \label{fig:enc_toxi}
 \end{figure}
 
-\textbf{BioMotion} (Behavioral): Organismal behavior is the fastest biological response to contamination---invertebrates alter swimming within minutes, before chemical sensors register a change [4]. BioMotion uses diffusion pretraining (Figure~\ref{fig:biomotion}): a denoising U-Net learns the distribution of healthy \textit{Daphnia magna} trajectories by reconstructing clean data from progressively corrupted inputs. At inference, toxicant-exposed trajectories produce high reconstruction error as the anomaly score---avoiding threshold tuning entirely. Trained on 17,074 real EPA ECOTOX concentration-response tests spanning 1,391 chemicals (AUROC = 1.000, Cohen's $d$ = 2.655).
+\textbf{BioMotion} (Behavioral): Organismal behavior is the fastest biological response to contamination---invertebrates alter swimming within minutes, before chemical sensors register a change [4]. BioMotion uses diffusion pretraining (Figure~\ref{fig:biomotion}): a denoising U-Net learns the distribution of healthy \textit{Daphnia magna} trajectories by reconstructing clean data from progressively corrupted inputs. At inference, toxicant-exposed trajectories produce high reconstruction error as the anomaly score---avoiding threshold tuning entirely. Trained on 28,610 real EPA ECOTOX concentration-response tests spanning 1,391 chemicals (AUROC = 1.000, Cohen's $d$ = 2.655).
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.78\textwidth]{fig_encoder_biomotion.jpg}
-\caption{BioMotion behavioral encoder. A denoising diffusion U-Net learns the distribution of healthy \textit{Daphnia magna} locomotion trajectories by reconstructing clean data from progressively corrupted inputs. At inference, toxicant-exposed trajectories produce high reconstruction error as the anomaly score---no threshold tuning required. Trained on 28,610 real EPA ECOTOX concentration-response tests spanning 1,391 chemicals. AUROC = 1.000, outperforming the published Deep Autoencoder (PLOS CompBio 2024) by +0.042 AUROC on 10$\times$ more data.}
+\includegraphics[width=0.72\textwidth]{fig_encoder_biomotion.jpg}
+\caption{BioMotion behavioral encoder. A denoising diffusion U-Net learns healthy \textit{Daphnia magna} trajectory distributions; toxicant-exposed trajectories produce high reconstruction error as the anomaly score. Trained on 28,610 real EPA ECOTOX tests spanning 1,391 chemicals. AUROC = 1.000, outperforming the Deep Autoencoder [25] by +0.042 on 10$\times$ more data.}
 \label{fig:biomotion}
 \end{figure}
 
@@ -304,7 +304,7 @@ BioMotion (Behavioral) & AUROC & 1.000 [1.000, 1.000] & $>$0.80 \\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{fig2_sota_comparison.jpg}
+\includegraphics[width=0.88\textwidth]{fig2_sota_comparison.jpg}
 \caption{SENTINEL encoders vs.\ published state-of-the-art and baselines on standardized benchmark splits. Dark green = SENTINEL (ours); navy = published SOTA with citations; blue = ML/DL baselines. Dashed red lines mark performance thresholds. AquaSSM outperforms MCN-LSTM [24] by +0.052 AUROC on USGS sensor data ($n = 762$). HydroViT v9 outperforms DenseNet121/HydroVision [23] by +0.009 R$^2$ on water temperature ($n = 5{,}464$). BioMotion outperforms the Deep Autoencoder [25] by +0.042 AUROC on behavioral data ($n = 28{,}610$). MicroBiomeNet and ToxiGene establish first-in-class benchmarks where no prior published model exists.}
 \label{fig:sota}
 \end{figure}
@@ -316,7 +316,7 @@ The core scientific claim of this work is that jointly reasoning across five sen
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{fig5_ablation.jpg}
+\includegraphics[width=0.88\textwidth]{fig5_ablation.jpg}
 \caption{Modality ablation analysis. \textbf{Left}: AUROC drop when each modality is removed from the full 5-modal fusion, revealing that sensor data ($-0.246$) and behavioral monitoring ($-0.174$) are the most critical inputs---removing either degrades performance more than removing all other modalities combined. \textbf{Right}: Cumulative build-up from the best single modality (sensor-only, 0.943) to full 5-modal fusion (0.992, $p = 0.002$ by paired permutation test), showing diminishing but statistically significant returns as each modality is added.}
 \label{fig:ablation}
 \end{figure}
@@ -334,7 +334,7 @@ The strongest evidence for SENTINEL's early warning capability comes from \texti
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth]{fig4_case_studies.jpg}
+\includegraphics[width=0.60\textwidth]{fig4_case_studies.jpg}
 \caption{Detection lead time for all 31 validated contamination events, sorted by lead time. Dark green bars (6 events) indicate real USGS inference---AquaSSM was run directly on downloaded 15-minute sensor records from USGS NWIS stations, producing lead times of 44--90 days with max anomaly probabilities $\geq 0.993$. Teal bars (6 events) are real NEON sensor detections at sites never seen during training. Blue bars (21 events) are research-validated from published EPA, USGS, and state agency records. Light green bars are historical estimates. Mean lead time across all 31 events: 32 days. Dashed red line marks the mean.}
 \label{fig:detection}
 \end{figure}
@@ -343,7 +343,7 @@ Figure~\ref{fig:timeline} illustrates the full pipeline on the Lake Erie HAB 202
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{fig_lake_erie_timeline.jpg}
+\includegraphics[width=0.85\textwidth]{fig_lake_erie_timeline.jpg}
 \caption{SENTINEL multi-modal detection timeline for the Lake Erie HAB 2023 case study, illustrating how each modality contributes at a different timescale. \textbf{Row 1}: Sentinel-2 satellite imagery and HydroViT anomaly score detect subtle chlorophyll-a spectral elevation at Day $-10$, before any visible bloom in RGB imagery. \textbf{Row 2}: USGS sensor data (DO, pH, turbidity) and AquaSSM's 12-hour channel activate at Day $-5$ as dissolved oxygen begins declining. \textbf{Row 3}: SENTINEL-Fusion anomaly probability crosses 0.80 at Day $-3$; conformal prediction band excludes ``normal''; cascade escalation progresses from Monitor $\rightarrow$ Investigate $\rightarrow$ Alert $\rightarrow$ Emergency. \textbf{Row 4}: Causal chain (TP $\rightarrow$ COD, 147-hour eutrophication lag) fires concurrently, identifying the active pollution mechanism. Total early warning lead time: +201.6 hours before EPA report.}
 \label{fig:timeline}
 \end{figure}
@@ -383,7 +383,7 @@ Critically, the guarantee must be calibrated on \textit{real} data. Initial cali
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{fig9_fpr_persistence.jpg}
+\includegraphics[width=0.88\textwidth]{fig9_fpr_persistence.jpg}
 \caption{Empirical false positive and alert persistence analysis. \textbf{Left}: Alert rate at the operational threshold of 0.9. Ten clean NEON monitoring sites (8,739 total windows) produce exactly zero false alerts---specificity = 1.0. In contrast, 6 real contamination events trigger detection rates of 10--100\%, with Jordan Lake and Klamath HABs sustaining continuous above-threshold scores throughout the entire pre-event monitoring period. \textbf{Right}: Maximum consecutive windows above threshold for each event. Real contamination events sustain alerts for up to 89 consecutive windows (Klamath HAB, spanning 59 days), while clean sites never produce even a single above-threshold window. The persistence ratio of 31:0 confirms that SENTINEL alerts are sustained signals, not transient noise.}
 \label{fig:fpr}
 \end{figure}
@@ -417,20 +417,16 @@ Limitations include geographic bias (95\% US/Europe training data), per-modality
 \section{Conclusions}
 
 \begin{enumerate}
-\item \textbf{Multimodal fusion outperforms single modalities.} Five-modal fusion achieves AUROC = 0.992, significantly outperforming the best single modality (0.943, $p = 0.002$). Cross-modal MI analysis proves the modalities are complementary, not redundant ($I_{\text{sensor-behavioral}} = 0.01$ nats). The system maintains AUROC $>$ 0.90 with any 2 of 5 modalities, enabling deployment even when not all sensing types are available.
+\item \textbf{Multimodal fusion outperforms single modalities.} Five-modal fusion achieves AUROC = 0.992, outperforming the best single modality (0.943, $p = 0.002$). The system maintains AUROC $>$ 0.90 with any 2 of 5 modalities.
 
-\item \textbf{Early detection validated on real data.} Six major contamination events detected on real downloaded USGS sensor data with mean lead time of 66 days (range 44--90 days). Chesapeake Bay hypoxia detected 90 days early; Gulf of Mexico Dead Zone 87 days early; Lake Erie HAB 59 days early. An additional 6 real NEON events detected 18 days before routine monitoring at sites never seen during training, and 21 research-validated events confirm generalization across 9 contamination types.
+\item \textbf{Early detection validated on real data.} Six major events detected on real USGS sensor data with mean lead time of 66 days (44--90 days). An additional 6 NEON events and 21 research-validated events confirm generalization across 9 types.
 
-\item \textbf{Causal discovery reveals pollution mechanisms.} 375 causal chains discovered from real GRQA data across 91 unique types, including 44 novel chains absent from existing environmental databases. The TP $\rightarrow$ COD eutrophication mechanism (147h lag) and NH4 $\rightarrow$ COD nitrification (81h lag) are independently verifiable and translate directly to management response windows.
+\item \textbf{Causal discovery reveals pollution mechanisms.} 375 causal chains from real GRQA data, including 44 novel chains. The TP $\rightarrow$ COD (147h) and NH4 $\rightarrow$ COD (81h) mechanisms translate directly to management response windows.
 
-\item \textbf{Distribution-free safety guarantees make everything deployable.} Conformal prediction provides coverage $\geq$ 0.95 validated on 13,202 real embeddings, with calibrated fusion uncertainty (ECE = 0.086) and zero false positives on 10 clean NEON sites. A live discovery scan across 18 US waterways (January 2025--April 2026) flagged 8 sites with sustained alerts, demonstrating prospective deployment readiness.
+\item \textbf{Distribution-free safety guarantees.} Conformal coverage $\geq$ 0.95 on 13,202 real embeddings, zero false positives on 10 clean sites, and a live discovery scan across 18 US waterways (8 sites flagged) demonstrate deployment readiness.
 \end{enumerate}
 
-% ============================================================
-% 6. REFERENCES
-% ============================================================
 \section{References}
-
 \footnotesize
 \begin{multicols}{2}
 \begin{enumerate}[label={[\arabic*]}, nosep]
@@ -462,8 +458,5 @@ Limitations include geographic bias (95\% US/Europe training data), per-modality
 \end{enumerate}
 \end{multicols}
 \normalsize
-
-% Annex removed to fit page limit. Conformal theory: P(z_{n+1} in C_alpha) >= 1-alpha.
-% All models trained on a single NVIDIA RTX 4060 (8 GB); total 223.1M params, ~72h.
 
 \end{document}
