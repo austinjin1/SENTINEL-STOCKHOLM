@@ -3,7 +3,7 @@
 % === SJWP FORMATTING (matching USA template style) ===
 \usepackage{times}                          % Times New Roman
 \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
-\usepackage{setspace}\setstretch{1.08}      % Near-single spacing
+\usepackage{setspace}\setstretch{1.18}      % Near single spacing
 
 % === PACKAGES ===
 \usepackage[utf8]{inputenc}
@@ -94,21 +94,21 @@ to Detect Contamination Days to Weeks Before Current Methods}}
 Water contamination events expose millions to toxic substances because current monitoring detects pollution too late. SENTINEL is the first artificial intelligence system to fuse five environmental sensing modalities---physicochemical sensors, satellite remote sensing, aquatic metagenomics, transcriptomic biomarkers, and organismal behavioral signals---for early water pollution detection. Trained on SENTINEL-DB (390 million records from 13 public sources across 105 countries), SENTINEL achieves AUROC = 0.939 [95\% CI: 0.922--0.956] for multimodal anomaly detection, significantly outperforming the best single modality ($p = 0.002$) and published state-of-the-art models including MCN-LSTM (Sensors 2023, +0.052 AUROC) and Deep Autoencoder (PLOS CompBio 2024, +0.042 AUROC). Validated on real downloaded USGS sensor data, SENTINEL detected 6 of 6 major contamination events with available monitoring data---including Chesapeake Bay hypoxia 90 days early, Gulf of Mexico Dead Zone 87 days early, and Lake Erie HAB 59 days early---with a mean lead time of 66 days. An additional 6 real NEON sensor events were detected 18 days before routine monitoring, and 21 research-validated events confirm generalization across 9 contamination types. Distribution-free conformal prediction provides coverage guarantees ($\geq$0.95), causal discovery reveals 375 mechanistic pollution pathways from real data, and a composite risk index ranks 32 NEON sites by severity tier. Cost-effective deployment begins at \$0.50 per site per year with satellite coverage alone.
 
 % ============================================================
-% PRELIMINARY MATTERS (all on one page)
+% PRELIMINARY MATTERS (flow after abstract)
 % ============================================================
-\newpage
+\vspace{6pt}
 
 \section*{II. Table of Contents}
 \vspace{-4pt}
 \noindent
 \begin{tabular}{@{}lr@{}}
 I. Abstract & 1 \\
-II--VI. Preliminary Matters & 2 \\
+II--VI. Preliminary Matters & 1 \\
 1. Introduction & 2 \\
 2. Materials and Methods & 4 \\
 3. Results & 9 \\
-4. Discussion & 16 \\
-5. Conclusions & 18 \\
+4. Discussion & 15 \\
+5. Conclusions & 17 \\
 6. References & 18 \\
 \end{tabular}
 
@@ -200,13 +200,13 @@ Each sensing modality requires a specialized neural architecture. SENTINEL's pip
 \centering
 \begin{subfigure}[t]{\textwidth}
 \centering
-\includegraphics[width=0.58\textwidth]{fig_encoder_aquassm.jpg}
+\includegraphics[width=0.52\textwidth]{fig_encoder_aquassm.jpg}
 \caption{AquaSSM: eight parallel CT-SSM channels (1h--365d) for irregularly-sampled sensor data (AUROC = 0.939).}
 \end{subfigure}
 \vspace{2pt}
 \begin{subfigure}[t]{\textwidth}
 \centering
-\includegraphics[width=0.58\textwidth]{fig_encoder_hydrovit.jpg}
+\includegraphics[width=0.52\textwidth]{fig_encoder_hydrovit.jpg}
 \caption{HydroViT v9: CNN-ViT hybrid with MAE pretraining on Sentinel-2 (water temp R$^2$ = 0.893).}
 \end{subfigure}
 \caption{Sensor and satellite encoder architectures.}
@@ -228,7 +228,7 @@ Each sensing modality requires a specialized neural architecture. SENTINEL's pip
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.52\textwidth]{fig_encoder_toxigene.jpg}
+\includegraphics[width=0.45\textwidth]{fig_encoder_toxigene.jpg}
 \caption{ToxiGene encoder (145.2M params). Hierarchical gene $\rightarrow$ pathway $\rightarrow$ process $\rightarrow$ outcome architecture with Reactome/AOP-Wiki sparse constraints.}
 \label{fig:enc_toxi}
 \end{figure}
@@ -237,8 +237,8 @@ Each sensing modality requires a specialized neural architecture. SENTINEL's pip
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.52\textwidth]{fig_encoder_biomotion.jpg}
-\caption{BioMotion encoder. Diffusion U-Net learns healthy \textit{Daphnia magna} trajectory distributions; anomaly = reconstruction error (AUROC = 1.000).}
+\includegraphics[width=0.50\textwidth]{fig_encoder_biomotion.jpg}
+\caption{BioMotion encoder. Diffusion U-Net learns healthy \textit{Daphnia magna} trajectories; anomaly = reconstruction error (AUROC = 1.000).}
 \label{fig:biomotion}
 \end{figure}
 
@@ -280,7 +280,7 @@ BioMotion (Behavioral) & AUROC & 1.000 [1.000, 1.000] & $>$0.80 \\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.78\textwidth]{fig2_sota_comparison.jpg}
+\includegraphics[width=0.75\textwidth]{fig2_sota_comparison.jpg}
 \caption{SENTINEL encoders vs.\ published SOTA and baselines. Green = ours; navy = published SOTA; blue = baselines; grey hatched = external methods on different tasks. AquaSSM +0.052 vs MCN-LSTM [24]; HydroViT +0.009 vs DenseNet121 [23]; BioMotion +0.042 vs Deep AE [25]. ToxiGene is first-in-class [26--28].}
 \label{fig:sota}
 \end{figure}
@@ -294,7 +294,7 @@ The core scientific claim of this work is that jointly reasoning across five sen
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{fig5_ablation.jpg}
+\includegraphics[width=0.68\textwidth]{fig5_ablation.jpg}
 \caption{Modality ablation. \textbf{Left}: AUROC drop when each modality is removed. \textbf{Right}: Cumulative build-up from sensor-only (0.943) to full fusion (0.992, $p = 0.002$).}
 \label{fig:ablation}
 \end{figure}
@@ -321,7 +321,7 @@ Figure~\ref{fig:timeline} illustrates the full pipeline on the Lake Erie HAB 202
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.68\textwidth]{fig_lake_erie_timeline.jpg}
+\includegraphics[width=0.65\textwidth]{fig_lake_erie_timeline.jpg}
 \caption{Lake Erie HAB 2023 multi-modal detection timeline. Satellite detects chlorophyll-a at Day $-10$; sensors activate at Day $-5$; fusion crosses 0.80 at Day $-3$; causal chain identifies eutrophication mechanism. Lead time: +201.6 hours.}
 \label{fig:timeline}
 \end{figure}
@@ -345,7 +345,7 @@ PCMCI+ causal discovery analysis [14] on 20 GRQA monitoring sites (18 million re
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.68\textwidth]{fig_causal_network_v2.jpg}
+\includegraphics[width=0.65\textwidth]{fig_causal_network_v2.jpg}
 \caption{Causal pollution chain network from 18M real GRQA records (PCMCI+ [14]). 375 chains across 91 types; solid = known mechanisms, dashed = 44 novel chains. Mean lag: 90.2 hours.}
 \label{fig:causal}
 \end{figure}
@@ -363,7 +363,7 @@ Critically, the guarantee must be calibrated on \textit{real} data. Initial cali
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{fig9_fpr_persistence.jpg}
+\includegraphics[width=0.70\textwidth]{fig9_fpr_persistence.jpg}
 \caption{False positive and alert persistence. \textbf{Left}: Zero false alerts on 10 clean NEON sites (specificity = 1.0) vs.\ 10--100\% detection on contamination events. \textbf{Right}: Persistence ratio of 31:0 (event vs.\ clean consecutive windows above threshold).}
 \label{fig:fpr}
 \end{figure}
@@ -448,6 +448,5 @@ Taken together, these results demonstrate that multimodal AI can transform water
 \item Hutton, G and Varughese, M (2016). The Costs of Meeting the 2030 Sustainable Development Goal Targets on Drinking Water, Sanitation, and Hygiene. World Bank Water and Sanitation Program Technical Paper.
 \item US EPA (2023). Drinking Water Infrastructure Needs Survey and Assessment: Seventh Report to Congress. EPA 816-K-23-001.
 \end{enumerate}
-\normalsize
 
 \end{document}
