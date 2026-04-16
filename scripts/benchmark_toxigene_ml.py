@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""benchmark_toxigene_ml.py — ML baselines on SAME split as ToxiGene v7.
+"""benchmark_toxigene_ml_v3.py — ML baselines on SAME split as ToxiGene v8.
 
 Runs RandomForest, XGBoost, LogisticRegression, PCA+LR, and ExtraTrees
-on the exact 1187/254/256 split (seed=42, expression_matrix_v2_expanded.npy).
+on the 1750/375/375 split (seed=42, expression_matrix_v3_expanded.npy).
 
-Uses class-specific threshold optimization on val set (same as ToxiGene v7)
-for fair comparison.  Feature selection: top 5000 by max t-statistic (same
-as v6 gene selection) to keep RF/XGB tractable on 61479 features.
+Uses the v3 expanded dataset (2500 samples: 1697 v2 + 708 new real GEO
+samples from 16 datasets + 95 class-conditional augmented).
+
+Feature selection: top 5000 by max t-statistic to keep RF/XGB tractable.
 
 Bryan Cheng, SENTINEL project, 2026
 """
@@ -35,12 +36,12 @@ except ImportError:
 
 PROJECT_ROOT = Path("/home/bcheng/SENTINEL")
 DATA_DIR     = PROJECT_ROOT / "data" / "processed" / "molecular"
-RESULTS_PATH = PROJECT_ROOT / "checkpoints" / "molecular" / "results_ml_baselines.json"
+RESULTS_PATH = PROJECT_ROOT / "checkpoints" / "molecular" / "results_ml_baselines_v3.json"
 
 SEED    = 42
-N_TRAIN = 1187
-N_VAL   = 254
-N_TEST  = 256
+N_TRAIN = 1778
+N_VAL   = 381
+N_TEST  = 381
 N_GENES = 5000   # same discriminative gene selection as v6
 
 OUTCOME_NAMES = [
@@ -104,9 +105,10 @@ def main():
     t0 = time.time()
 
     # ── Load data ─────────────────────────────────────────────────────────────
-    print("Loading data...")
-    X = np.load(str(DATA_DIR / "expression_matrix_v2_expanded.npy"))
-    y = np.load(str(DATA_DIR / "outcome_labels_v2_expanded.npy")).astype(np.float32)
+    print("Loading v3 data...")
+    X = np.load(str(DATA_DIR / "expression_matrix_v3_expanded.npy"))
+    y = np.load(str(DATA_DIR / "outcome_labels_v3_expanded.npy")).astype(np.float32)
+    print(f"  X: {X.shape}, y: {y.shape}")
 
     # Same split as v7 (seed=42)
     rng = np.random.default_rng(SEED)
@@ -131,13 +133,17 @@ def main():
     X_te5 = X_te[:, top_idx]
     print(f"Split: {N_TRAIN}/{N_VAL}/{N_TEST}  |  features: {X_tr5.shape[1]}")
 
+    n_total = len(X)
     results = {
-        "split": f"{N_TRAIN}/{N_VAL}/{N_TEST}",
+        "split": f"{N_TRAIN}/{N_VAL}/{n_total - N_TRAIN - N_VAL}",
+        "n_total": n_total,
         "n_genes": N_GENES,
-        "gene_selection": "max_t_statistic (same as ToxiGene v6/v7)",
+        "dataset": "v3_expanded (2540 samples, 843 new real GEO)",
+        "gene_selection": "max_t_statistic",
         "normalization": "z-score + clip[-10,10]",
-        "threshold_opt": "per-class F1 on val (same as ToxiGene v7)",
+        "threshold_opt": "per-class F1 on val (same as ToxiGene v8)",
         "reference_models": {
+            "ToxiGene_v8":            "TBD",
             "ToxiGene_v7":            0.8860,
             "SimpleMLP_baseline":     0.8896,
         },
@@ -258,11 +264,11 @@ def main():
 
     # ── Summary table ─────────────────────────────────────────────────────────
     print("\n" + "=" * 65)
-    print("ToxiGene — ML Baselines vs DL (SAME 1187/254/256 split, seed=42)")
+    print(f"ToxiGene — ML Baselines vs DL (v3 dataset, {N_TRAIN}/{N_VAL}/{n_total-N_TRAIN-N_VAL} split)")
     print(f"  {'Model':<30} {'F1 (opt thresh)':>16} {'F1 (t=0.5)':>11}  Type")
     print("-" * 65)
     ordered = [
-        ("ToxiGene v7 (ours)",    0.8860, None, "DL"),
+        ("ToxiGene v7 (v2 data)", 0.8860, None, "DL"),
         ("SimpleMLP baseline",    0.8896, None, "DL"),
     ]
     for name, m in results["models"].items():

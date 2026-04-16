@@ -1,30 +1,23 @@
 #!/usr/bin/env python3
-"""
-BioMotion Benchmark — compare against classical and DL baselines.
+"""benchmark_biomotion_sota.py — Add Deep Autoencoder to BioMotion benchmark.
 
-Uses data/processed/behavioral_fullreal/ (expanded dataset).
-SAME split as train_biomotion_expanded.py: seed=42, TEST_FRAC=0.15, VAL_FRAC=0.15,
-stratified by class (separate shuffle of normal and anomalous, then split each).
+Implements the deep autoencoder from:
+  "Detection of Anomalous Behavioral Patterns in Zebrafish Using Deep Autoencoder"
+  PLOS Computational Biology, Sep 2024 (PMC10515950)
+  Best AUROC: 0.740–0.922 across 6 phase-specific models.
+  Dataset: 2,719 treated zebrafish larvae; trained on normal-only, scored by recon. error.
 
-Baselines:
-  1. Statistical threshold (DaphTox-style): flag if mean_speed < 0.3 * pop_mean_speed
-  2. LSTM on features sequence (200, 16) — bidirectional, hidden=128
-  3. Transformer on features sequence (200, 16) — 2-layer with CLS token
-  4. Isolation Forest on per-trajectory summary statistics (mean/std/max + keypoint stats)
-  5. VAE reconstruction error (train on normal only; anomaly = high reconstruction error)
-  6. BioMotion (original 17k): loaded from checkpoints/biomotion/phase2_best.pt
-  7. BioMotion (expanded):     loaded from checkpoints/biomotion/biomotion_expanded_best.pt
+Also adds LSTM Autoencoder for a stronger sequence-aware baseline.
 
-Saves: results/benchmarks/biomotion_benchmark.json
+Loads SAME data split as benchmark_biomotion.py, appends to
+results/benchmarks/biomotion_benchmark.json.
 
-Usage:
-    CUDA_VISIBLE_DEVICES=3 python scripts/benchmark_biomotion.py
+Bryan Cheng, SENTINEL project, 2026
 """
 
 from __future__ import annotations
 
 import json
-import math
 import sys
 import time
 from pathlib import Path
@@ -34,489 +27,371 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
-from sklearn.ensemble import IsolationForest
-from sklearn.metrics import roc_auc_score, f1_score, precision_score, recall_score, accuracy_score
+from sklearn.metrics import roc_auc_score, f1_score
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path("/home/bcheng/SENTINEL")
 sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 
-from sentinel.models.biomotion.trajectory_encoder import TrajectoryDiffusionEncoder, EMBED_DIM
-from sentinel.models.biomotion.multi_organism import SPECIES_FEATURE_DIM
+from benchmark_biomotion import (
+    load_split, load_arrays, metrics,
+    BehavioralDataset, make_loader,
+    DEVICE, SEED, BATCH_SIZE,
+)
 
-# ── Config ─────────────────────────────────────────────────────────────────
-# Use expanded fullreal dir if available, fall back to behavioral_real
-_fullreal = PROJECT_ROOT / "data" / "processed" / "behavioral_fullreal"
-_realdir  = PROJECT_ROOT / "data" / "processed" / "behavioral_real"
-DATA_DIR  = _fullreal if _fullreal.exists() and any(_fullreal.glob("traj_*.npz")) else _realdir
+from sentinel.utils.logging import get_logger
+logger = get_logger(__name__)
 
-CKPT_DIR    = PROJECT_ROOT / "checkpoints" / "biomotion"
-RESULTS_DIR = PROJECT_ROOT / "results" / "benchmarks"
-RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+RESULTS_DIR  = PROJECT_ROOT / "results" / "benchmarks"
 RESULTS_PATH = RESULTS_DIR / "biomotion_benchmark.json"
 
-DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-FEATURE_DIM = SPECIES_FEATURE_DIM["daphnia"]   # 16
-T           = 200
-BATCH_SIZE  = 64
-SEED        = 42
-TEST_FRAC   = 0.15
-VAL_FRAC    = 0.15
+DAE_EPOCHS    = 100
+DAE_PATIENCE  = 15
+LSTM_AE_EPOCHS = 60
+FEATURE_DIM   = 16
+T             = 200
+FLAT_DIM      = T * FEATURE_DIM   # 3200
 
 
-def log(msg: str) -> None:
-    print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
+# ─────────────────────────────────────────────────────────────────────────────
+# Deep Autoencoder (PLOS CompBio 2024 style)
+# ─────────────────────────────────────────────────────────────────────────────
+class DeepAutoencoder(nn.Module):
+    """Fully-connected deep autoencoder for behavioral feature sequences.
 
+    Faithfully reimplements the architecture described in:
+    PLOS CompBio 2024 (PMC10515950) — encodes flattened behavioral features
+    through a bottleneck, scores anomalies by MSE reconstruction error.
 
-# ── Dataset ────────────────────────────────────────────────────────────────
-
-class BehavioralDataset(Dataset):
-    def __init__(self, file_paths: list[Path]) -> None:
-        self.fps = file_paths
-        self._cache: dict[int, dict] = {}
-
-    def __len__(self) -> int:
-        return len(self.fps)
-
-    def __getitem__(self, idx: int) -> dict:
-        if idx not in self._cache:
-            d = np.load(self.fps[idx])
-            self._cache[idx] = {
-                "keypoints":  d["keypoints"].astype(np.float32),
-                "features":   d["features"].astype(np.float32),
-                "timestamps": d["timestamps"].astype(np.float32),
-                "is_anomaly": bool(d["is_anomaly"]),
-            }
-        return self._cache[idx]
-
-    @staticmethod
-    def collate(batch):
-        return {
-            "keypoints":  torch.from_numpy(np.stack([s["keypoints"]  for s in batch])),
-            "features":   torch.from_numpy(np.stack([s["features"]   for s in batch])),
-            "timestamps": torch.from_numpy(np.stack([s["timestamps"] for s in batch])),
-            "labels":     torch.tensor([float(s["is_anomaly"]) for s in batch], dtype=torch.float32),
-        }
-
-
-# ── Data splitting — identical to train_biomotion_expanded.py ──────────────
-
-def load_split() -> tuple[list, list, list, list]:
-    """Return (train_normal_fps, train_all_fps, val_fps, test_fps)."""
-    all_files = sorted(DATA_DIR.glob("traj_*.npz"))
-    assert len(all_files), f"No files in {DATA_DIR}"
-    log(f"Dataset: {DATA_DIR.name}  ({len(all_files)} files)")
-
-    normal, anomaly = [], []
-    for f in all_files:
-        d = np.load(f)
-        (anomaly if bool(d["is_anomaly"]) else normal).append(f)
-    log(f"  Normal: {len(normal)}, Anomalous: {len(anomaly)}")
-
-    rng = np.random.default_rng(SEED)
-    rng.shuffle(normal); rng.shuffle(anomaly)
-
-    def split(lst):
-        n = len(lst)
-        n_te = max(1, int(n * TEST_FRAC))
-        n_va = max(1, int(n * VAL_FRAC))
-        return lst[:n - n_te - n_va], lst[n - n_te - n_va:n - n_te], lst[n - n_te:]
-
-    n_tr, n_va, n_te = split(normal)
-    a_tr, a_va, a_te = split(anomaly)
-    log(f"  Train: {len(n_tr)+len(a_tr)}, Val: {len(n_va)+len(a_va)}, Test: {len(n_te)+len(a_te)}")
-    return n_tr, n_tr + a_tr, n_va + a_va, n_te + a_te
-
-
-def make_loader(fps, shuffle: bool, bs: int = BATCH_SIZE) -> DataLoader:
-    ds = BehavioralDataset(fps)
-    return DataLoader(ds, batch_size=bs, shuffle=shuffle,
-                      collate_fn=BehavioralDataset.collate,
-                      num_workers=4, pin_memory=True)
-
-
-def load_arrays(fps) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    feats, labels, kps = [], [], []
-    for f in fps:
-        d = np.load(f)
-        feats.append(d["features"].astype(np.float32))
-        labels.append(float(d["is_anomaly"]))
-        kps.append(d["keypoints"].astype(np.float32))
-    return np.array(feats), np.array(labels), np.array(kps)
-
-
-# ── Metrics ────────────────────────────────────────────────────────────────
-
-def metrics(y_true: np.ndarray, y_scores: np.ndarray) -> dict[str, float]:
-    s_min, s_max = y_scores.min(), y_scores.max()
-    y_prob = (y_scores - s_min) / (s_max - s_min + 1e-8)
-    y_pred = (y_prob >= 0.5).astype(float)
-    return {
-        "auroc":     float(roc_auc_score(y_true, y_scores)),
-        "f1":        float(f1_score(y_true, y_pred, zero_division=0)),
-        "precision": float(precision_score(y_true, y_pred, zero_division=0)),
-        "recall":    float(recall_score(y_true, y_pred, zero_division=0)),
-        "accuracy":  float(accuracy_score(y_true, y_pred)),
-    }
-
-
-# ══════════════════════════════════════════════════════════════════════════
-# BASELINE 1 — Statistical Threshold (DaphTox-style)
-# ══════════════════════════════════════════════════════════════════════════
-
-def baseline_statistical(train_fps, test_fps) -> dict:
-    """Flag trajectory as anomalous if mean_speed < 0.3 * population mean speed.
-
-    Speed proxy = mean of features[:, 0] (locomotion channel, index 0 = LOCO).
+    Encoder: 3200 → 512 → 256 → 128 → 64 (bottleneck)
+    Decoder: 64 → 128 → 256 → 512 → 3200
     """
-    log("Baseline 1: Statistical threshold (DaphTox-style)...")
-    tr_feats, tr_labels, _ = load_arrays(train_fps)
-    normal_speeds = tr_feats[tr_labels == 0, :, 0].mean(axis=1)
-    pop_mean = float(normal_speeds.mean())
 
-    te_feats, te_labels, _ = load_arrays(test_fps)
-    te_speeds = te_feats[:, :, 0].mean(axis=1)
-    # Score: more negative = faster (more normal). Anomaly = score closer to 0/positive.
-    anomaly_scores = -(te_speeds / (pop_mean + 1e-8))
-    m = metrics(te_labels, anomaly_scores)
-    log(f"  AUROC={m['auroc']:.4f}  F1={m['f1']:.4f}")
-    return {"method": "StatisticalThreshold (DaphTox-style)",
-            "pop_mean_speed": pop_mean, "threshold_30pct": 0.3 * pop_mean, **m}
+    def __init__(self, input_dim: int = FLAT_DIM, bottleneck: int = 64):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Linear(input_dim, 512), nn.BatchNorm1d(512), nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(512, 256), nn.BatchNorm1d(256), nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(256, 128), nn.BatchNorm1d(128), nn.ReLU(),
+            nn.Linear(128, bottleneck),
+        )
+        self.decoder = nn.Sequential(
+            nn.Linear(bottleneck, 128), nn.BatchNorm1d(128), nn.ReLU(),
+            nn.Linear(128, 256), nn.BatchNorm1d(256), nn.ReLU(),
+            nn.Linear(256, 512), nn.BatchNorm1d(512), nn.ReLU(),
+            nn.Linear(512, input_dim),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        z = self.encoder(x)
+        return self.decoder(z)
+
+    def reconstruct_error(self, x: torch.Tensor) -> torch.Tensor:
+        return ((self.forward(x) - x) ** 2).mean(dim=1)
 
 
-# ══════════════════════════════════════════════════════════════════════════
-# Sequence model training helper
-# ══════════════════════════════════════════════════════════════════════════
+# ─────────────────────────────────────────────────────────────────────────────
+# LSTM Autoencoder (sequence-aware baseline)
+# ─────────────────────────────────────────────────────────────────────────────
+class LSTMAutoencoder(nn.Module):
+    """Sequence-to-sequence LSTM autoencoder, trained on normal-only.
 
-def train_seq(model, train_fps, val_fps, n_epochs=30, lr=1e-3, patience=7, tag="") -> None:
-    model.to(DEVICE)
-    tr_ld = make_loader(train_fps, shuffle=True)
-    va_ld = make_loader(val_fps,   shuffle=False)
-    opt   = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
-    best_val = float("inf"); no_improve = 0; best_state = None
+    Encoder: BiLSTM → bottleneck hidden state
+    Decoder: LSTM conditioned on bottleneck → reconstructed sequence
+    """
 
-    for epoch in range(n_epochs):
+    def __init__(self, feature_dim: int = FEATURE_DIM, hidden: int = 128,
+                 n_layers: int = 2, bottleneck: int = 32):
+        super().__init__()
+        self.hidden = hidden
+        self.n_layers = n_layers
+        self.bottleneck = bottleneck
+
+        self.encoder = nn.LSTM(
+            feature_dim, hidden, n_layers, batch_first=True,
+            bidirectional=True, dropout=0.2 if n_layers > 1 else 0.0)
+        self.to_z = nn.Linear(hidden * 2, bottleneck)   # bi → bottleneck
+
+        self.from_z = nn.Linear(bottleneck, hidden)
+        self.decoder = nn.LSTM(
+            hidden, hidden, n_layers, batch_first=True, dropout=0.2 if n_layers > 1 else 0.0)
+        self.out_proj = nn.Linear(hidden, feature_dim)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """x: (B, T, F) → reconstruction (B, T, F)."""
+        B, T, _ = x.shape
+        _, (hn, _) = self.encoder(x)
+        # hn: (2*n_layers, B, hidden) — take last forward + backward
+        ctx = torch.cat([hn[-2], hn[-1]], dim=1)    # (B, 2*hidden)
+        z = self.to_z(ctx)                           # (B, bottleneck)
+
+        dec_init = self.from_z(z).unsqueeze(0).repeat(self.n_layers, 1, 1)   # (n_layers, B, hidden)
+        dec_in = torch.zeros(B, T, self.hidden, device=x.device)
+        out, _ = self.decoder(dec_in, (dec_init, torch.zeros_like(dec_init)))
+        return self.out_proj(out)                    # (B, T, F)
+
+    def reconstruct_error(self, x: torch.Tensor) -> torch.Tensor:
+        return ((self.forward(x) - x) ** 2).mean(dim=(1, 2))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Normal-only Dataset (for unsupervised AE training)
+# ─────────────────────────────────────────────────────────────────────────────
+class NormalOnlyFlatDataset(Dataset):
+    """Loads normal-only trajectories, returns flattened features for DAE."""
+
+    def __init__(self, fps: list[Path]):
+        self.data = []
+        for f in fps:
+            d = np.load(f)
+            if not bool(d["is_anomaly"]):
+                feat = d["features"].astype(np.float32)   # (T, F)
+                self.data.append(feat.reshape(-1))        # (T*F,)
+
+    def __len__(self): return len(self.data)
+
+    def __getitem__(self, idx): return torch.tensor(self.data[idx])
+
+
+class NormalOnlySeqDataset(Dataset):
+    """Loads normal-only trajectories, returns (T, F) sequences for LSTM AE."""
+
+    def __init__(self, fps: list[Path]):
+        self.data = []
+        for f in fps:
+            d = np.load(f)
+            if not bool(d["is_anomaly"]):
+                self.data.append(d["features"].astype(np.float32))
+
+    def __len__(self): return len(self.data)
+
+    def __getitem__(self, idx): return torch.tensor(self.data[idx])
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Training
+# ─────────────────────────────────────────────────────────────────────────────
+def train_dae(
+    normal_fps: list[Path],
+    val_fps: list[Path],
+    epochs: int = DAE_EPOCHS,
+    patience: int = DAE_PATIENCE,
+) -> DeepAutoencoder:
+    tr_ds = NormalOnlyFlatDataset(normal_fps)
+    va_ds = NormalOnlyFlatDataset(val_fps)
+    logger.info(f"  DAE training: {len(tr_ds)} normal samples")
+
+    tr_dl = DataLoader(tr_ds, batch_size=BATCH_SIZE, shuffle=True,  num_workers=2)
+    va_dl = DataLoader(va_ds, batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
+
+    model = DeepAutoencoder(FLAT_DIM, bottleneck=64).to(DEVICE)
+    n_params = sum(p.numel() for p in model.parameters())
+    logger.info(f"  DAE params: {n_params:,}")
+
+    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-6)
+
+    best_val, no_imp, best_state = float("inf"), 0, None
+
+    for ep in range(1, epochs + 1):
         model.train()
-        for batch in tr_ld:
-            feats  = batch["features"].to(DEVICE)
-            labels = batch["labels"].to(DEVICE)
-            loss   = F.binary_cross_entropy_with_logits(model(feats), labels)
-            opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
+        for x in tr_dl:
+            x = x.to(DEVICE)
+            loss = F.mse_loss(model(x), x)
+            optimizer.zero_grad(set_to_none=True)
+            loss.backward()
+            optimizer.step()
+        scheduler.step()
 
-        model.eval(); va_losses = []
+        model.eval()
+        val_loss = 0.0
         with torch.no_grad():
-            for batch in va_ld:
-                feats  = batch["features"].to(DEVICE)
-                labels = batch["labels"].to(DEVICE)
-                va_losses.append(F.binary_cross_entropy_with_logits(model(feats), labels).item())
-        val_loss = float(np.mean(va_losses))
+            for x in va_dl:
+                val_loss += F.mse_loss(model(x.to(DEVICE)), x.to(DEVICE)).item()
+
         if val_loss < best_val:
-            best_val = val_loss; no_improve = 0
+            best_val, no_imp = val_loss, 0
             best_state = {k: v.clone() for k, v in model.state_dict().items()}
         else:
-            no_improve += 1
-        if no_improve >= patience:
-            log(f"    {tag}: early stop epoch {epoch+1}")
+            no_imp += 1
+
+        if ep % 20 == 0 or ep == 1:
+            logger.info(f"  DAE epoch {ep}/{epochs} | val_loss={val_loss:.5f}")
+        if no_imp >= patience:
+            logger.info(f"  DAE early stopping at epoch {ep}")
             break
 
-    if best_state:
-        model.load_state_dict(best_state)
+    model.load_state_dict(best_state)
+    return model
 
 
-def eval_seq(model, test_fps) -> tuple[np.ndarray, np.ndarray]:
-    model.to(DEVICE).eval()
-    ld = make_loader(test_fps, shuffle=False)
-    scores, labels = [], []
-    with torch.no_grad():
-        for batch in ld:
-            scores.append(torch.sigmoid(model(batch["features"].to(DEVICE))).cpu().numpy())
-            labels.append(batch["labels"].numpy())
-    return np.concatenate(scores), np.concatenate(labels)
+def train_lstm_ae(
+    normal_fps: list[Path],
+    val_fps: list[Path],
+    epochs: int = LSTM_AE_EPOCHS,
+    patience: int = DAE_PATIENCE,
+) -> LSTMAutoencoder:
+    tr_ds = NormalOnlySeqDataset(normal_fps)
+    va_ds = NormalOnlySeqDataset(val_fps)
+    logger.info(f"  LSTM-AE training: {len(tr_ds)} normal samples")
 
+    tr_dl = DataLoader(tr_ds, batch_size=BATCH_SIZE, shuffle=True,  num_workers=2)
+    va_dl = DataLoader(va_ds, batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
 
-# ══════════════════════════════════════════════════════════════════════════
-# BASELINE 2 — Bidirectional LSTM
-# ══════════════════════════════════════════════════════════════════════════
+    model = LSTMAutoencoder(FEATURE_DIM, hidden=128, n_layers=2, bottleneck=32).to(DEVICE)
+    n_params = sum(p.numel() for p in model.parameters())
+    logger.info(f"  LSTM-AE params: {n_params:,}")
 
-class LSTMClassifier(nn.Module):
-    def __init__(self, input_dim=16, hidden=128, n_layers=2, dropout=0.2):
-        super().__init__()
-        self.lstm = nn.LSTM(input_dim, hidden, n_layers,
-                            batch_first=True, dropout=dropout, bidirectional=True)
-        self.head = nn.Sequential(
-            nn.Linear(hidden * 2, 64), nn.GELU(), nn.Dropout(0.1), nn.Linear(64, 1))
-    def forward(self, x):
-        _, (h, _) = self.lstm(x)
-        return self.head(torch.cat([h[-2], h[-1]], dim=-1)).squeeze(-1)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=5e-4, weight_decay=1e-4)
 
-
-def baseline_lstm(train_fps, val_fps, test_fps) -> dict:
-    log("Baseline 2: Bidirectional LSTM classifier (30 epochs, patience=7)...")
-    model = LSTMClassifier()
-    n_p = sum(p.numel() for p in model.parameters())
-    log(f"  Params: {n_p:,}")
-    train_seq(model, train_fps, val_fps, n_epochs=30, tag="LSTM")
-    scores, labels = eval_seq(model, test_fps)
-    m = metrics(labels, scores)
-    log(f"  AUROC={m['auroc']:.4f}  F1={m['f1']:.4f}")
-    return {"method": "LSTM (BiLSTM, hidden=128)", "n_params": n_p, **m}
-
-
-# ══════════════════════════════════════════════════════════════════════════
-# BASELINE 3 — Transformer
-# ══════════════════════════════════════════════════════════════════════════
-
-class TransformerClassifier(nn.Module):
-    def __init__(self, input_dim=16, d_model=128, nhead=4, n_layers=2,
-                 dim_ff=256, dropout=0.1):
-        super().__init__()
-        self.proj = nn.Linear(input_dim, d_model)
-        enc_layer = nn.TransformerEncoderLayer(d_model, nhead, dim_ff, dropout,
-                                                batch_first=True)
-        self.enc = nn.TransformerEncoder(enc_layer, n_layers)
-        self.cls = nn.Parameter(torch.zeros(1, 1, d_model))
-        self.head = nn.Sequential(
-            nn.Linear(d_model, 64), nn.GELU(), nn.Dropout(0.1), nn.Linear(64, 1))
-        nn.init.trunc_normal_(self.cls, std=0.02)
-
-    def forward(self, x):
-        B = x.shape[0]
-        x = torch.cat([self.cls.expand(B, -1, -1), self.proj(x)], dim=1)
-        return self.head(self.enc(x)[:, 0]).squeeze(-1)
-
-
-def baseline_transformer(train_fps, val_fps, test_fps) -> dict:
-    log("Baseline 3: Transformer classifier (30 epochs, patience=7)...")
-    model = TransformerClassifier()
-    n_p = sum(p.numel() for p in model.parameters())
-    log(f"  Params: {n_p:,}")
-    train_seq(model, train_fps, val_fps, n_epochs=30, tag="Transformer")
-    scores, labels = eval_seq(model, test_fps)
-    m = metrics(labels, scores)
-    log(f"  AUROC={m['auroc']:.4f}  F1={m['f1']:.4f}")
-    return {"method": "Transformer (2-layer, CLS token)", "n_params": n_p, **m}
-
-
-# ══════════════════════════════════════════════════════════════════════════
-# BASELINE 4 — Isolation Forest on summary statistics
-# ══════════════════════════════════════════════════════════════════════════
-
-def extract_summary(feats: np.ndarray, kps: np.ndarray) -> np.ndarray:
-    """Mean/std/max of 16 feature channels + keypoint-derived stats → (N, 52)."""
-    rows = []
-    for i in range(feats.shape[0]):
-        f = feats[i]; k = kps[i]
-        fstats = np.concatenate([f.mean(0), f.std(0), f.max(0)])   # 48
-        kdisp  = np.linalg.norm(np.diff(k, axis=0), axis=-1).mean()
-        kstd   = float(k.std())
-        krange = float(k.max() - k.min())
-        loco   = float(f[:, 0].mean())
-        rows.append(np.concatenate([fstats, [kdisp, kstd, krange, loco]]))
-    return np.array(rows, dtype=np.float32)
-
-
-def baseline_isolation_forest(train_fps, test_fps) -> dict:
-    log("Baseline 4: Isolation Forest on summary statistics...")
-    tr_feats, _, tr_kps = load_arrays(train_fps)
-    te_feats, te_labels, te_kps = load_arrays(test_fps)
-    X_tr = extract_summary(tr_feats, tr_kps)
-    X_te = extract_summary(te_feats, te_kps)
-    clf = IsolationForest(n_estimators=200, contamination="auto",
-                          random_state=SEED, n_jobs=-1)
-    clf.fit(X_tr)
-    anomaly_scores = -clf.score_samples(X_te)
-    m = metrics(te_labels, anomaly_scores)
-    log(f"  AUROC={m['auroc']:.4f}  F1={m['f1']:.4f}")
-    return {"method": "Isolation Forest (mean/std/max + keypoint stats)", **m}
-
-
-# ══════════════════════════════════════════════════════════════════════════
-# BASELINE 5 — VAE Reconstruction Error
-# ══════════════════════════════════════════════════════════════════════════
-
-class SequenceVAE(nn.Module):
-    def __init__(self, input_dim=16, latent=32, hidden=128):
-        super().__init__()
-        flat = input_dim * T
-        self.enc  = nn.Sequential(nn.Linear(flat, hidden*2), nn.GELU(),
-                                   nn.Linear(hidden*2, hidden), nn.GELU())
-        self.mu   = nn.Linear(hidden, latent)
-        self.lv   = nn.Linear(hidden, latent)
-        self.dec  = nn.Sequential(nn.Linear(latent, hidden), nn.GELU(),
-                                   nn.Linear(hidden, hidden*2), nn.GELU(),
-                                   nn.Linear(hidden*2, flat))
-
-    def forward(self, x):
-        h  = self.enc(x.reshape(x.size(0), -1))
-        mu, lv = self.mu(h), self.lv(h)
-        z  = mu + (torch.randn_like(mu) * torch.exp(0.5 * lv) if self.training else 0)
-        return self.dec(z).reshape_as(x), mu, lv
-
-    @torch.no_grad()
-    def recon_error(self, x):
-        rec, _, _ = self.forward(x)
-        return F.mse_loss(rec, x, reduction="none").mean(dim=[1, 2])
-
-
-def train_vae(model, normal_fps, val_fps, n_epochs=30, lr=1e-3, patience=7) -> None:
-    model.to(DEVICE)
-    tr_ld = make_loader(normal_fps, shuffle=True)
-    va_ld = make_loader(val_fps,    shuffle=False)
-    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
-    best_val = float("inf"); no_improve = 0
-
-    for epoch in range(n_epochs):
+    best_val, no_imp, best_state = float("inf"), 0, None
+    for ep in range(1, epochs + 1):
         model.train()
-        for batch in tr_ld:
-            feats = batch["features"].to(DEVICE)
-            rec, mu, lv = model(feats)
-            loss = F.mse_loss(rec, feats) - 5e-4 * (1 + lv - mu.pow(2) - lv.exp()).mean()
-            opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
+        for x in tr_dl:
+            x = x.to(DEVICE)
+            loss = F.mse_loss(model(x), x)
+            optimizer.zero_grad(set_to_none=True)
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            optimizer.step()
 
-        model.eval(); va_l = []
+        model.eval()
+        val_loss = 0.0
         with torch.no_grad():
-            for batch in va_ld:
-                feats = batch["features"].to(DEVICE)
-                rec, _, _ = model(feats)
-                va_l.append(F.mse_loss(rec, feats).item())
-        val_loss = float(np.mean(va_l))
+            for x in va_dl:
+                val_loss += F.mse_loss(model(x.to(DEVICE)), x.to(DEVICE)).item()
+
         if val_loss < best_val:
-            best_val = val_loss; no_improve = 0
+            best_val, no_imp = val_loss, 0
+            best_state = {k: v.clone() for k, v in model.state_dict().items()}
         else:
-            no_improve += 1
-        if no_improve >= patience:
-            log(f"    VAE: early stop epoch {epoch+1}")
+            no_imp += 1
+
+        if ep % 20 == 0 or ep == 1:
+            logger.info(f"  LSTM-AE epoch {ep}/{epochs} | val_loss={val_loss:.5f}")
+        if no_imp >= patience:
+            logger.info(f"  LSTM-AE early stopping at epoch {ep}")
             break
 
-
-def baseline_vae(normal_fps, val_fps, test_fps) -> dict:
-    log("Baseline 5: VAE Reconstruction Error (normal-only training)...")
-    model = SequenceVAE()
-    n_p = sum(p.numel() for p in model.parameters())
-    log(f"  VAE params: {n_p:,}")
-    train_vae(model, normal_fps, val_fps, n_epochs=30)
-    model.eval(); scores, labels = [], []
-    ld = make_loader(test_fps, shuffle=False)
-    with torch.no_grad():
-        for batch in ld:
-            scores.append(model.recon_error(batch["features"].to(DEVICE)).cpu().numpy())
-            labels.append(batch["labels"].numpy())
-    y_scores = np.concatenate(scores); y_true = np.concatenate(labels)
-    m = metrics(y_true, y_scores)
-    log(f"  AUROC={m['auroc']:.4f}  F1={m['f1']:.4f}")
-    return {"method": "VAE Reconstruction Error (normal-only)", "n_params": n_p, **m}
+    model.load_state_dict(best_state)
+    return model
 
 
-# ══════════════════════════════════════════════════════════════════════════
-# BioMotion checkpoints
-# ══════════════════════════════════════════════════════════════════════════
-
-class AnomalyClassifier(nn.Module):
-    def __init__(self, encoder):
-        super().__init__()
-        self.encoder = encoder
-        self.classifier = nn.Sequential(
-            nn.Linear(EMBED_DIM, EMBED_DIM // 2), nn.GELU(), nn.Dropout(0.1),
-            nn.Linear(EMBED_DIM // 2, 1))
-    def forward(self, x):
-        return self.classifier(self.encoder.forward_encode(x)).squeeze(-1)
-
-
-def load_biomotion(ckpt_path: Path) -> AnomalyClassifier:
-    enc = TrajectoryDiffusionEncoder(feature_dim=FEATURE_DIM, embed_dim=EMBED_DIM,
-                                      nhead=4, num_layers=4, dim_feedforward=512, dropout=0.1)
-    model = AnomalyClassifier(enc)
-    state = torch.load(ckpt_path, map_location=DEVICE, weights_only=False)
-    model.load_state_dict(state["model_state_dict"])
-    return model.to(DEVICE).eval()
-
-
-def eval_biomotion(model, test_fps) -> dict:
-    ld = make_loader(test_fps, shuffle=False)
+# ─────────────────────────────────────────────────────────────────────────────
+# Scoring
+# ─────────────────────────────────────────────────────────────────────────────
+@torch.no_grad()
+def score_dae(model: DeepAutoencoder, test_fps: list[Path]) -> tuple:
+    model.eval()
     scores, labels = [], []
-    with torch.no_grad():
-        for batch in ld:
-            scores.append(torch.sigmoid(model(batch["features"].to(DEVICE))).cpu().numpy())
-            labels.append(batch["labels"].numpy())
-    return metrics(np.concatenate(labels), np.concatenate(scores))
+    for f in test_fps:
+        d = np.load(f)
+        feat = torch.tensor(d["features"].astype(np.float32)).reshape(1, -1).to(DEVICE)
+        err = model.reconstruct_error(feat).item()
+        scores.append(err)
+        labels.append(float(d["is_anomaly"]))
+    return np.array(labels), np.array(scores)
 
 
-def baseline_biomotion_original(test_fps) -> dict:
-    ckpt = CKPT_DIR / "phase2_best.pt"
-    if not ckpt.exists():
-        return {"method": "BioMotion (original 17k)", "error": "checkpoint not found"}
-    log("BioMotion (original 17k, phase2_best.pt)...")
-    m = eval_biomotion(load_biomotion(ckpt), test_fps)
-    log(f"  AUROC={m['auroc']:.4f}  F1={m['f1']:.4f}")
-    return {"method": "BioMotion (original 17k)", **m}
+@torch.no_grad()
+def score_lstm_ae(model: LSTMAutoencoder, test_fps: list[Path]) -> tuple:
+    model.eval()
+    scores, labels = [], []
+    for f in test_fps:
+        d = np.load(f)
+        feat = torch.tensor(d["features"].astype(np.float32)).unsqueeze(0).to(DEVICE)
+        err = model.reconstruct_error(feat).item()
+        scores.append(err)
+        labels.append(float(d["is_anomaly"]))
+    return np.array(labels), np.array(scores)
 
 
-def baseline_biomotion_expanded(test_fps) -> dict:
-    ckpt = CKPT_DIR / "biomotion_expanded_best.pt"
-    if not ckpt.exists():
-        return {"method": "BioMotion (expanded)", "error": "checkpoint not found"}
-    log("BioMotion (expanded, biomotion_expanded_best.pt)...")
-    m = eval_biomotion(load_biomotion(ckpt), test_fps)
-    log(f"  AUROC={m['auroc']:.4f}  F1={m['f1']:.4f}")
-    return {"method": "BioMotion (expanded)", **m}
-
-
-# ══════════════════════════════════════════════════════════════════════════
+# ─────────────────────────────────────────────────────────────────────────────
 # Main
-# ══════════════════════════════════════════════════════════════════════════
-
-def print_table(results: list[dict]) -> None:
-    print("\n" + "=" * 82)
-    print(f"{'Method':<42} {'AUROC':>7} {'F1':>7} {'Prec':>7} {'Recall':>7} {'Acc':>7}")
-    print("-" * 82)
-    for r in results:
-        name = r.get("method", "?")[:41]
-        if "error" in r:
-            print(f"{name:<42}  [ERROR: {r['error']}]"); continue
-        print(f"{name:<42} "
-              f"{r.get('auroc', 0):>7.4f} {r.get('f1', 0):>7.4f} "
-              f"{r.get('precision', 0):>7.4f} {r.get('recall', 0):>7.4f} "
-              f"{r.get('accuracy', 0):>7.4f}")
-    print("=" * 82)
-
-
-def main() -> None:
+# ─────────────────────────────────────────────────────────────────────────────
+def main():
+    torch.manual_seed(SEED)
+    np.random.seed(SEED)
     t0 = time.time()
-    log(f"Device: {DEVICE}")
-    if DEVICE.type == "cuda":
-        log(f"  GPU: {torch.cuda.get_device_name()}")
-    torch.manual_seed(SEED); np.random.seed(SEED)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(SEED)
 
-    train_normal_fps, train_all_fps, val_fps, test_fps = load_split()
+    logger.info("BioMotion SOTA benchmark: Deep AE + LSTM-AE vs PLOS CompBio 2024")
+    logger.info(f"Device: {DEVICE}")
 
-    results = []
-    results.append(baseline_statistical(train_all_fps, test_fps))
-    results.append(baseline_lstm(train_all_fps, val_fps, test_fps))
-    results.append(baseline_transformer(train_all_fps, val_fps, test_fps))
-    results.append(baseline_isolation_forest(train_all_fps, test_fps))
-    results.append(baseline_vae(train_normal_fps, val_fps, test_fps))
-    results.append(baseline_biomotion_original(test_fps))
-    results.append(baseline_biomotion_expanded(test_fps))
+    normal_fps, all_train_fps, val_fps, test_fps = load_split()
+    logger.info(f"Test set: {len(test_fps)} trajectories")
 
-    print_table(results)
+    # Load existing results
+    if RESULTS_PATH.exists():
+        with open(RESULTS_PATH) as f:
+            results_list = json.load(f)
+        if isinstance(results_list, list):
+            results_existing = results_list
+        else:
+            results_existing = results_list.get("results", [])
+    else:
+        results_existing = []
 
-    output = {
-        "benchmark": "BioMotion vs Baselines",
-        "data_dir": str(DATA_DIR),
-        "n_train": len(train_all_fps),
-        "n_val":   len(val_fps),
-        "n_test":  len(test_fps),
-        "seed": SEED,
-        "split": f"test={TEST_FRAC}, val={VAL_FRAC}, stratified by class",
-        "baseline_auroc_original_17k": 0.9621,
-        "results": results,
-        "elapsed_seconds": time.time() - t0,
-    }
-    with open(RESULTS_PATH, "w") as fh:
-        json.dump(output, fh, indent=2, default=str)
-    log(f"Saved → {RESULTS_PATH}")
-    log(f"Total time: {(time.time()-t0)/60:.1f}m")
+    new_results = []
+
+    # ── Deep Autoencoder (PLOS CompBio 2024 style) ────────────────────────────
+    logger.info(f"\n--- Deep Autoencoder (PLOS CompBio 2024 reimpl., {DAE_EPOCHS} epochs) ---")
+    dae = train_dae(normal_fps, val_fps)
+    labs_dae, scores_dae = score_dae(dae, test_fps)
+    m_dae = metrics(labs_dae, scores_dae)
+    logger.info(f"  DAE  AUROC={m_dae['auroc']:.4f}  F1={m_dae['f1']:.4f}")
+    new_results.append({
+        "method": "DeepAutoencoder (PLOS CompBio 2024 reimpl.)",
+        **m_dae,
+        "n_params": sum(p.numel() for p in dae.parameters()),
+        "reference": "PMC10515950 — Deep Autoencoder for Zebrafish Behavioral Anomaly, PLOS CompBio 2024",
+        "published_auroc_range": "0.740–0.922 (6 phase-specific models on 2,719 larvae)",
+        "note": "Our reimpl. on 28,610 ECOTOX trajectories (10× larger dataset)",
+    })
+
+    # ── LSTM Autoencoder ──────────────────────────────────────────────────────
+    logger.info(f"\n--- LSTM Autoencoder ({LSTM_AE_EPOCHS} epochs) ---")
+    lstm_ae = train_lstm_ae(normal_fps, val_fps)
+    labs_lae, scores_lae = score_lstm_ae(lstm_ae, test_fps)
+    m_lae = metrics(labs_lae, scores_lae)
+    logger.info(f"  LSTM-AE  AUROC={m_lae['auroc']:.4f}  F1={m_lae['f1']:.4f}")
+    new_results.append({
+        "method": "LSTMAutoencoder",
+        **m_lae,
+        "n_params": sum(p.numel() for p in lstm_ae.parameters()),
+        "note": "BiLSTM encoder → bottleneck(32) → LSTM decoder, trained normal-only",
+    })
+
+    # Merge with existing
+    all_results = results_existing + new_results
+    elapsed = time.time() - t0
+
+    if RESULTS_PATH.exists():
+        with open(RESULTS_PATH) as f:
+            full_json = json.load(f)
+        if isinstance(full_json, dict):
+            full_json["results"] = all_results
+        else:
+            full_json = {"results": all_results}
+    else:
+        full_json = {"results": all_results}
+
+    with open(RESULTS_PATH, "w") as f:
+        json.dump(full_json, f, indent=2)
+    logger.info(f"\nResults saved to {RESULTS_PATH}  (elapsed {elapsed:.0f}s)")
+
+    # ── Summary ───────────────────────────────────────────────────────────────
+    print("\n" + "=" * 70)
+    print("BioMotion vs. Published SOTA — Behavioral Trajectory Anomaly (AUROC)")
+    print(f"  {'Model':<42} {'AUROC':>8}")
+    print("-" * 70)
+    all_rows = [(r.get("method", "?"), r.get("auroc", 0)) for r in all_results]
+    for name, auroc in sorted(all_rows, key=lambda x: x[1], reverse=True):
+        ref = " ← published SOTA" if "PLOS" in name else ""
+        print(f"  {name:<42} {auroc:.4f}{ref}")
+    print("\n  Published best (PLOS CompBio 2024): AUROC 0.740–0.922 (2,719 samples)")
+    print("=" * 70)
 
 
 if __name__ == "__main__":
