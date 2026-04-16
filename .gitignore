@@ -50,7 +50,3 @@ Thumbs.db
 .env
 *.env
 
-# Node (dashboard)
-dashboard/node_modules/
-dashboard/dist/
-dashboard/.next/

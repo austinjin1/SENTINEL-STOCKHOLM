@@ -142,8 +142,6 @@ SENTINEL includes a deployable platform layer (`sentinel/platform/`):
 - **Photo Analysis** (`photo_analysis.py`) — Estimates water quality from smartphone photos via HydroViT/ResNet backbone, cross-referenced against satellite-derived values
 - **Test Kit Validation** (`test_kit.py`) — Calibrates home water quality test kits against reference measurements, applies per-kit bias correction, and ingests validated results into SENTINEL-DB
 
-An interactive **dashboard** (React + TypeScript + Leaflet + Recharts) visualizes detection timelines, modality specialization, and causal chain discovery across monitoring sites.
-
 ---
 
 ## Project Structure
@@ -174,14 +172,13 @@ sentinel/                        # Core Python package
 ├── evaluation/                  # 20-experiment evaluation suite
 ├── platform/                    # REST API, citizen science QC, photo analysis
 └── utils/                       # Configuration, logging
-scripts/                         # 100+ standalone scripts
+scripts/                         # Standalone scripts
 ├── data acquisition             # Download from USGS, EPA, GRQA, GEO, EMP, etc.
 ├── training                     # Per-encoder and fusion training scripts
 ├── benchmarking                 # SOTA comparisons for each encoder
 └── experiments                  # exp1-exp20 + named experiments
 results/                         # Reproducible experiment outputs (JSON/CSV)
 configs/                         # YAML configuration (hyperparameters, data, evaluation)
-dashboard/                       # React + TypeScript interactive monitoring demo
 ```
 
 ---
@@ -243,9 +240,6 @@ python -m sentinel.evaluation.case_study --config configs/default.yaml
 
 # Run 31-condition modality ablation
 python -m sentinel.evaluation.ablation --config configs/default.yaml
-
-# Launch interactive dashboard
-cd dashboard && npm install && npm run dev
 ```
 
 ---
