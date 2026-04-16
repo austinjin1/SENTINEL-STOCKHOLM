@@ -1,5 +1,0 @@
-[00:40:18] INFO     Loaded 50000 sequences from data/processed/sensor/real_50k  
-           INFO     Split: 35000 train / 7500 val / 7500 test                   
-[00:40:19] INFO     SensorEncoder: 4,600,895 params                             
-           INFO     PHASE 1: MPP Pretraining on 50K sequences                   
-[09:27:58] INFO       Pretrain Ep 5/30 | Loss: 0.1230                           

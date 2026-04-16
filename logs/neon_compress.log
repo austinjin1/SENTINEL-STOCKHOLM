@@ -1,7 +1,0 @@
-Traceback (most recent call last):
-  File "<string>", line 36, in <module>
-  File "/home/bcheng/.conda/envs/physiformer/lib/python3.10/pathlib.py", line 1097, in stat
-    return self._accessor.stat(self, follow_symlinks=follow_symlinks)
-FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/neon_aquatic/DP1.20288.001_ARIK_2026-02_NEON.D10.ARIK.DP1.20288.001.102.100.100.waq_instantaneous.2026-02.expanded.20260304T234050Z.csv'
-Compressing DP1.20288.001: 3880 files...
-  → DP1.20288.001: 62,670,845 rows, 1431.3 MB parquet

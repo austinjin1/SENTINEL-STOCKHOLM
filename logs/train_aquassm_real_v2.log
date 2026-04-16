@@ -1,4 +1,0 @@
-[12:53:16] INFO     REAL DATA: 102531 total -> 20000 subsample ->               
-                    14000/3000/3000                                             
-           INFO     Phase 1: MPP Pretrain on REAL data...                       
-[13:08:06] INFO       Ep 1 batch 100/438 loss=0.2656                            

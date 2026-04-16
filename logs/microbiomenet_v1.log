@@ -1,9 +1,0 @@
-[08:47:20] INFO     Data: 35000/7500/7500 samples, 5000 features                
-[08:47:22] INFO     MicroBiomeNet: 128,933,510 parameters                       
-           INFO     ============================================================
-           INFO     SOURCE CLASSIFICATION TRAINING                              
-           INFO     ============================================================
-[08:47:47] INFO     Ep   1/60 | Loss: 2.0834 | Train F1: 0.1188 | Val F1: 0.0712
-[08:49:23] INFO     Ep   5/60 | Loss: 2.0777 | Train F1: 0.0313 | Val F1: 0.0306
-[08:51:17] INFO     Ep  10/60 | Loss: 2.0778 | Train F1: 0.0624 | Val F1: 0.0306
-[08:53:10] INFO     Ep  15/60 | Loss: 2.0648 | Train F1: 0.0696 | Val F1: 0.0524
