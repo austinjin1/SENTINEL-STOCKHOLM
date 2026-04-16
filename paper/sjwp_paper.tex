@@ -3,7 +3,7 @@
 % === SJWP FORMATTING (matching USA template style) ===
 \usepackage{times}                          % Times New Roman
 \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
-\usepackage{setspace}\setstretch{1.18}      % Near single spacing
+\usepackage{setspace}\setstretch{1.14}      % Near single spacing
 
 % === PACKAGES ===
 \usepackage[utf8]{inputenc}
@@ -213,16 +213,14 @@ Each sensing modality requires a specialized neural architecture. SENTINEL's pip
 \label{fig:enc_sensor}
 \end{figure}
 
-\begin{wrapfigure}{r}{0.38\textwidth}
+\textbf{MicroBiomeNet} (Microbial): Microbiome data is compositional---OTU abundances sum to a constant, creating spurious correlations if analyzed with standard methods [11]. MicroBiomeNet operates natively in Aitchison simplex geometry (Figure~\ref{fig:enc_micro}): a CLR transform maps compositional data to Euclidean space, followed by an MLP and Neural ODE modeling temporal community dynamics. Trained on 20,288 EMP 16S rRNA samples spanning 127 habitats, it classifies aquatic sources into 8 categories (F1 = 0.913, per-class range 0.72--0.95).
+
+\begin{figure}[htbp]
 \centering
-\vspace{-10pt}
-\includegraphics[width=0.36\textwidth]{fig_encoder_microbiomenet.jpg}
+\includegraphics[width=0.35\textwidth]{fig_encoder_microbiomenet.jpg}
 \caption{MicroBiomeNet encoder: CLR transform + MLP + Neural ODE for compositional 16S data (F1 = 0.913).}
 \label{fig:enc_micro}
-\vspace{-8pt}
-\end{wrapfigure}
-
-\textbf{MicroBiomeNet} (Microbial): Microbiome data is compositional---OTU abundances sum to a constant, creating spurious correlations if analyzed with standard methods [11]. MicroBiomeNet operates natively in Aitchison simplex geometry (Figure~\ref{fig:enc_micro}): a CLR transform maps compositional data to Euclidean space, followed by an MLP and Neural ODE modeling temporal community dynamics. Trained on 20,288 EMP 16S rRNA samples spanning 127 habitats, it classifies aquatic sources into 8 categories (F1 = 0.913, per-class range 0.72--0.95).
+\end{figure}
 
 \textbf{ToxiGene} (Molecular): Gene expression data is high-dimensional ($\sim$84K genes) but structured: genes participate in pathways, pathways drive processes, and processes cause adverse outcomes. ToxiGene mirrors this hierarchy (Figure~\ref{fig:enc_toxi}) using sparse Reactome/AOP-Wiki connections, constraining 145.2M parameters to mechanistically plausible relationships. Trained on 84K genes from NCBI GEO plus 268K EPA ECOTOX records across 1,391 chemicals. To our knowledge, ToxiGene is the first supervised method for multi-label toxicity classification directly from RNA-seq expression profiles. Closest prior art addresses different problems: MTForestNet [26] predicts chemical--gene interactions from molecular fingerprints (not transcriptomics), Senn et al.\ [27] cluster transcriptomic responses without contaminant labels, and Gagn\'e et al.\ [28] use unsupervised pathway enrichment for effluent characterization.
 
