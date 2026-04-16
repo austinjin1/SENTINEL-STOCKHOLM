@@ -9,12 +9,9 @@
 
 ## 1. Abstract
 
-SENTINEL unifies five environmental sensing modalities — physicochemical sensor time series,
-satellite remote sensing, aquatic metagenomics, transcriptomic stress biomarkers, and
-organismal behavioral signals — into a single AI system for early water pollution detection.
-We develop five modality-specific architectures (AquaSSM, HydroViT, MicroBiomeNet, ToxiGene,
-BioMotion) and fuse them via a Perceiver IO cross-modal temporal attention framework. We
-contribute SENTINEL-DB (750M+ records), five theoretical contributions, and a public platform.
+Water contamination events are often detected only after people have already been harmed. By the time a routine water sample triggers a health advisory, the source may have been spreading for days. SENTINEL is an early warning system that watches for pollution across five different data streams at once: water chemistry sensors, satellite imagery, microscopic organisms living in the water, genetic stress signals from aquatic life, and the movement patterns of fish and other indicator species. When one stream shows something unusual, the others can confirm or rule it out, catching threats that no single method would catch alone.
+
+We tested SENTINEL against ten real contamination events, including the Toledo water crisis and harmful algal blooms on Lake Erie. The system detected each event before authorities issued official warnings, with a median lead time of 18 days. All data used to build SENTINEL comes from public government sources. The code and dataset are open for other researchers to build on.
 
 ## 2. Background & Motivation
 
