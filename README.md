@@ -2,7 +2,7 @@
 
 **Scalable Environmental Network for Temporal Intelligence and Ecological Learning**
 
-SENTINEL is a multimodal deep learning framework for real-time water quality monitoring and contamination detection. It fuses five heterogeneous sensing modalities — physicochemical sensors, satellite imagery, microbial community profiles, molecular toxicogenomics, and organism behavioral assays — through a Perceiver IO cross-attention architecture, detecting pollution events earlier and more reliably than any single data source alone.
+SENTINEL is a multimodal deep learning framework for real-time water quality monitoring and contamination detection. It fuses five heterogeneous sensing modalities — physicochemical sensors, satellite imagery, microbial community profiles, molecular toxicogenomics, and organism behavioral assays — through a Perceiver IO cross-attention architecture, detecting pollution events earlier and more reliably than any single data source alone. 
 
 > **Stockholm Junior Water Prize 2026 Submission** — Austin Jin & Bryan Cheng
 
