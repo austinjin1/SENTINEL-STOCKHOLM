@@ -114,10 +114,10 @@ Activating all five modalities at every site is operationally infeasible, so we 
 % --- Architecture Fig 2: placed here (after fusion text) so it floats to next available page ---
 \begin{figure*}[t]
 \centering
-\begin{subfigure}[t]{0.30\textwidth}\includegraphics[width=\linewidth]{fig_microbiomenet.jpg}\caption{MicroBiomeNet (8.4M params).}\label{fig:microbe}\end{subfigure}\hfill
-\begin{subfigure}[t]{0.34\textwidth}\includegraphics[width=\linewidth]{fig_toxigene.png}\caption{ToxiGene ($145.2$M params).}\label{fig:toxigene}\end{subfigure}\hfill
-\begin{subfigure}[t]{0.34\textwidth}\includegraphics[width=\linewidth]{fig_biomotion.jpg}\caption{BioMotion (3M params).}\label{fig:biomotion}\end{subfigure}
-\caption{Microbial, molecular, and behavioral encoders. MicroBiomeNet (a) performs CLR projection from the Aitchison simplex into Euclidean space and integrates a neural ODE for temporal dynamics. ToxiGene (b) routes RNA-seq through a Reactome-constrained gene$\rightarrow$pathway$\rightarrow$process$\rightarrow$outcome hierarchy with sparse biologically-informed connections. BioMotion (c) uses diffusion pretraining on healthy \emph{Daphnia} trajectories and detects toxicant exposure as denoising reconstruction error.}
+\begin{subfigure}[b]{0.22\textwidth}\centering\includegraphics[height=5.2cm]{fig_microbiomenet.jpg}\caption{MicroBiomeNet.}\label{fig:microbe}\end{subfigure}\hfill
+\begin{subfigure}[b]{0.40\textwidth}\includegraphics[width=\linewidth]{fig_toxigene.png}\caption{ToxiGene ($145.2$M params).}\label{fig:toxigene}\end{subfigure}\hfill
+\begin{subfigure}[b]{0.35\textwidth}\includegraphics[width=\linewidth]{fig_biomotion.jpg}\caption{BioMotion ($3$M params).}\label{fig:biomotion}\end{subfigure}
+\caption{Microbial, molecular, and behavioral encoders. (a)~MicroBiomeNet ($8.4$M params) applies a CLR transform to project compositional OTU data from the Aitchison simplex into Euclidean space, then integrates a neural ODE for temporal dynamics. (b)~ToxiGene routes RNA-seq expression through a Reactome-constrained gene$\rightarrow$pathway$\rightarrow$process$\rightarrow$outcome hierarchy with sparse biologically-informed connections and an autoencoder bottleneck. (c)~BioMotion uses diffusion pretraining on healthy \emph{Daphnia} trajectories and detects toxicant-level behavioral impairment as denoising reconstruction error.}
 \label{fig:enc2}
 \end{figure*}
 
@@ -364,41 +364,44 @@ Jordan Lake HAB NC & $44.3$ & $0.993$ \\
 \section{Per-Encoder Benchmark Comparison}
 \label{app:benchmarks}
 
-Figure~\ref{fig:bench} provides a visual comparison of each SENTINEL encoder against published SOTA and tuned classical baselines.
+Figure~\ref{fig:bench} provides a visual comparison of each SENTINEL encoder against published SOTA and tuned classical baselines on each modality's own held-out test set.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{fig_encoder_benchmarks.jpg}
-\caption{Per-encoder benchmarks vs.\ published SOTA and tuned classical baselines. SENTINEL encoders (green) match or exceed the strongest reported model on each modality's own held-out test set.}
+\caption{Per-encoder benchmarks vs.\ published SOTA and tuned classical baselines. Each panel shows one encoder (SENTINEL, green) against published results and our re-implemented baselines. AquaSSM achieves AUROC~$0.916$ ($+0.052$ vs.\ MCN-LSTM); HydroViT v9 reaches $R^2\!=\!0.893$ on water temperature ($+0.009$ vs.\ DenseNet121); MicroBiomeNet attains macro-F$_1\!=\!0.899$; ToxiGene is first-in-class on toxicant-class classification from RNA-seq (F$_1\!=\!0.877$); BioMotion reaches assay-level AUROC~$1.000$ ($+0.042$ vs.\ Deep Autoencoder). Dashed lines denote thresholds; hatched bars indicate results from different tasks.}
 \label{fig:bench}
 \end{figure*}
 
 \section{Ablation and Modality Importance}
 \label{app:ablation}
 
-Figure~\ref{fig:abl} provides a visual breakdown of leave-one-out modality criticality and cumulative fusion gain.
+Figure~\ref{fig:abl} visualises the modality importance analysis from the $100$ random-drop trials and the exhaustive $31$-condition subset sweep described in Section~\ref{sec:exp}.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{fig_modality_importance.jpg}
-\caption{Where the fusion gain comes from. \textbf{Left}: leave-one-out modality criticality on the windowed $31$-event protocol ($100$ random-drop trials). Sensor ($-0.246$) and behavioral ($-0.174$) are the most consequential. \textbf{Right}: cumulative AUROC gain from successive cascade tiers, from sensor-only ($0.943$) to full $5$-modal fusion ($0.992$, $p = 0.002$).}
+\caption{Where the fusion gain comes from. \textbf{Left}: average marginal contribution of each modality across $100$ random-drop trials on the windowed $31$-event protocol. Sensor ($-0.246$) and behavioral ($-0.174$) are the most consequential; removing satellite, microbial, or molecular has progressively smaller impact. \textbf{Right}: cumulative AUROC gain from successive cascade tiers, from sensor-only ($0.943$) to full $5$-modal fusion ($0.992$, $p\!=\!0.002$, paired permutation). Error bars show $95\%$ CIs from the ablation sweep.}
 \label{fig:abl}
 \end{figure*}
 
-\section{Operational Reliability and Causal Chains}
+\section{Operational Reliability}
 \label{app:operational}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{fig_specificity.jpg}
-\caption{Operational reliability. \textbf{Left}: alert rate at threshold $0.9$ across ten clean NEON sites ($8{,}739$ windows) is exactly $0\%$, while contaminated sites alert in $10\%$--$100\%$ of windows. \textbf{Right}: max consecutive windows above threshold (persistence ratio $31\!:\!0$).}
+\caption{Operational reliability at deployment threshold $0.9$. \textbf{Left}: alert rate across ten clean NEON reference sites ($8{,}739$ windows total) is exactly $0\%$, while all six contaminated case-study sites trigger alerts in $10\%$--$100\%$ of their windows, yielding a signal-to-noise gap of $12.8\times$ (contaminated mean $0.893$ vs.\ clean mean $0.070$). \textbf{Right}: max consecutive windows above threshold for each site. The persistence ratio is $31\!:\!0$ (max sustained alert on a contaminated site vs.\ longest false alarm on any clean site), demonstrating that SENTINEL alerts are not transient noise but sustained signals.}
 \label{fig:specificity}
 \end{figure*}
 
+\section{Causal Chain Discovery}
+\label{app:causal}
+
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.95\textwidth]{fig_causal_chains.jpg}
-\caption{Discovered causal chains. $375$ chains across $91$ types over $20$ GRQA sites; $44$ chains (dashed edges) are novel. Edge labels report mean trigger-to-effect lag.}
+\includegraphics[width=0.85\textwidth]{fig_causal_chains.jpg}
+\caption{Causal-chain network discovered by PCMCI+ over $20$ contaminated GRQA sites. Node size indicates frequency as a trigger or effect; edge colour distinguishes nutrient (green), oxygen-demand-related (orange), and physical (blue) parameters. Solid edges correspond to mechanisms documented in environmental-science literature; dashed edges represent $44$ novel chains not found in existing databases. Edge labels report the mean trigger-to-effect lag. The most frequent triggers are chemical oxygen demand, total phosphorus, ammonia, and nitrate---consistent with eutrophication-driven cascades.}
 \label{fig:chains}
 \end{figure*}
 
@@ -410,7 +413,7 @@ Figure~\ref{fig:case} illustrates the per-modality scoring trajectory over a sin
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\linewidth]{fig_case_timeline.jpg}
-\caption{Per-modality scoring trajectory for Lake Erie HAB 2023. The fused alert fires $+201.6$\,h ahead of the official EPA advisory; the cascade controller escalates monitor~$\rightarrow$~investigate~$\rightarrow$~alert as evidence accumulates.}
+\caption{Per-modality scoring trajectory for the Lake Erie HAB 2023 case study. \textbf{Top row}: satellite imagery and HydroViT anomaly score showing chlorophyll-a rise by day $-10$. \textbf{Second row}: AquaSSM sensor anomaly (dissolved oxygen, turbidity) rising by day $-5$. \textbf{Third row}: fused SENTINEL probability crossing the alert threshold at day $-3$ ($+201.6$\,h before the official EPA advisory). \textbf{Bottom row}: cascade controller state progression from \emph{monitor}~$\rightarrow$~\emph{investigate}~$\rightarrow$~\emph{alert} as cross-modal evidence accumulates.}
 \label{fig:case}
 \end{figure}
 
