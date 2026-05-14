@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: icml2026.bst
+Database file #1: references.bib
+Warning--empty booktitle in vovk2005conformal
+You've used 16 entries,
+            2773 wiz_defined-function locations,
+            674 strings with 8156 characters,
+and the built_in function-call counts, 9514 in all, are:
+= -- 733
+> -- 877
+< -- 4
++ -- 295
+- -- 279
+* -- 851
+:= -- 1535
+add.period$ -- 48
+call.type$ -- 16
+change.case$ -- 135
+chr.to.int$ -- 16
+cite$ -- 33
+duplicate$ -- 356
+empty$ -- 626
+format.name$ -- 300
+if$ -- 1919
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 16
+newline$ -- 88
+num.names$ -- 64
+pop$ -- 296
+preamble$ -- 1
+purify$ -- 119
+quote$ -- 0
+skip$ -- 291
+stack$ -- 0
+substring$ -- 151
+swap$ -- 24
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 176
+warning$ -- 1
+while$ -- 58
+width$ -- 0
+write$ -- 204
+(There was 1 warning)
