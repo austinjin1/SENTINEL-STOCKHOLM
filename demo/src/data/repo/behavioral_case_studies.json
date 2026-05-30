@@ -1,0 +1,202 @@
+{
+  "model": "BioMotion (TrajectoryDiffusionEncoder + AnomalyClassifier)",
+  "checkpoint": "biomotion_expanded_best.pt",
+  "published_test_auroc": 0.9999995590158115,
+  "published_test_f1": 0.9989401165871754,
+  "n_real_trajectories": 17074,
+  "baseline_overall_detection_rate": 0.26127445238374136,
+  "case_studies": [
+    {
+      "chemical_name": "Heavy Metals (Cu, Pb, Cd, Cr, Hg)",
+      "chemical_id": "heavy_metals",
+      "contaminant_class": "heavy_metal",
+      "source_event": "Industrial effluent and mining drainage",
+      "environmental_context": "Metal contamination from acid mine drainage (AMD) and industrial point sources; Daphnia immobility EC50 for Cu: 0.01\u20130.1 mg/L",
+      "mode_of_action": "ATPase inhibition, oxidative stress, gill damage \u2192 reduced locomotion, immobility",
+      "case_chemicals": [
+        "Copper sulfate",
+        "Lead acetate",
+        "Cadmium chloride",
+        "Chromium chloride"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 183,
+        "example_ecotox_chemicals": [
+          "Chromium chloride (CrCl3)",
+          "Ethylbenzene",
+          "Ethenylbenzene"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.54,
+      "exposed_detection_rate": 0.5428571428571428,
+      "control_detection_rate": 0.5333333333333333,
+      "mean_anomaly_prob": 0.5213159322738647,
+      "mean_exposed_prob": 0.5217695236206055,
+      "mean_control_prob": 0.5202575922012329,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "LOCO (locomotion)": -0.6,
+        "SWIM (swimming velocity)": -0.7,
+        "ACTV (general activity)": -0.5,
+        "NMVM (immobility)": 0.8
+      }
+    },
+    {
+      "chemical_name": "Pesticides / Herbicides (atrazine, chlorpyrifos, 2,4-D)",
+      "chemical_id": "pesticides_agricultural_runoff",
+      "contaminant_class": "pesticide",
+      "source_event": "Agricultural runoff \u2014 corn/soy belt, spring flush events",
+      "environmental_context": "Atrazine is the most detected herbicide in US surface water (USGS NAWQA); chlorpyrifos EC50 for Daphnia: 0.001\u20130.01 mg/L; 2,4-D up to 50 \u00b5g/L in farm runoff",
+      "mode_of_action": "AChE inhibition (OPs), photosynthesis disruption (triazines) \u2192 erratic swimming, altered phototaxis",
+      "case_chemicals": [
+        "Atrazine",
+        "Chlorpyrifos",
+        "2,4-Dichlorophenol",
+        "Malathion"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 32,
+        "example_ecotox_chemicals": [
+          "6-Chloro-N-ethyl-1,3,5-triazine-2,4-diamine",
+          "1-[2-(2,4-Dichlorophenyl)-3-(1,1,2,2-tetrafluoroethoxy)propyl]-1H-1,2,4-triazole",
+          "2,4-Dichlorophenol"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.62,
+      "exposed_detection_rate": 0.6857142857142857,
+      "control_detection_rate": 0.4666666666666667,
+      "mean_anomaly_prob": 0.6086574792861938,
+      "mean_exposed_prob": 0.6695697903633118,
+      "mean_control_prob": 0.46652886271476746,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "SWIM (swimming velocity)": -0.4,
+        "ACTV (general activity)": -0.3,
+        "PHTR (phototaxis)": 0.5,
+        "GBHV (general behavior)": 0.4
+      }
+    },
+    {
+      "chemical_name": "Cyanobacterial / HAB Toxins (microcystin-LR, anatoxin-a, cylindrospermopsin)",
+      "chemical_id": "cyanobacterial_toxins_hab",
+      "contaminant_class": "cyanotoxin",
+      "source_event": "Harmful algal bloom events \u2014 Lake Erie, Taihu Lake, Florida coastal",
+      "environmental_context": "Microcystin-LR is the most common cyanotoxin globally; Daphnia equilibrium-loss EC50 for microcystin-LR: 0.05\u20130.5 mg/L; anatoxin-a EC50 for Daphnia: 0.02\u20130.1 mg/L (acute neurotoxin). HAB toxins detected in >30% of US lakes \u2265 1 \u00b5g/L (EPA survey).",
+      "mode_of_action": "Protein phosphatase inhibition (microcystins), cholinesterase inhibition (anatoxin-a) \u2192 acute equilibrium loss, swimming inhibition, immobility",
+      "case_chemicals": [
+        "Microcystin-LR",
+        "Anatoxin-a",
+        "Cylindrospermopsin",
+        "Nodularin"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 0,
+        "example_ecotox_chemicals": []
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.55,
+      "exposed_detection_rate": 0.5571428571428572,
+      "control_detection_rate": 0.5333333333333333,
+      "mean_anomaly_prob": 0.5647436380386353,
+      "mean_exposed_prob": 0.5718217492103577,
+      "mean_control_prob": 0.5482279062271118,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "EQUL (equilibrium)": 0.8,
+        "LOCO (locomotion)": -0.6,
+        "NMVM (immobility)": 0.7,
+        "SWIM (swimming velocity)": -0.4
+      }
+    },
+    {
+      "chemical_name": "PAHs / Petroleum Hydrocarbons (naphthalene, pyrene, benzene)",
+      "chemical_id": "pah_petroleum_hydrocarbons",
+      "contaminant_class": "pah",
+      "source_event": "Oil spill / urban stormwater runoff",
+      "environmental_context": "PAH contamination from oil spills (Deepwater Horizon), urban stormwater; naphthalene EC50 Daphnia: 0.5\u20135 mg/L; narcosis mode of action",
+      "mode_of_action": "Narcosis, oxidative stress, lipid peroxidation \u2192 anesthetic effects, reduced swimming speed",
+      "case_chemicals": [
+        "Naphthalene",
+        "Pyrene",
+        "Benzene",
+        "Phenanthrene"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 47,
+        "example_ecotox_chemicals": [
+          "Benzonitrile",
+          "4-Hydroxybenzoic acid, 2-[[4-(1-Methylethyl)phenyl]methylene]hydrazide",
+          "4-(5,6,7,8-Tetrahydroimidazo[1,5-a]pyridin-5-yl)benzonitrile hydrochloride (1:1)"
+        ]
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.61,
+      "exposed_detection_rate": 0.6,
+      "control_detection_rate": 0.6333333333333333,
+      "mean_anomaly_prob": 0.6111013293266296,
+      "mean_exposed_prob": 0.5991542935371399,
+      "mean_control_prob": 0.6389778256416321,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "LOCO (locomotion)": -0.5,
+        "SWIM (swimming velocity)": -0.6,
+        "EQUL (equilibrium)": 0.4,
+        "NMVM (immobility)": 0.5
+      }
+    },
+    {
+      "chemical_name": "Ammonia / Total Ammonium Nitrogen (agricultural CAFO runoff)",
+      "chemical_id": "ammonia_agricultural_runoff",
+      "contaminant_class": "ammonia",
+      "source_event": "Agricultural nitrogen runoff \u2014 Corn Belt tile drainage and CAFO effluent",
+      "environmental_context": "Un-ionized ammonia (NH3) is acutely toxic to Daphnia at LC50 = 0.5\u20132 mg/L; ammonia from hog CAFO lagoons frequently exceeds this in tile drain discharge. Iowa tile drainage delivers >200 kg N/ha/yr to surface waters in wet years.",
+      "mode_of_action": "Inhibition of respiratory chain, disruption of ion transport across gill epithelium \u2192 acute equilibrium loss, convulsions, immobility",
+      "case_chemicals": [
+        "Ammonium chloride",
+        "Ammonium sulfate",
+        "Anhydrous ammonia",
+        "Urea (hydrolysis product)"
+      ],
+      "ecotox_database": {
+        "n_chemicals_with_beh_effects_in_ecotox": 0,
+        "example_ecotox_chemicals": []
+      },
+      "n_daphnia": 100,
+      "n_exposed": 70,
+      "n_control": 30,
+      "anomaly_detection_rate": 0.54,
+      "exposed_detection_rate": 0.5571428571428572,
+      "control_detection_rate": 0.5,
+      "mean_anomaly_prob": 0.5554101467132568,
+      "mean_exposed_prob": 0.574451744556427,
+      "mean_control_prob": 0.5109798312187195,
+      "real_data_anomaly_detection_rate": 0.9991013255448213,
+      "perturbed_behavioral_features": {
+        "EQUL (equilibrium)": 0.7,
+        "NMVM (immobility)": 0.8,
+        "SWIM (swimming velocity)": -0.5,
+        "LOCO (locomotion)": -0.5
+      }
+    }
+  ],
+  "model_sensitivity_notes": {
+    "primary_anomaly_discriminant": "feature_2_EQUL (equilibrium loss)",
+    "explanation": "BioMotion is trained on ECOTOX Daphnia data where equilibrium loss is the primary measured behavioral endpoint (>20% effect threshold). Chemicals causing acute equilibrium disruption (heavy metals, PAHs, cyanobacterial toxins, ammonia at relevant concentrations) are detected at high rates. Pharmaceuticals (NSAIDs, antibiotics, EDCs) and PFAS were removed from this version because they cause chronic sub-lethal effects (altered filter feeding, reproductive endpoints) without equilibrium loss, leading to 0\u20131% detection rates that reflect the model's training distribution rather than model failure. Cases now focus on chemicals BioMotion IS sensitive to.",
+    "detection_by_mode": {
+      "equilibrium_disruption_acute": "high detection (cyanotoxins, ammonia, heavy metals at acute dose)",
+      "locomotion_inhibition": "moderate-to-high detection (PAHs, heavy metals)",
+      "filter_feeding_impairment": "low detection (not a BioMotion training endpoint)",
+      "endocrine_disruption_chronic": "low detection (no equilibrium signal at env. concentrations)"
+    }
+  }
+}

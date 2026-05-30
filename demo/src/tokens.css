@@ -1,0 +1,196 @@
+/* SENTINEL design tokens — Light theme · Apple Maps / NASA Earth Observatory feel. */
+
+:root {
+  /* surfaces */
+  --bg-canvas: #f5f5f7;              /* app background (when not covered by map) */
+  --bg-surface: #ffffff;             /* primary card / panel */
+  --bg-elevated: #ffffff;            /* hover state — same surface, deeper shadow */
+  --bg-subtle: #fafafc;              /* secondary surface (sidebar) */
+  --bg-inset: #f5f5f7;               /* chart well inside a card */
+  --bg-overlay: rgba(255, 255, 255, 0.92);
+  --bg-scrim: rgba(13, 17, 23, 0.45);
+
+  /* borders — Apple soft hairlines */
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --hairline: rgba(0, 0, 0, 0.06);
+
+  /* text — SF System Gray palette */
+  --text-primary: #1d1d1f;
+  --text-secondary: #515154;
+  --text-tertiary: #86868b;
+  --text-quaternary: #aeaeb2;
+  --text-mono: #1d1d1f;
+  --text-link: #0071e3;
+
+  /* institutional accent — Apple system blue */
+  --accent: #0071e3;
+  --accent-bright: #0077ed;
+  --accent-soft: rgba(0, 113, 227, 0.1);
+  --accent-dim: rgba(0, 113, 227, 0.06);
+
+  /* semantic status — desaturated NOAA */
+  --nominal: #2e8540;
+  --nominal-dim: rgba(46, 133, 64, 0.1);
+  --watch: #b06e1a;
+  --watch-dim: rgba(176, 110, 26, 0.1);
+  --investigate: #b8430f;
+  --investigate-dim: rgba(184, 67, 15, 0.1);
+  --alert: #c0362c;
+  --alert-dim: rgba(192, 54, 44, 0.1);
+  --inert: #d2d2d7;
+  --inert-dim: #f5f5f7;
+
+  /* coverage states */
+  --obs: #2e8540;
+  --inf: #b06e1a;
+  --dep: #aeaeb2;
+
+  /* data-viz modality identity (deeper for light bg) */
+  --m-sensor: #2c7e7a;       /* teal */
+  --m-satellite: #2c5b8c;    /* navy blue */
+  --m-microbial: #6b4fb0;    /* violet */
+  --m-molecular: #a3506b;    /* rose */
+  --m-behavioral: #3e7d4f;   /* forest */
+
+  /* spacing */
+  --s-2: 2px; --s-4: 4px; --s-8: 8px; --s-12: 12px;
+  --s-16: 16px; --s-20: 20px; --s-24: 24px;
+  --s-32: 32px; --s-40: 40px; --s-48: 48px;
+
+  /* radii */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+  --r-pill: 999px;
+
+  /* elevation */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+
+  /* motion */
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 340ms;
+
+  /* z */
+  --z-map: 0; --z-map-overlay: 10;
+  --z-left-rail: 30; --z-place-card: 40; --z-top-bar: 50;
+  --z-demo: 60; --z-tooltip: 70;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0; padding: 0; height: 100%;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 400;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Mono only for numbers. */
+.mono {
+  font-family: "SF Mono", "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-hero {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 48px;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.metric-xl {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-l {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-cell {
+  font-family: "SF Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.12); border-radius: 5px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 0, 0, 0.2); background-clip: padding-box; }
+
+@keyframes scanline-sweep {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes alert-pulse {
+  0%, 100% { box-shadow: inset 0 0 0 0 rgba(46, 133, 64, 0); }
+  50% { box-shadow: inset 0 0 24px 0 rgba(46, 133, 64, 0.35); }
+}
+@keyframes advisory-pulse {
+  0%, 100% { box-shadow: inset 0 0 0 0 rgba(192, 54, 44, 0); }
+  50% { box-shadow: inset 0 0 24px 0 rgba(192, 54, 44, 0.35); }
+}

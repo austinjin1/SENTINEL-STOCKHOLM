@@ -69,3 +69,8 @@ paper/*.fdb_latexmk
 paper/_official/
 texput.log
 
+
+# Demo (React + Vite)
+demo/node_modules/
+demo/dist/
+demo/.vite/
