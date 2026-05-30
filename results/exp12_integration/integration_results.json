@@ -1,5 +1,5 @@
 {
-  "n_eval": 726,
+  "n_eval": 800,
   "n_modalities_available": 4,
   "modalities": [
     "sensor",
@@ -14,9 +14,9 @@
       ],
       "n_modalities": 1,
       "method": "fusion",
-      "auroc": 0.521002663752476,
-      "mean_prob": 0.5264800786972046,
-      "std_prob": 0.006395907606929541
+      "auroc": 0.6275375,
+      "mean_prob": 0.5390010476112366,
+      "std_prob": 0.0203325804322958
     },
     "fusion_satellite": {
       "modalities": [
@@ -24,9 +24,9 @@
       ],
       "n_modalities": 1,
       "method": "fusion",
-      "auroc": 0.5004781094187555,
-      "mean_prob": 0.5223348140716553,
-      "std_prob": 0.022083278745412827
+      "auroc": 0.49878125,
+      "mean_prob": 0.5023149251937866,
+      "std_prob": 0.0001348905061604455
     },
     "fusion_microbial": {
       "modalities": [
@@ -34,9 +34,9 @@
       ],
       "n_modalities": 1,
       "method": "fusion",
-      "auroc": 0.5140055703541804,
-      "mean_prob": 0.5461264848709106,
-      "std_prob": 0.03753615543246269
+      "auroc": 0.5130750000000001,
+      "mean_prob": 0.5428912043571472,
+      "std_prob": 0.03489150106906891
     },
     "fusion_behavioral": {
       "modalities": [
@@ -44,9 +44,9 @@
       ],
       "n_modalities": 1,
       "method": "fusion",
-      "auroc": 0.5213479649993549,
-      "mean_prob": 0.5548614859580994,
-      "std_prob": 0.0035793904680758715
+      "auroc": 0.3967062499999999,
+      "mean_prob": 0.5065315961837769,
+      "std_prob": 0.0006835712702013552
     },
     "fusion_sensor+satellite": {
       "modalities": [
@@ -55,9 +55,9 @@
       ],
       "n_modalities": 2,
       "method": "fusion",
-      "auroc": 0.4766295562689252,
-      "mean_prob": 0.5328950881958008,
-      "std_prob": 0.015648292377591133
+      "auroc": 0.6159562500000001,
+      "mean_prob": 0.5202115774154663,
+      "std_prob": 0.007949351333081722
     },
     "fusion_sensor+microbial": {
       "modalities": [
@@ -66,9 +66,9 @@
       ],
       "n_modalities": 2,
       "method": "fusion",
-      "auroc": 0.5465701340983083,
-      "mean_prob": 0.5379620790481567,
-      "std_prob": 0.02224789373576641
+      "auroc": 0.5737937500000001,
+      "mean_prob": 0.5426408648490906,
+      "std_prob": 0.022497044876217842
     },
     "fusion_sensor+behavioral": {
       "modalities": [
@@ -77,9 +77,9 @@
       ],
       "n_modalities": 2,
       "method": "fusion",
-      "auroc": 0.6380066631757091,
-      "mean_prob": 0.5771469473838806,
-      "std_prob": 0.010535425506532192
+      "auroc": 0.61155,
+      "mean_prob": 0.5189083218574524,
+      "std_prob": 0.006050761789083481
     },
     "fusion_satellite+microbial": {
       "modalities": [
@@ -88,9 +88,9 @@
       ],
       "n_modalities": 2,
       "method": "fusion",
-      "auroc": 0.5056955733139054,
-      "mean_prob": 0.5297441482543945,
-      "std_prob": 0.019727589562535286
+      "auroc": 0.4817,
+      "mean_prob": 0.5242401361465454,
+      "std_prob": 0.013375284150242805
     },
     "fusion_satellite+behavioral": {
       "modalities": [
@@ -99,9 +99,9 @@
       ],
       "n_modalities": 2,
       "method": "fusion",
-      "auroc": 0.502200821133954,
-      "mean_prob": 0.5457625985145569,
-      "std_prob": 0.023796724155545235
+      "auroc": 0.401459375,
+      "mean_prob": 0.5062671303749084,
+      "std_prob": 0.00030926885665394366
     },
     "fusion_microbial+behavioral": {
       "modalities": [
@@ -110,9 +110,9 @@
       ],
       "n_modalities": 2,
       "method": "fusion",
-      "auroc": 0.518634883773877,
-      "mean_prob": 0.5454534888267517,
-      "std_prob": 0.023162541911005974
+      "auroc": 0.5102875,
+      "mean_prob": 0.5213238596916199,
+      "std_prob": 0.01196467038244009
     },
     "fusion_sensor+satellite+microbial": {
       "modalities": [
@@ -122,9 +122,9 @@
       ],
       "n_modalities": 3,
       "method": "fusion",
-      "auroc": 0.5204866091417557,
-      "mean_prob": 0.5349874496459961,
-      "std_prob": 0.015517826192080975
+      "auroc": 0.56944375,
+      "mean_prob": 0.5330526828765869,
+      "std_prob": 0.012608610093593597
     },
     "fusion_sensor+satellite+behavioral": {
       "modalities": [
@@ -134,9 +134,9 @@
       ],
       "n_modalities": 3,
       "method": "fusion",
-      "auroc": 0.5042840121728176,
-      "mean_prob": 0.5587608814239502,
-      "std_prob": 0.01763259992003441
+      "auroc": 0.608090625,
+      "mean_prob": 0.5159721970558167,
+      "std_prob": 0.004056941717863083
     },
     "fusion_sensor+microbial+behavioral": {
       "modalities": [
@@ -146,9 +146,9 @@
       ],
       "n_modalities": 3,
       "method": "fusion",
-      "auroc": 0.5569443495814645,
-      "mean_prob": 0.5569102764129639,
-      "std_prob": 0.020496197044849396
+      "auroc": 0.5831,
+      "mean_prob": 0.5258177518844604,
+      "std_prob": 0.010111049748957157
     },
     "fusion_satellite+microbial+behavioral": {
       "modalities": [
@@ -158,9 +158,9 @@
       ],
       "n_modalities": 3,
       "method": "fusion",
-      "auroc": 0.5149466111149056,
-      "mean_prob": 0.5397838950157166,
-      "std_prob": 0.018269363790750504
+      "auroc": 0.485809375,
+      "mean_prob": 0.5172907114028931,
+      "std_prob": 0.006714284885674715
     },
     "fusion_sensor+satellite+microbial+behavioral": {
       "modalities": [
@@ -171,16 +171,16 @@
       ],
       "n_modalities": 4,
       "method": "fusion",
-      "auroc": 0.5330616457588659,
-      "mean_prob": 0.5490694046020508,
-      "std_prob": 0.015947865322232246
+      "auroc": 0.5755312499999999,
+      "mean_prob": 0.5238385200500488,
+      "std_prob": 0.007015416398644447
     }
   },
   "marginal_modality_gains": {
-    "satellite": -0.04437310748355072,
-    "microbial": 0.0255674703458324,
-    "behavioral": 0.11700399942323314
+    "satellite": -0.011581249999999876,
+    "microbial": -0.05374374999999987,
+    "behavioral": -0.015987499999999932
   },
   "critique_addressed": "Proper multi-modal fusion test with real embeddings and EPA-proxy labels. Tests all modality subsets to show information gain from each additional modality.",
-  "elapsed_s": 1.9
+  "elapsed_s": 0.8
 }

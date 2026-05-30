@@ -1,0 +1,285 @@
+{
+  "version": "1.0",
+  "pipeline": "SENTINEL Prospective Validation",
+  "phase": "Phase 0.2",
+  "timestamp": "2026-05-26T20:33:18.616386+00:00",
+  "n_sites": 18,
+  "sites": [
+    {
+      "site_id": "04193500",
+      "name": "Maumee River at Waterville, OH",
+      "latitude": 41.5009,
+      "longitude": -83.7127,
+      "region": "Ohio/Lake Erie",
+      "concern": "Harmful algal blooms (HABs), nutrient loading",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "dissolved_oxygen_drop"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Maumee River at Waterville, OH. Primary concern: Harmful algal blooms (HABs), nutrient loading. Region: Ohio/Lake Erie."
+    },
+    {
+      "site_id": "04199000",
+      "name": "Huron River at Milan, OH",
+      "latitude": 41.2984,
+      "longitude": -82.606,
+      "region": "Ohio/Lake Erie",
+      "concern": "Agricultural runoff, Lake Erie tributary",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "turbidity_surge"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Huron River at Milan, OH. Primary concern: Agricultural runoff, Lake Erie tributary. Region: Ohio/Lake Erie."
+    },
+    {
+      "site_id": "04208000",
+      "name": "Cuyahoga River at Independence, OH",
+      "latitude": 41.397,
+      "longitude": -81.6285,
+      "region": "Ohio/Lake Erie",
+      "concern": "Urban/industrial discharge, legacy contamination",
+      "predicted_contamination_types": [
+        "chemical_spike",
+        "toxic_compound"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Cuyahoga River at Independence, OH. Primary concern: Urban/industrial discharge, legacy contamination. Region: Ohio/Lake Erie."
+    },
+    {
+      "site_id": "01578310",
+      "name": "Susquehanna River at Conowingo, MD",
+      "latitude": 39.6578,
+      "longitude": -76.1747,
+      "region": "Chesapeake Bay",
+      "concern": "Nutrient loading to Chesapeake Bay, sediment",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "turbidity_surge"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Susquehanna River at Conowingo, MD. Primary concern: Nutrient loading to Chesapeake Bay, sediment. Region: Chesapeake Bay."
+    },
+    {
+      "site_id": "01646500",
+      "name": "Potomac River near Washington, DC",
+      "latitude": 38.9498,
+      "longitude": -77.1276,
+      "region": "Chesapeake Bay",
+      "concern": "Urban runoff, wastewater, nutrient loading",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "chemical_spike"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Potomac River near Washington, DC. Primary concern: Urban runoff, wastewater, nutrient loading. Region: Chesapeake Bay."
+    },
+    {
+      "site_id": "01668000",
+      "name": "Rappahannock River near Fredericksburg, VA",
+      "latitude": 38.3176,
+      "longitude": -77.5283,
+      "region": "Chesapeake Bay",
+      "concern": "Agricultural and urban runoff",
+      "predicted_contamination_types": [
+        "turbidity_surge",
+        "nutrient_bloom"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Rappahannock River near Fredericksburg, VA. Primary concern: Agricultural and urban runoff. Region: Chesapeake Bay."
+    },
+    {
+      "site_id": "07374000",
+      "name": "Mississippi River at Baton Rouge, LA",
+      "latitude": 30.4459,
+      "longitude": -91.1914,
+      "region": "Gulf Coast",
+      "concern": "Hypoxia zone driver, agricultural/industrial mix",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "dissolved_oxygen_drop",
+        "chemical_spike"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Mississippi River at Baton Rouge, LA. Primary concern: Hypoxia zone driver, agricultural/industrial mix. Region: Gulf Coast."
+    },
+    {
+      "site_id": "02489500",
+      "name": "Pearl River near Bogalusa, LA",
+      "latitude": 30.7755,
+      "longitude": -89.827,
+      "region": "Gulf Coast",
+      "concern": "Paper mill discharge, industrial contamination",
+      "predicted_contamination_types": [
+        "chemical_spike",
+        "dissolved_oxygen_drop"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Pearl River near Bogalusa, LA. Primary concern: Paper mill discharge, industrial contamination. Region: Gulf Coast."
+    },
+    {
+      "site_id": "04087000",
+      "name": "Milwaukee River at Milwaukee, WI",
+      "latitude": 43.0542,
+      "longitude": -87.9065,
+      "region": "Great Lakes",
+      "concern": "Combined sewer overflows, urban runoff",
+      "predicted_contamination_types": [
+        "chemical_spike",
+        "turbidity_surge"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Milwaukee River at Milwaukee, WI. Primary concern: Combined sewer overflows, urban runoff. Region: Great Lakes."
+    },
+    {
+      "site_id": "04157005",
+      "name": "Saginaw River at Saginaw, MI",
+      "latitude": 43.4265,
+      "longitude": -83.9508,
+      "region": "Great Lakes",
+      "concern": "Saginaw Bay eutrophication, industrial legacy",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "toxic_compound"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Saginaw River at Saginaw, MI. Primary concern: Saginaw Bay eutrophication, industrial legacy. Region: Great Lakes."
+    },
+    {
+      "site_id": "02336000",
+      "name": "Chattahoochee River at Atlanta, GA",
+      "latitude": 33.8813,
+      "longitude": -84.4388,
+      "region": "Southeast",
+      "concern": "Urban runoff, wastewater treatment plant discharge",
+      "predicted_contamination_types": [
+        "chemical_spike",
+        "dissolved_oxygen_drop"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Chattahoochee River at Atlanta, GA. Primary concern: Urban runoff, wastewater treatment plant discharge. Region: Southeast."
+    },
+    {
+      "site_id": "02324000",
+      "name": "Steinhatchee River near Cross City, FL",
+      "latitude": 29.6883,
+      "longitude": -83.3735,
+      "region": "Southeast",
+      "concern": "Spring-fed system, nutrient sensitivity",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "ph_deviation"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Steinhatchee River near Cross City, FL. Primary concern: Spring-fed system, nutrient sensitivity. Region: Southeast."
+    },
+    {
+      "site_id": "01463500",
+      "name": "Delaware River at Trenton, NJ",
+      "latitude": 40.2217,
+      "longitude": -74.7802,
+      "region": "Northeast",
+      "concern": "Industrial corridor, drinking water source",
+      "predicted_contamination_types": [
+        "chemical_spike",
+        "toxic_compound"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Delaware River at Trenton, NJ. Primary concern: Industrial corridor, drinking water source. Region: Northeast."
+    },
+    {
+      "site_id": "01304200",
+      "name": "Peconic River at Riverhead, NY",
+      "latitude": 40.9168,
+      "longitude": -72.6618,
+      "region": "Northeast",
+      "concern": "Nitrogen loading, estuary eutrophication",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "dissolved_oxygen_drop"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Peconic River at Riverhead, NY. Primary concern: Nitrogen loading, estuary eutrophication. Region: Northeast."
+    },
+    {
+      "site_id": "11447650",
+      "name": "Sacramento River at Freeport, CA",
+      "latitude": 38.4566,
+      "longitude": -121.5007,
+      "region": "West",
+      "concern": "Agricultural pesticides, Delta water quality",
+      "predicted_contamination_types": [
+        "chemical_spike",
+        "toxic_compound",
+        "turbidity_surge"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Sacramento River at Freeport, CA. Primary concern: Agricultural pesticides, Delta water quality. Region: West."
+    },
+    {
+      "site_id": "11303500",
+      "name": "San Joaquin River near Vernalis, CA",
+      "latitude": 37.6758,
+      "longitude": -121.2653,
+      "region": "West",
+      "concern": "Selenium, agricultural drainage, salinity",
+      "predicted_contamination_types": [
+        "toxic_compound",
+        "chemical_spike"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for San Joaquin River near Vernalis, CA. Primary concern: Selenium, agricultural drainage, salinity. Region: West."
+    },
+    {
+      "site_id": "05331000",
+      "name": "Mississippi River at St Paul, MN",
+      "latitude": 44.9438,
+      "longitude": -93.088,
+      "region": "Midwest",
+      "concern": "Urban-rural transition, WWTP discharge",
+      "predicted_contamination_types": [
+        "nutrient_bloom",
+        "chemical_spike"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Mississippi River at St Paul, MN. Primary concern: Urban-rural transition, WWTP discharge. Region: Midwest."
+    },
+    {
+      "site_id": "04157000",
+      "name": "Tittabawassee River at Midland, MI",
+      "latitude": 43.6314,
+      "longitude": -84.2269,
+      "region": "Midwest",
+      "concern": "PFAS contamination site, Dow Chemical legacy",
+      "predicted_contamination_types": [
+        "toxic_compound",
+        "chemical_spike"
+      ],
+      "current_conditions_summary": "Pre-anomaly baseline for Tittabawassee River at Midland, MI. Primary concern: PFAS contamination site, Dow Chemical legacy. Region: Midwest."
+    }
+  ],
+  "thresholds": {
+    "anomaly_probability_threshold": 0.9,
+    "sustained_windows_required": 5,
+    "severity_threshold": 0.7,
+    "min_confidence": 0.6
+  },
+  "parameters_queried": {
+    "00300": "DO",
+    "00400": "pH",
+    "00095": "SpCond",
+    "00010": "Temp",
+    "63680": "Turb"
+  },
+  "model_info": {
+    "sensor_encoder": {
+      "path": "/home/bcheng/SENTINEL/checkpoints/sensor/aquassm_real_best.pt",
+      "size_bytes": 18658450,
+      "modified": "2026-04-13T14:12:04.019997+00:00",
+      "available": true
+    },
+    "fusion_model": {
+      "path": "/home/bcheng/SENTINEL/checkpoints/fusion/fusion_real_best.pt",
+      "size_bytes": 12113624,
+      "modified": "2026-04-04T21:02:33.736870+00:00",
+      "available": true
+    }
+  },
+  "nwis_query_config": {
+    "lookback_days": 7,
+    "sequence_length": 128,
+    "stride": 64,
+    "parameter_codes": [
+      "00300",
+      "00400",
+      "00095",
+      "00010",
+      "63680"
+    ]
+  },
+  "commitment_hash_sha256": "ec8b790821d217e9773b5030b4bdbebd14c7aefdee199682f39055ea46fbca74"
+}

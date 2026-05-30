@@ -44,9 +44,29 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from sentinel.evaluation.case_study import HISTORICAL_EVENTS, HistoricalEvent
-from sentinel.models.satellite_encoder.model import SatelliteEncoder
-from sentinel.models.satellite_encoder.parameter_head import PARAM_NAMES, NUM_WATER_PARAMS
 from sentinel.models.fusion.heads import AnomalyDetectionHead, ANOMALY_TYPES
+
+# Lazy imports for satellite encoder — timm/torchvision may be unavailable
+SatelliteEncoder = None
+PARAM_NAMES = None
+NUM_WATER_PARAMS = None
+
+def _load_satellite_imports():
+    global SatelliteEncoder, PARAM_NAMES, NUM_WATER_PARAMS
+    if SatelliteEncoder is not None:
+        return True
+    try:
+        from sentinel.models.satellite_encoder.model import SatelliteEncoder as _SE
+        from sentinel.models.satellite_encoder.parameter_head import (
+            PARAM_NAMES as _PN, NUM_WATER_PARAMS as _NWP,
+        )
+        SatelliteEncoder = _SE
+        PARAM_NAMES = _PN
+        NUM_WATER_PARAMS = _NWP
+        return True
+    except Exception as e:
+        log(f"WARNING: Cannot import SatelliteEncoder ({e}), will use fallback embeddings")
+        return False
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -57,6 +77,8 @@ CKPT_PATHS = [
     Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints/satellite/hydrovit_wq_v6.pt"),
 ]
 FUSION_CKPT_PATHS = [
+    PROJECT_ROOT / "checkpoints" / "fusion" / "fusion_head_best.pt",
+    PROJECT_ROOT / "checkpoints" / "fusion" / "fusion_real_best.pt",
     Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints/fusion/fusion_head_best.pt"),
     Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints/fusion/fusion_real_best.pt"),
 ]
@@ -413,7 +435,6 @@ def run_s2_pipeline(
 
 
 def run_fallback_pipeline(
-    model: SatelliteEncoder,
     anomaly_head: AnomalyDetectionHead,
 ) -> Dict[str, Any]:
     """Use pre-extracted embeddings when S2 download is unavailable."""
@@ -479,8 +500,8 @@ def run_fallback_pipeline(
                 result = {
                     "anomaly_probability": anomaly_out.anomaly_probability.item(),
                     "severity_score": anomaly_out.severity_score.item(),
-                    "alert_level_probs": anomaly_out.alert_level_probs.squeeze(0).cpu().numpy().tolist(),
-                    "type_probs": anomaly_out.anomaly_type_probs.squeeze(0).cpu().numpy().tolist(),
+                    "alert_level_probs": anomaly_out.alert_level_probs.squeeze(0).detach().cpu().numpy().tolist(),
+                    "type_probs": anomaly_out.anomaly_type_probs.squeeze(0).detach().cpu().numpy().tolist(),
                 }
             else:
                 # If embeddings have different dim, project through a linear layer
@@ -491,8 +512,8 @@ def run_fallback_pipeline(
                 result = {
                     "anomaly_probability": anomaly_out.anomaly_probability.item(),
                     "severity_score": anomaly_out.severity_score.item(),
-                    "alert_level_probs": anomaly_out.alert_level_probs.squeeze(0).cpu().numpy().tolist(),
-                    "type_probs": anomaly_out.anomaly_type_probs.squeeze(0).cpu().numpy().tolist(),
+                    "alert_level_probs": anomaly_out.alert_level_probs.squeeze(0).detach().cpu().numpy().tolist(),
+                    "type_probs": anomaly_out.anomaly_type_probs.squeeze(0).detach().cpu().numpy().tolist(),
                 }
 
             event_results["time_points"][label] = {
@@ -544,7 +565,7 @@ def plot_event_timeseries(
         dates = []
         anomaly_probs = []
         severity_scores = []
-        wq_data = {name: [] for name in PARAM_NAMES}
+        wq_data = {name: [] for name in (PARAM_NAMES or [])}
         valid_dates_wq = []
         offset_labels = []
 
@@ -708,25 +729,31 @@ def main() -> None:
 
     # Load models
     log("\nLoading models...")
-    model = load_hydrovit()
+    have_sat = _load_satellite_imports()
     anomaly_head = load_anomaly_head()
 
-    # Try S2 download pipeline first
-    log("\nAttempting Sentinel-2 download from Planetary Computer...")
-    s2_results = run_s2_pipeline(model, anomaly_head)
+    if have_sat:
+        model = load_hydrovit()
 
-    # Check how many events got data
-    events_with_s2 = sum(
-        1 for r in s2_results.values()
-        if any(tp.get("source") == "sentinel-2"
-               for tp in r.get("time_points", {}).values())
-    )
-    log(f"\nEvents with S2 data: {events_with_s2}/{len(ELIGIBLE_EVENTS)}")
+        # Try S2 download pipeline first
+        log("\nAttempting Sentinel-2 download from Planetary Computer...")
+        s2_results = run_s2_pipeline(model, anomaly_head)
+
+        # Check how many events got data
+        events_with_s2 = sum(
+            1 for r in s2_results.values()
+            if any(tp.get("source") == "sentinel-2"
+                   for tp in r.get("time_points", {}).values())
+        )
+        log(f"\nEvents with S2 data: {events_with_s2}/{len(ELIGIBLE_EVENTS)}")
+    else:
+        s2_results = {}
+        events_with_s2 = 0
 
     # If no S2 data was obtained, fall back to pre-extracted embeddings
     if events_with_s2 == 0:
         log("\nNo S2 tiles obtained — falling back to pre-extracted embeddings")
-        fallback_results = run_fallback_pipeline(model, anomaly_head)
+        fallback_results = run_fallback_pipeline(anomaly_head)
         # Merge: use fallback for events without S2 data
         for eid, res in fallback_results.items():
             if eid not in s2_results or not any(

@@ -62,6 +62,17 @@ NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
 NEON_QF_COLS    = ["pHFinalQF", "dissolvedOxygenFinalQF", "turbidityFinalQF", "specificCondFinalQF"]
 PARAM_NAMES     = ["pH", "DO", "Turbidity", "SpCond"]
 
+# Map each value column to its quality flag column
+NEON_QF_MAP = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+
+# Physical range clipping (after QF filtering, as additional sanity check)
+NEON_CLIP_RANGES = {
+    "pH": (0, 14),
+    "dissolvedOxygen": (0, 25),
+    "turbidity": (0, 4000),
+    "specificConductance": (0, 100000),
+}
+
 ANOMALY_THRESHOLDS = {
     "pH":                  (6.0, 9.0),
     "dissolvedOxygen":     (4.0, None),
@@ -89,19 +100,42 @@ def load_neon_windows():
     import pandas as pd
 
     logger.info(f"Reading NEON parquet: {NEON_PARQUET}")
-    read_cols = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
+    read_cols = ["startDateTime", "source_file"] + NEON_VALUE_COLS + NEON_QF_COLS
     table = pq.read_table(str(NEON_PARQUET), columns=read_cols)
     df = table.to_pandas()
     logger.info(f"  Raw rows: {len(df):,}")
 
+    # Extract site name from source_file (pattern: DP1.20288.001_SITENAME_YYYY-MM_...)
+    import re
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
+    df["siteID"] = df["source_file"].apply(_extract_site)
+    df = df.drop(columns=["source_file"])
+
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    n_before = df[NEON_VALUE_COLS].notna().sum().sum()
+    for val_col, qf_col in NEON_QF_MAP.items():
+        if qf_col in df.columns:
+            bad_qf = df[qf_col].fillna(1).astype(float) != 0
+            df.loc[bad_qf, val_col] = np.nan
+    n_after = df[NEON_VALUE_COLS].notna().sum().sum()
+    logger.info(f"  QF filtering: {n_before:,} -> {n_after:,} valid values "
+                f"({n_before - n_after:,} rejected)")
+
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in NEON_CLIP_RANGES.items():
+        if col in df.columns:
+            df[col] = df[col].clip(lo, hi)
+
     # Parse timestamps and sort
     df["ts"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
-    df = df.dropna(subset=["ts"]).sort_values(["source_site", "ts"]).reset_index(drop=True)
+    df = df.dropna(subset=["ts", "siteID"]).sort_values(["siteID", "ts"]).reset_index(drop=True)
 
     normal_windows   = []
     anomaly_windows  = []
 
-    sites = df["source_site"].dropna().unique()
+    sites = df["siteID"].unique()
     logger.info(f"  Sites available: {len(sites)}")
 
     for site in sites:
@@ -109,7 +143,7 @@ def load_neon_windows():
                 len(anomaly_windows) >= N_ANOMALY_TARGET * 2):
             break
 
-        df_site = df[df["source_site"] == site].copy()
+        df_site = df[df["siteID"] == site].copy()
         df_site = df_site.set_index("ts")
 
         # Resample to 15-min grid (same as exp16)

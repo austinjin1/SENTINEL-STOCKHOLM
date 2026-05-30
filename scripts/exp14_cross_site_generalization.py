@@ -131,18 +131,41 @@ def run_quick_scan_subset() -> dict:
     head.load_state_dict(fusion_ckpt["head"], strict=False)
     head.eval()
 
-    READ_COLS = ["startDateTime", "source_site", "specificConductance",
-                 "pH", "dissolvedOxygen", "turbidity", "specificCondFinalQF"]
+    NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
+    NEON_QF_COLS = ["pHFinalQF", "dissolvedOxygenFinalQF", "turbidityFinalQF", "specificCondFinalQF"]
+    NEON_QF_MAP = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+    NEON_CLIP_RANGES = {"pH": (0, 14), "dissolvedOxygen": (0, 25),
+                        "turbidity": (0, 4000), "specificConductance": (0, 100000)}
+    READ_COLS = ["startDateTime", "source_file"] + NEON_VALUE_COLS + NEON_QF_COLS
     TARGET_SITES = ["FLNT", "ARIK", "BLUE", "PRPO"]
 
     pf = pq.ParquetFile(str(NEON_PARQUET))
     table = pf.read(columns=READ_COLS)
     df = table.to_pandas()
-    df = df[df["source_site"].isin(TARGET_SITES)]
+
+    # Extract siteID from source_file (siteID column is mostly NULL in sensor rows)
+    import re
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
+    df["siteID"] = df["source_file"].apply(_extract_site)
+    df = df.drop(columns=["source_file"])
+
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    for val_col, qf_col in NEON_QF_MAP.items():
+        if qf_col in df.columns:
+            bad_qf = df[qf_col].fillna(1).astype(float) != 0
+            df.loc[bad_qf, val_col] = np.nan
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in NEON_CLIP_RANGES.items():
+        if col in df.columns:
+            df[col] = df[col].clip(lo, hi)
+    # Drop QF columns
+    df = df.drop(columns=[c for c in NEON_QF_COLS if c in df.columns])
+
+    df = df[df["siteID"].isin(TARGET_SITES)]
     df["ts"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
     df = df.dropna(subset=["ts"]).sort_values("ts")
-
-    NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
     ANOMALY_THRESHOLDS = {
         "pH": (6.0, 9.5),
         "dissolvedOxygen": (4.0, None),
@@ -153,7 +176,7 @@ def run_quick_scan_subset() -> dict:
     scan_results = {}
 
     for site in TARGET_SITES:
-        df_site = df[df["source_site"] == site].set_index("ts")
+        df_site = df[df["siteID"] == site].set_index("ts")
         if len(df_site) < T:
             logger.warning(f"  {site}: insufficient data ({len(df_site)} rows)")
             scan_results[site] = {"site": site, "status": "insufficient_data"}

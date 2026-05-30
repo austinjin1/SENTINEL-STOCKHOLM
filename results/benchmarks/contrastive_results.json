@@ -1,0 +1,40 @@
+{
+  "model": "ContrastivePretrainer (CLIP-style)",
+  "pair_results": {
+    "microbial-molecular": {
+      "pair_name": "microbial-molecular",
+      "modality_a": "microbial",
+      "modality_b": "molecular",
+      "best_epoch": 1,
+      "best_val_recall_at_1": 1.0,
+      "test_retrieval": {
+        "recall@1_a2b": 1.0,
+        "recall@1_b2a": 1.0,
+        "mean_cosine_sim": 0.037916556000709534,
+        "std_cosine_sim": NaN,
+        "median_cosine_sim": 0.037916556000709534
+      },
+      "trainable_params": 99329,
+      "encoder_a": "checkpoints/microbial/microbiomenet_v5_best.pt",
+      "encoder_b": "checkpoints/molecular/toxigene_v9b_best.pt"
+    }
+  },
+  "args": {
+    "pairs": [
+      "microbial-molecular"
+    ],
+    "epochs": 50,
+    "batch_size": 256,
+    "lr": 0.0003,
+    "weight_decay": 0.01,
+    "warmup_epochs": 10,
+    "init_temperature": 0.07,
+    "grad_clip": 1.0,
+    "patience": 15,
+    "eval_every": 5,
+    "gpu": 3,
+    "seed": 42,
+    "checkpoint_dir": "checkpoints/contrastive"
+  },
+  "timestamp": "2026-05-26T19:45:16.896034"
+}

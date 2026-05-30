@@ -1,0 +1,1067 @@
+{
+  "prediction_date": "2026-05-28T23:29:09.129512+00:00",
+  "lookback_days": 7,
+  "registration_hash": "e59732216c72c7aee5bccd9c23c4cb3149011b92c60a9c8fe69e71e4915965d5",
+  "model_info": {
+    "sensor_encoder": {
+      "path": "/home/bcheng/SENTINEL/checkpoints/sensor/aquassm_real_best.pt",
+      "size_bytes": 18658450,
+      "modified": "2026-04-13T14:12:04.019997+00:00",
+      "available": true
+    },
+    "fusion_model": {
+      "path": "/home/bcheng/SENTINEL/checkpoints/fusion/fusion_real_best.pt",
+      "size_bytes": 12113624,
+      "modified": "2026-04-04T21:02:33.736870+00:00",
+      "available": true
+    }
+  },
+  "summary": {
+    "n_sites_attempted": 18,
+    "n_sites_success": 13,
+    "n_sites_failed": 5,
+    "n_alerts_triggered": 0
+  },
+  "thresholds": {
+    "anomaly_probability_threshold": 0.9,
+    "sustained_windows_required": 5,
+    "severity_threshold": 0.7,
+    "min_confidence": 0.6
+  },
+  "predictions": [
+    {
+      "site_id": "04193500",
+      "name": "Maumee River at Waterville, OH",
+      "region": "Ohio/Lake Erie",
+      "prediction_timestamp": "2026-05-28T23:29:11.979786+00:00",
+      "data_summary": {
+        "n_records_raw": 750,
+        "date_range_start": "2026-05-21 04:00:00+00:00",
+        "date_range_end": "2026-05-28 23:00:00+00:00",
+        "parameters_available": [
+          "DO",
+          "pH",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.04571518098766154,
+        "max_probability": 0.09781751036643982,
+        "min_probability": 0.0388931930065155,
+        "std_probability": 0.016512565027755065,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.09781751036643982,
+          0.04114118963479996,
+          0.04083482548594475,
+          0.040687091648578644,
+          0.04174720123410225,
+          0.042839180678129196,
+          0.04035433754324913,
+          0.039367739111185074,
+          0.0388931930065155,
+          0.03939627856016159,
+          0.039788443595170975
+        ]
+      },
+      "severity_scores": {
+        "mean": 1.4007861253778953e-14,
+        "max": 1.540244304711405e-13
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9995846856724132
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9778726696968079
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.7567881887609308
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9467899690974843
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.03205687772821297
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.018839955075897953
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "nutrient_bloom",
+        "dissolved_oxygen_drop"
+      ]
+    },
+    {
+      "site_id": "04199000",
+      "name": "Huron River at Milan, OH",
+      "region": "Ohio/Lake Erie",
+      "prediction_timestamp": "2026-05-28T23:29:13.244364+00:00",
+      "data_summary": {
+        "n_records_raw": 747,
+        "date_range_start": "2026-05-21 04:00:00+00:00",
+        "date_range_end": "2026-05-28 22:30:00+00:00",
+        "parameters_available": [
+          "Temp"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.10505273193120956,
+        "max_probability": 0.1055574119091034,
+        "min_probability": 0.1047159805893898,
+        "std_probability": 0.0002129141632494294,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.10496635735034943,
+          0.1055574119091034,
+          0.10515802353620529,
+          0.10526104271411896,
+          0.10489507019519806,
+          0.10500019043684006,
+          0.10487545281648636,
+          0.10512814670801163,
+          0.1047159805893898,
+          0.10499655455350876,
+          0.10502582043409348
+        ]
+      },
+      "severity_scores": {
+        "mean": 9.245917232328552e-19,
+        "max": 9.841118708005161e-19
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9995789256962863
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9874449209733442
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.896931832486933
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.8863173506476663
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.07731266387484291
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.029455038464882156
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "nutrient_bloom",
+        "turbidity_surge"
+      ]
+    },
+    {
+      "site_id": "04208000",
+      "name": "Cuyahoga River at Independence, OH",
+      "region": "Ohio/Lake Erie",
+      "prediction_timestamp": "2026-05-28T23:29:14.504274+00:00",
+      "data_summary": {
+        "n_records_raw": 750,
+        "date_range_start": "2026-05-21 04:00:00+00:00",
+        "date_range_end": "2026-05-28 23:15:00+00:00",
+        "parameters_available": [
+          "Temp"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.10503317754377019,
+        "max_probability": 0.10532380640506744,
+        "min_probability": 0.10482166707515717,
+        "std_probability": 0.00014276209821267982,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.10499543696641922,
+          0.10516326874494553,
+          0.10516134649515152,
+          0.10532380640506744,
+          0.10496411472558975,
+          0.10483074188232422,
+          0.10495305806398392,
+          0.10498204827308655,
+          0.10482166707515717,
+          0.10507714748382568,
+          0.10509231686592102
+        ]
+      },
+      "severity_scores": {
+        "mean": 9.121370903443568e-19,
+        "max": 9.68370623743632e-19
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9995827945795926
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.987457047809254
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.8969407027417963
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.8865823691541498
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.07703720845959404
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.029474647377024998
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "chemical_spike",
+        "toxic_compound"
+      ]
+    },
+    {
+      "site_id": "01646500",
+      "name": "Potomac River near Washington, DC",
+      "region": "Chesapeake Bay",
+      "prediction_timestamp": "2026-05-28T23:29:17.324357+00:00",
+      "data_summary": {
+        "n_records_raw": 2243,
+        "date_range_start": "2026-05-21 04:00:00+00:00",
+        "date_range_end": "2026-05-28 22:50:00+00:00",
+        "parameters_available": [
+          "DO",
+          "pH",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.05263269963589581,
+        "max_probability": 0.07624772936105728,
+        "min_probability": 0.0406593456864357,
+        "std_probability": 0.014653161620959669,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.0406593456864357,
+          0.04071894288063049,
+          0.04104065150022507,
+          0.04328984022140503,
+          0.07459750026464462,
+          0.07624772936105728,
+          0.07595022022724152,
+          0.05480002984404564,
+          0.048833899199962616,
+          0.041614048182964325,
+          0.041207488626241684
+        ]
+      },
+      "severity_scores": {
+        "mean": 3.1017675196187153e-18,
+        "max": 4.0000895187609756e-18
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9998195225542242
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9945754733952609
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.7812785452062433
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9681724093177102
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.02620830488475886
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.004432284061542966
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "nutrient_bloom",
+        "chemical_spike"
+      ]
+    },
+    {
+      "site_id": "01668000",
+      "name": "Rappahannock River near Fredericksburg, VA",
+      "region": "Chesapeake Bay",
+      "prediction_timestamp": "2026-05-28T23:29:18.603649+00:00",
+      "data_summary": {
+        "n_records_raw": 746,
+        "date_range_start": "2026-05-21 04:00:00+00:00",
+        "date_range_end": "2026-05-28 22:15:00+00:00",
+        "parameters_available": [
+          "DO",
+          "pH",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.08131760595874353,
+        "max_probability": 0.13685980439186096,
+        "min_probability": 0.04543649032711983,
+        "std_probability": 0.0345206750197438,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.04543649032711983,
+          0.04586172476410866,
+          0.04651019349694252,
+          0.04884891211986542,
+          0.13685980439186096,
+          0.12095139175653458,
+          0.0750359296798706,
+          0.06592308729887009,
+          0.06757792830467224,
+          0.1149045079946518,
+          0.12658369541168213
+        ]
+      },
+      "severity_scores": {
+        "mean": 1.3204425114879302e-18,
+        "max": 2.1413383749428144e-18
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9997406872836027
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9939548915082758
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.8583131486719305
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9486086910421198
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.03939189795743336
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.009639982070604508
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "turbidity_surge",
+        "nutrient_bloom"
+      ]
+    },
+    {
+      "site_id": "07374000",
+      "name": "Mississippi River at Baton Rouge, LA",
+      "region": "Gulf Coast",
+      "prediction_timestamp": "2026-05-28T23:29:20.028170+00:00",
+      "data_summary": {
+        "n_records_raw": 373,
+        "date_range_start": "2026-05-21 05:00:00+00:00",
+        "date_range_end": "2026-05-28 23:00:00+00:00",
+        "parameters_available": [
+          "DO",
+          "pH",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 5
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.047637154906988145,
+        "max_probability": 0.048767779022455215,
+        "min_probability": 0.046904414892196655,
+        "std_probability": 0.0006150577859376083,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.04737938567996025,
+          0.048767779022455215,
+          0.04756658896803856,
+          0.046904414892196655,
+          0.04756760597229004
+        ]
+      },
+      "severity_scores": {
+        "mean": 2.21072079579866e-18,
+        "max": 2.4129319621363316e-18
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9998573303222656
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9955949425697327
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.7201245307922364
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9684812664985657
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.02560000717639923
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.0046279698610305784
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "nutrient_bloom",
+        "dissolved_oxygen_drop",
+        "chemical_spike"
+      ]
+    },
+    {
+      "site_id": "04087000",
+      "name": "Milwaukee River at Milwaukee, WI",
+      "region": "Great Lakes",
+      "prediction_timestamp": "2026-05-28T23:29:22.130078+00:00",
+      "data_summary": {
+        "n_records_raw": 2233,
+        "date_range_start": "2026-05-21 05:00:00+00:00",
+        "date_range_end": "2026-05-28 23:00:00+00:00",
+        "parameters_available": [
+          "Temp"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.10510951348326424,
+        "max_probability": 0.10538982599973679,
+        "min_probability": 0.1046731099486351,
+        "std_probability": 0.00019062567995256803,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.10538982599973679,
+          0.10531593859195709,
+          0.10509831458330154,
+          0.1050792932510376,
+          0.10502546280622482,
+          0.1046731099486351,
+          0.10497630387544632,
+          0.10514537245035172,
+          0.10498678684234619,
+          0.10522310435771942,
+          0.10529113560914993
+        ]
+      },
+      "severity_scores": {
+        "mean": 9.034651543970633e-19,
+        "max": 9.73088241572175e-19
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9995850595560941
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.987464346668937
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.8969827890396118
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.8866138295693831
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.07690108161080968
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.029568229886618527
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "chemical_spike",
+        "turbidity_surge"
+      ]
+    },
+    {
+      "site_id": "04157005",
+      "name": "Saginaw River at Saginaw, MI",
+      "region": "Great Lakes",
+      "prediction_timestamp": "2026-05-28T23:29:24.059038+00:00",
+      "data_summary": {
+        "n_records_raw": 743,
+        "date_range_start": "2026-05-21 05:00:00+00:00",
+        "date_range_end": "2026-05-28 23:00:00+00:00",
+        "parameters_available": [
+          "DO",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.04513299668377096,
+        "max_probability": 0.05921851098537445,
+        "min_probability": 0.04088486731052399,
+        "std_probability": 0.006779379615732949,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.04296861216425896,
+          0.04281303286552429,
+          0.04095485806465149,
+          0.0409935899078846,
+          0.041032690554857254,
+          0.0410958006978035,
+          0.04110078141093254,
+          0.04088486731052399,
+          0.05921851098537445,
+          0.04635343328118324,
+          0.05904678627848625
+        ]
+      },
+      "severity_scores": {
+        "mean": 3.1688477219939235e-18,
+        "max": 3.897066655009334e-18
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9998180703683333
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9930978579954668
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.8117295124314048
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9676772572777488
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.02719752507453615
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.004079476485706188
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "nutrient_bloom",
+        "toxic_compound"
+      ]
+    },
+    {
+      "site_id": "02336000",
+      "name": "Chattahoochee River at Atlanta, GA",
+      "region": "Southeast",
+      "prediction_timestamp": "2026-05-28T23:29:25.323037+00:00",
+      "data_summary": {
+        "n_records_raw": 747,
+        "date_range_start": "2026-05-21 04:00:00+00:00",
+        "date_range_end": "2026-05-28 22:45:00+00:00",
+        "parameters_available": [
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.14929373884065586,
+        "max_probability": 0.37714967131614685,
+        "min_probability": 0.029273400083184242,
+        "std_probability": 0.10473309635520335,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.02928157150745392,
+          0.029321391135454178,
+          0.029273400083184242,
+          0.20945128798484802,
+          0.13005244731903076,
+          0.20961572229862213,
+          0.18292751908302307,
+          0.2524023950099945,
+          0.07980924844741821,
+          0.37714967131614685,
+          0.11294647306203842
+        ]
+      },
+      "severity_scores": {
+        "mean": 3.3110507248820437e-17,
+        "max": 2.429235170885966e-16
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9994905699383129
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9920542402700945
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.8771276473999023
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9000245928764343
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.04826435802335089
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.044943581631576475
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "chemical_spike",
+        "dissolved_oxygen_drop"
+      ]
+    },
+    {
+      "site_id": "01463500",
+      "name": "Delaware River at Trenton, NJ",
+      "region": "Northeast",
+      "prediction_timestamp": "2026-05-28T23:29:27.315070+00:00",
+      "data_summary": {
+        "n_records_raw": 187,
+        "date_range_start": "2026-05-21 04:00:00+00:00",
+        "date_range_end": "2026-05-28 22:00:00+00:00",
+        "parameters_available": [
+          "DO",
+          "pH",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 2
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.054646849632263184,
+        "max_probability": 0.05481588467955589,
+        "min_probability": 0.054477814584970474,
+        "std_probability": 0.00016903504729270935,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.054477814584970474,
+          0.05481588467955589
+        ]
+      },
+      "severity_scores": {
+        "mean": 6.537953360545758e-19,
+        "max": 6.669944502939314e-19
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9998635053634644
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.993968278169632
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.83778977394104
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9564771950244904
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.03663823567330837
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.005417207255959511
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "chemical_spike",
+        "toxic_compound"
+      ]
+    },
+    {
+      "site_id": "01304200",
+      "name": "Peconic River at Riverhead, NY",
+      "region": "Northeast",
+      "prediction_timestamp": "2026-05-28T23:29:29.129984+00:00",
+      "data_summary": {
+        "n_records_raw": 1860,
+        "date_range_start": "2026-05-21 05:00:00+00:00",
+        "date_range_end": "2026-05-28 22:54:00+00:00",
+        "parameters_available": [
+          "DO",
+          "pH",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.041605395349589264,
+        "max_probability": 0.04161783307790756,
+        "min_probability": 0.04159100726246834,
+        "std_probability": 9.764487921520764e-06,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.04159596934914589,
+          0.04161522909998894,
+          0.04160657525062561,
+          0.04161269962787628,
+          0.04161783307790756,
+          0.041596826165914536,
+          0.04160332307219505,
+          0.04159100726246834,
+          0.04161473736166954,
+          0.0416141040623188,
+          0.04159104451537132
+        ]
+      },
+      "severity_scores": {
+        "mean": 3.635437172677274e-18,
+        "max": 3.6468635448661315e-18
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9998218850655989
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9935490922494368
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.7916306961666454
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9707006812095642
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.024973745542493733
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.0034112664447589354
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "nutrient_bloom",
+        "dissolved_oxygen_drop"
+      ]
+    },
+    {
+      "site_id": "11447650",
+      "name": "Sacramento River at Freeport, CA",
+      "region": "West",
+      "prediction_timestamp": "2026-05-28T23:29:30.660520+00:00",
+      "data_summary": {
+        "n_records_raw": 737,
+        "date_range_start": "2026-05-21 07:00:00+00:00",
+        "date_range_end": "2026-05-28 23:00:00+00:00",
+        "parameters_available": [
+          "DO",
+          "pH",
+          "SpCond",
+          "Temp",
+          "Turb"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.04868978228081356,
+        "max_probability": 0.11531442403793335,
+        "min_probability": 0.03969007730484009,
+        "std_probability": 0.021139646861684215,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.04064581170678139,
+          0.04233035072684288,
+          0.045407675206661224,
+          0.04451461508870125,
+          0.04209068790078163,
+          0.0427485927939415,
+          0.042488034814596176,
+          0.04060063511133194,
+          0.03969007730484009,
+          0.03975670039653778,
+          0.11531442403793335
+        ]
+      },
+      "severity_scores": {
+        "mean": 1.555436133270896e-17,
+        "max": 1.4525118179374775e-16
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.999655311757868
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9863742915066805
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.8311385187235746
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.9337632764469493
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.04682588204741478
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.015756722560829738
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "chemical_spike",
+        "toxic_compound",
+        "turbidity_surge"
+      ]
+    },
+    {
+      "site_id": "11303500",
+      "name": "San Joaquin River near Vernalis, CA",
+      "region": "West",
+      "prediction_timestamp": "2026-05-28T23:29:31.983517+00:00",
+      "data_summary": {
+        "n_records_raw": 736,
+        "date_range_start": "2026-05-21 07:00:00+00:00",
+        "date_range_end": "2026-05-28 22:45:00+00:00",
+        "parameters_available": [
+          "Temp"
+        ],
+        "n_windows": 11
+      },
+      "anomaly_scores": {
+        "mean_probability": 0.10500345650044354,
+        "max_probability": 0.10506042838096619,
+        "min_probability": 0.1049470603466034,
+        "std_probability": 3.9519013105432726e-05,
+        "fraction_above_threshold": 0.0,
+        "max_consecutive_above_threshold": 0,
+        "per_window_probabilities": [
+          0.10495524853467941,
+          0.10501080751419067,
+          0.1049470603466034,
+          0.10502582043409348,
+          0.10502645373344421,
+          0.10496138781309128,
+          0.10506042838096619,
+          0.10505334287881851,
+          0.10501448065042496,
+          0.10502810031175613,
+          0.10495489090681076
+        ]
+      },
+      "severity_scores": {
+        "mean": 8.955556627796109e-19,
+        "max": 9.076965122225611e-19
+      },
+      "alert": {
+        "triggered": false,
+        "threshold": 0.9,
+        "sustained_windows_required": 5,
+        "max_consecutive_windows": 0
+      },
+      "top_anomaly_types": [
+        {
+          "type": "dissolved_oxygen_drop",
+          "mean_probability": 0.9995879422534596
+        },
+        {
+          "type": "temperature_anomaly",
+          "mean_probability": 0.9874737912958319
+        },
+        {
+          "type": "nutrient_bloom",
+          "mean_probability": 0.8969581506469033
+        }
+      ],
+      "top_contamination_sources": [
+        {
+          "class": "nutrient",
+          "mean_probability": 0.8869589404626326
+        },
+        {
+          "class": "thermal",
+          "mean_probability": 0.0766619782556187
+        },
+        {
+          "class": "acid_mine",
+          "mean_probability": 0.029488366435874592
+        }
+      ],
+      "predicted_contamination_types_registered": [
+        "toxic_compound",
+        "chemical_spike"
+      ]
+    }
+  ]
+}

@@ -49,24 +49,24 @@
     "tier_4": [
       "MAYF",
       "MCDI",
-      "PRIN"
+      "PRIN",
+      "SUGG"
     ],
     "tier_5": [
       "BARC",
-      "PRPO",
-      "SUGG"
+      "PRPO"
     ]
   },
   "ranked_sites": [
     {
       "site": "BARC",
-      "composite_score": 0.8427,
+      "composite_score": 0.7427,
       "tier": 5,
       "tier_name": "Critical",
       "components": {
         "aquassm_level": 0.91,
         "exceedance_rate": 1.0,
-        "trend_severity": 0.5,
+        "trend_severity": 0.0,
         "peak_severity": 0.871
       },
       "raw": {
@@ -79,34 +79,14 @@
       "_tier_color": "#8B0000"
     },
     {
-      "site": "SUGG",
-      "composite_score": 0.7937,
-      "tier": 5,
-      "tier_name": "Critical",
-      "components": {
-        "aquassm_level": 0.8885,
-        "exceedance_rate": 1.0,
-        "trend_severity": 0.5,
-        "peak_severity": 0.6635
-      },
-      "raw": {
-        "mean_score": 0.1184,
-        "p95_score": 0.3746,
-        "max_score": 0.564,
-        "label_anomaly_rate": 1.0
-      },
-      "context": "",
-      "_tier_color": "#8B0000"
-    },
-    {
       "site": "PRPO",
-      "composite_score": 0.7559,
+      "composite_score": 0.7159,
       "tier": 5,
       "tier_name": "Critical",
       "components": {
         "aquassm_level": 0.7872,
         "exceedance_rate": 1.0,
-        "trend_severity": 0.2,
+        "trend_severity": 0.0,
         "peak_severity": 0.9517
       },
       "raw": {
@@ -117,6 +97,26 @@
       },
       "context": "Prairie pothole agricultural (high baseline SpCond)",
       "_tier_color": "#8B0000"
+    },
+    {
+      "site": "SUGG",
+      "composite_score": 0.6937,
+      "tier": 4,
+      "tier_name": "High",
+      "components": {
+        "aquassm_level": 0.8885,
+        "exceedance_rate": 1.0,
+        "trend_severity": 0.0,
+        "peak_severity": 0.6635
+      },
+      "raw": {
+        "mean_score": 0.1184,
+        "p95_score": 0.3746,
+        "max_score": 0.564,
+        "label_anomaly_rate": 1.0
+      },
+      "context": "",
+      "_tier_color": "#CC2200"
     },
     {
       "site": "MAYF",
@@ -701,8 +701,8 @@
   ],
   "top10": [
     "BARC",
-    "SUGG",
     "PRPO",
+    "SUGG",
     "MAYF",
     "MCDI",
     "PRIN",

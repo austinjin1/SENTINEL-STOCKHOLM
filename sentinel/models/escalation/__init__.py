@@ -17,18 +17,6 @@ CurriculumScheduler
     Curriculum learning schedule manager.
 """
 
-from sentinel.models.escalation.curriculum import (
-    CurriculumCallback,
-    CurriculumPhase,
-    CurriculumScheduler,
-)
-from sentinel.models.escalation.decision_tree import (
-    ExtractionResult,
-    collect_policy_dataset,
-    extract_decision_tree,
-    format_protocol,
-    save_protocol,
-)
 from sentinel.models.escalation.environment import (
     NUM_ACTIONS,
     NUM_TIERS,
@@ -39,12 +27,34 @@ from sentinel.models.escalation.environment import (
     ContaminationEvent,
     EpisodeScenario,
 )
-from sentinel.models.escalation.model import CascadeEscalationController
-from sentinel.models.escalation.policy import (
-    EscalationFeaturesExtractor,
-    EscalationPolicyNetwork,
-    create_ppo_agent,
-)
+
+# Lazy imports: curriculum, policy, decision_tree, and model depend on
+# stable_baselines3 which triggers tensorboard → tensorflow.  Defer so
+# that scripts which only need the environment (e.g. exp4) can import
+# this package without a working TF installation.
+
+def __getattr__(name):
+    _curriculum_names = {"CurriculumCallback", "CurriculumPhase", "CurriculumScheduler"}
+    _decision_tree_names = {
+        "ExtractionResult", "collect_policy_dataset", "extract_decision_tree",
+        "format_protocol", "save_protocol",
+    }
+    _policy_names = {"EscalationFeaturesExtractor", "EscalationPolicyNetwork", "create_ppo_agent"}
+    _model_names = {"CascadeEscalationController"}
+
+    if name in _curriculum_names:
+        from sentinel.models.escalation import curriculum
+        return getattr(curriculum, name)
+    if name in _decision_tree_names:
+        from sentinel.models.escalation import decision_tree
+        return getattr(decision_tree, name)
+    if name in _policy_names:
+        from sentinel.models.escalation import policy
+        return getattr(policy, name)
+    if name in _model_names:
+        from sentinel.models.escalation import model
+        return getattr(model, name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 __all__ = [
     # Top-level controller

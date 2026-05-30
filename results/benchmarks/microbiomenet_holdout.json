@@ -1,0 +1,59 @@
+{
+  "model": "MicroBiomeNetV5",
+  "version": "v3_spatial_holdout",
+  "split_protocol": "spatial_holdout_hash_based",
+  "split_description": "Strict spatial holdout using sentinel.data.splits. Sites assigned to folds via SHA-256 hash of site_id. Folds 0,1,2 -> train, Fold 3 -> val, Fold 4 -> test. Zero site leakage verified.",
+  "data_source": "Real EMP 16S rRNA only (no synthetic data)",
+  "test_macro_f1": 0.83093,
+  "test_accuracy": 0.867647,
+  "best_val_f1": 0.855136,
+  "per_class_f1": {
+    "freshwater_natural": 0.818182,
+    "freshwater_impacted": 0.75,
+    "saline_water": 0.884615,
+    "freshwater_sediment": 0.96,
+    "saline_sediment": 0.807692,
+    "soil_runoff": 0.628571,
+    "animal_fecal": 0.895522,
+    "plant_associated": 0.902857
+  },
+  "n_train": 835,
+  "n_val": 281,
+  "n_test": 272,
+  "n_total": 1388,
+  "n_train_sites": 835,
+  "n_val_sites": 281,
+  "n_test_sites": 272,
+  "site_leakage": {
+    "train_val_overlap": 0,
+    "train_test_overlap": 0,
+    "val_test_overlap": 0
+  },
+  "n_classes": 8,
+  "architecture": {
+    "input_dim": 5000,
+    "embed_dim": 256,
+    "num_heads": 8,
+    "num_layers": 6,
+    "ff_dim": 1024,
+    "dropout": 0.15,
+    "top_k_sparse": 256,
+    "n_params": 11674000
+  },
+  "training": {
+    "epochs": 150,
+    "lr": 0.0003,
+    "weight_decay": 0.02,
+    "batch_size": 64,
+    "seed": 42,
+    "loss": "CrossEntropyLoss(label_smoothing=0.05)",
+    "optimizer": "AdamW(lr=3e-4, weight_decay=0.02)",
+    "scheduler": "CosineAnnealingWarmRestarts(T_0=25, T_mult=2, eta_min=1e-6)",
+    "patience": 25,
+    "gradient_clip": 1.0,
+    "mixed_precision": true,
+    "augmentation": "Mixup(50%), Dirichlet(50%), OTU_subsample(15%), lognormal(30%)"
+  },
+  "elapsed_seconds": 116.67,
+  "checkpoint_path": "/home/bcheng/SENTINEL/checkpoints/microbial/microbiomenet_v3_best.pt"
+}

@@ -45,6 +45,15 @@ STRIDE = 64
 NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
 NEON_QF_COLS    = ["pHFinalQF", "dissolvedOxygenFinalQF", "turbidityFinalQF", "specificCondFinalQF"]
 PARAM_NAMES     = ["pH", "DO", "Turbidity", "SpCond", "Temp(pad)", "ORP(pad)"]
+# Map value columns to their QF columns for pre-filtering
+NEON_QF_MAP = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+# Physical range clipping (after QF filtering, as additional sanity check)
+NEON_CLIP_RANGES = {
+    "pH": (0, 14),
+    "dissolvedOxygen": (0, 25),
+    "turbidity": (0, 4000),
+    "specificConductance": (0, 100000),
+}
 
 ANOMALY_THRESHOLDS = {
     "pH":                  (6.0, 9.5),
@@ -53,7 +62,7 @@ ANOMALY_THRESHOLDS = {
     "specificConductance": (None, 1500.0),
 }
 
-READ_COLS = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
+READ_COLS = ["startDateTime", "source_file"] + NEON_VALUE_COLS + NEON_QF_COLS
 
 
 # ---------------------------------------------------------------------------
@@ -141,6 +150,16 @@ def build_site_windows(df_site):
     import pandas as pd
 
     df_site = df_site.copy()
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    for val_col, qf_col in NEON_QF_MAP.items():
+        if qf_col in df_site.columns:
+            bad_qf = df_site[qf_col].fillna(1).astype(float) != 0
+            df_site.loc[bad_qf, val_col] = np.nan
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in NEON_CLIP_RANGES.items():
+        if col in df_site.columns:
+            df_site[col] = df_site[col].clip(lo, hi)
+
     df_site["ts"] = pd.to_datetime(df_site["startDateTime"], utc=True, errors="coerce")
     df_site = df_site.dropna(subset=["ts"]).sort_values("ts").reset_index(drop=True)
     df_site = df_site.set_index("ts")
@@ -229,23 +248,33 @@ def main():
 
     import pyarrow.parquet as pq
     import pandas as pd
+    import re
+
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
 
     pf = pq.ParquetFile(str(NEON_PARQUET))
     schema = pf.schema_arrow
     logger.info(f"NEON parquet open. Schema cols: {len(schema)}")
+
+    # Read all data once and extract siteID from source_file
+    logger.info("Loading full parquet (relevant columns)...")
+    table_all = pf.read(columns=READ_COLS)
+    df_all = table_all.to_pandas()
+    df_all["siteID"] = df_all["source_file"].apply(_extract_site)
+    df_all = df_all.drop(columns=["source_file"])
+    logger.info(f"Loaded {len(df_all):,} rows")
 
     for rank, (site, site_res) in enumerate(ranked_sites, 1):
         try:
             logger.info(f"  [{rank:2d}/20] {site}: max_score={site_res['max_score']:.4f}")
 
             # Read site data
-            filters = [("source_site", "=", site)]
-            table = pq.read_table(str(NEON_PARQUET), columns=READ_COLS, filters=filters)
-            if len(table) < T * 2:
-                logger.info(f"    Skip {site}: too few rows ({len(table)})")
+            df = df_all[df_all["siteID"] == site].copy()
+            if len(df) < T * 2:
+                logger.info(f"    Skip {site}: too few rows ({len(df)})")
                 continue
-
-            df = table.to_pandas()
             windows = build_site_windows(df)
             if not windows:
                 logger.info(f"    Skip {site}: no valid windows")

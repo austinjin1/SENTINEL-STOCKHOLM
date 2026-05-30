@@ -1,0 +1,53 @@
+{
+  "model": "DigitalTwinEngine",
+  "n_params": 341871,
+  "train_size": 300,
+  "val_size": 60,
+  "test_size": 60,
+  "best_epoch": 40,
+  "test_metrics": {
+    "loss": 786.1218180338542,
+    "horizon_metrics": {
+      "1d_mse": 47.62459754943848,
+      "7d_mse": 421.43275451660156,
+      "14d_mse": 614.8316879272461,
+      "30d_mse": 673.0224075317383,
+      "90d_mse": 943.1773834228516,
+      "365d_mse": 1979.3178100585938
+    },
+    "variable_metrics": {
+      "dissolved_oxygen_mse": 19.138278245925903,
+      "bod_mse": 13.292395114898682,
+      "total_nitrogen_mse": 2.6447696685791016,
+      "total_phosphorus_mse": 0.014265979873016477,
+      "chlorophyll_a_mse": 79.56944274902344,
+      "temperature_mse": 91.8430118560791,
+      "ph_mse": 10.876760721206665,
+      "turbidity_mse": 215.6849021911621,
+      "doc_mse": 26.839694499969482,
+      "sediment_mse": 7339.107421875
+    },
+    "physics_only_mse": 1442.0355224609375,
+    "hybrid_mse": 786.1351318359375
+  },
+  "state_variables": [
+    "dissolved_oxygen",
+    "bod",
+    "total_nitrogen",
+    "total_phosphorus",
+    "chlorophyll_a",
+    "temperature",
+    "ph",
+    "turbidity",
+    "doc",
+    "sediment"
+  ],
+  "forecast_horizons": [
+    1,
+    7,
+    14,
+    30,
+    90,
+    365
+  ]
+}

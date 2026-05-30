@@ -6,64 +6,67 @@
       "model": "AquaSSM",
       "n_samples": 500,
       "n_mc_passes": 50,
-      "mean_uncertainty_std": 0.005146542564034462,
-      "uncertainty_normal_mean": 0.0051398430950939655,
-      "uncertainty_anomaly_mean": 0.005153242032974958,
-      "ece_before_calibration": 0.18696541261672975,
+      "mean_uncertainty_std": 0.005297055467963219,
+      "uncertainty_normal_mean": 0.00537588307633996,
+      "uncertainty_anomaly_mean": 0.005218227859586477,
+      "ece_before_calibration": 0.13398738204687835,
       "reliability_fracs": [
-        0.4166666666666667,
-        0.4722222222222222,
-        0.4811320754716981,
-        0.5377358490566038,
-        0.5346534653465347,
-        0.43333333333333335,
-        0.5555555555555556,
-        0.5454545454545454,
-        0.25
+        0.3333333333333333,
+        0.25,
+        0.6049382716049383,
+        0.5046728971962616,
+        0.4645669291338583,
+        0.4574468085106383,
+        0.509090909090909,
+        0.6363636363636364,
+        0.625,
+        1.0
       ],
       "reliability_confs": [
-        0.06464868038892746,
-        0.15549544990062714,
-        0.2523123621940613,
-        0.3545346260070801,
-        0.44629135727882385,
-        0.5480751395225525,
-        0.6412875652313232,
-        0.7539868950843811,
-        0.8405605554580688
+        0.05464593693614006,
+        0.17051585018634796,
+        0.255560964345932,
+        0.3479071855545044,
+        0.44843289256095886,
+        0.5446960926055908,
+        0.635752260684967,
+        0.7440725564956665,
+        0.8322341442108154,
+        0.9291749596595764
       ],
       "reliability_counts": [
+        3,
         12,
-        72,
-        106,
-        106,
-        101,
-        60,
-        27,
+        81,
+        107,
+        127,
+        94,
+        55,
         11,
-        4
+        8,
+        1
       ],
-      "pred_mean": 15.84294319152832,
-      "pred_std_total": 0.005146542564034462,
+      "pred_mean": 15.842903137207031,
+      "pred_std_total": 0.005297055467963219,
       "data_source": "real_neon_neon_DP1.20288.001"
     },
     "Fusion": {
       "model": "Fusion+Head",
       "n_samples": 100,
       "n_mc_passes": 50,
-      "mean_uncertainty_std": 0.03607013076543808,
-      "ece_before_calibration": 0.10918686881661414,
-      "pred_mean": 0.5434018969535828,
-      "pred_std_total": 0.03607013076543808
+      "mean_uncertainty_std": 0.05067739635705948,
+      "ece_before_calibration": 0.22384287174791098,
+      "pred_mean": 0.5378357172012329,
+      "pred_std_total": 0.05067739635705948
     },
     "BioMotion": {
       "model": "BioMotion",
       "n_samples": 500,
       "n_mc_passes": 50,
-      "mean_uncertainty_std": 6.372198828604968e-07,
-      "ece_before_calibration": 0.3811296295473884
+      "mean_uncertainty_std": 6.321239951645545e-07,
+      "ece_before_calibration": 0.48777653620442507
     }
   },
   "critique_addressed": "Predictive uncertainty via MC Dropout. Anomalous inputs show higher epistemic uncertainty, validating that the model is less certain at decision boundaries.",
-  "elapsed_s": 2182.3
+  "elapsed_s": 982.7
 }

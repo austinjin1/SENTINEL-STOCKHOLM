@@ -58,6 +58,9 @@ S2_BANDS = ["B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B11", "B12"
 # NEON sensor column names and order (matches AquaSSM training)
 NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
 NEON_QF_COLS    = ["pHFinalQF", "dissolvedOxygenFinalQF", "turbidityFinalQF", "specificCondFinalQF"]
+NEON_QF_MAP = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+NEON_CLIP_RANGES = {"pH": (0, 14), "dissolvedOxygen": (0, 25),
+                    "turbidity": (0, 4000), "specificConductance": (0, 100000)}
 
 # AquaSSM normalisation constants (pH, DO, Turb, SpCond, Temp, ORP)
 WQ_MEANS = np.array([7.5, 8.0, 15.0, 500.0, 18.0, 200.0], dtype=np.float32)
@@ -247,6 +250,16 @@ def load_neon_site(site_id: str) -> Optional[pd.DataFrame]:
         if len(df) == 0:
             log(f"    No rows for {site_id}")
             return None
+        # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+        for val_col, qf_col in NEON_QF_MAP.items():
+            if qf_col in df.columns and val_col in df.columns:
+                bad_qf = df[qf_col].fillna(1).astype(float) != 0
+                df.loc[bad_qf, val_col] = np.nan
+        # --- Range-based sanity clipping ---
+        for col, (lo, hi) in NEON_CLIP_RANGES.items():
+            if col in df.columns:
+                df[col] = df[col].clip(lo, hi)
+
         df["startDateTime"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
         df = df.dropna(subset=["startDateTime"]).set_index("startDateTime")
         # Downsample to 15-min resolution

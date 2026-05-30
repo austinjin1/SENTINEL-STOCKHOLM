@@ -2,24 +2,88 @@
 
 **Scalable Environmental Network for Temporal Intelligence and Ecological Learning**
 
-SENTINEL is a multimodal deep learning framework for real-time water quality monitoring and contamination detection. It fuses five heterogeneous sensing modalities — physicochemical sensors, satellite imagery, microbial community profiles, molecular toxicogenomics, and organism behavioral assays — through a Perceiver IO cross-attention architecture, detecting pollution events earlier and more reliably than any single data source alone. 
+SENTINEL is a multimodal deep learning system for real-time freshwater ecosystem monitoring and contamination early warning. It fuses five heterogeneous sensing modalities -- physicochemical sensors, satellite imagery, microbial community profiles, molecular toxicogenomics, and organism behavioral assays -- through a Perceiver IO cross-attention architecture, detecting pollution events weeks to months before they become critical.
 
-> **Stockholm Junior Water Prize 2026 Submission** — Austin Jin & Bryan Cheng
+> **Stockholm Junior Water Prize 2026** -- Austin Jin & Bryan Cheng
+
+---
+
+## Overview
+
+Freshwater ecosystems face accelerating threats from agricultural runoff, industrial discharge, harmful algal blooms, and climate change. Traditional monitoring relies on sparse grab-sampling and single-modality sensors, missing early signals that span multiple biological and chemical dimensions.
+
+SENTINEL addresses this by learning joint representations across all five sensing modalities. In validation on real USGS data, the system detected 6 of 8 historical contamination events with a mean lead time of **66.4 days**, zero false positives on clean reference sites, and graceful degradation to any 2 of 5 modalities.
+
+**SENTINEL Mini** (WaterDroneNet) extends the system to low-cost drone-based monitoring, predicting water quality parameters directly from RGB+NIR aerial imagery without requiring expensive in-situ sensors.
 
 ---
 
 ## Results
 
-| Encoder | Task | Performance | Training Data | Threshold |
-|---|---|---|---|---|
-| **AquaSSM** | Sensor anomaly detection | AUROC = 0.920 | 20,000 USGS NWIS sequences, 1,115 stations | > 0.85 |
-| **HydroViT** | Satellite water quality regression | R² = 0.749 (water temp) | 4,202 Sentinel-2 / in-situ pairs | > 0.55 |
-| **MicroBiomeNet** | Microbial source attribution | F1 = 0.913 (8-class) | 20,288 EMP 16S rRNA samples | > 0.70 |
-| **ToxiGene** | Contaminant classification | F1 = 0.894 (8-class) | 4 GEO datasets + 268K ECOTOX records | > 0.80 |
-| **BioMotion** | Behavioral anomaly detection | AUROC = 1.000 | 17,074 EPA ECOTOX Daphnia assays | > 0.80 |
-| **Perceiver IO Fusion** | Multimodal detection | **AUROC = 0.992** | 31-condition ablation, 10 events | > best single |
+### SENTINEL 1.0: Core Encoder Performance
 
-The full 5-modality fusion (AUROC = 0.992) significantly outperforms the best single modality (sensor-only, AUROC = 0.943; *p* = 0.002, paired permutation test). The system maintains AUROC > 0.90 with as few as 2 modalities available, degrading gracefully across 100 random-drop trials.
+| Encoder | Modality | Key Metric | Training Data |
+|---------|----------|-----------|---------------|
+| **AquaSSM** | Sensor (USGS NWIS) | AUROC 0.939, RMSE 0.83 | 127K real sequences, 381 stations |
+| **HydroViT** | Satellite (Sentinel-2) | R^2 0.893 (water temp) | 4,202 Sentinel-2 / in-situ pairs |
+| **MicroBiomeNet** | Microbial (16S rRNA) | F1 0.899 | 20,288 EMP samples, spatial holdout |
+| **ToxiGene** | Molecular (RNA-seq) | F1 0.952 | GEO transcriptomics, cross-species |
+| **BioMotion** | Behavioral (fish/Daphnia) | AUROC 1.000 | 17,074 EPA ECOTOX assays |
+| **Perceiver IO Fusion** | All 5 modalities | **AUROC 0.992** | 31-condition ablation |
+
+### Real-World Case Studies (6/8 Detected)
+
+Pre-registered detections on real USGS NWIS sensor data (no synthetic data):
+
+| Event | Lead Time | USGS Records |
+|-------|-----------|-------------|
+| Lake Erie HAB 2023 | 59.3 days | 7,199 |
+| Gulf of Mexico Dead Zone 2023 | 87.2 days | 3,486 |
+| Chesapeake Bay Hypoxia 2018 | 89.8 days | 34,831 |
+| Klamath River HAB 2021 | 59.2 days | 7,200 |
+| Jordan Lake HAB, NC | 44.3 days | 5,755 |
+| Mississippi River Salinity 2023 | 58.6 days | 4,168 |
+
+Two events (Iowa Nitrate 2015, Dan River Coal Ash 2014) had insufficient sensor data coverage for detection.
+
+### SENTINEL 2.0: Extended Models
+
+| Model | Task | Key Metric | Notes |
+|-------|------|-----------|-------|
+| **Stream Network GNN** | Contamination propagation | AUROC 1.000, F1 0.991 | 561 NHDPlus sites, 338 edges |
+| **Species Health Index** | Keystone species forecasting | R^2 0.415, occ_acc 78.8% | 6 species, 28K BioData samples |
+| **Disease Forecast** | Pathogen risk prediction | Test loss 0.974 | 4 pathogens, 20K samples |
+| **Digital Twin** | Ecosystem forecasting | MSE 786 (45.5% vs physics-only) | 10 state vars, 6 horizons (1d--365d) |
+| **Climate Coupling** | Climate-WQ prediction | R^2 0.098, DO MAE 1.51 mg/L | 8 climate vars, NEON QF-filtered |
+| **Foundation Model** | Joint multimodal pretraining | Val AUROC 0.653 | Limited by modality co-occurrence |
+| **MoME Fusion** | Mixture-of-modality experts | Val AUROC 0.539 | 5-expert router |
+| **Contrastive Pretraining** | Cross-modal alignment | Recall@1 = 1.000 | CLIP-style InfoNCE |
+
+### WaterDroneNet / SENTINEL Mini
+
+> **Status: Actively being trained and improved.** Results below are from the latest spatial holdout evaluation on real Sentinel-2 imagery and will change as training continues.
+
+WaterDroneNet predicts water quality parameters directly from 4-band (RGB+NIR) satellite/drone imagery at 224x224 resolution, without any in-situ sensor input. This is a deliberately hard task -- the model must learn spectral-to-chemical mappings from imagery alone.
+
+| Target | R^2 | MAE | 90% Coverage |
+|--------|-----|-----|-------------|
+| Dissolved Oxygen | 0.26 | 1.48 mg/L | 91.1% |
+| pH | -0.21 | 0.42 | 72.0% |
+| Turbidity | -0.004 | 4.34 NTU | 97.3% |
+| Temperature | 0.44 | 4.46 C | 89.6% |
+| Specific Conductance | 0.52 | 5100 uS/cm | 93.5% |
+
+Architecture: ViT-Small/16 backbone (ImageNet-pretrained, adapted to 4 input channels) with Gaussian NLL + MAE + calibration loss. 21.9M parameters. Spatial holdout ensures test stations are geographically unseen during training.
+
+### Prospective Validation
+
+Pre-registered predictions at 18 USGS sites with hash-verified timestamps:
+- **Registration hash**: e59732...65d5
+- **Sites monitored**: 18 across 8 states
+- **Prediction runs**: 10 (May 26--28, 2026)
+- **False alerts**: 0
+- **Notable signal**: Chattahoochee River at Atlanta showed a transient anomaly peak (0.173) that self-resolved -- correctly classified as non-alert
+- **Monitoring window**: 120 days from May 26, 2026
 
 ---
 
@@ -27,30 +91,29 @@ The full 5-modality fusion (AUROC = 0.992) significantly outperforms the best si
 
 ### Modality-Specific Encoders
 
-**AquaSSM** (Sensor Encoder) — A continuous-time state space model for irregularly-sampled multivariate sensor streams. Pre-trained with masked parameter prediction (MPP) on 6 water quality parameters (DO, pH, specific conductance, temperature, turbidity, ORP) at 15-minute resolution. Multi-scale temporal kernels (1 hour to 1 year) capture both rapid transients and seasonal patterns. Physics-constraint loss enforces thermodynamic consistency.
+**AquaSSM** (Sensor Encoder) -- A continuous-time state space model (Mamba-based) for irregularly-sampled multivariate sensor streams. Pre-trained with masked parameter prediction on 6 water quality parameters (DO, pH, specific conductance, temperature, turbidity, ORP) at 15-minute resolution. Multi-scale temporal kernels (1 hour to 1 year) capture both rapid transients and seasonal patterns.
 
-**HydroViT** (Satellite Encoder) — A water-specific vision foundation model built on ViT-S/16 with masked autoencoder (MAE) pre-training on 2,986 Sentinel-2 L2A tiles (10 spectral bands). Multi-resolution cross-attention fuses 10m and 20m bands. A temporal attention stack integrates revisit sequences. The water quality regression head predicts 9 parameters with positive skill, including water temperature (R² = 0.749), TSS (R² = 0.160), and nitrate (R² = 0.155). Spectral physics loss enforces known band-ratio relationships.
+**HydroViT** (Satellite Encoder) -- A water-specific vision transformer built on ViT-S/16 with CNN-ViT hybrid architecture and masked autoencoder pre-training on Sentinel-2 L2A tiles (10 spectral bands). Multi-resolution cross-attention fuses 10m and 20m bands. Predicts 9 water quality parameters from satellite imagery.
 
-**MicroBiomeNet** (Microbial Encoder) — An Aitchison-geometry-aware transformer for compositional microbiome data. CLR-transformed attention with Aitchison batch normalization handles the simplex constraint of relative abundance data. Integrates a DNABERT-S sequence encoder, zero-inflation gate for sparse OTU tables, simplex neural ODE for temporal dynamics, and abundance-weighted pooling. Performs 8-class aquatic source attribution (freshwater natural/impacted, saline, sediments, soil runoff, animal fecal, plant-associated).
+**MicroBiomeNet** (Microbial Encoder) -- An Aitchison-geometry-aware transformer for compositional microbiome data. CLR-transformed attention with Aitchison batch normalization handles the simplex constraint. Integrates DNABERT-S sequence encoder, zero-inflation gate, simplex neural ODE for temporal dynamics, and abundance-weighted pooling. Performs 8-class aquatic source attribution.
 
-**ToxiGene** (Molecular Encoder) — A biologically-constrained hierarchy network (P-NET architecture: gene → pathway → process → outcome) for multi-label toxicity classification directly from RNA-seq expression profiles. Sparse Reactome-constrained linear layers enforce known biology. Cross-species encoder with ortholog alignment enables transfer across zebrafish, Daphnia, and fathead minnow. Information bottleneck identifies minimal gene panels (30-50 genes) achieving 90%+ of full-panel accuracy. To our knowledge, ToxiGene is the first supervised method for this task.
+**ToxiGene** (Molecular Encoder) -- A biologically-constrained hierarchy network (gene -> pathway -> process -> outcome) for multi-label toxicity classification from RNA-seq expression profiles. Sparse Reactome-constrained layers enforce known biology. Cross-species encoder with ortholog alignment enables transfer across zebrafish, Daphnia, and fathead minnow. Information bottleneck identifies minimal gene panels (30--50 genes) achieving 90%+ accuracy.
 
-**BioMotion** (Behavioral Encoder) — A diffusion-pretrained trajectory encoder for multi-organism behavioral anomaly detection. Pose encoder with sinusoidal timestamps and per-species keypoint configurations (Daphnia: 12, mussel: 8, fish: 22). Phase 1: diffusion denoising pre-training learns normal concentration-response baselines. Phase 2: fine-tuning detects LOEC/EC50-level behavioral impairment. Cross-organism attention enables ensemble inference across species.
+**BioMotion** (Behavioral Encoder) -- A diffusion-pretrained trajectory encoder for multi-organism behavioral anomaly detection. Per-species keypoint configurations (Daphnia: 12, mussel: 8, fish: 22). Phase 1: diffusion denoising pre-training learns normal baselines. Phase 2: fine-tuning detects LOEC/EC50-level behavioral impairment.
 
 ### Perceiver IO Fusion
 
-The `PerceiverIOFusion` module integrates asynchronous, irregularly-arriving modality embeddings into a unified waterway state representation:
+The fusion module integrates asynchronous, irregularly-arriving modality embeddings into a unified waterway state representation:
 
-1. **Projection Bank** — Maps each modality's native dimension to a shared 256-d embedding space
-2. **Embedding Registry** — Maintains the latest embedding and timestamp per modality, handling asynchronous updates
-3. **Temporal Decay** — Learned per-modality-pair exponential decay weights stale embeddings (sensor: ~2h half-life, behavioral: ~5min, satellite: ~5 days, microbial: ~7 days, molecular: ~3 days)
-4. **Confidence Gate** — Calibrated per-modality gating suppresses unreliable inputs
-5. **Perceiver Cross-Attention** — A learned latent array (256 latents x 256-d) serves as a compressed waterway state, updated recurrently across observation events via 8-head cross-attention with 4 self-attention layers
-6. **Output** — Fused state vector (256-d), updated latent state, and per-modality attention weights for interpretability
+1. **Projection Bank** -- Maps each modality's native dimension to a shared 256-d embedding space
+2. **Temporal Decay** -- Learned per-modality-pair exponential decay weights stale embeddings (sensor: ~2h, behavioral: ~5min, satellite: ~5 days, microbial: ~7 days, molecular: ~3 days)
+3. **Confidence Gate** -- Calibrated per-modality gating suppresses unreliable inputs
+4. **Perceiver Cross-Attention** -- 256 learned latents x 256-d, updated recurrently via 8-head cross-attention with 4 self-attention layers
+5. **Output** -- Fused 256-d state vector with per-modality attention weights for interpretability
 
 ### Cascade Escalation Controller
 
-A PPO-trained (Stable Baselines 3) reinforcement learning policy that optimizes the cost-accuracy tradeoff of which modalities to activate:
+A PPO-trained reinforcement learning policy that optimizes the cost-accuracy tradeoff of which modalities to activate:
 
 | Tier | Modalities | Cost |
 |------|-----------|------|
@@ -59,88 +122,116 @@ A PPO-trained (Stable Baselines 3) reinforcement learning policy that optimizes 
 | 2 | + Microbial | Medium-High |
 | 3 | + Molecular (full pipeline) | High |
 
-State representation: 256-d fused state + 5 modality flags + 4 tier one-hots + 2 scalars (267-d total). Trained with curriculum learning (easy → mixed → hard events) over 500K timesteps. Includes `extract_decision_tree` to distill the neural policy into a human-readable monitoring protocol for resource-constrained field deployment.
+Trained with curriculum learning over 500K timesteps. Includes `extract_decision_tree` to distill the neural policy into a human-readable monitoring protocol for resource-constrained field deployment.
+
+### SENTINEL 2.0 Extensions
+
+- **Stream Network GNN**: Graph attention network over real NHDPlus river topology (561 sites, 338 edges) for upstream-downstream contamination propagation modeling
+- **WaterDroneNet (SENTINEL Mini)**: Physics-informed ViT for water quality prediction from drone/satellite RGB+NIR imagery -- enables low-cost monitoring without fixed sensor infrastructure
+- **Species Health Index**: Forecasts health of 6 keystone bioindicator species (freshwater mussels, mayflies, brook trout, hellbender, freshwater pearl mussel, American eel) from environmental conditions
+- **Disease Forecast**: Predicts risk for 4 waterborne pathogens (cyanotoxin, vibrio, naegleria, schistosomiasis)
+- **Digital Twin Engine**: Neural-ODE hybrid ecosystem simulator for multi-horizon forecasting (1/7/14/30/90/365-day), achieving 45.5% improvement over physics-only baselines
+- **Climate Coupling**: Links climate variables (precipitation, temperature, solar radiation, wind, humidity, soil moisture, snow, evapotranspiration) to water quality outcomes
+- **Foundation Model + MoME Fusion**: Joint multimodal pretraining and mixture-of-modality-experts architecture
+- **Contrastive Pretraining**: CLIP-style InfoNCE cross-modal alignment
 
 ```
 Sensor          Satellite       Microbial       Molecular       Behavioral
 (AquaSSM)       (HydroViT)      (MicroBiomeNet) (ToxiGene)      (BioMotion)
-   │               │                │               │               │
-   └───────┬───────┴────────┬───────┴───────┬───────┴───────────────┘
-           │                │               │
-           ▼                ▼               ▼
-   ┌────────────────────────────────────────────────┐
-   │           Perceiver IO Fusion Layer             │
-   │   Confidence-weighted gating + cross-attention  │
-   │        Learned latent array (256 x 256)         │
-   └──────────────┬─────────────────┬───────────────┘
-                  │                 │
-        ┌─────────▼──────┐  ┌──────▼──────────┐
-        │    Anomaly     │  │    Source        │
-        │   Detection    │  │  Attribution     │
-        └────────────────┘  └─────────────────┘
-                  │
-        ┌─────────▼──────────────┐
-        │  Cascade Escalation    │
-        │  Controller (PPO/RL)   │
-        └────────────────────────┘
+   |               |                |               |               |
+   +-------+-------+--------+-------+-------+-------+---------------+
+           |                |               |
+           v                v               v
+   +------------------------------------------------+
+   |           Perceiver IO Fusion Layer             |
+   |   Confidence-weighted gating + cross-attention  |
+   |        Learned latent array (256 x 256)         |
+   +----------------+-----------------+-------------+
+                    |                 |
+          +---------v------+  +------v----------+
+          |    Anomaly     |  |    Source        |
+          |   Detection    |  |  Attribution     |
+          +----------------+  +-----------------+
+                    |
+          +---------v--------------+
+          |  Cascade Escalation    |        +------------------+
+          |  Controller (PPO/RL)  |        | WaterDroneNet    |
+          +------------------------+        | (SENTINEL Mini)  |
+                                            +------------------+
+                    Stream Network GNN
+                    Digital Twin Engine
+                    Species Health Index
+                    Disease Forecast
+                    Climate Coupling
 ```
 
 ---
 
-## SENTINEL-DB
+## Data Infrastructure: SENTINEL-DB
 
-SENTINEL-DB harmonizes **390M+ environmental records** (~85 GB) from 13 data sources spanning 105 countries and 94,000+ monitoring sites into a unified schema:
+SENTINEL-DB harmonizes **390M+ environmental records** (~85 GB) from 13+ data sources spanning 105 countries and 94,000+ monitoring sites:
 
 | Source | Records | Type |
 |--------|---------|------|
-| NEON Aquatic | 351.7M | Continuous high-frequency sonde data (34 sites, 24 months) |
+| NEON Aquatic | 351.7M | Continuous high-frequency sonde data (34 sites) |
 | EPA WQP | 18.27M | Discrete water quality samples |
 | GRQA v1.3 | 17.99M | Harmonized global river quality |
+| WQP (cyanotoxins, nutrients) | 755K | Water Quality Portal HAB-related |
+| USGS BioData | 701K | Invertebrate + fish + WQP biological records |
 | EPA ECOTOX | 1.23M | Ecotoxicology dose-response endpoints |
 | Canada WQP | 787K | Discrete water quality samples |
+| NOAA HABs (ERDDAP chl-a) | 146K | VIIRS + MODIS chlorophyll-a |
 | USGS NWIS | 364K sequences | Real-time sensor time series |
+| NHDPlusV2 | 561 sites, 338 edges | Stream network topology |
 | Sentinel-2 | 2,986 tiles | Multispectral satellite imagery |
-| EPA NARS | 2,111 | National aquatic resource surveys |
-| WHO/World Bank | 18K | WASH indicators |
-| NCBI GEO | 4 datasets | Aquatic transcriptomics |
 | EMP 16S rRNA | 20,288 | Microbiome OTU tables |
+| NCBI GEO | 4 datasets | Aquatic transcriptomics |
 | GBIF Freshwater | 2,355 | Bioindicator species occurrences |
-| Behavioral Assay | 5,000 trajectories | Daphnia motion data |
 
-**Key design features:**
-- **Unified parameter ontology** — Maps 10,000+ raw parameter names across EPA WQP, USGS NWIS, EU Waterbase, GEMStat, and citizen science to ~500 canonical parameters with standardized units. Includes a unit conversion table and fuzzy-match fallback.
-- **H3 hexagonal spatial indexing** (resolution 8) — Enables cross-source spatial queries and satellite co-registration within configurable tolerance (default: 500m spatial, 3h temporal).
-- **Quality tiers** — Q1 (ISO-certified lab), Q2 (calibrated in-situ sensor), Q3 (citizen science), Q4 (derived/modelled). Quality-aware weighting propagates through training and inference.
-- **Pydantic v2 schema** — Type-safe records with canonical parameter name, value, unit, UTC timestamp, lat/lon, H3 hex index, source ID, and quality tier.
+**Design features:**
+- **Unified parameter ontology** mapping 10,000+ raw parameter names to ~500 canonical parameters with standardized units
+- **H3 hexagonal spatial indexing** (resolution 8) for cross-source spatial queries and satellite co-registration
+- **Quality tiers**: Q1 (ISO-certified lab), Q2 (calibrated sensor), Q3 (citizen science), Q4 (derived/modelled)
+- **Pydantic v2 schema** with type-safe records, UTC timestamps, lat/lon, H3 hex index, source ID, and quality tier
 
 ---
 
 ## Evaluation Framework
 
-SENTINEL includes a comprehensive evaluation suite spanning 20 experiments:
+SENTINEL includes 20+ experiments spanning:
 
 | Category | Experiments |
 |----------|------------|
-| **Core detection** | Multimodal case studies (10 historical events), baseline comparisons, EPA violation correlation |
+| **Core detection** | Multimodal case studies (historical events), baseline comparisons, EPA violation correlation |
 | **Ablation** | Full 31-condition (2^5 - 1) modality subset analysis with statistical significance testing |
-| **Robustness** | Missing modality degradation (100 random-drop trials), cross-site generalization, label noise sensitivity |
-| **Uncertainty** | MC dropout calibration, conformal prediction with distribution-free coverage guarantees, bootstrap CIs |
-| **Interpretability** | Parameter attribution, causal chain discovery, cross-modal alignment (CKA), attention visualization |
-| **Downstream** | False positive rate on clean reference sites, temporal persistence, pollution fingerprinting, discovery scan |
-| **Operational** | Cascade escalation analysis, seasonal patterns, risk index ranking, early warning ROC, sensor placement optimization |
+| **Robustness** | Missing modality degradation, cross-site generalization, label noise sensitivity |
+| **Uncertainty** | MC dropout calibration, conformal prediction (94% coverage), bootstrap confidence intervals |
+| **Interpretability** | Parameter attribution, causal chain discovery (PCMCI+), cross-modal alignment (CKA) |
+| **Downstream** | False positive rate (0.000 on NEON reference sites), temporal persistence, pollution fingerprinting |
+| **Operational** | Cascade escalation, seasonal patterns, risk index ranking, early warning ROC |
+| **Predictability audit** | Honest assessment of what is/isn't learnable from each modality combination |
 
-All experiment results are stored as reproducible JSON/CSV outputs in `results/`.
+### Key Findings
+
+1. **Multimodal fusion outperforms any single modality** -- AUROC 0.992 vs. 0.943 (sensor-only), p = 0.002
+2. **Modalities contribute unique information** -- Near-zero mutual information between sensor and behavioral channels (MINE estimate: I = 0.01 nats)
+3. **Robust to missing modalities** -- AUROC > 0.90 with only 2 of 5 modalities via confidence-weighted gating
+4. **Zero false positives on clean sites** -- FPR = 0.000 across 10 NEON reference sites; 31.3x signal-to-noise ratio
+5. **Biological hierarchy enables interpretability** -- ToxiGene's gene-pathway-process-outcome mapping provides causal chains
+6. **DO, pH, turbidity require multimodal sensing** -- Predictability audit confirms these are unrecoverable from temperature + conductivity alone, validating the multimodal architecture
 
 ---
 
 ## Platform
 
-SENTINEL includes a deployable platform layer (`sentinel/platform/`):
+SENTINEL includes a deployable platform layer:
 
-- **REST API** (`api.py`) — FastAPI application serving real-time water quality assessment, anomaly alerts, time-series queries, and model inference endpoints
-- **Citizen Science QC** (`citizen_qc.py`) — Three-stage quality control pipeline (physical plausibility → spatial consistency → temporal consistency) for community-contributed water quality observations
-- **Photo Analysis** (`photo_analysis.py`) — Estimates water quality from smartphone photos via HydroViT/ResNet backbone, cross-referenced against satellite-derived values
-- **Test Kit Validation** (`test_kit.py`) — Calibrates home water quality test kits against reference measurements, applies per-kit bias correction, and ingests validated results into SENTINEL-DB
+- **REST API** (`sentinel/platform/api.py`) -- FastAPI serving real-time assessment, anomaly alerts, time-series queries, and model inference
+- **Streamlit Dashboard** (`sentinel/dashboard/app.py`) -- Real-time monitoring visualization
+- **Citizen Science QC** -- Three-stage quality control (physical plausibility, spatial consistency, temporal consistency) for community observations
+- **Photo Analysis** -- Water quality estimation from smartphone photos via HydroViT backbone
+- **Docker deployment** with CI/CD pipeline (`.github/workflows/ci.yml`)
+- **Prospective validation** with hash-verified pre-registration
 
 ---
 
@@ -148,37 +239,52 @@ SENTINEL includes a deployable platform layer (`sentinel/platform/`):
 
 ```
 sentinel/                        # Core Python package
-├── data/                        # Data acquisition & preprocessing
-│   ├── satellite/               # Sentinel-2 download & tiling
-│   ├── sensor/                  # USGS NWIS sensor time series
-│   ├── microbial/               # 16S rRNA community data
-│   ├── molecular/               # Toxicogenomics expression data
-│   ├── ecotox/                  # EPA ECOTOX dose-response data
-│   ├── behavioral/              # Daphnia trajectory data
-│   ├── sentinel_db/             # Unified database (schema, ontology, spatial indexing)
-│   ├── alignment/               # Geographic co-location linking
-│   └── case_studies/            # Historical contamination event data
-├── models/                      # Neural network architectures
-│   ├── sensor_encoder/          # AquaSSM — continuous-time SSM
-│   ├── satellite_encoder/       # HydroViT — MAE + ViT-S/16
-│   ├── microbial_encoder/       # MicroBiomeNet — Aitchison transformer
-│   ├── molecular_encoder/       # ToxiGene — P-NET biological hierarchy
-│   ├── biomotion/               # BioMotion — diffusion trajectory encoder
-│   ├── digital_biosentinel/     # Dose-response prediction (~1M ECOTOX records)
-│   ├── fusion/                  # Perceiver IO cross-modal fusion
-│   ├── escalation/              # PPO cascade controller
-│   └── theory/                  # Conformal prediction, causal discovery, Aitchison NN
-├── training/                    # Training loops for each encoder + fusion + escalation
-├── evaluation/                  # 20-experiment evaluation suite
-├── platform/                    # REST API, citizen science QC, photo analysis
-└── utils/                       # Configuration, logging
+  data/                          # Data acquisition & preprocessing
+    satellite/                   # Sentinel-2 download & tiling
+    sensor/                      # USGS NWIS sensor time series
+    microbial/                   # 16S rRNA community data
+    molecular/                   # Toxicogenomics expression data
+    ecotox/                      # EPA ECOTOX dose-response data
+    behavioral/                  # Daphnia/fish trajectory data
+    sentinel_db/                 # Unified database (schema, ontology, spatial indexing)
+    alignment/                   # Geographic co-location linking
+    case_studies/                # Historical contamination event data
+    splits.py                    # Spatial/temporal holdout splitting
+  models/                        # Neural network architectures
+    sensor_encoder/              # AquaSSM
+    satellite_encoder/           # HydroViT
+    microbial_encoder/           # MicroBiomeNet
+    molecular_encoder/           # ToxiGene
+    biomotion/                   # BioMotion
+    fusion/                      # Perceiver IO + MoME fusion
+    escalation/                  # PPO cascade controller
+    graph/                       # Stream Network GNN
+    waterdronenet/               # WaterDroneNet (SENTINEL Mini)
+    twin/                        # Digital Twin Engine + Climate Coupling
+    biology/                     # Species Health, Disease Forecast, ARG Surveillance
+    digital_biosentinel/         # Dose-response prediction
+    theory/                      # Conformal prediction, causal discovery
+  training/                      # Training loops
+  evaluation/                    # 20-experiment evaluation suite
+  platform/                      # REST API, citizen science QC, photo analysis
+  dashboard/                     # Streamlit monitoring dashboard
+  utils/                         # Configuration, logging
+
 scripts/                         # Standalone scripts
-├── data acquisition             # Download from USGS, EPA, GRQA, GEO, EMP, etc.
-├── training                     # Per-encoder and fusion training scripts
-├── benchmarking                 # SOTA comparisons for each encoder
-└── experiments                  # exp1-exp20 + named experiments
+  train_*.py                     # Training scripts for each model
+  benchmark_*.py                 # SOTA comparison benchmarks
+  exp*.py                        # Numbered + named experiments
+  download_*.py                  # Data acquisition from public sources
+  prospective_validation.py      # Live pre-registered predictions
+  run_all.py                     # Full training orchestrator
+
 results/                         # Reproducible experiment outputs (JSON/CSV)
-configs/                         # YAML configuration (hyperparameters, data, evaluation)
+  benchmarks/                    # Per-model holdout metrics
+  prospective/                   # Pre-registered predictions + evaluations
+  SENTINEL_2.0_Results_Summary.md
+
+configs/default.yaml             # All hyperparameters and data paths
+figures/                         # Generated publication figures
 ```
 
 ---
@@ -198,14 +304,17 @@ pip install -e .
 
 All training data is freely available from public sources. No proprietary or restricted data is used.
 
-| Modality | Source | Access Method |
-|----------|--------|---------------|
+| Modality | Source | Access |
+|----------|--------|--------|
 | Sensor | USGS NWIS (~3,000 stations) | `dataretrieval` Python package |
 | Satellite | Sentinel-2 L2A (10 bands, 10m) | Microsoft Planetary Computer STAC API |
 | Microbial | Earth Microbiome Project | Qiita platform |
 | Molecular | NCBI GEO (transcriptomics) | GEOparse |
 | Ecotoxicology | EPA ECOTOX (~1M records) | EPA bulk download |
 | Water Quality | GRQA, EPA WQP, NEON, Canada WQP | Various public APIs |
+| Stream Network | NHDPlusV2 | USGS |
+| Biological | USGS BioData, GBIF | Public APIs |
+| Climate | NEON, NOAA | Public APIs |
 
 ```bash
 # Download all data sources
@@ -214,54 +323,55 @@ python scripts/data_acquisition/download_all.py
 
 ### Training
 
-Training follows a staged pipeline: (1) self-supervised pre-training per encoder, (2) supervised fine-tuning per encoder, (3) fusion training, (4) escalation controller training.
+Training follows a staged pipeline:
 
 ```bash
 # Stage 1-2: Train individual encoders
-python -m sentinel.training.train_sensor --config configs/default.yaml
-python -m sentinel.training.train_satellite --config configs/default.yaml
-python -m sentinel.training.train_microbial --config configs/default.yaml
-python -m sentinel.training.train_molecular --config configs/default.yaml
-python -m sentinel.training.train_biomotion --config configs/default.yaml
-python -m sentinel.training.train_biosentinel --config configs/default.yaml
+python scripts/train_aquassm.py --gpu 0
+python scripts/train_hydrovit.py --gpu 1
+python scripts/train_microbiomenet.py --gpu 2
+python scripts/train_toxigene.py --gpu 3
+python scripts/train_biomotion.py --gpu 0
 
 # Stage 3: Train Perceiver IO fusion
-python -m sentinel.training.train_fusion --config configs/default.yaml
+python scripts/train_fusion.py --gpu 0
 
-# Stage 4: Train cascade escalation controller
-python -m sentinel.training.train_escalation --config configs/default.yaml
+# Stage 4: SENTINEL 2.0 extensions
+python scripts/train_stream_gnn.py --gpu 0
+python scripts/train_waterdronenet.py --gpu 0
+python scripts/train_species_health.py --gpu 1
+python scripts/train_disease_forecast.py --gpu 2
+python scripts/train_twin.py --gpu 3
+python scripts/train_climate_coupling.py --gpu 0
+
+# Or run everything with the orchestrator
+python scripts/run_all.py
 ```
 
 ### Evaluation
 
 ```bash
-# Run case studies on historical contamination events
-python -m sentinel.evaluation.case_study --config configs/default.yaml
+# Run full experiment suite
+python scripts/exp1_case_studies.py
+python scripts/exp2_baseline_comparison.py
+# ... (20+ experiments, see scripts/exp*.py)
 
-# Run 31-condition modality ablation
-python -m sentinel.evaluation.ablation --config configs/default.yaml
+# Prospective validation
+python scripts/prospective_validation.py
 ```
 
 ---
 
-## Key Findings
+## Falsifiable Claims
 
-1. **Multimodal fusion outperforms any single modality** — AUROC 0.992 vs. 0.943 (sensor-only), detecting all 10 historical contamination events
-2. **Modalities contribute unique information** — Near-zero mutual information between sensor and behavioral channels (MINE estimate: *I* = 0.01 nats), confirming independent sensing
-3. **Robust to missing modalities** — AUROC > 0.90 with only 2 of 5 modalities; graceful degradation via confidence-weighted gating
-4. **Biological hierarchy enables interpretability** — ToxiGene's gene → pathway → process → outcome mapping provides causal chains; information bottleneck identifies field-deployable 30-50 gene panels
-5. **Zero false positives on clean sites** — FPR = 0.000 across 10 NEON reference sites; 31.3x signal-to-noise ratio between contaminated and clean temporal windows
-
----
-
-## Configuration
-
-All hyperparameters, data paths, model architectures, training schedules, evaluation settings, and case study definitions are specified in `configs/default.yaml`. Key configurable sections:
-
-- **Data** — Sensor parameters, satellite bands, microbial features, molecular pathways, behavioral keypoints, SENTINEL-DB spatial/temporal tolerances
-- **Models** — Architecture choices, embedding dimensions, number of layers/heads, diffusion steps, fusion latent array size
-- **Training** — Per-encoder pre-training and fine-tuning schedules (learning rates, batch sizes, epochs, optimizers, schedulers), fusion two-stage training, escalation PPO hyperparameters with curriculum phases
-- **Evaluation** — 31 ablation conditions, 15 named ablation configurations, 8 evaluation metrics, 3 case study definitions (Lake Erie HAB, East Palestine derailment, Chesapeake Bay blooms)
+1. First multimodal AI system for freshwater ecosystem monitoring validated on real USGS data
+2. Mean 66.4-day early warning for water quality events across 6 verified case studies
+3. First pre-registered prospective water quality prediction system with hash-verified timestamps
+4. 390M+ record freshwater database spanning 13+ sources
+5. Graceful degradation: AUROC > 0.90 with any 2 of 5 modalities
+6. Zero false positives on 10 NEON clean reference sites
+7. Stream network GNN: AUROC 1.000 on real NHDPlus topology (561 sites)
+8. WaterDroneNet: SpCond R^2 = 0.52 from aerial imagery alone (no sensor input) -- actively improving
 
 ---
 

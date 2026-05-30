@@ -1,88 +1,77 @@
 #!/usr/bin/env python3
-"""ToxiGene v9b — Same architecture as v9 but with targeted fixes for the
-val-test generalization gap observed in v9:
+"""ToxiGene v3 — MolecularEncoder trained on real GEO expression data.
 
-Changes from v9:
-  1. Label smoothing (eps=0.05) to reduce overconfident predictions
-  2. Threshold averaging: optimize thresholds over 5 bootstrap resamples of val,
-     average to reduce per-class threshold overfitting
-  3. Stochastic Weight Averaging (SWA): collect model weights from last 40 epochs
-     and average → reduces generalization gap substantially
-  4. Slightly reduced dropout (0.30 vs 0.35) — SWA adds its own regularization
-  5. Higher weight_decay (0.02) to shrink model weights
-  6. Broader threshold search grid (0.15 to 0.85, 30 points)
-  7. mixup augmentation (alpha=0.2) on training batches
+Key features:
+  - Uses real GEO expression data preprocessed by prepare_geo_for_toxigene.py
+  - Loads proper hierarchy adjacency matrices from npz files
+  - Handles class imbalance with pos_weight for BCE loss
+  - Handles classes with zero positive samples (skips them in loss)
+  - Study-level spatial holdout splits (prevents intra-study leakage)
+  - Z-score normalization computed on train split ONLY
+  - Gradient clipping + AdamW + cosine LR schedule
+  - Saves results to results/benchmarks/toxigene_v3_holdout.json
 
-Same split, same corrected data as v9.
-MIT License — Bryan Cheng, 2026
+Prerequisites:
+  Run: python scripts/prepare_geo_for_toxigene.py
+  This produces the expression matrix, outcomes, pathway labels, gene_names,
+  and hierarchy adjacency matrices in data/processed/molecular/.
+
+Usage:
+  CUDA_VISIBLE_DEVICES=2 python scripts/train_toxigene_v3.py
+
+MIT License -- Bryan Cheng, 2026
 """
 
 from __future__ import annotations
 
 import json
-import logging
-import math
 import os
 import sys
 import time
 from pathlib import Path
 
-PROJECT_ROOT = Path("/home/bcheng/SENTINEL")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.amp import GradScaler, autocast
 from torch.utils.data import DataLoader, Dataset
-from sklearn.metrics import f1_score, accuracy_score
+from sklearn.metrics import f1_score, roc_auc_score
+from scipy import sparse
 
-# ── Device ─────────────────────────────────────────────────────────────────────
-CUDA_DEVICE = "cuda:2"
-os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0,1,2,3")
+from sentinel.models.molecular_encoder.model import MolecularEncoder
+from sentinel.data.splits import split_indices_spatial_only, SplitConfig
+from sentinel.utils.logging import get_logger
 
-# ── Paths ──────────────────────────────────────────────────────────────────────
-DATA_DIR  = PROJECT_ROOT / "data" / "processed" / "molecular"
-CKPT_DIR  = PROJECT_ROOT / "checkpoints" / "molecular"
-LOG_DIR   = PROJECT_ROOT / "logs"
+logger = get_logger(__name__)
 
-CORRECTED_DATA_PATH = DATA_DIR / "expression_matrix_v3_corrected.npy"
-CKPT_PATH           = CKPT_DIR / "toxigene_v9b_best.pt"
-SWA_CKPT_PATH       = CKPT_DIR / "toxigene_v9b_swa.pt"
-RESULTS_PATH        = CKPT_DIR / "results_v9b.json"
-LOG_PATH            = LOG_DIR  / "train_toxigene_v9b.log"
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+DATA_DIR = PROJECT_ROOT / "data" / "processed" / "molecular"
+GEO_SUMMARY = DATA_DIR / "real" / "geo_summary.json"
+GEO_METADATA = DATA_DIR / "geo_sample_metadata.json"
+CKPT_DIR = PROJECT_ROOT / "checkpoints" / "molecular"
+RESULTS_DIR = PROJECT_ROOT / "results" / "benchmarks"
+CKPT_DIR.mkdir(parents=True, exist_ok=True)
+RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-# ── Hyperparameters ────────────────────────────────────────────────────────────
-HIDDEN1        = 2048
-HIDDEN2        = 1024
-HIDDEN3        = 512
-HIDDEN4        = 256
-DROPOUT        = 0.30    # slightly lower; SWA provides regularization
-LABEL_SMOOTH   = 0.05
-N_PATHWAY      = 200
-PATHWAY_LAMBDA = 0.3
-PATHWAY_HIDDEN = 128
-MIXUP_ALPHA    = 0.2     # mixup interpolation parameter
+# ---------------------------------------------------------------------------
+# Hyperparameters — tuned for small dataset (239 samples)
+# ---------------------------------------------------------------------------
+EPOCHS = 200
+BATCH_SIZE = 16  # small batch for small dataset
+EARLY_STOP_PATIENCE = 25
+LR = 5e-4
+WEIGHT_DECAY = 0.02
+GRAD_CLIP = 1.0
+SEED = 42
+LAMBDA_L1 = 0.005  # lighter L1 for small dataset
+DROPOUT = 0.3
 
-BATCH_SIZE    = 64
-EPOCHS        = 400
-LR            = 3e-4
-WEIGHT_DECAY  = 0.02     # slightly higher L2
-GRAD_CLIP     = 1.0
-EARLY_STOP    = 60
-SEED          = 42
-WARMUP_EPOCHS = 5
-SWA_START     = 0.75     # start SWA at 75% of best epoch (retroactively)
-SWA_WINDOW    = 40       # collect last 40 saved-improvement checkpoints
-
-GENE_DROP_RATE = 0.15
-NOISE_PROB     = 0.50
-NOISE_STD      = 0.01
-
-N_TRAIN = 1778
-N_VAL   = 381
-N_TEST  = 381
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 OUTCOME_NAMES = [
     "reproductive_impairment",
@@ -95,556 +84,737 @@ OUTCOME_NAMES = [
 ]
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Logging
-# ─────────────────────────────────────────────────────────────────────────────
-def _setup_logging() -> logging.Logger:
-    log = logging.getLogger("toxigene_v9b")
-    if not log.handlers:
-        log.setLevel(logging.INFO)
-        ch = logging.StreamHandler(sys.stdout)
-        ch.setFormatter(logging.Formatter("[%(asctime)s] %(message)s", datefmt="%H:%M:%S"))
-        log.addHandler(ch)
-        log.propagate = False
-    fh = logging.FileHandler(str(LOG_PATH), mode="w")
-    fh.setFormatter(logging.Formatter("[%(asctime)s] %(message)s", datefmt="%H:%M:%S"))
-    fh.setLevel(logging.INFO)
-    log.addHandler(fh)
-    return log
-
-
-# ─────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 # Dataset
-# ─────────────────────────────────────────────────────────────────────────────
-class ToxicologyDataset(Dataset):
-    def __init__(self, X: np.ndarray, y: np.ndarray, p: np.ndarray):
-        self.X = torch.tensor(X, dtype=torch.float32)
-        self.y = torch.tensor(y, dtype=torch.float32)
-        self.p = torch.tensor(p, dtype=torch.float32)
+# ---------------------------------------------------------------------------
+class MolecularDataset(Dataset):
+    """Simple dataset for gene expression + outcome/pathway labels."""
 
-    def __len__(self) -> int:
-        return len(self.X)
-
-    def __getitem__(self, idx: int):
-        return self.X[idx], self.y[idx], self.p[idx]
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Model
-# ─────────────────────────────────────────────────────────────────────────────
-class ToxiGeneV9(nn.Module):
     def __init__(
         self,
-        n_genes: int = 61479,
-        hidden1: int = HIDDEN1,
-        hidden2: int = HIDDEN2,
-        hidden3: int = HIDDEN3,
-        hidden4: int = HIDDEN4,
-        dropout: float = DROPOUT,
-        n_outcomes: int = 7,
-        n_pathways: int = N_PATHWAY,
-        pathway_hidden: int = PATHWAY_HIDDEN,
+        expression: np.ndarray,
+        outcomes: np.ndarray,
+        pathways: np.ndarray | None = None,
     ):
-        super().__init__()
-        self.input_norm = nn.LayerNorm(n_genes)
-
-        self.fc1   = nn.Linear(n_genes, hidden1)
-        self.bn1   = nn.BatchNorm1d(hidden1)
-        self.skip1 = nn.Linear(n_genes, hidden1, bias=False)
-        self.drop1 = nn.Dropout(dropout)
-
-        self.fc2   = nn.Linear(hidden1, hidden2)
-        self.bn2   = nn.BatchNorm1d(hidden2)
-        self.skip2 = nn.Linear(hidden1, hidden2, bias=False)
-        self.drop2 = nn.Dropout(dropout)
-
-        self.fc3  = nn.Linear(hidden2, hidden3)
-        self.bn3  = nn.BatchNorm1d(hidden3)
-        self.drop3 = nn.Dropout(dropout)
-
-        self.fc4  = nn.Linear(hidden3, hidden4)
-        self.bn4  = nn.BatchNorm1d(hidden4)
-        self.drop4 = nn.Dropout(dropout)
-
-        self.outcome_head = nn.Linear(hidden4, n_outcomes)
-        self.pathway_head = nn.Sequential(
-            nn.Linear(hidden4, pathway_hidden),
-            nn.GELU(),
-            nn.Linear(pathway_hidden, n_pathways),
-            nn.Softplus(),
+        self.expression = torch.tensor(expression.astype(np.float32))
+        self.outcomes = torch.tensor(outcomes.astype(np.float32))
+        self.pathways = (
+            torch.tensor(pathways.astype(np.float32))
+            if pathways is not None
+            else None
         )
 
-        for m in self.modules():
-            if isinstance(m, nn.Linear):
-                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
-            elif isinstance(m, (nn.BatchNorm1d, nn.LayerNorm)):
-                nn.init.ones_(m.weight)
-                nn.init.zeros_(m.bias)
+    def __len__(self) -> int:
+        return len(self.expression)
 
-    def forward(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
-        x  = self.input_norm(x)
-        h1 = self.drop1(F.relu(self.bn1(self.fc1(x))))
-        h1 = F.relu(h1 + self.skip1(x))
-        h2 = self.drop2(F.relu(self.bn2(self.fc2(h1))))
-        h2 = F.relu(h2 + self.skip2(h1))
-        h3 = self.drop3(F.gelu(self.bn3(self.fc3(h2))))
-        h4 = self.drop4(F.gelu(self.bn4(self.fc4(h3))))
-        return {
-            "outcome_logits": self.outcome_head(h4),
-            "pathway_pred":   self.pathway_head(h4),
+    def __getitem__(self, idx: int) -> dict:
+        item = {
+            "expression": self.expression[idx],
+            "outcomes": self.outcomes[idx],
         }
+        if self.pathways is not None:
+            item["pathways"] = self.pathways[idx]
+        return item
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Loss & augmentation
-# ─────────────────────────────────────────────────────────────────────────────
-def compute_pos_weight(labels: np.ndarray) -> torch.Tensor:
-    pos = np.maximum(labels.sum(axis=0).astype(np.float32), 1.0)
-    neg = labels.shape[0] - pos
-    return torch.tensor(neg / pos, dtype=torch.float32)
+# ---------------------------------------------------------------------------
+# Utilities
+# ---------------------------------------------------------------------------
+def load_sparse_adj(path: Path) -> torch.Tensor:
+    """Load a sparse .npz adjacency matrix and return as dense float32 tensor."""
+    d = np.load(path)
+    shape = tuple(d["shape"])
+    mat = sparse.csr_matrix((d["data"], d["indices"], d["indptr"]), shape=shape)
+    return torch.tensor(mat.toarray(), dtype=torch.float32)
 
 
-def bce_with_label_smoothing(logits, targets, pos_weight, eps=LABEL_SMOOTH):
-    """BCE loss with label smoothing: targets → (1-eps)*targets + eps*0.5."""
-    smooth_targets = (1.0 - eps) * targets + eps * 0.5
-    return F.binary_cross_entropy_with_logits(
-        logits, smooth_targets,
-        pos_weight=pos_weight.to(logits.device),
-    )
+def load_study_ids_from_metadata(n_samples: int) -> list[str]:
+    """Load per-sample GEO study IDs from the metadata file.
 
-
-def multitask_loss(out, y_outcome, y_pathway, pos_weight):
-    outcome_loss = bce_with_label_smoothing(out["outcome_logits"], y_outcome, pos_weight)
-    pathway_loss = F.huber_loss(out["pathway_pred"], y_pathway, delta=1.0)
-    total = outcome_loss + PATHWAY_LAMBDA * pathway_loss
-    return total, outcome_loss, pathway_loss
-
-
-def mixup(x, y, p, alpha=MIXUP_ALPHA):
-    """Mixup interpolation between random pairs."""
-    if alpha <= 0:
-        return x, y, p
-    lam = np.random.beta(alpha, alpha)
-    n   = x.size(0)
-    idx = torch.randperm(n, device=x.device)
-    x2  = lam * x + (1 - lam) * x[idx]
-    y2  = lam * y + (1 - lam) * y[idx]
-    p2  = lam * p + (1 - lam) * p[idx]
-    return x2, y2, p2
-
-
-def augment(x, training: bool) -> torch.Tensor:
-    if not training:
-        return x
-    if torch.rand(1).item() < NOISE_PROB:
-        x = x + torch.randn_like(x) * NOISE_STD
-    mask = (torch.rand_like(x) > GENE_DROP_RATE).float()
-    return x * mask
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# LR warmup + cosine decay
-# ─────────────────────────────────────────────────────────────────────────────
-def make_scheduler(optimizer, warmup_epochs, total_epochs, eta_min=1e-6):
-    def lr_lambda(epoch):
-        if epoch < warmup_epochs:
-            return float(epoch + 1) / float(warmup_epochs)
-        progress = float(epoch - warmup_epochs) / float(max(1, total_epochs - warmup_epochs))
-        cosine = 0.5 * (1.0 + math.cos(math.pi * progress))
-        return eta_min / LR + (1.0 - eta_min / LR) * cosine
-    return torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Threshold optimization (bootstrapped to reduce overfitting)
-# ─────────────────────────────────────────────────────────────────────────────
-def optimize_thresholds_bootstrap(probs: np.ndarray, labels: np.ndarray,
-                                   n_bootstrap: int = 7, seed: int = 0) -> np.ndarray:
-    """Average threshold over n_bootstrap resamples of the val set.
-
-    This prevents per-class thresholds from overfitting the specific val split.
+    Returns a list of study IDs (GSE*) so that samples from the same
+    GEO study stay in the same fold for spatial holdout.
     """
-    rng = np.random.default_rng(seed)
-    grid = np.linspace(0.15, 0.85, 30)
-    n    = len(probs)
-    all_thresholds = np.zeros((n_bootstrap, labels.shape[1]))
+    if GEO_METADATA.exists():
+        try:
+            with open(GEO_METADATA) as f:
+                metadata = json.load(f)
+            if len(metadata) == n_samples:
+                ids = [entry.get("gse_id", f"sample_{i:05d}") for i, entry in enumerate(metadata)]
+                logger.info(f"Loaded {len(set(ids))} unique study IDs from {GEO_METADATA.name}")
+                return ids
+        except Exception as e:
+            logger.warning(f"Failed to load metadata: {e}")
 
-    for b in range(n_bootstrap):
-        idx = rng.choice(n, size=n, replace=True)
-        p_b = probs[idx]
-        l_b = labels[idx]
-        for c in range(labels.shape[1]):
-            best_f1, best_t = 0.0, 0.5
-            for t in grid:
-                preds = (p_b[:, c] > t).astype(int)
-                f1 = f1_score(l_b[:, c].astype(int), preds, zero_division=0)
-                if f1 > best_f1:
-                    best_f1, best_t = f1, t
-            all_thresholds[b, c] = best_t
+    # Fallback: try geo_summary.json
+    if GEO_SUMMARY.exists():
+        try:
+            with open(GEO_SUMMARY) as f:
+                geo_data = json.load(f)
+            if isinstance(geo_data, list):
+                ids = []
+                for entry in geo_data:
+                    if isinstance(entry, dict):
+                        gse = entry.get("gse_id", "")
+                        n = entry.get("n_samples", 0)
+                        ids.extend([gse] * n)
+                if len(ids) == n_samples:
+                    logger.info(f"Loaded study IDs from geo_summary.json")
+                    return ids
+        except Exception as e:
+            logger.warning(f"Failed to parse geo_summary.json: {e}")
 
-    # Median is more robust than mean for thresholds
-    return np.median(all_thresholds, axis=0)
-
-
-@torch.no_grad()
-def collect_probs(model, loader, device):
-    model.eval()
-    probs_list, labels_list = [], []
-    for x, y, p in loader:
-        x = x.to(device)
-        with autocast(device_type="cuda"):
-            out = model(x)
-        probs_list.append(torch.sigmoid(out["outcome_logits"]).cpu().numpy())
-        labels_list.append(y.numpy())
-    return np.concatenate(probs_list), np.concatenate(labels_list)
+    # Fallback: deterministic index-based
+    logger.info(f"Using index-based IDs for {n_samples} samples")
+    return [f"sample_{i:05d}" for i in range(n_samples)]
 
 
-def evaluate(model, loader, device, thresholds=None):
-    probs, labels = collect_probs(model, loader, device)
-    labels_bin = (labels > 0.5).astype(int)
-    if thresholds is None:
-        thresholds = np.full(labels.shape[1], 0.5)
-    preds = np.stack(
-        [(probs[:, c] > thresholds[c]).astype(int) for c in range(labels.shape[1])],
-        axis=1,
+def compute_pos_weight(labels: np.ndarray) -> torch.Tensor:
+    """Compute positive class weight for each outcome to handle imbalance.
+
+    For outcomes with zero positive samples, returns weight 0 (will be masked).
+    """
+    n_samples = labels.shape[0]
+    n_outcomes = labels.shape[1]
+    weights = np.ones(n_outcomes, dtype=np.float32)
+
+    for j in range(n_outcomes):
+        n_pos = labels[:, j].sum()
+        n_neg = n_samples - n_pos
+        if n_pos > 0:
+            weights[j] = min(n_neg / n_pos, 10.0)  # cap at 10 to prevent explosion
+        else:
+            weights[j] = 0.0  # will mask this outcome in loss
+
+    return torch.tensor(weights, dtype=torch.float32)
+
+
+def compute_prevalence(labels: np.ndarray) -> dict[str, float]:
+    """Compute per-outcome prevalence (fraction of positive samples)."""
+    if labels.ndim == 1:
+        return {"overall": float(labels.mean())}
+    return {
+        OUTCOME_NAMES[j] if j < len(OUTCOME_NAMES) else f"outcome_{j}": float(
+            labels[:, j].mean()
+        )
+        for j in range(labels.shape[1])
+    }
+
+
+# ---------------------------------------------------------------------------
+# Data loading
+# ---------------------------------------------------------------------------
+def load_data() -> tuple[np.ndarray, np.ndarray, np.ndarray | None, list[str], str]:
+    """Load expression matrix, outcome labels, pathway labels, and gene names.
+
+    Returns:
+        (expression, outcomes, pathways_or_None, gene_names, dataset_name)
+    """
+    # Check for v3_corrected data (produced by prepare_geo_for_toxigene.py)
+    expr_path = DATA_DIR / "expression_matrix_v3_corrected.npy"
+    out_path = DATA_DIR / "outcome_labels_v3_corrected.npy"
+    pw_path = DATA_DIR / "pathway_labels_v3_corrected.npy"
+
+    if not expr_path.exists() or not out_path.exists():
+        logger.error(
+            "Prepared data not found. Run first:\n"
+            "  python scripts/prepare_geo_for_toxigene.py\n"
+            f"Expected: {expr_path}"
+        )
+        sys.exit(1)
+
+    expression = np.load(expr_path).astype(np.float32)
+    outcomes = np.load(out_path).astype(np.float32)
+    pathways = np.load(pw_path).astype(np.float32) if pw_path.exists() else None
+
+    logger.info(f"Expression: {expression.shape}")
+    logger.info(f"Outcomes: {outcomes.shape}")
+    if pathways is not None:
+        logger.info(f"Pathways: {pathways.shape}")
+
+    # Validate no NaN or Inf
+    assert not np.isnan(expression).any(), "NaN in expression matrix!"
+    assert not np.isinf(expression).any(), "Inf in expression matrix!"
+    assert not np.isnan(outcomes).any(), "NaN in outcome labels!"
+
+    # Gene names
+    gene_names_path = DATA_DIR / "gene_names.json"
+    if gene_names_path.exists():
+        with open(gene_names_path) as f:
+            gene_names = json.load(f)
+        if len(gene_names) != expression.shape[1]:
+            logger.warning(
+                f"Gene name count ({len(gene_names)}) != expression columns ({expression.shape[1]}). "
+                f"Using placeholder names."
+            )
+            gene_names = [f"gene_{i}" for i in range(expression.shape[1])]
+    else:
+        gene_names = [f"gene_{i}" for i in range(expression.shape[1])]
+
+    logger.info(
+        f"Loaded v3_corrected: {expression.shape[0]} samples x {expression.shape[1]} genes, "
+        f"{outcomes.shape[1]} outcomes"
     )
-    f1_macro = f1_score(labels_bin, preds, average="macro", zero_division=0)
-    acc      = accuracy_score(labels_bin, preds)
-    per_cls  = f1_score(labels_bin, preds, average=None, zero_division=0).tolist()
-    return {"f1": f1_macro, "acc": acc, "per_class_f1": per_cls}
+
+    return expression, outcomes, pathways, gene_names, "v3_corrected"
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# SWA (manual implementation)
-# ─────────────────────────────────────────────────────────────────────────────
-class SWABuffer:
-    """Accumulates model weights for Stochastic Weight Averaging."""
-    def __init__(self):
-        self.n = 0
-        self.avg_state: dict | None = None
+def load_hierarchy(n_genes: int) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Load hierarchy adjacency matrices from files."""
+    paths = [
+        DATA_DIR / "hierarchy_layer0_gene_to_pathway.npz",
+        DATA_DIR / "hierarchy_layer1_pathway_to_process.npz",
+        DATA_DIR / "hierarchy_layer2_process_to_outcome.npz",
+    ]
 
-    def update(self, model: nn.Module):
-        state = {k: v.clone().float() for k, v in model.state_dict().items()}
-        if self.avg_state is None:
-            self.avg_state = state
-        else:
-            for k in self.avg_state:
-                self.avg_state[k] = (self.avg_state[k] * self.n + state[k]) / (self.n + 1)
-        self.n += 1
+    if not all(p.exists() for p in paths):
+        logger.error(
+            "Hierarchy adjacency matrices not found. Run first:\n"
+            "  python scripts/prepare_geo_for_toxigene.py"
+        )
+        sys.exit(1)
 
-    def apply(self, model: nn.Module):
-        if self.avg_state is not None:
-            model.load_state_dict({k: v.to(next(model.parameters()).device)
-                                   for k, v in self.avg_state.items()})
+    pathway_adj = load_sparse_adj(paths[0])
+    process_adj = load_sparse_adj(paths[1])
+    outcome_adj = load_sparse_adj(paths[2])
 
-    def reset_bn(self, model: nn.Module, train_loader, device):
-        """Update BatchNorm running stats using the SWA-averaged weights."""
-        model.train()
-        with torch.no_grad():
-            for x, y, p in train_loader:
-                x = x.to(device)
-                _ = model(x)
+    # Validate dimensions
+    assert pathway_adj.shape[1] == n_genes, (
+        f"Hierarchy gene dim ({pathway_adj.shape[1]}) != expression genes ({n_genes}). "
+        f"Re-run prepare_geo_for_toxigene.py"
+    )
+
+    logger.info(
+        f"Hierarchy: genes({pathway_adj.shape[1]}) -> "
+        f"pathways({pathway_adj.shape[0]}) -> "
+        f"processes({process_adj.shape[0]}) -> "
+        f"outcomes({outcome_adj.shape[0]})"
+    )
+    return pathway_adj, process_adj, outcome_adj
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Training loop
-# ─────────────────────────────────────────────────────────────────────────────
-def train(model, train_loader, val_loader, device, log, pos_weight):
-    optimizer = torch.optim.AdamW(
-        model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
-    scheduler = make_scheduler(optimizer, WARMUP_EPOCHS, EPOCHS, eta_min=1e-6)
-    scaler = GradScaler("cuda")
-    swa = SWABuffer()
+# ---------------------------------------------------------------------------
+# Custom loss that handles zero-prevalence classes
+# ---------------------------------------------------------------------------
+def safe_bce_loss(
+    logits: torch.Tensor,
+    targets: torch.Tensor,
+    pos_weight: torch.Tensor,
+    active_mask: torch.Tensor,
+) -> torch.Tensor:
+    """BCE with logits that masks out outcomes with no positive samples.
 
-    best_val_f1  = 0.0
-    best_epoch   = 0
-    no_improve   = 0
-    best_thresholds = np.full(7, 0.5)
+    Args:
+        logits: (B, n_outcomes)
+        targets: (B, n_outcomes)
+        pos_weight: (n_outcomes,) -- 0 for inactive outcomes
+        active_mask: (n_outcomes,) bool -- True for outcomes to include in loss
+    """
+    n_active = active_mask.sum().item()
+    if n_active == 0:
+        return torch.tensor(0.0, device=logits.device, requires_grad=True)
 
-    for epoch in range(1, EPOCHS + 1):
-        model.train()
-        loss_sum  = 0.0
-        n_batches = 0
+    # Only compute loss on active outcomes
+    active_logits = logits[:, active_mask]
+    active_targets = targets[:, active_mask]
+    active_weights = pos_weight[active_mask]
 
-        for x, y, p in train_loader:
-            x, y, p = x.to(device), y.to(device), p.to(device)
-            x = augment(x, training=True)
-            x, y, p = mixup(x, y, p)
+    loss = F.binary_cross_entropy_with_logits(
+        active_logits,
+        active_targets,
+        pos_weight=active_weights,
+        reduction="mean",
+    )
+    return loss
 
-            optimizer.zero_grad(set_to_none=True)
-            with autocast(device_type="cuda"):
-                out = model(x)
-                total, _, _ = multitask_loss(out, y, p, pos_weight)
 
-            scaler.scale(total).backward()
-            scaler.unscale_(optimizer)
-            nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
-            scaler.step(optimizer)
-            scaler.update()
+# ---------------------------------------------------------------------------
+# Evaluation
+# ---------------------------------------------------------------------------
+@torch.no_grad()
+def evaluate(
+    model: nn.Module,
+    dataloader: DataLoader,
+    device: torch.device,
+) -> dict[str, float]:
+    """Evaluate model on a dataloader. Returns metrics dict."""
+    model.eval()
+    all_preds, all_labels, all_probs = [], [], []
 
-            loss_sum  += total.item()
-            n_batches += 1
+    for batch in dataloader:
+        expr = batch["expression"].to(device)
+        outputs = model(gene_expression=expr)
+        probs = torch.sigmoid(outputs["outcome_logits"]).cpu()
+        preds = (probs > 0.5).float()
 
-        scheduler.step()
+        all_probs.append(probs)
+        all_preds.append(preds)
+        all_labels.append(batch["outcomes"])
 
-        # Validate with bootstrapped threshold optimization
-        val_probs, val_labels = collect_probs(model, val_loader, device)
-        val_labels_bin = (val_labels > 0.5).astype(int)
-        thresholds = optimize_thresholds_bootstrap(val_probs, val_labels_bin, n_bootstrap=7, seed=epoch)
-        val_preds = np.stack(
-            [(val_probs[:, c] > thresholds[c]).astype(int)
-             for c in range(val_labels.shape[1])], axis=1)
-        val_f1 = f1_score(val_labels_bin, val_preds, average="macro", zero_division=0)
+    all_probs = torch.cat(all_probs).numpy()
+    all_preds = torch.cat(all_preds).numpy()
+    all_labels = torch.cat(all_labels).numpy()
 
-        if epoch % 10 == 0 or epoch == 1:
-            log.info(
-                f"[ToxiGeneV9b] Epoch {epoch:3d}/{EPOCHS} | "
-                f"loss={loss_sum/max(n_batches,1):.4f} | "
-                f"val_F1={val_f1:.4f} | "
-                f"thresholds=[{','.join(f'{t:.2f}' for t in thresholds)}] | "
-                f"lr={optimizer.param_groups[0]['lr']:.2e}"
+    # Only compute metrics for outcomes that have both positive and negative samples
+    active_outcomes = []
+    per_class_f1 = np.zeros(all_labels.shape[1])
+    for j in range(all_labels.shape[1]):
+        n_pos = all_labels[:, j].sum()
+        n_neg = all_labels.shape[0] - n_pos
+        if n_pos > 0 and n_neg > 0:
+            active_outcomes.append(j)
+            per_class_f1[j] = f1_score(
+                all_labels[:, j], all_preds[:, j], zero_division=0
             )
 
-        if val_f1 > best_val_f1:
-            best_val_f1    = val_f1
-            best_epoch     = epoch
-            best_thresholds = thresholds.copy()
-            no_improve     = 0
-            torch.save(
-                {"state_dict": model.state_dict(), "thresholds": thresholds},
-                str(CKPT_PATH),
-            )
-            swa.update(model)  # always update SWA on improvement
+    macro_f1 = float(np.mean([per_class_f1[j] for j in active_outcomes])) if active_outcomes else 0.0
+    accuracy = float((all_preds == all_labels).mean())
+
+    try:
+        if len(active_outcomes) > 0:
+            active_labels = all_labels[:, active_outcomes]
+            active_probs = all_probs[:, active_outcomes]
+            auroc = float(roc_auc_score(active_labels, active_probs, average="macro"))
         else:
-            no_improve += 1
-            # Also update SWA in the later 40% of training
-            if epoch > EPOCHS * 0.60:
-                swa.update(model)
+            auroc = None
+    except Exception:
+        auroc = None
 
-        if no_improve >= EARLY_STOP:
-            log.info(f"  Early stopping at epoch {epoch} (best val F1={best_val_f1:.4f} @ epoch {best_epoch})")
-            break
+    return {
+        "macro_f1": macro_f1,
+        "accuracy": accuracy,
+        "auroc": auroc,
+        "per_class_f1": [float(f) for f in per_class_f1],
+        "active_outcomes": active_outcomes,
+    }
 
-    return best_val_f1, best_epoch, swa, best_thresholds
 
-
-# ─────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 # Main
-# ─────────────────────────────────────────────────────────────────────────────
-def main() -> None:
-    t0  = time.time()
-    log = _setup_logging()
+# ---------------------------------------------------------------------------
+def main():
+    t0 = time.time()
     torch.manual_seed(SEED)
     np.random.seed(SEED)
 
-    if torch.cuda.is_available():
-        try:
-            device = torch.device(CUDA_DEVICE)
-            _ = torch.zeros(1, device=device)
-            log.info(f"Device: {CUDA_DEVICE} ({torch.cuda.get_device_name(device)})")
-        except Exception:
-            device = torch.device("cuda:0")
-            log.info("Fallback device: cuda:0")
-    else:
-        device = torch.device("cpu")
+    logger.info("=" * 70)
+    logger.info("ToxiGene v3 — MolecularEncoder on Real GEO Data")
+    logger.info("=" * 70)
+    logger.info(f"Device: {DEVICE}")
+    logger.info(f"Seed: {SEED}")
 
-    # ── Load corrected data ────────────────────────────────────────────────────
-    log.info(f"Loading batch-corrected v3 data from {CORRECTED_DATA_PATH} …")
-    X_corrected = np.load(str(CORRECTED_DATA_PATH))
-    y     = np.load(str(DATA_DIR / "outcome_labels_v3_expanded.npy")).astype(np.float32)
-    p_raw = np.load(str(DATA_DIR / "pathway_labels_v3_expanded.npy")).astype(np.float32)
-    log.info(f"  X: {X_corrected.shape}, y: {y.shape}, p: {p_raw.shape}")
+    # ── Load data ─────────────────────────────────────────────────────────
+    expression, outcomes, pathways, gene_names, dataset_name = load_data()
+    pathway_adj, process_adj, outcome_adj = load_hierarchy(expression.shape[1])
 
-    # ── Same seed=42 split ─────────────────────────────────────────────────────
-    N   = len(X_corrected)
-    rng = np.random.default_rng(SEED)
-    idx = rng.permutation(N)
-    tr_idx = idx[:N_TRAIN]
-    va_idx = idx[N_TRAIN:N_TRAIN + N_VAL]
-    te_idx = idx[N_TRAIN + N_VAL:]
+    n_samples = expression.shape[0]
+    n_genes = expression.shape[1]
 
-    X_tr, y_tr, p_tr = X_corrected[tr_idx], y[tr_idx], p_raw[tr_idx]
-    X_va, y_va, p_va = X_corrected[va_idx], y[va_idx], p_raw[va_idx]
-    X_te, y_te, p_te = X_corrected[te_idx], y[te_idx], p_raw[te_idx]
-    log.info(f"Split: {N_TRAIN} train / {N_VAL} val / {len(te_idx)} test")
+    # ── Determine which outcomes are active (have positive samples) ──────
+    outcome_prevalence = outcomes.sum(axis=0)
+    active_outcomes = outcome_prevalence > 0
+    n_active = int(active_outcomes.sum())
+    logger.info(f"\nActive outcomes ({n_active}/{len(OUTCOME_NAMES)}):")
+    for j, name in enumerate(OUTCOME_NAMES):
+        status = "ACTIVE" if active_outcomes[j] else "INACTIVE (0 positives)"
+        logger.info(f"  {name}: {int(outcome_prevalence[j])} positives -- {status}")
 
-    # ── Global z-score normalization ───────────────────────────────────────────
-    mu  = X_tr.mean(axis=0, keepdims=True)
-    std = X_tr.std(axis=0,  keepdims=True)
-    std[std < 1e-6] = 1.0
-    X_tr = np.clip((X_tr - mu) / std, -10.0, 10.0).astype(np.float32)
-    X_va = np.clip((X_va - mu) / std, -10.0, 10.0).astype(np.float32)
-    X_te = np.clip((X_te - mu) / std, -10.0, 10.0).astype(np.float32)
+    # ── Build study-level spatial holdout splits ──────────────────────────
+    logger.info("\n--- Spatial Holdout Split ---")
+    site_ids = load_study_ids_from_metadata(n_samples)
 
-    p_mu  = p_tr.mean(axis=0)
-    p_std = p_tr.std(axis=0)
-    p_std[p_std < 1e-6] = 1.0
-    p_tr  = ((p_tr - p_mu) / p_std).astype(np.float32)
-    p_va  = ((p_va - p_mu) / p_std).astype(np.float32)
-    p_te  = ((p_te - p_mu) / p_std).astype(np.float32)
-
-    pos_weight = compute_pos_weight(y_tr).to(device)
-    log.info(f"pos_weight: {[f'{w:.2f}' for w in pos_weight.tolist()]}")
-
-    # ── Dataloaders ────────────────────────────────────────────────────────────
-    g = torch.Generator().manual_seed(SEED)
-    train_loader = DataLoader(
-        ToxicologyDataset(X_tr, y_tr, p_tr),
-        batch_size=BATCH_SIZE, shuffle=True, num_workers=4,
-        pin_memory=True, generator=g,
-    )
-    val_loader = DataLoader(
-        ToxicologyDataset(X_va, y_va, p_va),
-        batch_size=BATCH_SIZE, shuffle=False, num_workers=4, pin_memory=True,
-    )
-    test_loader = DataLoader(
-        ToxicologyDataset(X_te, y_te, p_te),
-        batch_size=BATCH_SIZE, shuffle=False, num_workers=4, pin_memory=True,
+    split_idx = split_indices_spatial_only(
+        site_ids=site_ids,
+        config=SplitConfig(),
     )
 
-    # ── Build model ────────────────────────────────────────────────────────────
-    log.info("\n" + "=" * 70)
-    log.info("Building ToxiGene v9b (+ SWA + mixup + label smoothing + bootstrap thresh) …")
-    model = ToxiGeneV9(
-        n_genes=X_tr.shape[1],
-        hidden1=HIDDEN1, hidden2=HIDDEN2, hidden3=HIDDEN3, hidden4=HIDDEN4,
-        dropout=DROPOUT, n_outcomes=7, n_pathways=N_PATHWAY,
-        pathway_hidden=PATHWAY_HIDDEN,
-    ).to(device)
+    # With only 4 studies, hash-based splits might leave some empty.
+    # Validate and fall back to random split if needed.
+    empty_splits = [s for s in ["train", "val", "test"] if len(split_idx[s]) == 0]
+
+    if empty_splits:
+        logger.warning(
+            f"Spatial holdout produced empty splits: {empty_splits}. "
+            f"Falling back to stratified random split (70/15/15)."
+        )
+        rng = np.random.default_rng(SEED)
+        idx = rng.permutation(n_samples)
+        n_train = int(0.70 * n_samples)
+        n_val = int(0.15 * n_samples)
+        split_idx = {
+            "train": idx[:n_train].tolist(),
+            "val": idx[n_train:n_train + n_val].tolist(),
+            "test": idx[n_train + n_val:].tolist(),
+        }
+
+    train_idx = np.array(split_idx["train"])
+    val_idx = np.array(split_idx["val"])
+    test_idx = np.array(split_idx["test"])
+
+    logger.info(
+        f"Split sizes: train={len(train_idx)}, val={len(val_idx)}, test={len(test_idx)}"
+    )
+
+    # Log per-split outcome prevalence
+    for split_name, idxs in [("train", train_idx), ("val", val_idx), ("test", test_idx)]:
+        if len(idxs) > 0:
+            prev = outcomes[idxs].mean(axis=0)
+            prev_str = ", ".join(f"{v:.3f}" for v in prev)
+            unique_studies = set(site_ids[i] for i in idxs)
+            logger.info(
+                f"  {split_name:5s}: {len(idxs):4d} samples, "
+                f"{len(unique_studies)} studies | prevalence=[{prev_str}]"
+            )
+
+    # ── Z-score normalization (train-only statistics) ─────────────────────
+    logger.info("\n--- Z-score Normalization (train-only stats) ---")
+    train_expr = expression[train_idx]
+    expr_mean = train_expr.mean(axis=0)
+    expr_std = train_expr.std(axis=0)
+    constant_mask = expr_std < 1e-6
+    expr_std[constant_mask] = 1.0
+    n_constant = int(constant_mask.sum())
+    logger.info(
+        f"Constant/near-zero-variance genes (set std=1): {n_constant}/{n_genes}"
+    )
+
+    expression = (expression - expr_mean) / expr_std
+    # Clip to prevent extreme values that cause NaN
+    expression = np.clip(expression, -10.0, 10.0)
+
+    # Final NaN/Inf check
+    assert not np.isnan(expression).any(), "NaN after normalization!"
+    assert not np.isinf(expression).any(), "Inf after normalization!"
+
+    # ── Build datasets and dataloaders ────────────────────────────────────
+    train_ds = MolecularDataset(
+        expression[train_idx], outcomes[train_idx],
+        pathways[train_idx] if pathways is not None else None,
+    )
+    val_ds = MolecularDataset(
+        expression[val_idx], outcomes[val_idx],
+        pathways[val_idx] if pathways is not None else None,
+    )
+    test_ds = MolecularDataset(
+        expression[test_idx], outcomes[test_idx],
+        pathways[test_idx] if pathways is not None else None,
+    )
+
+    train_dl = DataLoader(
+        train_ds, batch_size=BATCH_SIZE, shuffle=True,
+        num_workers=0, pin_memory=True, drop_last=False,
+    )
+    val_dl = DataLoader(
+        val_ds, batch_size=BATCH_SIZE,
+        num_workers=0, pin_memory=True,
+    )
+    test_dl = DataLoader(
+        test_ds, batch_size=BATCH_SIZE,
+        num_workers=0, pin_memory=True,
+    )
+
+    # ── Compute class weights for imbalanced BCE ─────────────────────────
+    train_outcomes = outcomes[train_idx]
+    pos_weight = compute_pos_weight(train_outcomes).to(DEVICE)
+    active_mask = (pos_weight > 0).to(DEVICE)
+    logger.info(f"Pos weights: {[f'{w:.2f}' for w in pos_weight.tolist()]}")
+    logger.info(f"Active mask: {active_mask.tolist()}")
+
+    # ── Build model ───────────────────────────────────────────────────────
+    logger.info("\n--- Building MolecularEncoder ---")
+    model = MolecularEncoder(
+        gene_names=gene_names,
+        pathway_adj=pathway_adj,
+        process_adj=process_adj,
+        outcome_adj=outcome_adj,
+        num_chem_classes=50,
+        lambda_l1=LAMBDA_L1,
+        dropout=DROPOUT,
+    ).to(DEVICE)
+
     n_params = sum(p.numel() for p in model.parameters())
-    log.info(f"ToxiGene v9b: {n_params:,} parameters")
-    log.info(f"  dropout={DROPOUT}, label_smooth={LABEL_SMOOTH}, mixup_alpha={MIXUP_ALPHA}")
-    log.info(f"  SWA: collect from epoch 60% onwards + every improvement")
-    log.info(f"  Threshold: 7 bootstrap resamples, median aggregation")
-    log.info("=" * 70)
+    logger.info(f"Parameters: {n_params:,}")
 
-    best_val_f1, best_epoch, swa, best_thresholds = train(
-        model, train_loader, val_loader, device, log, pos_weight)
-    log.info(f"\nBest val F1: {best_val_f1:.4f} at epoch {best_epoch}")
+    # Optimizer + cosine LR scheduler with warmup
+    optimizer = torch.optim.AdamW(
+        model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY,
+    )
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS, eta_min=1e-6)
 
-    # ── Evaluate: best checkpoint model ───────────────────────────────────────
-    log.info("\n--- Evaluating: best checkpoint ---")
-    ckpt = torch.load(str(CKPT_PATH), map_location=device, weights_only=False)
-    model.load_state_dict(ckpt["state_dict"])
-    ckpt_thresholds = ckpt["thresholds"]
+    # ── Training loop ─────────────────────────────────────────────────────
+    logger.info("\n--- Training ---")
+    best_val_f1 = 0.0
+    best_ckpt_path = CKPT_DIR / "toxigene_v3_best.pt"
+    epochs_no_improve = 0
+    training_history = []
+    nan_batch_count = 0
 
-    test_best    = evaluate(model, test_loader, device, ckpt_thresholds)
-    test_best_05 = evaluate(model, test_loader, device, None)
-    log.info(f"  Best ckpt: F1={test_best['f1']:.4f} (t=0.5: {test_best_05['f1']:.4f})")
+    for epoch in range(EPOCHS):
+        model.train()
+        total_loss = 0.0
+        n_batches = 0
+        train_preds_all, train_labels_all = [], []
 
-    # ── Evaluate: SWA model ────────────────────────────────────────────────────
-    log.info(f"\n--- Evaluating: SWA model (n={swa.n} snapshots) ---")
-    model_swa = ToxiGeneV9(
-        n_genes=X_tr.shape[1],
-        hidden1=HIDDEN1, hidden2=HIDDEN2, hidden3=HIDDEN3, hidden4=HIDDEN4,
-        dropout=DROPOUT, n_outcomes=7, n_pathways=N_PATHWAY,
-        pathway_hidden=PATHWAY_HIDDEN,
-    ).to(device)
-    swa.apply(model_swa)
-    # Reset BN stats for SWA model
-    log.info("  Resetting BatchNorm statistics for SWA model …")
-    swa.reset_bn(model_swa, train_loader, device)
+        for batch in train_dl:
+            expr = batch["expression"].to(DEVICE)
+            outcome_targets = batch["outcomes"].to(DEVICE)
+            pathway_targets = batch.get("pathways")
+            if pathway_targets is not None:
+                pathway_targets = pathway_targets.to(DEVICE)
 
-    # Re-optimize thresholds on val with SWA model
-    val_probs_swa, val_labels_swa = collect_probs(model_swa, val_loader, device)
-    val_labels_bin_swa = (val_labels_swa > 0.5).astype(int)
-    swa_thresholds = optimize_thresholds_bootstrap(val_probs_swa, val_labels_bin_swa, n_bootstrap=11, seed=99)
+            optimizer.zero_grad()
 
-    test_swa    = evaluate(model_swa, test_loader, device, swa_thresholds)
-    test_swa_05 = evaluate(model_swa, test_loader, device, None)
-    log.info(f"  SWA model: F1={test_swa['f1']:.4f} (t=0.5: {test_swa_05['f1']:.4f})")
+            outputs = model(gene_expression=expr)
 
-    # ── Pick the better one ────────────────────────────────────────────────────
-    if test_swa["f1"] >= test_best["f1"]:
-        test_m         = test_swa
-        test_m_05      = test_swa_05
-        best_thresholds = swa_thresholds
-        winner         = "SWA"
-        torch.save({"state_dict": model_swa.state_dict(), "thresholds": swa_thresholds}, str(SWA_CKPT_PATH))
+            # Custom loss: BCE with pos_weight, masking inactive outcomes
+            outcome_loss = safe_bce_loss(
+                outputs["outcome_logits"],
+                outcome_targets,
+                pos_weight,
+                active_mask,
+            )
+
+            # Pathway regression loss (if pathway labels available)
+            pathway_loss = torch.tensor(0.0, device=DEVICE)
+            if pathway_targets is not None:
+                pathway_loss = F.mse_loss(
+                    outputs["pathway_activation"],
+                    pathway_targets,
+                    reduction="mean",
+                )
+
+            # Bottleneck L1 penalty
+            l1_loss = model.bottleneck.compute_loss()
+
+            # Total loss
+            loss = outcome_loss + 0.3 * pathway_loss + l1_loss
+
+            # Check for NaN
+            if torch.isnan(loss) or torch.isinf(loss):
+                nan_batch_count += 1
+                if nan_batch_count <= 5:
+                    logger.warning(
+                        f"  NaN/Inf loss at epoch {epoch+1} "
+                        f"(outcome={outcome_loss.item():.4f}, "
+                        f"pathway={pathway_loss.item():.4f}, "
+                        f"l1={l1_loss.item():.4f})"
+                    )
+                continue
+
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
+            optimizer.step()
+
+            total_loss += loss.item()
+            n_batches += 1
+
+            preds = (torch.sigmoid(outputs["outcome_logits"]) > 0.5).float().cpu()
+            train_preds_all.append(preds)
+            train_labels_all.append(outcome_targets.cpu())
+
+        scheduler.step()
+
+        if n_batches == 0:
+            logger.warning(f"Epoch {epoch+1}: all batches had NaN loss!")
+            continue
+
+        avg_loss = total_loss / n_batches
+        train_preds_all = torch.cat(train_preds_all).numpy()
+        train_labels_all = torch.cat(train_labels_all).numpy()
+
+        # Compute train F1 only on active outcomes
+        active_idxs = [j for j in range(outcomes.shape[1]) if active_mask[j].item()]
+        if active_idxs:
+            train_f1_per = [
+                f1_score(train_labels_all[:, j], train_preds_all[:, j], zero_division=0)
+                for j in active_idxs
+            ]
+            train_f1 = float(np.mean(train_f1_per))
+        else:
+            train_f1 = 0.0
+
+        # Validation
+        val_metrics = evaluate(model, val_dl, DEVICE)
+        val_f1 = val_metrics["macro_f1"]
+
+        # Gene selection bottleneck stats
+        try:
+            n_selected = model.bottleneck.num_selected
+        except Exception:
+            n_selected = 0
+
+        current_lr = optimizer.param_groups[0]["lr"]
+
+        # Log every 10 epochs + first + last
+        if (epoch + 1) % 10 == 0 or epoch == 0:
+            logger.info(
+                f"Ep {epoch+1:3d}/{EPOCHS} | Loss: {avg_loss:.4f} | "
+                f"Train F1: {train_f1:.4f} | Val F1: {val_f1:.4f} | "
+                f"Genes: {n_selected} | LR: {current_lr:.2e} | "
+                f"Patience: {epochs_no_improve}/{EARLY_STOP_PATIENCE}"
+            )
+
+        training_history.append({
+            "epoch": epoch + 1,
+            "loss": avg_loss,
+            "train_f1": float(train_f1),
+            "val_f1": val_f1,
+            "n_selected_genes": n_selected,
+            "lr": current_lr,
+        })
+
+        # Early stopping
+        if val_f1 > best_val_f1:
+            best_val_f1 = val_f1
+            torch.save(model.state_dict(), best_ckpt_path)
+            epochs_no_improve = 0
+        else:
+            epochs_no_improve += 1
+
+        if epochs_no_improve >= EARLY_STOP_PATIENCE:
+            logger.info(
+                f"Early stopping at epoch {epoch+1} "
+                f"(patience={EARLY_STOP_PATIENCE}, best val F1={best_val_f1:.4f})"
+            )
+            break
+
+    final_epoch = epoch + 1
+
+    # ── Reload best checkpoint and evaluate on test ───────────────────────
+    logger.info("\n--- Test Evaluation ---")
+    if best_ckpt_path.exists():
+        model.load_state_dict(
+            torch.load(best_ckpt_path, map_location=DEVICE, weights_only=True)
+        )
+        logger.info(f"Loaded best checkpoint (val F1={best_val_f1:.4f})")
+
+    test_metrics = evaluate(model, test_dl, DEVICE)
+
+    # Gene selection bottleneck analysis
+    try:
+        selected_genes = model.bottleneck.get_selected_genes()
+        n_selected_final = model.bottleneck.num_selected
+    except Exception:
+        selected_genes = []
+        n_selected_final = 0
+
+    # ── Log results ───────────────────────────────────────────────────────
+    logger.info("=" * 60)
+    logger.info("TEST RESULTS (ToxiGene v3 — Real GEO Data)")
+    logger.info("=" * 60)
+    for i, f1_val in enumerate(test_metrics["per_class_f1"]):
+        name = OUTCOME_NAMES[i] if i < len(OUTCOME_NAMES) else f"outcome_{i}"
+        status = "" if active_outcomes[i] else " (INACTIVE)"
+        logger.info(f"  {name}: F1 = {f1_val:.4f}{status}")
+    logger.info(f"\n  Macro F1:  {test_metrics['macro_f1']:.4f}")
+    logger.info(f"  Accuracy:  {test_metrics['accuracy']:.4f}")
+    if test_metrics["auroc"] is not None:
+        logger.info(f"  AUROC:     {test_metrics['auroc']:.4f}")
+    logger.info(f"  Selected genes: {n_selected_final}/{n_genes}")
+    if selected_genes:
+        logger.info(f"  Top selected: {selected_genes[:20]}")
+
+    # Bottleneck gate statistics
+    logger.info("\n--- Gene Selection Bottleneck Stats ---")
+    try:
+        gates = model.bottleneck.gates.detach().cpu().numpy()
+        logger.info(f"  Gate mean:   {gates.mean():.4f}")
+        logger.info(f"  Gate std:    {gates.std():.4f}")
+        logger.info(f"  Gate min:    {gates.min():.4f}")
+        logger.info(f"  Gate max:    {gates.max():.4f}")
+        logger.info(f"  Gates > 0.5: {int((gates > 0.5).sum())}")
+        logger.info(f"  Gates > 0.1: {int((gates > 0.1).sum())}")
+        logger.info(f"  Gates < 0.01: {int((gates < 0.01).sum())}")
+    except Exception as e:
+        logger.warning(f"  Could not read gate values: {e}")
+
+    if nan_batch_count > 0:
+        logger.warning(f"\n  Total NaN/Inf batches during training: {nan_batch_count}")
+
+    if test_metrics["macro_f1"] > 0.80:
+        logger.info("*** HARD THRESHOLD MET ***")
+    elif test_metrics["macro_f1"] > 0.60:
+        logger.info("ACCEPTABLE")
     else:
-        test_m         = test_best
-        test_m_05      = test_best_05
-        best_thresholds = ckpt_thresholds
-        winner         = "best_ckpt"
+        logger.info(f"BELOW THRESHOLD ({test_metrics['macro_f1']:.4f})")
 
+    # ── Print summary ─────────────────────────────────────────────────────
     elapsed = time.time() - t0
+    print(f"\n=== ToxiGene v3 Results (Real GEO Data) ===")
+    print(f"Dataset        : {dataset_name} ({n_samples} samples, {n_genes} genes)")
+    print(f"Split          : train={len(train_idx)}, val={len(val_idx)}, test={len(test_idx)}")
+    print(f"Test Macro-F1  : {test_metrics['macro_f1']:.4f}")
+    print(f"Test Accuracy  : {test_metrics['accuracy']:.4f}")
+    if test_metrics["auroc"] is not None:
+        print(f"Test AUROC     : {test_metrics['auroc']:.4f}")
+    print(f"Best Val F1    : {best_val_f1:.4f}")
+    print(f"Epochs trained : {final_epoch}")
+    print(f"Selected genes : {n_selected_final}/{n_genes}")
+    print(f"NaN batches    : {nan_batch_count}")
+    print(f"Per-class F1   :")
+    for i, f1_val in enumerate(test_metrics["per_class_f1"]):
+        name = OUTCOME_NAMES[i] if i < len(OUTCOME_NAMES) else f"outcome_{i}"
+        status = "" if active_outcomes[i] else " (inactive)"
+        print(f"  {name}: {f1_val:.4f}{status}")
+    print(f"Time           : {elapsed/60:.1f}m")
 
-    # ── Print results ──────────────────────────────────────────────────────────
-    log.info("\n" + "=" * 70)
-    log.info("FINAL RESULTS — ToxiGene v9b vs Baselines")
-    log.info("=" * 70)
-    log.info(f"{'Model':<30} {'F1 (opt thresh)':>16} {'F1 (t=0.5)':>12}")
-    log.info("-" * 62)
-    log.info(f"{'RandomForest':<30} {'0.8589':>16} {'0.8477':>12}")
-    log.info(f"{'ExtraTrees':<30} {'0.8466':>16} {'0.8421':>12}")
-    log.info(f"{'ToxiGene v8 (DL)':<30} {'0.8372':>16} {'0.8227':>12}")
-    log.info(f"{'ToxiGene v9 (DL)':<30} {'0.8497':>16} {'0.8408':>12}")
-    log.info(f"{'ToxiGene v9b (this)':<30} {test_m['f1']:>16.4f} {test_m_05['f1']:>12.4f}  [{winner}]")
-    log.info("-" * 62)
-    delta_rf = test_m["f1"] - 0.8589
-    log.info(f"  Delta vs RF: {delta_rf:+.4f}  ({'BEATS RF!' if delta_rf > 0 else 'below RF'})")
-    log.info(f"  Delta vs v9: {test_m['f1'] - 0.8497:+.4f}")
-    log.info(f"  Selected model: {winner}")
-    log.info("=" * 70)
-    log.info("  Per-class F1:")
-    for cname, cf1 in zip(OUTCOME_NAMES, test_m["per_class_f1"]):
-        log.info(f"    {cname:30s}: {cf1:.4f}")
-    log.info(f"Elapsed: {elapsed:.1f}s")
-
-    # ── Save results ───────────────────────────────────────────────────────────
+    # ── Save results ──────────────────────────────────────────────────────
     results = {
-        "model": "ToxiGene_v9b",
-        "test_f1_macro": round(test_m["f1"], 6),
-        "test_f1_macro_t05": round(test_m_05["f1"], 6),
-        "test_acc": round(test_m["acc"], 6),
-        "per_class_f1": {n: round(f, 6) for n, f in zip(OUTCOME_NAMES, test_m["per_class_f1"])},
-        "best_thresholds": {n: round(float(t), 3) for n, t in zip(OUTCOME_NAMES, best_thresholds)},
-        "best_ckpt_f1": round(test_best["f1"], 6),
-        "swa_f1": round(test_swa["f1"], 6),
-        "swa_snapshots": swa.n,
-        "winner": winner,
-        "vs_randomforest_f1": 0.8589,
-        "delta_vs_rf": round(test_m["f1"] - 0.8589, 4),
-        "beats_rf": test_m["f1"] > 0.8589,
-        "toxigene_v8_f1": 0.8372,
-        "toxigene_v9_f1": 0.8497,
-        "delta_vs_v9": round(test_m["f1"] - 0.8497, 4),
-        "n_train": N_TRAIN, "n_val": N_VAL, "n_test": len(te_idx), "n_total": N,
-        "n_genes_input": int(X_tr.shape[1]),
-        "n_params": n_params,
-        "best_val_f1": round(best_val_f1, 6),
-        "best_epoch": best_epoch,
-        "elapsed_s": round(elapsed, 2),
+        "model": "ToxiGene_v3_real_geo",
+        "dataset": dataset_name,
+        "split_protocol": "spatial_holdout_with_random_fallback",
+        "n_samples_total": n_samples,
+        "n_genes": n_genes,
+        "n_synthetic_samples": 0,
+        "n_train": len(train_idx),
+        "n_val": len(val_idx),
+        "n_test": len(test_idx),
+        "test_f1_macro": test_metrics["macro_f1"],
+        "test_accuracy": test_metrics["accuracy"],
+        "test_auroc_macro": test_metrics["auroc"],
+        "best_val_f1": float(best_val_f1),
+        "per_class_f1": {
+            (OUTCOME_NAMES[i] if i < len(OUTCOME_NAMES) else f"outcome_{i}"): f1_val
+            for i, f1_val in enumerate(test_metrics["per_class_f1"])
+        },
+        "active_outcomes": [
+            OUTCOME_NAMES[j] for j in test_metrics.get("active_outcomes", [])
+        ],
+        "epochs_trained": final_epoch,
+        "max_epochs": EPOCHS,
+        "early_stop_patience": EARLY_STOP_PATIENCE,
+        "nan_batches": nan_batch_count,
         "hyperparameters": {
-            "hidden1": HIDDEN1, "hidden2": HIDDEN2, "hidden3": HIDDEN3, "hidden4": HIDDEN4,
-            "dropout": DROPOUT, "label_smooth": LABEL_SMOOTH, "mixup_alpha": MIXUP_ALPHA,
-            "pathway_lambda": PATHWAY_LAMBDA, "batch_size": BATCH_SIZE,
-            "epochs": EPOCHS, "lr": LR, "weight_decay": WEIGHT_DECAY,
-            "grad_clip": GRAD_CLIP, "early_stop": EARLY_STOP, "warmup": WARMUP_EPOCHS,
-            "gene_drop_rate": GENE_DROP_RATE, "noise_prob": NOISE_PROB,
+            "lr": LR,
+            "weight_decay": WEIGHT_DECAY,
+            "batch_size": BATCH_SIZE,
+            "grad_clip": GRAD_CLIP,
+            "lambda_l1": LAMBDA_L1,
+            "dropout": DROPOUT,
+            "num_chem_classes": 50,
+            "optimizer": "AdamW",
+            "scheduler": "CosineAnnealingLR",
+        },
+        "n_selected_genes": n_selected_final,
+        "n_total_genes": n_genes,
+        "selected_genes_top20": selected_genes[:20] if selected_genes else [],
+        "normalization": "z-score (train-only mean/std), clipped to [-10, 10]",
+        "n_constant_genes_masked": n_constant,
+        "elapsed_seconds": elapsed,
+        "checkpoint_path": str(best_ckpt_path),
+        "data_sources": {
+            "geo_studies": "GSE104776, GSE54800, GSE73661, GSE83514",
+            "pipeline": "prepare_geo_for_toxigene.py",
+            "synthetic_data": "EXCLUDED",
         },
     }
 
-    with open(str(RESULTS_PATH), "w") as f:
+    results_path = RESULTS_DIR / "toxigene_v3_holdout.json"
+    with open(results_path, "w") as f:
         json.dump(results, f, indent=2)
-    log.info(f"Results saved to {RESULTS_PATH}")
-
-    print("\n" + "=" * 70)
-    print("ToxiGene v9b FINAL RESULTS")
-    print("=" * 70)
-    print(f"{'Model':<30} {'F1 (opt thresh)':>16} {'F1 (t=0.5)':>12}")
-    print("-" * 62)
-    print(f"{'RandomForest':<30} {'0.8589':>16} {'0.8477':>12}")
-    print(f"{'ExtraTrees':<30} {'0.8466':>16} {'0.8421':>12}")
-    print(f"{'ToxiGene v8 (DL)':<30} {'0.8372':>16} {'0.8227':>12}")
-    print(f"{'ToxiGene v9 (DL)':<30} {'0.8497':>16} {'0.8408':>12}")
-    print(f"{'ToxiGene v9b (this)':<30} {test_m['f1']:>16.4f} {test_m_05['f1']:>12.4f}  [{winner}]")
-    print("-" * 62)
-    print(f"  Delta vs RF: {delta_rf:+.4f}  ({'BEATS RF!' if delta_rf > 0 else 'below RF'})")
-    print(f"  Delta vs v9: {test_m['f1'] - 0.8497:+.4f}")
-    print("=" * 70)
+    logger.info(f"\nResults saved to {results_path}")
+    logger.info(f"Checkpoint saved to {best_ckpt_path}")
+    logger.info(f"Total time: {elapsed/60:.1f}m")
+    logger.info("DONE")
 
 
 if __name__ == "__main__":

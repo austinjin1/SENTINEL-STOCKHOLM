@@ -126,7 +126,7 @@ def main():
     model = SensorEncoder().to(DEVICE)
     ckpt_path = CHECKPOINT_DIR / "aquassm_pretrained_best.pt"
     if ckpt_path.exists():
-        model.load_state_dict(torch.load(ckpt_path, map_location=DEVICE))
+        model.load_state_dict(torch.load(ckpt_path, map_location=DEVICE, weights_only=False))
         logger.info(f"Loaded pretrained checkpoint: {ckpt_path}")
     else:
         logger.warning("No pretrained checkpoint found — training from scratch")
