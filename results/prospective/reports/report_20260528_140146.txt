@@ -1,0 +1,102 @@
+========================================================================
+SENTINEL Prospective Validation Report
+Generated: 2026-05-28T14:01:46.183896+00:00
+========================================================================
+
+1. PRE-REGISTRATION
+----------------------------------------
+   Total registrations: 2
+   Latest: 2026-05-26T20:37:46.443516+00:00
+   Hash:   e59732216c72c7aee5bccd9c23c4cb3149011b92c60a9c8fe69e71e4915965d5
+   Sites:  18
+
+   Registered Sites:
+     - 04193500 | Maumee River at Waterville, OH
+       Predicted: nutrient_bloom, dissolved_oxygen_drop
+     - 04199000 | Huron River at Milan, OH
+       Predicted: nutrient_bloom, turbidity_surge
+     - 04208000 | Cuyahoga River at Independence, OH
+       Predicted: chemical_spike, toxic_compound
+     - 01578310 | Susquehanna River at Conowingo, MD
+       Predicted: nutrient_bloom, turbidity_surge
+     - 01646500 | Potomac River near Washington, DC
+       Predicted: nutrient_bloom, chemical_spike
+     - 01668000 | Rappahannock River near Fredericksburg, VA
+       Predicted: turbidity_surge, nutrient_bloom
+     - 07374000 | Mississippi River at Baton Rouge, LA
+       Predicted: nutrient_bloom, dissolved_oxygen_drop, chemical_spike
+     - 02489500 | Pearl River near Bogalusa, LA
+       Predicted: chemical_spike, dissolved_oxygen_drop
+     - 04087000 | Milwaukee River at Milwaukee, WI
+       Predicted: chemical_spike, turbidity_surge
+     - 04157005 | Saginaw River at Saginaw, MI
+       Predicted: nutrient_bloom, toxic_compound
+     - 02336000 | Chattahoochee River at Atlanta, GA
+       Predicted: chemical_spike, dissolved_oxygen_drop
+     - 02324000 | Steinhatchee River near Cross City, FL
+       Predicted: nutrient_bloom, ph_deviation
+     - 01463500 | Delaware River at Trenton, NJ
+       Predicted: chemical_spike, toxic_compound
+     - 01304200 | Peconic River at Riverhead, NY
+       Predicted: nutrient_bloom, dissolved_oxygen_drop
+     - 11447650 | Sacramento River at Freeport, CA
+       Predicted: chemical_spike, toxic_compound, turbidity_surge
+     - 11303500 | San Joaquin River near Vernalis, CA
+       Predicted: toxic_compound, chemical_spike
+     - 05331000 | Mississippi River at St Paul, MN
+       Predicted: nutrient_bloom, chemical_spike
+     - 04157000 | Tittabawassee River at Midland, MI
+       Predicted: toxic_compound, chemical_spike
+
+2. PREDICTIONS
+----------------------------------------
+   Total prediction runs: 4
+
+   Run: 2026-05-26T20:37:53.852411+00:00
+     Sites: 13/18 successful
+     Alerts: 0
+     Top anomaly scores:
+       0.1052 - Huron River at Milan, OH
+       0.1051 - Cuyahoga River at Independence, OH
+       0.1051 - Milwaukee River at Milwaukee, WI
+       0.1050 - San Joaquin River near Vernalis, CA
+       0.0924 - Chattahoochee River at Atlanta, GA
+
+   Run: 2026-05-26T22:36:41.732809+00:00
+     Sites: 13/18 successful
+     Alerts: 0
+     Top anomaly scores:
+       0.1052 - Huron River at Milan, OH
+       0.1051 - Cuyahoga River at Independence, OH
+       0.1051 - Milwaukee River at Milwaukee, WI
+       0.1050 - San Joaquin River near Vernalis, CA
+       0.0911 - Chattahoochee River at Atlanta, GA
+
+   Run: 2026-05-28T11:50:24.384637+00:00
+     Sites: 13/18 successful
+     Alerts: 0
+     Top anomaly scores:
+       0.1281 - Chattahoochee River at Atlanta, GA
+       0.1051 - Milwaukee River at Milwaukee, WI
+       0.1051 - Huron River at Milan, OH
+       0.1050 - Cuyahoga River at Independence, OH
+       0.1050 - San Joaquin River near Vernalis, CA
+
+   Run: 2026-05-28T13:24:59.160678+00:00
+     Sites: 13/18 successful
+     Alerts: 0
+     Top anomaly scores:
+       0.1720 - Chattahoochee River at Atlanta, GA
+       0.1051 - Milwaukee River at Milwaukee, WI
+       0.1051 - Huron River at Milan, OH
+       0.1050 - Cuyahoga River at Independence, OH
+       0.1050 - San Joaquin River near Vernalis, CA
+
+
+3. EVALUATIONS
+----------------------------------------
+   No evaluations found. Run --mode evaluate first.
+
+========================================================================
+End of report
+========================================================================

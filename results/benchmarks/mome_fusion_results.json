@@ -1,0 +1,40 @@
+{
+  "model": "MoMEFusion",
+  "best_epoch": 3,
+  "best_val_auroc": 0.5386100386100385,
+  "test_metrics": {
+    "loss": 0.5054337779680887,
+    "aux_loss": 0.03820469851295153,
+    "auroc": 0.42000000000000004,
+    "f1": 0.0,
+    "source_accuracy": 0.15714285714285714,
+    "expert_0_usage": 0.12306816130876541,
+    "expert_1_usage": 0.22372759878635406,
+    "expert_2_usage": 0.1549483686685562,
+    "expert_3_usage": 0.2792392075061798,
+    "expert_4_usage": 0.2190166860818863
+  },
+  "mome_params": 7839098,
+  "args": {
+    "epochs": 100,
+    "batch_size": 32,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "patience": 15,
+    "grad_clip": 1.0,
+    "num_layers": 4,
+    "num_heads": 8,
+    "num_experts": 5,
+    "expert_dim": 512,
+    "router_top_k": 2,
+    "dropout": 0.1,
+    "pool_mode": "cls",
+    "source_loss_weight": 0.5,
+    "aux_loss_weight": 0.01,
+    "gpu": 3,
+    "seed": 42,
+    "checkpoint_dir": "checkpoints/fusion"
+  },
+  "perceiver_comparison": "not available",
+  "timestamp": "2026-05-28T10:11:45.698629"
+}

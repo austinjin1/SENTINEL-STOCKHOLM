@@ -1,0 +1,61 @@
+========================================================================
+SENTINEL Prospective Validation Report
+Generated: 2026-05-26T20:33:29.655493+00:00
+========================================================================
+
+1. PRE-REGISTRATION
+----------------------------------------
+   Total registrations: 1
+   Latest: 2026-05-26T20:33:18.616386+00:00
+   Hash:   ec8b790821d217e9773b5030b4bdbebd14c7aefdee199682f39055ea46fbca74
+   Sites:  18
+
+   Registered Sites:
+     - 04193500 | Maumee River at Waterville, OH
+       Predicted: nutrient_bloom, dissolved_oxygen_drop
+     - 04199000 | Huron River at Milan, OH
+       Predicted: nutrient_bloom, turbidity_surge
+     - 04208000 | Cuyahoga River at Independence, OH
+       Predicted: chemical_spike, toxic_compound
+     - 01578310 | Susquehanna River at Conowingo, MD
+       Predicted: nutrient_bloom, turbidity_surge
+     - 01646500 | Potomac River near Washington, DC
+       Predicted: nutrient_bloom, chemical_spike
+     - 01668000 | Rappahannock River near Fredericksburg, VA
+       Predicted: turbidity_surge, nutrient_bloom
+     - 07374000 | Mississippi River at Baton Rouge, LA
+       Predicted: nutrient_bloom, dissolved_oxygen_drop, chemical_spike
+     - 02489500 | Pearl River near Bogalusa, LA
+       Predicted: chemical_spike, dissolved_oxygen_drop
+     - 04087000 | Milwaukee River at Milwaukee, WI
+       Predicted: chemical_spike, turbidity_surge
+     - 04157005 | Saginaw River at Saginaw, MI
+       Predicted: nutrient_bloom, toxic_compound
+     - 02336000 | Chattahoochee River at Atlanta, GA
+       Predicted: chemical_spike, dissolved_oxygen_drop
+     - 02324000 | Steinhatchee River near Cross City, FL
+       Predicted: nutrient_bloom, ph_deviation
+     - 01463500 | Delaware River at Trenton, NJ
+       Predicted: chemical_spike, toxic_compound
+     - 01304200 | Peconic River at Riverhead, NY
+       Predicted: nutrient_bloom, dissolved_oxygen_drop
+     - 11447650 | Sacramento River at Freeport, CA
+       Predicted: chemical_spike, toxic_compound, turbidity_surge
+     - 11303500 | San Joaquin River near Vernalis, CA
+       Predicted: toxic_compound, chemical_spike
+     - 05331000 | Mississippi River at St Paul, MN
+       Predicted: nutrient_bloom, chemical_spike
+     - 04157000 | Tittabawassee River at Midland, MI
+       Predicted: toxic_compound, chemical_spike
+
+2. PREDICTIONS
+----------------------------------------
+   No predictions found. Run --mode predict first.
+
+3. EVALUATIONS
+----------------------------------------
+   No evaluations found. Run --mode evaluate first.
+
+========================================================================
+End of report
+========================================================================

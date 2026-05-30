@@ -66,6 +66,15 @@ ANOMALY_THRESHOLDS = {
     "turbidity":           (None, 300.0), # above 300 NTU
     "specificConductance": (None, 1500.0),# above 1500 µS/cm
 }
+# Map value columns to their QF columns for pre-filtering
+NEON_QF_MAP = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+# Physical range clipping (after QF filtering, as additional sanity check)
+NEON_CLIP_RANGES = {
+    "pH": (0, 14),
+    "dissolvedOxygen": (0, 25),
+    "turbidity": (0, 4000),
+    "specificConductance": (0, 100000),
+}
 
 # source_site is the actual NEON 4-char site code (siteID is often null)
 READ_COLS = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
@@ -121,6 +130,16 @@ def build_windows(df_site: pd.DataFrame):
     df_site = df_site.copy()
     df_site["ts"] = pd.to_datetime(df_site["startDateTime"], utc=True, errors="coerce")
     df_site = df_site.dropna(subset=["ts"]).sort_values("ts").reset_index(drop=True)
+
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    for val_col, qf_col in NEON_QF_MAP.items():
+        if qf_col in df_site.columns:
+            bad_qf = df_site[qf_col].fillna(1).astype(float) != 0
+            df_site.loc[bad_qf, val_col] = np.nan
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in NEON_CLIP_RANGES.items():
+        if col in df_site.columns:
+            df_site[col] = df_site[col].clip(lo, hi)
 
     # Downsample to 15-minute resolution (NEON records every 1 min)
     df_site = df_site.set_index("ts")

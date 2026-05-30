@@ -32,6 +32,8 @@ checkpoints/
 *.pth
 *.ckpt
 wandb/
+results/checkpoints
+results/data
 
 # IDE
 .vscode/
@@ -50,6 +52,10 @@ Thumbs.db
 .env
 *.env
 
+# Logs
+logs/
+*.pid
+
 # LaTeX build artifacts
 paper/*.aux
 paper/*.bbl
@@ -61,4 +67,5 @@ paper/*.synctex.gz
 paper/*.fls
 paper/*.fdb_latexmk
 paper/_official/
+texput.log
 

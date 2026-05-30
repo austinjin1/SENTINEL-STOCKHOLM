@@ -1,0 +1,30 @@
+{
+  "model": "SentinelSpeciesHealthIndex",
+  "n_params": 797591,
+  "train_size": 20035,
+  "val_size": 5710,
+  "test_size": 2830,
+  "best_epoch": 56,
+  "test_metrics": {
+    "loss": 183.68860553027042,
+    "health_r2": 0.41505213216140324,
+    "health_mae": 8.578404426574707,
+    "occ_accuracy": 0.7879858613014221,
+    "per_species_mae": [
+      8.396807670593262,
+      9.569014549255371,
+      7.990578651428223,
+      8.135088920593262,
+      7.947757720947266,
+      9.431184768676758
+    ]
+  },
+  "species_names": [
+    "Freshwater mussels (Unionidae)",
+    "Mayflies (Ephemeroptera)",
+    "Brook trout (Salvelinus fontinalis)",
+    "Hellbender (Cryptobranchus alleganiensis)",
+    "Freshwater pearl mussel (Margaritifera margaritifera)",
+    "American eel (Anguilla rostrata)"
+  ]
+}

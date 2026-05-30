@@ -1,0 +1,95 @@
+{
+  "model": "WaterDroneNet_v3",
+  "description": "SENTINEL Mini \u2014 drone imagery to water quality",
+  "input": "Sentinel-2 RGB+NIR (4ch, 224x224)",
+  "n_params": 21922562,
+  "train_size": 986,
+  "val_size": 250,
+  "test_size": 204,
+  "best_epoch": 28,
+  "best_val_score": 5.0592375040054325,
+  "targets": [
+    "DO",
+    "pH",
+    "Turb",
+    "Temp",
+    "SpCond"
+  ],
+  "holdout": {
+    "type": "spatial",
+    "train": "70% of stations",
+    "val": "15% of stations",
+    "test": "15% of stations (geographically unseen)"
+  },
+  "test_metrics": {
+    "per_target": {
+      "DO": {
+        "r2": 0.26171237230300903,
+        "mae": 1.4751992225646973,
+        "rmse": 2.036057710647583,
+        "coverage_90pct": 0.9105263157894737,
+        "n_valid": 190
+      },
+      "pH": {
+        "r2": -0.21022021770477295,
+        "mae": 0.41641417145729065,
+        "rmse": 0.5158060193061829,
+        "coverage_90pct": 0.7195767195767195,
+        "n_valid": 189
+      },
+      "Turb": {
+        "r2": -0.003989696502685547,
+        "mae": 4.3421759605407715,
+        "rmse": 7.839760780334473,
+        "coverage_90pct": 0.973404255319149,
+        "n_valid": 188
+      },
+      "Temp": {
+        "r2": 0.44161152839660645,
+        "mae": 4.4639482498168945,
+        "rmse": 5.959909439086914,
+        "coverage_90pct": 0.8960396039603961,
+        "n_valid": 202
+      },
+      "SpCond": {
+        "r2": 0.5200351476669312,
+        "mae": 5100.26806640625,
+        "rmse": 10822.18359375,
+        "coverage_90pct": 0.935,
+        "n_valid": 200
+      }
+    },
+    "nll": 2.912249803543091,
+    "n_samples": 204
+  },
+  "training_config": {
+    "epochs": 100,
+    "batch_size": 32,
+    "lr": 5e-05,
+    "backbone": "vit_small_patch16_224 (ImageNet, 4ch adapted)",
+    "pretrain_epochs": 20,
+    "loss": "gaussian_nll + mae + calibration + trust"
+  },
+  "target_normalisation": {
+    "DO": {
+      "mean": 9.521267890930176,
+      "std": 2.260305643081665
+    },
+    "pH": {
+      "mean": 7.823301315307617,
+      "std": 0.354589581489563
+    },
+    "Turb": {
+      "mean": 8.591105461120605,
+      "std": 16.03053855895996
+    },
+    "Temp": {
+      "mean": 14.685131072998047,
+      "std": 7.786158561706543
+    },
+    "SpCond": {
+      "mean": 7470.814453125,
+      "std": 15233.853515625
+    }
+  }
+}

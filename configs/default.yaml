@@ -312,6 +312,18 @@ training:
 # Evaluation
 # ============================================================
 evaluation:
+  splits:
+    seed: 42
+    num_spatial_folds: 5
+    temporal_ranges:
+      train: ["2015-01-01", "2023-01-01"]   # 2015-2022
+      val:   ["2023-01-01", "2024-01-01"]   # 2023
+      test:  ["2024-01-01", "2027-01-01"]   # 2024-2026
+    fold_assignment:
+      train: [0, 1, 2]   # Folds A, B, C
+      val:   [3]          # Fold D
+      test:  [4]          # Fold E
+
   ablation_conditions: 31         # 2^5 - 1 non-empty modality subsets
   ablation_named:
     - "sensor_only"

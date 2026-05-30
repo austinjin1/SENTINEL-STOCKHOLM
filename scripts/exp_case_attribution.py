@@ -51,7 +51,10 @@ NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
 NEON_QF_COLS    = ["pHFinalQF", "dissolvedOxygenFinalQF", "turbidityFinalQF", "specificCondFinalQF"]
 # Channel order: pH(0), DO(1), Turbidity(2), SpCond(3), Temp_pad(4), ORP_pad(5)
 CHANNEL_NAMES   = ["pH", "DO", "Turbidity", "SpCond", "Temp(padded)", "ORP(padded)"]
-READ_COLS = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
+NEON_QF_MAP = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+NEON_CLIP_RANGES = {"pH": (0, 14), "dissolvedOxygen": (0, 25),
+                    "turbidity": (0, 4000), "specificConductance": (0, 100000)}
+READ_COLS = ["startDateTime", "source_file"] + NEON_VALUE_COLS + NEON_QF_COLS
 
 # Event types to NEON site proxies (best matching site from scan by event type)
 EVENT_META = {
@@ -198,6 +201,16 @@ def score_windows_batch(sensor, fusion, head, windows: list) -> list[float]:
 def build_windows(df):
     import pandas as pd
     df = df.copy()
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    for val_col, qf_col in NEON_QF_MAP.items():
+        if qf_col in df.columns:
+            bad_qf = df[qf_col].fillna(1).astype(float) != 0
+            df.loc[bad_qf, val_col] = np.nan
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in NEON_CLIP_RANGES.items():
+        if col in df.columns:
+            df[col] = df[col].clip(lo, hi)
+
     df["ts"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
     df = df.dropna(subset=["ts"]).sort_values("ts").reset_index(drop=True).set_index("ts")
     agg = {c: "mean" for c in NEON_VALUE_COLS}
@@ -247,7 +260,7 @@ def find_peak_window_for_event(sensor, fusion, head, event_type: str,
     best_site  = None
 
     for site in candidate_sites:
-        df_site = df_all_proxy[df_all_proxy["source_site"] == site].copy()
+        df_site = df_all_proxy[df_all_proxy["siteID"] == site].copy()
         if len(df_site) < T * 2:
             continue
         windows = build_windows(df_site)[:200]  # limit to 200 windows per site
@@ -310,12 +323,19 @@ def main():
 
     # Batch-read all proxy sites at once for efficiency
     import pandas as pd
+    import re
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
+
     all_proxy_sites = list({s for sites in TYPE_NEON_SITES.values() for s in sites})
     print(f"  Batch-reading NEON parquet for proxy sites: {all_proxy_sites}")
     t_read = time.time()
-    table = pq.read_table(str(NEON_PARQUET), columns=READ_COLS,
-                          filters=[("source_site", "in", all_proxy_sites)])
+    table = pq.read_table(str(NEON_PARQUET), columns=READ_COLS)
     df_all_proxy = table.to_pandas()
+    df_all_proxy["siteID"] = df_all_proxy["source_file"].apply(_extract_site)
+    df_all_proxy = df_all_proxy.drop(columns=["source_file"])
+    df_all_proxy = df_all_proxy[df_all_proxy["siteID"].isin(all_proxy_sites)]
     print(f"  Read {len(df_all_proxy)} rows in {time.time()-t_read:.1f}s")
 
     results = {}

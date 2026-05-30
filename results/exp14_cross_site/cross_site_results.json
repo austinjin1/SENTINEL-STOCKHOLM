@@ -458,5 +458,5 @@
   },
   "epa_cross_metric_note": null,
   "methodology_note": "Per-site AUROC computed from stored top_events windows (score vs labeled_anomaly). Ecoregion ranking_auroc uses p95_score vs binary impairment label (label_anomaly_rate > 0). Cross-site Spearman uses real AquaSSM risk scores from NEON scan \u2014 not constant fallback embeddings. All scores are from pre-computed neon_scan_results.json, no fabrication.",
-  "elapsed_s": 1.7
+  "elapsed_s": 1.5
 }

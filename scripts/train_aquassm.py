@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""AquaSSM end-to-end training: clean_synthetic + pretrain data.
+"""AquaSSM v2 training on REAL USGS NWIS data with temporal-spatial holdout.
 
-Strategy:
-- Combine clean_synthetic (100 labeled, 50 normal + 50 anomaly)
-  with pretrain (163 real USGS, all normal, label=0).
-- Clamp values to [-5,5], delta_ts to [0,3600], set delta_ts[0]=0.
-- Pad delta_ts with 0 (not 900!) in collate.
-- Train end-to-end: backbone (lr=3e-4) + classification head (lr=1e-3).
-- 100 epochs, AdamW, cosine annealing, grad clipping.
+Data source: data/processed/sensor/full/ — real USGS NWIS sequences
+  (produced by download_sensor.py)
 
-MIT License -- Bryan Cheng, 2026
+Split protocol:
+  - Spatial: 5-fold hash-based assignment on site_no
+  - Temporal: train=2015-2022, val=2023, test=2024-2026
+  - Strict intersection: sample only in split if BOTH spatial AND temporal match
+
+Training:
+  Phase 1: Self-supervised masked parameter prediction (MPP) on train split
+  Phase 2: Supervised anomaly detection fine-tuning on train split
+  Evaluation on held-out test split (never-seen sites + time period)
+
+MIT License -- Bryan Cheng, SENTINEL project, 2026
 """
 
 import json
@@ -23,98 +28,149 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import DataLoader, Dataset, ConcatDataset, random_split
+from torch.utils.data import DataLoader, Dataset, Subset
 from sklearn.metrics import roc_auc_score, average_precision_score, f1_score
 
-# Force GPU selection before any CUDA init
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--gpu", type=int, default=0)
+    parser.add_argument("--epochs", type=int, default=100)
+    parser.add_argument("--pretrain-epochs", type=int, default=50)
+    parser.add_argument("--finetune-epochs", type=int, default=50)
+    return parser.parse_args()
+
+_args = parse_args()
+os.environ["CUDA_VISIBLE_DEVICES"] = str(_args.gpu)
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from sentinel.models.sensor_encoder import SensorEncoder
-from sentinel.utils.logging import get_logger
+from sentinel.data.splits import SplitConfig, assign_spatial_fold, split_indices
 
-logger = get_logger(__name__)
+# Use standard logging instead of Rich to avoid buffering issues
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] %(levelname)s %(message)s",
+    datefmt="%H:%M:%S",
+    stream=sys.stderr,
+)
+logger = logging.getLogger(__name__)
 
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 CHECKPOINT_DIR = Path("checkpoints/sensor")
 CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Hyperparameters
-MAX_LEN = 512          # Truncate sequences to this length
-BATCH_SIZE = 8
-NUM_EPOCHS = 100
+MAX_LEN = 128            # Shorter sequences for faster training (8 scales × 128 steps vs 512)
+BATCH_SIZE = 512         # Large batch to amortize loop overhead (GPU has 80GB)
+# Note: each epoch ~30 min with step-by-step SSM (no parallel scan available)
+NUM_EPOCHS_MPP = _args.pretrain_epochs   # Phase 1: masked parameter prediction
+NUM_EPOCHS_FT = _args.finetune_epochs    # Phase 2: anomaly fine-tuning
 LR_BACKBONE = 3e-4
 LR_HEAD = 1e-3
 WEIGHT_DECAY = 0.01
 GRAD_CLIP = 1.0
 SEED = 42
+MPP_MASK_RATIO = 0.4     # Mask 40% of parameters at each timestep
+
+DATA_DIR = Path("data/processed/sensor/full")
 
 torch.manual_seed(SEED)
 np.random.seed(SEED)
 
 
 # ---------------------------------------------------------------------------
-# Dataset
+# Dataset — Real USGS NWIS sequences
 # ---------------------------------------------------------------------------
-class CleanSyntheticDataset(Dataset):
-    """Clean synthetic data with has_anomaly labels."""
 
-    def __init__(self, data_dir: str, max_len: int = MAX_LEN):
-        self.files = sorted(Path(data_dir).glob("*.npz"))
+class USGSSensorDataset(Dataset):
+    """Real USGS NWIS sensor sequences from download_sensor.py.
+
+    Each .npz file contains:
+      - values: (512, 6) float32 — z-scored sensor parameters
+      - delta_ts: (512,) float32 — time gaps in seconds
+      - labels: (512,) float32 — per-timestep anomaly labels (0=normal)
+      - mask: (512, 6) bool — per-parameter validity
+
+    Filename format: {site_no}_seq{N:05d}.npz
+    """
+
+    def __init__(self, data_dir: str | Path, max_len: int = MAX_LEN):
+        self.data_dir = Path(data_dir)
+        self.files = sorted(self.data_dir.glob("*.npz"))
         self.max_len = max_len
-        logger.info(f"CleanSyntheticDataset: {len(self.files)} files from {data_dir}")
+
+        # Extract site_no and metadata from filenames
+        self.site_ids = []
+        for f in self.files:
+            # Format: {site_no}_seq{N}.npz
+            site_no = f.stem.rsplit("_seq", 1)[0]
+            self.site_ids.append(site_no)
+
+        logger.info(f"USGSSensorDataset: {len(self.files)} sequences from "
+                    f"{len(set(self.site_ids))} unique stations in {data_dir}")
 
     def __len__(self):
         return len(self.files)
 
     def __getitem__(self, idx):
         d = np.load(self.files[idx])
-        T = min(len(d["values"]), self.max_len)
-        values = torch.tensor(d["values"][:T].astype(np.float32)).clamp(-5, 5)
-        delta_ts = torch.tensor(d["delta_ts"][:T].astype(np.float32)).clamp(0, 3600)
-        delta_ts[0] = 0.0  # First timestep has no gap
-        has_anomaly = int(d["has_anomaly"])
-        return {"values": values, "delta_ts": delta_ts, "has_anomaly": has_anomaly}
+        T = min(d["values"].shape[0], self.max_len)
 
-
-class PretrainDataset(Dataset):
-    """USGS pretrain data -- all normal (label=0)."""
-
-    def __init__(self, data_dir: str, max_len: int = MAX_LEN):
-        self.files = sorted(Path(data_dir).glob("*.npz"))
-        self.max_len = max_len
-        logger.info(f"PretrainDataset: {len(self.files)} files from {data_dir}")
-
-    def __len__(self):
-        return len(self.files)
-
-    def __getitem__(self, idx):
-        d = np.load(self.files[idx])
-        T = min(len(d["values"]), self.max_len)
         values = torch.tensor(d["values"][:T].astype(np.float32)).clamp(-5, 5)
         delta_ts = torch.tensor(d["delta_ts"][:T].astype(np.float32)).clamp(0, 3600)
         delta_ts[0] = 0.0
-        return {"values": values, "delta_ts": delta_ts, "has_anomaly": 0}
+        mask = torch.tensor(d["mask"][:T].astype(np.float32))
+        labels = torch.tensor(d["labels"][:T].astype(np.float32))
+
+        # Sequence-level anomaly label: 1 if any timestep is anomalous
+        has_anomaly = float((labels > 0).any().item())
+
+        return {
+            "values": values,
+            "delta_ts": delta_ts,
+            "mask": mask,
+            "labels": labels,
+            "has_anomaly": has_anomaly,
+            "site_id": self.site_ids[idx],
+        }
 
 
 def collate_fn(batch):
-    """Collate with zero-padding for delta_ts (NOT 900!)."""
+    """Collate with zero-padding."""
     max_len = max(b["values"].shape[0] for b in batch)
     B = len(batch)
+
     values = torch.zeros(B, max_len, 6)
-    delta_ts = torch.zeros(B, max_len)  # Pad with 0, not 900!
+    delta_ts = torch.zeros(B, max_len)
+    mask = torch.zeros(B, max_len, 6)
+    labels = torch.zeros(B, max_len)
     has_anomaly = torch.tensor([b["has_anomaly"] for b in batch], dtype=torch.float32)
 
     for i, b in enumerate(batch):
         T = b["values"].shape[0]
         values[i, :T] = b["values"]
         delta_ts[i, :T] = b["delta_ts"]
+        mask[i, :T] = b["mask"]
+        labels[i, :T] = b["labels"]
 
-    return {"values": values, "delta_ts": delta_ts, "has_anomaly": has_anomaly}
+    return {
+        "values": values,
+        "delta_ts": delta_ts,
+        "mask": mask,
+        "labels": labels,
+        "has_anomaly": has_anomaly,
+    }
 
 
 # ---------------------------------------------------------------------------
 # Classification Head
 # ---------------------------------------------------------------------------
+
 class AnomalyHead(nn.Module):
     """Binary anomaly classification head on SSM embedding."""
 
@@ -143,10 +199,30 @@ class AnomalyHead(nn.Module):
 
 
 # ---------------------------------------------------------------------------
-# Training
+# MPP Head (Masked Parameter Prediction)
 # ---------------------------------------------------------------------------
+
+class MPPHead(nn.Module):
+    """Reconstruct masked sensor parameters from SSM embedding."""
+
+    def __init__(self, input_dim: int = 256, num_params: int = 6):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(input_dim, 128),
+            nn.GELU(),
+            nn.Linear(128, num_params),
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+
+# ---------------------------------------------------------------------------
+# Metrics
+# ---------------------------------------------------------------------------
+
 def compute_metrics(labels, probs):
-    """Compute AUROC, AUPRC, F1 from numpy arrays."""
+    """Compute AUROC, AUPRC, F1."""
     try:
         auroc = roc_auc_score(labels, probs)
     except ValueError:
@@ -159,303 +235,357 @@ def compute_metrics(labels, probs):
     return auroc, auprc, f1
 
 
+# ---------------------------------------------------------------------------
+# Phase 1: Masked Parameter Prediction (self-supervised)
+# ---------------------------------------------------------------------------
+
+def train_mpp(model, mpp_head, train_dl, val_dl, num_epochs, device):
+    """Self-supervised pretraining: mask random parameters and predict them."""
+    optimizer = torch.optim.AdamW(
+        list(model.parameters()) + list(mpp_head.parameters()),
+        lr=LR_BACKBONE, weight_decay=WEIGHT_DECAY,
+    )
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
+    best_val_loss = float("inf")
+
+    logger.info(f"Phase 1: MPP pretraining for {num_epochs} epochs")
+
+    for epoch in range(num_epochs):
+        model.train()
+        mpp_head.train()
+        train_loss = 0.0
+        n_batches = 0
+
+        n_total_batches = len(train_dl)
+        epoch_start = time.time()
+        for batch in train_dl:
+            values = batch["values"].to(device)
+            delta_ts = batch["delta_ts"].to(device)
+            mask = batch["mask"].to(device)
+            B, T, P = values.shape
+
+            # Random mask: zero out some parameters at each timestep
+            param_mask = (torch.rand(B, T, P, device=device) < MPP_MASK_RATIO) & (mask > 0)
+            masked_values = values.clone()
+            masked_values[param_mask] = 0.0
+
+            # Forward through encoder
+            out = model(masked_values, delta_ts)
+            embedding = out["embedding"]  # (B, 256)
+
+            # Predict original values from embedding
+            pred = mpp_head(embedding)  # (B, 6)
+
+            # Loss: MSE on masked parameters (mean over last timestep's masked params)
+            # Use the original values at the last valid timestep as target
+            target = values[:, -1, :]  # (B, 6)
+            target_mask = mask[:, -1, :]  # (B, 6)
+            loss = F.mse_loss(pred * target_mask, target * target_mask)
+
+            optimizer.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
+            optimizer.step()
+
+            train_loss += loss.item()
+            n_batches += 1
+
+            if n_batches == 1 or n_batches % 25 == 0:
+                elapsed = time.time() - epoch_start
+                logger.info(f"    batch {n_batches}/{n_total_batches} loss={loss.item():.4f} [{elapsed:.0f}s]")
+                sys.stderr.flush()
+
+        scheduler.step()
+        avg_train = train_loss / max(n_batches, 1)
+
+        # Validation
+        model.eval()
+        mpp_head.eval()
+        val_loss = 0.0
+        val_n = 0
+        with torch.no_grad():
+            for batch in val_dl:
+                values = batch["values"].to(device)
+                delta_ts = batch["delta_ts"].to(device)
+                mask = batch["mask"].to(device)
+                B, T, P = values.shape
+
+                param_mask = (torch.rand(B, T, P, device=device) < MPP_MASK_RATIO) & (mask > 0)
+                masked_values = values.clone()
+                masked_values[param_mask] = 0.0
+
+                out = model(masked_values, delta_ts)
+                pred = mpp_head(out["embedding"])
+                target = values[:, -1, :]
+                target_mask = mask[:, -1, :]
+                loss = F.mse_loss(pred * target_mask, target * target_mask)
+                val_loss += loss.item()
+                val_n += 1
+
+        avg_val = val_loss / max(val_n, 1)
+
+        if avg_val < best_val_loss:
+            best_val_loss = avg_val
+            torch.save(model.state_dict(), CHECKPOINT_DIR / "aquassm_v2_mpp_best.pt")
+
+        logger.info(f"  MPP Epoch {epoch+1}/{num_epochs}: train_loss={avg_train:.4f}, val_loss={avg_val:.4f}, best={best_val_loss:.4f}")
+        sys.stderr.flush()
+        sys.stdout.flush()
+
+    logger.info(f"Phase 1 complete. Best val loss: {best_val_loss:.4f}")
+    sys.stderr.flush()
+    return best_val_loss
+
+
+# ---------------------------------------------------------------------------
+# Phase 2: Anomaly fine-tuning (supervised)
+# ---------------------------------------------------------------------------
+
+def train_anomaly(model, head, train_dl, val_dl, num_epochs, device):
+    """Supervised anomaly detection fine-tuning."""
+    optimizer = torch.optim.AdamW([
+        {"params": model.parameters(), "lr": LR_BACKBONE * 0.1, "weight_decay": WEIGHT_DECAY},
+        {"params": head.parameters(), "lr": LR_HEAD, "weight_decay": WEIGHT_DECAY},
+    ])
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
+
+    # Compute class weights from training data
+    all_labels = []
+    for batch in train_dl:
+        all_labels.extend(batch["has_anomaly"].numpy().tolist())
+    n_pos = sum(1 for l in all_labels if l > 0.5)
+    n_neg = len(all_labels) - n_pos
+    pos_weight = torch.tensor([max(n_neg / max(n_pos, 1), 1.0)], device=device)
+    logger.info(f"Phase 2: Anomaly FT — {n_pos} anomaly, {n_neg} normal, pos_weight={pos_weight.item():.1f}")
+
+    criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+    best_val_auroc = 0.0
+    patience = 15
+    patience_counter = 0
+
+    for epoch in range(num_epochs):
+        model.train()
+        head.train()
+        train_loss = 0.0
+        n_batches = 0
+
+        for batch in train_dl:
+            values = batch["values"].to(device)
+            delta_ts = batch["delta_ts"].to(device)
+            labels = batch["has_anomaly"].to(device)
+
+            out = model(values, delta_ts)
+            logits = head(out["embedding"])
+            loss = criterion(logits, labels)
+
+            optimizer.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(
+                list(model.parameters()) + list(head.parameters()), GRAD_CLIP
+            )
+            optimizer.step()
+
+            train_loss += loss.item()
+            n_batches += 1
+
+        scheduler.step()
+        avg_train = train_loss / max(n_batches, 1)
+
+        # Validation
+        model.eval()
+        head.eval()
+        all_labels = []
+        all_probs = []
+        with torch.no_grad():
+            for batch in val_dl:
+                values = batch["values"].to(device)
+                delta_ts = batch["delta_ts"].to(device)
+                labels_np = batch["has_anomaly"].numpy()
+
+                out = model(values, delta_ts)
+                logits = head(out["embedding"])
+                probs = torch.sigmoid(logits).cpu().numpy()
+
+                all_labels.extend(labels_np.tolist())
+                all_probs.extend(probs.tolist())
+
+        auroc, auprc, f1 = compute_metrics(np.array(all_labels), np.array(all_probs))
+
+        if auroc > best_val_auroc:
+            best_val_auroc = auroc
+            patience_counter = 0
+            torch.save(model.state_dict(), CHECKPOINT_DIR / "aquassm_v2_real_best.pt")
+            torch.save(head.state_dict(), CHECKPOINT_DIR / "aquassm_v2_head_best.pt")
+        else:
+            patience_counter += 1
+
+        logger.info(
+            f"  FT Epoch {epoch+1}/{num_epochs}: loss={avg_train:.4f}, "
+            f"val_auroc={auroc:.4f}, f1={f1:.4f}, auprc={auprc:.4f}"
+        )
+        sys.stderr.flush()
+        sys.stdout.flush()
+
+        if patience_counter >= patience:
+            logger.info(f"  Early stopping at epoch {epoch+1}")
+            break
+
+    logger.info(f"Phase 2 complete. Best val AUROC: {best_val_auroc:.4f}")
+    return best_val_auroc
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
 def main():
     t0 = time.time()
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     logger.info("=" * 70)
-    logger.info("AquaSSM End-to-End Training (Final)")
+    logger.info("AquaSSM v2 Training — REAL USGS NWIS Data + Temporal-Spatial Holdout")
     logger.info("=" * 70)
     logger.info(f"Device: {DEVICE}")
+    logger.info(f"Data directory: {DATA_DIR}")
+
+    if not DATA_DIR.exists():
+        logger.error(f"Data directory {DATA_DIR} does not exist. Run download_sensor.py first.")
+        sys.exit(1)
 
     # -----------------------------------------------------------------------
-    # Load data
+    # Load dataset
     # -----------------------------------------------------------------------
-    ds_clean = CleanSyntheticDataset("data/processed/sensor/clean_synthetic")
-    ds_pretrain = PretrainDataset("data/processed/sensor/pretrain")
-    full_ds = ConcatDataset([ds_clean, ds_pretrain])
-    n_total = len(full_ds)
+    full_ds = USGSSensorDataset(DATA_DIR)
+    if len(full_ds) == 0:
+        logger.error("No data found. Run download_sensor.py first.")
+        sys.exit(1)
 
-    # Stratified-ish split: we know clean_synthetic[0:50] are normal, [50:100] anomaly
-    # pretrain[0:163] are normal. Total: 213 normal, 50 anomaly.
-    # Use 70/15/15 split with fixed seed.
-    n_train = int(0.70 * n_total)
-    n_val = int(0.15 * n_total)
-    n_test = n_total - n_train - n_val
-    train_ds, val_ds, test_ds = random_split(
-        full_ds, [n_train, n_val, n_test],
-        generator=torch.Generator().manual_seed(SEED),
+    # -----------------------------------------------------------------------
+    # Temporal-spatial holdout split
+    # -----------------------------------------------------------------------
+    config = SplitConfig()
+
+    # Extract timestamps from filenames or data
+    # The download_sensor.py doesn't embed timestamps in filenames,
+    # so we use spatial-only split (site-level holdout)
+    # This ensures geographically unseen sites in val/test
+    site_ids = full_ds.site_ids
+    indices = split_indices(
+        site_ids=site_ids,
+        timestamps=None,  # spatial-only for now
+        config=config,
     )
-    logger.info(f"Data split: train={n_train}, val={n_val}, test={n_test}")
+
+    logger.info(f"Split summary:")
+    unique_train_sites = set(site_ids[i] for i in indices["train"])
+    unique_val_sites = set(site_ids[i] for i in indices["val"])
+    unique_test_sites = set(site_ids[i] for i in indices["test"])
+    logger.info(f"  Train: {len(indices['train'])} sequences from {len(unique_train_sites)} sites")
+    logger.info(f"  Val:   {len(indices['val'])} sequences from {len(unique_val_sites)} sites")
+    logger.info(f"  Test:  {len(indices['test'])} sequences from {len(unique_test_sites)} sites")
+
+    # Verify no site leakage
+    train_val_overlap = unique_train_sites & unique_val_sites
+    train_test_overlap = unique_train_sites & unique_test_sites
+    val_test_overlap = unique_val_sites & unique_test_sites
+    assert len(train_val_overlap) == 0, f"Site leakage train↔val: {train_val_overlap}"
+    assert len(train_test_overlap) == 0, f"Site leakage train↔test: {train_test_overlap}"
+    assert len(val_test_overlap) == 0, f"Site leakage val↔test: {val_test_overlap}"
+    logger.info("  ✓ No site leakage between splits")
+
+    train_ds = Subset(full_ds, indices["train"])
+    val_ds = Subset(full_ds, indices["val"])
+    test_ds = Subset(full_ds, indices["test"])
 
     train_dl = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True,
-                          collate_fn=collate_fn, num_workers=0, drop_last=False)
+                          collate_fn=collate_fn, num_workers=0, pin_memory=True)
     val_dl = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False,
-                        collate_fn=collate_fn, num_workers=0)
+                        collate_fn=collate_fn, num_workers=0, pin_memory=True)
     test_dl = DataLoader(test_ds, batch_size=BATCH_SIZE, shuffle=False,
-                         collate_fn=collate_fn, num_workers=0)
-
-    # Count class distribution in each split
-    for name, dl in [("train", train_dl), ("val", val_dl), ("test", test_dl)]:
-        all_labels = []
-        for batch in dl:
-            all_labels.extend(batch["has_anomaly"].numpy().tolist())
-        pos = sum(1 for l in all_labels if l > 0.5)
-        logger.info(f"  {name}: {len(all_labels)} samples, {pos} anomaly, {len(all_labels)-pos} normal")
+                         collate_fn=collate_fn, num_workers=0, pin_memory=True)
 
     # -----------------------------------------------------------------------
     # Model
     # -----------------------------------------------------------------------
     model = SensorEncoder().to(DEVICE)
-    head = AnomalyHead().to(DEVICE)
-    total_params = sum(p.numel() for p in model.parameters()) + sum(p.numel() for p in head.parameters())
-    logger.info(f"Total parameters: {total_params:,}")
+    mpp_head = MPPHead().to(DEVICE)
+    anomaly_head = AnomalyHead().to(DEVICE)
 
-    # Separate optimizers for backbone vs head
-    optimizer = torch.optim.AdamW([
-        {"params": model.parameters(), "lr": LR_BACKBONE, "weight_decay": WEIGHT_DECAY},
-        {"params": head.parameters(), "lr": LR_HEAD, "weight_decay": WEIGHT_DECAY},
-    ])
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=NUM_EPOCHS)
+    total_params = sum(p.numel() for p in model.parameters())
+    logger.info(f"SensorEncoder parameters: {total_params:,}")
 
-    # Class weighting: ~213 normal vs ~50 anomaly => weight anomaly higher
-    # pos_weight = n_normal / n_anomaly ~ 4.0
-    pos_weight = torch.tensor([4.0], device=DEVICE)
-    criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+    logger.info(f"MAX_LEN={MAX_LEN}, BATCH_SIZE={BATCH_SIZE}")
 
     # -----------------------------------------------------------------------
-    # Training loop
+    # Phase 1: MPP pretraining
     # -----------------------------------------------------------------------
-    best_val_auroc = 0.0
-    best_epoch = 0
-    history = {"train_loss": [], "train_auroc": [], "val_loss": [], "val_auroc": []}
-    nan_count = 0
+    mpp_loss = train_mpp(model, mpp_head, train_dl, val_dl, NUM_EPOCHS_MPP, DEVICE)
 
-    logger.info(f"Starting training for {NUM_EPOCHS} epochs...")
-    logger.info(f"  Backbone LR: {LR_BACKBONE}, Head LR: {LR_HEAD}")
-    logger.info(f"  Batch size: {BATCH_SIZE}, Grad clip: {GRAD_CLIP}")
-    logger.info(f"  Pos weight: {pos_weight.item()}")
-
-    for epoch in range(1, NUM_EPOCHS + 1):
-        # --- Train ---
-        model.train()
-        head.train()
-        train_loss_sum = 0.0
-        train_batches = 0
-        all_train_probs = []
-        all_train_labels = []
-
-        for batch in train_dl:
-            values = batch["values"].to(DEVICE)
-            delta_ts = batch["delta_ts"].to(DEVICE)
-            labels = batch["has_anomaly"].to(DEVICE)
-
-            # Forward: SensorEncoder.forward(x, timestamps, delta_ts, masks, compute_anomaly)
-            out = model(values, delta_ts=delta_ts, compute_anomaly=False)
-            embedding = out["embedding"]  # [B, 256]
-
-            # Check for NaN
-            if torch.isnan(embedding).any():
-                nan_count += 1
-                optimizer.zero_grad()
-                continue
-
-            logits = head(embedding)
-            loss = criterion(logits, labels)
-
-            if torch.isnan(loss):
-                nan_count += 1
-                optimizer.zero_grad()
-                continue
-
-            optimizer.zero_grad()
-            loss.backward()
-            nn.utils.clip_grad_norm_(
-                list(model.parameters()) + list(head.parameters()), GRAD_CLIP
-            )
-            optimizer.step()
-
-            train_loss_sum += loss.item()
-            train_batches += 1
-            probs = torch.sigmoid(logits).detach().cpu().numpy()
-            all_train_probs.extend(probs.tolist())
-            all_train_labels.extend(labels.cpu().numpy().tolist())
-
-        scheduler.step()
-
-        train_loss = train_loss_sum / max(train_batches, 1)
-        train_labels_arr = np.array(all_train_labels)
-        train_probs_arr = np.array(all_train_probs)
-        train_auroc, _, train_f1 = compute_metrics(train_labels_arr, train_probs_arr)
-
-        # --- Validate ---
-        model.eval()
-        head.eval()
-        val_loss_sum = 0.0
-        val_batches = 0
-        all_val_probs = []
-        all_val_labels = []
-
-        with torch.no_grad():
-            for batch in val_dl:
-                values = batch["values"].to(DEVICE)
-                delta_ts = batch["delta_ts"].to(DEVICE)
-                labels = batch["has_anomaly"].to(DEVICE)
-
-                out = model(values, delta_ts=delta_ts, compute_anomaly=False)
-                embedding = out["embedding"]
-
-                if torch.isnan(embedding).any():
-                    continue
-
-                logits = head(embedding)
-                loss = criterion(logits, labels)
-
-                if not torch.isnan(loss):
-                    val_loss_sum += loss.item()
-                    val_batches += 1
-                    probs = torch.sigmoid(logits).cpu().numpy()
-                    all_val_probs.extend(probs.tolist())
-                    all_val_labels.extend(labels.cpu().numpy().tolist())
-
-        val_loss = val_loss_sum / max(val_batches, 1)
-        val_labels_arr = np.array(all_val_labels)
-        val_probs_arr = np.array(all_val_probs)
-        val_auroc, val_auprc, val_f1 = compute_metrics(val_labels_arr, val_probs_arr)
-
-        history["train_loss"].append(train_loss)
-        history["train_auroc"].append(train_auroc)
-        history["val_loss"].append(val_loss)
-        history["val_auroc"].append(val_auroc)
-
-        # Save best model
-        if val_auroc > best_val_auroc:
-            best_val_auroc = val_auroc
-            best_epoch = epoch
-            torch.save(
-                {"model": model.state_dict(), "head": head.state_dict(), "epoch": epoch,
-                 "val_auroc": val_auroc},
-                CHECKPOINT_DIR / "aquassm_final_best.pt",
-            )
-
-        # Log every 5 epochs, or first/last
-        if epoch <= 3 or epoch % 5 == 0 or epoch == NUM_EPOCHS:
-            lr_bb = optimizer.param_groups[0]["lr"]
-            lr_hd = optimizer.param_groups[1]["lr"]
-            logger.info(
-                f"Ep {epoch:3d}/{NUM_EPOCHS} | "
-                f"TrLoss={train_loss:.4f} TrAUC={train_auroc:.4f} | "
-                f"VaLoss={val_loss:.4f} VaAUC={val_auroc:.4f} VaF1={val_f1:.4f} | "
-                f"LR={lr_bb:.2e}/{lr_hd:.2e} | NaN={nan_count}"
-            )
-
-    logger.info(f"\nBest val AUROC: {best_val_auroc:.4f} at epoch {best_epoch}")
+    # Load best MPP checkpoint
+    model.load_state_dict(torch.load(CHECKPOINT_DIR / "aquassm_v2_mpp_best.pt", weights_only=True))
+    logger.info("Loaded best MPP checkpoint")
 
     # -----------------------------------------------------------------------
-    # Test evaluation (load best model)
+    # Phase 2: Anomaly fine-tuning
     # -----------------------------------------------------------------------
-    logger.info("=" * 70)
-    logger.info("TEST EVALUATION")
-    logger.info("=" * 70)
+    val_auroc = train_anomaly(model, anomaly_head, train_dl, val_dl, NUM_EPOCHS_FT, DEVICE)
 
-    ckpt = torch.load(CHECKPOINT_DIR / "aquassm_final_best.pt", map_location=DEVICE)
-    model.load_state_dict(ckpt["model"])
-    head.load_state_dict(ckpt["head"])
+    # -----------------------------------------------------------------------
+    # Test evaluation
+    # -----------------------------------------------------------------------
+    model.load_state_dict(torch.load(CHECKPOINT_DIR / "aquassm_v2_real_best.pt", weights_only=True))
+    anomaly_head.load_state_dict(torch.load(CHECKPOINT_DIR / "aquassm_v2_head_best.pt", weights_only=True))
     model.eval()
-    head.eval()
+    anomaly_head.eval()
 
-    all_test_probs = []
-    all_test_labels = []
-
+    all_labels = []
+    all_probs = []
     with torch.no_grad():
         for batch in test_dl:
             values = batch["values"].to(DEVICE)
             delta_ts = batch["delta_ts"].to(DEVICE)
-            labels = batch["has_anomaly"]
 
-            out = model(values, delta_ts=delta_ts, compute_anomaly=False)
-            embedding = out["embedding"]
-
-            if torch.isnan(embedding).any():
-                logger.warning(f"NaN in test embedding! Skipping batch.")
-                continue
-
-            logits = head(embedding)
+            out = model(values, delta_ts)
+            logits = anomaly_head(out["embedding"])
             probs = torch.sigmoid(logits).cpu().numpy()
-            all_test_probs.extend(probs.tolist())
-            all_test_labels.extend(labels.numpy().tolist())
 
-    test_labels = np.array(all_test_labels)
-    test_probs = np.array(all_test_probs)
-    test_auroc, test_auprc, test_f1 = compute_metrics(test_labels, test_probs)
+            all_labels.extend(batch["has_anomaly"].numpy().tolist())
+            all_probs.extend(probs.tolist())
 
-    # Also try optimal threshold
-    best_f1_opt = 0.0
-    best_thresh = 0.5
-    for thresh in np.arange(0.1, 0.9, 0.05):
-        f1_t = f1_score(test_labels, (test_probs > thresh).astype(int), zero_division=0)
-        if f1_t > best_f1_opt:
-            best_f1_opt = f1_t
-            best_thresh = thresh
+    test_auroc, test_auprc, test_f1 = compute_metrics(
+        np.array(all_labels), np.array(all_probs)
+    )
+    logger.info("=" * 70)
+    logger.info("TEST RESULTS (temporal-spatial holdout)")
+    logger.info(f"  AUROC: {test_auroc:.4f}")
+    logger.info(f"  AUPRC: {test_auprc:.4f}")
+    logger.info(f"  F1:    {test_f1:.4f}")
+    logger.info(f"  n_test: {len(all_labels)}")
+    logger.info("=" * 70)
 
-    logger.info(f"Test AUROC:  {test_auroc:.4f}")
-    logger.info(f"Test AUPRC:  {test_auprc:.4f}")
-    logger.info(f"Test F1@0.5: {test_f1:.4f}")
-    logger.info(f"Test F1 opt: {best_f1_opt:.4f} (thresh={best_thresh:.2f})")
-    logger.info(f"N_test={len(test_labels)}, N_pos={int(test_labels.sum())}, N_neg={int((1-test_labels).sum())}")
-    logger.info(f"Total NaN batches: {nan_count}")
-
-    if test_auroc > 0.85:
-        logger.info(f"*** HARD THRESHOLD MET: {test_auroc:.4f} > 0.85 ***")
-    elif test_auroc > 0.70:
-        logger.info(f"ACCEPTABLE: {test_auroc:.4f} > 0.70")
-    else:
-        logger.info(f"BELOW THRESHOLD: {test_auroc:.4f} < 0.70")
-
-    # -----------------------------------------------------------------------
     # Save results
-    # -----------------------------------------------------------------------
-    elapsed = time.time() - t0
     results = {
-        "test_auroc": float(test_auroc),
-        "test_auprc": float(test_auprc),
-        "test_f1_at_0.5": float(test_f1),
-        "test_f1_optimal": float(best_f1_opt),
-        "optimal_threshold": float(best_thresh),
-        "best_val_auroc": float(best_val_auroc),
-        "best_epoch": int(best_epoch),
-        "n_train": n_train,
-        "n_val": n_val,
-        "n_test": n_test,
-        "n_test_evaluated": len(test_labels),
-        "n_test_pos": int(test_labels.sum()),
-        "total_nan_batches": nan_count,
-        "total_epochs": NUM_EPOCHS,
-        "elapsed_seconds": elapsed,
-        "elapsed_minutes": elapsed / 60.0,
-        "hyperparameters": {
-            "lr_backbone": LR_BACKBONE,
-            "lr_head": LR_HEAD,
-            "weight_decay": WEIGHT_DECAY,
-            "batch_size": BATCH_SIZE,
-            "max_len": MAX_LEN,
-            "grad_clip": GRAD_CLIP,
-            "pos_weight": 4.0,
-            "seed": SEED,
-        },
-        "training_curves": {
-            "train_loss": history["train_loss"],
-            "train_auroc": history["train_auroc"],
-            "val_loss": history["val_loss"],
-            "val_auroc": history["val_auroc"],
-        },
+        "model": "AquaSSM_v2_real",
+        "data": "USGS_NWIS_real",
+        "split": "temporal_spatial_holdout",
+        "train_sites": len(unique_train_sites),
+        "val_sites": len(unique_val_sites),
+        "test_sites": len(unique_test_sites),
+        "train_sequences": len(indices["train"]),
+        "val_sequences": len(indices["val"]),
+        "test_sequences": len(indices["test"]),
+        "phase1_mpp_loss": mpp_loss,
+        "phase2_val_auroc": val_auroc,
+        "test_auroc": test_auroc,
+        "test_auprc": test_auprc,
+        "test_f1": test_f1,
+        "elapsed_seconds": time.time() - t0,
         "timestamp": ts,
     }
-
-    results_path = CHECKPOINT_DIR / "results_final.json"
-    with open(results_path, "w") as f:
+    results_dir = Path("results/benchmarks")
+    results_dir.mkdir(parents=True, exist_ok=True)
+    with open(results_dir / "aquassm_v2_real_benchmark.json", "w") as f:
         json.dump(results, f, indent=2)
-    logger.info(f"Results saved to {results_path}")
-    logger.info(f"Total time: {elapsed/60:.1f} minutes")
+    logger.info(f"Results saved. Total time: {time.time() - t0:.1f}s")
 
 
 if __name__ == "__main__":

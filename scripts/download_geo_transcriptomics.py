@@ -225,6 +225,49 @@ def main():
 
     log(f"Total unique GEO dataset IDs: {len(all_geo_ids)}")
 
+    # If Entrez search returned nothing, fall back to known GSE IDs
+    if len(all_geo_ids) == 0:
+        log("Entrez search returned 0 results — falling back to known GSE IDs")
+        known_gses = [
+            "GSE153551", "GSE164437", "GSE122556", "GSE133548",
+            "GSE97434", "GSE73661", "GSE59768", "GSE143795",
+            "GSE104776", "GSE83514", "GSE114036", "GSE54800",
+            "GSE130306", "GSE108634", "GSE126666",
+        ]
+        all_datasets = []
+        for gse_id in known_gses:
+            log(f"  Downloading {gse_id}...")
+            gse = download_geo_dataset(gse_id)
+            if gse is not None:
+                data = extract_expression_data(gse, gse_id)
+                if data is not None:
+                    out_path = OUT_DIR / f"{gse_id}.npz"
+                    np.savez_compressed(
+                        out_path,
+                        expression=data["expression"],
+                        gene_ids=data["gene_ids"],
+                        sample_ids=data["sample_ids"],
+                        contaminant_class=data["contaminant_class"],
+                        organism=data["organism"],
+                        title=data["title"],
+                    )
+                    all_datasets.append({
+                        "gse_id": gse_id,
+                        "organism": data["organism"],
+                        "contaminant": data["contaminant_class"],
+                        "n_genes": data["n_genes"],
+                        "n_samples": data["n_samples"],
+                    })
+                    log(f"    Saved: {data['n_genes']} genes x {data['n_samples']} samples ({data['organism']}, {data['contaminant_class']})")
+                else:
+                    log(f"    No expression data extracted")
+            time.sleep(1)
+        log(f"\nTotal datasets: {len(all_datasets)}")
+        with open(OUT_DIR / "geo_summary.json", "w") as f:
+            json.dump(all_datasets, f, indent=2)
+        log("DONE")
+        return
+
     # Convert GDS IDs to GSE IDs and download
     all_datasets = []
     for gds_id in list(all_geo_ids)[:50]:  # Limit to 50 for initial download

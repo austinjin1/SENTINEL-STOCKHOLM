@@ -50,7 +50,7 @@ ANOMALY_THRESHOLDS = {
     "specificConductance": (None, 1500.0),
 }
 
-READ_COLS = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
+READ_COLS = ["startDateTime", "source_file"] + NEON_VALUE_COLS + NEON_QF_COLS
 
 SEASONS = {
     12: "Winter", 1: "Winter", 2: "Winter",
@@ -145,17 +145,45 @@ def main():
     success_sites = [s for s, r in scan["per_site"].items() if r.get("status") == "success"]
     logger.info(f"Processing {len(success_sites)} sites")
 
+    import re
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
+
+    # Read all data once and extract siteID from source_file
+    logger.info("Loading full parquet (relevant columns)...")
     pf = pq.ParquetFile(str(NEON_PARQUET))
+    table_all = pf.read(columns=READ_COLS)
+    df_all = table_all.to_pandas()
+    df_all["siteID"] = df_all["source_file"].apply(_extract_site)
+    df_all = df_all.drop(columns=["source_file"])
+    logger.info(f"Loaded {len(df_all):,} rows")
+
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    _qf_map = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+    _clip_ranges = {"pH": (0, 14), "dissolvedOxygen": (0, 25),
+                    "turbidity": (0, 4000), "specificConductance": (0, 100000)}
+    n_before = df_all[NEON_VALUE_COLS].notna().sum().sum()
+    for val_col, qf_col in _qf_map.items():
+        if qf_col in df_all.columns:
+            bad_qf = df_all[qf_col].fillna(1).astype(float) != 0
+            df_all.loc[bad_qf, val_col] = np.nan
+    n_after = df_all[NEON_VALUE_COLS].notna().sum().sum()
+    logger.info(f"  QF filtering: {n_before:,} -> {n_after:,} valid values "
+                f"({n_before - n_after:,} rejected)")
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in _clip_ranges.items():
+        if col in df_all.columns:
+            df_all[col] = df_all[col].clip(lo, hi)
+
     all_monthly = {}
 
     for i, site in enumerate(sorted(success_sites)):
         try:
             logger.info(f"  [{i+1:2d}/{len(success_sites)}] {site}")
-            filters = [("source_site", "=", site)]
-            table = pq.read_table(str(NEON_PARQUET), columns=READ_COLS, filters=filters)
-            if len(table) < 100:
+            df = df_all[df_all["siteID"] == site].copy()
+            if len(df) < 100:
                 continue
-            df = table.to_pandas()
             monthly = compute_monthly_exceedances(df)
             all_monthly[site] = monthly
             # Quick report

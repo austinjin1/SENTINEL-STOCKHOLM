@@ -1,0 +1,20 @@
+{
+  "model": "AquaSSM_v2_MPP",
+  "training": "Self-supervised MPP on 78575 real USGS sequences (241 sites)",
+  "test_set": "20044 sequences from 62 unseen sites",
+  "mpp_val_loss": 0.0043,
+  "mpp_epochs": 15,
+  "max_len": 128,
+  "n_params": 4600895,
+  "reconstruction_mse": {
+    "mean": 0.6882542778510263,
+    "std": 0.49673831884568453,
+    "median": 0.5919097363948822,
+    "p95": 1.3846814453601701,
+    "p99": 2.943426203727722,
+    "rmse": 0.8296109195586967
+  },
+  "n_train": 78575,
+  "n_val": 28802,
+  "n_test": 20044
+}

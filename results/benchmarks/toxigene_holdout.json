@@ -1,0 +1,57 @@
+{
+  "model": "ToxiGene_v3_real_geo",
+  "dataset": "v3_corrected",
+  "split_protocol": "spatial_holdout_with_random_fallback",
+  "n_samples_total": 239,
+  "n_genes": 2000,
+  "n_synthetic_samples": 0,
+  "n_train": 190,
+  "n_val": 40,
+  "n_test": 9,
+  "test_f1_macro": 0.4916666666666667,
+  "test_accuracy": 0.5238095238095238,
+  "test_auroc_macro": 0.5694444444444444,
+  "best_val_f1": 0.5333333333333333,
+  "per_class_f1": {
+    "reproductive_impairment": 0.5,
+    "growth_inhibition": 0.8,
+    "immunosuppression": 0.0,
+    "neurotoxicity": 0.0,
+    "hepatotoxicity": 0.0,
+    "oxidative_damage": 0.6666666666666666,
+    "endocrine_disruption": 0.0
+  },
+  "active_outcomes": [
+    "reproductive_impairment",
+    "growth_inhibition",
+    "hepatotoxicity",
+    "oxidative_damage"
+  ],
+  "epochs_trained": 28,
+  "max_epochs": 200,
+  "early_stop_patience": 25,
+  "nan_batches": 0,
+  "hyperparameters": {
+    "lr": 0.0005,
+    "weight_decay": 0.02,
+    "batch_size": 16,
+    "grad_clip": 1.0,
+    "lambda_l1": 0.005,
+    "dropout": 0.3,
+    "num_chem_classes": 50,
+    "optimizer": "AdamW",
+    "scheduler": "CosineAnnealingLR"
+  },
+  "n_selected_genes": 0,
+  "n_total_genes": 2000,
+  "selected_genes_top20": [],
+  "normalization": "z-score (train-only mean/std), clipped to [-10, 10]",
+  "n_constant_genes_masked": 0,
+  "elapsed_seconds": 4.338924407958984,
+  "checkpoint_path": "/home/bcheng/SENTINEL/checkpoints/molecular/toxigene_v3_best.pt",
+  "data_sources": {
+    "geo_studies": "GSE104776, GSE54800, GSE73661, GSE83514",
+    "pipeline": "prepare_geo_for_toxigene.py",
+    "synthetic_data": "EXCLUDED"
+  }
+}

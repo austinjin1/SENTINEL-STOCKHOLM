@@ -40,6 +40,9 @@ THRESHOLD = 0.9
 
 NEON_VALUE_COLS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
 NEON_QF_COLS    = ["pHFinalQF", "dissolvedOxygenFinalQF", "turbidityFinalQF", "specificCondFinalQF"]
+NEON_QF_MAP = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+NEON_CLIP_RANGES = {"pH": (0, 14), "dissolvedOxygen": (0, 25),
+                    "turbidity": (0, 4000), "specificConductance": (0, 100000)}
 READ_COLS = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
 
 EVENT_FILES = {
@@ -187,6 +190,16 @@ def build_windows_neon(df) -> list:
     """Returns list of (w_norm,) for NEON data."""
     import pandas as pd
     df = df.copy()
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    for val_col, qf_col in NEON_QF_MAP.items():
+        if qf_col in df.columns:
+            bad_qf = df[qf_col].fillna(1).astype(float) != 0
+            df.loc[bad_qf, val_col] = np.nan
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in NEON_CLIP_RANGES.items():
+        if col in df.columns:
+            df[col] = df[col].clip(lo, hi)
+
     df["ts"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
     df = df.dropna(subset=["ts"]).sort_values("ts").reset_index(drop=True).set_index("ts")
     agg = {c: "mean" for c in NEON_VALUE_COLS}

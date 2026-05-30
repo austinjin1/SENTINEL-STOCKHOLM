@@ -147,20 +147,41 @@ def _load_neon_windows_for_mc(n_normal: int = 250, n_anomaly: int = 250):
     T_WIN  = 128
     STRIDE = 64
 
-    read_cols = ["startDateTime", "source_site"] + NEON_VALUE_COLS + NEON_QF_COLS
+    read_cols = ["startDateTime", "source_file"] + NEON_VALUE_COLS + NEON_QF_COLS
     table = pq.read_table(str(NEON_PARQUET), columns=read_cols)
     df    = table.to_pandas()
+
+    # Extract siteID from source_file (siteID column is mostly NULL in sensor rows)
+    import re
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
+    df["siteID"] = df["source_file"].apply(_extract_site)
+    df = df.drop(columns=["source_file"])
+
     df["ts"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
-    df = df.dropna(subset=["ts"]).sort_values(["source_site", "ts"]).reset_index(drop=True)
+    df = df.dropna(subset=["ts"]).sort_values(["siteID", "ts"]).reset_index(drop=True)
+
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    _qf_map = dict(zip(NEON_VALUE_COLS, NEON_QF_COLS))
+    _clip_ranges = {"pH": (0, 14), "dissolvedOxygen": (0, 25),
+                    "turbidity": (0, 4000), "specificConductance": (0, 100000)}
+    for val_col, qf_col in _qf_map.items():
+        if qf_col in df.columns:
+            bad_qf = df[qf_col].fillna(1).astype(float) != 0
+            df.loc[bad_qf, val_col] = np.nan
+    for col, (lo, hi) in _clip_ranges.items():
+        if col in df.columns:
+            df[col] = df[col].clip(lo, hi)
 
     normal_wins  = []
     anomaly_wins = []
     col_map      = {"pH": 0, "dissolvedOxygen": 1, "turbidity": 2, "specificConductance": 3}
 
-    for site in df["source_site"].dropna().unique():
+    for site in df["siteID"].dropna().unique():
         if len(normal_wins) >= n_normal * 2 and len(anomaly_wins) >= n_anomaly * 2:
             break
-        df_site = df[df["source_site"] == site].copy().set_index("ts")
+        df_site = df[df["siteID"] == site].copy().set_index("ts")
         agg = {c: "mean" for c in NEON_VALUE_COLS}
         agg.update({c: "min" for c in NEON_QF_COLS})
         try:

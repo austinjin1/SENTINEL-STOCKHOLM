@@ -1,0 +1,650 @@
+{
+  "evaluation_timestamp": "2026-05-28T14:05:29.542766+00:00",
+  "n_prediction_sets_evaluated": 4,
+  "event_thresholds": {
+    "DO": {
+      "low": 4.0,
+      "unit": "mg/L",
+      "direction": "below"
+    },
+    "pH": {
+      "low": 6.0,
+      "high": 9.5,
+      "unit": "std units",
+      "direction": "outside"
+    },
+    "SpCond": {
+      "high": 1500.0,
+      "unit": "uS/cm",
+      "direction": "above"
+    },
+    "Turb": {
+      "high": 300.0,
+      "unit": "FNU",
+      "direction": "above"
+    },
+    "Temp": {
+      "high": 35.0,
+      "unit": "degC",
+      "direction": "above"
+    }
+  },
+  "evaluations": [
+    {
+      "prediction_date": "2026-05-26T20:37:53.852411+00:00",
+      "evaluation_date": "2026-05-28T14:05:29.542766+00:00",
+      "site_evaluations": [
+        {
+          "site_id": "04193500",
+          "name": "Maumee River at Waterville, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.06289151348173619,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04199000",
+          "name": "Huron River at Milan, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10518623956225136,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04208000",
+          "name": "Cuyahoga River at Independence, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10510248216715726,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01646500",
+          "name": "Potomac River near Washington, DC",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.05208791013468395,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01668000",
+          "name": "Rappahannock River near Fredericksburg, VA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.06563182784752412,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 341.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "07374000",
+          "name": "Mississippi River at Baton Rouge, LA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04833688735961914,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04087000",
+          "name": "Milwaukee River at Milwaukee, WI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10505635223605415,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04157005",
+          "name": "Saginaw River at Saginaw, MI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.041693651540712875,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "02336000",
+          "name": "Chattahoochee River at Atlanta, GA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.09238595549355853,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 872.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "01463500",
+          "name": "Delaware River at Trenton, NJ",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.054455824196338654,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01304200",
+          "name": "Peconic River at Riverhead, NY",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.041720230132341385,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "SpCond spiked to 45900.00 (threshold: 1500.0 uS/cm)",
+            "Turb spiked to 588.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "11447650",
+          "name": "Sacramento River at Freeport, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.048998053100976074,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "11303500",
+          "name": "San Joaquin River near Vernalis, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10499656742269342,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        }
+      ],
+      "metrics": {
+        "n_sites_evaluated": 13,
+        "n_pending": 0,
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 10,
+        "false_negatives": 3,
+        "hit_rate": 0.0,
+        "false_alarm_rate": 0.0,
+        "precision": null
+      }
+    },
+    {
+      "prediction_date": "2026-05-26T22:36:41.732809+00:00",
+      "evaluation_date": "2026-05-28T14:05:29.542766+00:00",
+      "site_evaluations": [
+        {
+          "site_id": "04193500",
+          "name": "Maumee River at Waterville, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.06289148591458797,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04199000",
+          "name": "Huron River at Milan, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10518526285886765,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04208000",
+          "name": "Cuyahoga River at Independence, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10509973561221903,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01646500",
+          "name": "Potomac River near Washington, DC",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.051903279328888115,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01668000",
+          "name": "Rappahannock River near Fredericksburg, VA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.0656733743169091,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 341.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "07374000",
+          "name": "Mississippi River at Baton Rouge, LA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04834166541695595,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04087000",
+          "name": "Milwaukee River at Milwaukee, WI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10505829751491547,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04157005",
+          "name": "Saginaw River at Saginaw, MI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04169149019501426,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "02336000",
+          "name": "Chattahoochee River at Atlanta, GA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.09108745476061647,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 872.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "01463500",
+          "name": "Delaware River at Trenton, NJ",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.05452505871653557,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01304200",
+          "name": "Peconic River at Riverhead, NY",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.041601727631959046,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "SpCond spiked to 45900.00 (threshold: 1500.0 uS/cm)",
+            "Turb spiked to 588.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "11447650",
+          "name": "Sacramento River at Freeport, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.048987211151556534,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "11303500",
+          "name": "San Joaquin River near Vernalis, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10499742762608961,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        }
+      ],
+      "metrics": {
+        "n_sites_evaluated": 13,
+        "n_pending": 0,
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 10,
+        "false_negatives": 3,
+        "hit_rate": 0.0,
+        "false_alarm_rate": 0.0,
+        "precision": null
+      }
+    },
+    {
+      "prediction_date": "2026-05-28T11:50:24.384637+00:00",
+      "evaluation_date": "2026-05-28T14:05:29.542766+00:00",
+      "site_evaluations": [
+        {
+          "site_id": "04193500",
+          "name": "Maumee River at Waterville, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04630285054445267,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04199000",
+          "name": "Huron River at Milan, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.1050554446876049,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04208000",
+          "name": "Cuyahoga River at Independence, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10502813383936882,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01646500",
+          "name": "Potomac River near Washington, DC",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.05378795862197876,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01668000",
+          "name": "Rappahannock River near Fredericksburg, VA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.07527932710945606,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 341.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "07374000",
+          "name": "Mississippi River at Baton Rouge, LA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04767303764820099,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04087000",
+          "name": "Milwaukee River at Milwaukee, WI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10509456172585488,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04157005",
+          "name": "Saginaw River at Saginaw, MI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.0439441230148077,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "02336000",
+          "name": "Chattahoochee River at Atlanta, GA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.12805545162409543,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 872.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "01463500",
+          "name": "Delaware River at Trenton, NJ",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.05460517853498459,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01304200",
+          "name": "Peconic River at Riverhead, NY",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04160723946988583,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "SpCond spiked to 45900.00 (threshold: 1500.0 uS/cm)",
+            "Turb spiked to 588.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "11447650",
+          "name": "Sacramento River at Freeport, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04206163920462132,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "11303500",
+          "name": "San Joaquin River near Vernalis, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10501236617565154,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        }
+      ],
+      "metrics": {
+        "n_sites_evaluated": 13,
+        "n_pending": 0,
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 10,
+        "false_negatives": 3,
+        "hit_rate": 0.0,
+        "false_alarm_rate": 0.0,
+        "precision": null
+      }
+    },
+    {
+      "prediction_date": "2026-05-28T13:24:59.160678+00:00",
+      "evaluation_date": "2026-05-28T14:05:29.542766+00:00",
+      "site_evaluations": [
+        {
+          "site_id": "04193500",
+          "name": "Maumee River at Waterville, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04567286033521999,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04199000",
+          "name": "Huron River at Milan, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.1050554446876049,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04208000",
+          "name": "Cuyahoga River at Independence, OH",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10503012280572545,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01646500",
+          "name": "Potomac River near Washington, DC",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.052638784728266975,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01668000",
+          "name": "Rappahannock River near Fredericksburg, VA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.08132929524237459,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 341.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "07374000",
+          "name": "Mississippi River at Baton Rouge, LA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04775293320417404,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04087000",
+          "name": "Milwaukee River at Milwaukee, WI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10510248758576134,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "04157005",
+          "name": "Saginaw River at Saginaw, MI",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04374161772429943,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "02336000",
+          "name": "Chattahoochee River at Atlanta, GA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.17198628170246427,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "Turb spiked to 872.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "01463500",
+          "name": "Delaware River at Trenton, NJ",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.05458774045109749,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "01304200",
+          "name": "Peconic River at Riverhead, NY",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.041606830433011055,
+          "actual_event_detected": true,
+          "outcome": "false_negative",
+          "event_details": [
+            "SpCond spiked to 45900.00 (threshold: 1500.0 uS/cm)",
+            "Turb spiked to 588.00 (threshold: 300.0 FNU)"
+          ],
+          "data_available": true
+        },
+        {
+          "site_id": "11447650",
+          "name": "Sacramento River at Freeport, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.04960713125765324,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        },
+        {
+          "site_id": "11303500",
+          "name": "San Joaquin River near Vernalis, CA",
+          "predicted_alert": false,
+          "mean_anomaly_probability": 0.10500960946083068,
+          "actual_event_detected": false,
+          "outcome": "true_negative",
+          "event_details": [],
+          "data_available": true
+        }
+      ],
+      "metrics": {
+        "n_sites_evaluated": 13,
+        "n_pending": 0,
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 10,
+        "false_negatives": 3,
+        "hit_rate": 0.0,
+        "false_alarm_rate": 0.0,
+        "precision": null
+      }
+    }
+  ]
+}

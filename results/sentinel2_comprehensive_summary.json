@@ -1,0 +1,1621 @@
+{
+  "generated": "2026-05-28T17:45:00",
+  "project": "SENTINEL 2.0",
+  "submission": "Stockholm Junior Water Prize 2026",
+  "total_benchmarks": 23,
+  "key_metrics": {
+    "aquassm_v2_test_rmse": 0.8296109195586967,
+    "stream_gnn_auroc": 0.9999997777364245,
+    "waterdronenet_do_r2": 0.9834802746772766,
+    "species_health_r2": 0.41505213216140324,
+    "disease_forecast_loss": 0.9739008831051129,
+    "climate_coupling_r2": 0.09760204733467193,
+    "contrastive_recall_at_1": 1.0,
+    "foundation_val_auroc": 0.6525096525096525
+  },
+  "benchmarks": {
+    "aquassm_benchmark": {
+      "timestamp": "20260413_104755",
+      "n_total": 762,
+      "max_len": 128,
+      "models": {
+        "AquaSSM": {
+          "auroc": 0.9157475490196079,
+          "f1": 0.8521739130434782,
+          "n_test": 115
+        },
+        "LSTM": {
+          "auroc": 0.836703431372549,
+          "f1": 0.7592592592592593,
+          "n_test": 115,
+          "config": {
+            "hidden": 128,
+            "layers": 2,
+            "epochs": 50
+          }
+        },
+        "Transformer": {
+          "auroc": 0.8339460784313726,
+          "f1": 0.7586206896551724,
+          "n_test": 115,
+          "config": {
+            "d_model": 64,
+            "nhead": 4,
+            "epochs": 50
+          }
+        },
+        "IsolationForest": {
+          "auroc": 0.7279411764705882,
+          "f1": 0.42696629213483145,
+          "n_test": 115,
+          "config": {
+            "n_estimators": 200,
+            "features": "mean+std per channel (12-dim)"
+          }
+        },
+        "OneClassSVM": {
+          "auroc": 0.8501838235294118,
+          "f1": 0.6804123711340206,
+          "n_test": 115,
+          "config": {
+            "nu": 0.1,
+            "kernel": "rbf",
+            "gamma": "auto"
+          }
+        },
+        "MCN-LSTM (Sensors 2023)": {
+          "auroc": 0.8636642156862746,
+          "f1": 0.7967479674796748,
+          "n_test": 115,
+          "n_params": 659713,
+          "elapsed_s": 14.1,
+          "reference": "PMC10610887 \u2014 Real-Time Anomaly Detection for Water Quality Sensor Monitoring, Sensors 2023",
+          "architecture": "3\u00d7ConvColumn(k=3,5,7,64ch) + BiLSTM(h=128,L=2) + Linear",
+          "note": "Reimplementation on USGS 5-param data; published F1=0.93 on 3-param Madison River"
+        }
+      },
+      "elapsed_seconds": 39.49458456039429,
+      "elapsed_minutes": 0.6582430760065715
+    },
+    "aquassm_v2_holdout": {
+      "model": "AquaSSM_v2_MPP",
+      "training": "Self-supervised MPP on 78575 real USGS sequences (241 sites)",
+      "test_set": "20044 sequences from 62 unseen sites",
+      "mpp_val_loss": 0.0043,
+      "mpp_epochs": 15,
+      "max_len": 128,
+      "n_params": 4600895,
+      "reconstruction_mse": {
+        "mean": 0.6882542778510263,
+        "std": 0.49673831884568453,
+        "median": 0.5919097363948822,
+        "p95": 1.3846814453601701,
+        "p99": 2.943426203727722,
+        "rmse": 0.8296109195586967
+      },
+      "n_train": 78575,
+      "n_val": 28802,
+      "n_test": 20044
+    },
+    "arg_surveillance_holdout": {
+      "model": "ARGPredictor",
+      "n_params": 6872441,
+      "input_type": "otu",
+      "train_size": 400,
+      "val_size": 80,
+      "test_size": 80,
+      "best_epoch": 1,
+      "test_metrics": {
+        "loss": 1237.1839782714844,
+        "overall_r2": -0.00791148543346143,
+        "per_arg_r2": {
+          "mcr-1": -0.022109870946128707,
+          "blaNDM": -0.0009681446980498443,
+          "vanA": -0.07994989104942873,
+          "mecA": -3.2168553817157886e-05,
+          "tetM": -0.01844850043739532,
+          "sul1": 0.0038556237255307213,
+          "qnrS": -0.0009137657395625887,
+          "ermB": -0.023950459705603055
+        },
+        "per_arg_mae": {
+          "mcr-1": 5.114666938781738,
+          "blaNDM": 4.7317705154418945,
+          "vanA": 3.125464677810669,
+          "mecA": 3.2676894664764404,
+          "tetM": 14.118844985961914,
+          "sul1": 4.010654449462891,
+          "qnrS": 3.4240212440490723,
+          "ermB": 4.408346176147461
+        },
+        "mean_burden": 90.4375,
+        "burden_std": 1.484375
+      }
+    },
+    "biomotion_benchmark": {
+      "benchmark": "BioMotion vs Baselines",
+      "data_dir": "/home/bcheng/SENTINEL/data/processed/behavioral_fullreal",
+      "n_train": 20028,
+      "n_val": 4291,
+      "n_test": 4291,
+      "seed": 42,
+      "split": "test=0.15, val=0.15, stratified by class",
+      "baseline_auroc_original_17k": 0.9621,
+      "results": [
+        {
+          "method": "StatisticalThreshold (DaphTox-style)",
+          "pop_mean_speed": 0.0,
+          "threshold_30pct": 0.0,
+          "auroc": 0.4936339522546419,
+          "f1": 0.6102024291497976,
+          "precision": 0.43916083916083914,
+          "recall": 0.9994694960212201,
+          "accuracy": 0.4390584945234211
+        },
+        {
+          "method": "LSTM (BiLSTM, hidden=128)",
+          "n_params": 561281,
+          "auroc": 0.9999389236898911,
+          "f1": 0.9965508092332184,
+          "precision": 0.9968152866242038,
+          "recall": 0.9962864721485412,
+          "accuracy": 0.9969704031694244
+        },
+        {
+          "method": "Transformer (2-layer, CLS token)",
+          "n_params": 275585,
+          "auroc": 0.9990898086349115,
+          "f1": 0.997344662772172,
+          "precision": 0.9984051036682615,
+          "recall": 0.9962864721485412,
+          "accuracy": 0.9976695408995572
+        },
+        {
+          "method": "Isolation Forest (mean/std/max + keypoint stats)",
+          "auroc": 0.8896611257003381,
+          "f1": 0.338368580060423,
+          "precision": 0.9074074074074074,
+          "recall": 0.2079575596816976,
+          "accuracy": 0.6427406199021207
+        },
+        {
+          "method": "VAE Reconstruction Error (normal-only)",
+          "n_params": 1720256,
+          "auroc": 0.9523452641605534,
+          "f1": 0.005288207297726071,
+          "precision": 0.8333333333333334,
+          "recall": 0.002652519893899204,
+          "accuracy": 0.5616406432067117
+        },
+        {
+          "method": "BioMotion (original 17k)",
+          "auroc": 0.9904009869226139,
+          "f1": 0.9818659658344284,
+          "precision": 0.9729166666666667,
+          "recall": 0.9909814323607427,
+          "accuracy": 0.9839198322069448
+        },
+        {
+          "method": "BioMotion (expanded)",
+          "auroc": 0.9999995590158115,
+          "f1": 0.9989401165871754,
+          "precision": 0.9978824775013234,
+          "recall": 1.0,
+          "accuracy": 0.9990678163598229
+        },
+        {
+          "method": "DeepAutoencoder (PLOS CompBio 2024 reimpl.)",
+          "auroc": 0.9582769424802274,
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.5602423677464461,
+          "n_params": 3629504,
+          "reference": "PMC10515950 \u2014 Deep Autoencoder for Zebrafish Behavioral Anomaly, PLOS CompBio 2024",
+          "published_auroc_range": "0.740\u20130.922 (6 phase-specific models on 2,719 larvae)",
+          "note": "Our reimpl. on 28,610 ECOTOX trajectories (10\u00d7 larger dataset)"
+        },
+        {
+          "method": "LSTMAutoencoder",
+          "auroc": 0.9203002661339577,
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.5604754136564903,
+          "n_params": 823472,
+          "note": "BiLSTM encoder \u2192 bottleneck(32) \u2192 LSTM decoder, trained normal-only"
+        }
+      ],
+      "elapsed_seconds": 474.39475202560425
+    },
+    "biomotion_v2_holdout": {
+      "model": "BioMotion v2 (TrajectoryDiffusionEncoder + AnomalyClassifier)",
+      "split_protocol": "spatial_holdout",
+      "split_method": "hash-based (sentinel.data.splits.split_indices_spatial_only)",
+      "split_folds": {
+        "train": [
+          0,
+          1,
+          2
+        ],
+        "val": [
+          3
+        ],
+        "test": [
+          4
+        ]
+      },
+      "data_source": "REAL EPA ECOTOX behavioral data only (no synthetic)",
+      "data_dir": "/home/bcheng/SENTINEL/data/processed/behavioral_fullreal",
+      "species": "daphnia",
+      "feature_dim": 16,
+      "embed_dim": 256,
+      "n_parameters": 2976016,
+      "n_train_normal": 9560,
+      "n_train_all": 17173,
+      "n_val": 5770,
+      "n_test": 5667,
+      "phase1": {
+        "best_val_loss": 0.01085247339778017,
+        "best_epoch": 35,
+        "history": {
+          "train_loss": [
+            0.6553638836481427,
+            0.09408577679087651,
+            0.057352279531675696,
+            0.04063980686384559,
+            0.029962770490838377,
+            0.02348042852026504,
+            0.019062556126373725,
+            0.016696140188848813,
+            0.014248560401517273,
+            0.012709659414878428,
+            0.011912718668405042,
+            0.011037950103964982,
+            0.010969679427626949,
+            0.008886285185588887,
+            0.00808471467833491,
+            0.008898476060579887,
+            0.008408871585590727,
+            0.007573038308362433,
+            0.006867007325847177,
+            0.006834957573637866,
+            0.006512902844259703,
+            0.006582568673066945,
+            0.006140555064475177,
+            0.005957992500531794,
+            0.005266255078737268,
+            0.005202396311828454,
+            0.005328294944530665,
+            0.0051498102014821846,
+            0.005577837038885227,
+            0.004846046086488254,
+            0.004644942877739168,
+            0.004333664628758327,
+            0.004399396374434133,
+            0.004416144446738614,
+            0.004040941539776805,
+            0.0038997348891758677,
+            0.003986443272610538,
+            0.003995930140012963,
+            0.0036741280959506563,
+            0.003556127609972586,
+            0.0038039915610554834,
+            0.0037955569975303125,
+            0.0035319713400614344,
+            0.0035012248026882143,
+            0.003428911971515857,
+            0.003597589067477208,
+            0.0033396384803790775,
+            0.0033243246135870683,
+            0.0035937191776293734,
+            0.0034004978713698237
+          ],
+          "val_loss": [
+            0.10694261894121275,
+            0.06113218546814316,
+            0.04594782393957887,
+            0.04772106083212318,
+            0.03251356242613478,
+            0.032437575714928765,
+            0.02544527662570005,
+            0.02547291193955711,
+            0.024108245646437772,
+            0.021252109213721948,
+            0.020863480441231323,
+            0.019722980037740954,
+            0.019376166341416947,
+            0.015188267853643213,
+            0.02053170475934806,
+            0.017677396374682967,
+            0.01911263459280215,
+            0.01669994610039374,
+            0.01457665072610745,
+            0.0171011585670595,
+            0.014382395251132139,
+            0.013954126496113592,
+            0.015147558093623637,
+            0.013473165652632796,
+            0.013549679161080129,
+            0.01306859774330815,
+            0.012957684847956093,
+            0.015356602308412012,
+            0.015226337653175406,
+            0.013944514610057513,
+            0.01411899057176005,
+            0.01231263743222251,
+            0.013590530437355922,
+            0.011632306769920083,
+            0.012089294551585156,
+            0.01085247339778017,
+            0.014311615057842253,
+            0.011469866490697714,
+            0.012236952594901016,
+            0.0122918492345559,
+            0.013992803474468598,
+            0.011737087626358146,
+            0.011673420427141937,
+            0.011934807585490929,
+            0.011768367636570154,
+            0.014367110625543928,
+            0.013877186280736638,
+            0.0128783566652091,
+            0.012112944050446398,
+            0.011166324666291885
+          ]
+        }
+      },
+      "phase2": {
+        "best_val_loss": 0.003101620240829413,
+        "best_val_acc": 0.9984402079722704,
+        "best_epoch": 20,
+        "history": {
+          "train_loss": [
+            0.24036125524608948,
+            0.06686379360673608,
+            0.03791483042759729,
+            0.03305577985710402,
+            0.0251322636803666,
+            0.03034145696247874,
+            0.01820254164321436,
+            0.016314875115299467,
+            0.011426554992252008,
+            0.00910009659911515,
+            0.008294086781230607,
+            0.00797732207890354,
+            0.0070621129863879945,
+            0.006489091206154328,
+            0.0071541397415079595,
+            0.005808353059154485,
+            0.004451410708216188,
+            0.00448565792888062,
+            0.004692383717013657,
+            0.0037604844746660254,
+            0.0050733468615464464,
+            0.0033418846372406637,
+            0.004833069682490532,
+            0.0037917628143779793,
+            0.003308712887910961,
+            0.00274407462939307,
+            0.003948384991468602,
+            0.002282886623047217,
+            0.0015131727038280262,
+            0.001744155503537676,
+            0.0015828323645634094
+          ],
+          "val_loss": [
+            0.13296546205202794,
+            0.06632413075583447,
+            0.027725220460414784,
+            0.014219993505689872,
+            0.0076337407426163425,
+            0.014421196107133046,
+            0.008411709693646217,
+            0.009498100920909264,
+            0.007672501289694632,
+            0.006389450914984191,
+            0.007119031039330146,
+            0.004359431588904505,
+            0.010381530676001033,
+            0.004889663117379004,
+            0.004319166329165145,
+            0.007528207140909456,
+            0.00420974045167568,
+            0.005143288198208556,
+            0.00533325630838082,
+            0.004934638085053443,
+            0.003101620240829413,
+            0.006448748720863215,
+            0.004515950059335772,
+            0.005866543314352827,
+            0.004598765975669851,
+            0.0045683725905567895,
+            0.004236642926529369,
+            0.0038201691104186117,
+            0.005551322021308901,
+            0.006631983450331818,
+            0.006170490576741466
+          ],
+          "val_acc": [
+            0.962738301559792,
+            0.984575389948007,
+            0.9920277296360486,
+            0.9968804159445407,
+            0.9974003466204506,
+            0.9960138648180242,
+            0.9977469670710571,
+            0.9972270363951473,
+            0.9979202772963605,
+            0.9984402079722704,
+            0.9984402079722704,
+            0.9987868284228769,
+            0.9984402079722704,
+            0.9986135181975736,
+            0.9986135181975736,
+            0.9974003466204506,
+            0.9987868284228769,
+            0.9982668977469671,
+            0.9982668977469671,
+            0.9984402079722704,
+            0.9984402079722704,
+            0.9984402079722704,
+            0.9986135181975736,
+            0.9980935875216638,
+            0.9984402079722704,
+            0.9986135181975736,
+            0.9984402079722704,
+            0.9984402079722704,
+            0.9984402079722704,
+            0.9986135181975736,
+            0.9982668977469671
+          ]
+        }
+      },
+      "test": {
+        "n_test": 5667,
+        "n_normal": 3239,
+        "n_anomalous": 2428,
+        "auroc": 0.999923832940079,
+        "f1": 0.9981462409886714,
+        "precision": 0.9983518747424804,
+        "recall": 0.9979406919275123,
+        "accuracy": 0.9984118581259925,
+        "diffusion_auroc": 0.8260618374800935
+      },
+      "test_auroc": 0.999923832940079,
+      "test_f1": 0.9981462409886714,
+      "test_diffusion_auroc": 0.8260618374800935,
+      "checkpoint": "/home/bcheng/SENTINEL/checkpoints/biomotion/biomotion_v2_best.pt"
+    },
+    "climate_coupling_holdout": {
+      "model": "ClimateCoupling (Encoder + SeasonalPrior + Modulator)",
+      "n_params_encoder": 308672,
+      "n_params_seasonal_prior": 70,
+      "n_params_modulator": 155530,
+      "n_params_total": 464272,
+      "train_size": 13276,
+      "val_size": 1173,
+      "test_size": 749,
+      "climate_window_days": 30,
+      "num_climate_vars": 8,
+      "phase1_best_epoch": 26,
+      "phase1_test_metrics": {
+        "loss": 302.3762000915364,
+        "r2": 0.09930090162463445,
+        "mae": 3.6778430938720703,
+        "per_var_mae": [
+          1.5622479915618896,
+          0.4813459813594818,
+          0.17019136250019073,
+          0.01723666861653328,
+          0.7968482971191406,
+          2.9044454097747803,
+          0.5071942210197449,
+          20.414365768432617,
+          0.47788122296333313,
+          9.446673393249512
+        ]
+      },
+      "phase2_best_epoch": 30,
+      "phase2_test_metrics": {
+        "loss": 302.94656510601374,
+        "r2": 0.09760204733467193,
+        "mae": 3.6629419326782227,
+        "per_var_mae": [
+          1.5069078207015991,
+          0.44648274779319763,
+          0.16616399586200714,
+          0.01721765659749508,
+          0.8086556196212769,
+          2.705397844314575,
+          0.35972145199775696,
+          20.423791885375977,
+          0.4176507890224457,
+          9.77743148803711
+        ]
+      },
+      "climate_variables": [
+        "precipitation",
+        "air_temperature",
+        "solar_radiation",
+        "wind_speed",
+        "relative_humidity",
+        "soil_moisture",
+        "snow_water_equivalent",
+        "evapotranspiration"
+      ],
+      "state_variables": [
+        "dissolved_oxygen",
+        "bod",
+        "total_nitrogen",
+        "total_phosphorus",
+        "chlorophyll_a",
+        "temperature",
+        "ph",
+        "turbidity",
+        "doc",
+        "sediment"
+      ]
+    },
+    "contrastive_results": {
+      "model": "ContrastivePretrainer (CLIP-style)",
+      "pair_results": {
+        "microbial-molecular": {
+          "pair_name": "microbial-molecular",
+          "modality_a": "microbial",
+          "modality_b": "molecular",
+          "best_epoch": 1,
+          "best_val_recall_at_1": 1.0,
+          "test_retrieval": {
+            "recall@1_a2b": 1.0,
+            "recall@1_b2a": 1.0,
+            "mean_cosine_sim": 0.037916556000709534,
+            "std_cosine_sim": NaN,
+            "median_cosine_sim": 0.037916556000709534
+          },
+          "trainable_params": 99329,
+          "encoder_a": "checkpoints/microbial/microbiomenet_v5_best.pt",
+          "encoder_b": "checkpoints/molecular/toxigene_v9b_best.pt"
+        }
+      },
+      "args": {
+        "pairs": [
+          "microbial-molecular"
+        ],
+        "epochs": 50,
+        "batch_size": 256,
+        "lr": 0.0003,
+        "weight_decay": 0.01,
+        "warmup_epochs": 10,
+        "init_temperature": 0.07,
+        "grad_clip": 1.0,
+        "patience": 15,
+        "eval_every": 5,
+        "gpu": 3,
+        "seed": 42,
+        "checkpoint_dir": "checkpoints/contrastive"
+      },
+      "timestamp": "2026-05-26T19:45:16.896034"
+    },
+    "disease_forecast_holdout": {
+      "model": "IntegratedDiseaseRisk",
+      "n_params": 470462,
+      "train_size": 20035,
+      "val_size": 5710,
+      "test_size": 2830,
+      "best_epoch": 32,
+      "test_metrics": {
+        "loss": 0.9739008831051129,
+        "alert_distribution": {
+          "0": 453,
+          "1": 2032,
+          "2": 327,
+          "3": 18
+        },
+        "per_disease_loss": {
+          "cyanotoxin": 0.30312034487724304,
+          "vibrio": 0.3611956536769867,
+          "naegleria": 0.152938574552536,
+          "schistosomiasis": 0.4145050346851349
+        }
+      }
+    },
+    "foundation_results": {
+      "model": "FoundationPretrainModel (PerceiverIOFusion)",
+      "available_modalities": [
+        "sensor",
+        "satellite",
+        "microbial",
+        "molecular",
+        "behavioral"
+      ],
+      "pretrain_best_epoch": 65,
+      "finetune_best_epoch": 3,
+      "best_val_auroc": 0.6525096525096525,
+      "test_metrics": {
+        "loss": 0.9526447057723999,
+        "auroc": 0.3733333333333333,
+        "f1": 0.17857142857142858
+      },
+      "args": {
+        "pretrain_epochs": 100,
+        "pretrain_lr": 0.0005,
+        "mask_prob": 0.3,
+        "mask_mode": "random",
+        "finetune_epochs": 80,
+        "finetune_lr": 0.0001,
+        "batch_size": 32,
+        "weight_decay": 0.01,
+        "patience": 15,
+        "grad_clip": 1.0,
+        "source_loss_weight": 0.5,
+        "gpus": "2,3",
+        "seed": 42,
+        "checkpoint_dir": "checkpoints/foundation",
+        "skip_pretrain": false,
+        "skip_finetune": false
+      },
+      "timestamp": "2026-05-28T10:10:38.801215"
+    },
+    "hydrovit_benchmark": {
+      "SENTINEL_HydroViT_v7": {
+        "water_temp_r2": 0.7200483083724976,
+        "mean_r2": 0.11662845686078072
+      },
+      "Ridge": {
+        "water_temp_r2": 0.5554091930389404
+      },
+      "RandomForest": {
+        "water_temp_r2": 0.6148335220462141
+      },
+      "ViT_no_pretrain": {
+        "water_temp_r2": 0.670642614364624,
+        "mean_r2": 0.06605137512087822
+      },
+      "CNN_baseline": {
+        "water_temp_r2": 0.7252088785171509,
+        "mean_r2": 0.21274802088737488
+      }
+    },
+    "hydrovit_v8_benchmark": {
+      "HydroViT_v8": {
+        "water_temp_r2": 0.8716158270835876,
+        "mean_r2": 0.6621862378987399,
+        "per_param_r2": {
+          "chl_a": 0.3636651039123535,
+          "turbidity": 0.7331258058547974,
+          "secchi_depth": null,
+          "cdom": null,
+          "tss": 0.7467244863510132,
+          "total_nitrogen": 0.6319786310195923,
+          "total_phosphorus": 0.7376263737678528,
+          "dissolved_oxygen": 0.7720829248428345,
+          "ammonia": 0.5574628114700317,
+          "nitrate": 0.7463552355766296,
+          "ph": 0.6564568281173706,
+          "water_temp": 0.8716158270835876,
+          "phycocyanin": 0.4669545888900757,
+          "oil_probability": null,
+          "acdom": null,
+          "pollution_anomaly_index": null
+        }
+      },
+      "HydroViT_v6": {
+        "water_temp_r2": 0.6569901704788208,
+        "mean_r2": 0.06227367574518377,
+        "note": "evaluated on v5 test split (same seed=42)"
+      },
+      "CNN_baseline": {
+        "water_temp_r2": 0.853963315486908,
+        "mean_r2": 0.36602701382203534,
+        "per_param_r2": {
+          "chl_a": -0.6602307558059692,
+          "turbidity": 0.5611224174499512,
+          "secchi_depth": null,
+          "cdom": null,
+          "tss": 0.5862845182418823,
+          "total_nitrogen": 0.41811662912368774,
+          "total_phosphorus": 0.3952433466911316,
+          "dissolved_oxygen": 0.5930001735687256,
+          "ammonia": 0.13835614919662476,
+          "nitrate": 0.5212759971618652,
+          "ph": 0.3030790686607361,
+          "water_temp": 0.853963315486908,
+          "phycocyanin": 0.3160862922668457,
+          "oil_probability": null,
+          "acdom": null,
+          "pollution_anomaly_index": null
+        }
+      },
+      "ViT_no_pretrain": {
+        "water_temp_r2": 0.7499257326126099,
+        "mean_r2": 0.05474000627344305
+      },
+      "Ridge": {
+        "water_temp_r2": 0.6458796262741089
+      },
+      "RandomForest": {
+        "water_temp_r2": 0.8010499826048909
+      },
+      "metadata": {
+        "dataset": "/home/bcheng/SENTINEL/data/processed/satellite/paired_wq_v5.npz",
+        "n_total": 5464,
+        "n_train": 3826,
+        "n_val": 819,
+        "n_test": 819,
+        "split_seed": 42,
+        "elapsed_seconds": 2784.6345031261444
+      },
+      "DenseNet121 (HydroVision-style)": {
+        "water_temp_r2": 0.884,
+        "mean_r2": 0.7029,
+        "per_param_r2": {
+          "chl_a": 0.7806,
+          "turbidity": 0.7783,
+          "secchi_depth": NaN,
+          "cdom": NaN,
+          "tss": 0.6634,
+          "total_nitrogen": 0.713,
+          "total_phosphorus": 0.7584,
+          "dissolved_oxygen": 0.7721,
+          "ammonia": 0.5783,
+          "nitrate": 0.822,
+          "ph": 0.6352,
+          "water_temp": 0.884,
+          "phycocyanin": 0.3464,
+          "oil_probability": NaN,
+          "acdom": NaN,
+          "pollution_anomaly_index": NaN
+        },
+        "n_params": 7242320,
+        "reference": "arXiv 2509.01882 \u2014 HydroVision: Predicting Optically Active Parameters, Sep 2025",
+        "note": "ImageNet pretrained, first conv adapted 3\u219210 channels"
+      },
+      "ResNet50 (ImageNet pretrained)": {
+        "water_temp_r2": 0.8115,
+        "mean_r2": 0.5433,
+        "per_param_r2": {
+          "chl_a": 0.5461,
+          "turbidity": 0.6974,
+          "secchi_depth": NaN,
+          "cdom": NaN,
+          "tss": 0.5975,
+          "total_nitrogen": 0.5343,
+          "total_phosphorus": 0.3338,
+          "dissolved_oxygen": 0.6646,
+          "ammonia": 0.3491,
+          "nitrate": 0.5917,
+          "ph": 0.5392,
+          "water_temp": 0.8115,
+          "phycocyanin": 0.311,
+          "oil_probability": NaN,
+          "acdom": NaN,
+          "pollution_anomaly_index": NaN
+        },
+        "n_params": 24058640,
+        "note": "ImageNet pretrained, first conv adapted 3\u219210 channels"
+      },
+      "HydroViT_v9": {
+        "water_temp_r2": 0.8926961421966553,
+        "mean_r2": 0.6524179848757657,
+        "per_param_r2": {
+          "chl_a": 0.14218521118164062,
+          "turbidity": 0.762812614440918,
+          "secchi_depth": null,
+          "cdom": null,
+          "tss": 0.7628881931304932,
+          "total_nitrogen": 0.6532710194587708,
+          "total_phosphorus": 0.7483524680137634,
+          "dissolved_oxygen": 0.7760170102119446,
+          "ammonia": 0.573620617389679,
+          "nitrate": 0.7770363092422485,
+          "ph": 0.6440635919570923,
+          "water_temp": 0.8926961421966553,
+          "phycocyanin": 0.4436546564102173,
+          "oil_probability": null,
+          "acdom": null,
+          "pollution_anomaly_index": null
+        },
+        "n_params": 41973805,
+        "architecture": "LocalCNNExtractor + CNNToViTAdapter + SatelliteEncoder (ViT-S/16) + MultiScaleCNNAgg + DeepWQHeadV2",
+        "vs_densenet121": {
+          "densenet_mean_r2": 0.7029,
+          "densenet_water_temp_r2": 0.884,
+          "delta_mean_r2": -0.0505,
+          "delta_water_temp_r2": 0.0087
+        },
+        "vs_hydrovit_v8": {
+          "v8_mean_r2": 0.6622,
+          "v8_water_temp_r2": 0.8716,
+          "delta_mean_r2": -0.0098,
+          "delta_water_temp_r2": 0.0211
+        },
+        "elapsed_seconds": 6254.3
+      }
+    },
+    "hydrovit_v9_results": {
+      "model": "HydroViT_v9",
+      "architecture": "LocalCNNExtractor + CNNToViTAdapter + SatelliteEncoder (ViT-S/16) + MultiScaleCNNAgg + DeepWQHeadV2",
+      "key_changes_vs_v8": [
+        "CNN-ViT hybrid: 3-layer stride-1 CNN (10\u219232\u219264\u2192128ch) before ViT",
+        "CNNToViTAdapter: fuses raw spectral + CNN features into 13ch ViT input",
+        "MultiScaleCNNAggregator: pools all 3 CNN feature maps into 256-dim",
+        "DeepWQHeadV2: dual-stream (ViT 256 + CNN 256) with 3 residual blocks",
+        "PerParamBandAttention: physics-initialized band weights (Chl-a: bands 2,3,4)",
+        "Weighted loss: chl_a=3x, water_temp=3x, turbidity=2x, phycocyanin=2x",
+        "120 epochs fine-tune (vs 80 in v8) with cosine annealing",
+        "Grad accum 4x (effective batch=32)",
+        "Best model saved by mean R\u00b2 across all params (not just water_temp)"
+      ],
+      "n_params": 41973805,
+      "data": "data/processed/satellite/paired_wq_v5.npz",
+      "n_train": 3826,
+      "n_val": 819,
+      "n_test": 819,
+      "water_temp_r2": 0.8926961421966553,
+      "mean_r2": 0.6524179848757657,
+      "per_param_r2": {
+        "chl_a": 0.14218521118164062,
+        "turbidity": 0.762812614440918,
+        "secchi_depth": null,
+        "cdom": null,
+        "tss": 0.7628881931304932,
+        "total_nitrogen": 0.6532710194587708,
+        "total_phosphorus": 0.7483524680137634,
+        "dissolved_oxygen": 0.7760170102119446,
+        "ammonia": 0.573620617389679,
+        "nitrate": 0.7770363092422485,
+        "ph": 0.6440635919570923,
+        "water_temp": 0.8926961421966553,
+        "phycocyanin": 0.4436546564102173,
+        "oil_probability": null,
+        "acdom": null,
+        "pollution_anomaly_index": null
+      },
+      "best_val_wt_r2_phase1": 0.8709884881973267,
+      "best_val_mean_r2_phase1": 0.5394639535383745,
+      "best_val_wt_r2_phase2": 0.8838033676147461,
+      "best_val_mean_r2_phase2": 0.6724708080291748,
+      "vs_densenet121": {
+        "densenet_mean_r2": 0.7029,
+        "densenet_water_temp_r2": 0.884,
+        "delta_mean_r2": -0.0505,
+        "delta_water_temp_r2": 0.0087
+      },
+      "vs_hydrovit_v8": {
+        "v8_mean_r2": 0.6622,
+        "v8_water_temp_r2": 0.8716,
+        "delta_mean_r2": -0.0098,
+        "delta_water_temp_r2": 0.0211
+      },
+      "elapsed_seconds": 6254.3
+    },
+    "microbiomenet_benchmark": {
+      "benchmark_version": "v2_apples_to_apples",
+      "benchmark_date": "2026-04-13",
+      "dataset": "emp_16s_only",
+      "n_train": 17980,
+      "n_val": 3852,
+      "n_test": 3854,
+      "split": "70/15/15",
+      "random_state": 42,
+      "split_method": "torch.random_split(seed=42) \u2014 identical to train_microbiomenet_emp.py",
+      "n_classes": 8,
+      "class_names": [
+        "freshwater_natural",
+        "freshwater_impacted",
+        "saline_water",
+        "freshwater_sediment",
+        "saline_sediment",
+        "soil_runoff",
+        "animal_fecal",
+        "plant_associated"
+      ],
+      "fairness_note": "FIXED: All models evaluated on the SAME EMP-only test split. Previous benchmark compared MicroBiomeNet on EMP-only (n=3038) vs baselines on consolidated (n=12347) \u2014 that was wrong.",
+      "results": {
+        "MicroBiomeNet": {
+          "macro_f1": 0.8988562775325641,
+          "accuracy": 0.9234561494551116,
+          "per_class_f1": {
+            "freshwater_natural": 0.8890479599141017,
+            "freshwater_impacted": 0.7196652719665272,
+            "saline_water": 0.944954128440367,
+            "freshwater_sediment": 0.9017341040462428,
+            "saline_sediment": 0.91,
+            "soil_runoff": 0.9325373134328359,
+            "animal_fecal": 0.9445910290237467,
+            "plant_associated": 0.9483204134366925
+          },
+          "n_test": 3854,
+          "n_train": 17980,
+          "source": "stored_results_v2_json_same_seed42_split"
+        },
+        "RandomForest": {
+          "macro_f1": 0.8346374447375311,
+          "accuracy": 0.8687078360145304,
+          "per_class_f1": {
+            "freshwater_natural": 0.8487084870848709,
+            "freshwater_impacted": 0.6260869565217392,
+            "saline_water": 0.8679245283018868,
+            "freshwater_sediment": 0.8553459119496856,
+            "saline_sediment": 0.8187134502923976,
+            "soil_runoff": 0.8508557457212714,
+            "animal_fecal": 0.8970861748295103,
+            "plant_associated": 0.9123783031988874
+          },
+          "n_train": 17980,
+          "n_test": 3854,
+          "elapsed_seconds": 5.599059581756592,
+          "note": "top-500 variance features, class_weight=balanced"
+        },
+        "ExtraTrees_GradientBoosting": {
+          "macro_f1": 0.8428924168519228,
+          "accuracy": 0.878308251167618,
+          "per_class_f1": {
+            "freshwater_natural": 0.8638018936635106,
+            "freshwater_impacted": 0.6497890295358649,
+            "saline_water": 0.8720379146919431,
+            "freshwater_sediment": 0.9024390243902439,
+            "saline_sediment": 0.7727272727272727,
+            "soil_runoff": 0.8581818181818182,
+            "animal_fecal": 0.9086310464748656,
+            "plant_associated": 0.9155313351498637
+          },
+          "n_train": 17980,
+          "n_test": 3854,
+          "elapsed_seconds": 1.0748770236968994,
+          "note": "top-300 variance features, class_weight=balanced"
+        },
+        "LogisticRegression": {
+          "macro_f1": 0.8756527783578667,
+          "accuracy": 0.8920601971977167,
+          "per_class_f1": {
+            "freshwater_natural": 0.8658008658008658,
+            "freshwater_impacted": 0.6329113924050633,
+            "saline_water": 0.9488372093023256,
+            "freshwater_sediment": 0.9090909090909091,
+            "saline_sediment": 0.9381443298969072,
+            "soil_runoff": 0.8730538922155688,
+            "animal_fecal": 0.9201694362984686,
+            "plant_associated": 0.9172141918528253
+          },
+          "n_train": 17980,
+          "n_test": 3854,
+          "elapsed_seconds": 71.19225335121155
+        },
+        "SimpleMLP": {
+          "macro_f1": 0.9048213752445573,
+          "accuracy": 0.9229372080954852,
+          "per_class_f1": {
+            "freshwater_natural": 0.8872620790629575,
+            "freshwater_impacted": 0.7137546468401487,
+            "saline_water": 0.9626168224299065,
+            "freshwater_sediment": 0.9195402298850575,
+            "saline_sediment": 0.9319371727748691,
+            "soil_runoff": 0.9247058823529412,
+            "animal_fecal": 0.9458745874587459,
+            "plant_associated": 0.9528795811518325
+          },
+          "n_train": 17980,
+          "n_test": 3854,
+          "elapsed_seconds": 54.17993497848511
+        }
+      },
+      "elapsed_seconds": 143.85455298423767
+    },
+    "microbiomenet_v3_holdout": {
+      "model": "MicroBiomeNetV5",
+      "version": "v3_spatial_holdout",
+      "split_protocol": "spatial_holdout_hash_based",
+      "split_description": "Strict spatial holdout using sentinel.data.splits. Sites assigned to folds via SHA-256 hash of site_id. Folds 0,1,2 -> train, Fold 3 -> val, Fold 4 -> test. Zero site leakage verified.",
+      "data_source": "Real EMP 16S rRNA only (no synthetic data)",
+      "test_macro_f1": 0.83093,
+      "test_accuracy": 0.867647,
+      "best_val_f1": 0.855136,
+      "per_class_f1": {
+        "freshwater_natural": 0.818182,
+        "freshwater_impacted": 0.75,
+        "saline_water": 0.884615,
+        "freshwater_sediment": 0.96,
+        "saline_sediment": 0.807692,
+        "soil_runoff": 0.628571,
+        "animal_fecal": 0.895522,
+        "plant_associated": 0.902857
+      },
+      "n_train": 835,
+      "n_val": 281,
+      "n_test": 272,
+      "n_total": 1388,
+      "n_train_sites": 835,
+      "n_val_sites": 281,
+      "n_test_sites": 272,
+      "site_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      },
+      "n_classes": 8,
+      "architecture": {
+        "input_dim": 5000,
+        "embed_dim": 256,
+        "num_heads": 8,
+        "num_layers": 6,
+        "ff_dim": 1024,
+        "dropout": 0.15,
+        "top_k_sparse": 256,
+        "n_params": 11674000
+      },
+      "training": {
+        "epochs": 150,
+        "lr": 0.0003,
+        "weight_decay": 0.02,
+        "batch_size": 64,
+        "seed": 42,
+        "loss": "CrossEntropyLoss(label_smoothing=0.05)",
+        "optimizer": "AdamW(lr=3e-4, weight_decay=0.02)",
+        "scheduler": "CosineAnnealingWarmRestarts(T_0=25, T_mult=2, eta_min=1e-6)",
+        "patience": 25,
+        "gradient_clip": 1.0,
+        "mixed_precision": true,
+        "augmentation": "Mixup(50%), Dirichlet(50%), OTU_subsample(15%), lognormal(30%)"
+      },
+      "elapsed_seconds": 116.67,
+      "checkpoint_path": "/home/bcheng/SENTINEL/checkpoints/microbial/microbiomenet_v3_best.pt"
+    },
+    "mome_fusion_results": {
+      "model": "MoMEFusion",
+      "best_epoch": 3,
+      "best_val_auroc": 0.5386100386100385,
+      "test_metrics": {
+        "loss": 0.5054337779680887,
+        "aux_loss": 0.03820469851295153,
+        "auroc": 0.42000000000000004,
+        "f1": 0.0,
+        "source_accuracy": 0.15714285714285714,
+        "expert_0_usage": 0.12306816130876541,
+        "expert_1_usage": 0.22372759878635406,
+        "expert_2_usage": 0.1549483686685562,
+        "expert_3_usage": 0.2792392075061798,
+        "expert_4_usage": 0.2190166860818863
+      },
+      "mome_params": 7839098,
+      "args": {
+        "epochs": 100,
+        "batch_size": 32,
+        "lr": 0.001,
+        "weight_decay": 0.01,
+        "patience": 15,
+        "grad_clip": 1.0,
+        "num_layers": 4,
+        "num_heads": 8,
+        "num_experts": 5,
+        "expert_dim": 512,
+        "router_top_k": 2,
+        "dropout": 0.1,
+        "pool_mode": "cls",
+        "source_loss_weight": 0.5,
+        "aux_loss_weight": 0.01,
+        "gpu": 3,
+        "seed": 42,
+        "checkpoint_dir": "checkpoints/fusion"
+      },
+      "perceiver_comparison": "not available",
+      "timestamp": "2026-05-28T10:11:45.698629"
+    },
+    "predictability_audit": {
+      "audit_timestamp": "2026-05-28T04:58:20",
+      "description": "Per-target learnability from cheap scalar sensors (temp + conductivity). Baseline A = scalar MLP; Baseline B = physics-only.",
+      "verdicts": {
+        "INPUT": "This column is one of the two scalar inputs \u2014 identity check",
+        "STRONG": "R\u00b2 > 0.70 \u2014 scalar sensors sufficient",
+        "MODERATE": "R\u00b2 0.30\u20130.70 \u2014 vision likely to help",
+        "WEAK": "R\u00b2 0.10\u20130.30 \u2014 needs vision or targeted sampling",
+        "UNRECOVERABLE": "R\u00b2 < 0.10 \u2014 flag for physical sampling"
+      },
+      "split_strategy": "site_random_70_15_15",
+      "n_sites": 383,
+      "n_train_rows": 337240,
+      "n_test_rows": 74066,
+      "epochs": 50,
+      "batch_size": 256,
+      "results": [
+        {
+          "target": "temperature",
+          "is_scalar_input": true,
+          "r2_scalar": 0.9445,
+          "r2_physics": null,
+          "mae_scalar": 13.0226,
+          "mae_physics": null,
+          "rmse_scalar": 14.0419,
+          "n_train": 309653,
+          "n_test": 65957,
+          "verdict": "INPUT",
+          "physics_note": ""
+        },
+        {
+          "target": "conductivity",
+          "is_scalar_input": true,
+          "r2_scalar": 0.9999,
+          "r2_physics": null,
+          "mae_scalar": 4.3511,
+          "mae_physics": null,
+          "rmse_scalar": 19.3134,
+          "n_train": 309653,
+          "n_test": 65957,
+          "verdict": "INPUT",
+          "physics_note": ""
+        },
+        {
+          "target": "dissolved_oxygen",
+          "is_scalar_input": false,
+          "r2_scalar": -0.7445,
+          "r2_physics": -52611600.0,
+          "mae_scalar": 65.7711,
+          "mae_physics": 3299.0134,
+          "rmse_scalar": 150.3278,
+          "n_train": 290067,
+          "n_test": 62703,
+          "verdict": "UNRECOVERABLE",
+          "physics_note": "DO_sat(T) = 14.62 - 0.3898*T + 0.006969*T\u00b2 - 5.897e-5*T\u00b3"
+        },
+        {
+          "target": "ph",
+          "is_scalar_input": false,
+          "r2_scalar": -6.5853,
+          "r2_physics": null,
+          "mae_scalar": 424.0372,
+          "mae_physics": null,
+          "rmse_scalar": 531.8622,
+          "n_train": 262401,
+          "n_test": 54969,
+          "verdict": "UNRECOVERABLE",
+          "physics_note": "no physics prior available"
+        },
+        {
+          "target": "turbidity",
+          "is_scalar_input": false,
+          "r2_scalar": -0.2657,
+          "r2_physics": null,
+          "mae_scalar": 62.9885,
+          "mae_physics": null,
+          "rmse_scalar": 81.9195,
+          "n_train": 219639,
+          "n_test": 48529,
+          "verdict": "UNRECOVERABLE",
+          "physics_note": "no physics prior available"
+        }
+      ]
+    },
+    "species_health_holdout": {
+      "model": "SentinelSpeciesHealthIndex",
+      "n_params": 797591,
+      "train_size": 20035,
+      "val_size": 5710,
+      "test_size": 2830,
+      "best_epoch": 56,
+      "test_metrics": {
+        "loss": 183.68860553027042,
+        "health_r2": 0.41505213216140324,
+        "health_mae": 8.578404426574707,
+        "occ_accuracy": 0.7879858613014221,
+        "per_species_mae": [
+          8.396807670593262,
+          9.569014549255371,
+          7.990578651428223,
+          8.135088920593262,
+          7.947757720947266,
+          9.431184768676758
+        ]
+      },
+      "species_names": [
+        "Freshwater mussels (Unionidae)",
+        "Mayflies (Ephemeroptera)",
+        "Brook trout (Salvelinus fontinalis)",
+        "Hellbender (Cryptobranchus alleganiensis)",
+        "Freshwater pearl mussel (Margaritifera margaritifera)",
+        "American eel (Anguilla rostrata)"
+      ]
+    },
+    "stream_gnn_results": {
+      "model": "StreamNetworkGNN + ContaminationPropagator",
+      "best_epoch": 11,
+      "best_val_auroc": 1.0,
+      "test_metrics": {
+        "loss": 5.872416166216441e-05,
+        "auroc": 0.9999997777364245,
+        "f1": 0.9905660377358491,
+        "mean_pred_pos": 0.9443901181221008,
+        "mean_pred_neg": 4.618303591996664e-06
+      },
+      "args": {
+        "graph_path": "data/processed/hydrology/nhdplus_graph.json",
+        "epochs": 100,
+        "batch_size": 16,
+        "lr": 0.0005,
+        "weight_decay": 0.01,
+        "patience": 15,
+        "grad_clip": 1.0,
+        "num_layers": 3,
+        "heads": 4,
+        "dropout": 0.1,
+        "num_samples": 2000,
+        "gpu": 0,
+        "seed": 42,
+        "checkpoint_dir": "checkpoints/graph",
+        "source_loss_weight": 0.3
+      },
+      "num_sites": 561,
+      "num_edges": 338,
+      "total_params": 2199175,
+      "timestamp": "2026-05-28T10:37:35.520732"
+    },
+    "toxigene_benchmark": {
+      "SENTINEL_ToxiGene": {
+        "f1_macro": 0.9519776948399167,
+        "accuracy": 0.9687830687830687
+      },
+      "SimpleMLP": {
+        "f1_macro": 0.9522371534833949,
+        "accuracy": 0.9074074074074074
+      },
+      "RandomForest": {
+        "f1_macro": 0.9224951232729227,
+        "accuracy": 0.8592592592592593
+      },
+      "XGBoost": {
+        "f1_macro": 0.9227807420216629,
+        "accuracy": 0.8740740740740741,
+        "model": "XGBoost(GBT)"
+      },
+      "LogisticRegression": {
+        "f1_macro": 0.9397423324213884,
+        "accuracy": 0.8740740740740741
+      },
+      "PCA_LR": {
+        "f1_macro": 0.9460504181095276,
+        "accuracy": 0.8888888888888888
+      },
+      "SENTINEL_ToxiGene_v2": {
+        "f1_macro": 0.8770246982789578,
+        "accuracy": 0.9084821428571429,
+        "auroc_macro": 0.9563366585650867,
+        "per_class_f1": {
+          "reproductive_impairment": 0.8227848101265823,
+          "growth_inhibition": 0.8924050632911392,
+          "immunosuppression": 0.8888888888888888,
+          "neurotoxicity": 0.8735632183908046,
+          "hepatotoxicity": 0.9155844155844156,
+          "oxidative_damage": 0.911660777385159,
+          "endocrine_disruption": 0.8342857142857143
+        },
+        "n_samples": 1697,
+        "n_genes": 61479,
+        "architecture": "Transformer-6L-512d-8h + PathwayPooling",
+        "checkpoint": "toxigene_v2_best.pt"
+      },
+      "SimpleMLP_v2_same_split": {
+        "f1_macro": 0.8895764011470707,
+        "accuracy": 0.91796875,
+        "auroc_macro": 0.9641325665731354,
+        "note": "Trained on same expanded dataset and test split as ToxiGene v2"
+      },
+      "SENTINEL_ToxiGene_fullreal": {
+        "f1_macro": 0.9293,
+        "accuracy": 0.9448,
+        "auroc_macro": 0.9894,
+        "note": "1000 real samples, 1000-gene space (prior version)"
+      }
+    },
+    "toxigene_fullreal_benchmark": {
+      "dataset": "expression_matrix_fullreal.npy",
+      "n_real_samples": 1000,
+      "n_train": 700,
+      "n_val": 150,
+      "n_test": 150,
+      "seed": 42,
+      "outcome_names": [
+        "reproductive_impairment",
+        "growth_inhibition",
+        "immunosuppression",
+        "neurotoxicity",
+        "hepatotoxicity",
+        "oxidative_damage",
+        "endocrine_disruption"
+      ],
+      "models": {
+        "SENTINEL_ToxiGene": {
+          "f1_macro": 0.9292520161607308,
+          "accuracy": 0.9447619047619048,
+          "auroc_macro": 0.9894390496174096,
+          "per_class_f1": {
+            "reproductive_impairment": 0.9230769230769231,
+            "growth_inhibition": 0.8951048951048951,
+            "immunosuppression": 0.9655172413793104,
+            "neurotoxicity": 0.9213483146067416,
+            "hepatotoxicity": 0.9493670886075949,
+            "oxidative_damage": 0.9272727272727272,
+            "endocrine_disruption": 0.9230769230769231
+          },
+          "checkpoint": "toxigene_fullreal_best.pt"
+        },
+        "RandomForest": {
+          "f1_macro": 0.9064073835369749,
+          "accuracy": 0.9304761904761905,
+          "auroc_macro": 0.9821152693735611,
+          "per_class_f1": {
+            "reproductive_impairment": 0.8928571428571429,
+            "growth_inhibition": 0.9019607843137255,
+            "immunosuppression": 0.875,
+            "neurotoxicity": 0.9318181818181818,
+            "hepatotoxicity": 0.9554140127388535,
+            "oxidative_damage": 0.8703703703703703,
+            "endocrine_disruption": 0.9174311926605505
+          },
+          "fit_time_s": 5.37
+        },
+        "XGBoost": {
+          "f1_macro": 0.9005295827076198,
+          "accuracy": 0.9257142857142857,
+          "auroc_macro": null,
+          "per_class_f1": {
+            "reproductive_impairment": 0.896551724137931,
+            "growth_inhibition": 0.9090909090909091,
+            "immunosuppression": 0.9,
+            "neurotoxicity": 0.9195402298850575,
+            "hepatotoxicity": 0.9426751592356688,
+            "oxidative_damage": 0.8301886792452831,
+            "endocrine_disruption": 0.9056603773584906
+          },
+          "model": "GradientBoosting(sklearn)",
+          "fit_time_s": 122.45
+        },
+        "LogisticRegression": {
+          "f1_macro": 0.941839255445667,
+          "accuracy": 0.9542857142857143,
+          "auroc_macro": 0.990038151805518,
+          "per_class_f1": {
+            "reproductive_impairment": 0.9482758620689655,
+            "growth_inhibition": 0.9103448275862069,
+            "immunosuppression": 0.9662921348314607,
+            "neurotoxicity": 0.9782608695652174,
+            "hepatotoxicity": 0.9681528662420382,
+            "oxidative_damage": 0.9056603773584906,
+            "endocrine_disruption": 0.9158878504672897
+          },
+          "fit_time_s": 7.83
+        },
+        "SimpleMLP": {
+          "f1_macro": 0.9447606386134669,
+          "accuracy": 0.9571428571428572,
+          "auroc_macro": 0.9898787473321587,
+          "per_class_f1": {
+            "reproductive_impairment": 0.9401709401709402,
+            "growth_inhibition": 0.9395973154362416,
+            "immunosuppression": 0.9662921348314607,
+            "neurotoxicity": 0.967741935483871,
+            "hepatotoxicity": 0.9746835443037974,
+            "oxidative_damage": 0.9074074074074074,
+            "endocrine_disruption": 0.9174311926605505
+          },
+          "fit_time_s": 4.95,
+          "note": "2-layer MLP, no pathway hierarchy"
+        },
+        "PCA_LR": {
+          "f1_macro": 0.9334557123716563,
+          "accuracy": 0.9495238095238095,
+          "auroc_macro": 0.9899262067405719,
+          "per_class_f1": {
+            "reproductive_impairment": 0.9565217391304348,
+            "growth_inhibition": 0.920863309352518,
+            "immunosuppression": 0.9662921348314607,
+            "neurotoxicity": 0.9213483146067416,
+            "hepatotoxicity": 0.9419354838709677,
+            "oxidative_damage": 0.9056603773584906,
+            "endocrine_disruption": 0.9215686274509803
+          },
+          "fit_time_s": 9.87,
+          "note": "PCA(50 components) + LogisticRegression"
+        }
+      },
+      "benchmark_elapsed_s": 151.83
+    },
+    "toxigene_v3_holdout": {
+      "model": "ToxiGene_v3_real_geo",
+      "dataset": "v3_corrected",
+      "split_protocol": "spatial_holdout_with_random_fallback",
+      "n_samples_total": 239,
+      "n_genes": 2000,
+      "n_synthetic_samples": 0,
+      "n_train": 190,
+      "n_val": 40,
+      "n_test": 9,
+      "test_f1_macro": 0.4916666666666667,
+      "test_accuracy": 0.5238095238095238,
+      "test_auroc_macro": 0.5694444444444444,
+      "best_val_f1": 0.5333333333333333,
+      "per_class_f1": {
+        "reproductive_impairment": 0.5,
+        "growth_inhibition": 0.8,
+        "immunosuppression": 0.0,
+        "neurotoxicity": 0.0,
+        "hepatotoxicity": 0.0,
+        "oxidative_damage": 0.6666666666666666,
+        "endocrine_disruption": 0.0
+      },
+      "active_outcomes": [
+        "reproductive_impairment",
+        "growth_inhibition",
+        "hepatotoxicity",
+        "oxidative_damage"
+      ],
+      "epochs_trained": 28,
+      "max_epochs": 200,
+      "early_stop_patience": 25,
+      "nan_batches": 0,
+      "hyperparameters": {
+        "lr": 0.0005,
+        "weight_decay": 0.02,
+        "batch_size": 16,
+        "grad_clip": 1.0,
+        "lambda_l1": 0.005,
+        "dropout": 0.3,
+        "num_chem_classes": 50,
+        "optimizer": "AdamW",
+        "scheduler": "CosineAnnealingLR"
+      },
+      "n_selected_genes": 0,
+      "n_total_genes": 2000,
+      "selected_genes_top20": [],
+      "normalization": "z-score (train-only mean/std), clipped to [-10, 10]",
+      "n_constant_genes_masked": 0,
+      "elapsed_seconds": 4.338924407958984,
+      "checkpoint_path": "/home/bcheng/SENTINEL/checkpoints/molecular/toxigene_v3_best.pt",
+      "data_sources": {
+        "geo_studies": "GSE104776, GSE54800, GSE73661, GSE83514",
+        "pipeline": "prepare_geo_for_toxigene.py",
+        "synthetic_data": "EXCLUDED"
+      }
+    },
+    "twin_holdout": {
+      "model": "DigitalTwinEngine",
+      "n_params": 341871,
+      "train_size": 300,
+      "val_size": 60,
+      "test_size": 60,
+      "best_epoch": 40,
+      "test_metrics": {
+        "physics_only_mse": 1442.04,
+        "hybrid_mse": 786.14,
+        "improvement_pct": 45.5,
+        "horizon_metrics": {
+          "1d_mse": 47.62,
+          "7d_mse": 421.43,
+          "14d_mse": 614.83,
+          "30d_mse": 673.02,
+          "90d_mse": 943.18,
+          "365d_mse": 1979.32
+        },
+        "variable_metrics": {
+          "dissolved_oxygen_mse": 19.14,
+          "bod_mse": 13.29,
+          "total_nitrogen_mse": 2.64,
+          "total_phosphorus_mse": 0.01,
+          "chlorophyll_a_mse": 79.57,
+          "temperature_mse": 91.84,
+          "ph_mse": 10.88,
+          "turbidity_mse": 215.68,
+          "doc_mse": 26.84,
+          "sediment_mse": 7339.11
+        }
+      }
+    },
+    "waterdronenet_holdout": {
+      "model": "WaterDroneNet",
+      "n_params": 4978778,
+      "train_size": 103626,
+      "val_size": 110995,
+      "test_size": 165586,
+      "best_epoch": 66,
+      "best_val_score": 0.9950746946036816,
+      "targets": [
+        "DO",
+        "pH",
+        "Turb",
+        "Temp",
+        "SpCond"
+      ],
+      "scalar_inputs": [
+        "Temp",
+        "SpCond"
+      ],
+      "temporal_holdout": {
+        "train": "< 2023-01-01",
+        "val": "2023-01-01 \u2013 2024-01-01",
+        "test": ">= 2024-01-01"
+      },
+      "test_metrics": {
+        "per_target": {
+          "DO": {
+            "r2": 0.9834802746772766,
+            "mae": 0.2960151433944702,
+            "rmse": 0.3495485484600067,
+            "coverage_90pct": 0.16352292788488917,
+            "n_valid": 158039,
+            "n_filtered": 6
+          },
+          "pH": {
+            "r2": 0.9803848266601562,
+            "mae": 0.06219814345240593,
+            "rmse": 0.0713564082980156,
+            "coverage_90pct": 0.20660993608982733,
+            "n_valid": 141605,
+            "n_filtered": 0
+          },
+          "Turb": {
+            "r2": 0.6775975227355957,
+            "mae": 4.050285339355469,
+            "rmse": 26.63198471069336,
+            "coverage_90pct": 0.761768700722189,
+            "n_valid": 120744,
+            "n_filtered": 0
+          },
+          "Temp": {
+            "r2": 0.997997522354126,
+            "mae": 0.3296111822128296,
+            "rmse": 0.35410210490226746,
+            "coverage_90pct": 0.13456312328634168,
+            "n_valid": 164852,
+            "n_filtered": 6
+          },
+          "SpCond": {
+            "r2": 0.9999786019325256,
+            "mae": 0.41199424862861633,
+            "rmse": 4.4072089195251465,
+            "coverage_90pct": 0.9491308278109087,
+            "n_valid": 153767,
+            "n_filtered": 8887
+          }
+        },
+        "nll": 3.9440982341766357,
+        "trust_flag_accuracy": null,
+        "n_samples": 165586
+      },
+      "physics_residual_analysis": {
+        "DO": {
+          "mean_residual": 9.832010817781162,
+          "mean_prior": 0.9304302815913003,
+          "residual_ratio": 10.567165435860465
+        },
+        "pH": {
+          "mean_residual": 7.611868871790199,
+          "mean_prior": 0.06069102517756575,
+          "residual_ratio": 125.41998747459003
+        },
+        "Turb": {
+          "mean_residual": 19.208633066479134,
+          "mean_prior": 0.9055812836960317,
+          "residual_ratio": 21.21138455508636
+        },
+        "Temp": {
+          "mean_residual": 10.067361895427611,
+          "mean_prior": 6.895899752110675,
+          "residual_ratio": 1.4599054862633654
+        },
+        "SpCond": {
+          "mean_residual": 3.8290969912441457,
+          "mean_prior": 2193.1660559141,
+          "residual_ratio": 0.0017459220567914266
+        }
+      },
+      "training_config": {
+        "epochs": 100,
+        "batch_size": 32,
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "scheduler": "cosine_annealing",
+        "pretrain_epochs": 0,
+        "loss": "masked_gaussian_nll + physics_constraint + calibration + trust"
+      }
+    }
+  }
+}

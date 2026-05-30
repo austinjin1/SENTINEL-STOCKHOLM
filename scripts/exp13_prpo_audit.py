@@ -60,7 +60,7 @@ def load_prpo_data():
     """Load PRPO site data from NEON parquet."""
     logger.info("Loading NEON parquet for PRPO site...")
     READ_COLS = [
-        "startDateTime", "source_site",
+        "startDateTime", "source_file",
         "specificConductance", "specificCondFinalQF",
         "pH", "pHFinalQF",
         "dissolvedOxygen", "dissolvedOxygenFinalQF",
@@ -70,8 +70,39 @@ def load_prpo_data():
     table = pf.read(columns=READ_COLS)
     df = table.to_pandas()
 
-    prpo = df[df["source_site"] == "PRPO"].copy()
+    # Extract siteID from source_file (siteID column is mostly NULL in sensor rows)
+    import re
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
+    df["siteID"] = df["source_file"].apply(_extract_site)
+    df = df.drop(columns=["source_file"])
+
+    prpo = df[df["siteID"] == "PRPO"].copy()
     logger.info(f"PRPO rows: {len(prpo):,}")
+
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    # (QF columns themselves are kept for the audit analysis)
+    _qf_map = {
+        "specificConductance": "specificCondFinalQF",
+        "pH": "pHFinalQF",
+        "dissolvedOxygen": "dissolvedOxygenFinalQF",
+        "turbidity": "turbidityFinalQF",
+    }
+    _clip_ranges = {"pH": (0, 14), "dissolvedOxygen": (0, 25),
+                    "turbidity": (0, 4000), "specificConductance": (0, 100000)}
+    n_before = sum(prpo[c].notna().sum() for c in _qf_map if c in prpo.columns)
+    for val_col, qf_col in _qf_map.items():
+        if qf_col in prpo.columns and val_col in prpo.columns:
+            bad_qf = prpo[qf_col].fillna(1).astype(float) != 0
+            prpo.loc[bad_qf, val_col] = np.nan
+    n_after = sum(prpo[c].notna().sum() for c in _qf_map if c in prpo.columns)
+    logger.info(f"  QF filtering: {n_before:,} -> {n_after:,} valid values "
+                f"({n_before - n_after:,} rejected)")
+    # --- Range-based sanity clipping ---
+    for col, (lo, hi) in _clip_ranges.items():
+        if col in prpo.columns:
+            prpo[col] = prpo[col].clip(lo, hi)
 
     prpo["ts"] = pd.to_datetime(prpo["startDateTime"], utc=True, errors="coerce")
     prpo = prpo.dropna(subset=["ts"]).sort_values("ts").reset_index(drop=True)

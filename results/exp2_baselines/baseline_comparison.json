@@ -1,23 +1,23 @@
 {
   "Z-score": {
-    "auroc": 0.592512,
-    "scores_mean": 0.297611264847219
+    "auroc": 0.6087359999999999,
+    "scores_mean": 0.29452706744521856
   },
   "Isolation Forest": {
-    "auroc": 0.644916,
-    "scores_mean": 0.46644359727116086
+    "auroc": 0.658784,
+    "scores_mean": 0.47074637755833704
   },
   "ARIMA": {
-    "auroc": 0.6073219999999999,
-    "scores_mean": 0.13742633141246155
+    "auroc": 0.613096,
+    "scores_mean": 0.12521151002476644
   },
   "AquaSSM-only": {
-    "auroc": 0.5297719999999999,
-    "scores_mean": 0.415919691324234
+    "auroc": 0.49171800000000004,
+    "scores_mean": 0.4174891710281372
   },
   "SENTINEL": {
-    "auroc": 0.491336,
-    "scores_mean": 0.05974167255032808
+    "auroc": 0.494966,
+    "scores_mean": 0.05924722237512469
   },
   "_meta": {
     "n_total": 1000,
@@ -26,6 +26,6 @@
     "window_len": 128,
     "data_source": "/home/bcheng/SENTINEL/data/raw/neon_aquatic/neon_DP1.20288.001_consolidated.parquet",
     "label_method": "threshold_exceedance",
-    "elapsed_seconds": 328.23624205589294
+    "elapsed_seconds": 235.10973525047302
   }
 }

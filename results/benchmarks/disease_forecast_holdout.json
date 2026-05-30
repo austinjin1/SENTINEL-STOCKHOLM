@@ -1,0 +1,23 @@
+{
+  "model": "IntegratedDiseaseRisk",
+  "n_params": 470462,
+  "train_size": 20035,
+  "val_size": 5710,
+  "test_size": 2830,
+  "best_epoch": 32,
+  "test_metrics": {
+    "loss": 0.9739008831051129,
+    "alert_distribution": {
+      "0": 453,
+      "1": 2032,
+      "2": 327,
+      "3": 18
+    },
+    "per_disease_loss": {
+      "cyanotoxin": 0.30312034487724304,
+      "vibrio": 0.3611956536769867,
+      "naegleria": 0.152938574552536,
+      "schistosomiasis": 0.4145050346851349
+    }
+  }
+}

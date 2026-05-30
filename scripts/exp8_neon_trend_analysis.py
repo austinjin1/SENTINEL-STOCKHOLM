@@ -53,6 +53,22 @@ PARAMS = ["pH", "dissolvedOxygen", "turbidity", "specificConductance"]
 PARAM_LABELS = {"pH": "pH (s.u.)", "dissolvedOxygen": "DO (mg/L)",
                 "turbidity": "Turbidity (NTU)", "specificConductance": "SpCond (µS/cm)"}
 
+# Quality flag columns for each parameter (FinalQF==0 means data passed QC)
+PARAM_QF = {
+    "pH": "pHFinalQF",
+    "dissolvedOxygen": "dissolvedOxygenFinalQF",
+    "turbidity": "turbidityFinalQF",
+    "specificConductance": "specificCondFinalQF",
+}
+
+# Physical range clipping (after QF filtering, as additional sanity check)
+PARAM_CLIP = {
+    "pH": (0, 14),
+    "dissolvedOxygen": (0, 25),
+    "turbidity": (0, 4000),
+    "specificConductance": (0, 100000),
+}
+
 # EPA thresholds (same as NEON scan)
 EPA_THRESH = {
     "pH":                  (6.0, 9.5),
@@ -133,14 +149,41 @@ def main():
     logger.info("=" * 65)
     logger.info(f"NEON parquet: {NEON_PARQUET}")
 
-    # Load columns we need
+    # Load columns we need (including quality flag columns)
     logger.info("Loading parquet (relevant columns only)...")
     t_read = time.time()
     pf = pq.ParquetFile(str(NEON_PARQUET))
-    read_cols = ["startDateTime", "source_site"] + PARAMS
+    qf_cols = list(PARAM_QF.values())
+    read_cols = ["startDateTime", "source_file"] + PARAMS + qf_cols
     table = pf.read(columns=read_cols)
     df = table.to_pandas()
     logger.info(f"Loaded {len(df):,} rows in {time.time()-t_read:.1f}s")
+
+    # Extract siteID from source_file (siteID column is mostly NULL in sensor rows)
+    import re
+    def _extract_site(sf):
+        m = re.search(r'DP1\.\d+\.\d+_(\w+)_', str(sf))
+        return m.group(1) if m else None
+    df["siteID"] = df["source_file"].apply(_extract_site)
+    df = df.drop(columns=["source_file"])
+
+    # --- Quality flag filtering: NaN out values where FinalQF != 0 ---
+    n_before = df[PARAMS].notna().sum().sum()
+    for param, qf_col in PARAM_QF.items():
+        if qf_col in df.columns:
+            bad_qf = df[qf_col].fillna(1).astype(float) != 0
+            df.loc[bad_qf, param] = np.nan
+    n_after = df[PARAMS].notna().sum().sum()
+    logger.info(f"QF filtering: {n_before:,} -> {n_after:,} valid values "
+                f"({n_before - n_after:,} rejected)")
+
+    # --- Range-based sanity clipping ---
+    for param, (lo, hi) in PARAM_CLIP.items():
+        if param in df.columns:
+            df[param] = df[param].clip(lo, hi)
+
+    # Drop QF columns (no longer needed)
+    df = df.drop(columns=[c for c in qf_cols if c in df.columns])
 
     # Parse timestamps
     df["ts"] = pd.to_datetime(df["startDateTime"], utc=True, errors="coerce")
@@ -148,7 +191,7 @@ def main():
     df["year_month"] = df["ts"].dt.to_period("M")
     df["year"] = df["ts"].dt.year
 
-    sites = sorted(df["source_site"].dropna().unique())
+    sites = sorted(df["siteID"].dropna().unique())
     logger.info(f"Sites: {len(sites)}")
 
     # ------------------------------------------------------------------
@@ -157,7 +200,7 @@ def main():
     site_results = {}
 
     for site in sites:
-        df_s = df[df["source_site"] == site].copy()
+        df_s = df[df["siteID"] == site].copy()
         n_rows = len(df_s)
 
         # Monthly mean per parameter
@@ -231,7 +274,7 @@ def main():
     logger.info("Computing cross-site DO correlation...")
     do_monthly = {}
     for site in sites:
-        df_s = df[df["source_site"] == site].copy()
+        df_s = df[df["siteID"] == site].copy()
         if len(df_s) < 100:
             continue
         do_col = df_s["dissolvedOxygen"].astype(float)

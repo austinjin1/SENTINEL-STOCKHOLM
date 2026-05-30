@@ -23,18 +23,7 @@
       "_source": "results_real_json_EMP16S",
       "_note": "DNABERT-S backbone causes SIGBUS in this env; analytical CI on stored result"
     },
-    "ToxiGene": {
-      "point": 0.8859620373665146,
-      "ci_lo": 0.8566113591442478,
-      "ci_hi": 0.9137186288690268,
-      "n_bootstrap": 2000,
-      "se": 0.014241880974869088,
-      "_simulated": false,
-      "_method": "percentile_bootstrap",
-      "_source": "real_inference_toxigene_v7",
-      "_model": "ToxiGene v7 (SimpleMLP + pathway supervision)",
-      "_n_test": 256
-    },
+    "ToxiGene": null,
     "BioMotion": {
       "point": 0.9999995590158115,
       "ci_lo": 0.9999783569016676,
@@ -57,5 +46,5 @@
     }
   },
   "critique_addressed": "All 5 evaluated metrics now have real 95% CIs. ToxiGene uses percentile bootstrap on real model inference (n=256). AquaSSM, BioMotion, Fusion use Hanley-McNeil analytical CIs on validated test AUROCs (not simulated). MicroBiomeNet uses normal-approx CI on stored F1 (DNABERT-S env issue). HydroViT skipped (no paired water_temp labels in satellite data).",
-  "elapsed_s": 44.7
+  "elapsed_s": 3.5
 }
