@@ -56,10 +56,10 @@ FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 import torch as _torch
 DEVICE = _torch.device("cuda" if _torch.cuda.is_available() else "cpu")
 
-REAL_DIR = PROJECT_ROOT / "data" / "processed" / "behavioral_real"
-CKPT_PATH = PROJECT_ROOT / "checkpoints" / "biomotion" / "phase2_best.pt"
+REAL_DIR = PROJECT_ROOT / "data" / "processed" / "behavioral_fullreal"
+CKPT_PATH = PROJECT_ROOT / "checkpoints" / "biomotion" / "biomotion_v2_best.pt"
 N_PERM   = 500   # permutation test iterations
-MAX_TRAJ = 1000  # max trajectories to load (for speed)
+MAX_TRAJ = 5000  # max trajectories to load
 
 
 # ---------------------------------------------------------------------------

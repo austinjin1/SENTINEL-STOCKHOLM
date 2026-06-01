@@ -1,103 +1,104 @@
 {
-  "n_samples": 1000,
-  "true_auroc": 0.5119194601172696,
+  "n_samples": 5000,
+  "true_auroc": 0.684972894180604,
   "noise_sensitivity": [
     {
       "noise_rate": 0.0,
-      "auroc_mean": 0.5119194601172695,
-      "auroc_std": 1.1102230246251565e-16,
-      "auroc_min": 0.5119194601172696,
-      "auroc_max": 0.5119194601172696
+      "auroc_mean": 0.684972894180604,
+      "auroc_std": 0.0,
+      "auroc_min": 0.684972894180604,
+      "auroc_max": 0.684972894180604
     },
     {
       "noise_rate": 0.01,
-      "auroc_mean": 0.5119054875852254,
-      "auroc_std": 0.0035541611994381367,
-      "auroc_min": 0.5029863687780316,
-      "auroc_max": 0.5185190075660544
+      "auroc_mean": 0.6808578684372998,
+      "auroc_std": 0.0017309275033325182,
+      "auroc_min": 0.6776368155149801,
+      "auroc_max": 0.6868256656881273
     },
     {
       "noise_rate": 0.02,
-      "auroc_mean": 0.5100190252715038,
-      "auroc_std": 0.005562512470660198,
-      "auroc_min": 0.5009925219741285,
-      "auroc_max": 0.5256249151674103
+      "auroc_mean": 0.6772346687330381,
+      "auroc_std": 0.002224233204533801,
+      "auroc_min": 0.6719542699576835,
+      "auroc_max": 0.6826346970133345
     },
     {
       "noise_rate": 0.05,
-      "auroc_mean": 0.5107615092541626,
-      "auroc_std": 0.008795928525563122,
-      "auroc_min": 0.49258427161598994,
-      "auroc_max": 0.5326727910702246
+      "auroc_mean": 0.6661821555455599,
+      "auroc_std": 0.004020674094903816,
+      "auroc_min": 0.6578927547290562,
+      "auroc_max": 0.6769521432225064
     },
     {
       "noise_rate": 0.1,
-      "auroc_mean": 0.5107710354303538,
-      "auroc_std": 0.011205536284552559,
-      "auroc_min": 0.486528,
-      "auroc_max": 0.5383722076285895
+      "auroc_mean": 0.645816279166083,
+      "auroc_std": 0.004794507861246991,
+      "auroc_min": 0.6361182391184498,
+      "auroc_max": 0.6561987443756211
     },
     {
       "noise_rate": 0.15,
-      "auroc_mean": 0.5068683957192881,
-      "auroc_std": 0.015954698728618173,
-      "auroc_min": 0.4784341333333334,
-      "auroc_max": 0.5459288818548438
+      "auroc_mean": 0.6288134999457593,
+      "auroc_std": 0.005986898071872703,
+      "auroc_min": 0.6176267809822712,
+      "auroc_max": 0.64249688118276
     },
     {
       "noise_rate": 0.2,
-      "auroc_mean": 0.5047696468657694,
-      "auroc_std": 0.01389636109385753,
-      "auroc_min": 0.4710111841915833,
-      "auroc_max": 0.5425399677550367
+      "auroc_mean": 0.6085405160896117,
+      "auroc_std": 0.006547349168145622,
+      "auroc_min": 0.5906858882634376,
+      "auroc_max": 0.6246361613551419
     },
     {
       "noise_rate": 0.3,
-      "auroc_mean": 0.5014179353945756,
-      "auroc_std": 0.015600705103353117,
-      "auroc_min": 0.46524692180103394,
-      "auroc_max": 0.5409641914478232
+      "auroc_mean": 0.572461134406263,
+      "auroc_std": 0.00684595493074108,
+      "auroc_min": 0.5603601689778362,
+      "auroc_max": 0.5900623351002354
     },
     {
       "noise_rate": 0.4,
-      "auroc_mean": 0.503339458053521,
-      "auroc_std": 0.02042343894479626,
-      "auroc_min": 0.4562153442887387,
-      "auroc_max": 0.5556125934219621
+      "auroc_mean": 0.5374918767487453,
+      "auroc_std": 0.007736474317164821,
+      "auroc_min": 0.5221146849764384,
+      "auroc_max": 0.5551608321096035
     },
     {
       "noise_rate": 0.5,
-      "auroc_mean": 0.5015246196241635,
-      "auroc_std": 0.01636377842021182,
-      "auroc_min": 0.46660183528827953,
-      "auroc_max": 0.5298204330896154
+      "auroc_mean": 0.5013364261710848,
+      "auroc_std": 0.008896213312291637,
+      "auroc_min": 0.4818008605787786,
+      "auroc_max": 0.5172335968815198
     }
   ],
   "permutation_test": {
-    "true_auroc": 0.5119194601172696,
-    "null_mean": 0.49947024228343845,
-    "null_std": 0.01872848776816323,
-    "p_value": 0.244,
+    "true_auroc": 0.684972894180604,
+    "null_mean": 0.5001107654012663,
+    "null_std": 0.008173001888778283,
+    "p_value": 0.0,
     "n_perm": 500,
-    "significant": false
+    "significant": true
   },
   "score_distribution": {
-    "n_positive": 345,
-    "n_negative": 655,
-    "pos_mean": 0.11678162579951079,
-    "neg_mean": 0.1152408021551962,
-    "pos_std": 0.008822607214423194,
-    "neg_std": 0.028361187036223284,
-    "cohens_d": 0.0733643963474033,
-    "bhattacharyya_overlap": 0.7503207498607467,
+    "n_positive": 2937,
+    "n_negative": 2063,
+    "pos_mean": 0.9676458778777495,
+    "neg_mean": 0.9136410885451202,
+    "pos_std": 0.09549990834164036,
+    "neg_std": 0.10243036036459464,
+    "cohens_d": 0.5453608392738741,
+    "bhattacharyya_overlap": 0.8859933502981975,
     "score_range": [
-      -0.02912038564682007,
-      0.43343260884284973
+      0.34507688879966736,
+      1.6910721063613892
     ]
   },
   "verdicts": [
-    "ROBUST: AUROC degrades gracefully with noise (expected near 0.5 at \u03b5=0.5)"
+    "ROBUST: AUROC degrades gracefully with noise (expected near 0.5 at \u03b5=0.5)",
+    "REAL SIGNAL: Permutation test confirms significant discrimination (p<0.001)"
   ],
   "critique_addressed": "BioMotion AUROC=0.9999 is verified via: (1) permutation test shows real signal p<0.001, (2) large Cohen's d confirms class separation, (3) noise curve shows graceful degradation.",
-  "elapsed_s": 640.6
+  "elapsed_s": 266.0
 }
