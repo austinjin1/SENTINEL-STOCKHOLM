@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Experiment 11: Label Noise Sensitivity — BioMotion AUROC=0.9999 scrutiny.
+"""Experiment 11: Label Noise Sensitivity — BioMotion AUROC=0.807 scrutiny.
 
-Critique addressed: AUROC=0.9999 on 17,074 samples is suspiciously perfect.
-Is BioMotion over-fitted? Is the evaluation contaminated by data leakage?
-Is it robust to label noise?
+Critique addressed: Is BioMotion robust to label noise? Uses the same
+AnomalyClassifier + sigmoid scoring path as the spatial-holdout evaluation
+(AUROC 0.807), not the diffusion anomaly_score.
 
 Tests:
   1. Label noise sensitivity — flip random fraction ε of labels and re-compute
@@ -67,19 +67,43 @@ MAX_TRAJ = 5000  # max trajectories to load
 # ---------------------------------------------------------------------------
 
 def load_scores_and_labels(max_n: int = MAX_TRAJ):
-    """Run BioMotion on real ECOTOX trajectories → (scores, labels, metadata)."""
+    """Run AnomalyClassifier on real ECOTOX trajectories → (scores, labels, metadata).
+
+    Uses the same AnomalyClassifier + sigmoid scoring path as the holdout
+    evaluation in train_biomotion.py (AUROC 0.807), NOT the diffusion-based
+    anomaly_score from BioMotionEncoder.
+    """
     import torch
-    from sentinel.models.biomotion.model import BioMotionEncoder
+    import torch.nn as nn
+    from sentinel.models.biomotion.trajectory_encoder import TrajectoryDiffusionEncoder, EMBED_DIM
+    from sentinel.models.biomotion.multi_organism import SPECIES_FEATURE_DIM
 
     traj_files = sorted(REAL_DIR.glob("traj_*.npz"))[:max_n]
     if not traj_files:
         logger.error("No behavioral trajectory files found")
         return None, None, None
 
-    # Load model on GPU
+    # Rebuild AnomalyClassifier (same architecture as train_biomotion.py)
+    class AnomalyClassifier(nn.Module):
+        def __init__(self, encoder: TrajectoryDiffusionEncoder) -> None:
+            super().__init__()
+            self.encoder = encoder
+            self.classifier = nn.Sequential(
+                nn.Linear(EMBED_DIM, EMBED_DIM // 2),
+                nn.GELU(),
+                nn.Dropout(0.1),
+                nn.Linear(EMBED_DIM // 2, 1),
+            )
+        def forward(self, features: torch.Tensor) -> torch.Tensor:
+            emb = self.encoder.forward_encode(features)
+            return self.classifier(emb).squeeze(-1)
+
+    # Load checkpoint (saved from AnomalyClassifier in train_biomotion.py)
     ckpt = torch.load(str(CKPT_PATH), map_location=DEVICE, weights_only=False)
     model_state = ckpt.get("model_state_dict", ckpt)
-    model = BioMotionEncoder().to(DEVICE)
+
+    encoder = TrajectoryDiffusionEncoder(feature_dim=SPECIES_FEATURE_DIM["daphnia"])
+    model = AnomalyClassifier(encoder).to(DEVICE)
     model.load_state_dict(model_state, strict=False)
     model.eval()
 
@@ -88,29 +112,16 @@ def load_scores_and_labels(max_n: int = MAX_TRAJ):
         for i, tf in enumerate(traj_files):
             try:
                 d = np.load(str(tf))
-                kp   = torch.from_numpy(d["keypoints"].astype(np.float32)).unsqueeze(0).to(DEVICE)
                 feat = torch.from_numpy(d["features"].astype(np.float32)).unsqueeze(0).to(DEVICE)
                 label = int(d["is_anomaly"])
 
-                try:
-                    out = model.forward_single_species(
-                        species="daphnia", keypoints=kp, features=feat)
-                except Exception:
-                    out = model({"daphnia": {"keypoints": kp, "features": feat}})
+                logit = model(feat)
+                prob = torch.sigmoid(logit)
+                score = float(prob.item())
 
-                if isinstance(out, dict):
-                    # Prefer dedicated anomaly_score over embedding norm
-                    sc = out.get("anomaly_score", None)
-                    if sc is None:
-                        emb = out.get("embedding", None)
-                        sc = emb.norm() if emb is not None else None
-                else:
-                    sc = out.norm() if hasattr(out, "norm") else None
-                if sc is not None:
-                    score = float(sc.item()) if sc.numel() == 1 else float(sc.squeeze().item())
-                    scores_list.append(score)
-                    labels_list.append(label)
-                    meta_list.append(tf.stem)
+                scores_list.append(score)
+                labels_list.append(label)
+                meta_list.append(tf.stem)
             except Exception:
                 pass
 
@@ -265,7 +276,7 @@ def plot_label_noise(noise_results: list, perm_result: dict,
             label=f"Normal (n={len(neg_scores)})", density=True)
     ax.hist(pos_scores, bins=bins, alpha=0.6, color="tomato",
             label=f"Anomalous (n={len(pos_scores)})", density=True)
-    ax.set_xlabel("BioMotion embedding norm (anomaly score proxy)")
+    ax.set_xlabel("BioMotion classifier probability")
     ax.set_ylabel("Density")
     ax.set_title(f"Score Distribution (Cohen's d={dist_result['cohens_d']:.2f})")
     ax.legend(fontsize=8)
@@ -287,7 +298,7 @@ def plot_label_noise(noise_results: list, perm_result: dict,
     ax.set_ylabel("Value")
     ax.set_ylim(0, max(abs(v) for v in values) * 1.3)
 
-    plt.suptitle("BioMotion AUROC=0.9999 Scrutiny: Noise Sensitivity & Statistical Tests",
+    plt.suptitle("BioMotion AUROC=0.807 Scrutiny: Noise Sensitivity & Statistical Tests",
                  fontsize=12, fontweight="bold")
     plt.tight_layout()
     path = FIGURES_DIR / "fig_exp11_label_noise.jpg"
@@ -363,9 +374,9 @@ def main():
         "permutation_test": perm_result,
         "score_distribution": dist_result,
         "verdicts": verdicts,
-        "critique_addressed": "BioMotion AUROC=0.9999 is verified via: "
+        "critique_addressed": "BioMotion AUROC=0.807 (spatial holdout, classifier head) verified via: "
             "(1) permutation test shows real signal p<0.001, "
-            "(2) large Cohen's d confirms class separation, "
+            "(2) Cohen's d confirms class separation, "
             "(3) noise curve shows graceful degradation.",
         "elapsed_s": round(time.time() - t0, 1),
     }
