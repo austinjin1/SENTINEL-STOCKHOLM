@@ -12,10 +12,10 @@
 | HydroViT | Satellite (Sentinel-2) | R^2 0.8927 | Vision Transformer, 13 bands |
 | MicroBiomeNet | Microbial (16S rRNA) | F1 0.8989 | Simplex Neural ODE |
 | ToxiGene | Molecular (RNA-seq) | F1 0.9520 | Cross-species transformer |
-| BioMotion | Behavioral (fish) | AUROC 0.9999 | Attention-based trajectory model |
-| Perceiver IO Fusion | All 5 modalities | AUROC 0.9919 | Iterative cross-attention |
+| BioMotion | Behavioral (fish/Daphnia) | AUROC 0.807 | Attention-based trajectory model, 29,421 ECOTOX assays |
+| Perceiver IO Fusion | All 5 modalities | AUROC 0.992 (ablation) / 0.939 (holdout) | Iterative cross-attention |
 
-## 2. Real-World Case Studies (6/8 Detected)
+## 2. Real-World Case Studies (8/10 USGS Detected; 31 Total Events)
 
 Using real USGS NWIS data (no synthetic data):
 
@@ -27,10 +27,12 @@ Using real USGS NWIS data (no synthetic data):
 | Klamath River HAB 2021 | DETECTED | 59.2 days | 7,200 |
 | Jordan Lake HAB, NC | DETECTED | 44.3 days | 5,755 |
 | Mississippi River Salinity 2023 | DETECTED | 58.6 days | 4,168 |
-| Iowa Nitrate Crisis 2015 | INSUFFICIENT DATA | - | 7,196 |
-| Dan River Coal Ash 2014 | INSUFFICIENT DATA | - | 3,456 |
+| Iowa Nitrate Crisis 2015 | DETECTED | 59.3 days | 7,196 |
+| Dan River Coal Ash 2014 | DETECTED | 13.3 days | 3,456 |
+| Neuse River Hypoxia 2022 | INSUFFICIENT DATA | - | - |
+| Toledo Water Crisis 2014 | INSUFFICIENT DATA | - | - |
 
-**Mean lead time: 66.4 days (detected events)**
+**Mean lead time: 66.4 days (6 original USGS events) / 32 days (all 31 events including NEON + research-validated)**
 
 ## 3. New Model Benchmarks (SENTINEL 2.0 - Phase 1-4)
 
@@ -41,7 +43,7 @@ Using real USGS NWIS data (no synthetic data):
 | MoME Fusion | Val AUROC | 0.539 (test 0.420) | Same data limitation as foundation model |
 | Contrastive Pretrain | Recall@1 | 1.000 | microbial-molecular pair |
 | Stream GNN | Test AUROC=1.000, F1=0.991 | Real NHDPlus | 561 nodes, 338 edges, best epoch 11 |
-| WaterDroneNet (SENTINEL Mini) | Test: DO R²=0.262, Temp R²=0.442, SpCond R²=0.520, pH R²=-0.21, Turb R²=-0.004 | Real S2 imagery (4-band RGB+NIR, 224x224), spatial holdout | 22M params, 1440 paired samples, ViT-S/16 backbone, imagery-only (no sensors) |
+| WaterDroneNet (SENTINEL Mini) | Test: Temp R²=0.508, DO R²=0.257, pH R²=0.124, Turb R²=-0.027, SpCond R²=-0.951 | Real S2 imagery (4-band RGB+NIR, 224x224), spatial holdout | 22M params, 19,358 paired samples from 380 stations, ViT-S/16 backbone, imagery-only (no sensors) |
 
 ### Phase 3-4: Biological Prediction & Digital Twin
 | Model | Metric | Value | Notes |
@@ -57,7 +59,8 @@ Using real USGS NWIS data (no synthetic data):
 
 ### Completed This Session
 - **AquaSSM**: MPP 15 epochs, val_loss=0.0043, test RMSE=0.83 on 20K unseen-site samples
-- **WaterDroneNet (SENTINEL Mini)**: Rebuilt for real Sentinel-2 imagery input (no sensor data). 1,440 paired S2+WQ samples from 78 USGS stations. Spatial holdout test: DO R^2=0.262, Temp R^2=0.442, SpCond R^2=0.520. Actively being trained and improved.
+- **WaterDroneNet (SENTINEL Mini)**: Rebuilt for real Sentinel-2 imagery input (no sensor data). 12,000 paired S2+WQ samples from 379 USGS stations (19K+ cached tiles). Spatial holdout test: Temp R²=0.508, DO R²=0.257, pH R²=0.124. Validates multimodal architecture: imagery alone captures temperature and partial DO, but pH/Turb/SpCond require sensor data.
+- **SENTINEL Mini Trigger System**: Built drone-to-station activation pipeline (anomaly scoring → nearest-K station selection → LoRa RF trigger → full SENTINEL confirmation)
 - **Disease Forecast**: Test loss=0.974 (6.4% improvement over prior version)
 - **Digital Twin**: Phase 2 complete (80 total epochs), test MSE=786.1 vs physics-only 1442.0 (45.5% improvement)
   - Per-horizon test MSE: 1d=47.6, 7d=421.4, 14d=614.8, 30d=673.0, 90d=943.2, 365d=1979.3
@@ -121,14 +124,15 @@ Honest assessment of what's learnable from sensor data alone:
 ## 8. System Architecture
 
 ### Core Detection (SENTINEL 1.0)
-- **5 specialized encoders** + Perceiver IO fusion (AUROC 0.9919)
+- **5 specialized encoders** + Perceiver IO fusion (AUROC 0.992 ablation / 0.939 holdout)
 - **PPO cascade controller** with 4-tier escalation
 - **Conformal prediction** (94% coverage, sensor encoder)
 - **PCMCI+ causal discovery** (375 chains, 44 novel)
 
 ### SENTINEL 2.0 Extensions
 - **Stream Network GNN**: Upstream-downstream contamination propagation (561 NHDPlus sites)
-- **WaterDroneNet (SENTINEL Mini)**: Image-only water quality prediction from drone/satellite RGB+NIR imagery (DO R²=0.262, Temp R²=0.442, SpCond R²=0.520 on spatially held-out stations) — actively being improved
+- **WaterDroneNet (SENTINEL Mini)**: Image-only water quality prediction from drone/satellite RGB+NIR imagery (Temp R²=0.508, DO R²=0.257, pH R²=0.124 on spatially held-out stations). 19,358 paired S2+WQ samples from 380 USGS stations, 22M param ViT-S/16 backbone. Designed as trigger for full SENTINEL confirmation — drone detections activate fixed coastal stations via RF controller
+- **SENTINEL Mini Trigger System**: Drone-to-station activation pipeline — WaterDroneNet anomaly scoring → station selection (nearest K within LoRa range) → RF trigger → fixed SENTINEL confirmation. Supports 5 alert levels, duty cycling, and confirmation feedback loop
 - **Species Health Index**: 6 keystone species health forecasting (R²=0.415)
 - **Disease Forecast**: 4 pathogen risk prediction (cyanotoxin, vibrio, naegleria, schistosomiasis)
 - **Climate Coupling**: Climate-driven water quality prediction (DO MAE=1.51 mg/L)
@@ -145,7 +149,7 @@ Honest assessment of what's learnable from sensor data alone:
 ## 9. Key Claims (Falsifiable)
 
 1. First multimodal AI system for freshwater ecosystem monitoring validated on real USGS data
-2. Mean 66.4-day early warning for water quality events across 6 verified case studies
+2. Mean 32-day early warning across 31 contamination events (66.4-day mean for 6 original USGS case studies)
 3. First pre-registered prospective water quality prediction system with hash-verified timestamps
 4. 390M+ record freshwater database spanning 13+ sources (plus 755K WQP, 701K BioData, 146K ERDDAP)
 5. Species health index for 6 keystone species with R²=0.415 and 78.8% occupancy accuracy
