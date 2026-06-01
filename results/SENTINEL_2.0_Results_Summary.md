@@ -43,7 +43,7 @@ Using real USGS NWIS data (no synthetic data):
 | MoME Fusion | Val AUROC | 0.539 (test 0.420) | Same data limitation as foundation model |
 | Contrastive Pretrain | Recall@1 | 1.000 | microbial-molecular pair |
 | Stream GNN | Test AUROC=1.000, F1=0.991 | Real NHDPlus | 561 nodes, 338 edges, best epoch 11 |
-| WaterDroneNet (SENTINEL Mini) | Test: Temp R²=0.508, DO R²=0.257, pH R²=0.124, Turb R²=-0.027, SpCond R²=-0.951 | Real S2 imagery (4-band RGB+NIR, 224x224), spatial holdout | 22M params, 19,358 paired samples from 380 stations, ViT-S/16 backbone, imagery-only (no sensors) |
+| WaterDroneNet V4 (SENTINEL Mini) | Test: Temp R²=0.776, DO R²=0.463, Turb R²=0.181, SpCond R²=0.442 | Real S2 imagery (4-band RGB+NIR, 224x224) + pH strip, spatial holdout | 8.4M params, 57K train/11K test from 399 stations, HydroDenseNet (DenseNet121 + SpectralStem + CBAM + FiLM + per-target experts) |
 
 ### Phase 3-4: Biological Prediction & Digital Twin
 | Model | Metric | Value | Notes |
@@ -131,7 +131,7 @@ Honest assessment of what's learnable from sensor data alone:
 
 ### SENTINEL 2.0 Extensions
 - **Stream Network GNN**: Upstream-downstream contamination propagation (561 NHDPlus sites)
-- **WaterDroneNet (SENTINEL Mini)**: Image-only water quality prediction from drone/satellite RGB+NIR imagery (Temp R²=0.508, DO R²=0.257, pH R²=0.124 on spatially held-out stations). 19,358 paired S2+WQ samples from 380 USGS stations, 22M param ViT-S/16 backbone. Designed as trigger for full SENTINEL confirmation — drone detections activate fixed coastal stations via RF controller
+- **WaterDroneNet V4 (SENTINEL Mini)**: Water quality prediction from drone/satellite RGB+NIR imagery + pH strip input (Temp R²=0.776, DO R²=0.463, Turb R²=0.181, SpCond R²=0.442 on spatially held-out stations). 57K train/11K test from 399 USGS stations, 8.4M param HydroDenseNet (DenseNet121 + SpectralStem + CBAM + FiLM conditioning + per-target expert MLPs). Designed as trigger for full SENTINEL confirmation — drone detections activate fixed coastal stations via RF controller
 - **SENTINEL Mini Trigger System**: Drone-to-station activation pipeline — WaterDroneNet anomaly scoring → station selection (nearest K within LoRa range) → RF trigger → fixed SENTINEL confirmation. Supports 5 alert levels, duty cycling, and confirmation feedback loop
 - **Species Health Index**: 6 keystone species health forecasting (R²=0.415)
 - **Disease Forecast**: 4 pathogen risk prediction (cyanotoxin, vibrio, naegleria, schistosomiasis)

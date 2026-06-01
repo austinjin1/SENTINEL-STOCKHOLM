@@ -1,0 +1,90 @@
+{
+  "model": "HydroDenseNet (WaterDroneNet V4)",
+  "description": "Custom architecture built on DenseNet121 for water quality",
+  "backbone": "DenseNet121 body with SpectralStem + Multi-Scale FPN",
+  "input": "Sentinel-2 RGB+NIR (4ch, 224x224) + pH strip measurement",
+  "improvements": [
+    "SpectralStem: learnable band interactions before DenseNet body",
+    "Multi-Scale Feature Pyramid: taps all 4 DenseBlock outputs",
+    "CBAM (channel + spatial) attention at each scale",
+    "FiLM conditioning: pH modulates visual features inside the network",
+    "Multi-pool aggregation: avg + max + std captures spatial heterogeneity",
+    "Per-target expert decoders: DO/Turb/Temp/SpCond each specialized",
+    "Band ratio encoder with gradient flow (15 \u2192 48-dim learned)",
+    "Multi-GPU DataParallel training",
+    "Lazy tile loading (individual .npz files)",
+    "Data augmentation (flip + rotate)"
+  ],
+  "n_params": 8369877,
+  "train_size": 57009,
+  "val_size": 11123,
+  "test_size": 11424,
+  "best_epoch": 13,
+  "best_val_score": -0.6240438371896744,
+  "targets": [
+    "DO",
+    "Turb",
+    "Temp",
+    "SpCond"
+  ],
+  "ph_input": {
+    "mean": 7.57718563079834,
+    "std": 0.4901409149169922,
+    "noise_std": 0.3
+  },
+  "holdout": {
+    "type": "spatial",
+    "train": "70% of stations",
+    "val": "15% of stations",
+    "test": "15% of stations (geographically unseen)",
+    "seed": 42
+  },
+  "hyperparameters": {
+    "lr": 0.0003,
+    "weight_decay": 0.01,
+    "batch_size": 128,
+    "epochs": 100,
+    "patience": 20,
+    "optimizer": "AdamW",
+    "scheduler": "CosineAnnealing",
+    "mixed_precision": true
+  },
+  "test_metrics": {
+    "per_target": {
+      "DO": {
+        "r2": 0.463214635848999,
+        "mae": 1.2545838356018066,
+        "rmse": 1.831177830696106,
+        "pearson_r": 0.7572255776777854,
+        "coverage_90pct": 0.7967654482565205,
+        "n_valid": 10697
+      },
+      "Turb": {
+        "r2": 0.18064886331558228,
+        "mae": 10.96142578125,
+        "rmse": 22.815589904785156,
+        "pearson_r": 0.43500059718426576,
+        "coverage_90pct": 0.8808936403508771,
+        "n_valid": 7296
+      },
+      "Temp": {
+        "r2": 0.7756208181381226,
+        "mae": 2.5602645874023438,
+        "rmse": 3.466421365737915,
+        "pearson_r": 0.8823424367054908,
+        "coverage_90pct": 0.8393171418514608,
+        "n_valid": 11364
+      },
+      "SpCond": {
+        "r2": 0.4421982765197754,
+        "mae": 1955.55615234375,
+        "rmse": 6504.51708984375,
+        "pearson_r": 0.6750375576167589,
+        "coverage_90pct": 0.8493518104604381,
+        "n_valid": 11185
+      }
+    },
+    "nll": 6.341893672943115,
+    "n_samples": 11424
+  }
+}

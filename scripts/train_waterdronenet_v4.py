@@ -36,9 +36,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-# Use all GPUs by default unless explicitly set
+# GPU setup — respect CUDA_VISIBLE_DEVICES if already set, default to GPU 2
 if "CUDA_VISIBLE_DEVICES" not in os.environ:
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
 import numpy as np
 import pandas as pd
