@@ -1,0 +1,446 @@
+{
+  "model": "DigitalTwinEngine",
+  "checkpoint": "/home/bcheng/SENTINEL/checkpoints/twin/twin_best.pt",
+  "checkpoint_epoch": 40,
+  "checkpoint_phase": 2,
+  "n_params": 341871,
+  "test_samples": 51549,
+  "total_observations": 702769,
+  "inference_time_seconds": 4321.39,
+  "overall": {
+    "r2": NaN,
+    "mae": NaN,
+    "rmse": NaN,
+    "direction_accuracy": 0.4882728159427643,
+    "coverage_90": 0.13945122792838044
+  },
+  "physics_only_baseline": {
+    "r2": 0.06064176559448242,
+    "mae": 263.023193359375,
+    "rmse": 861.9869384765625,
+    "direction_accuracy": 0.48612701892852783
+  },
+  "naive_baseline": {
+    "r2": 0.9226757884025574,
+    "mae": 37.30414962768555,
+    "rmse": 247.31065368652344
+  },
+  "per_variable": {
+    "dissolved_oxygen": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.5253822803497314,
+      "coverage_90": 0.31453887997007435,
+      "n_observations": 128318,
+      "unit": "mg/L",
+      "physics_r2": -2.3042218685150146,
+      "physics_mae": 3.818220376968384,
+      "physics_rmse": 5.277698040008545
+    },
+    "bod": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": NaN,
+      "coverage_90": NaN,
+      "n_observations": 0,
+      "unit": "mg/L",
+      "physics_r2": NaN,
+      "physics_mae": NaN,
+      "physics_rmse": NaN
+    },
+    "total_nitrogen": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": NaN,
+      "coverage_90": NaN,
+      "n_observations": 0,
+      "unit": "mg/L",
+      "physics_r2": NaN,
+      "physics_mae": NaN,
+      "physics_rmse": NaN
+    },
+    "total_phosphorus": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": NaN,
+      "coverage_90": NaN,
+      "n_observations": 0,
+      "unit": "mg/L",
+      "physics_r2": NaN,
+      "physics_mae": NaN,
+      "physics_rmse": NaN
+    },
+    "chlorophyll_a": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": NaN,
+      "coverage_90": NaN,
+      "n_observations": 0,
+      "unit": "ug/L",
+      "physics_r2": NaN,
+      "physics_mae": NaN,
+      "physics_rmse": NaN
+    },
+    "temperature": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.5182304382324219,
+      "coverage_90": 0.08683685694027739,
+      "n_observations": 286307,
+      "unit": "\u00b0C",
+      "physics_r2": -0.7702531814575195,
+      "physics_mae": 8.259218215942383,
+      "physics_rmse": 10.99783992767334
+    },
+    "ph": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.5013701319694519,
+      "coverage_90": 0.7594329679595279,
+      "n_observations": 37952,
+      "unit": "pH",
+      "physics_r2": -56.87969970703125,
+      "physics_mae": 2.074702024459839,
+      "physics_rmse": 3.80035400390625
+    },
+    "turbidity": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.4329714775085449,
+      "coverage_90": 0.01581585342456993,
+      "n_observations": 250192,
+      "unit": "NTU",
+      "physics_r2": -0.15803837776184082,
+      "physics_mae": 727.08642578125,
+      "physics_rmse": 1444.6217041015625
+    },
+    "doc": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": NaN,
+      "coverage_90": NaN,
+      "n_observations": 0,
+      "unit": "mg/L",
+      "physics_r2": NaN,
+      "physics_mae": NaN,
+      "physics_rmse": NaN
+    },
+    "sediment": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": NaN,
+      "coverage_90": NaN,
+      "n_observations": 0,
+      "unit": "mg/L",
+      "physics_r2": NaN,
+      "physics_mae": NaN,
+      "physics_rmse": NaN
+    }
+  },
+  "per_horizon": {
+    "1d": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.4066266417503357,
+      "coverage_90": 0.2401563604742826,
+      "n_observations": 123049,
+      "physics_r2": 0.6780893802642822,
+      "physics_mae": 131.70452880859375,
+      "physics_rmse": 501.276123046875
+    },
+    "7d": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.47229793667793274,
+      "coverage_90": 0.13325148352772662,
+      "n_observations": 122175,
+      "physics_r2": 0.08241528272628784,
+      "physics_mae": 266.7162780761719,
+      "physics_rmse": 847.326416015625
+    },
+    "14d": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.48680877685546875,
+      "coverage_90": 0.1143129708214086,
+      "n_observations": 121596,
+      "physics_r2": -0.08782577514648438,
+      "physics_mae": 290.9313659667969,
+      "physics_rmse": 923.2584228515625
+    },
+    "30d": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.5103196501731873,
+      "coverage_90": 0.11245803496121852,
+      "n_observations": 120934,
+      "physics_r2": -0.11358976364135742,
+      "physics_mae": 295.15985107421875,
+      "physics_rmse": 935.2197875976562
+    },
+    "90d": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.5632296800613403,
+      "coverage_90": 0.1154324120910857,
+      "n_observations": 114266,
+      "physics_r2": -0.11528229713439941,
+      "physics_mae": 299.9853820800781,
+      "physics_rmse": 945.211181640625
+    },
+    "365d": {
+      "r2": NaN,
+      "mae": NaN,
+      "rmse": NaN,
+      "direction_accuracy": 0.4976525902748108,
+      "coverage_90": 0.11395646606914213,
+      "n_observations": 100749,
+      "physics_r2": -0.1164712905883789,
+      "physics_mae": 304.7504577636719,
+      "physics_rmse": 955.7269897460938
+    }
+  },
+  "per_variable_per_horizon": {
+    "dissolved_oxygen": {
+      "1d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.43959835171699524,
+        "n_observations": 22607,
+        "physics_r2": -1.8767597675323486
+      },
+      "7d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5031679272651672,
+        "n_observations": 22412,
+        "physics_r2": -2.3318326473236084
+      },
+      "14d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5125707387924194,
+        "n_observations": 22274,
+        "physics_r2": -2.4879770278930664
+      },
+      "30d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5406494736671448,
+        "n_observations": 22079,
+        "physics_r2": -2.539489269256592
+      },
+      "90d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.6285617351531982,
+        "n_observations": 20636,
+        "physics_r2": -2.308028221130371
+      },
+      "365d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5393773913383484,
+        "n_observations": 18310,
+        "physics_r2": -2.293896436691284
+      }
+    },
+    "bod": {},
+    "total_nitrogen": {},
+    "total_phosphorus": {},
+    "chlorophyll_a": {},
+    "temperature": {
+      "1d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.43653109669685364,
+        "n_observations": 50056,
+        "physics_r2": -0.32913851737976074
+      },
+      "7d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.499386191368103,
+        "n_observations": 49689,
+        "physics_r2": -0.6309705972671509
+      },
+      "14d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5140239596366882,
+        "n_observations": 49451,
+        "physics_r2": -0.8725944757461548
+      },
+      "30d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5420733690261841,
+        "n_observations": 49176,
+        "physics_r2": -1.0037198066711426
+      },
+      "90d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.6187268495559692,
+        "n_observations": 46468,
+        "physics_r2": -0.9642727375030518
+      },
+      "365d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.503557026386261,
+        "n_observations": 41467,
+        "physics_r2": -0.8558965921401978
+      }
+    },
+    "ph": {
+      "1d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.43315112590789795,
+        "n_observations": 6769,
+        "physics_r2": -60.065486907958984
+      },
+      "7d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.4882134795188904,
+        "n_observations": 6745,
+        "physics_r2": -60.44969940185547
+      },
+      "14d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.4997020363807678,
+        "n_observations": 6712,
+        "physics_r2": -60.17481994628906
+      },
+      "30d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5198615789413452,
+        "n_observations": 6646,
+        "physics_r2": -58.571022033691406
+      },
+      "90d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5523032546043396,
+        "n_observations": 6252,
+        "physics_r2": -52.90143585205078
+      },
+      "365d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.5263049006462097,
+        "n_observations": 4828,
+        "physics_r2": -45.952842712402344
+      }
+    },
+    "turbidity": {
+      "1d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.3511016368865967,
+        "n_observations": 43617,
+        "physics_r2": 0.6032614707946777
+      },
+      "7d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.42278844118118286,
+        "n_observations": 43329,
+        "physics_r2": -0.13087141513824463
+      },
+      "14d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.4403253197669983,
+        "n_observations": 43159,
+        "physics_r2": -0.3403881788253784
+      },
+      "30d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.4569981098175049,
+        "n_observations": 43033,
+        "physics_r2": -0.3716270923614502
+      },
+      "90d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.46890735626220703,
+        "n_observations": 40910,
+        "physics_r2": -0.37502872943878174
+      },
+      "365d": {
+        "r2": NaN,
+        "mae": NaN,
+        "rmse": NaN,
+        "direction_accuracy": 0.46591413021087646,
+        "n_observations": 36144,
+        "physics_r2": -0.3793710470199585
+      }
+    },
+    "doc": {},
+    "sediment": {}
+  },
+  "state_variables": [
+    "dissolved_oxygen",
+    "bod",
+    "total_nitrogen",
+    "total_phosphorus",
+    "chlorophyll_a",
+    "temperature",
+    "ph",
+    "turbidity",
+    "doc",
+    "sediment"
+  ],
+  "forecast_horizons": [
+    1,
+    7,
+    14,
+    30,
+    90,
+    365
+  ]
+}
