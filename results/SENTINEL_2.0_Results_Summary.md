@@ -1,10 +1,10 @@
-# SENTINEL 2.0 - Comprehensive Results Summary
+# SENTINEL - Comprehensive Results Summary
 ## Stockholm Junior Water Prize 2026 Submission
 **Generated: 2026-05-28**
 
 ---
 
-## 1. Core Detection Performance (SENTINEL 1.0 Encoders)
+## 1. Encoder Performance
 
 | Model | Modality | Key Metric | Notes |
 |-------|----------|-----------|-------|
@@ -34,10 +34,10 @@ Using real USGS NWIS data (no synthetic data):
 
 **Mean lead time: 66.4 days (6 original USGS events) / 32 days (all 31 events including NEON + research-validated)**
 
-## 3. New Model Benchmarks (SENTINEL 2.0 - Phase 1-4)
+## 3. Model Benchmarks
 
-### Phase 1: Architectural Advances
-| Model | Metric | Value | Status |
+### Multimodal & Spatial Models
+| Model | Metric | Value | Notes |
 |-------|--------|-------|--------|
 | Foundation Model | Val AUROC | 0.653 (test 0.373) | Limited multimodal co-occurrence in training data |
 | MoME Fusion | Val AUROC | 0.539 (test 0.420) | Same data limitation as foundation model |
@@ -45,7 +45,7 @@ Using real USGS NWIS data (no synthetic data):
 | Stream GNN | Test AUROC=1.000, F1=0.991 | Real NHDPlus topology | 561 nodes, 338 edges; **NOTE**: anomaly labels are synthetic (random injection + BFS propagation) |
 | SENTINEL-Lite (HydroDenseNet) | Test: Temp R²=0.776, DO R²=0.463, Turb R²=0.181, SpCond R²=0.442 | Real S2 imagery (4-band RGB+NIR, 224x224), spatial holdout | 8.4M params, 57K train/11K test from 399 stations, DenseNet121 + SpectralStem + CBAM + multi-scale FPN + per-target expert MLPs |
 
-### Phase 3-4: Biological Prediction & Digital Twin
+### Biological & Ecosystem Models
 | Model | Metric | Value | Notes |
 |-------|--------|-------|-------|
 | Species Health Index | Health R^2 | 0.9996 | 6 keystone species, occ_acc=99.9%, 5,462 real BioData sites (385K invert + 16K fish), spatial holdout |
@@ -53,43 +53,32 @@ Using real USGS NWIS data (no synthetic data):
 | Digital Twin | Test MSE | 786.1 (45.5% vs physics-only) | 341K params, 303K train/51K test, 10 state vars, 6 horizons (1d–365d). Per-horizon: 1d=47.6, 7d=421.4, 14d=614.8, 30d=673.0, 90d=943.2, 365d=1979.3 |
 | ARG Surveillance | R^2 | -0.008 | **INSUFFICIENT DATA**: pseudo-labels from OTU composition, no real metagenomic ARG measurements |
 
-### Active Training (2026-06-01)
-- **Species Health**: COMPLETE on real BioData — R²=0.9996, occ_acc=99.9%, 5,462 sites
-- **Disease Forecast**: COMPLETE v5 — test_loss=0.760, val_loss=0.729, 120 epochs on 499K real USGS samples. Per-pathogen: cyano=0.297, vibrio≈0, naegleria=0.032, schisto=0.030
-- **Digital Twin**: COMPLETE v2 — 80 epochs on 303K+ real USGS samples. v3 killed (ODE integration too slow at 10+ hrs/epoch)
-
-### Completed This Session
-- **AquaSSM**: MPP 15 epochs, val_loss=0.0043, test RMSE=0.83 on 20K unseen-site samples
-- **WaterDroneNet (SENTINEL Mini)**: Rebuilt for real Sentinel-2 imagery input (no sensor data). 12,000 paired S2+WQ samples from 379 USGS stations (19K+ cached tiles). Spatial holdout test: Temp R²=0.508, DO R²=0.257, pH R²=0.124. Validates multimodal architecture: imagery alone captures temperature and partial DO, but pH/Turb/SpCond require sensor data.
-- **SENTINEL Mini Trigger System**: Built drone-to-station activation pipeline (anomaly scoring → nearest-K station selection → LoRa RF trigger → full SENTINEL confirmation)
-- **Disease Forecast**: v5 COMPLETE — test_loss=0.760 (22% improvement over v4's 0.974). 120 epochs, 499K train, BCE NaN fix, real USGS data only
-- **Digital Twin**: Phase 2 complete (80 total epochs), test MSE=786.1 vs physics-only 1442.0 (45.5% improvement)
+### Training Status (2026-06-01)
+- **Species Health**: COMPLETE — R²=0.9996, occ_acc=99.9%, 5,462 sites
+- **Disease Forecast**: COMPLETE — test_loss=0.760, val_loss=0.729, 120 epochs on 499K real USGS samples
+- **Digital Twin**: COMPLETE — 80 epochs on 303K+ real USGS samples, test MSE=786.1 vs physics-only 1442.0 (45.5% improvement)
   - Per-horizon test MSE: 1d=47.6, 7d=421.4, 14d=614.8, 30d=673.0, 90d=943.2, 365d=1979.3
   - Per-variable test MSE: DO=19.1, BOD=13.3, TN=2.6, TP=0.01, Chl-a=79.6, Temp=91.8, pH=10.9, Turb=215.7, DOC=26.8, Sediment=7339.1
-- **exp4 Satellite Imagery**: Unblocked (lazy imports fix), 6 events analyzed with trained fusion head
-- **Digital Twin Real-World Validation**: 6/8 case studies evaluated (2 skipped — no station data)
-  - Mean MSE across all horizons: 1595.3
-  - Direction accuracy vs observed: 10/19 (52.6%)
-  - DO MAE: 1.7–3.3 mg/L across events; Temp MAE: 3.8–15.8°C
-  - Turbidity poorly calibrated (MAE 12–136 NTU) — needs improved normalization
-  - NOTE: Results from pre-v3 checkpoint; will re-evaluate after v3 training completes
+- **SENTINEL-Lite**: COMPLETE — Temp R²=0.776, DO R²=0.463, SpCond R²=0.442, Turb R²=0.181
+- **AquaSSM**: COMPLETE — MPP 15 epochs, val_loss=0.0043, test RMSE=0.83 on 20K unseen-site samples
 
-## 4. Data Infrastructure
+### Digital Twin Real-World Validation
+- 6/8 case studies evaluated (Lake Erie HAB, Gulf Dead Zone, Chesapeake, Iowa Nitrate, Klamath HAB, Mississippi Salinity)
+- Mean MSE across all horizons: 1595.3
+- Direction accuracy vs observed: 10/19 (52.6%)
+- DO MAE: 1.7–3.3 mg/L across events; Temp MAE: 3.8–15.8°C
+- Turbidity poorly calibrated (MAE 12–136 NTU)
 
-### SENTINEL-DB
+## 4. Data Infrastructure (SENTINEL-DB)
+
 - **390M+ records** across 13 data sources
 - **383 USGS NWIS stations** with real-time sensor data
 - **32 NEON aquatic sites** with water quality measurements
 - **51.4M NEON sensor rows** (with quality flag filtering)
-
-### Phase 2 Data
-| Source | Status | Records |
-|--------|--------|---------|
-| NHDPlusV2 | **Downloaded** | 561 sites, 338 edges, stream orders 1-8 |
-| USGS BioData | **Downloaded** | 701K records (384K inverts, 300K WQP, 16K fish) |
-| NOAA HABs (ERDDAP chl-a) | **Downloaded** | 146K chlorophyll-a records (VIIRS, MODIS) |
-| NOAA HABs (WQP) | **Downloaded** | 755K water quality records via Water Quality Portal |
-| Sentinel-3 OLCI | Cataloged 300 products | Needs CDSE credentials for download |
+- **701K USGS BioData** records (384K inverts, 300K WQP, 16K fish)
+- **755K Water Quality Portal** HAB-related records
+- **146K NOAA ERDDAP** chlorophyll-a records (VIIRS, MODIS)
+- **561 NHDPlusV2 sites**, 338 edges, stream orders 1-8
 
 ## 5. Prospective Validation
 
@@ -130,13 +119,10 @@ Honest assessment of what's learnable from sensor data alone:
 
 ## 8. System Architecture
 
-### Core Detection (SENTINEL 1.0)
 - **5 specialized encoders** + Perceiver IO fusion (AUROC 0.992 ablation / 0.939 holdout)
 - **PPO cascade controller** with 4-tier escalation
 - **Conformal prediction** (94% coverage, sensor encoder)
 - **PCMCI+ causal discovery** (375 chains, 44 novel)
-
-### SENTINEL 2.0 Extensions
 - **Stream Network GNN**: Upstream-downstream contamination propagation (561 NHDPlus sites)
 - **SENTINEL-Lite**: Low-cost drone + HydroDenseNet vision model for imagery-only water quality screening (Temp R²=0.776, DO R²=0.463, Turb R²=0.181, SpCond R²=0.442 on spatially held-out stations). 57K train/11K test from 399 USGS stations, 8.4M param HydroDenseNet (DenseNet121 + SpectralStem + CBAM + multi-scale FPN + per-target expert MLPs). Dual-camera payload: Raspberry Pi Camera Module 3 Wide (RGB) + Raspberry Pi NoIR Camera Module V2 (8MP, 1080P30) for near-infrared. Designed as triage layer — drone screens water bodies, anomalies trigger full SENTINEL multimodal confirmation
 - **SENTINEL-Lite Trigger System**: Drone-to-station activation pipeline — SENTINEL-Lite anomaly scoring → station selection (nearest K within LoRa range) → RF trigger → full SENTINEL confirmation. Supports 5 alert levels, duty cycling, and confirmation feedback loop

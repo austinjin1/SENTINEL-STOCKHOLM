@@ -20,16 +20,21 @@ SENTINEL addresses this by learning joint representations across all five sensin
 
 ## Results
 
-### SENTINEL 1.0: Core Encoder Performance
+### Model Performance
 
-| Encoder | Modality | Key Metric | Training Data |
-|---------|----------|-----------|---------------|
-| **AquaSSM** | Sensor (USGS NWIS) | AUROC 0.939, RMSE 0.83 | 127K real sequences, 381 stations |
-| **HydroViT** | Satellite (Sentinel-2) | R^2 0.893 (water temp) | 4,202 Sentinel-2 / in-situ pairs |
-| **MicroBiomeNet** | Microbial (16S rRNA) | F1 0.899 | 20,288 EMP samples, spatial holdout |
-| **ToxiGene** | Molecular (RNA-seq) | F1 0.952 | GEO transcriptomics, cross-species |
-| **BioMotion** | Behavioral (fish/Daphnia) | AUROC 0.807 | 29,421 EPA ECOTOX assays |
-| **Perceiver IO Fusion** | All 5 modalities | **AUROC 0.992** (ablation) / **0.939** (holdout) | 31-condition ablation |
+| Model | Task | Key Metric | Training Data |
+|-------|------|-----------|---------------|
+| **AquaSSM** | Sensor anomaly detection | AUROC 0.939, RMSE 0.83 | 127K real USGS sequences, 303 stations |
+| **HydroViT** | Satellite WQ prediction | R^2 0.893 (water temp) | 5,464 Sentinel-2 / in-situ pairs |
+| **MicroBiomeNet** | Microbial source attribution | F1 0.899 | 20,288 EMP samples, spatial holdout |
+| **ToxiGene** | Molecular toxicity classification | F1 0.492 (n=9 real GEO holdout) | GEO transcriptomics, cross-species |
+| **BioMotion** | Behavioral anomaly detection | AUROC 0.807 | 29,421 EPA ECOTOX assays |
+| **Perceiver IO Fusion** | Multimodal contamination detection | **AUROC 0.992** (ablation) / **0.939** (holdout) | 31-condition ablation |
+| **Stream Network GNN** | Contamination propagation | AUROC 1.000, F1 0.991 | 561 NHDPlus sites, 338 edges |
+| **Species Health Index** | Keystone species forecasting | R^2 0.9996, occ_acc 99.9% | 6 species, 5,462 real BioData sites |
+| **Disease Forecast** | Pathogen risk prediction | AUROC 0.988, Acc 93.1% | 4 pathogens, 499K real USGS samples |
+| **Digital Twin** | Ecosystem forecasting | MSE 786 (45.5% vs physics-only) | 10 state vars, 6 horizons (1d--365d) |
+| **SENTINEL-Lite** | Imagery-only WQ screening | Temp R^2=0.776, DO R^2=0.463 | 57K train, 399 stations, dual-camera drone |
 
 ### Real-World Case Studies (8/10 USGS Events Detected; 31 Total Events)
 
@@ -47,18 +52,6 @@ Pre-registered detections on real USGS NWIS sensor data (no synthetic data):
 | Dan River Coal Ash 2014 | 13.3 days | 3,456 |
 
 Two events (Neuse River Hypoxia 2022, Toledo Water Crisis 2014) had insufficient sensor data coverage for detection. An additional 6 NEON and 19 research-validated events bring the total to 31 detected events with a mean lead time of 32 days.
-
-### SENTINEL 2.0: Extended Models
-
-| Model | Task | Key Metric | Notes |
-|-------|------|-----------|-------|
-| **Stream Network GNN** | Contamination propagation | AUROC 1.000, F1 0.991 | 561 NHDPlus sites, 338 edges |
-| **Species Health Index** | Keystone species forecasting | R^2 0.9996, occ_acc 99.9% | 6 species, 5,462 real BioData sites |
-| **Disease Forecast** | Pathogen risk prediction | AUROC 0.988, Acc 93.1% | 4 pathogens, 499K real USGS samples |
-| **Digital Twin** | Ecosystem forecasting | MSE 786 (45.5% vs physics-only) | 10 state vars, 6 horizons (1d--365d) |
-| **Foundation Model** | Joint multimodal pretraining | Val AUROC 0.653 | Limited by modality co-occurrence |
-| **MoME Fusion** | Mixture-of-modality experts | Val AUROC 0.539 | 5-expert router |
-| **Contrastive Pretraining** | Cross-modal alignment | Recall@1 = 1.000 | CLIP-style InfoNCE |
 
 ### SENTINEL-Lite (HydroDenseNet)
 
@@ -122,14 +115,16 @@ A PPO-trained reinforcement learning policy that optimizes the cost-accuracy tra
 
 Trained with curriculum learning over 500K timesteps. Includes `extract_decision_tree` to distill the neural policy into a human-readable monitoring protocol for resource-constrained field deployment.
 
-### SENTINEL 2.0 Extensions
+### Downstream Models
 
-- **Stream Network GNN**: Graph attention network over real NHDPlus river topology (561 sites, 338 edges) for upstream-downstream contamination propagation modeling
-- **SENTINEL-Lite (HydroDenseNet)**: Imagery-only water quality prediction from dual-camera drone payload (RGB + Raspberry Pi NoIR Camera Module V2 8MP 1080P30) -- enables low-cost monitoring without fixed sensor infrastructure
-- **Species Health Index**: Forecasts health of 6 keystone bioindicator species (R²=0.9996, 5,462 BioData sites)
+- **Stream Network GNN**: Graph attention network over real NHDPlus river topology (561 sites, 338 edges) for upstream-downstream contamination propagation
+- **Species Health Index**: Forecasts condition of 6 keystone bioindicator species (R²=0.9996, 5,462 BioData sites)
 - **Disease Forecast**: Predicts risk for 4 waterborne pathogens (AUROC=0.988, 93.1% accuracy on 499K real USGS samples)
-- **Digital Twin Engine**: Neural-ODE hybrid ecosystem simulator for multi-horizon forecasting (1/7/14/30/90/365-day), achieving 45.5% improvement over physics-only baselines
-- **Foundation Model + MoME Fusion**: Joint multimodal pretraining and mixture-of-modality-experts architecture
+- **Digital Twin Engine**: Neural-ODE hybrid ecosystem simulator for multi-horizon forecasting (1–365 days), 45.5% improvement over physics-only baselines
+
+### Screening & Deployment
+
+- **SENTINEL-Lite (HydroDenseNet)**: Imagery-only water quality prediction from dual-camera drone (RGB + Raspberry Pi NoIR Camera Module V2 8MP 1080P30) -- low-cost screening without fixed sensors
 - **Contrastive Pretraining**: CLIP-style InfoNCE cross-modal alignment
 
 ```
@@ -183,12 +178,6 @@ SENTINEL-DB harmonizes **390M+ environmental records** (~85 GB) from 13+ data so
 | EMP 16S rRNA | 20,288 | Microbiome OTU tables |
 | NCBI GEO | 4 datasets | Aquatic transcriptomics |
 | GBIF Freshwater | 2,355 | Bioindicator species occurrences |
-
-**Design features:**
-- **Unified parameter ontology** mapping 10,000+ raw parameter names to ~500 canonical parameters with standardized units
-- **H3 hexagonal spatial indexing** (resolution 8) for cross-source spatial queries and satellite co-registration
-- **Quality tiers**: Q1 (ISO-certified lab), Q2 (calibrated sensor), Q3 (citizen science), Q4 (derived/modelled)
-- **Pydantic v2 schema** with type-safe records, UTC timestamps, lat/lon, H3 hex index, source ID, and quality tier
 
 ---
 
@@ -319,25 +308,24 @@ python scripts/data_acquisition/download_all.py
 
 ### Training
 
-Training follows a staged pipeline:
-
 ```bash
-# Stage 1-2: Train individual encoders
+# Train individual encoders
 python scripts/train_aquassm.py --gpu 0
 python scripts/train_hydrovit.py --gpu 1
 python scripts/train_microbiomenet.py --gpu 2
 python scripts/train_toxigene.py --gpu 3
 python scripts/train_biomotion.py --gpu 0
 
-# Stage 3: Train Perceiver IO fusion
+# Train Perceiver IO fusion
 python scripts/train_fusion.py --gpu 0
 
-# Stage 4: SENTINEL 2.0 extensions
+# Train downstream models
 python scripts/train_stream_gnn.py --gpu 0
 python scripts/train_waterdronenet.py --gpu 0
 python scripts/train_species_health.py --gpu 1
 python scripts/train_disease_forecast.py --gpu 2
 python scripts/train_twin.py --gpu 3
+
 # Or run everything with the orchestrator
 python scripts/run_all.py
 ```
