@@ -137,19 +137,24 @@ def build_trajectory(group: pd.DataFrame) -> dict | None:
         meas_code = str(row.get("measurement", "")).strip()
         feat_idx  = BEH_MEASUREMENTS.get(meas_code, 7)
 
-        effect_val  = float(row["effect_pct"]) / 100.0
         conc_norm_v = float(concs_norm[i])
 
-        keypoints_raw[i, feat_idx, 0] = np.clip(effect_val, 0.0, 1.0)
+        # AUDIT FIX 2026-05-31: Removed effect_pct from input features.
+        # Previously, effect_pct/100 was used as features[0-11] and features[14],
+        # but effect_pct > 20 defines the anomaly label — textbook feature leakage.
+        # Now features encode WHAT was measured (one-hot) and HOW (conc, duration),
+        # not the outcome (effect magnitude).
+
+        # One-hot: which behavioral channel was measured (independent of effect size)
+        keypoints_raw[i, feat_idx, 0] = 1.0  # measurement channel indicator
         keypoints_raw[i, feat_idx, 1] = conc_norm_v
 
-        features_raw[i, feat_idx] = np.clip(effect_val, 0.0, 1.0)
+        features_raw[i, feat_idx] = 1.0  # one-hot measurement channel (was: effect_pct leak)
         features_raw[i, 12] = conc_norm_v
         dur = pd.to_numeric(row.get("obs_duration_mean"), errors="coerce")
         features_raw[i, 13] = float(dur) / 96.0 if pd.notna(dur) else 0.5
-        features_raw[i, 14] = np.clip(effect_val, 0.0, 2.0)
-        sig = str(row.get("significance_code", "")).strip()
-        features_raw[i, 15] = 1.0 if sig in {"*", "**", "***", "SIG"} else 0.0
+        features_raw[i, 14] = conc_norm_v ** 2  # quadratic concentration (was: effect_pct leak)
+        features_raw[i, 15] = 0.0  # removed significance_code (correlated with label)
 
     # Interpolate to T=200
     if n_pts >= T:
@@ -224,104 +229,57 @@ def load_ecotox_expanded() -> pd.DataFrame:
 
 
 def main() -> None:
-    log("=== BioMotion Data Expansion ===")
+    log("=== BioMotion Data Expansion (FULL REGENERATION — no copied files) ===")
     log(f"Output: {OUT_DIR}")
 
-    # ── Step 1: Copy existing behavioral_real files ────────────────────────
-    log("\nStep 1: Copying existing behavioral_real files...")
-    existing_files = sorted(REAL_DIR.glob("traj_*.npz"))
-    log(f"  Found {len(existing_files)} existing files")
+    # ── Step 1: Clear old output and regenerate ALL from ECOTOX ───────────
+    # AUDIT FIX 2026-05-31: Previously copied behavioral_real files as-is,
+    # but those contained leaked effect_pct features. Now we regenerate
+    # ALL trajectories from ECOTOX using the fixed build_trajectory().
+    log("\nStep 1: Clearing old output directory for full regeneration...")
+    old_files = sorted(OUT_DIR.glob("traj_*.npz"))
+    if old_files:
+        log(f"  Removing {len(old_files)} old trajectory files...")
+        for f in old_files:
+            f.unlink()
+    log("  Output directory cleared.")
 
-    n_copied = 0
-    for src in existing_files:
-        dst = OUT_DIR / src.name
-        if not dst.exists():
-            shutil.copy2(src, dst)
-        n_copied += 1
-    log(f"  Copied {n_copied} files from behavioral_real/")
-
-    # ── Step 2: Extract new tests from ECOTOX ────────────────────────────
-    log("\nStep 2: Extracting new tests from ECOTOX database...")
+    # ── Step 2: Extract ALL tests from ECOTOX ────────────────────────────
+    log("\nStep 2: Extracting ALL tests from ECOTOX database...")
     beh_results = load_ecotox_expanded()
-
-    # Find test IDs already processed (from metadata or by counting existing files)
-    meta_path = REAL_DIR / "metadata.json"
-    if meta_path.exists():
-        meta = json.loads(meta_path.read_text())
-        existing_n = meta.get("n_total", len(existing_files))
-    else:
-        existing_n = len(existing_files)
-
-    # The existing files cover the first N test IDs processed by process_ecotox_behavioral.py
-    # We need to find which test IDs are NOT yet in behavioral_real
-    # Re-process using same logic to identify new tests
-    log("  Identifying test IDs already covered...")
-
-    # Run same species/test filter as original script to find what was already done
-    species = pd.read_csv(ECOTOX_DIR / "validation" / "species.txt", sep="|", low_memory=False)
-    old_mask = species["common_name"].str.contains("Water Flea", case=False, na=False)
-    old_nums = set(species[old_mask]["species_number"].tolist())
-
-    tests_all = pd.read_csv(ECOTOX_DIR / "tests.txt", sep="|",
-        usecols=["test_id", "species_number"], low_memory=False)
-    old_test_ids = set(tests_all[tests_all["species_number"].isin(old_nums)]["test_id"])
-
-    # All test IDs in our expanded query
     all_test_ids = set(beh_results["test_id"].tolist())
-    # old_test_ids covers ALL Water Flea tests regardless of effect type
-    # so new_test_ids = any test NOT for a classic Water Flea species (very few)
-    # Better approach: new tests = any test not yet converted to behavioral_real
-    # We know behavioral_real = 17,074 files (n_copied). We need to find which
-    # test IDs were already processed. Since the original script processed them
-    # in order, we identify them by running the same group logic and tracking
-    # what would have been the first 17,074 (or rather all that succeeded).
-    # Simplest: old_test_ids are the Water Flea tests that had BEH/MOR/PHY/MVT/REP results
-    old_beh_effects = {"BEH","BEH/","MOR","MOR/","PHY","PHY/","MVT","REP","REP/"}
-    old_beh_results = beh_results[
-        beh_results["test_id"].isin(old_test_ids) &
-        beh_results["effect"].isin(old_beh_effects)
-    ]
-    processed_test_ids = set(old_beh_results["test_id"].tolist())
-    new_test_ids = all_test_ids - processed_test_ids
-    log(f"  Old Water Flea test IDs: {len(old_test_ids)}")
-    log(f"  Already-processed behavioral test IDs: {len(processed_test_ids)}")
-    log(f"  Total test IDs in expanded query: {len(all_test_ids)}")
-    log(f"  New test IDs to process: {len(new_test_ids)}")
+    log(f"  Total test IDs to process: {len(all_test_ids)}")
 
-    # ── Step 3: Build new trajectories ───────────────────────────────────
-    log("\nStep 3: Building new trajectories from new test IDs...")
-    new_results = beh_results[beh_results["test_id"].isin(new_test_ids)]
-    grouped = new_results.groupby("test_id")
+    # ── Step 3: Build ALL trajectories with fixed features ───────────────
+    log("\nStep 3: Building ALL trajectories with fixed features (no effect_pct)...")
+    grouped = beh_results.groupby("test_id")
 
-    n_new_saved = 0
-    n_new_normal = 0
-    n_new_anomaly = 0
-    n_new_skipped = 0
-    start_idx = n_copied  # continue numbering after existing files
+    n_saved = 0
+    n_normal = 0
+    n_anomaly = 0
+    n_skipped = 0
 
     for test_id, group in grouped:
         traj = build_trajectory(group)
         if traj is None:
-            n_new_skipped += 1
+            n_skipped += 1
             continue
 
-        # Number continuing from existing
-        file_idx = start_idx + n_new_saved
-        out_path = OUT_DIR / f"traj_{file_idx:05d}.npz"
+        out_path = OUT_DIR / f"traj_{n_saved:05d}.npz"
         np.savez_compressed(out_path, **traj)
 
         if traj["is_anomaly"]:
-            n_new_anomaly += 1
+            n_anomaly += 1
         else:
-            n_new_normal += 1
-        n_new_saved += 1
+            n_normal += 1
+        n_saved += 1
 
-        if n_new_saved % 500 == 0:
-            log(f"  New: {n_new_saved} trajectories "
-                f"({n_new_normal} normal, {n_new_anomaly} anomaly)")
+        if n_saved % 2000 == 0:
+            log(f"  Saved: {n_saved} trajectories "
+                f"({n_normal} normal, {n_anomaly} anomaly)")
 
-    log(f"\n  New trajectories: {n_new_saved} saved ({n_new_skipped} skipped)")
-    log(f"  New normal: {n_new_normal} | New anomaly: {n_new_anomaly}")
+    log(f"\n  Total trajectories: {n_saved} saved ({n_skipped} skipped)")
+    log(f"  Normal: {n_normal} | Anomaly: {n_anomaly}")
 
     # ── Step 4: Count totals and save metadata ────────────────────────────
     total_files = sorted(OUT_DIR.glob("traj_*.npz"))
@@ -350,11 +308,11 @@ def main() -> None:
         "n_total": n_total,
         "n_normal": n_total_normal,
         "n_anomaly": n_total_anomaly,
-        "n_from_behavioral_real": n_copied,
-        "n_new_from_ecotox": n_new_saved,
-        "n_new_skipped": n_new_skipped,
+        "n_all_from_ecotox": n_saved,
+        "n_skipped": n_skipped,
         "anomaly_threshold_pct": ANOMALY_EFFECT_THRESHOLD,
         "source": "EPA ECOTOX — Daphnia/Water Flea species, all behavioral/functional endpoints",
+        "feature_audit": "FIXED 2026-05-31: features are one-hot measurement channels + concentration + duration, NO effect_pct",
         "effects_included": [
             "BEH", "MOR", "PHY", "MVT", "REP",   # original
             "ITX", "ENZ", "DVP", "GRO", "AVO", "IMM", "NER", "FDB",  # expanded

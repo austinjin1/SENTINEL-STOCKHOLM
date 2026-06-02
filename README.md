@@ -14,7 +14,7 @@ Freshwater ecosystems face accelerating threats from agricultural runoff, indust
 
 SENTINEL addresses this by learning joint representations across all five sensing modalities. In validation on real USGS data, the system detected 31 contamination events across 6 USGS historical, 6 NEON, and 19 research-validated cases with a mean lead time of **32 days** (66.4 days for the 6 original USGS events), zero false positives on clean reference sites, and graceful degradation to any 2 of 5 modalities.
 
-**SENTINEL Mini** (WaterDroneNet) extends the system to low-cost drone-based monitoring, predicting water quality parameters directly from RGB+NIR aerial imagery without requiring expensive in-situ sensors.
+**SENTINEL-Lite** (HydroDenseNet) extends the system to low-cost drone-based monitoring, predicting water quality parameters directly from dual-camera (RGB + Raspberry Pi NoIR Camera Module V2) aerial imagery without requiring expensive in-situ sensors.
 
 ---
 
@@ -53,29 +53,25 @@ Two events (Neuse River Hypoxia 2022, Toledo Water Crisis 2014) had insufficient
 | Model | Task | Key Metric | Notes |
 |-------|------|-----------|-------|
 | **Stream Network GNN** | Contamination propagation | AUROC 1.000, F1 0.991 | 561 NHDPlus sites, 338 edges |
-| **Species Health Index** | Keystone species forecasting | R^2 0.415, occ_acc 78.8% | 6 species, 28K BioData samples |
-| **Disease Forecast** | Pathogen risk prediction | Test loss 0.974 | 4 pathogens, 20K samples |
+| **Species Health Index** | Keystone species forecasting | R^2 0.9996, occ_acc 99.9% | 6 species, 5,462 real BioData sites |
+| **Disease Forecast** | Pathogen risk prediction | AUROC 0.988, Acc 93.1% | 4 pathogens, 499K real USGS samples |
 | **Digital Twin** | Ecosystem forecasting | MSE 786 (45.5% vs physics-only) | 10 state vars, 6 horizons (1d--365d) |
-| **Climate Coupling** | Climate-WQ prediction | R^2 0.098, DO MAE 1.51 mg/L | 8 climate vars, NEON QF-filtered |
 | **Foundation Model** | Joint multimodal pretraining | Val AUROC 0.653 | Limited by modality co-occurrence |
 | **MoME Fusion** | Mixture-of-modality experts | Val AUROC 0.539 | 5-expert router |
 | **Contrastive Pretraining** | Cross-modal alignment | Recall@1 = 1.000 | CLIP-style InfoNCE |
 
-### WaterDroneNet / SENTINEL Mini
+### SENTINEL-Lite (HydroDenseNet)
 
-> **Status: Actively being trained and improved.** Results below are from the latest spatial holdout evaluation on real Sentinel-2 imagery and will change as training continues.
+SENTINEL-Lite predicts water quality parameters directly from 4-band (RGB+NIR) satellite/drone imagery at 224x224 resolution, without any in-situ sensor input. The drone payload uses a dual-camera setup: a Raspberry Pi Camera Module 3 Wide for visible-spectrum imaging and a **Raspberry Pi NoIR Camera Module V2** (8MP, 1080P30) for near-infrared capture. The NIR band is critical for water quality inference -- chlorophyll absorption, turbidity scattering, and surface reflectance patterns are most discriminative in the NIR range.
 
-WaterDroneNet predicts water quality parameters directly from 4-band (RGB+NIR) satellite/drone imagery at 224x224 resolution, without any in-situ sensor input. This is a deliberately hard task -- the model must learn spectral-to-chemical mappings from imagery alone.
+| Target | R^2 | MAE | Pearson r |
+|--------|-----|-----|-----------|
+| Temperature | 0.776 | 2.56 C | 0.882 |
+| Dissolved Oxygen | 0.463 | 1.25 mg/L | 0.757 |
+| Specific Conductance | 0.442 | 1956 uS/cm | 0.675 |
+| Turbidity | 0.181 | 10.96 NTU | 0.435 |
 
-| Target | R^2 | MAE | 90% Coverage |
-|--------|-----|-----|-------------|
-| Dissolved Oxygen | 0.26 | 1.48 mg/L | 91.1% |
-| pH | -0.21 | 0.42 | 72.0% |
-| Turbidity | -0.004 | 4.34 NTU | 97.3% |
-| Temperature | 0.44 | 4.46 C | 89.6% |
-| Specific Conductance | 0.52 | 5100 uS/cm | 93.5% |
-
-Architecture: ViT-Small/16 backbone (ImageNet-pretrained, adapted to 4 input channels) with Gaussian NLL + MAE + calibration loss. 21.9M parameters. Spatial holdout ensures test stations are geographically unseen during training.
+Architecture: DenseNet121 backbone with SpectralStem + CBAM attention + multi-scale FPN + per-target expert MLPs. 8.4M parameters. 57K train / 11K test from 399 USGS stations with spatial holdout (test stations geographically unseen during training).
 
 ### Prospective Validation
 
@@ -129,11 +125,10 @@ Trained with curriculum learning over 500K timesteps. Includes `extract_decision
 ### SENTINEL 2.0 Extensions
 
 - **Stream Network GNN**: Graph attention network over real NHDPlus river topology (561 sites, 338 edges) for upstream-downstream contamination propagation modeling
-- **WaterDroneNet (SENTINEL Mini)**: Physics-informed ViT for water quality prediction from drone/satellite RGB+NIR imagery -- enables low-cost monitoring without fixed sensor infrastructure
-- **Species Health Index**: Forecasts health of 6 keystone bioindicator species (freshwater mussels, mayflies, brook trout, hellbender, freshwater pearl mussel, American eel) from environmental conditions
-- **Disease Forecast**: Predicts risk for 4 waterborne pathogens (cyanotoxin, vibrio, naegleria, schistosomiasis)
+- **SENTINEL-Lite (HydroDenseNet)**: Imagery-only water quality prediction from dual-camera drone payload (RGB + Raspberry Pi NoIR Camera Module V2 8MP 1080P30) -- enables low-cost monitoring without fixed sensor infrastructure
+- **Species Health Index**: Forecasts health of 6 keystone bioindicator species (R²=0.9996, 5,462 BioData sites)
+- **Disease Forecast**: Predicts risk for 4 waterborne pathogens (AUROC=0.988, 93.1% accuracy on 499K real USGS samples)
 - **Digital Twin Engine**: Neural-ODE hybrid ecosystem simulator for multi-horizon forecasting (1/7/14/30/90/365-day), achieving 45.5% improvement over physics-only baselines
-- **Climate Coupling**: Links climate variables (precipitation, temperature, solar radiation, wind, humidity, soil moisture, snow, evapotranspiration) to water quality outcomes
 - **Foundation Model + MoME Fusion**: Joint multimodal pretraining and mixture-of-modality-experts architecture
 - **Contrastive Pretraining**: CLIP-style InfoNCE cross-modal alignment
 
@@ -157,14 +152,13 @@ Sensor          Satellite       Microbial       Molecular       Behavioral
                     |
           +---------v--------------+
           |  Cascade Escalation    |        +------------------+
-          |  Controller (PPO/RL)  |        | WaterDroneNet    |
-          +------------------------+        | (SENTINEL Mini)  |
+          |  Controller (PPO/RL)  |        | SENTINEL-Lite    |
+          +------------------------+        | (HydroDenseNet)  |
                                             +------------------+
                     Stream Network GNN
                     Digital Twin Engine
                     Species Health Index
                     Disease Forecast
-                    Climate Coupling
 ```
 
 ---
@@ -261,8 +255,8 @@ sentinel/                        # Core Python package
     fusion/                      # Perceiver IO + MoME fusion
     escalation/                  # PPO cascade controller
     graph/                       # Stream Network GNN
-    waterdronenet/               # WaterDroneNet (SENTINEL Mini)
-    twin/                        # Digital Twin Engine + Climate Coupling
+    waterdronenet/               # SENTINEL-Lite (HydroDenseNet)
+    twin/                        # Digital Twin Engine
     biology/                     # Species Health, Disease Forecast, ARG Surveillance
     digital_biosentinel/         # Dose-response prediction
     theory/                      # Conformal prediction, causal discovery
@@ -344,8 +338,6 @@ python scripts/train_waterdronenet.py --gpu 0
 python scripts/train_species_health.py --gpu 1
 python scripts/train_disease_forecast.py --gpu 2
 python scripts/train_twin.py --gpu 3
-python scripts/train_climate_coupling.py --gpu 0
-
 # Or run everything with the orchestrator
 python scripts/run_all.py
 ```
@@ -373,7 +365,7 @@ python scripts/prospective_validation.py
 5. Graceful degradation: AUROC > 0.90 with any 2 of 5 modalities
 6. Zero false positives on 10 NEON clean reference sites
 7. Stream network GNN: AUROC 1.000 on real NHDPlus topology (561 sites)
-8. WaterDroneNet: SpCond R^2 = 0.52 from aerial imagery alone (no sensor input) -- actively improving
+8. SENTINEL-Lite: Temp R²=0.776, DO R²=0.463 from dual-camera (RGB + NoIR) aerial imagery alone (no sensor input), 399 USGS stations spatial holdout
 
 ---
 

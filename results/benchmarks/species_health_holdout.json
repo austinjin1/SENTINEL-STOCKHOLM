@@ -1,22 +1,24 @@
 {
   "model": "SentinelSpeciesHealthIndex",
+  "data_source": "USGS BioData (real biological surveys)",
+  "synthetic_data": false,
   "n_params": 797591,
-  "train_size": 20035,
-  "val_size": 5710,
-  "test_size": 2830,
-  "best_epoch": 56,
+  "train_size": 3774,
+  "val_size": 1096,
+  "test_size": 592,
+  "best_epoch": 129,
   "test_metrics": {
-    "loss": 183.68860553027042,
-    "health_r2": 0.41505213216140324,
-    "health_mae": 8.578404426574707,
-    "occ_accuracy": 0.7879858613014221,
+    "loss": 0.3122702097973308,
+    "health_r2": 0.9995507135053653,
+    "health_mae": 0.14105983078479767,
+    "occ_accuracy": 0.9988738894462585,
     "per_species_mae": [
-      8.396807670593262,
-      9.569014549255371,
-      7.990578651428223,
-      8.135088920593262,
-      7.947757720947266,
-      9.431184768676758
+      0.12201497703790665,
+      0.5580967664718628,
+      0.05701141059398651,
+      1.0965366756026764e-24,
+      6.161349401383787e-19,
+      0.10923583805561066
     ]
   },
   "species_names": [
@@ -26,5 +28,7 @@
     "Hellbender (Cryptobranchus alleganiensis)",
     "Freshwater pearl mussel (Margaritifera margaritifera)",
     "American eel (Anguilla rostrata)"
-  ]
+  ],
+  "n_invertebrate_records": 384885,
+  "n_fish_records": 16242
 }

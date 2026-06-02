@@ -263,6 +263,7 @@ def preprocess_for_aquassm(df, seq_len: int = 128, stride: int = 64):
 
     # Extract per-parameter columns
     param_data = {}
+    param_present = {}  # Track which params have ANY real data
     for code, name in zip(PARAM_CODES, PARAM_NAMES):
         col = None
         for c in df.columns:
@@ -271,8 +272,10 @@ def preprocess_for_aquassm(df, seq_len: int = 128, stride: int = 64):
                 break
         if col is not None and col in df.columns:
             vals = pd.to_numeric(df[col], errors="coerce").values.astype(np.float64)
+            param_present[name] = True
         else:
             vals = np.full(len(df), np.nan)
+            param_present[name] = False
         param_data[name] = vals
 
     n_steps = len(df)
@@ -289,13 +292,56 @@ def preprocess_for_aquassm(df, seq_len: int = 128, stride: int = 64):
         np.zeros(n_steps),          # ORP — not available
     ])
 
-    # Validity mask: False where raw data was NaN (before zero-filling)
-    masks = ~np.isnan(values_6)
-    # NOTE: ORP (column 5) was set to zeros above, not NaN — its mask stays True
-    # so the SSM sees "valid zeros" rather than zeroing out every timestep via the
-    # min-across-params gating in AquaSSM.forward.  This matches how the model
-    # was trained (ORP zero-padded as a valid zero input).
-    values_6 = np.nan_to_num(values_6, nan=0.0)
+    # ── Mask and gap-fill strategy ──────────────────────────────────────
+    # AquaSSM.forward uses masks.min(dim=-1) to gate projected features:
+    # if ANY parameter has mask=0 at a timestep, the *entire* projected
+    # feature vector at that timestep is zeroed out.  This is problematic
+    # when a parameter has intermittent gaps (e.g., SpCond drops out for a
+    # few hours) — it silently kills real data from all other params.
+    #
+    # Strategy:
+    #  1. For parameters *entirely absent* from the site: treat as valid
+    #     zero-padded (like ORP). The model sees normalized-zero input.
+    #  2. For parameters that ARE present but have intermittent NaN gaps:
+    #     forward-fill (carry last valid value), then mark as valid. This
+    #     is standard sensor-data practice and avoids the min-mask killing
+    #     whole timesteps due to transient sensor dropouts.
+    #  3. Any remaining leading NaNs (before the first valid value) are
+    #     back-filled from the first valid value.
+    #
+    # The mask we actually pass to the model will be all-ones, because
+    # every value is either real or convincingly imputed.  The model's
+    # anomaly detection is then driven by actual signal variation rather
+    # than by data-availability artifacts.
+
+    model_param_order = ["pH", "DO", "Turb", "SpCond", "Temp"]
+    for i, pname in enumerate(model_param_order):
+        col_vals = values_6[:, i]
+        if not param_present[pname]:
+            # Entirely absent: zero-pad (like ORP)
+            values_6[:, i] = 0.0
+            print(f"    NOTE: {pname} entirely absent — treating as valid zero (like ORP)")
+        else:
+            # Forward-fill then back-fill intermittent NaN gaps
+            nan_mask = np.isnan(col_vals)
+            n_nan = nan_mask.sum()
+            if n_nan > 0:
+                # Forward fill
+                idx_valid = np.where(~nan_mask)[0]
+                if len(idx_valid) > 0:
+                    series = pd.Series(col_vals)
+                    series = series.ffill().bfill()
+                    values_6[:, i] = series.values
+                    print(f"    NOTE: {pname} had {n_nan} NaN gaps — forward/back-filled")
+                else:
+                    # All NaN despite column existing (no valid data at all)
+                    values_6[:, i] = 0.0
+                    print(f"    NOTE: {pname} column exists but all NaN — treating as absent")
+    # ORP (col 5) is already zeros, not NaN
+
+    # After gap-filling, set mask to all-valid
+    masks = np.ones_like(values_6, dtype=bool)
+    values_6 = np.nan_to_num(values_6, nan=0.0)  # safety catch for any remaining NaN
 
     # Timestamps as unix seconds
     try:

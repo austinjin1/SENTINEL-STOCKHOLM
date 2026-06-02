@@ -1,8 +1,10 @@
-"""WaterDroneNet: Physics-conditioned water quality prediction from drone imagery.
+"""WaterDroneNet: Image-only water quality prediction from drone/satellite imagery.
 
-Fuses RGB+NIR drone imagery with cheap scalar sensors (temperature, TDS)
-to predict a full 12-parameter water quality panel with per-target
-uncertainty estimates and trust flags.
+SENTINEL Mini — a lightweight, deployable model for drones equipped with
+a dual-camera payload: Raspberry Pi Camera Module 3 Wide (RGB) + Raspberry Pi NoIR Camera
+Module V2 (8MP, 1080P30) for near-infrared capture. Predicts 5 key water
+quality parameters from 4-band (RGB + NIR) imagery alone, without
+requiring any scalar sensor inputs.
 
 Public API
 ----------
@@ -11,11 +13,7 @@ Public API
     WaterDroneNet
     WaterDroneNetOutput
     TargetPrediction
-    DroneVisionEncoder
-    ScalarEncoder
-    FiLMConditionedFusion
-    PhysicsResidualHead
-    UncertaintyRouter
+    MAEDecoder
     TARGET_PARAMS
     NUM_TARGETS
     FUSED_DIM
@@ -28,15 +26,11 @@ Public API
 from sentinel.models.waterdronenet.waterdronenet import (
     # Main model
     WaterDroneNet,
+    # MAE pretraining decoder
+    MAEDecoder,
     # Output dataclasses
     WaterDroneNetOutput,
     TargetPrediction,
-    # Sub-modules
-    DroneVisionEncoder,
-    ScalarEncoder,
-    FiLMConditionedFusion,
-    PhysicsResidualHead,
-    UncertaintyRouter,
     # Constants
     TARGET_PARAMS,
     NUM_TARGETS,
@@ -52,15 +46,11 @@ from sentinel.models.waterdronenet.waterdronenet import (
 __all__ = [
     # Main model
     "WaterDroneNet",
+    # MAE pretraining decoder
+    "MAEDecoder",
     # Output dataclasses
     "WaterDroneNetOutput",
     "TargetPrediction",
-    # Sub-modules
-    "DroneVisionEncoder",
-    "ScalarEncoder",
-    "FiLMConditionedFusion",
-    "PhysicsResidualHead",
-    "UncertaintyRouter",
     # Constants
     "TARGET_PARAMS",
     "NUM_TARGETS",

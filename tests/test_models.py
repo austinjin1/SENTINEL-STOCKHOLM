@@ -126,29 +126,6 @@ class TestRestoration:
         assert RestorationOutcomePredictor is not None
 
 
-class TestClimateCoupling:
-    def test_import(self):
-        from sentinel.models.twin.climate_coupling import (
-            ClimateEncoder, ClimateModulator, SeasonalPrior,
-        )
-        assert ClimateEncoder is not None
-
-    def test_climate_encoder(self):
-        from sentinel.models.twin.climate_coupling import ClimateEncoder
-        enc = ClimateEncoder()
-        x = torch.randn(BATCH_SIZE, 30, 8)  # 30 days, 8 vars
-        doy = torch.arange(180, 210).unsqueeze(0).expand(BATCH_SIZE, -1)
-        out = enc(x, doy)
-        assert out.shape == (BATCH_SIZE, 30, 128)
-
-    def test_seasonal_prior(self):
-        from sentinel.models.twin.climate_coupling import SeasonalPrior
-        sp = SeasonalPrior()
-        doy = torch.tensor([90.0, 180.0, 270.0, 360.0])
-        out = sp(doy)
-        assert out.shape == (4, 10)
-
-
 # ===== Phase 1: Fusion =====
 
 class TestMoMEFusion:

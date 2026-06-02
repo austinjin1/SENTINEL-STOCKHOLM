@@ -1059,14 +1059,26 @@ class DigitalTwinEngine(nn.Module):
         t_eval, horizon_idx = self._build_eval_times(horizons, device, dtype)
 
         try:
-            physics_traj = odeint(
-                self.ode,
-                y0,
-                t_eval,
-                method=self.ode_method,
-                rtol=self.ode_rtol,
-                atol=self.ode_atol,
-            )  # [T, B, D]
+            # Clamp initial state to physically reasonable ranges before ODE
+            y0_clamped = y0.clamp(-1e4, 1e4)
+            y0_clamped = torch.where(torch.isfinite(y0_clamped), y0_clamped, torch.zeros_like(y0_clamped))
+
+            try:
+                physics_traj = odeint(
+                    self.ode,
+                    y0_clamped,
+                    t_eval,
+                    method=self.ode_method,
+                    rtol=self.ode_rtol,
+                    atol=self.ode_atol,
+                )  # [T, B, D]
+            except (AssertionError, RuntimeError):
+                # Fallback to Euler integration if adaptive solver fails
+                physics_traj = _euler_integrate(self.ode, y0_clamped, t_eval)
+
+            # Clamp trajectory to prevent downstream NaN
+            physics_traj = physics_traj.clamp(-1e5, 1e5)
+            physics_traj = torch.where(torch.isfinite(physics_traj), physics_traj, torch.zeros_like(physics_traj))
         finally:
             # Always restore ODE parameters, even if integration fails.
             self._restore_ode_params(saved_params)

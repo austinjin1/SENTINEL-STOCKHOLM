@@ -1,13 +1,12 @@
 {
-  "model": "HydroDenseNet (WaterDroneNet V4)",
-  "description": "Custom architecture built on DenseNet121 for water quality",
+  "model": "HydroDenseNet (SENTINEL-Lite)",
+  "description": "Custom architecture built on DenseNet121 for imagery-only water quality prediction",
   "backbone": "DenseNet121 body with SpectralStem + Multi-Scale FPN",
-  "input": "Sentinel-2 RGB+NIR (4ch, 224x224) + pH strip measurement",
+  "input": "Sentinel-2 RGB+NIR (4ch, 224x224), imagery only \u2014 dual-camera payload: RGB + Raspberry Pi NoIR Camera Module V2 (8MP, 1080P30)",
   "improvements": [
     "SpectralStem: learnable band interactions before DenseNet body",
     "Multi-Scale Feature Pyramid: taps all 4 DenseBlock outputs",
     "CBAM (channel + spatial) attention at each scale",
-    "FiLM conditioning: pH modulates visual features inside the network",
     "Multi-pool aggregation: avg + max + std captures spatial heterogeneity",
     "Per-target expert decoders: DO/Turb/Temp/SpCond each specialized",
     "Band ratio encoder with gradient flow (15 \u2192 48-dim learned)",
@@ -27,10 +26,9 @@
     "Temp",
     "SpCond"
   ],
-  "ph_input": {
-    "mean": 7.57718563079834,
-    "std": 0.4901409149169922,
-    "noise_std": 0.3
+  "camera_payload": {
+    "rgb": "Raspberry Pi Camera Module 3 Wide",
+    "nir": "Raspberry Pi NoIR Camera Module V2 (8MP, 1080P30)"
   },
   "holdout": {
     "type": "spatial",

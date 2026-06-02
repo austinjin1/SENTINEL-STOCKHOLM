@@ -582,21 +582,19 @@ class CyanotoxinForecaster(DiseaseForecaster):
         device = output.log_concentration.device
 
         if "log_concentration" in targets:
-            losses["concentration_mse"] = F.mse_loss(
-                output.log_concentration, targets["log_concentration"],
-            )
+            pred_lc = torch.nan_to_num(output.log_concentration, nan=0.0)
+            tgt_lc = torch.nan_to_num(targets["log_concentration"], nan=0.0)
+            losses["concentration_mse"] = F.mse_loss(pred_lc, tgt_lc)
 
         if "drinking_exceedance" in targets:
-            losses["drinking_bce"] = F.binary_cross_entropy(
-                output.drinking_exceedance_prob,
-                targets["drinking_exceedance"].float(),
-            )
+            pred_drink = torch.nan_to_num(output.drinking_exceedance_prob, nan=0.5).clamp(1e-7, 1 - 1e-7)
+            tgt_drink = torch.nan_to_num(targets["drinking_exceedance"].float(), nan=0.0).clamp(0, 1)
+            losses["drinking_bce"] = F.binary_cross_entropy(pred_drink, tgt_drink)
 
         if "recreational_exceedance" in targets:
-            losses["recreational_bce"] = F.binary_cross_entropy(
-                output.recreational_exceedance_prob,
-                targets["recreational_exceedance"].float(),
-            )
+            pred_rec = torch.nan_to_num(output.recreational_exceedance_prob, nan=0.5).clamp(1e-7, 1 - 1e-7)
+            tgt_rec = torch.nan_to_num(targets["recreational_exceedance"].float(), nan=0.0).clamp(0, 1)
+            losses["recreational_bce"] = F.binary_cross_entropy(pred_rec, tgt_rec)
 
         total = torch.tensor(0.0, device=device)
         weights = {
@@ -786,9 +784,9 @@ class VibrioRiskForecaster(DiseaseForecaster):
         device = output.risk_index.device
 
         if "risk_index" in targets:
-            losses["risk_bce"] = F.binary_cross_entropy(
-                output.risk_index, targets["risk_index"].float(),
-            )
+            pred_ri = torch.nan_to_num(output.risk_index, nan=0.5).clamp(1e-7, 1 - 1e-7)
+            tgt_ri = torch.nan_to_num(targets["risk_index"].float(), nan=0.0).clamp(0, 1)
+            losses["risk_bce"] = F.binary_cross_entropy(pred_ri, tgt_ri)
 
         if "case_rate" in targets:
             # Poisson-like loss: treating case_rate as a rate parameter
@@ -964,9 +962,9 @@ class NaegleriaForecaster(DiseaseForecaster):
         device = output.habitat_probability.device
 
         if "habitat" in targets:
-            losses["habitat_bce"] = F.binary_cross_entropy(
-                output.habitat_probability, targets["habitat"].float(),
-            )
+            pred_hab = torch.nan_to_num(output.habitat_probability, nan=0.5).clamp(1e-7, 1 - 1e-7)
+            tgt_hab = torch.nan_to_num(targets["habitat"].float(), nan=0.0).clamp(0, 1)
+            losses["habitat_bce"] = F.binary_cross_entropy(pred_hab, tgt_hab)
 
         total = torch.tensor(0.0, device=device)
         for val in losses.values():
@@ -1103,9 +1101,9 @@ class SchistosomiasisForecaster(DiseaseForecaster):
         device = output.habitat_probability.device
 
         if "habitat" in targets:
-            losses["habitat_bce"] = F.binary_cross_entropy(
-                output.habitat_probability, targets["habitat"].float(),
-            )
+            pred_hab = torch.nan_to_num(output.habitat_probability, nan=0.5).clamp(1e-7, 1 - 1e-7)
+            tgt_hab = torch.nan_to_num(targets["habitat"].float(), nan=0.0).clamp(0, 1)
+            losses["habitat_bce"] = F.binary_cross_entropy(pred_hab, tgt_hab)
 
         total = torch.tensor(0.0, device=device)
         for val in losses.values():

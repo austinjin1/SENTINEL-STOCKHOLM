@@ -97,17 +97,23 @@ class TwinDataset(Dataset):
 
     def _build_from_sensor_data(self, split: str, seed: int, rng: np.random.RandomState):
         """Build twin training data from USGS sensor time series."""
-        import pandas as pd
+        try:
+            import pandas as pd
+        except ImportError:
+            raise ImportError(
+                "pandas is required to load USGS sensor data. "
+                "Install it with: pip install pandas pyarrow"
+            )
 
         sensor_files = sorted(RAW_SENSOR_DIR.glob("*.parquet")) if RAW_SENSOR_DIR.exists() else []
         if not sensor_files:
             sensor_files = sorted(SENSOR_DIR.glob("*.npz")) if SENSOR_DIR.exists() else []
 
         if not sensor_files:
-            log(f"  WARNING: No sensor data found. Using minimal dataset.")
-            n = 300 if split == "train" else 60
-            self._generate_minimal(n, rng)
-            return
+            raise FileNotFoundError(
+                f"No sensor data found in {RAW_SENSOR_DIR} or {SENSOR_DIR}. "
+                "Real USGS data is required — synthetic fallback disabled."
+            )
 
         # Split by site
         split_files = {"train": [], "val": [], "test": []}
@@ -201,11 +207,20 @@ class TwinDataset(Dataset):
                         future = np.zeros((len(FORECAST_HORIZONS), NUM_STATES), dtype=np.float32)
                         mask = np.zeros((len(FORECAST_HORIZONS), NUM_STATES), dtype=np.float32)
 
-                        # Fill initial state
+                        # Fill initial state (clamp to physically reasonable ranges)
+                        # Ranges: DO 0-20, BOD 0-50, TN 0-20, TP 0-5,
+                        # Chl-a 0-500, Temp -5 to 45, pH 3-12, Turb 0-4000,
+                        # DOC 0-100, Sediment 0-5000
+                        state_clamps = [
+                            (0, 20), (0, 50), (0, 20), (0, 5),
+                            (0, 500), (-5, 45), (3, 12), (0, 4000),
+                            (0, 100), (0, 5000),
+                        ]
                         for var_idx, col in state_cols.items():
                             val = daily.iloc[start_idx][col]
-                            if not np.isnan(val):
-                                state_t0[var_idx] = val
+                            if not np.isnan(val) and val != -999999:
+                                lo, hi = state_clamps[var_idx]
+                                state_t0[var_idx] = np.clip(val, lo, hi)
 
                         # Fill future states at each horizon
                         for h_idx, horizon in enumerate(FORECAST_HORIZONS):
@@ -213,8 +228,9 @@ class TwinDataset(Dataset):
                             if future_idx < len(daily):
                                 for var_idx, col in state_cols.items():
                                     val = daily.iloc[future_idx][col]
-                                    if not np.isnan(val):
-                                        future[h_idx, var_idx] = val
+                                    if not np.isnan(val) and val != -999999:
+                                        lo, hi = state_clamps[var_idx]
+                                        future[h_idx, var_idx] = np.clip(val, lo, hi)
                                         mask[h_idx, var_idx] = 1.0
 
                         # Only keep if at least some future observations exist
@@ -243,56 +259,18 @@ class TwinDataset(Dataset):
                         future_masks_list.append(mask)
 
                 elif fpath.suffix == ".npz":
-                    d = np.load(fpath, allow_pickle=True)
-                    feats = d.get("features", d.get("data", None))
-                    if feats is None:
-                        continue
-                    if feats.ndim > 1:
-                        emb = feats.mean(axis=0)
-                    else:
-                        emb = feats
-                    if len(emb) < 256:
-                        emb = np.pad(emb, (0, 256 - len(emb)))
-                    emb = emb[:256].astype(np.float32)
-                    emb = emb / (np.linalg.norm(emb) + 1e-8)
-
-                    # Generate plausible initial state from features
-                    state = np.array([
-                        8.0 + rng.normal(0, 2),   # DO
-                        3.0 + rng.exponential(2),  # BOD
-                        1.5 + rng.exponential(1),  # TN
-                        0.1 + rng.exponential(0.1),# TP
-                        5.0 + rng.exponential(5),  # Chl-a
-                        15 + rng.normal(0, 8),     # Temp
-                        7.5 + rng.normal(0, 0.5),  # pH
-                        10 + rng.exponential(10),  # Turbidity
-                        5 + rng.exponential(3),    # DOC
-                        50 + rng.exponential(50),  # Sediment
-                    ], dtype=np.float32)
-
-                    # Future: slight random walk from initial
-                    future = np.zeros((len(FORECAST_HORIZONS), NUM_STATES), dtype=np.float32)
-                    mask = np.ones((len(FORECAST_HORIZONS), NUM_STATES), dtype=np.float32)
-                    for h_idx, horizon in enumerate(FORECAST_HORIZONS):
-                        drift = rng.normal(0, 0.1 * np.sqrt(horizon), size=NUM_STATES)
-                        future[h_idx] = state + state * drift
-                        # Mask out long-horizon observations with some probability
-                        if horizon > 30:
-                            mask[h_idx] *= (rng.random(NUM_STATES) > 0.3).astype(np.float32)
-
-                    embeddings.append(emb)
-                    init_states_list.append(state)
-                    future_states_list.append(future)
-                    future_masks_list.append(mask)
+                    # NPZ files without paired time series — skip
+                    # (requires parquet with real temporal observations)
+                    continue
 
             except Exception:
                 continue
 
         if not embeddings:
-            log(f"  WARNING: Failed to build from sensor data for {split}")
-            n = 300 if split == "train" else 60
-            self._generate_minimal(n, rng)
-            return
+            raise RuntimeError(
+                f"Failed to build any samples from {len(selected)} sensor files for {split}. "
+                "Check that parquet files have >=2 state variables (DO, Temp, pH, Turb, SpCond)."
+            )
 
         self.embeddings = np.stack(embeddings)
         self.initial_states = np.stack(init_states_list)
@@ -301,28 +279,7 @@ class TwinDataset(Dataset):
 
         log(f"  Built {split} set: {len(self.embeddings)} samples from sensor data")
 
-    def _generate_minimal(self, n: int, rng: np.random.RandomState):
-        self.embeddings = rng.randn(n, 256).astype(np.float32)
-        self.initial_states = np.column_stack([
-            8 + rng.normal(0, 2, n),    # DO
-            3 + rng.exponential(2, n),   # BOD
-            1.5 + rng.exponential(1, n), # TN
-            0.1 + rng.exponential(0.1, n),# TP
-            5 + rng.exponential(5, n),   # Chl-a
-            15 + rng.normal(0, 8, n),    # Temp
-            7.5 + rng.normal(0, 0.5, n), # pH
-            10 + rng.exponential(10, n), # Turbidity
-            5 + rng.exponential(3, n),   # DOC
-            50 + rng.exponential(50, n), # Sediment
-        ]).astype(np.float32)
-
-        H = len(FORECAST_HORIZONS)
-        self.future_states = np.zeros((n, H, NUM_STATES), dtype=np.float32)
-        self.future_masks = np.ones((n, H, NUM_STATES), dtype=np.float32)
-        for i in range(n):
-            for h_idx, horizon in enumerate(FORECAST_HORIZONS):
-                drift = rng.normal(0, 0.05 * np.sqrt(horizon), NUM_STATES)
-                self.future_states[i, h_idx] = self.initial_states[i] * (1 + drift)
+    # _generate_minimal removed — synthetic data not allowed
 
     def __len__(self):
         return len(self.embeddings)

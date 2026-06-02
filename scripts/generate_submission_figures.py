@@ -78,7 +78,6 @@ def fig1_model_performance():
     gnn = load_json(BENCH / "stream_gnn_results.json")
     species = load_json(BENCH / "species_health_holdout.json")
     disease = load_json(BENCH / "disease_forecast_holdout.json")
-    climate = load_json(BENCH / "climate_coupling_holdout.json")
     foundation = load_json(BENCH / "foundation_results.json")
     mome = load_json(BENCH / "mome_fusion_results.json")
     contrastive = load_json(BENCH / "contrastive_results.json")

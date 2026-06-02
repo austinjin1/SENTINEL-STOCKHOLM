@@ -1,0 +1,466 @@
+{
+  "test_loss": 0.735274,
+  "per_disease_loss": {
+    "cyanotoxin": 0.287218,
+    "vibrio": 0.077079,
+    "naegleria": 0.148136,
+    "schistosomiasis": 0.074705
+  },
+  "n_test_samples": 80398,
+  "alert_overall_accuracy": 0.9314,
+  "alert_per_level": {
+    "LOW": {
+      "level": 0,
+      "support": 72186,
+      "predicted_count": 72046,
+      "tp": 70732,
+      "fp": 1314,
+      "fn": 1454,
+      "tn": 6898,
+      "precision": 0.9818,
+      "recall": 0.9799,
+      "f1": 0.9808,
+      "accuracy": 0.9656
+    },
+    "MODERATE": {
+      "level": 1,
+      "support": 2381,
+      "predicted_count": 3551,
+      "tp": 1327,
+      "fp": 2224,
+      "fn": 1054,
+      "tn": 75793,
+      "precision": 0.3737,
+      "recall": 0.5573,
+      "f1": 0.4474,
+      "accuracy": 0.9592
+    },
+    "HIGH": {
+      "level": 2,
+      "support": 203,
+      "predicted_count": 1983,
+      "tp": 198,
+      "fp": 1785,
+      "fn": 5,
+      "tn": 78410,
+      "precision": 0.0998,
+      "recall": 0.9754,
+      "f1": 0.1812,
+      "accuracy": 0.9777
+    },
+    "CRITICAL": {
+      "level": 3,
+      "support": 5628,
+      "predicted_count": 2818,
+      "tp": 2622,
+      "fp": 196,
+      "fn": 3006,
+      "tn": 74574,
+      "precision": 0.9304,
+      "recall": 0.4659,
+      "f1": 0.6209,
+      "accuracy": 0.9602
+    }
+  },
+  "alert_distribution": {
+    "true": {
+      "LOW": 72186,
+      "MODERATE": 2381,
+      "HIGH": 203,
+      "CRITICAL": 5628
+    },
+    "predicted": {
+      "LOW": 72046,
+      "MODERATE": 3551,
+      "HIGH": 1983,
+      "CRITICAL": 2818
+    }
+  },
+  "confusion_matrix": {
+    "rows_are_true_cols_are_predicted": [
+      [
+        70732,
+        985,
+        300,
+        169
+      ],
+      [
+        938,
+        1327,
+        90,
+        26
+      ],
+      [
+        0,
+        4,
+        198,
+        1
+      ],
+      [
+        376,
+        1235,
+        1395,
+        2622
+      ]
+    ],
+    "labels": [
+      "LOW",
+      "MODERATE",
+      "HIGH",
+      "CRITICAL"
+    ]
+  },
+  "alert_macro_f1": 0.5576,
+  "alert_weighted_f1": 0.9378,
+  "auroc_any_alert": 0.9879,
+  "any_alert_accuracy": 0.9656,
+  "auroc_high_alert": 0.9885,
+  "high_alert_accuracy": 0.9726,
+  "pathogen_metrics": {
+    "cyanotoxin_exceedance": {
+      "accuracy": 0.9906,
+      "auroc": 0.9955,
+      "precision": 0.8117,
+      "recall": 0.7123,
+      "f1": 0.7588,
+      "positive_rate_true": 0.0208,
+      "positive_rate_pred": 0.0182
+    },
+    "vibrio_risk": {
+      "accuracy": 0.9996,
+      "auroc": 1.0,
+      "mae": 0.0004,
+      "precision": 0.997,
+      "recall": 0.9701,
+      "f1": 0.9834,
+      "positive_rate_true": 0.0126,
+      "positive_rate_pred": 0.0123
+    },
+    "naegleria_habitat": {
+      "accuracy": 0.9823,
+      "auroc": 0.9998,
+      "mae": 0.0192,
+      "precision": 1.0,
+      "recall": 0.7398,
+      "f1": 0.8504,
+      "positive_rate_true": 0.0682,
+      "positive_rate_pred": 0.0505
+    },
+    "schistosomiasis_habitat": {
+      "accuracy": 1.0,
+      "auroc": "N/A",
+      "mae": 0.0001,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "positive_rate_true": 0.0,
+      "positive_rate_pred": 0.0
+    }
+  },
+  "calibration": {
+    "cyanotoxin_exceedance": {
+      "ece": 0.0014,
+      "n_bins_populated": 15,
+      "bin_details": [
+        {
+          "bin": "(0.00, 0.07]",
+          "count": 460635,
+          "avg_confidence": 0.0014,
+          "avg_accuracy": 0.0008,
+          "gap": 0.0006
+        },
+        {
+          "bin": "(0.07, 0.13]",
+          "count": 5748,
+          "avg_confidence": 0.0945,
+          "avg_accuracy": 0.0689,
+          "gap": 0.0256
+        },
+        {
+          "bin": "(0.13, 0.20]",
+          "count": 2004,
+          "avg_confidence": 0.1641,
+          "avg_accuracy": 0.1597,
+          "gap": 0.0044
+        },
+        {
+          "bin": "(0.20, 0.27]",
+          "count": 1521,
+          "avg_confidence": 0.2327,
+          "avg_accuracy": 0.238,
+          "gap": 0.0053
+        },
+        {
+          "bin": "(0.27, 0.33]",
+          "count": 1232,
+          "avg_confidence": 0.2997,
+          "avg_accuracy": 0.3117,
+          "gap": 0.0119
+        },
+        {
+          "bin": "(0.33, 0.40]",
+          "count": 1113,
+          "avg_confidence": 0.366,
+          "avg_accuracy": 0.3612,
+          "gap": 0.0048
+        },
+        {
+          "bin": "(0.40, 0.47]",
+          "count": 938,
+          "avg_confidence": 0.4322,
+          "avg_accuracy": 0.4595,
+          "gap": 0.0273
+        },
+        {
+          "bin": "(0.47, 0.53]",
+          "count": 785,
+          "avg_confidence": 0.4993,
+          "avg_accuracy": 0.5134,
+          "gap": 0.0141
+        },
+        {
+          "bin": "(0.53, 0.60]",
+          "count": 688,
+          "avg_confidence": 0.5657,
+          "avg_accuracy": 0.577,
+          "gap": 0.0113
+        },
+        {
+          "bin": "(0.60, 0.67]",
+          "count": 671,
+          "avg_confidence": 0.6347,
+          "avg_accuracy": 0.6364,
+          "gap": 0.0017
+        },
+        {
+          "bin": "(0.67, 0.73]",
+          "count": 785,
+          "avg_confidence": 0.7006,
+          "avg_accuracy": 0.6777,
+          "gap": 0.0229
+        },
+        {
+          "bin": "(0.73, 0.80]",
+          "count": 802,
+          "avg_confidence": 0.7686,
+          "avg_accuracy": 0.7456,
+          "gap": 0.023
+        },
+        {
+          "bin": "(0.80, 0.87]",
+          "count": 1028,
+          "avg_confidence": 0.8347,
+          "avg_accuracy": 0.7918,
+          "gap": 0.0428
+        },
+        {
+          "bin": "(0.87, 0.93]",
+          "count": 1319,
+          "avg_confidence": 0.9003,
+          "avg_accuracy": 0.8597,
+          "gap": 0.0405
+        },
+        {
+          "bin": "(0.93, 1.00]",
+          "count": 3119,
+          "avg_confidence": 0.9781,
+          "avg_accuracy": 0.9731,
+          "gap": 0.005
+        }
+      ]
+    },
+    "vibrio_risk": {
+      "ece": 0.0252,
+      "n_bins_populated": 12,
+      "bin_details": [
+        {
+          "bin": "(0.00, 0.07]",
+          "count": 275901,
+          "avg_confidence": 0.0061,
+          "avg_accuracy": 0.0,
+          "gap": 0.0061
+        },
+        {
+          "bin": "(0.07, 0.13]",
+          "count": 28802,
+          "avg_confidence": 0.0943,
+          "avg_accuracy": 0.0,
+          "gap": 0.0943
+        },
+        {
+          "bin": "(0.13, 0.20]",
+          "count": 9283,
+          "avg_confidence": 0.1603,
+          "avg_accuracy": 0.0,
+          "gap": 0.1603
+        },
+        {
+          "bin": "(0.20, 0.27]",
+          "count": 2853,
+          "avg_confidence": 0.2279,
+          "avg_accuracy": 0.0,
+          "gap": 0.2279
+        },
+        {
+          "bin": "(0.27, 0.33]",
+          "count": 1407,
+          "avg_confidence": 0.2968,
+          "avg_accuracy": 0.0,
+          "gap": 0.2968
+        },
+        {
+          "bin": "(0.33, 0.40]",
+          "count": 1023,
+          "avg_confidence": 0.3667,
+          "avg_accuracy": 0.0,
+          "gap": 0.3667
+        },
+        {
+          "bin": "(0.40, 0.47]",
+          "count": 878,
+          "avg_confidence": 0.4317,
+          "avg_accuracy": 0.0,
+          "gap": 0.4317
+        },
+        {
+          "bin": "(0.47, 0.53]",
+          "count": 547,
+          "avg_confidence": 0.4973,
+          "avg_accuracy": 0.6106,
+          "gap": 0.1133
+        },
+        {
+          "bin": "(0.53, 0.60]",
+          "count": 426,
+          "avg_confidence": 0.5667,
+          "avg_accuracy": 1.0,
+          "gap": 0.4333
+        },
+        {
+          "bin": "(0.60, 0.67]",
+          "count": 337,
+          "avg_confidence": 0.6306,
+          "avg_accuracy": 1.0,
+          "gap": 0.3694
+        },
+        {
+          "bin": "(0.67, 0.73]",
+          "count": 123,
+          "avg_confidence": 0.6908,
+          "avg_accuracy": 1.0,
+          "gap": 0.3092
+        },
+        {
+          "bin": "(0.73, 0.80]",
+          "count": 12,
+          "avg_confidence": 0.7457,
+          "avg_accuracy": 1.0,
+          "gap": 0.2543
+        }
+      ]
+    },
+    "naegleria_habitat": {
+      "ece": 0.0307,
+      "n_bins_populated": 13,
+      "bin_details": [
+        {
+          "bin": "(0.00, 0.07]",
+          "count": 140672,
+          "avg_confidence": 0.0058,
+          "avg_accuracy": 0.0,
+          "gap": 0.0058
+        },
+        {
+          "bin": "(0.07, 0.13]",
+          "count": 6582,
+          "avg_confidence": 0.0957,
+          "avg_accuracy": 0.0,
+          "gap": 0.0957
+        },
+        {
+          "bin": "(0.13, 0.20]",
+          "count": 3638,
+          "avg_confidence": 0.1631,
+          "avg_accuracy": 0.0,
+          "gap": 0.1631
+        },
+        {
+          "bin": "(0.20, 0.27]",
+          "count": 2332,
+          "avg_confidence": 0.2323,
+          "avg_accuracy": 0.0,
+          "gap": 0.2323
+        },
+        {
+          "bin": "(0.27, 0.33]",
+          "count": 1846,
+          "avg_confidence": 0.2987,
+          "avg_accuracy": 0.0,
+          "gap": 0.2987
+        },
+        {
+          "bin": "(0.33, 0.40]",
+          "count": 1654,
+          "avg_confidence": 0.3655,
+          "avg_accuracy": 0.0,
+          "gap": 0.3655
+        },
+        {
+          "bin": "(0.40, 0.47]",
+          "count": 1330,
+          "avg_confidence": 0.4318,
+          "avg_accuracy": 0.0,
+          "gap": 0.4318
+        },
+        {
+          "bin": "(0.47, 0.53]",
+          "count": 1020,
+          "avg_confidence": 0.4982,
+          "avg_accuracy": 0.2216,
+          "gap": 0.2766
+        },
+        {
+          "bin": "(0.53, 0.60]",
+          "count": 728,
+          "avg_confidence": 0.5639,
+          "avg_accuracy": 0.5975,
+          "gap": 0.0336
+        },
+        {
+          "bin": "(0.60, 0.67]",
+          "count": 526,
+          "avg_confidence": 0.6311,
+          "avg_accuracy": 1.0,
+          "gap": 0.3689
+        },
+        {
+          "bin": "(0.67, 0.73]",
+          "count": 266,
+          "avg_confidence": 0.6974,
+          "avg_accuracy": 1.0,
+          "gap": 0.3026
+        },
+        {
+          "bin": "(0.73, 0.80]",
+          "count": 144,
+          "avg_confidence": 0.7656,
+          "avg_accuracy": 1.0,
+          "gap": 0.2344
+        },
+        {
+          "bin": "(0.80, 0.87]",
+          "count": 58,
+          "avg_confidence": 0.8205,
+          "avg_accuracy": 1.0,
+          "gap": 0.1795
+        }
+      ]
+    }
+  },
+  "model": "IntegratedDiseaseRisk",
+  "checkpoint": "/home/bcheng/SENTINEL/checkpoints/biology/disease_forecast_best.pt",
+  "checkpoint_epoch": 112,
+  "n_params": 470462,
+  "data_source": "USGS NWIS real sensor data",
+  "evaluation_device": "cuda:0"
+}

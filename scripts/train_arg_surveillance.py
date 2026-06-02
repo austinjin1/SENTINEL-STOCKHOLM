@@ -4,6 +4,11 @@
 Trains ARGPredictor to predict abundance of 8 WHO priority ARGs from
 16S community composition using real EMP data.
 
+LIMITATION: ARG targets are pseudo-labels derived from known literature
+correlations between phyla and ARG carriage, NOT real metagenomic ARG
+measurements. Real ARG abundance data (e.g., ARGs-OAP annotations)
+would be needed for validated predictions.
+
 Target ARGs:
   1. mcr-1     (colistin resistance — last-resort antibiotic)
   2. blaNDM    (carbapenem resistance)
@@ -77,12 +82,10 @@ class ARGDataset(Dataset):
 
         emp_files = sorted(MICROBIAL_DIR.glob("*.npz")) if MICROBIAL_DIR.exists() else []
         if not emp_files:
-            log(f"  WARNING: No EMP data found. Using minimal placeholder.")
-            n = 400 if split == "train" else 80
-            self.otu_data = rng.randn(n, num_otus).astype(np.float32)
-            self.arg_targets = rng.lognormal(0, 1.5, size=(n, NUM_ARGS)).astype(np.float32)
-            self.embeddings = rng.randn(n, 256).astype(np.float32)
-            return
+            raise FileNotFoundError(
+                f"No EMP data found in {MICROBIAL_DIR}. "
+                "Real 16S microbiome data is required — no synthetic fallback."
+            )
 
         # Split files
         train_f, val_f, test_f = [], [], []
@@ -165,12 +168,10 @@ class ARGDataset(Dataset):
                 continue
 
         if not otus:
-            log(f"  WARNING: Failed to load EMP data for {split}")
-            n = 400 if split == "train" else 80
-            self.otu_data = rng.randn(n, num_otus).astype(np.float32)
-            self.arg_targets = rng.lognormal(0, 1.5, size=(n, NUM_ARGS)).astype(np.float32)
-            self.embeddings = rng.randn(n, 256).astype(np.float32)
-            return
+            raise RuntimeError(
+                f"Failed to load any EMP data for {split}. "
+                "Check that .npz files in MICROBIAL_DIR have otu_abundances."
+            )
 
         self.otu_data = np.stack(otus)
         self.embeddings = np.stack(embs)

@@ -6,442 +6,442 @@
     {
       "center_time": "2022-05-31T20:00:00",
       "center_ts": 1654027200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.849646806716919
     },
     {
       "center_time": "2022-06-01T12:00:00",
       "center_ts": 1654084800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8596160411834717
     },
     {
       "center_time": "2022-06-02T04:00:00",
       "center_ts": 1654142400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8442658185958862
     },
     {
       "center_time": "2022-06-02T20:00:00",
       "center_ts": 1654200000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.850892961025238
     },
     {
       "center_time": "2022-06-03T12:00:00",
       "center_ts": 1654257600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8651044368743896
     },
     {
       "center_time": "2022-06-04T04:00:00",
       "center_ts": 1654315200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8172832727432251
     },
     {
       "center_time": "2022-06-04T20:00:00",
       "center_ts": 1654372800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7968389987945557
     },
     {
       "center_time": "2022-06-05T12:00:00",
       "center_ts": 1654430400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8480372428894043
     },
     {
       "center_time": "2022-06-06T04:00:00",
       "center_ts": 1654488000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7885822057723999
     },
     {
       "center_time": "2022-06-06T20:00:00",
       "center_ts": 1654545600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7152913808822632
     },
     {
       "center_time": "2022-06-07T12:00:00",
       "center_ts": 1654603200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8481295108795166
     },
     {
       "center_time": "2022-06-08T04:00:00",
       "center_ts": 1654660800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7880288362503052
     },
     {
       "center_time": "2022-06-08T20:00:00",
       "center_ts": 1654718400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7475441098213196
     },
     {
       "center_time": "2022-06-09T12:00:00",
       "center_ts": 1654776000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8626334071159363
     },
     {
       "center_time": "2022-06-10T04:00:00",
       "center_ts": 1654833600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8282097578048706
     },
     {
       "center_time": "2022-06-10T20:00:00",
       "center_ts": 1654891200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7917255759239197
     },
     {
       "center_time": "2022-06-11T12:00:00",
       "center_ts": 1654948800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8756045699119568
     },
     {
       "center_time": "2022-06-12T04:00:00",
       "center_ts": 1655006400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8343273401260376
     },
     {
       "center_time": "2022-06-12T20:00:00",
       "center_ts": 1655064000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8175767660140991
     },
     {
       "center_time": "2022-06-13T12:00:00",
       "center_ts": 1655121600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.846074104309082
     },
     {
       "center_time": "2022-06-14T04:00:00",
       "center_ts": 1655179200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8490902185440063
     },
     {
       "center_time": "2022-06-14T20:00:00",
       "center_ts": 1655236800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8202146887779236
     },
     {
       "center_time": "2022-06-15T12:00:00",
       "center_ts": 1655294400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8428748846054077
     },
     {
       "center_time": "2022-06-16T04:00:00",
       "center_ts": 1655352000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8409348130226135
     },
     {
       "center_time": "2022-06-16T20:00:00",
       "center_ts": 1655409600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8312965035438538
     },
     {
       "center_time": "2022-06-17T12:00:00",
       "center_ts": 1655467200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8462181687355042
     },
     {
       "center_time": "2022-06-18T04:00:00",
       "center_ts": 1655524800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8373183012008667
     },
     {
       "center_time": "2022-06-18T20:00:00",
       "center_ts": 1655582400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8405832648277283
     },
     {
       "center_time": "2022-06-19T12:00:00",
       "center_ts": 1655640000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8681313395500183
     },
     {
       "center_time": "2022-06-20T04:00:00",
       "center_ts": 1655697600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8444467186927795
     },
     {
       "center_time": "2022-06-20T20:00:00",
       "center_ts": 1655755200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7790755033493042
     },
     {
       "center_time": "2022-06-21T12:00:00",
       "center_ts": 1655812800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8532085418701172
     },
     {
       "center_time": "2022-06-22T04:00:00",
       "center_ts": 1655870400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.816510796546936
     },
     {
       "center_time": "2022-06-22T20:00:00",
       "center_ts": 1655928000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7179564833641052
     },
     {
       "center_time": "2022-06-23T12:00:00",
       "center_ts": 1655985600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8363931179046631
     },
     {
       "center_time": "2022-06-24T04:00:00",
       "center_ts": 1656043200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8240342736244202
     },
     {
       "center_time": "2022-06-24T20:00:00",
       "center_ts": 1656100800.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8115996718406677
     },
     {
       "center_time": "2022-06-25T12:00:00",
       "center_ts": 1656158400.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8542369604110718
     },
     {
       "center_time": "2022-06-26T04:00:00",
       "center_ts": 1656216000.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8388281464576721
     },
     {
       "center_time": "2022-06-26T20:00:00",
       "center_ts": 1656273600.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.827215850353241
     },
     {
       "center_time": "2022-06-27T12:00:00",
       "center_ts": 1656331200.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8575567603111267
     },
     {
       "center_time": "2022-06-28T04:15:00",
       "center_ts": 1656389700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8853736519813538
     },
     {
       "center_time": "2022-06-28T20:15:00",
       "center_ts": 1656447300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8620676398277283
     },
     {
       "center_time": "2022-06-29T12:15:00",
       "center_ts": 1656504900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8826761245727539
     },
     {
       "center_time": "2022-06-30T04:15:00",
       "center_ts": 1656562500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8506035804748535
     },
     {
       "center_time": "2022-06-30T20:15:00",
       "center_ts": 1656620100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8627301454544067
     },
     {
       "center_time": "2022-07-01T12:15:00",
       "center_ts": 1656677700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.868836522102356
     },
     {
       "center_time": "2022-07-02T04:15:00",
       "center_ts": 1656735300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8445316553115845
     },
     {
       "center_time": "2022-07-02T20:15:00",
       "center_ts": 1656792900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8421204090118408
     },
     {
       "center_time": "2022-07-03T12:15:00",
       "center_ts": 1656850500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8630654811859131
     },
     {
       "center_time": "2022-07-04T04:15:00",
       "center_ts": 1656908100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8493018746376038
     },
     {
       "center_time": "2022-07-04T20:15:00",
       "center_ts": 1656965700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8325720429420471
     },
     {
       "center_time": "2022-07-05T12:15:00",
       "center_ts": 1657023300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8503814935684204
     },
     {
       "center_time": "2022-07-06T04:15:00",
       "center_ts": 1657080900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8463433980941772
     },
     {
       "center_time": "2022-07-06T20:15:00",
       "center_ts": 1657138500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8258408308029175
     },
     {
       "center_time": "2022-07-07T12:15:00",
       "center_ts": 1657196100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8380829691886902
     },
     {
       "center_time": "2022-07-08T04:15:00",
       "center_ts": 1657253700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.827177107334137
     },
     {
       "center_time": "2022-07-08T20:15:00",
       "center_ts": 1657311300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8300475478172302
     },
     {
       "center_time": "2022-07-09T12:15:00",
       "center_ts": 1657368900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.847567081451416
     },
     {
       "center_time": "2022-07-10T05:15:00",
       "center_ts": 1657430100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8203352689743042
     },
     {
       "center_time": "2022-07-10T21:15:00",
       "center_ts": 1657487700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7888099551200867
     },
     {
       "center_time": "2022-07-11T13:15:00",
       "center_ts": 1657545300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7931085824966431
     },
     {
       "center_time": "2022-07-12T05:15:00",
       "center_ts": 1657602900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7653226852416992
     },
     {
       "center_time": "2022-07-12T21:15:00",
       "center_ts": 1657660500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7509528994560242
     },
     {
       "center_time": "2022-07-13T13:15:00",
       "center_ts": 1657718100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7748098969459534
     },
     {
       "center_time": "2022-07-14T05:15:00",
       "center_ts": 1657775700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7606167197227478
     },
     {
       "center_time": "2022-07-14T21:15:00",
       "center_ts": 1657833300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.759584903717041
     },
     {
       "center_time": "2022-07-15T13:15:00",
       "center_ts": 1657890900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7853585481643677
     },
     {
       "center_time": "2022-07-16T05:15:00",
       "center_ts": 1657948500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.7812338471412659
     },
     {
       "center_time": "2022-07-16T21:15:00",
       "center_ts": 1658006100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.760646402835846
     },
     {
       "center_time": "2022-07-17T13:15:00",
       "center_ts": 1658063700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8214280605316162
     },
     {
       "center_time": "2022-07-18T05:15:00",
       "center_ts": 1658121300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8431055545806885
     },
     {
       "center_time": "2022-07-18T21:15:00",
       "center_ts": 1658178900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.817306399345398
     },
     {
       "center_time": "2022-07-19T13:15:00",
       "center_ts": 1658236500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.840435266494751
     },
     {
       "center_time": "2022-07-20T05:15:00",
       "center_ts": 1658294100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8516364693641663
     },
     {
       "center_time": "2022-07-20T21:15:00",
       "center_ts": 1658351700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8276658654212952
     },
     {
       "center_time": "2022-07-21T13:15:00",
       "center_ts": 1658409300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8427214026451111
     },
     {
       "center_time": "2022-07-22T05:15:00",
       "center_ts": 1658466900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.846592903137207
     },
     {
       "center_time": "2022-07-22T21:15:00",
       "center_ts": 1658524500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8312010169029236
     },
     {
       "center_time": "2022-07-23T13:15:00",
       "center_ts": 1658582100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8464694619178772
     },
     {
       "center_time": "2022-07-24T05:15:00",
       "center_ts": 1658639700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8403632640838623
     },
     {
       "center_time": "2022-07-24T21:15:00",
       "center_ts": 1658697300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8318701982498169
     },
     {
       "center_time": "2022-07-25T13:15:00",
       "center_ts": 1658754900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8458681702613831
     },
     {
       "center_time": "2022-07-26T05:15:00",
       "center_ts": 1658812500.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8372306823730469
     },
     {
       "center_time": "2022-07-26T21:15:00",
       "center_ts": 1658870100.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8402851819992065
     },
     {
       "center_time": "2022-07-27T13:15:00",
       "center_ts": 1658927700.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8442655205726624
     },
     {
       "center_time": "2022-07-28T05:15:00",
       "center_ts": 1658985300.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8418125510215759
     },
     {
       "center_time": "2022-07-28T21:15:00",
       "center_ts": 1659042900.0,
-      "anomaly_probability": 0.9929454922676086
+      "anomaly_probability": 0.8492493033409119
     }
   ]
 }

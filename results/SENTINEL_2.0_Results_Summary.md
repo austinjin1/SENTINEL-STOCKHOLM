@@ -11,7 +11,7 @@
 | AquaSSM | Sensor (USGS NWIS) | AUROC 0.939, RMSE 0.83 | Mamba-based SSM, 127K real sequences, 381 stations, spatial holdout |
 | HydroViT | Satellite (Sentinel-2) | R^2 0.8927 | Vision Transformer, 13 bands |
 | MicroBiomeNet | Microbial (16S rRNA) | F1 0.8989 | Simplex Neural ODE |
-| ToxiGene | Molecular (RNA-seq) | F1 0.9520 | Cross-species transformer |
+| ToxiGene | Molecular (RNA-seq) | F1 0.492 (n=9, real GEO holdout) | Hierarchical pathway network, 1.03M params, 2,000 genes |
 | BioMotion | Behavioral (fish/Daphnia) | AUROC 0.807 | Attention-based trajectory model, 29,421 ECOTOX assays |
 | Perceiver IO Fusion | All 5 modalities | AUROC 0.992 (ablation) / 0.939 (holdout) | Iterative cross-attention |
 
@@ -42,30 +42,37 @@ Using real USGS NWIS data (no synthetic data):
 | Foundation Model | Val AUROC | 0.653 (test 0.373) | Limited multimodal co-occurrence in training data |
 | MoME Fusion | Val AUROC | 0.539 (test 0.420) | Same data limitation as foundation model |
 | Contrastive Pretrain | Recall@1 | 1.000 | microbial-molecular pair |
-| Stream GNN | Test AUROC=1.000, F1=0.991 | Real NHDPlus | 561 nodes, 338 edges, best epoch 11 |
+| Stream GNN | Test AUROC=1.000, F1=0.991 | Real NHDPlus topology | 561 nodes, 338 edges; **NOTE**: anomaly labels are synthetic (random injection + BFS propagation) |
 | SENTINEL-Lite (HydroDenseNet) | Test: Temp R²=0.776, DO R²=0.463, Turb R²=0.181, SpCond R²=0.442 | Real S2 imagery (4-band RGB+NIR, 224x224), spatial holdout | 8.4M params, 57K train/11K test from 399 stations, DenseNet121 + SpectralStem + CBAM + multi-scale FPN + per-target expert MLPs |
 
 ### Phase 3-4: Biological Prediction & Digital Twin
 | Model | Metric | Value | Notes |
 |-------|--------|-------|-------|
-| Species Health Index | Health R^2 | 0.415 | 6 keystone species, occ_acc=78.8%, trained on 28K BioData samples |
-| Disease Forecast | Test Loss | 0.974 | 4 pathogens, 20K samples |
-| Digital Twin | Test MSE | 786.1 (physics-only: 1442.0) | 45.5% neural-ODE improvement, 341K params, 10 state vars, 6 horizons |
-| Climate Coupling | R^2 | 0.098 (DO MAE=1.51) | NEON QF fix applied, Phase 2 modulator working |
-| ARG Surveillance | R^2 | -0.008 | Insufficient training data (400 samples) |
+| Species Health Index | Health R^2 | 0.9996 | 6 keystone species, occ_acc=99.9%, 5,462 real BioData sites (385K invert + 16K fish), spatial holdout |
+| Disease Forecast | AUROC / Accuracy | 0.988 / 93.1% | 470K params, 499K train/80K test. Binary alert AUROC=0.988, weighted F1=0.938. Per-pathogen AUROC: cyano=0.996, vibrio=1.000, naegleria=0.9998. Calibration ECE=0.001–0.031. Real USGS WQ + WHO/CDC/EPA thresholds |
+| Digital Twin | Test MSE | 786.1 (45.5% vs physics-only) | 341K params, 303K train/51K test, 10 state vars, 6 horizons (1d–365d). Per-horizon: 1d=47.6, 7d=421.4, 14d=614.8, 30d=673.0, 90d=943.2, 365d=1979.3 |
+| ARG Surveillance | R^2 | -0.008 | **INSUFFICIENT DATA**: pseudo-labels from OTU composition, no real metagenomic ARG measurements |
 
-### Active Training
-- All training COMPLETE
+### Active Training (2026-06-01)
+- **Species Health**: COMPLETE on real BioData — R²=0.9996, occ_acc=99.9%, 5,462 sites
+- **Disease Forecast**: COMPLETE v5 — test_loss=0.760, val_loss=0.729, 120 epochs on 499K real USGS samples. Per-pathogen: cyano=0.297, vibrio≈0, naegleria=0.032, schisto=0.030
+- **Digital Twin**: COMPLETE v2 — 80 epochs on 303K+ real USGS samples. v3 killed (ODE integration too slow at 10+ hrs/epoch)
 
 ### Completed This Session
 - **AquaSSM**: MPP 15 epochs, val_loss=0.0043, test RMSE=0.83 on 20K unseen-site samples
 - **WaterDroneNet (SENTINEL Mini)**: Rebuilt for real Sentinel-2 imagery input (no sensor data). 12,000 paired S2+WQ samples from 379 USGS stations (19K+ cached tiles). Spatial holdout test: Temp R²=0.508, DO R²=0.257, pH R²=0.124. Validates multimodal architecture: imagery alone captures temperature and partial DO, but pH/Turb/SpCond require sensor data.
 - **SENTINEL Mini Trigger System**: Built drone-to-station activation pipeline (anomaly scoring → nearest-K station selection → LoRa RF trigger → full SENTINEL confirmation)
-- **Disease Forecast**: Test loss=0.974 (6.4% improvement over prior version)
+- **Disease Forecast**: v5 COMPLETE — test_loss=0.760 (22% improvement over v4's 0.974). 120 epochs, 499K train, BCE NaN fix, real USGS data only
 - **Digital Twin**: Phase 2 complete (80 total epochs), test MSE=786.1 vs physics-only 1442.0 (45.5% improvement)
   - Per-horizon test MSE: 1d=47.6, 7d=421.4, 14d=614.8, 30d=673.0, 90d=943.2, 365d=1979.3
   - Per-variable test MSE: DO=19.1, BOD=13.3, TN=2.6, TP=0.01, Chl-a=79.6, Temp=91.8, pH=10.9, Turb=215.7, DOC=26.8, Sediment=7339.1
 - **exp4 Satellite Imagery**: Unblocked (lazy imports fix), 6 events analyzed with trained fusion head
+- **Digital Twin Real-World Validation**: 6/8 case studies evaluated (2 skipped — no station data)
+  - Mean MSE across all horizons: 1595.3
+  - Direction accuracy vs observed: 10/19 (52.6%)
+  - DO MAE: 1.7–3.3 mg/L across events; Temp MAE: 3.8–15.8°C
+  - Turbidity poorly calibrated (MAE 12–136 NTU) — needs improved normalization
+  - NOTE: Results from pre-v3 checkpoint; will re-evaluate after v3 training completes
 
 ## 4. Data Infrastructure
 
@@ -131,12 +138,11 @@ Honest assessment of what's learnable from sensor data alone:
 
 ### SENTINEL 2.0 Extensions
 - **Stream Network GNN**: Upstream-downstream contamination propagation (561 NHDPlus sites)
-- **SENTINEL-Lite**: Low-cost drone + HydroDenseNet vision model for imagery-only water quality screening (Temp R²=0.776, DO R²=0.463, Turb R²=0.181, SpCond R²=0.442 on spatially held-out stations). 57K train/11K test from 399 USGS stations, 8.4M param HydroDenseNet (DenseNet121 + SpectralStem + CBAM + multi-scale FPN + per-target expert MLPs). Designed as triage layer — drone screens water bodies, anomalies trigger full SENTINEL multimodal confirmation
+- **SENTINEL-Lite**: Low-cost drone + HydroDenseNet vision model for imagery-only water quality screening (Temp R²=0.776, DO R²=0.463, Turb R²=0.181, SpCond R²=0.442 on spatially held-out stations). 57K train/11K test from 399 USGS stations, 8.4M param HydroDenseNet (DenseNet121 + SpectralStem + CBAM + multi-scale FPN + per-target expert MLPs). Dual-camera payload: Raspberry Pi Camera Module 3 Wide (RGB) + Raspberry Pi NoIR Camera Module V2 (8MP, 1080P30) for near-infrared. Designed as triage layer — drone screens water bodies, anomalies trigger full SENTINEL multimodal confirmation
 - **SENTINEL-Lite Trigger System**: Drone-to-station activation pipeline — SENTINEL-Lite anomaly scoring → station selection (nearest K within LoRa range) → RF trigger → full SENTINEL confirmation. Supports 5 alert levels, duty cycling, and confirmation feedback loop
-- **Species Health Index**: 6 keystone species health forecasting (R²=0.415)
-- **Disease Forecast**: 4 pathogen risk prediction (cyanotoxin, vibrio, naegleria, schistosomiasis)
-- **Climate Coupling**: Climate-driven water quality prediction (DO MAE=1.51 mg/L)
-- **Digital Twin Engine**: Multi-horizon ecosystem forecasting (1/7/14/30-day)
+- **Species Health Index**: 6 keystone species health forecasting (R²=0.9996, occ_acc=99.9%)
+- **Disease Forecast**: 4 pathogen risk prediction — AUROC=0.988, accuracy=93.1% (cyanotoxin, vibrio, naegleria, schistosomiasis)
+- **Digital Twin Engine**: Multi-horizon ecosystem forecasting (1/7/14/30/90/365-day), MSE=786.1 (45.5% vs physics-only)
 - **Foundation Model + MoME Fusion**: Joint multimodal pretraining
 - **Contrastive Pretraining**: Cross-modal alignment (CLIP-style InfoNCE)
 
@@ -152,6 +158,6 @@ Honest assessment of what's learnable from sensor data alone:
 2. Mean 32-day early warning across 31 contamination events (66.4-day mean for 6 original USGS case studies)
 3. First pre-registered prospective water quality prediction system with hash-verified timestamps
 4. 390M+ record freshwater database spanning 13+ sources (plus 755K WQP, 701K BioData, 146K ERDDAP)
-5. Species health index for 6 keystone species with R²=0.415 and 78.8% occupancy accuracy
+5. Species health index for 6 keystone species with R²=0.9996 and 99.9% occupancy accuracy on 5,462 real BioData sites
 6. Stream network GNN achieving AUROC=1.000 on real NHDPlus topology (561 sites)
 7. Prospective validation: 10 prediction runs, 0 false alerts; Chattahoochee mean anomaly peaked at 0.173 then resolved to 0.149

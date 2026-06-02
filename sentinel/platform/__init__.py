@@ -3,7 +3,8 @@ SENTINEL platform modules.
 
 Public-facing components for citizen science data ingestion, photo-based
 water analysis, test kit validation, environmental justice overlay,
-citizen eDNA kit processing, and the research API.
+citizen eDNA kit processing, SENTINEL Mini trigger system, and the
+research API.
 
 Modules
 -------
@@ -18,6 +19,9 @@ ej_overlay
     to EPA EJScreen demographics.
 edna_kit
     Citizen science eDNA kit ingestion, validation, and integration.
+sentinel_mini_trigger
+    Drone-to-station activation pipeline: SENTINEL Mini anomaly
+    detection triggers fixed coastal SENTINEL stations via RF controller.
 api
     FastAPI research API for programmatic platform access.
 """
@@ -56,6 +60,19 @@ from sentinel.platform.photo_analysis import (
     PhotoWaterAnalyzer,
     cross_reference_with_remote_sensing,
 )
+from sentinel.platform.sentinel_mini_trigger import (
+    AlertLevel,
+    AnomalyScorer,
+    ConfirmationResult,
+    DroneDetection,
+    FixedStation,
+    RFController,
+    SentinelMiniTriggerSystem,
+    StationMode,
+    StationSelector,
+    TriggerCommand,
+    create_station_network_from_usgs,
+)
 from sentinel.platform.test_kit import (
     TEST_KIT_PARAMETERS,
     TestKitReading,
@@ -91,6 +108,18 @@ __all__ = [
     "EquityReport",
     "MonitoringSite",
     "UndermonitoredCommunitiesFinder",
+    # sentinel_mini_trigger
+    "AlertLevel",
+    "AnomalyScorer",
+    "ConfirmationResult",
+    "DroneDetection",
+    "FixedStation",
+    "RFController",
+    "SentinelMiniTriggerSystem",
+    "StationMode",
+    "StationSelector",
+    "TriggerCommand",
+    "create_station_network_from_usgs",
     # photo_analysis
     "PhotoAnalysisResult",
     "PhotoDataset",

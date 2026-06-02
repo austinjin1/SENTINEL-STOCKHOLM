@@ -1,23 +1,26 @@
 {
   "model": "IntegratedDiseaseRisk",
+  "data_source": "USGS NWIS real sensor data",
+  "risk_methodology": "Environmental risk scores from WHO/CDC/EPA thresholds applied to real water quality measurements",
+  "synthetic_data": false,
   "n_params": 470462,
-  "train_size": 20035,
-  "val_size": 5710,
-  "test_size": 2830,
-  "best_epoch": 32,
+  "train_size": 499250,
+  "val_size": 149254,
+  "test_size": 80398,
+  "best_epoch": 112,
   "test_metrics": {
-    "loss": 0.9739008831051129,
+    "loss": 0.7603401576989832,
     "alert_distribution": {
-      "0": 453,
-      "1": 2032,
-      "2": 327,
-      "3": 18
+      "0": 72139,
+      "1": 3462,
+      "2": 1980,
+      "3": 2817
     },
     "per_disease_loss": {
-      "cyanotoxin": 0.30312034487724304,
-      "vibrio": 0.3611956536769867,
-      "naegleria": 0.152938574552536,
-      "schistosomiasis": 0.4145050346851349
+      "cyanotoxin": 0.2966901659965515,
+      "vibrio": 1.000000082740371e-07,
+      "naegleria": 0.031846754252910614,
+      "schistosomiasis": 0.029554568231105804
     }
   }
 }

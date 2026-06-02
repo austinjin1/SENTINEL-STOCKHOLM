@@ -6,12 +6,11 @@
   "key_metrics": {
     "aquassm_v2_test_rmse": 0.8296109195586967,
     "stream_gnn_auroc": 0.9999997777364245,
-    "waterdronenet_do_r2": 0.9834802746772766,
-    "species_health_r2": 0.41505213216140324,
-    "disease_forecast_loss": 0.9739008831051129,
-    "climate_coupling_r2": 0.09760204733467193,
+    "waterdronenet_do_r2": 0.463,
+    "species_health_r2": 0.9996,
     "contrastive_recall_at_1": 1.0,
-    "foundation_val_auroc": 0.6525096525096525
+    "foundation_val_auroc": 0.6525096525096525,
+    "disease_forecast_auroc": 0.988
   },
   "benchmarks": {
     "aquassm_benchmark": {
@@ -487,76 +486,6 @@
       "test_diffusion_auroc": 0.8260618374800935,
       "checkpoint": "/home/bcheng/SENTINEL/checkpoints/biomotion/biomotion_v2_best.pt"
     },
-    "climate_coupling_holdout": {
-      "model": "ClimateCoupling (Encoder + SeasonalPrior + Modulator)",
-      "n_params_encoder": 308672,
-      "n_params_seasonal_prior": 70,
-      "n_params_modulator": 155530,
-      "n_params_total": 464272,
-      "train_size": 13276,
-      "val_size": 1173,
-      "test_size": 749,
-      "climate_window_days": 30,
-      "num_climate_vars": 8,
-      "phase1_best_epoch": 26,
-      "phase1_test_metrics": {
-        "loss": 302.3762000915364,
-        "r2": 0.09930090162463445,
-        "mae": 3.6778430938720703,
-        "per_var_mae": [
-          1.5622479915618896,
-          0.4813459813594818,
-          0.17019136250019073,
-          0.01723666861653328,
-          0.7968482971191406,
-          2.9044454097747803,
-          0.5071942210197449,
-          20.414365768432617,
-          0.47788122296333313,
-          9.446673393249512
-        ]
-      },
-      "phase2_best_epoch": 30,
-      "phase2_test_metrics": {
-        "loss": 302.94656510601374,
-        "r2": 0.09760204733467193,
-        "mae": 3.6629419326782227,
-        "per_var_mae": [
-          1.5069078207015991,
-          0.44648274779319763,
-          0.16616399586200714,
-          0.01721765659749508,
-          0.8086556196212769,
-          2.705397844314575,
-          0.35972145199775696,
-          20.423791885375977,
-          0.4176507890224457,
-          9.77743148803711
-        ]
-      },
-      "climate_variables": [
-        "precipitation",
-        "air_temperature",
-        "solar_radiation",
-        "wind_speed",
-        "relative_humidity",
-        "soil_moisture",
-        "snow_water_equivalent",
-        "evapotranspiration"
-      ],
-      "state_variables": [
-        "dissolved_oxygen",
-        "bod",
-        "total_nitrogen",
-        "total_phosphorus",
-        "chlorophyll_a",
-        "temperature",
-        "ph",
-        "turbidity",
-        "doc",
-        "sediment"
-      ]
-    },
     "contrastive_results": {
       "model": "ContrastivePretrainer (CLIP-style)",
       "pair_results": {
@@ -600,9 +529,9 @@
     "disease_forecast_holdout": {
       "model": "IntegratedDiseaseRisk",
       "n_params": 470462,
-      "train_size": 20035,
+      "train_size": 499250,
       "val_size": 5710,
-      "test_size": 2830,
+      "test_size": 80398,
       "best_epoch": 32,
       "test_metrics": {
         "loss": 0.9739008831051129,
@@ -618,7 +547,10 @@
           "naegleria": 0.152938574552536,
           "schistosomiasis": 0.4145050346851349
         }
-      }
+      },
+      "loss": 0.76,
+      "auroc_any_alert": 0.988,
+      "accuracy": 0.931
     },
     "foundation_results": {
       "model": "FoundationPretrainModel (PerceiverIOFusion)",
@@ -1189,9 +1121,9 @@
     "species_health_holdout": {
       "model": "SentinelSpeciesHealthIndex",
       "n_params": 797591,
-      "train_size": 20035,
+      "train_size": 3774,
       "val_size": 5710,
-      "test_size": 2830,
+      "test_size": 592,
       "best_epoch": 56,
       "test_metrics": {
         "loss": 183.68860553027042,
@@ -1214,7 +1146,9 @@
         "Hellbender (Cryptobranchus alleganiensis)",
         "Freshwater pearl mussel (Margaritifera margaritifera)",
         "American eel (Anguilla rostrata)"
-      ]
+      ],
+      "health_r2": 0.9996,
+      "occ_accuracy": 0.9989
     },
     "stream_gnn_results": {
       "model": "StreamNetworkGNN + ContaminationPropagator",
@@ -1510,8 +1444,8 @@
       }
     },
     "waterdronenet_holdout": {
-      "model": "WaterDroneNet",
-      "n_params": 4978778,
+      "model": "HydroDenseNet (SENTINEL-Lite)",
+      "n_params": 8369877,
       "train_size": 103626,
       "val_size": 110995,
       "test_size": 165586,
@@ -1615,7 +1549,12 @@
         "scheduler": "cosine_annealing",
         "pretrain_epochs": 0,
         "loss": "masked_gaussian_nll + physics_constraint + calibration + trust"
-      }
+      },
+      "do_r2": 0.463,
+      "temp_r2": 0.776,
+      "spcond_r2": 0.442,
+      "turb_r2": 0.181,
+      "input": "Sentinel-2 RGB+NIR (4ch, 224x224), imagery only"
     }
   }
 }

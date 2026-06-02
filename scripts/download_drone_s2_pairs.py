@@ -40,14 +40,15 @@ TARGET_COLS = ["DO", "pH", "Turb", "Temp", "SpCond"]
 PARAM_RANGES = {"DO": (0, 20), "pH": (4, 10), "Turb": (0, 1000),
                 "Temp": (-5, 45), "SpCond": (0, 50000)}
 
-# Sample dates: seasonal coverage across S2 era
+# Sample dates: dense coverage across S2 era (every 10 days)
 SAMPLE_DATES = []
-for year in range(2018, 2026):
+for year in range(2017, 2027):
     for month in range(1, 13):
-        SAMPLE_DATES.append(f"{year}-{month:02d}-15")
+        for day in (5, 15, 25):
+            SAMPLE_DATES.append(f"{year}-{month:02d}-{day:02d}")
 
-MAX_WORKERS = 8  # parallel downloads
-MAX_DATES_PER_STATION = 40
+MAX_WORKERS = 12  # parallel downloads
+MAX_DATES_PER_STATION = 120  # up from 40 to allow more per station
 
 
 def log(msg):
@@ -208,10 +209,10 @@ def main():
             if n_added >= MAX_DATES_PER_STATION:
                 break
             cache_key = f"{sid}_{date_str}"
-            # Check if WQ data exists within ±3 days
+            # Check if WQ data exists within ±5 days
             dt = datetime.strptime(date_str, "%Y-%m-%d")
             has_wq = False
-            for delta in range(-3, 4):
+            for delta in range(-5, 6):
                 check = (dt + timedelta(days=delta)).strftime("%Y-%m-%d")
                 if check in wq:
                     has_wq = True
@@ -251,7 +252,7 @@ def main():
         wq = station_wq.get(sid, {})
         dt = datetime.strptime(date_str, "%Y-%m-%d")
         best_t, best_d = None, 999
-        for delta in range(-3, 4):
+        for delta in range(-5, 6):
             check = (dt + timedelta(days=delta)).strftime("%Y-%m-%d")
             if check in wq and abs(delta) < best_d:
                 best_d = abs(delta)

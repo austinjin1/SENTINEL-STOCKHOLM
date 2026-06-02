@@ -221,7 +221,6 @@ def render_sidebar():
         "Disease Forecast": (ckpt_dir / "biology" / "disease_forecast_best.pt").exists(),
         "ARG Surveillance": (ckpt_dir / "biology" / "arg_surveillance_best.pt").exists(),
         "Digital Twin": (ckpt_dir / "twin" / "twin_phase1_best.pt").exists(),
-        "Climate Coupling": (ckpt_dir / "climate" / "climate_coupling_best.pt").exists(),
     }
 
     for name, available in models_available.items():
