@@ -1,0 +1,11 @@
+# SENTINEL ground-computer inference (Omen 15).
+sentinel_inference:
+  ros__parameters:
+    rgb_topic: "/sentinel/camera/rgb/image_raw"
+    nir_topic: "" # set to NIR topic once that camera is live
+    result_topic: "/sentinel/water_quality"
+    repo_root: "~/SENTINEL-STOCKHOLM" # so `import sentinel.models...` resolves
+    checkpoint: "" # path to WaterDroneNet .pt; empty = random (smoke)
+    device: "cpu" # "cuda" on the Omen GPU
+    input_scale: 1.0 # domain-gap knob (pixels -> reflectance-ish)
+    sync_slop_sec: 0.05 # RGB<->NIR pairing window

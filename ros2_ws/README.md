@@ -116,5 +116,5 @@ calibration run; not fabricated here.
 
 - [x] Phase 1 — foundation: workspace, DDS env, shared `WaterQuality` message
 - [x] Phase 2 — drone: `sentinel_camera` (HAL backends + RGB publisher; NIR later)
-- [ ] Phase 3 — computer: `sentinel_inference` (assembly, sync, model node)
+- [x] Phase 3 — computer: `sentinel_inference` (assembly, sync, WaterDroneNet node)
 - [ ] Phase 4 — orchestration: role launch wrappers, run scripts, e2e docs
