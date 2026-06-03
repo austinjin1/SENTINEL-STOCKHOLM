@@ -1,0 +1,5699 @@
+{
+  "events": [
+    {
+      "event_id": "lake_erie_hab_2023",
+      "name": "Lake Erie HAB 2023",
+      "advisory_date": "2023-07-15",
+      "type": "HAB",
+      "drone_triggers": [
+        {
+          "date": "2023-05-16",
+          "alert_level": "warning",
+          "predictions": {
+            "DO": 7.849021911621094,
+            "pH": 7.950954437255859,
+            "Turb": 8.051559448242188,
+            "Temp": 22.3958740234375,
+            "SpCond": 4437.1962890625
+          },
+          "status": "confirmed"
+        },
+        {
+          "date": "2023-05-21",
+          "alert_level": "warning",
+          "predictions": {
+            "DO": 7.404260635375977,
+            "pH": 7.541194915771484,
+            "Turb": 12.767114639282227,
+            "Temp": 20.352413177490234,
+            "SpCond": 4934.51123046875
+          },
+          "status": "confirmed"
+        },
+        {
+          "date": "2023-05-26",
+          "alert_level": "warning",
+          "predictions": {
+            "DO": 7.404260635375977,
+            "pH": 7.541194915771484,
+            "Turb": 12.767114639282227,
+            "Temp": 20.352413177490234,
+            "SpCond": 4934.51123046875
+          },
+          "status": "confirmed"
+        },
+        {
+          "date": "2023-06-10",
+          "alert_level": "alert",
+          "predictions": {
+            "DO": 6.847813606262207,
+            "pH": 7.639976978302002,
+            "Turb": 11.391744613647461,
+            "Temp": 23.491912841796875,
+            "SpCond": 9115.7607421875
+          },
+          "status": "confirmed"
+        }
+      ],
+      "drone_first_trigger": "2023-05-16",
+      "drone_lead_days": 60,
+      "station_analyses": [
+        {
+          "station_id": "04199000",
+          "data_range": "2022-10-26 to 2023-08-14",
+          "n_days": 293,
+          "params": {
+            "DO": {
+              "n_values": 190,
+              "z_mean": -0.7925027213933106,
+              "z_max": 3.096756305563681,
+              "val_mean": 9.821957889031964,
+              "val_min": 5.459493670886076,
+              "val_max": 13.679569892473118,
+              "anomaly_dates": [
+                "2023-04-06",
+                "2023-04-16",
+                "2023-06-16"
+              ],
+              "first_anomaly": "2023-04-06",
+              "lead_days": 100
+            },
+            "pH": {
+              "n_values": 190,
+              "z_mean": -0.2277262660566256,
+              "z_max": 4.657942577959234,
+              "val_mean": 8.070487789412256,
+              "val_min": 7.278205128205129,
+              "val_max": 8.4,
+              "anomaly_dates": [
+                "2023-03-24",
+                "2023-06-12",
+                "2023-06-15",
+                "2023-06-16",
+                "2023-06-17"
+              ],
+              "first_anomaly": "2023-03-24",
+              "lead_days": 113
+            },
+            "Turb": {
+              "n_values": 177,
+              "z_mean": 0.12436988620169671,
+              "z_max": 5.977511433034948,
+              "val_mean": 49.39171731526367,
+              "val_min": 1.5736842105263158,
+              "val_max": 456.21707317073174,
+              "anomaly_dates": [
+                "2023-01-18",
+                "2023-01-19",
+                "2023-01-20",
+                "2023-01-21",
+                "2023-01-22",
+                "2023-01-23",
+                "2023-01-26",
+                "2023-01-27",
+                "2023-01-28",
+                "2023-02-09",
+                "2023-02-10",
+                "2023-02-11",
+                "2023-02-12",
+                "2023-02-23",
+                "2023-02-24",
+                "2023-02-25",
+                "2023-02-28",
+                "2023-03-01",
+                "2023-03-23",
+                "2023-03-24",
+                "2023-03-25",
+                "2023-03-26",
+                "2023-03-27",
+                "2023-03-28",
+                "2023-04-01",
+                "2023-04-02",
+                "2023-04-03",
+                "2023-04-04",
+                "2023-04-07",
+                "2023-04-08",
+                "2023-05-03",
+                "2023-05-04",
+                "2023-06-12",
+                "2023-06-16",
+                "2023-06-17",
+                "2023-06-28",
+                "2023-07-12",
+                "2023-07-13"
+              ],
+              "first_anomaly": "2023-01-18",
+              "lead_days": 178
+            },
+            "Temp": {
+              "n_values": 190,
+              "z_mean": 0.9970517066974864,
+              "z_max": 3.2762992277415854,
+              "val_mean": 14.489612518851395,
+              "val_min": 0.11145833333333334,
+              "val_max": 27.57872340425532,
+              "anomaly_dates": [
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-12",
+                "2023-04-13",
+                "2023-04-14",
+                "2023-04-15",
+                "2023-04-16"
+              ],
+              "first_anomaly": "2023-04-04",
+              "lead_days": 102
+            },
+            "SpCond": {
+              "n_values": 164,
+              "z_mean": -0.2738721011620452,
+              "z_max": 3.6194656515691896,
+              "val_mean": 601.1681574653944,
+              "val_min": 277.5833333333333,
+              "val_max": 742.3333333333334,
+              "anomaly_dates": [
+                "2023-01-18",
+                "2023-01-19",
+                "2023-01-20",
+                "2023-01-21",
+                "2023-02-23"
+              ],
+              "first_anomaly": "2023-01-18",
+              "lead_days": 178
+            }
+          },
+          "first_anomaly_date": "2023-01-18",
+          "first_anomaly_param": "Turb",
+          "first_anomaly_lead_days": 178,
+          "timeline": [
+            {
+              "date": "2023-05-16",
+              "days_before_advisory": 60,
+              "DO": 9.25,
+              "pH": 8.08,
+              "Turb": 1.78,
+              "Temp": 18.13,
+              "SpCond": 700.25
+            },
+            {
+              "date": "2023-05-17",
+              "days_before_advisory": 59,
+              "DO": 9.35,
+              "pH": 8.11,
+              "Turb": 1.8,
+              "Temp": 18.14,
+              "SpCond": 701.18
+            },
+            {
+              "date": "2023-05-18",
+              "days_before_advisory": 58,
+              "DO": 10.01,
+              "pH": 8.16,
+              "Turb": 1.74,
+              "Temp": 16.15,
+              "SpCond": 704.0
+            },
+            {
+              "date": "2023-05-19",
+              "days_before_advisory": 57,
+              "DO": 9.87,
+              "pH": 8.14,
+              "Turb": 2.14,
+              "Temp": 17.49,
+              "SpCond": 703.65
+            },
+            {
+              "date": "2023-05-20",
+              "days_before_advisory": 56,
+              "DO": 7.88,
+              "pH": 7.96,
+              "Turb": 11.44,
+              "Temp": 19.41,
+              "SpCond": 662.2
+            },
+            {
+              "date": "2023-05-21",
+              "days_before_advisory": 55,
+              "DO": 8.93,
+              "pH": 8.03,
+              "Turb": 16.69,
+              "Temp": 17.46
+            },
+            {
+              "date": "2023-05-22",
+              "days_before_advisory": 54,
+              "DO": 9.05,
+              "pH": 8.08,
+              "Turb": 4.43,
+              "Temp": 19.45
+            },
+            {
+              "date": "2023-05-23",
+              "days_before_advisory": 53,
+              "DO": 9.01,
+              "pH": 8.07,
+              "Turb": 2.92,
+              "Temp": 19.78
+            },
+            {
+              "date": "2023-05-24",
+              "days_before_advisory": 52,
+              "DO": 8.61,
+              "pH": 8.03,
+              "Turb": 2.46,
+              "Temp": 20.63
+            },
+            {
+              "date": "2023-05-25",
+              "days_before_advisory": 51,
+              "DO": 8.73,
+              "pH": 8.06,
+              "Turb": 2.58,
+              "Temp": 18.21,
+              "SpCond": 686.79
+            },
+            {
+              "date": "2023-05-26",
+              "days_before_advisory": 50,
+              "DO": 9.13,
+              "pH": 8.07,
+              "Turb": 2.75,
+              "Temp": 17.26,
+              "SpCond": 691.62
+            },
+            {
+              "date": "2023-05-27",
+              "days_before_advisory": 49,
+              "DO": 8.8,
+              "pH": 8.03,
+              "Turb": 2.62,
+              "Temp": 18.41,
+              "SpCond": 702.96
+            },
+            {
+              "date": "2023-05-28",
+              "days_before_advisory": 48,
+              "DO": 8.64,
+              "pH": 8.03,
+              "Turb": 3.54,
+              "Temp": 19.3,
+              "SpCond": 707.6
+            },
+            {
+              "date": "2023-05-29",
+              "days_before_advisory": 47,
+              "DO": 8.27,
+              "pH": 8.0,
+              "Turb": 3.23,
+              "Temp": 20.89,
+              "SpCond": 709.41
+            },
+            {
+              "date": "2023-05-30",
+              "days_before_advisory": 46,
+              "DO": 7.91,
+              "pH": 7.96,
+              "Turb": 2.6,
+              "Temp": 22.51,
+              "SpCond": 717.56
+            },
+            {
+              "date": "2023-05-31",
+              "days_before_advisory": 45,
+              "DO": 7.62,
+              "pH": 7.94,
+              "Turb": 2.63,
+              "Temp": 24.55,
+              "SpCond": 721.6
+            },
+            {
+              "date": "2023-06-01",
+              "days_before_advisory": 44,
+              "DO": 7.69,
+              "pH": 7.96,
+              "Turb": 4.78,
+              "Temp": 24.11,
+              "SpCond": 720.47
+            },
+            {
+              "date": "2023-06-02",
+              "days_before_advisory": 43,
+              "DO": 8.06,
+              "pH": 8.02,
+              "Turb": 5.61,
+              "Temp": 24.22,
+              "SpCond": 717.33
+            },
+            {
+              "date": "2023-06-03",
+              "days_before_advisory": 42,
+              "DO": 8.19,
+              "pH": 8.04,
+              "Turb": 4.66,
+              "Temp": 25.11,
+              "SpCond": 716.64
+            },
+            {
+              "date": "2023-06-04",
+              "days_before_advisory": 41,
+              "DO": 8.43,
+              "pH": 8.08,
+              "Turb": 4.42,
+              "Temp": 23.21,
+              "SpCond": 712.66
+            },
+            {
+              "date": "2023-06-05",
+              "days_before_advisory": 40,
+              "DO": 9.1,
+              "pH": 8.14,
+              "Turb": 4.36,
+              "Temp": 20.49,
+              "SpCond": 716.52
+            },
+            {
+              "date": "2023-06-06",
+              "days_before_advisory": 39,
+              "DO": 9.54,
+              "pH": 8.18,
+              "Turb": 6.52,
+              "Temp": 20.11,
+              "SpCond": 725.21
+            },
+            {
+              "date": "2023-06-07",
+              "days_before_advisory": 38,
+              "DO": 9.66,
+              "pH": 8.19,
+              "Turb": 6.32,
+              "Temp": 19.89,
+              "SpCond": 727.64
+            },
+            {
+              "date": "2023-06-08",
+              "days_before_advisory": 37,
+              "DO": 9.58,
+              "pH": 8.16,
+              "Turb": 5.77,
+              "Temp": 19.67,
+              "SpCond": 733.88
+            },
+            {
+              "date": "2023-06-09",
+              "days_before_advisory": 36,
+              "DO": 9.46,
+              "pH": 8.14,
+              "Turb": 4.78,
+              "Temp": 20.73,
+              "SpCond": 737.88
+            },
+            {
+              "date": "2023-06-10",
+              "days_before_advisory": 35,
+              "DO": 8.98,
+              "pH": 8.07,
+              "Turb": 4.74,
+              "Temp": 21.76,
+              "SpCond": 742.33
+            },
+            {
+              "date": "2023-06-11",
+              "days_before_advisory": 34,
+              "DO": 8.02,
+              "pH": 7.97,
+              "Turb": 4.97,
+              "Temp": 22.12,
+              "SpCond": 739.82
+            },
+            {
+              "date": "2023-06-12",
+              "days_before_advisory": 33,
+              "DO": 6.66,
+              "pH": 7.67,
+              "Turb": 67.89,
+              "Temp": 19.18,
+              "SpCond": 469.89
+            },
+            {
+              "date": "2023-06-13",
+              "days_before_advisory": 32,
+              "DO": 7.96,
+              "pH": 7.77,
+              "Turb": 32.15,
+              "Temp": 16.94,
+              "SpCond": 406.0
+            },
+            {
+              "date": "2023-06-14",
+              "days_before_advisory": 31,
+              "DO": 7.26,
+              "pH": 7.76,
+              "Turb": 28.34,
+              "Temp": 17.95
+            },
+            {
+              "date": "2023-06-15",
+              "days_before_advisory": 30,
+              "DO": 7.15,
+              "pH": 7.71,
+              "Turb": 24.0,
+              "Temp": 18.88
+            },
+            {
+              "date": "2023-06-16",
+              "days_before_advisory": 29,
+              "DO": 5.46,
+              "pH": 7.28,
+              "Turb": 456.22,
+              "Temp": 18.68
+            },
+            {
+              "date": "2023-06-17",
+              "days_before_advisory": 28,
+              "DO": 6.7,
+              "pH": 7.4,
+              "Turb": 182.95,
+              "Temp": 17.91
+            },
+            {
+              "date": "2023-06-18",
+              "days_before_advisory": 27
+            },
+            {
+              "date": "2023-06-19",
+              "days_before_advisory": 26,
+              "DO": 7.84,
+              "pH": 7.89,
+              "Turb": 11.97,
+              "Temp": 22.49
+            },
+            {
+              "date": "2023-06-20",
+              "days_before_advisory": 25,
+              "DO": 7.89,
+              "pH": 7.85,
+              "Turb": 8.88,
+              "Temp": 21.54,
+              "SpCond": 594.9
+            },
+            {
+              "date": "2023-06-21",
+              "days_before_advisory": 24,
+              "DO": 7.73,
+              "pH": 7.9,
+              "Turb": 6.39,
+              "Temp": 23.39,
+              "SpCond": 629.31
+            },
+            {
+              "date": "2023-06-22",
+              "days_before_advisory": 23,
+              "DO": 7.74,
+              "pH": 7.98,
+              "Turb": 4.87,
+              "Temp": 23.1,
+              "SpCond": 648.53
+            },
+            {
+              "date": "2023-06-23",
+              "days_before_advisory": 22,
+              "DO": 8.07,
+              "pH": 8.06,
+              "Turb": 4.11,
+              "Temp": 21.46,
+              "SpCond": 659.12
+            },
+            {
+              "date": "2023-06-24",
+              "days_before_advisory": 21,
+              "DO": 8.6,
+              "pH": 8.11,
+              "Turb": 3.46,
+              "Temp": 20.87,
+              "SpCond": 673.6
+            },
+            {
+              "date": "2023-06-25",
+              "days_before_advisory": 20,
+              "DO": 8.73,
+              "pH": 8.17,
+              "Turb": 3.33,
+              "Temp": 22.86,
+              "SpCond": 673.77
+            },
+            {
+              "date": "2023-06-26",
+              "days_before_advisory": 19,
+              "DO": 8.36,
+              "pH": 8.13,
+              "Turb": 3.83,
+              "Temp": 23.08,
+              "SpCond": 672.71
+            },
+            {
+              "date": "2023-06-27",
+              "days_before_advisory": 18,
+              "DO": 7.72,
+              "pH": 8.0,
+              "Turb": 38.04,
+              "Temp": 21.26,
+              "SpCond": 644.41
+            },
+            {
+              "date": "2023-06-28",
+              "days_before_advisory": 17,
+              "DO": 8.03,
+              "pH": 7.89,
+              "Turb": 104.22,
+              "Temp": 20.53,
+              "SpCond": 542.45
+            },
+            {
+              "date": "2023-06-29",
+              "days_before_advisory": 16,
+              "DO": 8.44,
+              "pH": 7.99,
+              "Turb": 39.68,
+              "Temp": 21.06,
+              "SpCond": 593.98
+            },
+            {
+              "date": "2023-06-30",
+              "days_before_advisory": 15,
+              "DO": 8.2,
+              "pH": 8.09,
+              "Temp": 23.94,
+              "SpCond": 630.77
+            },
+            {
+              "date": "2023-07-01",
+              "days_before_advisory": 14,
+              "DO": 7.99,
+              "pH": 8.15,
+              "Temp": 25.21,
+              "SpCond": 656.28
+            },
+            {
+              "date": "2023-07-02",
+              "days_before_advisory": 13,
+              "DO": 7.96,
+              "pH": 8.14,
+              "Temp": 24.47,
+              "SpCond": 674.39
+            },
+            {
+              "date": "2023-07-03",
+              "days_before_advisory": 12,
+              "DO": 7.96,
+              "pH": 8.11,
+              "Temp": 24.14,
+              "SpCond": 626.36
+            },
+            {
+              "date": "2023-07-04",
+              "days_before_advisory": 11,
+              "DO": 8.1,
+              "pH": 8.09,
+              "Temp": 25.04,
+              "SpCond": 610.86
+            },
+            {
+              "date": "2023-07-05",
+              "days_before_advisory": 10,
+              "DO": 8.26,
+              "pH": 8.17,
+              "Temp": 26.65,
+              "SpCond": 641.73
+            },
+            {
+              "date": "2023-07-06",
+              "days_before_advisory": 9,
+              "DO": 8.06,
+              "pH": 8.16,
+              "Turb": 2.57,
+              "Temp": 27.58,
+              "SpCond": 617.75
+            },
+            {
+              "date": "2023-07-07",
+              "days_before_advisory": 8,
+              "DO": 7.91,
+              "pH": 8.05,
+              "Turb": 40.02,
+              "Temp": 26.32,
+              "SpCond": 559.44
+            },
+            {
+              "date": "2023-07-08",
+              "days_before_advisory": 7,
+              "DO": 7.55,
+              "pH": 8.07,
+              "Turb": 8.62,
+              "Temp": 24.22,
+              "SpCond": 562.65
+            },
+            {
+              "date": "2023-07-09",
+              "days_before_advisory": 6,
+              "DO": 8.34,
+              "pH": 8.11,
+              "Turb": 10.48,
+              "Temp": 23.01
+            },
+            {
+              "date": "2023-07-10",
+              "days_before_advisory": 5,
+              "DO": 8.57,
+              "pH": 8.16,
+              "Turb": 9.04,
+              "Temp": 23.45
+            },
+            {
+              "date": "2023-07-11",
+              "days_before_advisory": 4,
+              "DO": 8.09,
+              "pH": 8.11,
+              "Turb": 5.69,
+              "Temp": 25.35
+            },
+            {
+              "date": "2023-07-12",
+              "days_before_advisory": 3,
+              "DO": 6.98,
+              "pH": 7.9,
+              "Turb": 74.65,
+              "Temp": 24.67
+            },
+            {
+              "date": "2023-07-13",
+              "days_before_advisory": 2,
+              "DO": 7.35,
+              "pH": 7.77,
+              "Turb": 71.09,
+              "Temp": 22.6
+            },
+            {
+              "date": "2023-07-14",
+              "days_before_advisory": 1,
+              "DO": 7.95,
+              "pH": 7.92,
+              "Turb": 30.97,
+              "Temp": 23.41
+            },
+            {
+              "date": "2023-07-15",
+              "days_before_advisory": 0,
+              "DO": 7.26,
+              "pH": 7.92,
+              "Turb": 11.34,
+              "Temp": 24.45
+            },
+            {
+              "date": "2023-07-16",
+              "days_before_advisory": -1,
+              "DO": 8.05,
+              "pH": 8.03,
+              "Turb": 9.61,
+              "Temp": 23.42
+            },
+            {
+              "date": "2023-07-17",
+              "days_before_advisory": -2,
+              "DO": 8.02,
+              "pH": 8.08,
+              "Turb": 6.8,
+              "Temp": 24.6
+            },
+            {
+              "date": "2023-07-18",
+              "days_before_advisory": -3,
+              "DO": 8.15,
+              "pH": 8.11,
+              "Turb": 6.01,
+              "Temp": 24.8
+            },
+            {
+              "date": "2023-07-19",
+              "days_before_advisory": -4,
+              "DO": 8.14,
+              "pH": 8.12,
+              "Turb": 5.17,
+              "Temp": 24.42,
+              "SpCond": 669.64
+            },
+            {
+              "date": "2023-07-20",
+              "days_before_advisory": -5,
+              "DO": 7.96,
+              "pH": 8.08,
+              "Turb": 5.11,
+              "Temp": 25.12,
+              "SpCond": 653.15
+            },
+            {
+              "date": "2023-07-21",
+              "days_before_advisory": -6,
+              "DO": 7.31,
+              "pH": 8.01,
+              "Turb": 58.56,
+              "Temp": 24.04,
+              "SpCond": 598.43
+            },
+            {
+              "date": "2023-07-22",
+              "days_before_advisory": -7,
+              "DO": 7.97,
+              "pH": 8.04,
+              "Turb": 62.41,
+              "Temp": 22.75,
+              "SpCond": 487.77
+            },
+            {
+              "date": "2023-07-23",
+              "days_before_advisory": -8,
+              "DO": 8.05,
+              "pH": 8.11,
+              "Turb": 23.63,
+              "Temp": 23.93,
+              "SpCond": 466.48
+            },
+            {
+              "date": "2023-07-24",
+              "days_before_advisory": -9,
+              "DO": 8.25,
+              "pH": 8.23,
+              "Turb": 10.82,
+              "Temp": 24.33,
+              "SpCond": 515.53
+            },
+            {
+              "date": "2023-07-25",
+              "days_before_advisory": -10,
+              "DO": 8.61,
+              "pH": 8.34,
+              "Turb": 8.2,
+              "Temp": 25.84,
+              "SpCond": 532.56
+            },
+            {
+              "date": "2023-07-26",
+              "days_before_advisory": -11,
+              "DO": 8.29,
+              "pH": 8.29,
+              "Turb": 9.85,
+              "Temp": 26.11,
+              "SpCond": 540.46
+            },
+            {
+              "date": "2023-07-27",
+              "days_before_advisory": -12,
+              "DO": 7.44,
+              "pH": 8.0,
+              "Turb": 42.2,
+              "Temp": 25.47,
+              "SpCond": 529.36
+            },
+            {
+              "date": "2023-07-28",
+              "days_before_advisory": -13,
+              "DO": 7.35,
+              "pH": 8.01,
+              "Turb": 9.43,
+              "Temp": 26.23,
+              "SpCond": 551.04
+            },
+            {
+              "date": "2023-07-29",
+              "days_before_advisory": -14,
+              "DO": 6.96,
+              "pH": 7.8,
+              "Turb": 247.9,
+              "Temp": 24.83,
+              "SpCond": 409.21
+            },
+            {
+              "date": "2023-07-30",
+              "days_before_advisory": -15,
+              "DO": 7.63,
+              "pH": 7.7,
+              "Turb": 149.56,
+              "Temp": 22.89
+            }
+          ]
+        },
+        {
+          "station_id": "04199500",
+          "data_range": "2022-10-18 to 2023-08-14",
+          "n_days": 301,
+          "params": {
+            "DO": {
+              "n_values": 163,
+              "z_mean": -0.9600202475288124,
+              "z_max": 2.7203232711802756,
+              "val_mean": 9.802005269043969,
+              "val_min": 7.464516129032258,
+              "val_max": 13.555208333333333,
+              "anomaly_dates": [
+                "2023-04-16"
+              ],
+              "first_anomaly": "2023-04-16",
+              "lead_days": 90
+            },
+            "pH": {
+              "n_values": 119,
+              "z_mean": -0.5369542000714421,
+              "z_max": 3.1595182425931343,
+              "val_mean": 8.257544127082614,
+              "val_min": 7.432291666666667,
+              "val_max": 8.80625,
+              "anomaly_dates": [
+                "2023-06-12",
+                "2023-06-13",
+                "2023-06-14",
+                "2023-06-16",
+                "2023-06-17"
+              ],
+              "first_anomaly": "2023-06-12",
+              "lead_days": 33
+            },
+            "Turb": {
+              "n_values": 141,
+              "z_mean": -0.138634848278565,
+              "z_max": 4.296314797532576,
+              "val_mean": 41.533881832712055,
+              "val_min": 0.8624999999999999,
+              "val_max": 428.2083333333333,
+              "anomaly_dates": [
+                "2023-03-02",
+                "2023-03-06",
+                "2023-03-07",
+                "2023-03-08",
+                "2023-03-09",
+                "2023-03-23",
+                "2023-03-24",
+                "2023-03-25",
+                "2023-03-26",
+                "2023-03-27",
+                "2023-03-28",
+                "2023-03-29",
+                "2023-04-01",
+                "2023-04-02",
+                "2023-04-03",
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-07",
+                "2023-04-08",
+                "2023-04-09",
+                "2023-05-01",
+                "2023-05-02",
+                "2023-05-03",
+                "2023-05-04",
+                "2023-05-05",
+                "2023-06-16",
+                "2023-06-17",
+                "2023-06-18"
+              ],
+              "first_anomaly": "2023-03-02",
+              "lead_days": 135
+            },
+            "Temp": {
+              "n_values": 163,
+              "z_mean": 1.1428212108504219,
+              "z_max": 2.9564318325044954,
+              "val_mean": 17.399069524218408,
+              "val_min": 1.375,
+              "val_max": 27.636458333333334,
+              "anomaly_dates": [
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-13",
+                "2023-04-14",
+                "2023-04-15"
+              ],
+              "first_anomaly": "2023-04-05",
+              "lead_days": 101
+            },
+            "SpCond": {
+              "n_values": 161,
+              "z_mean": -0.16731156178237966,
+              "z_max": 2.6516392293227393,
+              "val_mean": 500.4886789111171,
+              "val_min": 238.09375,
+              "val_max": 794.0,
+              "anomaly_dates": [],
+              "first_anomaly": null,
+              "lead_days": null
+            }
+          },
+          "first_anomaly_date": "2023-03-02",
+          "first_anomaly_param": "Turb",
+          "first_anomaly_lead_days": 135,
+          "timeline": [
+            {
+              "date": "2023-05-16",
+              "days_before_advisory": 60,
+              "DO": 9.45,
+              "pH": 8.4,
+              "Turb": 2.33,
+              "Temp": 18.14,
+              "SpCond": 527.92
+            },
+            {
+              "date": "2023-05-17",
+              "days_before_advisory": 59,
+              "DO": 9.81,
+              "pH": 8.47,
+              "Turb": 1.97,
+              "Temp": 18.09,
+              "SpCond": 540.37
+            },
+            {
+              "date": "2023-05-18",
+              "days_before_advisory": 58,
+              "DO": 10.37,
+              "pH": 8.56,
+              "Turb": 1.85,
+              "Temp": 16.6,
+              "SpCond": 555.53
+            },
+            {
+              "date": "2023-05-19",
+              "days_before_advisory": 57,
+              "DO": 10.45,
+              "pH": 8.6,
+              "Turb": 1.53,
+              "Temp": 17.83,
+              "SpCond": 595.2
+            },
+            {
+              "date": "2023-05-20",
+              "days_before_advisory": 56,
+              "DO": 9.53,
+              "pH": 8.53,
+              "Turb": 3.18,
+              "Temp": 19.91,
+              "SpCond": 567.91
+            },
+            {
+              "date": "2023-05-21",
+              "days_before_advisory": 55,
+              "DO": 10.19,
+              "pH": 8.56,
+              "Turb": 2.03,
+              "Temp": 19.15,
+              "SpCond": 521.41
+            },
+            {
+              "date": "2023-05-22",
+              "days_before_advisory": 54,
+              "DO": 9.88,
+              "pH": 8.54,
+              "Turb": 1.57,
+              "Temp": 20.09,
+              "SpCond": 516.53
+            },
+            {
+              "date": "2023-05-23",
+              "days_before_advisory": 53,
+              "DO": 9.47,
+              "pH": 8.49,
+              "Turb": 1.49,
+              "Temp": 20.2,
+              "SpCond": 535.51
+            },
+            {
+              "date": "2023-05-24",
+              "days_before_advisory": 52,
+              "DO": 9.01,
+              "pH": 8.38,
+              "Turb": 1.46,
+              "Temp": 21.18,
+              "SpCond": 547.77
+            },
+            {
+              "date": "2023-05-25",
+              "days_before_advisory": 51,
+              "DO": 8.97,
+              "pH": 8.33,
+              "Turb": 1.23,
+              "Temp": 18.73,
+              "SpCond": 555.19
+            },
+            {
+              "date": "2023-05-26",
+              "days_before_advisory": 50,
+              "DO": 9.22,
+              "pH": 8.31,
+              "Turb": 1.17,
+              "Temp": 17.88,
+              "SpCond": 569.3
+            },
+            {
+              "date": "2023-05-27",
+              "days_before_advisory": 49,
+              "DO": 9.09,
+              "pH": 8.27,
+              "Turb": 1.16,
+              "Temp": 18.93,
+              "SpCond": 582.09
+            },
+            {
+              "date": "2023-05-28",
+              "days_before_advisory": 48,
+              "DO": 8.89,
+              "pH": 8.27,
+              "Turb": 1.0,
+              "Temp": 19.8,
+              "SpCond": 590.27
+            },
+            {
+              "date": "2023-05-29",
+              "days_before_advisory": 47,
+              "DO": 8.58,
+              "pH": 8.23,
+              "Turb": 1.07,
+              "Temp": 20.99,
+              "SpCond": 597.8
+            },
+            {
+              "date": "2023-05-30",
+              "days_before_advisory": 46,
+              "DO": 8.19,
+              "pH": 8.19,
+              "Turb": 0.96,
+              "Temp": 22.99,
+              "SpCond": 616.59
+            },
+            {
+              "date": "2023-05-31",
+              "days_before_advisory": 45,
+              "DO": 8.0,
+              "pH": 8.18,
+              "Turb": 1.03,
+              "Temp": 24.73
+            },
+            {
+              "date": "2023-06-01",
+              "days_before_advisory": 44,
+              "DO": 8.18,
+              "pH": 8.2,
+              "Turb": 0.86,
+              "Temp": 24.52,
+              "SpCond": 605.52
+            },
+            {
+              "date": "2023-06-02",
+              "days_before_advisory": 43,
+              "DO": 8.22,
+              "pH": 8.21,
+              "Turb": 0.99,
+              "Temp": 24.81,
+              "SpCond": 604.56
+            },
+            {
+              "date": "2023-06-03",
+              "days_before_advisory": 42,
+              "DO": 8.11,
+              "pH": 8.22,
+              "Turb": 1.03,
+              "Temp": 25.73,
+              "SpCond": 608.83
+            },
+            {
+              "date": "2023-06-04",
+              "days_before_advisory": 41,
+              "DO": 8.35,
+              "pH": 8.26,
+              "Turb": 0.99,
+              "Temp": 23.24,
+              "SpCond": 609.94
+            },
+            {
+              "date": "2023-06-05",
+              "days_before_advisory": 40,
+              "DO": 8.82,
+              "pH": 8.31,
+              "Turb": 1.05,
+              "Temp": 20.91,
+              "SpCond": 604.54
+            },
+            {
+              "date": "2023-06-06",
+              "days_before_advisory": 39,
+              "DO": 9.02,
+              "pH": 8.36,
+              "Turb": 1.18,
+              "Temp": 20.76,
+              "SpCond": 604.76
+            },
+            {
+              "date": "2023-06-07",
+              "days_before_advisory": 38,
+              "DO": 8.86,
+              "pH": 8.33,
+              "Turb": 1.12,
+              "Temp": 20.7,
+              "SpCond": 610.95
+            },
+            {
+              "date": "2023-06-08",
+              "days_before_advisory": 37,
+              "DO": 8.61,
+              "pH": 8.28,
+              "Turb": 1.59,
+              "Temp": 20.15,
+              "SpCond": 625.55
+            },
+            {
+              "date": "2023-06-09",
+              "days_before_advisory": 36,
+              "DO": 8.51,
+              "pH": 8.23,
+              "Turb": 1.3,
+              "Temp": 21.35,
+              "SpCond": 634.77
+            },
+            {
+              "date": "2023-06-10",
+              "days_before_advisory": 35,
+              "DO": 8.15,
+              "pH": 8.15,
+              "Turb": 1.4,
+              "Temp": 22.23,
+              "SpCond": 633.35
+            },
+            {
+              "date": "2023-06-11",
+              "days_before_advisory": 34,
+              "DO": 7.58,
+              "pH": 8.07,
+              "Turb": 1.71,
+              "Temp": 22.64,
+              "SpCond": 623.8
+            },
+            {
+              "date": "2023-06-12",
+              "days_before_advisory": 33,
+              "DO": 7.51,
+              "pH": 7.75,
+              "Turb": 42.46,
+              "Temp": 19.19,
+              "SpCond": 564.53
+            },
+            {
+              "date": "2023-06-13",
+              "days_before_advisory": 32,
+              "DO": 8.44,
+              "pH": 7.82,
+              "Turb": 14.21,
+              "Temp": 17.04,
+              "SpCond": 590.91
+            },
+            {
+              "date": "2023-06-14",
+              "days_before_advisory": 31,
+              "DO": 8.26,
+              "pH": 7.76,
+              "Turb": 21.18,
+              "Temp": 17.76,
+              "SpCond": 587.06
+            },
+            {
+              "date": "2023-06-15",
+              "days_before_advisory": 30,
+              "DO": 8.32,
+              "pH": 7.78,
+              "Turb": 12.31,
+              "Temp": 18.51,
+              "SpCond": 576.11
+            },
+            {
+              "date": "2023-06-16",
+              "days_before_advisory": 29,
+              "DO": 7.99,
+              "pH": 7.58,
+              "Turb": 233.28,
+              "Temp": 18.15,
+              "SpCond": 469.11
+            },
+            {
+              "date": "2023-06-17",
+              "days_before_advisory": 28,
+              "DO": 8.7,
+              "pH": 7.43,
+              "Turb": 379.57,
+              "Temp": 16.88,
+              "SpCond": 319.35
+            },
+            {
+              "date": "2023-06-18",
+              "days_before_advisory": 27,
+              "DO": 8.63,
+              "pH": 7.6,
+              "Turb": 136.9,
+              "Temp": 18.44,
+              "SpCond": 373.63
+            },
+            {
+              "date": "2023-06-19",
+              "days_before_advisory": 26,
+              "DO": 8.53,
+              "pH": 7.77,
+              "Turb": 49.82,
+              "Temp": 19.93,
+              "SpCond": 451.04
+            },
+            {
+              "date": "2023-06-20",
+              "days_before_advisory": 25,
+              "DO": 8.46,
+              "pH": 7.9,
+              "Turb": 23.3,
+              "Temp": 21.85,
+              "SpCond": 460.59
+            },
+            {
+              "date": "2023-06-21",
+              "days_before_advisory": 24,
+              "DO": 8.49,
+              "pH": 8.04,
+              "Turb": 12.58,
+              "Temp": 23.74,
+              "SpCond": 467.28
+            },
+            {
+              "date": "2023-06-22",
+              "days_before_advisory": 23,
+              "DO": 8.64,
+              "pH": 8.18,
+              "Turb": 6.72,
+              "Temp": 23.56,
+              "SpCond": 482.78
+            },
+            {
+              "date": "2023-06-23",
+              "days_before_advisory": 22,
+              "DO": 9.19,
+              "pH": 8.37,
+              "Turb": 4.79,
+              "Temp": 22.06,
+              "SpCond": 489.29
+            },
+            {
+              "date": "2023-06-24",
+              "days_before_advisory": 21,
+              "DO": 9.75,
+              "pH": 8.41,
+              "Turb": 4.45,
+              "Temp": 22.07,
+              "SpCond": 501.84
+            },
+            {
+              "date": "2023-06-25",
+              "days_before_advisory": 20,
+              "DO": 9.51,
+              "pH": 8.45,
+              "Turb": 5.09,
+              "Temp": 24.16,
+              "SpCond": 485.48
+            },
+            {
+              "date": "2023-06-26",
+              "days_before_advisory": 19,
+              "DO": 8.9,
+              "pH": 8.27,
+              "Turb": 5.41,
+              "Temp": 23.75,
+              "SpCond": 461.11
+            },
+            {
+              "date": "2023-06-27",
+              "days_before_advisory": 18,
+              "DO": 8.5,
+              "pH": 8.16,
+              "Turb": 5.22,
+              "Temp": 21.92,
+              "SpCond": 465.38
+            },
+            {
+              "date": "2023-06-28",
+              "days_before_advisory": 17,
+              "DO": 9.39,
+              "pH": 8.17,
+              "Turb": 9.19,
+              "Temp": 21.1,
+              "SpCond": 468.45
+            },
+            {
+              "date": "2023-06-29",
+              "days_before_advisory": 16,
+              "DO": 9.53,
+              "pH": 8.24,
+              "Turb": 6.9,
+              "Temp": 21.59,
+              "SpCond": 478.16
+            },
+            {
+              "date": "2023-06-30",
+              "days_before_advisory": 15,
+              "DO": 8.45,
+              "pH": 8.07,
+              "Turb": 4.48,
+              "Temp": 24.3,
+              "SpCond": 505.74
+            },
+            {
+              "date": "2023-07-01",
+              "days_before_advisory": 14,
+              "DO": 7.74,
+              "pH": 7.95,
+              "Turb": 3.93,
+              "Temp": 25.42,
+              "SpCond": 493.52
+            },
+            {
+              "date": "2023-07-02",
+              "days_before_advisory": 13,
+              "DO": 7.86,
+              "pH": 7.96,
+              "Turb": 3.09,
+              "Temp": 24.84,
+              "SpCond": 486.9
+            },
+            {
+              "date": "2023-07-03",
+              "days_before_advisory": 12,
+              "DO": 8.27,
+              "pH": 8.1,
+              "Turb": 2.41,
+              "Temp": 25.12,
+              "SpCond": 494.1
+            },
+            {
+              "date": "2023-07-04",
+              "days_before_advisory": 11,
+              "DO": 8.39,
+              "pH": 8.19,
+              "Turb": 2.06,
+              "Temp": 26.86,
+              "SpCond": 514.38
+            },
+            {
+              "date": "2023-07-05",
+              "days_before_advisory": 10,
+              "DO": 8.09,
+              "pH": 8.19,
+              "Turb": 1.78,
+              "Temp": 27.6,
+              "SpCond": 524.94
+            },
+            {
+              "date": "2023-07-06",
+              "days_before_advisory": 9,
+              "DO": 8.33,
+              "pH": 8.26,
+              "Turb": 2.34,
+              "Temp": 27.64,
+              "SpCond": 524.11
+            },
+            {
+              "date": "2023-07-07",
+              "days_before_advisory": 8,
+              "DO": 8.46,
+              "pH": 8.29,
+              "Turb": 3.0,
+              "Temp": 27.33,
+              "SpCond": 520.98
+            },
+            {
+              "date": "2023-07-08",
+              "days_before_advisory": 7,
+              "DO": 8.06,
+              "pH": 8.22,
+              "Turb": 1.93,
+              "Temp": 24.62,
+              "SpCond": 514.75
+            },
+            {
+              "date": "2023-07-09",
+              "days_before_advisory": 6,
+              "DO": 9.14,
+              "pH": 8.29,
+              "Turb": 1.63,
+              "Temp": 23.71,
+              "SpCond": 526.33
+            },
+            {
+              "date": "2023-07-10",
+              "days_before_advisory": 5,
+              "DO": 9.33,
+              "pH": 8.36,
+              "Temp": 24.46,
+              "SpCond": 534.56
+            },
+            {
+              "date": "2023-07-11",
+              "days_before_advisory": 4,
+              "DO": 8.85,
+              "pH": 8.31,
+              "Temp": 25.64,
+              "SpCond": 532.18
+            },
+            {
+              "date": "2023-07-12",
+              "days_before_advisory": 3,
+              "DO": 8.21,
+              "pH": 8.24,
+              "Temp": 25.65,
+              "SpCond": 534.91
+            },
+            {
+              "date": "2023-07-13",
+              "days_before_advisory": 2,
+              "DO": 8.29,
+              "pH": 8.14,
+              "Temp": 24.06,
+              "SpCond": 546.52
+            },
+            {
+              "date": "2023-07-14",
+              "days_before_advisory": 1,
+              "DO": 9.32,
+              "pH": 8.35,
+              "Temp": 24.31,
+              "SpCond": 596.95
+            },
+            {
+              "date": "2023-07-15",
+              "days_before_advisory": 0,
+              "DO": 8.39,
+              "pH": 8.31,
+              "Temp": 25.32,
+              "SpCond": 554.2
+            },
+            {
+              "date": "2023-07-16",
+              "days_before_advisory": -1,
+              "DO": 9.69,
+              "pH": 8.37,
+              "Temp": 24.47,
+              "SpCond": 563.44
+            },
+            {
+              "date": "2023-07-17",
+              "days_before_advisory": -2,
+              "DO": 9.53,
+              "pH": 8.48,
+              "Temp": 25.17,
+              "SpCond": 550.07
+            },
+            {
+              "date": "2023-07-18",
+              "days_before_advisory": -3,
+              "DO": 9.21,
+              "pH": 8.44,
+              "Temp": 25.66,
+              "SpCond": 535.35
+            },
+            {
+              "date": "2023-07-19",
+              "days_before_advisory": -4,
+              "DO": 8.67,
+              "pH": 8.38,
+              "Temp": 25.32,
+              "SpCond": 529.66
+            },
+            {
+              "date": "2023-07-20",
+              "days_before_advisory": -5,
+              "DO": 8.1,
+              "pH": 8.3,
+              "Temp": 25.47,
+              "SpCond": 535.92
+            },
+            {
+              "date": "2023-07-21",
+              "days_before_advisory": -6,
+              "DO": 7.81,
+              "pH": 8.18,
+              "Temp": 25.11,
+              "SpCond": 540.12
+            },
+            {
+              "date": "2023-07-22",
+              "days_before_advisory": -7,
+              "DO": 8.1,
+              "pH": 8.19,
+              "Temp": 23.85,
+              "SpCond": 554.49
+            },
+            {
+              "date": "2023-07-23",
+              "days_before_advisory": -8,
+              "DO": 8.82,
+              "pH": 8.29,
+              "Temp": 24.04,
+              "SpCond": 497.28
+            },
+            {
+              "date": "2023-07-24",
+              "days_before_advisory": -9,
+              "DO": 9.34,
+              "pH": 8.41,
+              "Temp": 24.77,
+              "SpCond": 520.81
+            },
+            {
+              "date": "2023-07-25",
+              "days_before_advisory": -10,
+              "DO": 9.13,
+              "pH": 8.43,
+              "Temp": 26.04,
+              "SpCond": 523.82
+            },
+            {
+              "date": "2023-07-26",
+              "days_before_advisory": -11,
+              "DO": 8.25,
+              "pH": 8.38,
+              "Temp": 26.28,
+              "SpCond": 512.48
+            },
+            {
+              "date": "2023-07-27",
+              "days_before_advisory": -12,
+              "DO": 7.46,
+              "pH": 8.07,
+              "Temp": 25.82,
+              "SpCond": 484.77
+            },
+            {
+              "date": "2023-07-28",
+              "days_before_advisory": -13,
+              "DO": 8.06,
+              "pH": 8.06,
+              "Temp": 25.81,
+              "SpCond": 410.98
+            },
+            {
+              "date": "2023-07-29",
+              "days_before_advisory": -14,
+              "DO": 7.93,
+              "pH": 8.1,
+              "Temp": 25.81,
+              "SpCond": 422.91
+            },
+            {
+              "date": "2023-07-30",
+              "days_before_advisory": -15,
+              "DO": 7.57,
+              "pH": 7.85,
+              "Temp": 24.01,
+              "SpCond": 393.9
+            }
+          ]
+        },
+        {
+          "station_id": "04200500",
+          "data_range": "2022-10-18 to 2023-08-14",
+          "n_days": 301,
+          "params": {
+            "DO": {
+              "n_values": 211,
+              "z_mean": -0.8431291027010174,
+              "z_max": 3.251354940483373,
+              "val_mean": 10.473715249431066,
+              "val_min": 6.838541666666667,
+              "val_max": 14.577083333333333,
+              "anomaly_dates": [
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-12",
+                "2023-04-13",
+                "2023-04-14",
+                "2023-04-15",
+                "2023-04-16",
+                "2023-04-17"
+              ],
+              "first_anomaly": "2023-04-04",
+              "lead_days": 102
+            },
+            "pH": {
+              "n_values": 211,
+              "z_mean": -0.12794568886711075,
+              "z_max": 2.7836420820189103,
+              "val_mean": 7.985018637983172,
+              "val_min": 7.561458333333333,
+              "val_max": 8.405208333333333,
+              "anomaly_dates": [
+                "2023-06-12",
+                "2023-06-13",
+                "2023-06-14",
+                "2023-06-17"
+              ],
+              "first_anomaly": "2023-06-12",
+              "lead_days": 33
+            },
+            "Turb": {
+              "n_values": 208,
+              "z_mean": -0.02327970367726734,
+              "z_max": 6.423007811393392,
+              "val_mean": 55.860491538711365,
+              "val_min": 4.258823529411765,
+              "val_max": 405.1145833333333,
+              "anomaly_dates": [
+                "2023-01-16",
+                "2023-01-17",
+                "2023-01-18",
+                "2023-01-19",
+                "2023-01-20",
+                "2023-01-21",
+                "2023-01-22",
+                "2023-01-23",
+                "2023-01-24",
+                "2023-01-25",
+                "2023-01-26",
+                "2023-01-27",
+                "2023-01-28",
+                "2023-01-29",
+                "2023-01-30",
+                "2023-01-31",
+                "2023-02-01",
+                "2023-02-10",
+                "2023-02-11",
+                "2023-02-12",
+                "2023-02-13",
+                "2023-02-14",
+                "2023-02-23",
+                "2023-02-24",
+                "2023-02-25",
+                "2023-02-26",
+                "2023-02-27",
+                "2023-02-28",
+                "2023-03-01",
+                "2023-03-02",
+                "2023-03-03",
+                "2023-03-04",
+                "2023-03-05",
+                "2023-03-06",
+                "2023-03-07",
+                "2023-03-08",
+                "2023-03-09",
+                "2023-03-24",
+                "2023-03-25",
+                "2023-03-26",
+                "2023-03-27",
+                "2023-03-28",
+                "2023-03-29",
+                "2023-03-30",
+                "2023-04-01",
+                "2023-04-02",
+                "2023-04-03",
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-07",
+                "2023-04-08",
+                "2023-04-09",
+                "2023-04-10",
+                "2023-04-11",
+                "2023-04-23",
+                "2023-04-24",
+                "2023-04-25",
+                "2023-05-03",
+                "2023-05-04",
+                "2023-05-05",
+                "2023-05-06",
+                "2023-05-15",
+                "2023-06-17",
+                "2023-06-18",
+                "2023-06-19"
+              ],
+              "first_anomaly": "2023-01-16",
+              "lead_days": 180
+            },
+            "Temp": {
+              "n_values": 211,
+              "z_mean": 1.0408957525443976,
+              "z_max": 3.4369503832988872,
+              "val_mean": 13.830022972384072,
+              "val_min": 0.14270833333333335,
+              "val_max": 26.09375,
+              "anomaly_dates": [
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-07",
+                "2023-04-12",
+                "2023-04-13",
+                "2023-04-14",
+                "2023-04-15",
+                "2023-04-16",
+                "2023-04-17"
+              ],
+              "first_anomaly": "2023-04-04",
+              "lead_days": 102
+            },
+            "SpCond": {
+              "n_values": 205,
+              "z_mean": -0.1668895930138808,
+              "z_max": 4.211548010179677,
+              "val_mean": 527.606836560688,
+              "val_min": 210.14583333333334,
+              "val_max": 765.6979166666666,
+              "anomaly_dates": [],
+              "first_anomaly": null,
+              "lead_days": null
+            }
+          },
+          "first_anomaly_date": "2023-01-16",
+          "first_anomaly_param": "Turb",
+          "first_anomaly_lead_days": 180,
+          "timeline": [
+            {
+              "date": "2023-05-16",
+              "days_before_advisory": 60,
+              "DO": 8.84,
+              "pH": 8.02,
+              "Turb": 42.14,
+              "Temp": 18.08,
+              "SpCond": 530.19
+            },
+            {
+              "date": "2023-05-17",
+              "days_before_advisory": 59,
+              "DO": 9.02,
+              "pH": 8.08,
+              "Turb": 26.15,
+              "Temp": 18.0,
+              "SpCond": 545.28
+            },
+            {
+              "date": "2023-05-18",
+              "days_before_advisory": 58,
+              "DO": 9.41,
+              "pH": 8.12,
+              "Turb": 18.83,
+              "Temp": 17.09,
+              "SpCond": 560.19
+            },
+            {
+              "date": "2023-05-19",
+              "days_before_advisory": 57,
+              "DO": 9.51,
+              "pH": 8.16,
+              "Turb": 14.65,
+              "Temp": 17.58,
+              "SpCond": 575.12
+            },
+            {
+              "date": "2023-05-20",
+              "days_before_advisory": 56,
+              "DO": 8.74,
+              "pH": 8.06,
+              "Turb": 15.47,
+              "Temp": 18.22,
+              "SpCond": 569.86
+            },
+            {
+              "date": "2023-05-21",
+              "days_before_advisory": 55,
+              "DO": 9.01,
+              "pH": 7.94,
+              "Turb": 15.34,
+              "Temp": 17.96,
+              "SpCond": 554.67
+            },
+            {
+              "date": "2023-05-22",
+              "days_before_advisory": 54,
+              "DO": 9.14,
+              "pH": 8.02,
+              "Turb": 11.84,
+              "Temp": 18.51,
+              "SpCond": 600.7
+            },
+            {
+              "date": "2023-05-23",
+              "days_before_advisory": 53,
+              "DO": 9.03,
+              "pH": 8.08,
+              "Turb": 9.51,
+              "Temp": 18.99,
+              "SpCond": 633.85
+            },
+            {
+              "date": "2023-05-24",
+              "days_before_advisory": 52,
+              "DO": 9.01,
+              "pH": 8.14,
+              "Turb": 8.87,
+              "Temp": 19.85,
+              "SpCond": 628.61
+            },
+            {
+              "date": "2023-05-25",
+              "days_before_advisory": 51,
+              "DO": 9.09,
+              "pH": 8.22,
+              "Turb": 8.88,
+              "Temp": 19.05,
+              "SpCond": 632.23
+            },
+            {
+              "date": "2023-05-26",
+              "days_before_advisory": 50,
+              "DO": 9.24,
+              "pH": 8.13,
+              "Turb": 8.28,
+              "Temp": 18.25,
+              "SpCond": 643.32
+            },
+            {
+              "date": "2023-05-27",
+              "days_before_advisory": 49,
+              "DO": 9.06,
+              "pH": 8.08,
+              "Turb": 7.78,
+              "Temp": 18.61,
+              "SpCond": 657.61
+            },
+            {
+              "date": "2023-05-28",
+              "days_before_advisory": 48,
+              "DO": 9.1,
+              "pH": 8.1,
+              "Turb": 7.14,
+              "Temp": 19.01,
+              "SpCond": 663.91
+            },
+            {
+              "date": "2023-05-29",
+              "days_before_advisory": 47,
+              "DO": 9.18,
+              "pH": 8.16,
+              "Turb": 6.87,
+              "Temp": 19.83,
+              "SpCond": 664.32
+            },
+            {
+              "date": "2023-05-30",
+              "days_before_advisory": 46,
+              "DO": 8.8,
+              "pH": 8.15,
+              "Turb": 6.48,
+              "Temp": 21.32,
+              "SpCond": 664.91
+            },
+            {
+              "date": "2023-05-31",
+              "days_before_advisory": 45,
+              "DO": 8.31,
+              "pH": 8.09,
+              "Turb": 6.4,
+              "Temp": 22.45
+            },
+            {
+              "date": "2023-06-01",
+              "days_before_advisory": 44,
+              "DO": 8.36,
+              "pH": 8.09,
+              "Turb": 6.07,
+              "Temp": 22.72,
+              "SpCond": 684.45
+            },
+            {
+              "date": "2023-06-02",
+              "days_before_advisory": 43,
+              "DO": 7.77,
+              "pH": 8.05,
+              "Turb": 5.68,
+              "Temp": 23.4,
+              "SpCond": 692.81
+            },
+            {
+              "date": "2023-06-03",
+              "days_before_advisory": 42,
+              "DO": 7.32,
+              "pH": 7.98,
+              "Turb": 5.8,
+              "Temp": 24.2,
+              "SpCond": 711.65
+            },
+            {
+              "date": "2023-06-04",
+              "days_before_advisory": 41,
+              "DO": 7.44,
+              "pH": 8.04,
+              "Turb": 6.7,
+              "Temp": 22.84,
+              "SpCond": 711.69
+            },
+            {
+              "date": "2023-06-05",
+              "days_before_advisory": 40,
+              "DO": 7.37,
+              "pH": 8.01,
+              "Turb": 6.43,
+              "Temp": 21.12,
+              "SpCond": 711.1
+            },
+            {
+              "date": "2023-06-06",
+              "days_before_advisory": 39,
+              "DO": 7.77,
+              "pH": 7.97,
+              "Turb": 5.87,
+              "Temp": 21.09,
+              "SpCond": 714.89
+            },
+            {
+              "date": "2023-06-07",
+              "days_before_advisory": 38,
+              "DO": 8.42,
+              "pH": 8.04,
+              "Turb": 5.51,
+              "Temp": 20.61,
+              "SpCond": 735.6
+            },
+            {
+              "date": "2023-06-08",
+              "days_before_advisory": 37,
+              "DO": 8.58,
+              "pH": 8.06,
+              "Turb": 5.45,
+              "Temp": 19.74,
+              "SpCond": 733.05
+            },
+            {
+              "date": "2023-06-09",
+              "days_before_advisory": 36,
+              "DO": 8.75,
+              "pH": 8.08,
+              "Turb": 5.46,
+              "Temp": 20.45,
+              "SpCond": 733.92
+            },
+            {
+              "date": "2023-06-10",
+              "days_before_advisory": 35,
+              "DO": 8.61,
+              "pH": 8.06,
+              "Turb": 5.55,
+              "Temp": 20.99,
+              "SpCond": 738.6
+            },
+            {
+              "date": "2023-06-11",
+              "days_before_advisory": 34,
+              "DO": 7.91,
+              "pH": 8.03,
+              "Turb": 5.66,
+              "Temp": 21.13,
+              "SpCond": 740.75
+            },
+            {
+              "date": "2023-06-12",
+              "days_before_advisory": 33,
+              "DO": 8.21,
+              "pH": 7.68,
+              "Turb": 26.64,
+              "Temp": 19.29,
+              "SpCond": 550.85
+            },
+            {
+              "date": "2023-06-13",
+              "days_before_advisory": 32,
+              "DO": 8.64,
+              "pH": 7.68,
+              "Turb": 22.64,
+              "Temp": 17.87,
+              "SpCond": 630.89
+            },
+            {
+              "date": "2023-06-14",
+              "days_before_advisory": 31,
+              "DO": 8.88,
+              "pH": 7.66,
+              "Turb": 21.31,
+              "Temp": 17.4,
+              "SpCond": 577.67
+            },
+            {
+              "date": "2023-06-15",
+              "days_before_advisory": 30,
+              "DO": 8.94,
+              "pH": 7.66,
+              "Turb": 20.78,
+              "Temp": 17.82,
+              "SpCond": 612.64
+            },
+            {
+              "date": "2023-06-16",
+              "days_before_advisory": 29,
+              "DO": 8.74,
+              "pH": 7.65,
+              "Turb": 19.88,
+              "Temp": 18.3,
+              "SpCond": 654.45
+            },
+            {
+              "date": "2023-06-17",
+              "days_before_advisory": 28,
+              "DO": 9.1,
+              "pH": 7.56,
+              "Turb": 104.57,
+              "Temp": 17.84,
+              "SpCond": 594.55
+            },
+            {
+              "date": "2023-06-18",
+              "days_before_advisory": 27,
+              "DO": 8.75,
+              "pH": 7.66,
+              "Turb": 77.07,
+              "Temp": 19.06,
+              "SpCond": 579.77
+            },
+            {
+              "date": "2023-06-19",
+              "days_before_advisory": 26,
+              "DO": 8.34,
+              "pH": 7.63,
+              "Turb": 52.63,
+              "Temp": 19.91,
+              "SpCond": 566.12
+            },
+            {
+              "date": "2023-06-20",
+              "days_before_advisory": 25,
+              "DO": 8.06,
+              "pH": 7.65,
+              "Turb": 36.02,
+              "Temp": 20.72,
+              "SpCond": 572.22
+            },
+            {
+              "date": "2023-06-21",
+              "days_before_advisory": 24,
+              "DO": 7.89,
+              "pH": 7.69,
+              "Turb": 24.37,
+              "Temp": 22.39,
+              "SpCond": 550.96
+            },
+            {
+              "date": "2023-06-22",
+              "days_before_advisory": 23,
+              "DO": 7.48,
+              "pH": 7.7,
+              "Turb": 16.69,
+              "Temp": 22.92,
+              "SpCond": 541.39
+            },
+            {
+              "date": "2023-06-23",
+              "days_before_advisory": 22,
+              "DO": 7.46,
+              "pH": 7.68,
+              "Turb": 12.89,
+              "Temp": 22.21,
+              "SpCond": 545.45
+            },
+            {
+              "date": "2023-06-24",
+              "days_before_advisory": 21,
+              "DO": 7.77,
+              "pH": 7.73,
+              "Turb": 10.37,
+              "Temp": 22.39,
+              "SpCond": 555.85
+            },
+            {
+              "date": "2023-06-25",
+              "days_before_advisory": 20,
+              "DO": 7.91,
+              "pH": 7.81,
+              "Turb": 8.64,
+              "Temp": 23.49,
+              "SpCond": 566.12
+            },
+            {
+              "date": "2023-06-26",
+              "days_before_advisory": 19,
+              "DO": 7.42,
+              "pH": 7.81,
+              "Turb": 7.87,
+              "Temp": 23.28,
+              "SpCond": 574.24
+            },
+            {
+              "date": "2023-06-27",
+              "days_before_advisory": 18,
+              "DO": 6.84,
+              "pH": 7.66,
+              "Turb": 8.5,
+              "Temp": 22.18,
+              "SpCond": 572.82
+            },
+            {
+              "date": "2023-06-28",
+              "days_before_advisory": 17,
+              "DO": 7.78,
+              "pH": 7.71,
+              "Turb": 7.13,
+              "Temp": 21.61,
+              "SpCond": 572.09
+            },
+            {
+              "date": "2023-06-29",
+              "days_before_advisory": 16,
+              "DO": 8.12,
+              "pH": 7.81,
+              "Turb": 6.28,
+              "Temp": 21.7,
+              "SpCond": 584.9
+            },
+            {
+              "date": "2023-06-30",
+              "days_before_advisory": 15,
+              "DO": 8.33,
+              "pH": 7.97,
+              "Turb": 5.89,
+              "Temp": 23.02,
+              "SpCond": 601.93
+            },
+            {
+              "date": "2023-07-01",
+              "days_before_advisory": 14,
+              "DO": 8.26,
+              "pH": 8.06,
+              "Turb": 5.64,
+              "Temp": 23.78,
+              "SpCond": 611.28
+            },
+            {
+              "date": "2023-07-02",
+              "days_before_advisory": 13,
+              "DO": 7.82,
+              "pH": 7.98,
+              "Turb": 5.17,
+              "Temp": 23.95,
+              "SpCond": 619.11
+            },
+            {
+              "date": "2023-07-03",
+              "days_before_advisory": 12,
+              "DO": 7.81,
+              "pH": 7.94,
+              "Turb": 4.8,
+              "Temp": 24.42,
+              "SpCond": 626.07
+            },
+            {
+              "date": "2023-07-04",
+              "days_before_advisory": 11,
+              "DO": 7.85,
+              "pH": 7.94,
+              "Turb": 4.88,
+              "Temp": 25.23,
+              "SpCond": 628.07
+            },
+            {
+              "date": "2023-07-05",
+              "days_before_advisory": 10,
+              "DO": 7.62,
+              "pH": 7.98,
+              "Turb": 4.37,
+              "Temp": 25.86,
+              "SpCond": 636.28
+            },
+            {
+              "date": "2023-07-06",
+              "days_before_advisory": 9,
+              "DO": 8.51,
+              "pH": 8.09,
+              "Turb": 4.26,
+              "Temp": 26.09,
+              "SpCond": 642.6
+            },
+            {
+              "date": "2023-07-07",
+              "days_before_advisory": 8,
+              "DO": 8.14,
+              "pH": 8.0,
+              "Temp": 25.98,
+              "SpCond": 619.83
+            },
+            {
+              "date": "2023-07-08",
+              "days_before_advisory": 7,
+              "DO": 7.64,
+              "pH": 7.98,
+              "Temp": 24.9,
+              "SpCond": 619.52
+            },
+            {
+              "date": "2023-07-09",
+              "days_before_advisory": 6,
+              "DO": 8.17,
+              "pH": 7.92,
+              "Temp": 24.16,
+              "SpCond": 626.89
+            },
+            {
+              "date": "2023-07-10",
+              "days_before_advisory": 5,
+              "DO": 8.4,
+              "pH": 7.94,
+              "Turb": 5.08,
+              "Temp": 24.51,
+              "SpCond": 633.98
+            },
+            {
+              "date": "2023-07-11",
+              "days_before_advisory": 4,
+              "DO": 8.41,
+              "pH": 7.95,
+              "Turb": 4.52,
+              "Temp": 24.75,
+              "SpCond": 647.04
+            },
+            {
+              "date": "2023-07-12",
+              "days_before_advisory": 3,
+              "DO": 8.04,
+              "pH": 8.01,
+              "Turb": 5.0,
+              "Temp": 24.53,
+              "SpCond": 658.82
+            },
+            {
+              "date": "2023-07-13",
+              "days_before_advisory": 2,
+              "DO": 8.02,
+              "pH": 7.83,
+              "Turb": 17.46,
+              "Temp": 23.39,
+              "SpCond": 581.74
+            },
+            {
+              "date": "2023-07-14",
+              "days_before_advisory": 1,
+              "DO": 8.61,
+              "pH": 7.89,
+              "Turb": 8.5,
+              "Temp": 23.55,
+              "SpCond": 611.11
+            },
+            {
+              "date": "2023-07-15",
+              "days_before_advisory": 0,
+              "DO": 7.92,
+              "pH": 7.91,
+              "Turb": 5.54,
+              "Temp": 24.31,
+              "SpCond": 609.31
+            },
+            {
+              "date": "2023-07-16",
+              "days_before_advisory": -1,
+              "DO": 7.99,
+              "pH": 7.82,
+              "Turb": 6.73,
+              "Temp": 23.53,
+              "SpCond": 617.45
+            },
+            {
+              "date": "2023-07-17",
+              "days_before_advisory": -2,
+              "DO": 8.19,
+              "pH": 7.86,
+              "Turb": 7.38,
+              "Temp": 23.62,
+              "SpCond": 597.94
+            },
+            {
+              "date": "2023-07-18",
+              "days_before_advisory": -3,
+              "DO": 8.29,
+              "pH": 7.97,
+              "Turb": 6.17,
+              "Temp": 24.31,
+              "SpCond": 622.66
+            },
+            {
+              "date": "2023-07-19",
+              "days_before_advisory": -4,
+              "DO": 8.13,
+              "pH": 7.99,
+              "Turb": 6.13,
+              "Temp": 24.31,
+              "SpCond": 640.85
+            },
+            {
+              "date": "2023-07-20",
+              "days_before_advisory": -5,
+              "DO": 7.92,
+              "pH": 7.96,
+              "Turb": 6.04,
+              "Temp": 24.55,
+              "SpCond": 642.44
+            },
+            {
+              "date": "2023-07-21",
+              "days_before_advisory": -6,
+              "DO": 7.57,
+              "pH": 7.82,
+              "Turb": 13.01,
+              "Temp": 23.74,
+              "SpCond": 576.51
+            },
+            {
+              "date": "2023-07-22",
+              "days_before_advisory": -7,
+              "DO": 7.81,
+              "pH": 7.81,
+              "Turb": 8.84,
+              "Temp": 23.42,
+              "SpCond": 585.03
+            },
+            {
+              "date": "2023-07-23",
+              "days_before_advisory": -8,
+              "DO": 7.79,
+              "pH": 7.83,
+              "Turb": 13.06,
+              "Temp": 23.32,
+              "SpCond": 562.66
+            },
+            {
+              "date": "2023-07-24",
+              "days_before_advisory": -9,
+              "DO": 8.15,
+              "pH": 7.93,
+              "Turb": 8.98,
+              "Temp": 23.67,
+              "SpCond": 576.83
+            },
+            {
+              "date": "2023-07-25",
+              "days_before_advisory": -10,
+              "DO": 8.3,
+              "pH": 8.02,
+              "Turb": 6.53,
+              "Temp": 24.76,
+              "SpCond": 605.61
+            },
+            {
+              "date": "2023-07-26",
+              "days_before_advisory": -11,
+              "DO": 7.96,
+              "pH": 8.03,
+              "Turb": 5.41,
+              "Temp": 25.26,
+              "SpCond": 627.06
+            },
+            {
+              "date": "2023-07-27",
+              "days_before_advisory": -12,
+              "DO": 7.71,
+              "pH": 7.92,
+              "Turb": 9.7,
+              "Temp": 24.83,
+              "SpCond": 573.4
+            },
+            {
+              "date": "2023-07-28",
+              "days_before_advisory": -13,
+              "DO": 7.61,
+              "pH": 7.72,
+              "Turb": 33.46,
+              "Temp": 24.36,
+              "SpCond": 498.21
+            },
+            {
+              "date": "2023-07-29",
+              "days_before_advisory": -14,
+              "DO": 7.25,
+              "pH": 7.63,
+              "Turb": 31.82,
+              "Temp": 24.43,
+              "SpCond": 434.46
+            },
+            {
+              "date": "2023-07-30",
+              "days_before_advisory": -15,
+              "DO": 7.8,
+              "pH": 7.7,
+              "Turb": 37.86,
+              "Temp": 23.43,
+              "SpCond": 442.71
+            }
+          ]
+        },
+        {
+          "station_id": "04193500",
+          "data_range": "2022-10-18 to 2023-08-13",
+          "n_days": 300,
+          "params": {
+            "DO": {
+              "n_values": 162,
+              "z_mean": -0.6918497660873587,
+              "z_max": 3.956482689742204,
+              "val_mean": 11.507152686245975,
+              "val_min": 5.325,
+              "val_max": 14.37032967032967,
+              "anomaly_dates": [
+                "2023-04-12",
+                "2023-05-14",
+                "2023-05-22",
+                "2023-05-23",
+                "2023-06-12",
+                "2023-06-13",
+                "2023-06-20"
+              ],
+              "first_anomaly": "2023-04-12",
+              "lead_days": 94
+            },
+            "pH": {
+              "n_values": 166,
+              "z_mean": 0.02842856503332893,
+              "z_max": 3.19651623081773,
+              "val_mean": 8.134803661895635,
+              "val_min": 7.530434782608695,
+              "val_max": 8.838235294117647,
+              "anomaly_dates": [
+                "2023-04-18",
+                "2023-04-19",
+                "2023-04-23",
+                "2023-04-24"
+              ],
+              "first_anomaly": "2023-04-18",
+              "lead_days": 88
+            },
+            "Turb": {
+              "n_values": 191,
+              "z_mean": 0.04491178742400209,
+              "z_max": 6.902873208155773,
+              "val_mean": 97.76351626477978,
+              "val_min": 4.22093023255814,
+              "val_max": 595.8064516129032,
+              "anomaly_dates": [
+                "2023-01-20",
+                "2023-01-21",
+                "2023-01-22",
+                "2023-01-23",
+                "2023-01-24",
+                "2023-01-25",
+                "2023-01-26",
+                "2023-01-27",
+                "2023-01-28",
+                "2023-01-29",
+                "2023-01-30",
+                "2023-01-31",
+                "2023-02-01",
+                "2023-02-02",
+                "2023-02-03",
+                "2023-02-05",
+                "2023-02-06",
+                "2023-02-07",
+                "2023-02-10",
+                "2023-02-11",
+                "2023-02-12",
+                "2023-02-13",
+                "2023-02-14",
+                "2023-02-15",
+                "2023-02-16",
+                "2023-02-17",
+                "2023-02-18",
+                "2023-02-19",
+                "2023-02-20",
+                "2023-02-21",
+                "2023-02-22",
+                "2023-02-23",
+                "2023-02-24",
+                "2023-02-25",
+                "2023-02-26",
+                "2023-02-27",
+                "2023-02-28",
+                "2023-03-01",
+                "2023-03-02",
+                "2023-03-03",
+                "2023-03-04",
+                "2023-03-05",
+                "2023-03-06",
+                "2023-03-07",
+                "2023-03-08",
+                "2023-03-09",
+                "2023-03-10",
+                "2023-03-11",
+                "2023-03-12",
+                "2023-03-13",
+                "2023-03-14",
+                "2023-03-15",
+                "2023-03-16",
+                "2023-03-25",
+                "2023-03-26",
+                "2023-03-27",
+                "2023-03-28",
+                "2023-03-29",
+                "2023-03-30",
+                "2023-03-31",
+                "2023-04-01",
+                "2023-04-02",
+                "2023-04-03",
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-07",
+                "2023-04-08",
+                "2023-04-09",
+                "2023-04-10",
+                "2023-04-11",
+                "2023-04-12",
+                "2023-04-13",
+                "2023-07-03",
+                "2023-07-04"
+              ],
+              "first_anomaly": "2023-01-20",
+              "lead_days": 176
+            },
+            "Temp": {
+              "n_values": 191,
+              "z_mean": 1.2224467676657402,
+              "z_max": 3.475048446753057,
+              "val_mean": 13.527451931065555,
+              "val_min": 0.33125,
+              "val_max": 28.44857142857143,
+              "anomaly_dates": [
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-07",
+                "2023-04-08",
+                "2023-04-09",
+                "2023-04-10",
+                "2023-04-11",
+                "2023-04-12",
+                "2023-04-13",
+                "2023-04-14",
+                "2023-04-15",
+                "2023-04-16"
+              ],
+              "first_anomaly": "2023-04-04",
+              "lead_days": 102
+            },
+            "SpCond": {
+              "n_values": 168,
+              "z_mean": 0.5137773217803772,
+              "z_max": 3.4397523932590275,
+              "val_mean": 510.3835734495002,
+              "val_min": 253.57647058823528,
+              "val_max": 743.1190476190476,
+              "anomaly_dates": [
+                "2023-06-28",
+                "2023-06-29"
+              ],
+              "first_anomaly": "2023-06-28",
+              "lead_days": 17
+            }
+          },
+          "first_anomaly_date": "2023-01-20",
+          "first_anomaly_param": "Turb",
+          "first_anomaly_lead_days": 176,
+          "timeline": [
+            {
+              "date": "2023-05-16",
+              "days_before_advisory": 60,
+              "DO": 9.88,
+              "pH": 8.14,
+              "Turb": 26.93,
+              "Temp": 19.43,
+              "SpCond": 556.61
+            },
+            {
+              "date": "2023-05-17",
+              "days_before_advisory": 59,
+              "DO": 11.67,
+              "pH": 8.44,
+              "Turb": 23.7,
+              "Temp": 19.3,
+              "SpCond": 563.3
+            },
+            {
+              "date": "2023-05-18",
+              "days_before_advisory": 58,
+              "DO": 11.97,
+              "pH": 8.53,
+              "Turb": 22.97,
+              "Temp": 18.37,
+              "SpCond": 557.53
+            },
+            {
+              "date": "2023-05-19",
+              "days_before_advisory": 57,
+              "DO": 11.29,
+              "pH": 8.44,
+              "Turb": 22.84,
+              "Temp": 18.63,
+              "SpCond": 541.29
+            },
+            {
+              "date": "2023-05-20",
+              "days_before_advisory": 56,
+              "DO": 9.71,
+              "pH": 8.17,
+              "Turb": 24.66,
+              "Temp": 19.22,
+              "SpCond": 502.0
+            },
+            {
+              "date": "2023-05-21",
+              "days_before_advisory": 55,
+              "DO": 9.92,
+              "pH": 8.1,
+              "Turb": 26.93,
+              "Temp": 19.25,
+              "SpCond": 490.68
+            },
+            {
+              "date": "2023-05-22",
+              "days_before_advisory": 54,
+              "DO": 8.41,
+              "pH": 7.86,
+              "Turb": 37.88,
+              "Temp": 19.67,
+              "SpCond": 482.92
+            },
+            {
+              "date": "2023-05-23",
+              "days_before_advisory": 53,
+              "DO": 8.25,
+              "pH": 7.79,
+              "Turb": 49.37,
+              "Temp": 20.41,
+              "SpCond": 460.59
+            },
+            {
+              "date": "2023-05-24",
+              "days_before_advisory": 52,
+              "DO": 9.56,
+              "pH": 8.06,
+              "Turb": 33.3,
+              "Temp": 21.3,
+              "SpCond": 502.31
+            },
+            {
+              "date": "2023-05-25",
+              "days_before_advisory": 51,
+              "DO": 10.72,
+              "pH": 8.29,
+              "Turb": 26.67,
+              "Temp": 19.08,
+              "SpCond": 529.83
+            },
+            {
+              "date": "2023-05-26",
+              "days_before_advisory": 50,
+              "DO": 11.44,
+              "pH": 8.55,
+              "Turb": 27.58,
+              "Temp": 18.07,
+              "SpCond": 529.48
+            },
+            {
+              "date": "2023-05-27",
+              "days_before_advisory": 49,
+              "DO": 13.9,
+              "pH": 8.5,
+              "Turb": 22.77,
+              "Temp": 19.8,
+              "SpCond": 484.15
+            },
+            {
+              "date": "2023-05-28",
+              "days_before_advisory": 48,
+              "DO": 12.8,
+              "pH": 8.36,
+              "Turb": 17.83,
+              "Temp": 20.56,
+              "SpCond": 473.44
+            },
+            {
+              "date": "2023-05-29",
+              "days_before_advisory": 47,
+              "DO": 12.23,
+              "pH": 8.42,
+              "Turb": 15.35,
+              "Temp": 22.03,
+              "SpCond": 480.07
+            },
+            {
+              "date": "2023-05-30",
+              "days_before_advisory": 46,
+              "DO": 10.63,
+              "pH": 8.2,
+              "Turb": 10.87,
+              "Temp": 23.21,
+              "SpCond": 516.06
+            },
+            {
+              "date": "2023-05-31",
+              "days_before_advisory": 45,
+              "DO": 10.25,
+              "pH": 8.26,
+              "Turb": 7.37,
+              "Temp": 24.34,
+              "SpCond": 526.59
+            },
+            {
+              "date": "2023-06-01",
+              "days_before_advisory": 44,
+              "DO": 8.66,
+              "pH": 8.12,
+              "Turb": 6.6,
+              "Temp": 24.29,
+              "SpCond": 526.52
+            },
+            {
+              "date": "2023-06-02",
+              "days_before_advisory": 43,
+              "DO": 9.65,
+              "pH": 8.12,
+              "Turb": 8.36,
+              "Temp": 25.09,
+              "SpCond": 535.34
+            },
+            {
+              "date": "2023-06-03",
+              "days_before_advisory": 42,
+              "DO": 10.18,
+              "pH": 8.19,
+              "Turb": 4.85,
+              "Temp": 25.86,
+              "SpCond": 514.1
+            },
+            {
+              "date": "2023-06-04",
+              "days_before_advisory": 41,
+              "DO": 10.36,
+              "pH": 8.22,
+              "Turb": 4.97,
+              "Temp": 23.58,
+              "SpCond": 506.78
+            },
+            {
+              "date": "2023-06-05",
+              "days_before_advisory": 40,
+              "DO": 11.15,
+              "pH": 8.24,
+              "Turb": 5.25,
+              "Temp": 22.72,
+              "SpCond": 533.26
+            },
+            {
+              "date": "2023-06-06",
+              "days_before_advisory": 39,
+              "DO": 9.55,
+              "pH": 8.13,
+              "Turb": 4.75,
+              "Temp": 22.81,
+              "SpCond": 548.44
+            },
+            {
+              "date": "2023-06-07",
+              "days_before_advisory": 38,
+              "DO": 9.91,
+              "pH": 8.19,
+              "Turb": 4.22,
+              "Temp": 21.65,
+              "SpCond": 548.51
+            },
+            {
+              "date": "2023-06-08",
+              "days_before_advisory": 37,
+              "DO": 11.04,
+              "pH": 8.27,
+              "Turb": 4.24,
+              "Temp": 21.04,
+              "SpCond": 545.65
+            },
+            {
+              "date": "2023-06-09",
+              "days_before_advisory": 36,
+              "DO": 10.83,
+              "pH": 8.25,
+              "Turb": 5.32,
+              "Temp": 22.4,
+              "SpCond": 526.8
+            },
+            {
+              "date": "2023-06-10",
+              "days_before_advisory": 35,
+              "DO": 10.2,
+              "pH": 8.31,
+              "Turb": 4.85,
+              "Temp": 23.42,
+              "SpCond": 510.7
+            },
+            {
+              "date": "2023-06-11",
+              "days_before_advisory": 34,
+              "DO": 7.97,
+              "pH": 8.12,
+              "Turb": 4.78,
+              "Temp": 22.81,
+              "SpCond": 520.62
+            },
+            {
+              "date": "2023-06-12",
+              "days_before_advisory": 33,
+              "DO": 5.33,
+              "pH": 7.68,
+              "Turb": 6.02,
+              "Temp": 19.31,
+              "SpCond": 505.87
+            },
+            {
+              "date": "2023-06-13",
+              "days_before_advisory": 32,
+              "DO": 6.58,
+              "pH": 7.87,
+              "Turb": 7.5,
+              "Temp": 18.65,
+              "SpCond": 580.26
+            },
+            {
+              "date": "2023-06-14",
+              "days_before_advisory": 31,
+              "DO": 12.0,
+              "pH": 8.51,
+              "Turb": 8.4,
+              "Temp": 22.15,
+              "SpCond": 556.98
+            },
+            {
+              "date": "2023-06-15",
+              "days_before_advisory": 30,
+              "DO": 7.56,
+              "pH": 7.99,
+              "Turb": 15.33,
+              "Temp": 20.58,
+              "SpCond": 559.61
+            },
+            {
+              "date": "2023-06-16",
+              "days_before_advisory": 29,
+              "DO": 8.5,
+              "pH": 8.25,
+              "Turb": 41.96,
+              "Temp": 21.56,
+              "SpCond": 566.64
+            },
+            {
+              "date": "2023-06-17",
+              "days_before_advisory": 28,
+              "DO": 8.76,
+              "pH": 8.1,
+              "Turb": 37.16,
+              "Temp": 21.56,
+              "SpCond": 582.31
+            },
+            {
+              "date": "2023-06-18",
+              "days_before_advisory": 27,
+              "DO": 9.75,
+              "pH": 8.11,
+              "Turb": 23.82,
+              "Temp": 23.45,
+              "SpCond": 595.59
+            },
+            {
+              "date": "2023-06-19",
+              "days_before_advisory": 26,
+              "DO": 8.83,
+              "pH": 8.15,
+              "Turb": 16.15,
+              "Temp": 23.55,
+              "SpCond": 616.45
+            },
+            {
+              "date": "2023-06-20",
+              "days_before_advisory": 25,
+              "DO": 6.65,
+              "pH": 7.93,
+              "Turb": 16.98,
+              "Temp": 23.75,
+              "SpCond": 611.02
+            },
+            {
+              "date": "2023-06-21",
+              "days_before_advisory": 24,
+              "pH": 8.02,
+              "Turb": 20.68,
+              "Temp": 24.64,
+              "SpCond": 632.3
+            },
+            {
+              "date": "2023-06-22",
+              "days_before_advisory": 23,
+              "pH": 8.1,
+              "Turb": 21.63,
+              "Temp": 23.98,
+              "SpCond": 602.41
+            },
+            {
+              "date": "2023-06-23",
+              "days_before_advisory": 22,
+              "pH": 8.01,
+              "Turb": 15.27,
+              "Temp": 22.65,
+              "SpCond": 570.71
+            },
+            {
+              "date": "2023-06-24",
+              "days_before_advisory": 21,
+              "pH": 8.33,
+              "Turb": 12.84,
+              "Temp": 25.91,
+              "SpCond": 573.4
+            },
+            {
+              "date": "2023-06-25",
+              "days_before_advisory": 20,
+              "pH": 8.06,
+              "Turb": 12.32,
+              "Temp": 25.58,
+              "SpCond": 602.34
+            },
+            {
+              "date": "2023-06-26",
+              "days_before_advisory": 19,
+              "pH": 8.03,
+              "Turb": 13.2,
+              "Temp": 24.02,
+              "SpCond": 604.35
+            },
+            {
+              "date": "2023-06-27",
+              "days_before_advisory": 18,
+              "pH": 8.09,
+              "Turb": 13.97,
+              "Temp": 23.15,
+              "SpCond": 680.51
+            },
+            {
+              "date": "2023-06-28",
+              "days_before_advisory": 17,
+              "pH": 8.11,
+              "Turb": 35.01,
+              "Temp": 22.87,
+              "SpCond": 743.12
+            },
+            {
+              "date": "2023-06-29",
+              "days_before_advisory": 16,
+              "pH": 8.2,
+              "Turb": 32.26,
+              "Temp": 23.31,
+              "SpCond": 707.33
+            },
+            {
+              "date": "2023-06-30",
+              "days_before_advisory": 15,
+              "pH": 8.19,
+              "Turb": 20.5,
+              "Temp": 24.92,
+              "SpCond": 685.91
+            },
+            {
+              "date": "2023-07-01",
+              "days_before_advisory": 14,
+              "pH": 8.32,
+              "Turb": 14.65,
+              "Temp": 25.78,
+              "SpCond": 633.4
+            },
+            {
+              "date": "2023-07-02",
+              "days_before_advisory": 13,
+              "pH": 8.13,
+              "Turb": 25.47,
+              "Temp": 25.68,
+              "SpCond": 572.56
+            },
+            {
+              "date": "2023-07-03",
+              "days_before_advisory": 12,
+              "pH": 8.12,
+              "Turb": 64.71,
+              "Temp": 25.73,
+              "SpCond": 575.28
+            },
+            {
+              "date": "2023-07-04",
+              "days_before_advisory": 11,
+              "pH": 7.79,
+              "Turb": 64.48,
+              "Temp": 26.01,
+              "SpCond": 555.64
+            },
+            {
+              "date": "2023-07-05",
+              "days_before_advisory": 10,
+              "pH": 7.76,
+              "Turb": 47.14,
+              "Temp": 26.56,
+              "SpCond": 535.72
+            },
+            {
+              "date": "2023-07-06",
+              "days_before_advisory": 9,
+              "pH": 7.93,
+              "Turb": 36.34,
+              "Temp": 27.4,
+              "SpCond": 567.91
+            },
+            {
+              "date": "2023-07-07",
+              "days_before_advisory": 8,
+              "pH": 8.14,
+              "Turb": 34.25,
+              "Temp": 27.18,
+              "SpCond": 576.76
+            },
+            {
+              "date": "2023-07-08",
+              "days_before_advisory": 7,
+              "pH": 8.36,
+              "Turb": 27.54,
+              "Temp": 26.75,
+              "SpCond": 562.9
+            },
+            {
+              "date": "2023-07-09",
+              "days_before_advisory": 6,
+              "pH": 8.21,
+              "Turb": 25.47,
+              "Temp": 25.66,
+              "SpCond": 553.37
+            },
+            {
+              "date": "2023-07-10",
+              "days_before_advisory": 5,
+              "pH": 8.36,
+              "Turb": 19.08,
+              "Temp": 25.63,
+              "SpCond": 555.4
+            },
+            {
+              "date": "2023-07-11",
+              "days_before_advisory": 4,
+              "pH": 8.33,
+              "Turb": 14.89,
+              "Temp": 27.13,
+              "SpCond": 573.06
+            },
+            {
+              "date": "2023-07-12",
+              "days_before_advisory": 3,
+              "pH": 8.32,
+              "Turb": 13.8,
+              "Temp": 26.9,
+              "SpCond": 519.66
+            },
+            {
+              "date": "2023-07-13",
+              "days_before_advisory": 2,
+              "pH": 8.2,
+              "Turb": 14.2,
+              "Temp": 25.71,
+              "SpCond": 528.06
+            },
+            {
+              "date": "2023-07-14",
+              "days_before_advisory": 1,
+              "pH": 8.3,
+              "Turb": 12.39,
+              "Temp": 25.61,
+              "SpCond": 624.76
+            },
+            {
+              "date": "2023-07-15",
+              "days_before_advisory": 0,
+              "pH": 8.04,
+              "Turb": 11.4,
+              "Temp": 25.58,
+              "SpCond": 529.38
+            },
+            {
+              "date": "2023-07-16",
+              "days_before_advisory": -1,
+              "pH": 8.17,
+              "Turb": 12.05,
+              "Temp": 26.07,
+              "SpCond": 519.83
+            },
+            {
+              "date": "2023-07-17",
+              "days_before_advisory": -2,
+              "pH": 8.23,
+              "Turb": 12.01,
+              "Temp": 25.27,
+              "SpCond": 552.43
+            },
+            {
+              "date": "2023-07-18",
+              "days_before_advisory": -3,
+              "pH": 8.08,
+              "Turb": 11.56,
+              "Temp": 24.33,
+              "SpCond": 550.72
+            },
+            {
+              "date": "2023-07-19",
+              "days_before_advisory": -4,
+              "pH": 7.89,
+              "Turb": 9.97,
+              "Temp": 25.36,
+              "SpCond": 543.54
+            },
+            {
+              "date": "2023-07-20",
+              "days_before_advisory": -5
+            },
+            {
+              "date": "2023-07-21",
+              "days_before_advisory": -6
+            },
+            {
+              "date": "2023-07-22",
+              "days_before_advisory": -7
+            },
+            {
+              "date": "2023-07-23",
+              "days_before_advisory": -8
+            },
+            {
+              "date": "2023-07-24",
+              "days_before_advisory": -9
+            },
+            {
+              "date": "2023-07-25",
+              "days_before_advisory": -10
+            },
+            {
+              "date": "2023-07-26",
+              "days_before_advisory": -11
+            },
+            {
+              "date": "2023-07-27",
+              "days_before_advisory": -12
+            },
+            {
+              "date": "2023-07-28",
+              "days_before_advisory": -13
+            },
+            {
+              "date": "2023-07-29",
+              "days_before_advisory": -14
+            },
+            {
+              "date": "2023-07-30",
+              "days_before_advisory": -15
+            }
+          ]
+        },
+        {
+          "station_id": "04176500",
+          "data_range": "2022-10-18 to 2023-08-14",
+          "n_days": 301,
+          "params": {
+            "DO": {
+              "n_values": 207,
+              "z_mean": -1.1206284979730645,
+              "z_max": 2.8784347022072705,
+              "val_mean": 10.078105894624029,
+              "val_min": 6.104166666666667,
+              "val_max": 14.567708333333334,
+              "anomaly_dates": [
+                "2023-03-02",
+                "2023-03-03",
+                "2023-04-06",
+                "2023-05-31",
+                "2023-06-01",
+                "2023-06-02",
+                "2023-06-03",
+                "2023-06-04"
+              ],
+              "first_anomaly": "2023-03-02",
+              "lead_days": 135
+            },
+            "Turb": {
+              "n_values": 199,
+              "z_mean": 0.14596551546170375,
+              "z_max": 6.752449823507563,
+              "val_mean": 43.65877232792114,
+              "val_min": 4.485416666666667,
+              "val_max": 351.4479166666667,
+              "anomaly_dates": [
+                "2023-01-20",
+                "2023-01-21",
+                "2023-01-22",
+                "2023-01-23",
+                "2023-01-24",
+                "2023-01-25",
+                "2023-02-10",
+                "2023-02-11",
+                "2023-02-12",
+                "2023-02-13",
+                "2023-02-14",
+                "2023-02-15",
+                "2023-02-23",
+                "2023-02-24",
+                "2023-02-25",
+                "2023-02-26",
+                "2023-02-27",
+                "2023-02-28",
+                "2023-03-01",
+                "2023-03-02",
+                "2023-03-03",
+                "2023-03-04",
+                "2023-03-05",
+                "2023-03-06",
+                "2023-03-07",
+                "2023-03-08",
+                "2023-03-09",
+                "2023-03-10",
+                "2023-03-11",
+                "2023-03-12",
+                "2023-04-01",
+                "2023-04-02",
+                "2023-04-03",
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-07",
+                "2023-04-08",
+                "2023-04-09",
+                "2023-04-10",
+                "2023-05-02",
+                "2023-05-03",
+                "2023-07-04",
+                "2023-07-05"
+              ],
+              "first_anomaly": "2023-01-20",
+              "lead_days": 176
+            },
+            "Temp": {
+              "n_values": 207,
+              "z_mean": 1.2010678033247453,
+              "z_max": 3.5195457943753405,
+              "val_mean": 13.484730331573934,
+              "val_min": 0.11979166666666667,
+              "val_max": 26.417708333333334,
+              "anomaly_dates": [
+                "2023-04-04",
+                "2023-04-05",
+                "2023-04-06",
+                "2023-04-07",
+                "2023-04-08",
+                "2023-04-09",
+                "2023-04-10",
+                "2023-04-11",
+                "2023-04-12",
+                "2023-04-13",
+                "2023-04-14",
+                "2023-04-15",
+                "2023-04-16",
+                "2023-04-17"
+              ],
+              "first_anomaly": "2023-04-04",
+              "lead_days": 102
+            },
+            "SpCond": {
+              "n_values": 207,
+              "z_mean": -0.16259692963280198,
+              "z_max": 3.530950243849616,
+              "val_mean": 626.791730305769,
+              "val_min": 328.59375,
+              "val_max": 817.9583333333334,
+              "anomaly_dates": [
+                "2023-01-22",
+                "2023-01-23",
+                "2023-01-24",
+                "2023-02-10",
+                "2023-02-11",
+                "2023-02-12",
+                "2023-02-13",
+                "2023-02-14",
+                "2023-02-24",
+                "2023-02-25",
+                "2023-02-26",
+                "2023-02-27",
+                "2023-02-28",
+                "2023-03-01",
+                "2023-03-02",
+                "2023-03-03"
+              ],
+              "first_anomaly": "2023-01-22",
+              "lead_days": 174
+            }
+          },
+          "first_anomaly_date": "2023-01-20",
+          "first_anomaly_param": "Turb",
+          "first_anomaly_lead_days": 176,
+          "timeline": [
+            {
+              "date": "2023-05-16",
+              "days_before_advisory": 60,
+              "DO": 9.64,
+              "Turb": 9.68,
+              "Temp": 18.39,
+              "SpCond": 632.83
+            },
+            {
+              "date": "2023-05-17",
+              "days_before_advisory": 59,
+              "DO": 9.59,
+              "Turb": 9.65,
+              "Temp": 18.21,
+              "SpCond": 633.93
+            },
+            {
+              "date": "2023-05-18",
+              "days_before_advisory": 58,
+              "DO": 9.93,
+              "Turb": 9.75,
+              "Temp": 17.65,
+              "SpCond": 635.71
+            },
+            {
+              "date": "2023-05-19",
+              "days_before_advisory": 57,
+              "DO": 9.77,
+              "Turb": 9.91,
+              "Temp": 17.26,
+              "SpCond": 643.9
+            },
+            {
+              "date": "2023-05-20",
+              "days_before_advisory": 56,
+              "DO": 9.21,
+              "Turb": 9.74,
+              "Temp": 17.06,
+              "SpCond": 644.01
+            },
+            {
+              "date": "2023-05-21",
+              "days_before_advisory": 55,
+              "DO": 9.45,
+              "Turb": 9.61,
+              "Temp": 17.1,
+              "SpCond": 653.08
+            },
+            {
+              "date": "2023-05-22",
+              "days_before_advisory": 54,
+              "DO": 9.85,
+              "Turb": 8.53,
+              "Temp": 17.82,
+              "SpCond": 655.56
+            },
+            {
+              "date": "2023-05-23",
+              "days_before_advisory": 53,
+              "DO": 9.79,
+              "Turb": 9.1,
+              "Temp": 18.42,
+              "SpCond": 650.09
+            },
+            {
+              "date": "2023-05-24",
+              "days_before_advisory": 52,
+              "DO": 9.54,
+              "Turb": 9.36,
+              "Temp": 19.11,
+              "SpCond": 649.54
+            },
+            {
+              "date": "2023-05-25",
+              "days_before_advisory": 51,
+              "DO": 9.42,
+              "Turb": 10.6,
+              "Temp": 18.61,
+              "SpCond": 655.59
+            },
+            {
+              "date": "2023-05-26",
+              "days_before_advisory": 50,
+              "DO": 9.51,
+              "Turb": 10.83,
+              "Temp": 18.21,
+              "SpCond": 665.8
+            },
+            {
+              "date": "2023-05-27",
+              "days_before_advisory": 49,
+              "DO": 9.27,
+              "Turb": 10.22,
+              "Temp": 18.44,
+              "SpCond": 652.93
+            },
+            {
+              "date": "2023-05-28",
+              "days_before_advisory": 48,
+              "DO": 9.07,
+              "Turb": 9.89,
+              "Temp": 18.81,
+              "SpCond": 658.85
+            },
+            {
+              "date": "2023-05-29",
+              "days_before_advisory": 47,
+              "DO": 8.65,
+              "Turb": 10.28,
+              "Temp": 19.74,
+              "SpCond": 661.1
+            },
+            {
+              "date": "2023-05-30",
+              "days_before_advisory": 46,
+              "DO": 8.14,
+              "Turb": 9.81,
+              "Temp": 20.99,
+              "SpCond": 664.26
+            },
+            {
+              "date": "2023-05-31",
+              "days_before_advisory": 45,
+              "DO": 7.63,
+              "Turb": 9.18,
+              "Temp": 22.26,
+              "SpCond": 668.36
+            },
+            {
+              "date": "2023-06-01",
+              "days_before_advisory": 44,
+              "DO": 7.3,
+              "Turb": 9.86,
+              "Temp": 23.1,
+              "SpCond": 671.47
+            },
+            {
+              "date": "2023-06-02",
+              "days_before_advisory": 43,
+              "DO": 7.03,
+              "Turb": 9.54,
+              "Temp": 23.65,
+              "SpCond": 675.52
+            },
+            {
+              "date": "2023-06-03",
+              "days_before_advisory": 42,
+              "DO": 6.84,
+              "Turb": 10.4,
+              "Temp": 24.1,
+              "SpCond": 679.3
+            },
+            {
+              "date": "2023-06-04",
+              "days_before_advisory": 41,
+              "DO": 6.96,
+              "Turb": 12.22,
+              "Temp": 23.89,
+              "SpCond": 684.59
+            },
+            {
+              "date": "2023-06-05",
+              "days_before_advisory": 40,
+              "DO": 7.1,
+              "Turb": 12.65,
+              "Temp": 23.24,
+              "SpCond": 686.67
+            },
+            {
+              "date": "2023-06-06",
+              "days_before_advisory": 39,
+              "DO": 7.11,
+              "Turb": 12.24,
+              "Temp": 22.74,
+              "SpCond": 688.35
+            },
+            {
+              "date": "2023-06-07",
+              "days_before_advisory": 38,
+              "DO": 7.41,
+              "Turb": 13.39,
+              "Temp": 22.03,
+              "SpCond": 692.75
+            },
+            {
+              "date": "2023-06-08",
+              "days_before_advisory": 37,
+              "DO": 7.52,
+              "Turb": 12.59,
+              "Temp": 21.26,
+              "SpCond": 700.47
+            },
+            {
+              "date": "2023-06-09",
+              "days_before_advisory": 36,
+              "DO": 7.72,
+              "Turb": 12.69,
+              "Temp": 21.4,
+              "SpCond": 709.93
+            },
+            {
+              "date": "2023-06-10",
+              "days_before_advisory": 35,
+              "DO": 8.19,
+              "Turb": 12.72,
+              "Temp": 21.71,
+              "SpCond": 718.78
+            },
+            {
+              "date": "2023-06-11",
+              "days_before_advisory": 34,
+              "DO": 7.97,
+              "Turb": 13.97,
+              "Temp": 21.65,
+              "SpCond": 720.22
+            },
+            {
+              "date": "2023-06-12",
+              "days_before_advisory": 33,
+              "DO": 7.49,
+              "Turb": 16.59,
+              "Temp": 20.3,
+              "SpCond": 714.98
+            },
+            {
+              "date": "2023-06-13",
+              "days_before_advisory": 32,
+              "DO": 7.75,
+              "Turb": 20.81,
+              "Temp": 19.48,
+              "SpCond": 713.12
+            },
+            {
+              "date": "2023-06-14",
+              "days_before_advisory": 31,
+              "DO": 8.01,
+              "Turb": 26.74,
+              "Temp": 19.74,
+              "SpCond": 714.85
+            },
+            {
+              "date": "2023-06-15",
+              "days_before_advisory": 30,
+              "DO": 8.1,
+              "Turb": 20.07,
+              "Temp": 20.06,
+              "SpCond": 700.71
+            },
+            {
+              "date": "2023-06-16",
+              "days_before_advisory": 29,
+              "DO": 7.82,
+              "Turb": 14.28,
+              "Temp": 20.44,
+              "SpCond": 697.09
+            },
+            {
+              "date": "2023-06-17",
+              "days_before_advisory": 28,
+              "DO": 7.97,
+              "Turb": 13.42,
+              "Temp": 20.89,
+              "SpCond": 698.2
+            },
+            {
+              "date": "2023-06-18",
+              "days_before_advisory": 27,
+              "DO": 8.14,
+              "Turb": 13.66,
+              "Temp": 21.41,
+              "SpCond": 700.11
+            },
+            {
+              "date": "2023-06-19",
+              "days_before_advisory": 26,
+              "DO": 8.46,
+              "Turb": 13.6,
+              "Temp": 22.16,
+              "SpCond": 697.91
+            },
+            {
+              "date": "2023-06-20",
+              "days_before_advisory": 25,
+              "DO": 8.91,
+              "Turb": 12.82,
+              "Temp": 22.97,
+              "SpCond": 697.74
+            },
+            {
+              "date": "2023-06-21",
+              "days_before_advisory": 24,
+              "DO": 9.12,
+              "Turb": 12.46,
+              "Temp": 23.81,
+              "SpCond": 700.35
+            },
+            {
+              "date": "2023-06-22",
+              "days_before_advisory": 23,
+              "DO": 9.47,
+              "Turb": 12.62,
+              "Temp": 24.31,
+              "SpCond": 705.7
+            },
+            {
+              "date": "2023-06-23",
+              "days_before_advisory": 22,
+              "DO": 8.15,
+              "Turb": 15.81,
+              "Temp": 23.82,
+              "SpCond": 716.14
+            },
+            {
+              "date": "2023-06-24",
+              "days_before_advisory": 21,
+              "DO": 7.01,
+              "Turb": 14.89,
+              "Temp": 23.94,
+              "SpCond": 722.54
+            },
+            {
+              "date": "2023-06-25",
+              "days_before_advisory": 20,
+              "DO": 6.75,
+              "Turb": 14.25,
+              "Temp": 24.34,
+              "SpCond": 729.44
+            },
+            {
+              "date": "2023-06-26",
+              "days_before_advisory": 19,
+              "DO": 6.35,
+              "Turb": 13.24,
+              "Temp": 23.74,
+              "SpCond": 727.06
+            },
+            {
+              "date": "2023-06-27",
+              "days_before_advisory": 18,
+              "DO": 6.1,
+              "Turb": 15.37,
+              "Temp": 22.97,
+              "SpCond": 719.11
+            },
+            {
+              "date": "2023-06-28",
+              "days_before_advisory": 17,
+              "DO": 6.32,
+              "Turb": 30.11,
+              "Temp": 22.13,
+              "SpCond": 698.81
+            },
+            {
+              "date": "2023-06-29",
+              "days_before_advisory": 16,
+              "DO": 7.24,
+              "Turb": 35.51,
+              "Temp": 22.36,
+              "SpCond": 663.79
+            },
+            {
+              "date": "2023-06-30",
+              "days_before_advisory": 15,
+              "DO": 7.22,
+              "Turb": 25.72,
+              "Temp": 23.16,
+              "SpCond": 626.29
+            },
+            {
+              "date": "2023-07-01",
+              "days_before_advisory": 14,
+              "DO": 6.78,
+              "Turb": 17.72,
+              "Temp": 23.82,
+              "SpCond": 599.24
+            },
+            {
+              "date": "2023-07-02",
+              "days_before_advisory": 13,
+              "DO": 6.31,
+              "Turb": 14.78,
+              "Temp": 23.84,
+              "SpCond": 583.01
+            },
+            {
+              "date": "2023-07-03",
+              "days_before_advisory": 12,
+              "DO": 6.24,
+              "Turb": 27.03,
+              "Temp": 24.22,
+              "SpCond": 582.01
+            },
+            {
+              "date": "2023-07-04",
+              "days_before_advisory": 11,
+              "DO": 6.56,
+              "Turb": 56.9,
+              "Temp": 24.92,
+              "SpCond": 626.76
+            },
+            {
+              "date": "2023-07-05",
+              "days_before_advisory": 10,
+              "DO": 6.81,
+              "Turb": 62.26,
+              "Temp": 25.44,
+              "SpCond": 628.8
+            },
+            {
+              "date": "2023-07-06",
+              "days_before_advisory": 9,
+              "DO": 6.82,
+              "Turb": 30.01,
+              "Temp": 26.4,
+              "SpCond": 613.07
+            },
+            {
+              "date": "2023-07-07",
+              "days_before_advisory": 8,
+              "DO": 6.87,
+              "Turb": 11.91,
+              "Temp": 26.42,
+              "SpCond": 612.76
+            },
+            {
+              "date": "2023-07-08",
+              "days_before_advisory": 7,
+              "DO": 6.45,
+              "Temp": 25.71,
+              "SpCond": 601.62
+            },
+            {
+              "date": "2023-07-09",
+              "days_before_advisory": 6,
+              "DO": 6.74,
+              "Turb": 11.2,
+              "Temp": 24.63,
+              "SpCond": 600.4
+            },
+            {
+              "date": "2023-07-10",
+              "days_before_advisory": 5,
+              "DO": 7.09,
+              "Turb": 10.09,
+              "Temp": 24.8,
+              "SpCond": 593.55
+            },
+            {
+              "date": "2023-07-11",
+              "days_before_advisory": 4,
+              "DO": 6.86,
+              "Turb": 9.9,
+              "Temp": 25.02,
+              "SpCond": 628.81
+            },
+            {
+              "date": "2023-07-12",
+              "days_before_advisory": 3,
+              "DO": 6.79,
+              "Turb": 11.5,
+              "Temp": 24.99,
+              "SpCond": 645.54
+            },
+            {
+              "date": "2023-07-13",
+              "days_before_advisory": 2,
+              "DO": 6.75,
+              "Turb": 11.28,
+              "Temp": 24.59,
+              "SpCond": 679.46
+            },
+            {
+              "date": "2023-07-14",
+              "days_before_advisory": 1,
+              "DO": 6.89,
+              "Turb": 10.83,
+              "Temp": 24.75,
+              "SpCond": 698.96
+            },
+            {
+              "date": "2023-07-15",
+              "days_before_advisory": 0,
+              "DO": 6.52,
+              "Turb": 11.71,
+              "Temp": 24.36,
+              "SpCond": 696.46
+            },
+            {
+              "date": "2023-07-16",
+              "days_before_advisory": -1,
+              "DO": 6.72,
+              "Turb": 11.59,
+              "Temp": 24.28,
+              "SpCond": 703.77
+            },
+            {
+              "date": "2023-07-17",
+              "days_before_advisory": -2,
+              "DO": 6.94,
+              "Turb": 12.04,
+              "Temp": 24.03,
+              "SpCond": 713.43
+            },
+            {
+              "date": "2023-07-18",
+              "days_before_advisory": -3,
+              "DO": 7.28,
+              "Turb": 12.63,
+              "Temp": 23.96,
+              "SpCond": 732.12
+            },
+            {
+              "date": "2023-07-19",
+              "days_before_advisory": -4,
+              "DO": 7.44,
+              "Turb": 11.22,
+              "Temp": 24.08,
+              "SpCond": 736.56
+            },
+            {
+              "date": "2023-07-20",
+              "days_before_advisory": -5,
+              "DO": 7.48,
+              "Turb": 12.18,
+              "Temp": 24.75,
+              "SpCond": 722.23
+            },
+            {
+              "date": "2023-07-21",
+              "days_before_advisory": -6,
+              "DO": 7.57,
+              "Temp": 24.94,
+              "SpCond": 715.17
+            },
+            {
+              "date": "2023-07-22",
+              "days_before_advisory": -7,
+              "DO": 7.59,
+              "Temp": 25.26,
+              "SpCond": 709.89
+            },
+            {
+              "date": "2023-07-23",
+              "days_before_advisory": -8,
+              "DO": 7.46,
+              "Temp": 24.92,
+              "SpCond": 725.77
+            },
+            {
+              "date": "2023-07-24",
+              "days_before_advisory": -9,
+              "DO": 7.81,
+              "Temp": 25.13,
+              "SpCond": 747.24
+            },
+            {
+              "date": "2023-07-25",
+              "days_before_advisory": -10,
+              "DO": 7.96,
+              "Temp": 25.64,
+              "SpCond": 765.89
+            },
+            {
+              "date": "2023-07-26",
+              "days_before_advisory": -11,
+              "DO": 7.75,
+              "Temp": 25.52,
+              "SpCond": 767.94
+            },
+            {
+              "date": "2023-07-27",
+              "days_before_advisory": -12,
+              "DO": 7.31,
+              "Temp": 25.28,
+              "SpCond": 748.33
+            },
+            {
+              "date": "2023-07-28",
+              "days_before_advisory": -13
+            },
+            {
+              "date": "2023-07-29",
+              "days_before_advisory": -14
+            },
+            {
+              "date": "2023-07-30",
+              "days_before_advisory": -15
+            }
+          ]
+        }
+      ],
+      "best_station_lead_days": 180,
+      "best_station_param": "Turb",
+      "combined_lead_days": 180,
+      "combined_source": "station"
+    },
+    {
+      "event_id": "chesapeake_hypoxia_2018",
+      "name": "Chesapeake Bay Hypoxia 2018",
+      "advisory_date": "2018-07-20",
+      "type": "hypoxia",
+      "drone_triggers": [
+        {
+          "date": "2018-04-21",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 9.858707427978516,
+            "pH": 7.8151092529296875,
+            "Turb": 15.818687438964844,
+            "Temp": 10.770435333251953,
+            "SpCond": 17347.33203125
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-04-26",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 9.858707427978516,
+            "pH": 7.8151092529296875,
+            "Turb": 15.818687438964844,
+            "Temp": 10.770435333251953,
+            "SpCond": 17347.33203125
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-05-01",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 9.676309585571289,
+            "pH": 7.8303985595703125,
+            "Turb": 13.736360549926758,
+            "Temp": 11.62497329711914,
+            "SpCond": 18335.62890625
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-05-06",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 9.676309585571289,
+            "pH": 7.8303985595703125,
+            "Turb": 13.736360549926758,
+            "Temp": 11.62497329711914,
+            "SpCond": 18335.62890625
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-05-16",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.001020431518555,
+            "pH": 7.778265953063965,
+            "Turb": 12.98897933959961,
+            "Temp": 18.73993492126465,
+            "SpCond": 19298.58203125
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-05-21",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.001020431518555,
+            "pH": 7.778265953063965,
+            "Turb": 12.98897933959961,
+            "Temp": 18.73993492126465,
+            "SpCond": 19298.58203125
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-05-26",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 7.893960475921631,
+            "pH": 7.782276153564453,
+            "Turb": 11.275171279907227,
+            "Temp": 18.591320037841797,
+            "SpCond": 21866.4609375
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-05-31",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 7.893960475921631,
+            "pH": 7.782276153564453,
+            "Turb": 11.275171279907227,
+            "Temp": 18.591320037841797,
+            "SpCond": 21866.4609375
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-06-10",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.401999473571777,
+            "pH": 7.784281253814697,
+            "Turb": 10.670685768127441,
+            "Temp": 15.227039337158203,
+            "SpCond": 23403.810546875
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-06-15",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.401999473571777,
+            "pH": 7.784281253814697,
+            "Turb": 10.670685768127441,
+            "Temp": 15.227039337158203,
+            "SpCond": 23403.810546875
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-06-20",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.401999473571777,
+            "pH": 7.784281253814697,
+            "Turb": 10.670685768127441,
+            "Temp": 15.227039337158203,
+            "SpCond": 23403.810546875
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-06-30",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 7.811352729797363,
+            "pH": 7.792050838470459,
+            "Turb": 11.721250534057617,
+            "Temp": 19.598190307617188,
+            "SpCond": 21815.779296875
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-07-05",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 7.811352729797363,
+            "pH": 7.792050838470459,
+            "Turb": 11.721250534057617,
+            "Temp": 19.598190307617188,
+            "SpCond": 21815.779296875
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-07-10",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.121297836303711,
+            "pH": 7.80032205581665,
+            "Turb": 10.83332347869873,
+            "Temp": 17.870534896850586,
+            "SpCond": 22373.279296875
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-07-15",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.121297836303711,
+            "pH": 7.80032205581665,
+            "Turb": 10.83332347869873,
+            "Temp": 17.870534896850586,
+            "SpCond": 22373.279296875
+          },
+          "status": "no_data"
+        },
+        {
+          "date": "2018-07-30",
+          "alert_level": "critical",
+          "predictions": {
+            "DO": 8.598028182983398,
+            "pH": 7.811349868774414,
+            "Turb": 13.1549072265625,
+            "Temp": 16.44382667541504,
+            "SpCond": 19222.560546875
+          },
+          "status": "no_data"
+        }
+      ],
+      "drone_first_trigger": "2018-04-21",
+      "drone_lead_days": 90,
+      "station_analyses": [],
+      "best_station_lead_days": null,
+      "best_station_param": null,
+      "combined_lead_days": 90,
+      "combined_source": "drone"
+    },
+    {
+      "event_id": "klamath_river_hab_2021",
+      "name": "Klamath River HAB 2021",
+      "advisory_date": "2021-08-01",
+      "type": "HAB",
+      "drone_triggers": [
+        {
+          "date": "2021-08-11",
+          "alert_level": "warning",
+          "predictions": {
+            "DO": 10.549970626831055,
+            "pH": 8.125898361206055,
+            "Turb": 20.348102569580078,
+            "Temp": 16.95051383972168,
+            "SpCond": 2961.6162109375
+          },
+          "status": "no_data"
+        }
+      ],
+      "drone_first_trigger": "2021-08-11",
+      "drone_lead_days": -10,
+      "station_analyses": [],
+      "best_station_lead_days": null,
+      "best_station_param": null,
+      "combined_lead_days": -10,
+      "combined_source": "drone"
+    },
+    {
+      "event_id": "jordan_lake_hab_nc",
+      "name": "Jordan Lake HAB NC",
+      "advisory_date": "2022-07-15",
+      "type": "HAB",
+      "drone_triggers": [],
+      "drone_first_trigger": null,
+      "drone_lead_days": null,
+      "station_analyses": [
+        {
+          "station_id": "02101726",
+          "data_range": "2022-01-01 to 2022-08-14",
+          "n_days": 226,
+          "params": {
+            "DO": {
+              "n_values": 211,
+              "z_mean": -1.223331809097708,
+              "z_max": 2.6143565157520885,
+              "val_mean": 7.5531097173569615,
+              "val_min": 3.3979166666666667,
+              "val_max": 12.726041666666667,
+              "anomaly_dates": [
+                "2022-05-05",
+                "2022-05-06",
+                "2022-06-18",
+                "2022-07-08",
+                "2022-07-09",
+                "2022-07-13",
+                "2022-07-14"
+              ],
+              "first_anomaly": "2022-05-05",
+              "lead_days": 71
+            },
+            "pH": {
+              "n_values": 211,
+              "z_mean": -0.5288739919988216,
+              "z_max": 5.142085954780897,
+              "val_mean": 6.837591054968122,
+              "val_min": 6.2,
+              "val_max": 7.223958333333333,
+              "anomaly_dates": [
+                "2022-02-19",
+                "2022-03-04",
+                "2022-03-17",
+                "2022-03-18",
+                "2022-03-19",
+                "2022-03-20",
+                "2022-03-21",
+                "2022-03-22",
+                "2022-03-23",
+                "2022-03-24",
+                "2022-07-11",
+                "2022-07-12",
+                "2022-07-13",
+                "2022-07-14"
+              ],
+              "first_anomaly": "2022-02-19",
+              "lead_days": 146
+            },
+            "Temp": {
+              "n_values": 211,
+              "z_mean": 1.279442800821197,
+              "z_max": 2.5067766990141918,
+              "val_mean": 18.086989125541,
+              "val_min": 3.2145833333333336,
+              "val_max": 28.742708333333336,
+              "anomaly_dates": [
+                "2022-03-08"
+              ],
+              "first_anomaly": "2022-03-08",
+              "lead_days": 129
+            },
+            "SpCond": {
+              "n_values": 211,
+              "z_mean": 0.21364142398673322,
+              "z_max": 4.072445625417253,
+              "val_mean": 89.89704362234387,
+              "val_min": 48.802083333333336,
+              "val_max": 109.92708333333333,
+              "anomaly_dates": [
+                "2022-03-17",
+                "2022-03-18",
+                "2022-03-19",
+                "2022-03-20",
+                "2022-03-21",
+                "2022-07-11",
+                "2022-07-12",
+                "2022-07-13",
+                "2022-07-14"
+              ],
+              "first_anomaly": "2022-03-17",
+              "lead_days": 120
+            }
+          },
+          "first_anomaly_date": "2022-02-19",
+          "first_anomaly_param": "pH",
+          "first_anomaly_lead_days": 146,
+          "timeline": [
+            {
+              "date": "2022-05-16",
+              "days_before_advisory": 60,
+              "DO": 6.19,
+              "pH": 6.68,
+              "Temp": 20.18,
+              "SpCond": 97.39
+            },
+            {
+              "date": "2022-05-17",
+              "days_before_advisory": 59,
+              "DO": 6.46,
+              "pH": 6.75,
+              "Temp": 20.8,
+              "SpCond": 96.08
+            },
+            {
+              "date": "2022-05-18",
+              "days_before_advisory": 58,
+              "DO": 6.46,
+              "pH": 6.74,
+              "Temp": 21.07,
+              "SpCond": 95.0
+            },
+            {
+              "date": "2022-05-19",
+              "days_before_advisory": 57,
+              "DO": 5.84,
+              "pH": 6.71,
+              "Temp": 21.53,
+              "SpCond": 96.09
+            },
+            {
+              "date": "2022-05-20",
+              "days_before_advisory": 56,
+              "DO": 5.65,
+              "pH": 6.71,
+              "Temp": 22.36,
+              "SpCond": 96.76
+            },
+            {
+              "date": "2022-05-21",
+              "days_before_advisory": 55,
+              "DO": 7.01,
+              "pH": 6.88,
+              "Temp": 23.8,
+              "SpCond": 95.35
+            },
+            {
+              "date": "2022-05-22",
+              "days_before_advisory": 54,
+              "DO": 6.22,
+              "pH": 6.79,
+              "Temp": 23.94,
+              "SpCond": 94.72
+            },
+            {
+              "date": "2022-05-23",
+              "days_before_advisory": 53,
+              "DO": 5.46,
+              "pH": 6.69,
+              "Temp": 23.74,
+              "SpCond": 94.45
+            },
+            {
+              "date": "2022-05-24",
+              "days_before_advisory": 52,
+              "DO": 6.9,
+              "pH": 6.77,
+              "Temp": 23.18,
+              "SpCond": 90.33
+            },
+            {
+              "date": "2022-05-25",
+              "days_before_advisory": 51,
+              "DO": 7.0,
+              "pH": 6.73,
+              "Temp": 21.57,
+              "SpCond": 92.29
+            },
+            {
+              "date": "2022-05-26",
+              "days_before_advisory": 50,
+              "DO": 6.68,
+              "pH": 6.77,
+              "Temp": 21.91,
+              "SpCond": 91.04
+            },
+            {
+              "date": "2022-05-27",
+              "days_before_advisory": 49,
+              "DO": 6.79,
+              "pH": 6.6,
+              "Temp": 21.68,
+              "SpCond": 83.81
+            },
+            {
+              "date": "2022-05-28",
+              "days_before_advisory": 48,
+              "DO": 7.96,
+              "pH": 6.83,
+              "Temp": 22.84,
+              "SpCond": 82.45
+            },
+            {
+              "date": "2022-05-29",
+              "days_before_advisory": 47,
+              "DO": 7.81,
+              "pH": 6.96,
+              "Temp": 23.62,
+              "SpCond": 83.4
+            },
+            {
+              "date": "2022-05-30",
+              "days_before_advisory": 46,
+              "DO": 6.84,
+              "pH": 6.85,
+              "Temp": 24.51,
+              "SpCond": 85.07
+            },
+            {
+              "date": "2022-05-31",
+              "days_before_advisory": 45,
+              "DO": 6.04,
+              "pH": 6.77,
+              "Temp": 24.56,
+              "SpCond": 87.54
+            },
+            {
+              "date": "2022-06-01",
+              "days_before_advisory": 44,
+              "DO": 5.69,
+              "pH": 6.76,
+              "Temp": 24.62,
+              "SpCond": 89.3
+            },
+            {
+              "date": "2022-06-02",
+              "days_before_advisory": 43,
+              "DO": 5.21,
+              "pH": 6.72,
+              "Temp": 24.91,
+              "SpCond": 91.09
+            },
+            {
+              "date": "2022-06-03",
+              "days_before_advisory": 42,
+              "DO": 5.19,
+              "pH": 6.71,
+              "Temp": 24.92,
+              "SpCond": 93.19
+            },
+            {
+              "date": "2022-06-04",
+              "days_before_advisory": 41,
+              "DO": 5.26,
+              "pH": 6.69,
+              "Temp": 24.94,
+              "SpCond": 94.05
+            },
+            {
+              "date": "2022-06-05",
+              "days_before_advisory": 40,
+              "DO": 4.64,
+              "pH": 6.65,
+              "Temp": 24.22,
+              "SpCond": 95.94
+            },
+            {
+              "date": "2022-06-06",
+              "days_before_advisory": 39,
+              "DO": 4.66,
+              "pH": 6.64,
+              "Temp": 23.82,
+              "SpCond": 96.24
+            },
+            {
+              "date": "2022-06-07",
+              "days_before_advisory": 38,
+              "DO": 4.95,
+              "pH": 6.65,
+              "Temp": 23.68,
+              "SpCond": 96.01
+            },
+            {
+              "date": "2022-06-08",
+              "days_before_advisory": 37,
+              "DO": 4.82,
+              "pH": 6.65,
+              "Temp": 24.17,
+              "SpCond": 97.96
+            },
+            {
+              "date": "2022-06-09",
+              "days_before_advisory": 36,
+              "DO": 4.62,
+              "pH": 6.65,
+              "Temp": 24.46,
+              "SpCond": 99.97
+            },
+            {
+              "date": "2022-06-10",
+              "days_before_advisory": 35,
+              "DO": 4.8,
+              "pH": 6.68,
+              "Temp": 24.25,
+              "SpCond": 100.8
+            },
+            {
+              "date": "2022-06-11",
+              "days_before_advisory": 34,
+              "DO": 4.78,
+              "pH": 6.74,
+              "Temp": 24.25,
+              "SpCond": 101.19
+            },
+            {
+              "date": "2022-06-12",
+              "days_before_advisory": 33,
+              "DO": 4.58,
+              "pH": 6.73,
+              "Temp": 24.65,
+              "SpCond": 102.26
+            },
+            {
+              "date": "2022-06-13",
+              "days_before_advisory": 32,
+              "DO": 4.46,
+              "pH": 6.73,
+              "Temp": 25.35,
+              "SpCond": 102.84
+            },
+            {
+              "date": "2022-06-14",
+              "days_before_advisory": 31,
+              "DO": 4.49,
+              "pH": 6.72,
+              "Temp": 25.7,
+              "SpCond": 103.83
+            },
+            {
+              "date": "2022-06-15",
+              "days_before_advisory": 30,
+              "DO": 4.36,
+              "pH": 6.73,
+              "Temp": 26.48,
+              "SpCond": 103.61
+            },
+            {
+              "date": "2022-06-16",
+              "days_before_advisory": 29,
+              "DO": 4.23,
+              "pH": 6.73,
+              "Temp": 26.79,
+              "SpCond": 104.27
+            },
+            {
+              "date": "2022-06-17",
+              "days_before_advisory": 28,
+              "DO": 4.01,
+              "pH": 6.71,
+              "Temp": 26.71,
+              "SpCond": 103.53
+            },
+            {
+              "date": "2022-06-18",
+              "days_before_advisory": 27,
+              "DO": 3.99,
+              "pH": 6.71,
+              "Temp": 26.36,
+              "SpCond": 102.8
+            },
+            {
+              "date": "2022-06-19",
+              "days_before_advisory": 26,
+              "DO": 4.21,
+              "pH": 6.72,
+              "Temp": 25.34,
+              "SpCond": 103.32
+            },
+            {
+              "date": "2022-06-20",
+              "days_before_advisory": 25,
+              "DO": 4.4,
+              "pH": 6.72,
+              "Temp": 24.11,
+              "SpCond": 103.81
+            },
+            {
+              "date": "2022-06-21",
+              "days_before_advisory": 24,
+              "DO": 4.33,
+              "pH": 6.71,
+              "Temp": 24.16,
+              "SpCond": 104.9
+            },
+            {
+              "date": "2022-06-22",
+              "days_before_advisory": 23,
+              "DO": 4.22,
+              "pH": 6.68,
+              "Temp": 24.48,
+              "SpCond": 106.17
+            },
+            {
+              "date": "2022-06-23",
+              "days_before_advisory": 22,
+              "DO": 4.0,
+              "pH": 6.7,
+              "Temp": 24.99,
+              "SpCond": 107.12
+            },
+            {
+              "date": "2022-06-24",
+              "days_before_advisory": 21,
+              "DO": 4.07,
+              "pH": 6.71,
+              "Temp": 25.43,
+              "SpCond": 106.78
+            },
+            {
+              "date": "2022-06-25",
+              "days_before_advisory": 20,
+              "DO": 4.42,
+              "pH": 6.74,
+              "Temp": 25.78,
+              "SpCond": 105.17
+            },
+            {
+              "date": "2022-06-26",
+              "days_before_advisory": 19,
+              "DO": 4.54,
+              "pH": 6.77,
+              "Temp": 26.02,
+              "SpCond": 105.0
+            },
+            {
+              "date": "2022-06-27",
+              "days_before_advisory": 18,
+              "DO": 4.45,
+              "pH": 6.77,
+              "Temp": 26.02,
+              "SpCond": 104.04
+            },
+            {
+              "date": "2022-06-28",
+              "days_before_advisory": 17,
+              "DO": 4.66,
+              "pH": 6.77,
+              "Temp": 25.67,
+              "SpCond": 103.82
+            },
+            {
+              "date": "2022-06-29",
+              "days_before_advisory": 16,
+              "DO": 4.81,
+              "pH": 6.81,
+              "Temp": 25.58,
+              "SpCond": 102.74
+            },
+            {
+              "date": "2022-06-30",
+              "days_before_advisory": 15,
+              "DO": 4.78,
+              "pH": 6.83,
+              "Temp": 25.89,
+              "SpCond": 104.15
+            },
+            {
+              "date": "2022-07-01",
+              "days_before_advisory": 14,
+              "DO": 5.23,
+              "pH": 6.84,
+              "Temp": 26.23,
+              "SpCond": 105.48
+            },
+            {
+              "date": "2022-07-02",
+              "days_before_advisory": 13,
+              "DO": 4.74,
+              "pH": 6.78,
+              "Temp": 26.34,
+              "SpCond": 107.25
+            },
+            {
+              "date": "2022-07-03",
+              "days_before_advisory": 12,
+              "DO": 4.6,
+              "pH": 6.82,
+              "Temp": 27.01,
+              "SpCond": 107.11
+            },
+            {
+              "date": "2022-07-04",
+              "days_before_advisory": 11,
+              "DO": 4.48,
+              "pH": 6.82,
+              "Temp": 27.28,
+              "SpCond": 107.52
+            },
+            {
+              "date": "2022-07-05",
+              "days_before_advisory": 10,
+              "DO": 4.29,
+              "pH": 6.82,
+              "Temp": 27.6,
+              "SpCond": 108.1
+            },
+            {
+              "date": "2022-07-06",
+              "days_before_advisory": 9,
+              "DO": 4.13,
+              "pH": 6.82,
+              "Temp": 27.68,
+              "SpCond": 108.78
+            },
+            {
+              "date": "2022-07-07",
+              "days_before_advisory": 8,
+              "DO": 4.04,
+              "pH": 6.82,
+              "Temp": 27.94,
+              "SpCond": 109.93
+            },
+            {
+              "date": "2022-07-08",
+              "days_before_advisory": 7,
+              "DO": 3.84,
+              "pH": 6.8,
+              "Temp": 27.32,
+              "SpCond": 108.03
+            },
+            {
+              "date": "2022-07-09",
+              "days_before_advisory": 6,
+              "DO": 3.68,
+              "pH": 6.73,
+              "Temp": 27.35,
+              "SpCond": 102.18
+            },
+            {
+              "date": "2022-07-10",
+              "days_before_advisory": 5,
+              "DO": 5.91,
+              "pH": 6.6,
+              "Temp": 25.17,
+              "SpCond": 76.91
+            },
+            {
+              "date": "2022-07-11",
+              "days_before_advisory": 4,
+              "DO": 5.29,
+              "pH": 6.34,
+              "Temp": 23.92,
+              "SpCond": 51.0
+            },
+            {
+              "date": "2022-07-12",
+              "days_before_advisory": 3,
+              "DO": 4.22,
+              "pH": 6.2,
+              "Temp": 24.18,
+              "SpCond": 48.8
+            },
+            {
+              "date": "2022-07-13",
+              "days_before_advisory": 2,
+              "DO": 3.48,
+              "pH": 6.2,
+              "Temp": 24.27,
+              "SpCond": 49.49
+            },
+            {
+              "date": "2022-07-14",
+              "days_before_advisory": 1,
+              "DO": 3.45,
+              "pH": 6.24,
+              "Temp": 24.55,
+              "SpCond": 51.29
+            },
+            {
+              "date": "2022-07-15",
+              "days_before_advisory": 0,
+              "DO": 3.4,
+              "pH": 6.33,
+              "Temp": 24.97,
+              "SpCond": 57.44
+            },
+            {
+              "date": "2022-07-16",
+              "days_before_advisory": -1,
+              "DO": 3.64,
+              "pH": 6.43,
+              "Temp": 25.23,
+              "SpCond": 63.83
+            },
+            {
+              "date": "2022-07-17",
+              "days_before_advisory": -2,
+              "DO": 4.09,
+              "pH": 6.53,
+              "Temp": 25.57,
+              "SpCond": 68.73
+            },
+            {
+              "date": "2022-07-18",
+              "days_before_advisory": -3,
+              "DO": 4.4,
+              "pH": 6.59,
+              "Temp": 26.12,
+              "SpCond": 71.89
+            },
+            {
+              "date": "2022-07-19",
+              "days_before_advisory": -4,
+              "DO": 4.32,
+              "pH": 6.65,
+              "Temp": 26.49,
+              "SpCond": 78.47
+            },
+            {
+              "date": "2022-07-20",
+              "days_before_advisory": -5,
+              "DO": 4.38,
+              "pH": 6.67,
+              "Temp": 27.03,
+              "SpCond": 83.59
+            },
+            {
+              "date": "2022-07-21",
+              "days_before_advisory": -6,
+              "DO": 4.04,
+              "pH": 6.68,
+              "Temp": 26.84,
+              "SpCond": 88.91
+            },
+            {
+              "date": "2022-07-22",
+              "days_before_advisory": -7,
+              "DO": 4.09,
+              "pH": 6.73,
+              "Temp": 27.39,
+              "SpCond": 91.08
+            },
+            {
+              "date": "2022-07-23",
+              "days_before_advisory": -8,
+              "DO": 4.03,
+              "pH": 6.73,
+              "Temp": 27.67,
+              "SpCond": 93.83
+            },
+            {
+              "date": "2022-07-24",
+              "days_before_advisory": -9,
+              "DO": 3.92,
+              "pH": 6.73,
+              "Temp": 27.72,
+              "SpCond": 95.8
+            },
+            {
+              "date": "2022-07-25",
+              "days_before_advisory": -10,
+              "DO": 3.93,
+              "pH": 6.74,
+              "Temp": 27.58,
+              "SpCond": 97.53
+            },
+            {
+              "date": "2022-07-26",
+              "days_before_advisory": -11,
+              "DO": 3.48,
+              "pH": 6.73,
+              "Temp": 27.34,
+              "SpCond": 99.86
+            },
+            {
+              "date": "2022-07-27",
+              "days_before_advisory": -12,
+              "DO": 3.41,
+              "pH": 6.73,
+              "Temp": 27.63,
+              "SpCond": 101.38
+            },
+            {
+              "date": "2022-07-28",
+              "days_before_advisory": -13,
+              "DO": 3.43,
+              "pH": 6.74,
+              "Temp": 27.96,
+              "SpCond": 101.56
+            },
+            {
+              "date": "2022-07-29",
+              "days_before_advisory": -14,
+              "DO": 3.46,
+              "pH": 6.74,
+              "Temp": 28.44,
+              "SpCond": 101.62
+            },
+            {
+              "date": "2022-07-30",
+              "days_before_advisory": -15,
+              "DO": 3.58,
+              "pH": 6.74,
+              "Temp": 28.43,
+              "SpCond": 101.99
+            }
+          ]
+        },
+        {
+          "station_id": "02102500",
+          "data_range": "2022-01-01 to 2022-08-14",
+          "n_days": 226,
+          "params": {
+            "DO": {
+              "n_values": 211,
+              "z_mean": -1.0086794570642965,
+              "z_max": 2.5044869739151285,
+              "val_mean": 8.956628473014353,
+              "val_min": 5.952083333333333,
+              "val_max": 13.548958333333333,
+              "anomaly_dates": [
+                "2022-05-24"
+              ],
+              "first_anomaly": "2022-05-24",
+              "lead_days": 52
+            },
+            "pH": {
+              "n_values": 211,
+              "z_mean": -0.07817830015389256,
+              "z_max": 3.790646074695665,
+              "val_mean": 7.260854302390146,
+              "val_min": 6.5843750000000005,
+              "val_max": 7.626041666666667,
+              "anomaly_dates": [
+                "2022-03-18",
+                "2022-03-19",
+                "2022-03-20"
+              ],
+              "first_anomaly": "2022-03-18",
+              "lead_days": 119
+            },
+            "Turb": {
+              "n_values": 89,
+              "z_mean": -0.46983662155443484,
+              "z_max": 0.9404476994550428,
+              "val_mean": 9.877387422414689,
+              "val_min": 1.9364583333333334,
+              "val_max": 57.484042553191486,
+              "anomaly_dates": [
+                "2022-05-28",
+                "2022-05-29"
+              ],
+              "first_anomaly": "2022-05-28",
+              "lead_days": 48
+            },
+            "Temp": {
+              "n_values": 211,
+              "z_mean": 1.2409203513167744,
+              "z_max": 2.5919342368725307,
+              "val_mean": 19.615128614577824,
+              "val_min": 3.5510416666666664,
+              "val_max": 31.79479166666667,
+              "anomaly_dates": [
+                "2022-05-21",
+                "2022-06-15",
+                "2022-07-05",
+                "2022-07-06",
+                "2022-07-07",
+                "2022-07-08",
+                "2022-07-09"
+              ],
+              "first_anomaly": "2022-05-21",
+              "lead_days": 55
+            },
+            "SpCond": {
+              "n_values": 211,
+              "z_mean": 0.5182829432870726,
+              "z_max": 3.1305510002436736,
+              "val_mean": 146.0247032586829,
+              "val_min": 48.385416666666664,
+              "val_max": 216.84375,
+              "anomaly_dates": [
+                "2022-03-18",
+                "2022-03-19",
+                "2022-03-20",
+                "2022-07-12",
+                "2022-07-13"
+              ],
+              "first_anomaly": "2022-03-18",
+              "lead_days": 119
+            }
+          },
+          "first_anomaly_date": "2022-03-18",
+          "first_anomaly_param": "pH",
+          "first_anomaly_lead_days": 119,
+          "timeline": [
+            {
+              "date": "2022-05-16",
+              "days_before_advisory": 60,
+              "DO": 8.08,
+              "pH": 7.42,
+              "Temp": 23.75,
+              "SpCond": 155.58
+            },
+            {
+              "date": "2022-05-17",
+              "days_before_advisory": 59,
+              "DO": 7.92,
+              "pH": 7.44,
+              "Turb": 9.56,
+              "Temp": 23.81,
+              "SpCond": 160.83
+            },
+            {
+              "date": "2022-05-18",
+              "days_before_advisory": 58,
+              "DO": 8.19,
+              "pH": 7.44,
+              "Turb": 5.56,
+              "Temp": 24.04,
+              "SpCond": 165.33
+            },
+            {
+              "date": "2022-05-19",
+              "days_before_advisory": 57,
+              "DO": 8.35,
+              "pH": 7.5,
+              "Turb": 4.96,
+              "Temp": 24.9,
+              "SpCond": 168.51
+            },
+            {
+              "date": "2022-05-20",
+              "days_before_advisory": 56,
+              "DO": 8.14,
+              "pH": 7.46,
+              "Turb": 5.4,
+              "Temp": 26.13,
+              "SpCond": 167.77
+            },
+            {
+              "date": "2022-05-21",
+              "days_before_advisory": 55,
+              "DO": 7.67,
+              "pH": 7.4,
+              "Turb": 3.53,
+              "Temp": 27.45,
+              "SpCond": 164.97
+            },
+            {
+              "date": "2022-05-22",
+              "days_before_advisory": 54,
+              "DO": 7.16,
+              "pH": 7.28,
+              "Turb": 3.26,
+              "Temp": 27.02,
+              "SpCond": 164.72
+            },
+            {
+              "date": "2022-05-23",
+              "days_before_advisory": 53,
+              "DO": 6.9,
+              "pH": 7.23,
+              "Turb": 5.02,
+              "Temp": 26.89,
+              "SpCond": 167.62
+            },
+            {
+              "date": "2022-05-24",
+              "days_before_advisory": 52,
+              "DO": 6.46,
+              "pH": 7.03,
+              "Turb": 27.0,
+              "Temp": 25.43,
+              "SpCond": 143.24
+            },
+            {
+              "date": "2022-05-25",
+              "days_before_advisory": 51,
+              "DO": 6.61,
+              "pH": 7.09,
+              "Turb": 18.36,
+              "Temp": 23.94,
+              "SpCond": 156.95
+            },
+            {
+              "date": "2022-05-26",
+              "days_before_advisory": 50,
+              "DO": 7.18,
+              "pH": 7.08,
+              "Turb": 37.44,
+              "Temp": 23.1,
+              "SpCond": 156.25
+            },
+            {
+              "date": "2022-05-27",
+              "days_before_advisory": 49,
+              "DO": 7.77,
+              "pH": 7.18,
+              "Turb": 31.28,
+              "Temp": 22.83,
+              "SpCond": 167.29
+            },
+            {
+              "date": "2022-05-28",
+              "days_before_advisory": 48,
+              "DO": 7.7,
+              "pH": 7.07,
+              "Turb": 57.48,
+              "Temp": 22.68,
+              "SpCond": 131.34
+            },
+            {
+              "date": "2022-05-29",
+              "days_before_advisory": 47,
+              "DO": 7.64,
+              "pH": 7.02,
+              "Turb": 50.34,
+              "Temp": 23.07,
+              "SpCond": 123.85
+            },
+            {
+              "date": "2022-05-30",
+              "days_before_advisory": 46,
+              "DO": 7.64,
+              "pH": 7.1,
+              "Turb": 30.01,
+              "Temp": 23.85,
+              "SpCond": 132.95
+            },
+            {
+              "date": "2022-05-31",
+              "days_before_advisory": 45,
+              "DO": 7.6,
+              "pH": 7.1,
+              "Turb": 19.78,
+              "Temp": 24.24,
+              "SpCond": 136.84
+            },
+            {
+              "date": "2022-06-01",
+              "days_before_advisory": 44,
+              "DO": 6.64,
+              "pH": 6.98,
+              "Turb": 10.59,
+              "Temp": 25.84,
+              "SpCond": 143.17
+            },
+            {
+              "date": "2022-06-02",
+              "days_before_advisory": 43,
+              "DO": 6.09,
+              "pH": 6.99,
+              "Turb": 12.24,
+              "Temp": 27.83,
+              "SpCond": 146.14
+            },
+            {
+              "date": "2022-06-03",
+              "days_before_advisory": 42,
+              "DO": 5.95,
+              "pH": 6.99,
+              "Turb": 15.63,
+              "Temp": 28.59,
+              "SpCond": 137.46
+            },
+            {
+              "date": "2022-06-04",
+              "days_before_advisory": 41,
+              "DO": 6.16,
+              "pH": 7.01,
+              "Turb": 14.87,
+              "Temp": 27.92,
+              "SpCond": 132.96
+            },
+            {
+              "date": "2022-06-05",
+              "days_before_advisory": 40,
+              "DO": 6.61,
+              "pH": 7.08,
+              "Turb": 23.6,
+              "Temp": 27.09,
+              "SpCond": 134.14
+            },
+            {
+              "date": "2022-06-06",
+              "days_before_advisory": 39,
+              "DO": 6.99,
+              "pH": 7.15,
+              "Turb": 22.09,
+              "Temp": 26.34,
+              "SpCond": 140.53
+            },
+            {
+              "date": "2022-06-07",
+              "days_before_advisory": 38,
+              "DO": 7.07,
+              "pH": 7.16,
+              "Turb": 27.2,
+              "Temp": 26.65,
+              "SpCond": 146.17
+            },
+            {
+              "date": "2022-06-08",
+              "days_before_advisory": 37,
+              "DO": 6.91,
+              "pH": 7.14,
+              "Temp": 27.4,
+              "SpCond": 147.58
+            },
+            {
+              "date": "2022-06-09",
+              "days_before_advisory": 36,
+              "DO": 6.64,
+              "pH": 7.12,
+              "Turb": 5.46,
+              "Temp": 27.27,
+              "SpCond": 144.55
+            },
+            {
+              "date": "2022-06-10",
+              "days_before_advisory": 35,
+              "DO": 6.59,
+              "pH": 7.1,
+              "Turb": 8.21,
+              "Temp": 27.08,
+              "SpCond": 140.81
+            },
+            {
+              "date": "2022-06-11",
+              "days_before_advisory": 34,
+              "DO": 6.94,
+              "pH": 7.19,
+              "Turb": 6.95,
+              "Temp": 26.89,
+              "SpCond": 145.4
+            },
+            {
+              "date": "2022-06-12",
+              "days_before_advisory": 33,
+              "DO": 6.71,
+              "pH": 7.15,
+              "Turb": 9.04,
+              "Temp": 26.48,
+              "SpCond": 143.54
+            },
+            {
+              "date": "2022-06-13",
+              "days_before_advisory": 32,
+              "DO": 6.66,
+              "pH": 7.16,
+              "Turb": 6.0,
+              "Temp": 27.57,
+              "SpCond": 142.61
+            },
+            {
+              "date": "2022-06-14",
+              "days_before_advisory": 31,
+              "DO": 6.66,
+              "pH": 7.15,
+              "Turb": 4.32,
+              "Temp": 29.27,
+              "SpCond": 146.05
+            },
+            {
+              "date": "2022-06-15",
+              "days_before_advisory": 30,
+              "DO": 6.54,
+              "pH": 7.16,
+              "Turb": 4.45,
+              "Temp": 30.12,
+              "SpCond": 150.24
+            },
+            {
+              "date": "2022-06-16",
+              "days_before_advisory": 29,
+              "DO": 6.48,
+              "pH": 7.15,
+              "Turb": 9.18,
+              "Temp": 29.94,
+              "SpCond": 146.09
+            },
+            {
+              "date": "2022-06-17",
+              "days_before_advisory": 28,
+              "DO": 6.51,
+              "pH": 7.18,
+              "Turb": 8.41,
+              "Temp": 28.63,
+              "SpCond": 150.38
+            },
+            {
+              "date": "2022-06-18",
+              "days_before_advisory": 27,
+              "DO": 6.73,
+              "pH": 7.21,
+              "Turb": 6.29,
+              "Temp": 28.88,
+              "SpCond": 151.42
+            },
+            {
+              "date": "2022-06-19",
+              "days_before_advisory": 26,
+              "DO": 7.08,
+              "pH": 7.35,
+              "Turb": 6.33,
+              "Temp": 27.79,
+              "SpCond": 152.81
+            },
+            {
+              "date": "2022-06-20",
+              "days_before_advisory": 25,
+              "DO": 7.43,
+              "pH": 7.39,
+              "Turb": 12.21,
+              "Temp": 26.06,
+              "SpCond": 155.18
+            },
+            {
+              "date": "2022-06-21",
+              "days_before_advisory": 24,
+              "DO": 7.52,
+              "pH": 7.37,
+              "Turb": 17.24,
+              "Temp": 25.26,
+              "SpCond": 158.1
+            },
+            {
+              "date": "2022-06-22",
+              "days_before_advisory": 23,
+              "DO": 7.7,
+              "pH": 7.47,
+              "Turb": 15.99,
+              "Temp": 26.64,
+              "SpCond": 162.72
+            },
+            {
+              "date": "2022-06-23",
+              "days_before_advisory": 22,
+              "DO": 7.41,
+              "pH": 7.44,
+              "Turb": 8.26,
+              "Temp": 28.14,
+              "SpCond": 164.92
+            },
+            {
+              "date": "2022-06-24",
+              "days_before_advisory": 21,
+              "DO": 7.25,
+              "pH": 7.41,
+              "Turb": 2.74,
+              "Temp": 28.89,
+              "SpCond": 165.71
+            },
+            {
+              "date": "2022-06-25",
+              "days_before_advisory": 20,
+              "DO": 7.44,
+              "pH": 7.36,
+              "Turb": 4.73,
+              "Temp": 29.22,
+              "SpCond": 164.08
+            },
+            {
+              "date": "2022-06-26",
+              "days_before_advisory": 19,
+              "DO": 7.5,
+              "pH": 7.42,
+              "Turb": 5.1,
+              "Temp": 29.43,
+              "SpCond": 164.49
+            },
+            {
+              "date": "2022-06-27",
+              "days_before_advisory": 18,
+              "DO": 7.3,
+              "pH": 7.32,
+              "Turb": 7.43,
+              "Temp": 28.9,
+              "SpCond": 168.74
+            },
+            {
+              "date": "2022-06-28",
+              "days_before_advisory": 17,
+              "DO": 7.03,
+              "pH": 7.33,
+              "Turb": 4.61,
+              "Temp": 28.13,
+              "SpCond": 168.29
+            },
+            {
+              "date": "2022-06-29",
+              "days_before_advisory": 16,
+              "DO": 7.34,
+              "pH": 7.35,
+              "Turb": 5.44,
+              "Temp": 27.72,
+              "SpCond": 169.62
+            },
+            {
+              "date": "2022-06-30",
+              "days_before_advisory": 15,
+              "DO": 7.34,
+              "pH": 7.35,
+              "Turb": 3.56,
+              "Temp": 27.6,
+              "SpCond": 171.27
+            },
+            {
+              "date": "2022-07-01",
+              "days_before_advisory": 14,
+              "DO": 7.33,
+              "pH": 7.36,
+              "Turb": 2.83,
+              "Temp": 28.31,
+              "SpCond": 173.94
+            },
+            {
+              "date": "2022-07-02",
+              "days_before_advisory": 13,
+              "DO": 7.05,
+              "pH": 7.35,
+              "Turb": 3.02,
+              "Temp": 28.06,
+              "SpCond": 174.1
+            },
+            {
+              "date": "2022-07-03",
+              "days_before_advisory": 12,
+              "DO": 7.14,
+              "pH": 7.38,
+              "Turb": 2.44,
+              "Temp": 29.16,
+              "SpCond": 175.59
+            },
+            {
+              "date": "2022-07-04",
+              "days_before_advisory": 11,
+              "DO": 7.05,
+              "pH": 7.3,
+              "Turb": 17.25,
+              "Temp": 29.86,
+              "SpCond": 162.89
+            },
+            {
+              "date": "2022-07-05",
+              "days_before_advisory": 10,
+              "DO": 6.91,
+              "pH": 7.31,
+              "Turb": 3.44,
+              "Temp": 30.44,
+              "SpCond": 173.57
+            },
+            {
+              "date": "2022-07-06",
+              "days_before_advisory": 9,
+              "DO": 7.02,
+              "pH": 7.33,
+              "Turb": 4.73,
+              "Temp": 30.61,
+              "SpCond": 180.99
+            },
+            {
+              "date": "2022-07-07",
+              "days_before_advisory": 8,
+              "DO": 7.04,
+              "pH": 7.41,
+              "Turb": 3.22,
+              "Temp": 31.79,
+              "SpCond": 183.07
+            },
+            {
+              "date": "2022-07-08",
+              "days_before_advisory": 7,
+              "DO": 6.71,
+              "pH": 7.37,
+              "Turb": 3.07,
+              "Temp": 31.57,
+              "SpCond": 184.01
+            },
+            {
+              "date": "2022-07-09",
+              "days_before_advisory": 6,
+              "DO": 6.46,
+              "pH": 7.29,
+              "Turb": 3.78,
+              "Temp": 30.7,
+              "SpCond": 183.77
+            },
+            {
+              "date": "2022-07-10",
+              "days_before_advisory": 5,
+              "DO": 6.12,
+              "pH": 7.06,
+              "Turb": 14.79,
+              "Temp": 28.93,
+              "SpCond": 174.51
+            },
+            {
+              "date": "2022-07-11",
+              "days_before_advisory": 4,
+              "DO": 6.23,
+              "pH": 7.08,
+              "Turb": 5.89,
+              "Temp": 26.48,
+              "SpCond": 184.62
+            },
+            {
+              "date": "2022-07-12",
+              "days_before_advisory": 3,
+              "DO": 6.84,
+              "pH": 7.25,
+              "Turb": 4.8,
+              "Temp": 28.03,
+              "SpCond": 208.93
+            },
+            {
+              "date": "2022-07-13",
+              "days_before_advisory": 2,
+              "DO": 6.57,
+              "pH": 7.22,
+              "Turb": 5.8,
+              "Temp": 29.0,
+              "SpCond": 203.11
+            },
+            {
+              "date": "2022-07-14",
+              "days_before_advisory": 1,
+              "DO": 6.78,
+              "pH": 7.18,
+              "Turb": 8.09,
+              "Temp": 28.39,
+              "SpCond": 188.6
+            },
+            {
+              "date": "2022-07-15",
+              "days_before_advisory": 0,
+              "DO": 7.13,
+              "pH": 7.24,
+              "Turb": 5.28,
+              "Temp": 28.61,
+              "SpCond": 176.09
+            },
+            {
+              "date": "2022-07-16",
+              "days_before_advisory": -1,
+              "DO": 6.61,
+              "pH": 7.11,
+              "Turb": 11.68,
+              "Temp": 28.4,
+              "SpCond": 173.86
+            },
+            {
+              "date": "2022-07-17",
+              "days_before_advisory": -2,
+              "DO": 6.47,
+              "pH": 7.06,
+              "Turb": 8.19,
+              "Temp": 27.96,
+              "SpCond": 189.97
+            },
+            {
+              "date": "2022-07-18",
+              "days_before_advisory": -3,
+              "DO": 6.59,
+              "pH": 7.13,
+              "Turb": 7.82,
+              "Temp": 28.89,
+              "SpCond": 197.1
+            },
+            {
+              "date": "2022-07-19",
+              "days_before_advisory": -4,
+              "DO": 6.75,
+              "pH": 7.17,
+              "Turb": 7.96,
+              "Temp": 30.05,
+              "SpCond": 169.25
+            },
+            {
+              "date": "2022-07-20",
+              "days_before_advisory": -5,
+              "DO": 6.9,
+              "pH": 7.26,
+              "Turb": 5.77,
+              "Temp": 30.6,
+              "SpCond": 153.12
+            },
+            {
+              "date": "2022-07-21",
+              "days_before_advisory": -6,
+              "DO": 6.58,
+              "pH": 7.13,
+              "Turb": 6.92,
+              "Temp": 30.37,
+              "SpCond": 146.32
+            },
+            {
+              "date": "2022-07-22",
+              "days_before_advisory": -7,
+              "DO": 6.76,
+              "pH": 7.19,
+              "Turb": 6.13,
+              "Temp": 30.03,
+              "SpCond": 149.11
+            },
+            {
+              "date": "2022-07-23",
+              "days_before_advisory": -8,
+              "DO": 7.03,
+              "pH": 7.26,
+              "Turb": 3.93,
+              "Temp": 30.69,
+              "SpCond": 158.19
+            },
+            {
+              "date": "2022-07-24",
+              "days_before_advisory": -9,
+              "DO": 6.57,
+              "pH": 7.16,
+              "Turb": 7.96,
+              "Temp": 30.34,
+              "SpCond": 150.31
+            },
+            {
+              "date": "2022-07-25",
+              "days_before_advisory": -10,
+              "DO": 6.32,
+              "pH": 7.04,
+              "Turb": 10.91,
+              "Temp": 29.63,
+              "SpCond": 144.48
+            },
+            {
+              "date": "2022-07-26",
+              "days_before_advisory": -11,
+              "DO": 6.52,
+              "pH": 7.09,
+              "Turb": 5.69,
+              "Temp": 29.53,
+              "SpCond": 153.91
+            },
+            {
+              "date": "2022-07-27",
+              "days_before_advisory": -12,
+              "DO": 6.81,
+              "pH": 7.14,
+              "Turb": 4.53,
+              "Temp": 29.85,
+              "SpCond": 169.16
+            },
+            {
+              "date": "2022-07-28",
+              "days_before_advisory": -13,
+              "DO": 7.12,
+              "pH": 7.32,
+              "Turb": 4.79,
+              "Temp": 31.22,
+              "SpCond": 175.71
+            },
+            {
+              "date": "2022-07-29",
+              "days_before_advisory": -14,
+              "DO": 7.12,
+              "pH": 7.38,
+              "Turb": 3.33,
+              "Temp": 31.73,
+              "SpCond": 174.4
+            },
+            {
+              "date": "2022-07-30",
+              "days_before_advisory": -15,
+              "DO": 6.98,
+              "pH": 7.35,
+              "Turb": 3.54,
+              "Temp": 31.68,
+              "SpCond": 174.42
+            }
+          ]
+        }
+      ],
+      "best_station_lead_days": 146,
+      "best_station_param": "pH",
+      "combined_lead_days": 146,
+      "combined_source": "station"
+    },
+    {
+      "event_id": "mississippi_salinity_2023",
+      "name": "Mississippi River Salinity 2023",
+      "status": "no_stations"
+    },
+    {
+      "event_id": "gulf_dead_zone_2023",
+      "name": "Gulf Dead Zone 2023",
+      "status": "no_stations"
+    }
+  ],
+  "summary": {}
+}

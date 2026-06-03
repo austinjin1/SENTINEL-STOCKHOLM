@@ -50,24 +50,23 @@ Using real USGS NWIS data (no synthetic data):
 |-------|--------|-------|-------|
 | Species Health Index | Health R^2 | 0.9996 | 6 keystone species, occ_acc=99.9%, 5,462 real BioData sites (385K invert + 16K fish), spatial holdout |
 | Disease Forecast | AUROC / Accuracy | 0.988 / 93.1% | 470K params, 499K train/80K test. Binary alert AUROC=0.988, weighted F1=0.938. Per-pathogen AUROC: cyano=0.996, vibrio=1.000, naegleria=0.9998. Calibration ECE=0.001–0.031. Real USGS WQ + WHO/CDC/EPA thresholds |
-| Digital Twin | Test MSE | 786.1 (45.5% vs physics-only) | 341K params, 303K train/51K test, 10 state vars, 6 horizons (1d–365d). Per-horizon: 1d=47.6, 7d=421.4, 14d=614.8, 30d=673.0, 90d=943.2, 365d=1979.3 |
+| Digital Twin | 1d R²=0.688, 7d+ R²<0 | **Honest**: Only useful at 1-day horizon. 341K params, 303K train/51K test, 4 observed vars (DO/Temp/pH/Turb). Per-var R²: all negative. Naive baseline (predict t=0) R²=0.923 beats model. ODE diverges at longer horizons |
 | ARG Surveillance | R^2 | -0.008 | **INSUFFICIENT DATA**: pseudo-labels from OTU composition, no real metagenomic ARG measurements |
 
 ### Training Status (2026-06-01)
 - **Species Health**: COMPLETE — R²=0.9996, occ_acc=99.9%, 5,462 sites
 - **Disease Forecast**: COMPLETE — test_loss=0.760, val_loss=0.729, 120 epochs on 499K real USGS samples
-- **Digital Twin**: COMPLETE — 80 epochs on 303K+ real USGS samples, test MSE=786.1 vs physics-only 1442.0 (45.5% improvement)
-  - Per-horizon test MSE: 1d=47.6, 7d=421.4, 14d=614.8, 30d=673.0, 90d=943.2, 365d=1979.3
-  - Per-variable test MSE: DO=19.1, BOD=13.3, TN=2.6, TP=0.01, Chl-a=79.6, Temp=91.8, pH=10.9, Turb=215.7, DOC=26.8, Sediment=7339.1
+- **Digital Twin**: COMPLETE — 80 epochs on 303K+ real USGS samples. **Honest evaluation**: 1d R²=0.688 (useful), 7d R²=0.087 (marginal), 14d+ R²<0 (worse than mean). Naive baseline (predict t=0) R²=0.923 outperforms. ODE solver diverges at longer horizons. Direction accuracy 49.4% (coin flip). Only 4/10 vars have test observations (DO/Temp/pH/Turb)
 - **SENTINEL-Lite**: COMPLETE — Temp R²=0.776, DO R²=0.463, SpCond R²=0.442, Turb R²=0.181
 - **AquaSSM**: COMPLETE — MPP 15 epochs, val_loss=0.0043, test RMSE=0.83 on 20K unseen-site samples
 
-### Digital Twin Real-World Validation
-- 6/8 case studies evaluated (Lake Erie HAB, Gulf Dead Zone, Chesapeake, Iowa Nitrate, Klamath HAB, Mississippi Salinity)
-- Mean MSE across all horizons: 1595.3
-- Direction accuracy vs observed: 10/19 (52.6%)
-- DO MAE: 1.7–3.3 mg/L across events; Temp MAE: 3.8–15.8°C
-- Turbidity poorly calibrated (MAE 12–136 NTU)
+### Digital Twin Evaluation (Honest)
+- **Per-horizon R²**: 1d=0.688, 7d=0.087, 14d=-0.084, 30d=-0.103, 90d=-0.105, 365d=-0.106
+- **Per-variable R²**: DO=-2.76, Temp=-1.03, pH=-56.58, Turb=-0.15 (all negative — worse than mean)
+- **Naive baseline (predict t=0)**: R²=0.923, MAE=37.3 — massively outperforms model
+- **Direction accuracy**: 49.4% (coin flip)
+- **Diagnosis**: ODE trajectories blow up at longer horizons; neural corrector too weak (+0.008 R²); scale mismatch (turbidity dominates loss); 90% CI only 14.1% coverage
+- 6/8 real-world case studies evaluated; DO MAE: 1.7–3.3 mg/L; Temp MAE: 3.8–15.8°C
 
 ## 4. Data Infrastructure (SENTINEL-DB)
 

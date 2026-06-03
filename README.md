@@ -33,7 +33,7 @@ SENTINEL addresses this by learning joint representations across all five sensin
 | **Stream Network GNN** | Contamination propagation | AUROC 1.000, F1 0.991 | 561 NHDPlus sites, 338 edges |
 | **Species Health Index** | Keystone species forecasting | R^2 0.9996, occ_acc 99.9% | 6 species, 5,462 real BioData sites |
 | **Disease Forecast** | Pathogen risk prediction | AUROC 0.988, Acc 93.1% | 4 pathogens, 499K real USGS samples |
-| **Digital Twin** | Ecosystem forecasting | MSE 786 (45.5% vs physics-only) | 10 state vars, 6 horizons (1d--365d) |
+| **Digital Twin** | Ecosystem forecasting | 1d R²=0.688 (7d+ R²<0) | 10 state vars, 6 horizons; useful at 1-day only |
 | **SENTINEL-Lite** | Imagery-only WQ screening | Temp R^2=0.776, DO R^2=0.463 | 57K train, 399 stations, dual-camera drone |
 
 ### Real-World Case Studies (8/10 USGS Events Detected; 31 Total Events)
@@ -65,6 +65,23 @@ SENTINEL-Lite predicts water quality parameters directly from 4-band (RGB+NIR) s
 | Turbidity | 0.181 | 10.96 NTU | 0.435 |
 
 Architecture: DenseNet121 backbone with SpectralStem + CBAM attention + multi-scale FPN + per-target expert MLPs. 8.4M parameters. 57K train / 11K test from 399 USGS stations with spatial holdout (test stations geographically unseen during training).
+
+#### Drone-to-Analysis Pipeline
+
+SENTINEL-Lite is designed for field deployment on a multispectral drone rig. The full pipeline:
+
+```
+Drone (RPi + dual camera)
+  → ROS2 publisher (/sentinel/drone/image_raw)
+  → WiFi/USB tether to ground station
+  → Local image cache (NPZ files with GPS + timestamp)
+  → HydroDenseNet inference (GPU or CPU)
+  → Anomaly scoring (EPA/WHO thresholds)
+  → If alert: LoRa RF trigger → nearest fixed SENTINEL station
+  → Full multimodal confirmation
+```
+
+See `sentinel/platform/SENTINEL_MINI_PIPELINE.md` for the full pipeline specification and `sentinel/models/waterdronenet/README.md` for model details.
 
 ### Prospective Validation
 
@@ -120,7 +137,7 @@ Trained with curriculum learning over 500K timesteps. Includes `extract_decision
 - **Stream Network GNN**: Graph attention network over real NHDPlus river topology (561 sites, 338 edges) for upstream-downstream contamination propagation
 - **Species Health Index**: Forecasts condition of 6 keystone bioindicator species (R²=0.9996, 5,462 BioData sites)
 - **Disease Forecast**: Predicts risk for 4 waterborne pathogens (AUROC=0.988, 93.1% accuracy on 499K real USGS samples)
-- **Digital Twin Engine**: Neural-ODE hybrid ecosystem simulator for multi-horizon forecasting (1–365 days), 45.5% improvement over physics-only baselines
+- **Digital Twin Engine**: Neural-ODE hybrid ecosystem simulator for multi-horizon forecasting. Useful at 1-day horizon (R²=0.688); longer horizons degrade (7d+ R²<0) due to ODE trajectory divergence
 
 ### Screening & Deployment
 

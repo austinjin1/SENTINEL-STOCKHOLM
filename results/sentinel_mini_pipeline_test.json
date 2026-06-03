@@ -1,0 +1,1342 @@
+{
+  "pipeline_tests": [
+    {
+      "event_id": "lake_erie_hab_2023",
+      "name": "Lake Erie HAB 2023",
+      "type": "HAB",
+      "nearby_stations": [
+        [
+          "04199000",
+          32.9
+        ]
+      ],
+      "pipeline_runs": [
+        {
+          "date": "2023-05-16",
+          "alert_level": "warning",
+          "stations_triggered": [
+            "04199000"
+          ],
+          "predictions": {
+            "DO": 7.849021911621094,
+            "pH": 7.950954437255859,
+            "Turb": 8.051559448242188,
+            "Temp": 22.3958740234375,
+            "SpCond": 4437.1962890625
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 9.431534679089026,
+              "pH": 8.133377485609628,
+              "Turb": 1.7199451754385966,
+              "Temp": 18.571008022774325,
+              "SpCond": 696.3507858468214
+            }
+          },
+          "status": "confirmed",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-05-21",
+          "alert_level": "warning",
+          "stations_triggered": [
+            "04199000"
+          ],
+          "predictions": {
+            "DO": 7.404260635375977,
+            "pH": 7.541194915771484,
+            "Turb": 12.767114639282227,
+            "Temp": 20.352413177490234,
+            "SpCond": 4934.51123046875
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 9.292410714285714,
+              "pH": 8.105059523809524,
+              "Turb": 5.994533208020051,
+              "Temp": 18.891369047619047,
+              "SpCond": 689.9469850948511
+            }
+          },
+          "status": "confirmed",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-05-26",
+          "alert_level": "warning",
+          "stations_triggered": [
+            "04199000"
+          ],
+          "predictions": {
+            "DO": 7.404260635375977,
+            "pH": 7.541194915771484,
+            "Turb": 12.767114639282227,
+            "Temp": 20.352413177490234,
+            "SpCond": 4934.51123046875
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 8.915178571428571,
+              "pH": 8.070684523809524,
+              "Turb": 2.7947594384898418,
+              "Temp": 19.398363095238093,
+              "SpCond": 699.3963235294117
+            }
+          },
+          "status": "confirmed",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-05-31",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.00696849822998,
+            "pH": 7.734153747558594,
+            "Turb": 9.796390533447266,
+            "Temp": 22.83800506591797,
+            "SpCond": 735.3118896484375
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 8.16860119047619,
+              "pH": 8.016369047619047,
+              "Turb": 3.8978211152882207,
+              "Temp": 23.24077380952381,
+              "SpCond": 716.8541666666666
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-06-05",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 7.663319110870361,
+            "pH": 7.634463310241699,
+            "Turb": 11.477764129638672,
+            "Temp": 23.395313262939453,
+            "SpCond": 999.2796630859375
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 9.140029761904762,
+              "pH": 8.149255952380951,
+              "Turb": 5.727232142857143,
+              "Temp": 22.160119047619045,
+              "SpCond": 720.4273966165414
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-06-10",
+          "alert_level": "alert",
+          "stations_triggered": [
+            "04199000"
+          ],
+          "predictions": {
+            "DO": 6.847813606262207,
+            "pH": 7.639976978302002,
+            "Turb": 11.391744613647461,
+            "Temp": 23.491912841796875,
+            "SpCond": 9115.7607421875
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 8.48045112781955,
+              "pH": 7.985565476190476,
+              "Turb": 20.61028195488722,
+              "Temp": 20.349526942355887,
+              "SpCond": 650.203869047619
+            }
+          },
+          "status": "confirmed",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-06-15",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 7.493476867675781,
+            "pH": 7.540897369384766,
+            "Turb": 11.884828567504883,
+            "Temp": 23.30614471435547,
+            "SpCond": 881.0220947265625
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 6.863972629358205,
+              "pH": 7.597136684518013,
+              "Turb": 131.92428993325956,
+              "Temp": 18.25738366551928,
+              "SpCond": 437.94270833333337
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "Turb"
+          ]
+        },
+        {
+          "date": "2023-06-20",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 7.493476867675781,
+            "pH": 7.540897369384766,
+            "Turb": 11.884828567504883,
+            "Temp": 23.30614471435547,
+            "SpCond": 881.0220947265625
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 7.767861058897243,
+              "pH": 7.869692774261604,
+              "Turb": 36.40902202658827,
+              "Temp": 21.905370956399437,
+              "SpCond": 631.4369648972603
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "Turb"
+          ]
+        },
+        {
+          "date": "2023-07-15",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 7.521233558654785,
+            "pH": 7.5514397621154785,
+            "Turb": 11.026044845581055,
+            "Temp": 24.026927947998047,
+            "SpCond": 316.131103515625
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 7.813839285714286,
+              "pH": 7.989285714285714,
+              "Turb": 29.850436827956994,
+              "Temp": 24.22038690476191
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-07-20",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 7.521233558654785,
+            "pH": 7.5514397621154785,
+            "Turb": 11.026044845581055,
+            "Temp": 24.026927947998047,
+            "SpCond": 316.131103515625
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 7.977595551378444,
+              "pH": 8.120684523809524,
+              "Turb": 25.57939056532238,
+              "Temp": 24.531279761904763,
+              "SpCond": 572.99675
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2023-07-25",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 7.298522472381592,
+            "pH": 7.502957344055176,
+            "Turb": 12.670284271240234,
+            "Temp": 24.539649963378906,
+            "SpCond": 533.640380859375
+          },
+          "ground_truth": {
+            "04199000": {
+              "DO": 8.171428571428573,
+              "pH": 8.186458333333334,
+              "Turb": 24.38865034777956,
+              "Temp": 25.260416666666664,
+              "SpCond": 513.1663723181581
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Turb",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        }
+      ]
+    },
+    {
+      "event_id": "chesapeake_hypoxia_2018",
+      "name": "Chesapeake Bay Hypoxia 2018",
+      "type": "hypoxia",
+      "nearby_stations": [
+        [
+          "01585219",
+          14.0
+        ],
+        [
+          "01594418",
+          23.5
+        ],
+        [
+          "01589290",
+          28.8
+        ],
+        [
+          "01594441",
+          32.8
+        ],
+        [
+          "01649190",
+          44.1
+        ]
+      ],
+      "pipeline_runs": [
+        {
+          "date": "2018-04-21",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 9.858707427978516,
+            "pH": 7.8151092529296875,
+            "Turb": 15.818687438964844,
+            "Temp": 10.770435333251953,
+            "SpCond": 17347.33203125
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-04-26",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 9.858707427978516,
+            "pH": 7.8151092529296875,
+            "Turb": 15.818687438964844,
+            "Temp": 10.770435333251953,
+            "SpCond": 17347.33203125
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-05-01",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 9.676309585571289,
+            "pH": 7.8303985595703125,
+            "Turb": 13.736360549926758,
+            "Temp": 11.62497329711914,
+            "SpCond": 18335.62890625
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-05-06",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 9.676309585571289,
+            "pH": 7.8303985595703125,
+            "Turb": 13.736360549926758,
+            "Temp": 11.62497329711914,
+            "SpCond": 18335.62890625
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-05-16",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.001020431518555,
+            "pH": 7.778265953063965,
+            "Turb": 12.98897933959961,
+            "Temp": 18.73993492126465,
+            "SpCond": 19298.58203125
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-05-21",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.001020431518555,
+            "pH": 7.778265953063965,
+            "Turb": 12.98897933959961,
+            "Temp": 18.73993492126465,
+            "SpCond": 19298.58203125
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-05-26",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 7.893960475921631,
+            "pH": 7.782276153564453,
+            "Turb": 11.275171279907227,
+            "Temp": 18.591320037841797,
+            "SpCond": 21866.4609375
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-05-31",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 7.893960475921631,
+            "pH": 7.782276153564453,
+            "Turb": 11.275171279907227,
+            "Temp": 18.591320037841797,
+            "SpCond": 21866.4609375
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-06-10",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.401999473571777,
+            "pH": 7.784281253814697,
+            "Turb": 10.670685768127441,
+            "Temp": 15.227039337158203,
+            "SpCond": 23403.810546875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-06-15",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.401999473571777,
+            "pH": 7.784281253814697,
+            "Turb": 10.670685768127441,
+            "Temp": 15.227039337158203,
+            "SpCond": 23403.810546875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-06-20",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.401999473571777,
+            "pH": 7.784281253814697,
+            "Turb": 10.670685768127441,
+            "Temp": 15.227039337158203,
+            "SpCond": 23403.810546875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-06-30",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 7.811352729797363,
+            "pH": 7.792050838470459,
+            "Turb": 11.721250534057617,
+            "Temp": 19.598190307617188,
+            "SpCond": 21815.779296875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-07-05",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 7.811352729797363,
+            "pH": 7.792050838470459,
+            "Turb": 11.721250534057617,
+            "Temp": 19.598190307617188,
+            "SpCond": 21815.779296875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-07-10",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.121297836303711,
+            "pH": 7.80032205581665,
+            "Turb": 10.83332347869873,
+            "Temp": 17.870534896850586,
+            "SpCond": 22373.279296875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-07-15",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.121297836303711,
+            "pH": 7.80032205581665,
+            "Turb": 10.83332347869873,
+            "Temp": 17.870534896850586,
+            "SpCond": 22373.279296875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2018-07-30",
+          "alert_level": "critical",
+          "stations_triggered": [
+            "01585219",
+            "01594418",
+            "01589290"
+          ],
+          "predictions": {
+            "DO": 8.598028182983398,
+            "pH": 7.811349868774414,
+            "Turb": 13.1549072265625,
+            "Temp": 16.44382667541504,
+            "SpCond": 19222.560546875
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        }
+      ]
+    },
+    {
+      "event_id": "klamath_river_hab_2021",
+      "name": "Klamath River HAB 2021",
+      "type": "HAB",
+      "nearby_stations": [
+        [
+          "11511990",
+          47.3
+        ]
+      ],
+      "pipeline_runs": [
+        {
+          "date": "2021-06-02",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 12.01312255859375,
+            "pH": 7.632458209991455,
+            "Turb": 11.433109283447266,
+            "Temp": 6.705803871154785,
+            "SpCond": 510.411376953125
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-06-07",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 12.169086456298828,
+            "pH": 7.651694297790527,
+            "Turb": 10.541891098022461,
+            "Temp": 6.014741897583008,
+            "SpCond": 491.405517578125
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-06-12",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 12.177016258239746,
+            "pH": 7.606391906738281,
+            "Turb": 9.160881042480469,
+            "Temp": 5.650633811950684,
+            "SpCond": 478.735107421875
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-06-17",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 11.685334205627441,
+            "pH": 7.548682689666748,
+            "Turb": 12.797432899475098,
+            "Temp": 8.139942169189453,
+            "SpCond": 626.55712890625
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-06-22",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 12.124147415161133,
+            "pH": 7.455508708953857,
+            "Turb": 11.988239288330078,
+            "Temp": 6.148495674133301,
+            "SpCond": 461.84130859375
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-06-27",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 11.584882736206055,
+            "pH": 7.585965156555176,
+            "Turb": 13.480652809143066,
+            "Temp": 8.771556854248047,
+            "SpCond": 655.065673828125
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-07-02",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 11.526726722717285,
+            "pH": 7.691670894622803,
+            "Turb": 12.458525657653809,
+            "Temp": 8.229111671447754,
+            "SpCond": 229.549560546875
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-07-07",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 11.510866165161133,
+            "pH": 7.683149337768555,
+            "Turb": 13.635769844055176,
+            "Temp": 9.325149536132812,
+            "SpCond": 632.892333984375
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-07-12",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 12.177016258239746,
+            "pH": 7.731396675109863,
+            "Turb": 10.772216796875,
+            "Temp": 6.2005109786987305,
+            "SpCond": 476.62353515625
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-07-17",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 11.524083137512207,
+            "pH": 7.698563575744629,
+            "Turb": 13.604745864868164,
+            "Temp": 9.336296081542969,
+            "SpCond": 627.613037109375
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-07-22",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 11.603386878967285,
+            "pH": 7.703074932098389,
+            "Turb": 13.247507095336914,
+            "Temp": 8.968473434448242,
+            "SpCond": 607.551513671875
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-07-27",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 12.063347816467285,
+            "pH": 7.54113245010376,
+            "Turb": 12.036419868469238,
+            "Temp": 6.014741897583008,
+            "SpCond": 333.02490234375
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-08-01",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 12.348840713500977,
+            "pH": 7.673123836517334,
+            "Turb": 9.33385944366455,
+            "Temp": 5.331110954284668,
+            "SpCond": 485.0703125
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-08-06",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 11.870375633239746,
+            "pH": 7.646932601928711,
+            "Turb": 12.431497573852539,
+            "Temp": 7.649511337280273,
+            "SpCond": 577.987060546875
+          },
+          "ground_truth": {},
+          "status": "no_trigger",
+          "confirmed_params": [],
+          "refuted_params": []
+        },
+        {
+          "date": "2021-08-11",
+          "alert_level": "warning",
+          "stations_triggered": [
+            "11511990"
+          ],
+          "predictions": {
+            "DO": 10.549970626831055,
+            "pH": 8.125898361206055,
+            "Turb": 20.348102569580078,
+            "Temp": 16.95051383972168,
+            "SpCond": 2961.6162109375
+          },
+          "ground_truth": {},
+          "status": "no_data",
+          "confirmed_params": [],
+          "refuted_params": []
+        }
+      ]
+    },
+    {
+      "event_id": "jordan_lake_hab_nc",
+      "name": "Jordan Lake HAB NC",
+      "type": "HAB",
+      "nearby_stations": [
+        [
+          "02101726",
+          33.1
+        ],
+        [
+          "02102500",
+          47.2
+        ]
+      ],
+      "pipeline_runs": [
+        {
+          "date": "2022-05-31",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.200601577758789,
+            "pH": 7.522264003753662,
+            "Turb": 5.799073696136475,
+            "Temp": 21.37042808532715,
+            "SpCond": 202.096923828125
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 6.3796130952380965,
+              "pH": 6.795833333333334,
+              "Temp": 24.309523809523814,
+              "SpCond": 87.4077380952381
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2022-06-05",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.200601577758789,
+            "pH": 7.522264003753662,
+            "Turb": 5.799073696136475,
+            "Temp": 21.37042808532715,
+            "SpCond": 202.096923828125
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 5.01592261904762,
+              "pH": 6.677380952380952,
+              "Temp": 24.4125,
+              "SpCond": 94.64583333333333
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "DO"
+          ]
+        },
+        {
+          "date": "2022-06-10",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 7.295878887176514,
+            "pH": 7.380630970001221,
+            "Turb": 9.2078857421875,
+            "Temp": 23.176105499267578,
+            "SpCond": 309.7958984375
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.721428571428571,
+              "pH": 6.6849702380952385,
+              "Temp": 24.395535714285717,
+              "SpCond": 100.02678571428571
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2022-06-15",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.188375473022461,
+            "pH": 7.51950740814209,
+            "Turb": 5.787792205810547,
+            "Temp": 21.38900375366211,
+            "SpCond": 199.985107421875
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.260565476190476,
+              "pH": 6.720089285714287,
+              "Temp": 26.069196428571434,
+              "SpCond": 103.19345238095238
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "DO"
+          ]
+        },
+        {
+          "date": "2022-06-20",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.190688133239746,
+            "pH": 7.521018981933594,
+            "Turb": 5.881802558898926,
+            "Temp": 21.38900375366211,
+            "SpCond": 210.5439453125
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.166220238095238,
+              "pH": 6.708482142857144,
+              "Temp": 25.25252976190476,
+              "SpCond": 104.36160714285714
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "DO"
+          ]
+        },
+        {
+          "date": "2022-06-25",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.190688133239746,
+            "pH": 7.521018981933594,
+            "Turb": 5.881802558898926,
+            "Temp": 21.38900375366211,
+            "SpCond": 210.5439453125
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.288175125313283,
+              "pH": 6.7401394110275685,
+              "Temp": 25.54765037593985,
+              "SpCond": 105.4688126566416
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "DO"
+          ]
+        },
+        {
+          "date": "2022-06-30",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 6.768509864807129,
+            "pH": 7.407323837280273,
+            "Turb": 8.534772872924805,
+            "Temp": 23.52906608581543,
+            "SpCond": 356.254150390625
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.753651315789473,
+              "pH": 6.801168546365915,
+              "Temp": 26.13336466165413,
+              "SpCond": 104.92565789473683
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2022-07-05",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.241244316101074,
+            "pH": 7.516844272613525,
+            "Turb": 5.690021514892578,
+            "Temp": 21.002605438232422,
+            "SpCond": 221.1025390625
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.281696428571428,
+              "pH": 6.811904761904762,
+              "Temp": 27.492559523809522,
+              "SpCond": 108.52827380952381
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "DO"
+          ]
+        },
+        {
+          "date": "2022-07-10",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.241244316101074,
+            "pH": 7.516844272613525,
+            "Turb": 5.690021514892578,
+            "Temp": 21.002605438232422,
+            "SpCond": 221.1025390625
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.398259575569358,
+              "pH": 6.527135093167702,
+              "Temp": 25.7685817805383,
+              "SpCond": 78.12163561076603
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "DO",
+            "pH"
+          ]
+        },
+        {
+          "date": "2022-07-15",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 6.801553249359131,
+            "pH": 7.3485493659973145,
+            "Turb": 7.8447370529174805,
+            "Temp": 23.068359375,
+            "SpCond": 282.34326171875
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 3.8118734335839597,
+              "pH": 6.360863095238096,
+              "Temp": 25.010416666666668,
+              "SpCond": 58.511904761904766
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "pH"
+          ]
+        },
+        {
+          "date": "2022-07-20",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 6.801553249359131,
+            "pH": 7.3485493659973145,
+            "Turb": 7.8447370529174805,
+            "Temp": 23.068359375,
+            "SpCond": 282.34326171875
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 4.201934523809524,
+              "pH": 6.649107142857143,
+              "Temp": 26.792113095238097,
+              "SpCond": 82.0952380952381
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "DO",
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": []
+        },
+        {
+          "date": "2022-07-25",
+          "alert_level": "nominal",
+          "stations_triggered": [],
+          "predictions": {
+            "DO": 8.156984329223633,
+            "pH": 7.48461389541626,
+            "Turb": 5.659938335418701,
+            "Temp": 21.036043167114258,
+            "SpCond": 206.3203125
+          },
+          "ground_truth": {
+            "02101726": {
+              "DO": 3.722321428571429,
+              "pH": 6.727175151975684,
+              "Temp": 27.66153748733536,
+              "SpCond": 97.35679457953394
+            }
+          },
+          "status": "no_trigger",
+          "confirmed_params": [
+            "pH",
+            "Temp",
+            "SpCond"
+          ],
+          "refuted_params": [
+            "DO"
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_tests": 54,
+    "confirmations": {
+      "confirmed": 4,
+      "partial": 0,
+      "refuted": 0,
+      "no_data": 17,
+      "no_trigger": 33
+    },
+    "trigger_system_status": {
+      "total_stations": 383,
+      "station_modes": {
+        "standby": 378,
+        "active": 3,
+        "confirm": 2
+      },
+      "total_detections": 54,
+      "total_triggers": 53,
+      "recent_alerts": []
+    },
+    "timestamp": "2026-05-31T16:43:01.159118"
+  }
+}

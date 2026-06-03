@@ -62,9 +62,14 @@ UNITS = {
 }
 
 
+def _valid_mask(predictions: np.ndarray, targets: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """Build combined validity mask: observed AND finite in both pred and target."""
+    return (mask > 0.5) & np.isfinite(predictions) & np.isfinite(targets)
+
+
 def compute_r2(predictions: np.ndarray, targets: np.ndarray, mask: np.ndarray) -> float:
-    """Compute R² score on masked entries."""
-    valid = mask > 0.5
+    """Compute R² score on masked entries (skipping NaN/inf)."""
+    valid = _valid_mask(predictions, targets, mask)
     if valid.sum() < 2:
         return float("nan")
     y_true = targets[valid]
@@ -77,16 +82,16 @@ def compute_r2(predictions: np.ndarray, targets: np.ndarray, mask: np.ndarray) -
 
 
 def compute_mae(predictions: np.ndarray, targets: np.ndarray, mask: np.ndarray) -> float:
-    """Compute MAE on masked entries."""
-    valid = mask > 0.5
+    """Compute MAE on masked entries (skipping NaN/inf)."""
+    valid = _valid_mask(predictions, targets, mask)
     if valid.sum() == 0:
         return float("nan")
     return float(np.mean(np.abs(predictions[valid] - targets[valid])))
 
 
 def compute_rmse(predictions: np.ndarray, targets: np.ndarray, mask: np.ndarray) -> float:
-    """Compute RMSE on masked entries."""
-    valid = mask > 0.5
+    """Compute RMSE on masked entries (skipping NaN/inf)."""
+    valid = _valid_mask(predictions, targets, mask)
     if valid.sum() == 0:
         return float("nan")
     return float(np.sqrt(np.mean((predictions[valid] - targets[valid]) ** 2)))
@@ -104,7 +109,7 @@ def compute_direction_accuracy(
     change from the initial state (increase vs. decrease) matches the actual
     direction. Ties (no change) are counted as correct if both agree.
     """
-    valid = mask > 0.5
+    valid = _valid_mask(predictions, targets, mask) & np.isfinite(initial_states)
     if valid.sum() == 0:
         return float("nan")
 
@@ -124,7 +129,7 @@ def compute_coverage_90(
     targets: np.ndarray, mask: np.ndarray,
 ) -> float:
     """Compute 90% CI coverage: fraction of true values within predicted interval."""
-    valid = mask > 0.5
+    valid = (mask > 0.5) & np.isfinite(lower) & np.isfinite(upper) & np.isfinite(targets)
     if valid.sum() == 0:
         return float("nan")
     in_interval = (targets[valid] >= lower[valid]) & (targets[valid] <= upper[valid])
@@ -172,72 +177,123 @@ def main():
     num_horizons = len(horizons)
 
     # -----------------------------------------------------------------------
-    # 3. Collect all predictions, targets, masks
+    # 3. Collect all predictions, targets, masks (with caching)
     # -----------------------------------------------------------------------
-    log("\nRunning inference on test set...")
-    all_preds = []       # [H, B, D]
-    all_lower = []       # [H, B, D]
-    all_upper = []       # [H, B, D]
-    all_targets = []     # [H, B, D]
-    all_masks = []       # [H, B, D]
-    all_init_states = [] # [B, D]
-    all_physics = []     # [H, B, D]
-    n_batches = 0
+    cache_path = RESULTS_DIR / "twin_eval_cache.npz"
 
-    t_start = time.time()
-    for batch in test_loader:
-        emb = batch["embedding"].to(device)
-        init_state = batch["initial_state"].to(device)
-        future = batch["future_states"].to(device)      # [B, H, D]
-        mask = batch["future_mask"].to(device)           # [B, H, D]
+    if cache_path.exists():
+        log(f"\nLoading cached predictions from {cache_path}")
+        cache = np.load(cache_path)
+        preds_all = cache["preds"]
+        lower_all = cache["lower"]
+        upper_all = cache["upper"]
+        targets_all = cache["targets"]
+        masks_all = cache["masks"]
+        init_all = cache["init_states"]
+        physics_all = cache["physics"]
+        inference_time = float(cache.get("inference_time", 0.0))
+        N = preds_all.shape[1]
+        log(f"Cached: {N} samples, inference took {inference_time:.1f}s originally")
+    else:
+        log("\nRunning inference on test set...")
+        all_preds = []       # [H, B, D]
+        all_lower = []       # [H, B, D]
+        all_upper = []       # [H, B, D]
+        all_targets = []     # [H, B, D]
+        all_masks = []       # [H, B, D]
+        all_init_states = [] # [B, D]
+        all_physics = []     # [H, B, D]
+        n_batches = 0
 
-        try:
-            with torch.no_grad():
-                output = model(emb.float(), horizons=horizons, state_override=init_state.float())
+        t_start = time.time()
+        for batch in test_loader:
+            emb = batch["embedding"].to(device)
+            init_state = batch["initial_state"].to(device)
+            future = batch["future_states"].to(device)      # [B, H, D]
+            mask = batch["future_mask"].to(device)           # [B, H, D]
 
-            preds = output.predictions.float()    # [H, B, D]
-            lower_90 = output.lower_90.float()
-            upper_90 = output.upper_90.float()
-            future_t = future.permute(1, 0, 2).float()    # [H, B, D]
-            mask_t = mask.permute(1, 0, 2).float()         # [H, B, D]
+            try:
+                with torch.no_grad():
+                    output = model(emb.float(), horizons=horizons, state_override=init_state.float())
 
-            # Physics-only predictions extracted from the same forward pass:
-            # physics_trajectory is the raw ODE output [T, B, D] including t=0.
-            # We skip t=0 to get predictions at horizon time-points.
-            physics_at_horizons = output.physics_trajectory[1:].float()  # [H, B, D]
+                preds = output.predictions.float()    # [H, B, D]
+                lower_90 = output.lower_90.float()
+                upper_90 = output.upper_90.float()
+                future_t = future.permute(1, 0, 2).float()    # [H, B, D]
+                mask_t = mask.permute(1, 0, 2).float()         # [H, B, D]
 
-            all_preds.append(preds.cpu().numpy())
-            all_lower.append(lower_90.cpu().numpy())
-            all_upper.append(upper_90.cpu().numpy())
-            all_targets.append(future_t.cpu().numpy())
-            all_masks.append(mask_t.cpu().numpy())
-            all_init_states.append(init_state.cpu().numpy())
-            all_physics.append(physics_at_horizons.cpu().numpy())
-            n_batches += 1
+                # Physics-only predictions extracted from the same forward pass:
+                # physics_trajectory is the raw ODE output [T, B, D] including t=0.
+                # We skip t=0 to get predictions at horizon time-points.
+                physics_at_horizons = output.physics_trajectory[1:].float()  # [H, B, D]
 
-            if n_batches % 100 == 0:
-                log(f"  ... processed {n_batches} batches ({n_batches * 32} samples)")
+                all_preds.append(preds.cpu().numpy())
+                all_lower.append(lower_90.cpu().numpy())
+                all_upper.append(upper_90.cpu().numpy())
+                all_targets.append(future_t.cpu().numpy())
+                all_masks.append(mask_t.cpu().numpy())
+                all_init_states.append(init_state.cpu().numpy())
+                all_physics.append(physics_at_horizons.cpu().numpy())
+                n_batches += 1
 
-        except (RuntimeError, AssertionError) as e:
-            log(f"  WARNING: batch failed: {e}")
-            continue
+                if n_batches % 100 == 0:
+                    log(f"  ... processed {n_batches} batches ({n_batches * 32} samples)")
 
-    inference_time = time.time() - t_start
-    log(f"Inference complete: {n_batches} batches, {inference_time:.1f}s")
+            except (RuntimeError, AssertionError) as e:
+                log(f"  WARNING: batch failed: {e}")
+                continue
 
-    # Concatenate along batch dimension
-    preds_all = np.concatenate(all_preds, axis=1)       # [H, N, D]
-    lower_all = np.concatenate(all_lower, axis=1)
-    upper_all = np.concatenate(all_upper, axis=1)
-    targets_all = np.concatenate(all_targets, axis=1)   # [H, N, D]
-    masks_all = np.concatenate(all_masks, axis=1)       # [H, N, D]
-    init_all = np.concatenate(all_init_states, axis=0)  # [N, D]
-    physics_all = np.concatenate(all_physics, axis=1)   # [H, N, D]
+        inference_time = time.time() - t_start
+        log(f"Inference complete: {n_batches} batches, {inference_time:.1f}s")
+
+        # Concatenate along batch dimension
+        preds_all = np.concatenate(all_preds, axis=1)       # [H, N, D]
+        lower_all = np.concatenate(all_lower, axis=1)
+        upper_all = np.concatenate(all_upper, axis=1)
+        targets_all = np.concatenate(all_targets, axis=1)   # [H, N, D]
+        masks_all = np.concatenate(all_masks, axis=1)       # [H, N, D]
+        init_all = np.concatenate(all_init_states, axis=0)  # [N, D]
+        physics_all = np.concatenate(all_physics, axis=1)   # [H, N, D]
+
+        # Save cache
+        np.savez_compressed(
+            cache_path,
+            preds=preds_all, lower=lower_all, upper=upper_all,
+            targets=targets_all, masks=masks_all,
+            init_states=init_all, physics=physics_all,
+            inference_time=np.array(inference_time),
+        )
+        log(f"Cached predictions to {cache_path}")
 
     N = preds_all.shape[1]
     log(f"Total test samples: {N}")
     log(f"Observed entries: {int(masks_all.sum())} / {masks_all.size} "
         f"({100 * masks_all.sum() / masks_all.size:.1f}%)")
+
+    # Diagnostics: check for NaN/inf in predictions
+    observed_mask = masks_all > 0.5
+    n_observed = observed_mask.sum()
+    n_pred_finite = np.isfinite(preds_all[observed_mask]).sum()
+    n_pred_nan = np.isnan(preds_all[observed_mask]).sum()
+    n_pred_inf = np.isinf(preds_all[observed_mask]).sum()
+    log(f"Prediction quality on observed entries:")
+    log(f"  Finite: {n_pred_finite}/{n_observed} ({100*n_pred_finite/n_observed:.1f}%)")
+    log(f"  NaN: {n_pred_nan}/{n_observed} ({100*n_pred_nan/n_observed:.1f}%)")
+    log(f"  Inf: {n_pred_inf}/{n_observed} ({100*n_pred_inf/n_observed:.1f}%)")
+
+    n_phys_finite = np.isfinite(physics_all[observed_mask]).sum()
+    log(f"Physics-only finite: {n_phys_finite}/{n_observed} ({100*n_phys_finite/n_observed:.1f}%)")
+
+    # Prediction range statistics (finite values only)
+    finite_preds = preds_all[observed_mask & np.isfinite(preds_all)]
+    if len(finite_preds) > 0:
+        log(f"Prediction range (finite): [{np.min(finite_preds):.2f}, {np.max(finite_preds):.2f}]")
+        log(f"  Mean: {np.mean(finite_preds):.4f}, Std: {np.std(finite_preds):.4f}")
+
+    finite_targets = targets_all[observed_mask & np.isfinite(targets_all)]
+    if len(finite_targets) > 0:
+        log(f"Target range: [{np.min(finite_targets):.2f}, {np.max(finite_targets):.2f}]")
+        log(f"  Mean: {np.mean(finite_targets):.4f}, Std: {np.std(finite_targets):.4f}")
 
     # -----------------------------------------------------------------------
     # 4. Compute metrics
@@ -281,13 +337,17 @@ def main():
         up = upper_all[:, :, v_idx]
         phys = physics_all[:, :, v_idx]
 
+        n_obs = int(m.sum())
+        n_finite = int(_valid_mask(p, t, m).sum())
+
         per_variable[var_name] = {
             "r2": compute_r2(p, t, m),
             "mae": compute_mae(p, t, m),
             "rmse": compute_rmse(p, t, m),
             "direction_accuracy": compute_direction_accuracy(p, t, ini, m),
             "coverage_90": compute_coverage_90(lo, up, t, m),
-            "n_observations": int(m.sum()),
+            "n_observations": n_obs,
+            "n_finite_predictions": n_finite,
             "unit": UNITS[var_name],
             # Physics-only baseline for comparison
             "physics_r2": compute_r2(phys, t, m),

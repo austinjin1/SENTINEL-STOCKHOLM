@@ -1,0 +1,35 @@
+{
+  "hsv_reader": {
+    "mae": 0.18015789473684213,
+    "rmse": 0.2657046242887411,
+    "params": 0
+  },
+  "cnn_reader": {
+    "mae": 0.17726213241878308,
+    "rmse": 0.2601661410902155,
+    "params": 15826
+  },
+  "physical_strip_accuracy": 0.3,
+  "robustness": {
+    "Normal lighting": {
+      "hsv_mae": 0.15839999999999999,
+      "cnn_mae": 0.15866014003753662
+    },
+    "Dim lighting": {
+      "hsv_mae": 0.35319999999999996,
+      "cnn_mae": 0.43732075214385985
+    },
+    "Bright lighting": {
+      "hsv_mae": 0.4870000000000001,
+      "cnn_mae": 0.4049563407897949
+    },
+    "High noise": {
+      "hsv_mae": 0.19540000000000002,
+      "cnn_mae": 0.20609359741210936
+    },
+    "Dim + noisy": {
+      "hsv_mae": 0.25939999999999985,
+      "cnn_mae": 0.31730586528778076
+    }
+  }
+}

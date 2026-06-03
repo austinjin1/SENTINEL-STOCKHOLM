@@ -1,0 +1,66 @@
+{
+  "model": "WaterDroneNet+pH",
+  "description": "SENTINEL Mini \u2014 imagery + pH strip \u2192 water quality",
+  "input": "Sentinel-2 RGB+NIR (4ch, 224x224) + pH strip measurement",
+  "n_params": 21931609,
+  "train_size": 8659,
+  "val_size": 1477,
+  "test_size": 1864,
+  "best_epoch": 51,
+  "best_val_score": -0.27767521142959595,
+  "targets": [
+    "DO",
+    "Turb",
+    "Temp",
+    "SpCond"
+  ],
+  "ph_input": {
+    "mean": 7.512340545654297,
+    "std": 0.5133036375045776,
+    "noise_std": 0.3
+  },
+  "holdout": {
+    "type": "spatial",
+    "train": "70% of stations",
+    "val": "15% of stations",
+    "test": "15% of stations (geographically unseen)"
+  },
+  "test_metrics": {
+    "per_target": {
+      "DO": {
+        "r2": 0.34918826818466187,
+        "mae": 1.6225937604904175,
+        "rmse": 2.291311740875244,
+        "pearson_r": 0.6067822839274764,
+        "coverage_90pct": 0.8146503884572697,
+        "n_valid": 1802
+      },
+      "Turb": {
+        "r2": -0.011876344680786133,
+        "mae": 10.108839988708496,
+        "rmse": 25.588350296020508,
+        "pearson_r": 0.16716305775787332,
+        "coverage_90pct": 0.9061728395061729,
+        "n_valid": 1215
+      },
+      "Temp": {
+        "r2": 0.5343049168586731,
+        "mae": 3.7972710132598877,
+        "rmse": 4.968295097351074,
+        "pearson_r": 0.7431989255869204,
+        "coverage_90pct": 0.8163155051323608,
+        "n_valid": 1851
+      },
+      "SpCond": {
+        "r2": -0.3633772134780884,
+        "mae": 1768.0621337890625,
+        "rmse": 6160.73681640625,
+        "pearson_r": 0.16577125689401453,
+        "coverage_90pct": 0.880242825607064,
+        "n_valid": 1812
+      }
+    },
+    "nll": 5.870840072631836,
+    "n_samples": 1864
+  }
+}

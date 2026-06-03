@@ -1,0 +1,608 @@
+{
+  "events": [
+    {
+      "event_id": "lake_erie_hab_2023",
+      "name": "Lake Erie HAB 2023",
+      "scans": [
+        {
+          "date": "2023-05-16",
+          "imagery_ph": 7.95,
+          "strip_ph": 8.24,
+          "actual_ph": 8.09,
+          "ph_zscore": 0.54,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 60
+        },
+        {
+          "date": "2023-05-21",
+          "imagery_ph": 7.54,
+          "strip_ph": 8.03,
+          "actual_ph": 8.07,
+          "ph_zscore": -0.46,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 55
+        },
+        {
+          "date": "2023-05-26",
+          "imagery_ph": 7.54,
+          "strip_ph": 8.24,
+          "actual_ph": 8.05,
+          "ph_zscore": 0.59,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 50
+        },
+        {
+          "date": "2023-05-31",
+          "imagery_ph": 7.73,
+          "strip_ph": 8.44,
+          "actual_ph": 7.99,
+          "ph_zscore": 1.55,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 45
+        },
+        {
+          "date": "2023-06-05",
+          "imagery_ph": 7.63,
+          "strip_ph": 8.04,
+          "actual_ph": 8.11,
+          "ph_zscore": -0.44,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 40
+        },
+        {
+          "date": "2023-06-10",
+          "imagery_ph": 7.64,
+          "strip_ph": 7.96,
+          "actual_ph": 8.03,
+          "ph_zscore": -0.74,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 35
+        },
+        {
+          "date": "2023-06-15",
+          "imagery_ph": 7.54,
+          "strip_ph": 8.09,
+          "actual_ph": 7.61,
+          "ph_zscore": -0.13,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 30
+        },
+        {
+          "date": "2023-06-20",
+          "imagery_ph": 7.54,
+          "strip_ph": 8.03,
+          "actual_ph": 7.8,
+          "ph_zscore": -0.29,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 25
+        },
+        {
+          "date": "2023-07-15",
+          "imagery_ph": 7.55,
+          "strip_ph": 7.8,
+          "actual_ph": 7.94,
+          "ph_zscore": -1.05,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 0
+        },
+        {
+          "date": "2023-07-20",
+          "imagery_ph": 7.55,
+          "strip_ph": 8.24,
+          "actual_ph": 8.07,
+          "ph_zscore": 0.78,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": -5
+        },
+        {
+          "date": "2023-07-25",
+          "imagery_ph": 7.5,
+          "strip_ph": 8.03,
+          "actual_ph": 8.17,
+          "ph_zscore": -0.01,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": -10
+        }
+      ],
+      "imagery_only": {
+        "triggers": 0,
+        "first_trigger_date": null,
+        "lead_days": null
+      },
+      "with_ph_strip": {
+        "triggers": 0,
+        "first_trigger_date": null,
+        "lead_days": null
+      }
+    },
+    {
+      "event_id": "chesapeake_hypoxia_2018",
+      "name": "Chesapeake Bay Hypoxia 2018",
+      "scans": [
+        {
+          "date": "2018-04-21",
+          "imagery_ph": 7.82,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 90
+        },
+        {
+          "date": "2018-04-26",
+          "imagery_ph": 7.82,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 85
+        },
+        {
+          "date": "2018-05-01",
+          "imagery_ph": 7.83,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 80
+        },
+        {
+          "date": "2018-05-06",
+          "imagery_ph": 7.83,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 75
+        },
+        {
+          "date": "2018-05-16",
+          "imagery_ph": 7.78,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 65
+        },
+        {
+          "date": "2018-05-21",
+          "imagery_ph": 7.78,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 60
+        },
+        {
+          "date": "2018-05-26",
+          "imagery_ph": 7.78,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 55
+        },
+        {
+          "date": "2018-05-31",
+          "imagery_ph": 7.78,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 50
+        },
+        {
+          "date": "2018-06-10",
+          "imagery_ph": 7.78,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 40
+        },
+        {
+          "date": "2018-06-15",
+          "imagery_ph": 7.78,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 35
+        },
+        {
+          "date": "2018-06-20",
+          "imagery_ph": 7.78,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 30
+        },
+        {
+          "date": "2018-06-30",
+          "imagery_ph": 7.79,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 20
+        },
+        {
+          "date": "2018-07-05",
+          "imagery_ph": 7.79,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 15
+        },
+        {
+          "date": "2018-07-10",
+          "imagery_ph": 7.8,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 10
+        },
+        {
+          "date": "2018-07-15",
+          "imagery_ph": 7.8,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": 5
+        },
+        {
+          "date": "2018-07-30",
+          "imagery_ph": 7.81,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": true,
+          "strip_alert": true,
+          "lead_days": -10
+        }
+      ],
+      "imagery_only": {
+        "triggers": 16,
+        "first_trigger_date": "2018-04-21",
+        "lead_days": 90
+      },
+      "with_ph_strip": {
+        "triggers": 16,
+        "first_trigger_date": "2018-04-21",
+        "lead_days": 90
+      }
+    },
+    {
+      "event_id": "klamath_river_hab_2021",
+      "name": "Klamath River HAB 2021",
+      "scans": [
+        {
+          "date": "2021-06-02",
+          "imagery_ph": 7.63,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 60
+        },
+        {
+          "date": "2021-06-07",
+          "imagery_ph": 7.65,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 55
+        },
+        {
+          "date": "2021-06-12",
+          "imagery_ph": 7.61,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 50
+        },
+        {
+          "date": "2021-06-17",
+          "imagery_ph": 7.55,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 45
+        },
+        {
+          "date": "2021-06-22",
+          "imagery_ph": 7.46,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 40
+        },
+        {
+          "date": "2021-06-27",
+          "imagery_ph": 7.59,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 35
+        },
+        {
+          "date": "2021-07-02",
+          "imagery_ph": 7.69,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 30
+        },
+        {
+          "date": "2021-07-07",
+          "imagery_ph": 7.68,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 25
+        },
+        {
+          "date": "2021-07-12",
+          "imagery_ph": 7.73,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 20
+        },
+        {
+          "date": "2021-07-17",
+          "imagery_ph": 7.7,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 15
+        },
+        {
+          "date": "2021-07-22",
+          "imagery_ph": 7.7,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 10
+        },
+        {
+          "date": "2021-07-27",
+          "imagery_ph": 7.54,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 5
+        },
+        {
+          "date": "2021-08-01",
+          "imagery_ph": 7.67,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 0
+        },
+        {
+          "date": "2021-08-06",
+          "imagery_ph": 7.65,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": -5
+        },
+        {
+          "date": "2021-08-11",
+          "imagery_ph": 8.13,
+          "strip_ph": null,
+          "actual_ph": null,
+          "ph_zscore": null,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": -10
+        }
+      ],
+      "imagery_only": {
+        "triggers": 0,
+        "first_trigger_date": null,
+        "lead_days": null
+      },
+      "with_ph_strip": {
+        "triggers": 0,
+        "first_trigger_date": null,
+        "lead_days": null
+      }
+    },
+    {
+      "event_id": "jordan_lake_hab_nc",
+      "name": "Jordan Lake HAB NC",
+      "scans": [
+        {
+          "date": "2022-05-31",
+          "imagery_ph": 7.52,
+          "strip_ph": 6.67,
+          "actual_ph": 6.81,
+          "ph_zscore": -0.91,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 45
+        },
+        {
+          "date": "2022-06-05",
+          "imagery_ph": 7.52,
+          "strip_ph": 6.75,
+          "actual_ph": 6.67,
+          "ph_zscore": -0.39,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 40
+        },
+        {
+          "date": "2022-06-10",
+          "imagery_ph": 7.38,
+          "strip_ph": 6.11,
+          "actual_ph": 6.68,
+          "ph_zscore": -5.3,
+          "imagery_alert": false,
+          "strip_alert": true,
+          "lead_days": 35
+        },
+        {
+          "date": "2022-06-15",
+          "imagery_ph": 7.52,
+          "strip_ph": 6.21,
+          "actual_ph": 6.72,
+          "ph_zscore": -4.85,
+          "imagery_alert": false,
+          "strip_alert": true,
+          "lead_days": 30
+        },
+        {
+          "date": "2022-06-20",
+          "imagery_ph": 7.52,
+          "strip_ph": 6.54,
+          "actual_ph": 6.71,
+          "ph_zscore": -1.91,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 25
+        },
+        {
+          "date": "2022-06-25",
+          "imagery_ph": 7.52,
+          "strip_ph": 6.43,
+          "actual_ph": 6.73,
+          "ph_zscore": -2.9,
+          "imagery_alert": false,
+          "strip_alert": true,
+          "lead_days": 20
+        },
+        {
+          "date": "2022-06-30",
+          "imagery_ph": 7.41,
+          "strip_ph": 6.9,
+          "actual_ph": 6.8,
+          "ph_zscore": 1.16,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 15
+        },
+        {
+          "date": "2022-07-05",
+          "imagery_ph": 7.52,
+          "strip_ph": 6.54,
+          "actual_ph": 6.81,
+          "ph_zscore": -1.89,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 10
+        },
+        {
+          "date": "2022-07-10",
+          "imagery_ph": 7.52,
+          "strip_ph": 6.16,
+          "actual_ph": 6.58,
+          "ph_zscore": -5.55,
+          "imagery_alert": false,
+          "strip_alert": true,
+          "lead_days": 5
+        },
+        {
+          "date": "2022-07-15",
+          "imagery_ph": 7.35,
+          "strip_ph": 6.76,
+          "actual_ph": 6.32,
+          "ph_zscore": 0.21,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": 0
+        },
+        {
+          "date": "2022-07-20",
+          "imagery_ph": 7.35,
+          "strip_ph": 6.57,
+          "actual_ph": 6.64,
+          "ph_zscore": -1.27,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": -5
+        },
+        {
+          "date": "2022-07-25",
+          "imagery_ph": 7.48,
+          "strip_ph": 6.75,
+          "actual_ph": 6.73,
+          "ph_zscore": 0.4,
+          "imagery_alert": false,
+          "strip_alert": false,
+          "lead_days": -10
+        }
+      ],
+      "imagery_only": {
+        "triggers": 0,
+        "first_trigger_date": null,
+        "lead_days": null
+      },
+      "with_ph_strip": {
+        "triggers": 4,
+        "first_trigger_date": "2022-06-10",
+        "lead_days": 35
+      }
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "model": "DigitalTwinEngine",
+  "validation_type": "real_world_case_studies",
+  "n_case_studies": 8,
+  "n_evaluated": 6,
+  "mean_mse": 1595.3451162385088,
+  "direction_accuracy": "1/19",
+  "case_studies": [
+    {
+      "name": "Lake Erie HAB 2023",
+      "status": "EVALUATED",
+      "station_id": "04199500",
+      "event_date": "2023-08-15",
+      "description": "Summer harmful algal bloom in western Lake Erie basin",
+      "initial_state": {
+        "temperature": 21.978124618530273,
+        "turbidity": 58.44791793823242,
+        "dissolved_oxygen": 8.183333396911621,
+        "ph": 7.867708206176758
+      },
+      "horizon_metrics": {
+        "1d_mse": 380.0844421386719,
+        "7d_mse": 72.13867950439453,
+        "14d_mse": 106.70159912109375,
+        "30d_mse": 11.980854988098145,
+        "90d_mse": 38.4561882019043,
+        "365d_mse": 11.5877046585083
+      },
+      "variable_metrics": {
+        "temperature": {
+          "mse": 128.4248046875,
+          "mae": 9.408247947692871,
+          "n_obs": 6
+        },
+        "turbidity": {
+          "mse": 267.1225891113281,
+          "mae": 12.097748756408691,
+          "n_obs": 6
+        },
+        "dissolved_oxygen": {
+          "mse": 5.587025165557861,
+          "mae": 1.924444556236267,
+          "n_obs": 6
+        },
+        "ph": {
+          "mse": 12.831851959228516,
+          "mae": 2.7525346279144287,
+          "n_obs": 6
+        }
+      },
+      "direction_accuracy": {
+        "dissolved_oxygen_7d": {
+          "predicted_change": 2.662245750427246,
+          "observed_change": 0.9739580154418945,
+          "expected_direction": "decrease",
+          "correct": false
+        },
+        "dissolved_oxygen_30d": {
+          "predicted_change": 1.2550849914550781,
+          "observed_change": 1.2916669845581055,
+          "expected_direction": "decrease",
+          "correct": false
+        },
+        "ph_7d": {
+          "predicted_change": -3.927345037460327,
+          "observed_change": 0.6854171752929688,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "ph_30d": {
+          "predicted_change": -0.6862788200378418,
+          "observed_change": 0.36979198455810547,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "turbidity_7d": {
+          "predicted_change": -58.72547912597656,
+          "observed_change": -49.17292022705078,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "turbidity_30d": {
+          "predicted_change": -58.730899810791016,
+          "observed_change": -51.98645782470703,
+          "expected_direction": "increase",
+          "correct": false
+        }
+      }
+    },
+    {
+      "name": "Gulf of Mexico Dead Zone 2023",
+      "status": "EVALUATED",
+      "station_id": "07374000",
+      "event_date": "2023-07-01",
+      "description": "Hypoxic dead zone from nutrient loading via Mississippi",
+      "initial_state": {
+        "temperature": 29.799999237060547,
+        "turbidity": 15.600000381469727,
+        "dissolved_oxygen": 6.699999809265137
+      },
+      "horizon_metrics": {
+        "1d_mse": 330.35498046875,
+        "7d_mse": 180.05918884277344,
+        "14d_mse": 172.6501007080078,
+        "30d_mse": 318.90631103515625,
+        "90d_mse": 106.13690185546875,
+        "365d_mse": 1069.4774169921875
+      },
+      "variable_metrics": {
+        "temperature": {
+          "mse": 283.1326904296875,
+          "mae": 15.660358428955078,
+          "n_obs": 6
+        },
+        "turbidity": {
+          "mse": 794.3820190429688,
+          "mae": 23.96247673034668,
+          "n_obs": 6
+        },
+        "dissolved_oxygen": {
+          "mse": 11.27783489227295,
+          "mae": 3.239853620529175,
+          "n_obs": 6
+        }
+      },
+      "direction_accuracy": {
+        "dissolved_oxygen_7d": {
+          "predicted_change": 4.160398483276367,
+          "observed_change": -0.19999980926513672,
+          "expected_direction": "decrease",
+          "correct": false
+        },
+        "dissolved_oxygen_30d": {
+          "predicted_change": 2.7391271591186523,
+          "observed_change": -0.6999998092651367,
+          "expected_direction": "decrease",
+          "correct": false
+        },
+        "temperature_7d": {
+          "predicted_change": -18.110523223876953,
+          "observed_change": 0.6000003814697266,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "temperature_30d": {
+          "predicted_change": -11.894309997558594,
+          "observed_change": 0.6000003814697266,
+          "expected_direction": "increase",
+          "correct": false
+        }
+      }
+    },
+    {
+      "name": "Chesapeake Bay Hypoxia 2018",
+      "status": "NO_DATA",
+      "station_id": "01570500"
+    },
+    {
+      "name": "Iowa Nitrate Crisis 2015",
+      "status": "EVALUATED",
+      "station_id": "05420500",
+      "event_date": "2015-06-01",
+      "description": "Spring agricultural runoff nitrate contamination",
+      "initial_state": {
+        "turbidity": 32.70000076293945,
+        "dissolved_oxygen": 6.699999809265137
+      },
+      "horizon_metrics": {
+        "1d_mse": 495.92352294921875,
+        "7d_mse": 621.9117431640625,
+        "14d_mse": 2365.1513671875,
+        "90d_mse": 759.8191528320312,
+        "365d_mse": 735.5132446289062
+      },
+      "variable_metrics": {
+        "turbidity": {
+          "mse": 1978.025390625,
+          "mae": 42.4211540222168,
+          "n_obs": 5
+        },
+        "dissolved_oxygen": {
+          "mse": 13.302340507507324,
+          "mae": 3.3657119274139404,
+          "n_obs": 5
+        }
+      },
+      "direction_accuracy": {
+        "dissolved_oxygen_7d": {
+          "predicted_change": 4.081904411315918,
+          "observed_change": -1.0999999046325684,
+          "expected_direction": "decrease",
+          "correct": false
+        }
+      }
+    },
+    {
+      "name": "Klamath River HAB 2021",
+      "status": "EVALUATED",
+      "station_id": "11510700",
+      "event_date": "2021-08-01",
+      "description": "Cyanobacterial HAB in Klamath River system",
+      "initial_state": {
+        "temperature": 18.5,
+        "turbidity": 137.0,
+        "dissolved_oxygen": 8.399999618530273
+      },
+      "horizon_metrics": {
+        "1d_mse": 6371.95361328125,
+        "7d_mse": 6378.98095703125,
+        "14d_mse": 6096.73095703125,
+        "30d_mse": 6279.23291015625,
+        "90d_mse": 6297.21826171875,
+        "365d_mse": 5989.080078125
+      },
+      "variable_metrics": {
+        "temperature": {
+          "mse": 62.871185302734375,
+          "mae": 5.883595943450928,
+          "n_obs": 6
+        },
+        "turbidity": {
+          "mse": 18639.779296875,
+          "mae": 136.52011108398438,
+          "n_obs": 6
+        },
+        "dissolved_oxygen": {
+          "mse": 3.948314905166626,
+          "mae": 1.6994720697402954,
+          "n_obs": 6
+        }
+      },
+      "direction_accuracy": {
+        "dissolved_oxygen_7d": {
+          "predicted_change": 2.450192451477051,
+          "observed_change": 0.20000076293945312,
+          "expected_direction": "decrease",
+          "correct": false
+        },
+        "dissolved_oxygen_30d": {
+          "predicted_change": 1.0371637344360352,
+          "observed_change": 0.5,
+          "expected_direction": "decrease",
+          "correct": false
+        }
+      }
+    },
+    {
+      "name": "Chattahoochee Summer Low-Flow 2023",
+      "status": "EVALUATED",
+      "station_id": "02336000",
+      "event_date": "2023-08-01",
+      "description": "Summer low-flow stress on urban river system",
+      "initial_state": {
+        "temperature": 22.799999237060547,
+        "turbidity": 0.0
+      },
+      "horizon_metrics": {
+        "1d_mse": 367.8807678222656,
+        "7d_mse": 68.64030456542969,
+        "14d_mse": 27.1981258392334,
+        "30d_mse": 15.882966041564941,
+        "90d_mse": 0.09935395419597626,
+        "365d_mse": 24.845439910888672
+      },
+      "variable_metrics": {
+        "temperature": {
+          "mse": 84.09115600585938,
+          "mae": 6.994235515594482,
+          "n_obs": 6
+        }
+      },
+      "direction_accuracy": {
+        "temperature_7d": {
+          "predicted_change": -11.084943771362305,
+          "observed_change": -2.799999237060547,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "temperature_30d": {
+          "predicted_change": -4.885343551635742,
+          "observed_change": -0.8999996185302734,
+          "expected_direction": "increase",
+          "correct": false
+        }
+      }
+    },
+    {
+      "name": "Delaware River Seasonal Transition 2023",
+      "status": "NO_DATA",
+      "station_id": "01463500"
+    },
+    {
+      "name": "Columbia River Spring Melt 2023",
+      "status": "EVALUATED",
+      "station_id": "14211720",
+      "event_date": "2023-05-01",
+      "description": "Spring snowmelt pulse \u2014 increased turbidity and flow",
+      "initial_state": {
+        "temperature": 12.699999809265137,
+        "turbidity": 57.0,
+        "dissolved_oxygen": 11.699999809265137
+      },
+      "horizon_metrics": {
+        "1d_mse": 1137.547119140625,
+        "7d_mse": 1458.6197509765625,
+        "14d_mse": 1329.41845703125,
+        "30d_mse": 1783.54052734375,
+        "90d_mse": 2966.0029296875,
+        "365d_mse": 1467.3531494140625
+      },
+      "variable_metrics": {
+        "temperature": {
+          "mse": 28.990610122680664,
+          "mae": 3.7698962688446045,
+          "n_obs": 6
+        },
+        "turbidity": {
+          "mse": 5032.16455078125,
+          "mae": 69.9493179321289,
+          "n_obs": 6
+        },
+        "dissolved_oxygen": {
+          "mse": 10.086007118225098,
+          "mae": 2.1898343563079834,
+          "n_obs": 6
+        }
+      },
+      "direction_accuracy": {
+        "turbidity_7d": {
+          "predicted_change": -57.14158248901367,
+          "observed_change": 9.0,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "turbidity_30d": {
+          "predicted_change": -57.147029876708984,
+          "observed_change": 16.0,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "temperature_7d": {
+          "predicted_change": -0.9352254867553711,
+          "observed_change": -0.8999996185302734,
+          "expected_direction": "increase",
+          "correct": false
+        },
+        "temperature_30d": {
+          "predicted_change": 5.224358558654785,
+          "observed_change": 5.199999809265137,
+          "expected_direction": "increase",
+          "correct": true
+        }
+      }
+    }
+  ]
+}

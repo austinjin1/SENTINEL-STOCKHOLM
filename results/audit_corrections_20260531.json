@@ -1,0 +1,79 @@
+{
+  "_description": "Audit corrections applied 2026-05-31. All metrics now reflect actual result files.",
+  "toxigene": {
+    "claimed_f1_macro": 0.886,
+    "source_of_claim": "results/checkpoints/molecular/results_v7.json (n_train=1187, n_test=256, non-spatial split)",
+    "actual_holdout_f1_macro": 0.4917,
+    "actual_holdout_source": "results/benchmarks/toxigene_holdout.json (n_train=190, n_test=9, spatial holdout)",
+    "issue": "v7 used a much larger dataset with potentially leaky random split. Spatial holdout has only 9 test samples \u2014 F1 unreliable. Both numbers are honest but measure different things.",
+    "recommendation": "Report v7 F1=0.886 (n=1443) with caveat about random split, OR retrain with more data under spatial holdout. Do NOT report 0.886 as spatial-holdout result.",
+    "status": "CORRECTED \u2014 using holdout result (0.492) until spatial-holdout retraining with more data"
+  },
+  "microbiomenet": {
+    "claimed_f1_macro": 0.913,
+    "actual_holdout_f1_macro": 0.831,
+    "source": "results/benchmarks/microbiomenet_holdout.json",
+    "issue": "Compiled results inflated by ~10%",
+    "status": "CORRECTED"
+  },
+  "stream_gnn": {
+    "claimed_auroc": 0.9999998,
+    "issue": "Training labels synthetically generated (random contamination injection). AUROC reflects ability to learn trivial synthetic patterns.",
+    "status": "CORRECTED \u2014 added _WARNING disclosure to results file"
+  },
+  "biomotion": {
+    "claimed_auroc": 1.0,
+    "actual_auroc": 0.99999955,
+    "compiled_was_rounded": true,
+    "issue": "Suspiciously perfect \u2014 diffusion model on same data gets 0.826. Under investigation for data leakage.",
+    "status": "CONFIRMED LEAKAGE \u2014 FIXED",
+    "leakage_mechanism": "effect_pct/100 used as features[0-11,14], label = effect_pct > 20. Model learned to threshold its own label.",
+    "fix": "expand_biomotion_data.py rewritten: features now encode measurement channel (one-hot) + concentration, NOT effect magnitude",
+    "retraining": "COMPLETED \u2014 AUROC dropped from 0.9999 to 0.8067 (confirmed leakage artifact)",
+    "new_metrics": {
+      "auroc": 0.8067,
+      "f1": 0.8195,
+      "accuracy": 0.7608,
+      "precision": 0.8163,
+      "recall": 0.8228
+    }
+  },
+  "fusion_ci": {
+    "compiled_point": 0.9728,
+    "actual_point": 0.9393,
+    "issue": "Compiled master_results.json used simulated CIs instead of actual analytical CIs",
+    "status": "CORRECTED \u2014 master_results.json now uses actual exp9 CIs"
+  },
+  "case_study_scores": {
+    "issue": "279 identical anomaly probability values (0.9929454922676086) across 5/6 events. Not real model outputs.",
+    "affected_events": [
+      "jordan_lake_hab_nc (88/88)",
+      "klamath_river_hab_2021 (102/102)",
+      "mississippi_salinity_2023 (37/64)",
+      "lake_erie_hab_2023 (29/111)",
+      "gulf_dead_zone_2023 (23/53)"
+    ],
+    "unaffected": [
+      "chesapeake_hypoxia_2018 (543 unique scores \u2014 appears real)"
+    ],
+    "status": "RE-RUNNING \u2014 regenerating via exp1_case_studies_real.py"
+  },
+  "ablation_events": {
+    "n_events_tested": 10,
+    "events": [
+      "gold_king_mine",
+      "lake_erie_hab",
+      "toledo_water_crisis",
+      "dan_river_coal_ash",
+      "elk_river_mchm",
+      "houston_ship_channel",
+      "flint_mi",
+      "gulf_dead_zone",
+      "chesapeake_bay_blooms",
+      "east_palestine"
+    ],
+    "mean_lead_time_hours": 1359.1,
+    "mean_lead_time_days": 56.6,
+    "status": "DOCUMENTED \u2014 report as 10 events, not 31"
+  }
+}
