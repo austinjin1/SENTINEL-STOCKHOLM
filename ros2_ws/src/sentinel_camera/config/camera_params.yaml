@@ -1,0 +1,13 @@
+# SENTINEL drone RGB camera (RPi Camera Module 3 Wide).
+# Capture params finalized from CINE-Sensing; see ros2_ws/README.md.
+sentinel_rgb_camera:
+  ros__parameters:
+    backend: "auto" # auto -> libcamera -> opencv -> synthetic
+    camera_id: 0
+    image_width: 1152
+    image_height: 648
+    fps: 30.0
+    topic: "/sentinel/camera/rgb/image_raw"
+    frame_id: "camera_optical_frame"
+    shutter_us: 10000
+    gain: 1.0
