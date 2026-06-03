@@ -59,19 +59,31 @@ On **both** machines first:
 source ros2_ws/network/sentinel_network.sh   # shared ROS_DOMAIN_ID
 ```
 
-Then, per role:
+Then, per role — one command each (the script sources network + workspace):
 
 ```bash
 # Raspberry Pi
-ros2 launch sentinel_camera drone.launch.py
+./scripts/run_drone.sh                 # auto-detect camera (synthetic if none)
 
 # Omen 15
-ros2 launch sentinel_inference computer.launch.py
+./scripts/run_computer.sh              # cpu, random weights (smoke)
+./scripts/run_computer.sh cuda /path/to/waterdronenet.pt
 ```
 
-Verify the link from either box: `ros2 topic list` should show both camera
-topics and `/sentinel/water_quality`; `ros2 topic hz /sentinel/camera/rgb/image_raw`
-checks the stream rate across the network.
+Or via make: `make drone` / `make computer`. Raw launch still works:
+`ros2 launch sentinel_camera drone.launch.py backend:=synthetic`.
+
+### Verify the link (from either box)
+
+```bash
+ros2 topic list                                  # see both halves' topics
+ros2 topic hz  /sentinel/camera/rgb/image_raw    # ~30 Hz across the network
+ros2 topic echo /sentinel/water_quality          # predictions flowing back
+```
+
+Expected: `/sentinel/camera/rgb/image_raw` at ~30 Hz, and `WaterQuality`
+messages on `/sentinel/water_quality` (param_names = [DO, pH, Turb, Temp,
+SpCond], `nir_present: false` until the NIR camera is added).
 
 ## Test without hardware or ROS
 
@@ -80,10 +92,12 @@ Capture, 4-band assembly, and time-sync logic are isolated from `rclpy`,
 run on any laptop:
 
 ```bash
-python -m pytest ros2_ws/src/sentinel_camera/test ros2_ws/src/sentinel_inference/test -q
+cd ros2_ws && make test            # pytest if present, else bundled runner
 ```
 
-Full-graph + torch inference must run on a box with ROS 2 and torch installed.
+This covers capture (synthetic backend), 4-band assembly, time-sync, and an
+end-to-end data-contract smoke (synthetic frame → model-ready tensor). The
+full graph + torch inference must run on a box with ROS 2 and torch installed.
 
 ## Finalized parameters (from CINE-Sensing)
 
@@ -117,4 +131,5 @@ calibration run; not fabricated here.
 - [x] Phase 1 — foundation: workspace, DDS env, shared `WaterQuality` message
 - [x] Phase 2 — drone: `sentinel_camera` (HAL backends + RGB publisher; NIR later)
 - [x] Phase 3 — computer: `sentinel_inference` (assembly, sync, WaterDroneNet node)
-- [ ] Phase 4 — orchestration: role launch wrappers, run scripts, e2e docs
+- [x] Phase 4 — orchestration: role run-scripts, Makefile, e2e smoke + docs
+- [ ] Next — add NIR camera (second publisher + TF + `nir_topic`); WaterDroneNet checkpoint; on-ROS graph bring-up
