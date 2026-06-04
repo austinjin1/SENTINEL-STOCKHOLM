@@ -11,7 +11,7 @@ both machines; each machine runs only its half.
   │  rgb_publisher  ──────┼──── /sentinel/camera/rgb/image_raw ──▶ frame_sync   │
   │  nir_publisher  ──────┼──── /sentinel/camera/nir/image_raw ──▶  + assemble  │
   │  (CameraBackend HAL)   │        DDS / FastRTPS         │      → WaterDroneNet │
-  └──────────────────────┘     ROS_DOMAIN_ID=42           │      → /sentinel/water_quality │
+  └──────────────────────┘     ROS_DOMAIN_ID=0            │      → /sentinel/water_quality │
                                                           └──────────────────────────────┘
                                                   sentinel_perception_msgs/WaterQuality
 ```

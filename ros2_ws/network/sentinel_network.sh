@@ -8,7 +8,7 @@
 # multicast is not blocked. No broker, no static IPs required for the happy path.
 
 # --- Domain: both machines MUST match -----------------------------------------
-export ROS_DOMAIN_ID=42
+export ROS_DOMAIN_ID=0
 
 # --- Allow off-localhost traffic (0 = talk to other hosts) --------------------
 export ROS_LOCALHOST_ONLY=0
