@@ -232,7 +232,7 @@ SENTINEL includes a deployable platform layer:
 - **Streamlit Dashboard** (`sentinel/dashboard/app.py`) -- Real-time monitoring visualization
 - **Citizen Science QC** -- Three-stage quality control (physical plausibility, spatial consistency, temporal consistency) for community observations
 - **Photo Analysis** -- Water quality estimation from smartphone photos via HydroViT backbone
-- **Docker deployment** with CI/CD pipeline (`.github/workflows/ci.yml`)
+- **Docker deployment** (`Dockerfile`, `docker-compose.yml`)
 - **Prospective validation** with hash-verified pre-registration
 
 ---
@@ -258,13 +258,12 @@ sentinel/                        # Core Python package
     microbial_encoder/           # MicroBiomeNet
     molecular_encoder/           # ToxiGene
     biomotion/                   # BioMotion
-    fusion/                      # Perceiver IO + MoME fusion
+    fusion/                      # Perceiver IO fusion
     escalation/                  # PPO cascade controller
     graph/                       # Stream Network GNN
     waterdronenet/               # SENTINEL-Lite (HydroDenseNet)
     twin/                        # Digital Twin Engine
-    biology/                     # Species Health, Disease Forecast, ARG Surveillance
-    digital_biosentinel/         # Dose-response prediction
+    biology/                     # Species Health, Disease Forecast
     theory/                      # Conformal prediction, causal discovery
   training/                      # Training loops
   evaluation/                    # 20-experiment evaluation suite
@@ -272,19 +271,23 @@ sentinel/                        # Core Python package
   dashboard/                     # Streamlit monitoring dashboard
   utils/                         # Configuration, logging
 
-scripts/                         # Standalone scripts
-  train_*.py                     # Training scripts for each model
-  benchmark_*.py                 # SOTA comparison benchmarks
-  exp*.py                        # Numbered + named experiments
-  download_*.py                  # Data acquisition from public sources
-  prospective_validation.py      # Live pre-registered predictions
-  run_all.py                     # Full training orchestrator
+scripts/                         # Standalone scripts, grouped by purpose
+  data_acquisition/              # download_*, ingest, co-registration (see DATABASE.md)
+  preprocessing/                 # process_/prepare_/expand_ → training-ready data
+  training/                      # train_*.py — one per model
+  benchmarks/                    # SOTA comparison benchmarks
+  experiments/                   # exp*.py — the 20 paper analyses + case studies
+  evaluation/                    # held-out / conformal / causal evaluation
+  deployment/                    # prospective validation + SENTINEL-Lite/Mini tests
+  figures/                       # figure generation
+  pipeline/                      # run_all.py orchestrator, results compilation
 
 results/                         # Reproducible experiment outputs (JSON/CSV)
   benchmarks/                    # Per-model holdout metrics
   prospective/                   # Pre-registered predictions + evaluations
 
 configs/default.yaml             # All hyperparameters and data paths
+DATABASE.md                      # How to download/build every data source
 ```
 
 ---
@@ -292,70 +295,77 @@ configs/default.yaml             # All hyperparameters and data paths
 ## Setup
 
 ```bash
-# Create environment
+# Create the environment and install the package
 conda env create -f environment.yml
-conda activate sentinel
-
-# Install package
+conda activate physiformer
 pip install -e .
 ```
 
-### Data Acquisition
+> All commands below assume `PYTHONNOUSERSITE=1` so the conda PyTorch is used
+> (a stray `~/.local` torch can otherwise shadow it). Prefix commands with it or
+> `export PYTHONNOUSERSITE=1` once per shell.
 
-All training data is freely available from public sources. No proprietary or restricted data is used.
+### 1. Get the data
 
-| Modality | Source | Access |
-|----------|--------|--------|
-| Sensor | USGS NWIS (~3,000 stations) | `dataretrieval` Python package |
-| Satellite | Sentinel-2 L2A (10 bands, 10m) | Microsoft Planetary Computer STAC API |
-| Microbial | Earth Microbiome Project | Qiita platform |
-| Molecular | NCBI GEO (transcriptomics) | GEOparse |
-| Ecotoxicology | EPA ECOTOX (~1M records) | EPA bulk download |
-| Water Quality | GRQA, EPA WQP, NEON, Canada WQP | Various public APIs |
-| Stream Network | NHDPlusV2 | USGS |
-| Biological | USGS BioData, GBIF | Public APIs |
-| Climate | NEON, NOAA | Public APIs |
+All training data is public. **See [DATABASE.md](DATABASE.md)** for the full
+per-source download + preprocessing guide. Quick start:
 
 ```bash
-# Download all data sources
-python scripts/data_acquisition/download_all.py
+export PYTHONNOUSERSITE=1
+python scripts/data_acquisition/download_all.py     # core sources
+# then per-modality preprocessing, e.g.
+python scripts/preprocessing/process_usgs_to_training.py
 ```
 
-### Training
+### 2. Train the models
 
 ```bash
-# Train individual encoders
-python scripts/train_aquassm.py --gpu 0
-python scripts/train_hydrovit.py --gpu 1
-python scripts/train_microbiomenet.py --gpu 2
-python scripts/train_toxigene.py --gpu 3
-python scripts/train_biomotion.py --gpu 0
+export PYTHONNOUSERSITE=1
 
-# Train Perceiver IO fusion
-python scripts/train_fusion.py --gpu 0
+# Five modality encoders
+python scripts/training/train_aquassm.py
+python scripts/training/train_hydrovit.py
+python scripts/training/train_microbiomenet.py
+python scripts/training/train_toxigene.py
+python scripts/training/train_biomotion.py
 
-# Train downstream models
-python scripts/train_stream_gnn.py --gpu 0
-python scripts/train_waterdronenet.py --gpu 0
-python scripts/train_species_health.py --gpu 1
-python scripts/train_disease_forecast.py --gpu 2
-python scripts/train_twin.py --gpu 3
+# Fusion + downstream / deployment models
+python scripts/training/train_fusion.py
+python scripts/training/train_stream_gnn.py
+python scripts/training/train_twin.py
+python scripts/training/train_species_health.py
+python scripts/training/train_disease_forecast.py
+python scripts/training/train_hydrodensenet.py     # SENTINEL-Lite
 
-# Or run everything with the orchestrator
-python scripts/run_all.py
+# Or run the whole pipeline in dependency order
+python scripts/pipeline/run_all.py                 # add --dry-run to preview
 ```
 
-### Evaluation
+### 3. Reproduce the experiments
+
+The 20 numbered analyses from the paper live in `scripts/experiments/`:
 
 ```bash
-# Run full experiment suite
-python scripts/exp1_case_studies.py
-python scripts/exp2_baseline_comparison.py
-# ... (20+ experiments, see scripts/exp*.py)
+export PYTHONNOUSERSITE=1
+python scripts/experiments/exp1_case_studies_real.py     # historical events
+python scripts/experiments/exp9_bootstrap_ci.py          # bootstrap 95% CIs
+python scripts/experiments/exp12_multimodal_integration.py  # 31-condition ablation
+# ... see scripts/experiments/ for exp1–exp20 and named case studies
 
-# Prospective validation
-python scripts/prospective_validation.py
+# SOTA benchmarks, held-out evaluation, prospective validation
+python scripts/benchmarks/benchmark_aquassm.py
+python scripts/evaluation/conformal_real_eval.py
+python scripts/deployment/prospective_validation.py
 ```
+
+## Pretrained models
+
+The trained checkpoints for every model in the paper are published on the
+Hugging Face Hub: **[huggingface.co/bryan7264/SENTINEL](https://huggingface.co/bryan7264/SENTINEL)**
+(`aquassm.pt`, `hydrovit.pt`, `microbiomenet.pt`, `toxigene.pt`, `biomotion.pt`,
+`sentinel_fusion.pt`, `stream_gnn.pt`, `digital_twin.pt`, `hydrodensenet.pt`,
+`species_health.pt`, `waterborne_disease.pt`). Architectures are defined under
+`sentinel/models/`.
 
 ---
 
