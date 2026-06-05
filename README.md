@@ -81,7 +81,7 @@ Drone (RPi + dual camera)
   → Full multimodal confirmation
 ```
 
-See `sentinel/platform/SENTINEL_MINI_PIPELINE.md` for the full pipeline specification and `sentinel/models/waterdronenet/README.md` for model details.
+See `sentinel/platform/` for the full pipeline implementation and `sentinel/models/waterdronenet/` for model details.
 
 ### Prospective Validation
 
@@ -283,10 +283,8 @@ scripts/                         # Standalone scripts
 results/                         # Reproducible experiment outputs (JSON/CSV)
   benchmarks/                    # Per-model holdout metrics
   prospective/                   # Pre-registered predictions + evaluations
-  SENTINEL_2.0_Results_Summary.md
 
 configs/default.yaml             # All hyperparameters and data paths
-figures/                         # Generated publication figures
 ```
 
 ---
