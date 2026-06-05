@@ -35,9 +35,12 @@ plt.rcParams.update({
 })
 
 
-def stretch_rgb(img4, lo=2, hi=98, gamma=0.85):
-    """img4: (4,H,W) reflectance -> RGB uint-ish float in [0,1].
-    bands order = B02,B03,B04,B08 -> R=B04(idx2) G=B03(idx1) B=B02(idx0)."""
+def stretch_rgb(img4, lo=2, hi=98, gamma=0.78, sat=1.18):
+    """img4: (4,H,W) reflectance -> RGB float in [0,1].
+    bands order = B02,B03,B04,B08 -> R=B04(idx2) G=B03(idx1) B=B02(idx0).
+    Per-channel percentile stretch + gamma + mild saturation boost for a
+    crisp, natural true-color render."""
+    from matplotlib.colors import rgb_to_hsv, hsv_to_rgb
     rgb = np.stack([img4[2], img4[1], img4[0]], axis=-1).astype(np.float32)
     out = np.empty_like(rgb)
     for c in range(3):
@@ -47,7 +50,9 @@ def stretch_rgb(img4, lo=2, hi=98, gamma=0.85):
             p_hi = p_lo + 1e-6
         out[..., c] = np.clip((ch - p_lo) / (p_hi - p_lo), 0, 1)
     out = np.power(out, gamma)
-    return out
+    hsv = rgb_to_hsv(out)
+    hsv[..., 1] = np.clip(hsv[..., 1] * sat, 0, 1)
+    return hsv_to_rgb(hsv)
 
 
 def ndwi(img4):
@@ -58,26 +63,27 @@ def ndwi(img4):
 
 
 def quality_score(img4):
-    """Higher = better candidate. Reward scenes with clear spatial detail AND
-    visible water; penalize nodata wedges, clouds/haze, and flat tiles."""
+    """Higher = better candidate. Reward sharp, detailed scenes with a clear
+    water body; strongly penalize clouds, haze, nodata wedges, and flat tiles."""
     rgb = np.stack([img4[2], img4[1], img4[0]], axis=0)
     var = float(rgb.std())
     bright = float(np.mean(rgb))
-    cloud_frac = float(np.mean(rgb > 0.55))
-    # nodata wedge: pixels black across all bands (swath edge / fill)
-    nodata_frac = float(np.mean(np.all(img4 < 0.02, axis=0)))
-    # haze: globally bright + low local contrast
-    haze = 1.0 if (bright > 0.30 and var < 0.06) else 0.0
-    # water presence via NDWI; reward tiles that actually contain a water body
+    cloud_frac = float(np.mean(rgb.max(0) > 0.40))             # bright cloud px
+    nodata_frac = float(np.mean(np.all(img4 < 0.02, axis=0)))  # swath-edge fill
+    p2, p98 = np.percentile(rgb, [2, 98])
+    contrast = float(p98 - p2)
+    blue_ratio = float(img4[0].mean() / (img4[2].mean() + 1e-6))   # B02/B04
+    haze = 1.0 if (contrast < 0.12 or (bright > 0.28 and contrast < 0.18)) else 0.0
+    # sharpness: mean gradient magnitude on the green band
+    g = img4[1]
+    sharp = float(np.abs(np.diff(g, axis=0)).mean()
+                  + np.abs(np.diff(g, axis=1)).mean())
     nd = ndwi(img4)
     water_frac = float(np.mean(nd > 0.0))
-    water_reward = 0.06 if 0.04 <= water_frac <= 0.75 else 0.0
-    return (var
-            + water_reward
-            - 2.0 * nodata_frac
-            - 1.5 * cloud_frac
-            - 0.10 * haze
-            - 0.4 * max(0, bright - 0.35))
+    water_term = 1.0 - abs(water_frac - 0.30) / 0.30
+    return (1.5 * max(0, water_term) + 6.0 * sharp + 0.8 * var
+            - 6.0 * cloud_frac - 2.5 * nodata_frac - 1.2 * haze
+            - 0.6 * max(0, blue_ratio - 1.15) - 0.5 * max(0, bright - 0.30))
 
 
 def load_pairs():
@@ -87,41 +93,41 @@ def load_pairs():
     return d, meta, targets
 
 
-def pick_samples(d, meta, targets, n=12, seed=7):
-    """Select geographically diverse, high-quality tiles with valid WQ."""
+def pick_samples(d, meta, targets, n=12, seed=20):
+    """Select high-quality, crisp tiles with a clear water body and valid WQ,
+    one tile per distinct USGS site for geographic diversity."""
     rng = np.random.default_rng(seed)
     imgs = d["images"]
     N = imgs.shape[0]
-    # candidate pool: sample a manageable subset, score, then diversify by state/lon
-    cand = rng.choice(N, size=min(1500, N), replace=False)
+    cand = rng.choice(N, size=min(4000, N), replace=False)
     scored = []
     for i in cand:
         t = targets[i]
-        n_valid = int(np.sum(~np.isnan(t)))
-        if n_valid < 4:
+        if int(np.sum(~np.isnan(t))) < 4:
             continue
         im = np.array(imgs[i])
         if not np.isfinite(im).all():
             continue
-        s = quality_score(im)
-        scored.append((s, int(i)))
+        scored.append((quality_score(im), int(i)))
     scored.sort(reverse=True)
-    # take top quality, then greedily spread by longitude to maximize geo diversity
-    top = [i for _, i in scored[:120]]
-    chosen, used_lon = [], []
+    top = [i for _, i in scored[:300]]
+    # one tile per site, spread by longitude
+    chosen, used_sites, used_lon = [], set(), []
     for i in top:
-        lon = meta[i]["lon"]
-        if all(abs(lon - u) > 1.2 for u in used_lon):
-            chosen.append(i)
-            used_lon.append(lon)
+        site = meta[i]["site_id"]; lon = meta[i]["lon"]
+        if site in used_sites:
+            continue
+        if all(abs(lon - u) > 0.8 for u in used_lon):
+            chosen.append(i); used_sites.add(site); used_lon.append(lon)
         if len(chosen) >= n:
             break
-    # backfill if geo filter was too strict
+    # backfill (still unique sites) if geo filter too strict
     for i in top:
         if len(chosen) >= n:
             break
-        if i not in chosen:
-            chosen.append(i)
+        site = meta[i]["site_id"]
+        if site not in used_sites:
+            chosen.append(i); used_sites.add(site)
     return chosen[:n]
 
 

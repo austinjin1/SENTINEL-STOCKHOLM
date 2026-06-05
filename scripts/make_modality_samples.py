@@ -29,23 +29,27 @@ ACCENT = "#1a3a6b"
 # --------------------------------------------------------------------------
 # SATELLITE
 # --------------------------------------------------------------------------
-def stretch_rgb(img4, lo=2, hi=98, gamma=0.85):
+def stretch_rgb(img4, lo=2, hi=98, gamma=0.78, sat=1.18):
+    from matplotlib.colors import rgb_to_hsv, hsv_to_rgb
     rgb = np.stack([img4[2], img4[1], img4[0]], axis=-1).astype(np.float32)
     out = np.empty_like(rgb)
     for c in range(3):
         ch = rgb[..., c]
         p_lo, p_hi = np.percentile(ch, [lo, hi])
         out[..., c] = np.clip((ch - p_lo) / (p_hi - p_lo + 1e-6), 0, 1)
-    return np.power(out, gamma)
+    out = np.power(out, gamma)
+    hsv = rgb_to_hsv(out)
+    hsv[..., 1] = np.clip(hsv[..., 1] * sat, 0, 1)
+    return hsv_to_rgb(hsv)
 
 
 def satellite_ax(ax):
     d = np.load("data/processed/satellite/drone_wq_pairs.npz",
                 allow_pickle=True, mmap_mode="r")
     meta = json.loads(str(d["metadata"]))
-    # index 932 = USGS 04087170 Milwaukee waterfront / Lake Michigan harbor:
-    # clear water + urban land contrast, ~48% water by NDWI
-    i = 932
+    # index 11650 = USGS 380548121390501 (Sacramento–San Joaquin Delta, CA):
+    # vivid turbid channel through farmland, crisp, ~30% water by NDWI
+    i = 11650
     im = np.array(d["images"][i])
     ax.imshow(stretch_rgb(im), interpolation="bilinear")
     m = meta[i]
