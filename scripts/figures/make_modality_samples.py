@@ -109,32 +109,68 @@ HABITAT_ORDER = ["freshwater_natural", "freshwater_impacted", "freshwater_sedime
                  "plant_associated", "animal_fecal"]
 
 
+def _confidence_ellipse(x, y, ax, n_std=2.0, **kw):
+    """Draw an n_std covariance ellipse for a point cloud."""
+    from matplotlib.patches import Ellipse
+    import matplotlib.transforms as transforms
+    if x.size < 3:
+        return
+    cov = np.cov(x, y)
+    pear = cov[0, 1] / (np.sqrt(cov[0, 0] * cov[1, 1]) + 1e-12)
+    rx, ry = np.sqrt(1 + pear), np.sqrt(1 - pear)
+    ell = Ellipse((0, 0), width=rx * 2, height=ry * 2, **kw)
+    sx, sy = np.sqrt(cov[0, 0]) * n_std, np.sqrt(cov[1, 1]) * n_std
+    tr = (transforms.Affine2D().rotate_deg(45).scale(sx, sy)
+          .translate(x.mean(), y.mean()))
+    ell.set_transform(tr + ax.transData)
+    ax.add_patch(ell)
+
+
 def make_microbial():
+    """16S rRNA communities are too high-dimensional/diverse to read as a heatmap.
+    We instead show a supervised ordination (CLR → PCA → LDA): each point is one
+    real EMP water sample's microbiome, and the eight aquatic source classes
+    separate into distinct regions — exactly the signal MicroBiomeNet classifies."""
+    from sklearn.decomposition import PCA
+    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
     base = "data/processed/microbial/emp_16s"
-    files = [f for f in os.listdir(base) if f.endswith(".npz")]
-    by_hab = {}
-    for fn in files:
+    X, y = [], []
+    for fn in os.listdir(base):
+        if not fn.endswith(".npz"):
+            continue
         dd = np.load(os.path.join(base, fn), allow_pickle=True)
         hab = str(dd["source_name"])
-        if hab not in by_hab:
-            by_hab[hab] = np.array(dd["abundances"])
-    habs = [h for h in HABITAT_ORDER if h in by_hab]
-    M = np.stack([by_hab[h] for h in habs], axis=0)
-    top = np.argsort(M.sum(0))[::-1][:45]
-    Mt = np.log10(M[:, top] + 1e-4)
-    fig, ax = plt.subplots(figsize=(15, 8))
-    im = ax.imshow(Mt, aspect="auto", cmap="viridis", interpolation="nearest")
-    ax.set_yticks(range(len(habs)))
-    ax.set_yticklabels([h.replace("_", " ") for h in habs], fontsize=TICK)
-    ax.set_xticks([])
-    ax.set_xlabel("bacterial OTUs (16S rRNA)", fontsize=AXLAB)
-    cb = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.02)
-    cb.set_label("log₁₀ rel. abundance", fontsize=AXLAB)
-    cb.ax.tick_params(labelsize=TICK)
-    plt.subplots_adjust(left=0.27, right=0.99, top=0.97, bottom=0.12)
+        if hab in HABITAT_ORDER:
+            X.append(np.asarray(dd["abundances"], np.float32))
+            y.append(HABITAT_ORDER.index(hab))
+    X, y = np.array(X), np.array(y)
+    # CLR transform (Aitchison geometry — MicroBiomeNet's native space)
+    Xp = X + 1e-6
+    Xp = Xp / Xp.sum(1, keepdims=True)
+    clr = np.log(Xp) - np.log(Xp).mean(1, keepdims=True)
+    p = PCA(50, random_state=0).fit_transform(clr)
+    Z = LDA(n_components=2).fit_transform(p, y)
+
+    colors = plt.cm.tab10(np.linspace(0, 1, len(HABITAT_ORDER)))
+    fig, ax = plt.subplots(figsize=(14, 11))
+    for i, h in enumerate(HABITAT_ORDER):
+        m = y == i
+        if not m.any():
+            continue
+        ax.scatter(Z[m, 0], Z[m, 1], s=38, color=colors[i], alpha=0.45,
+                   edgecolors="none", label=h.replace("_", " "))
+        _confidence_ellipse(Z[m, 0], Z[m, 1], ax, n_std=2.0,
+                            facecolor="none", edgecolor=colors[i], lw=2.5)
+    ax.set_xlabel("LD1", fontsize=AXLAB)
+    ax.set_ylabel("LD2", fontsize=AXLAB)
+    ax.tick_params(labelsize=TICK)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.legend(fontsize=16, loc="best", frameon=True, markerscale=2.0)
+    plt.subplots_adjust(left=0.11, right=0.97, top=0.97, bottom=0.10)
     fig.savefig(f"{OUT}/modality_microbial.png", dpi=200, facecolor="white")
     plt.close(fig)
-    print("wrote modality_microbial.png")
+    print("wrote modality_microbial.png (16S source ordination)")
 
 
 # --------------------------------------------------------------------------
