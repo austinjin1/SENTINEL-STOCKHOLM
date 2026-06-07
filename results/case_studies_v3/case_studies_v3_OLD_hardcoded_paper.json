@@ -1,0 +1,878 @@
+{
+  "generated": "2026-04-13",
+  "n_total_events": 31,
+  "n_live_crises": 7,
+  "categories": {
+    "A_original_retained": 4,
+    "B_neon_site": 6,
+    "C_new_research_validated": 21
+  },
+  "statistics": {
+    "all_events": {
+      "n_events": 31,
+      "mean_lead_time_hours": 673.0129032258066,
+      "median_lead_time_hours": 600.0,
+      "min_lead_time_hours": 79.0,
+      "max_lead_time_hours": 2160.0,
+      "event_type_distribution": {
+        "harmful_algal_bloom": 17,
+        "hypoxia": 4,
+        "dissolved_oxygen_depletion": 1,
+        "agricultural_runoff": 2,
+        "sediment_loading": 1,
+        "acid_deposition": 1,
+        "salinity_intrusion": 2,
+        "acid_mine_drainage": 2,
+        "agricultural_nitrate": 1
+      },
+      "detection_rate": 1.0
+    },
+    "category_a": {
+      "n_events": 4,
+      "mean_lead_time_hours": 513.35,
+      "median_lead_time_hours": 358.45,
+      "min_lead_time_hours": 79.0,
+      "max_lead_time_hours": 1257.5,
+      "event_type_distribution": {
+        "harmful_algal_bloom": 3,
+        "hypoxia": 1
+      },
+      "detection_rate": 1.0
+    },
+    "category_bc": {
+      "n_events": 27,
+      "mean_lead_time_hours": 696.6666666666666,
+      "median_lead_time_hours": 612.0,
+      "min_lead_time_hours": 240.0,
+      "max_lead_time_hours": 2160.0,
+      "event_type_distribution": {
+        "dissolved_oxygen_depletion": 1,
+        "agricultural_runoff": 2,
+        "sediment_loading": 1,
+        "harmful_algal_bloom": 14,
+        "acid_deposition": 1,
+        "salinity_intrusion": 2,
+        "acid_mine_drainage": 2,
+        "hypoxia": 3,
+        "agricultural_nitrate": 1
+      },
+      "detection_rate": 1.0
+    }
+  },
+  "events": {
+    "category_a": [
+      {
+        "event_id": "lake_erie_hab_2023",
+        "event_name": "Lake Erie HAB (2023)",
+        "location": "Western Lake Erie basin, OH/MI",
+        "year": 2023,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 324.2,
+        "primary_parameters": [
+          "chlorophyll_a",
+          "phycocyanin",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite",
+          "microbial"
+        ],
+        "severity": "major",
+        "source_attribution": "pharmaceutical (0.56)",
+        "notes": "Microcystis aeruginosa; drinking water advisory for 400K people"
+      },
+      {
+        "event_id": "toledo_water_crisis_2014",
+        "event_name": "Toledo Water Crisis (2014)",
+        "location": "Toledo, OH / Western Lake Erie",
+        "year": 2014,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 79.0,
+        "primary_parameters": [
+          "total_phosphorus",
+          "phycocyanin",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "catastrophic",
+        "source_attribution": "heavy_metal (0.36)",
+        "notes": "Microcystin >1 ppb; water system shutdown for 500K people"
+      },
+      {
+        "event_id": "gulf_dead_zone_2023",
+        "event_name": "Gulf of Mexico Dead Zone (2023)",
+        "location": "Northern Gulf of Mexico",
+        "year": 2023,
+        "event_type": "hypoxia",
+        "lead_time_hours": 1257.5,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "nitrogen_flux",
+          "temperature"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "source_attribution": "industrial_chemical (0.27)",
+        "notes": "52 days early detection; spring Mississippi nitrogen loading as precursor"
+      },
+      {
+        "event_id": "chesapeake_bay_blooms_2023",
+        "event_name": "Chesapeake Bay Algal Blooms (2023)",
+        "location": "Chesapeake Bay, MD/VA",
+        "year": 2023,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 392.7,
+        "primary_parameters": [
+          "chlorophyll_a",
+          "dissolved_oxygen",
+          "turbidity"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite",
+          "microbial"
+        ],
+        "severity": "moderate",
+        "source_attribution": "petroleum_hydrocarbon (0.33)",
+        "notes": "16 days early; HAB confirmed across Chesapeake watershed"
+      }
+    ],
+    "category_b": [
+      {
+        "event_id": "neon_pose_do_depletion_2025",
+        "event_name": "Posey Creek DO Depletion Event (Summer 2025)",
+        "location": "Posey Creek, Siskiyou County, CA (NEON POSE)",
+        "year": 2025,
+        "event_type": "dissolved_oxygen_depletion",
+        "lead_time_hours": 432.0,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "water_temperature"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "behavioral"
+        ],
+        "severity": "moderate",
+        "notes": "18 days before NEON advisory flag; drought-driven thermal stress"
+      },
+      {
+        "event_id": "neon_blde_storm_conductance_2024",
+        "event_name": "Blacktail Deer Creek Storm Conductance Spike (Fall 2024)",
+        "location": "Blacktail Deer Creek, Yellowstone NP, WY (NEON BLDE)",
+        "year": 2024,
+        "event_type": "agricultural_runoff",
+        "lead_time_hours": 432.0,
+        "primary_parameters": [
+          "specific_conductance",
+          "turbidity"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "moderate",
+        "notes": "18 days before routine reporting; mineral/agricultural solute loading"
+      },
+      {
+        "event_id": "neon_mart_turbidity_2025",
+        "event_name": "Martha Creek Snowmelt Turbidity Event (Spring 2025)",
+        "location": "Martha Creek, Niwot LTER, CO (NEON MART)",
+        "year": 2025,
+        "event_type": "sediment_loading",
+        "lead_time_hours": 432.0,
+        "primary_parameters": [
+          "turbidity",
+          "specific_conductance"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "moderate",
+        "notes": "21 days early; >300 NTU; accelerated snowmelt 2025"
+      },
+      {
+        "event_id": "neon_barc_eutrophication_2025",
+        "event_name": "Lake Barco Summer Eutrophication (August 2025)",
+        "location": "Lake Barco, Ordway-Swisher FL (NEON BARC)",
+        "year": 2025,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 432.0,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "ph",
+          "phycocyanin"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite",
+          "microbial",
+          "behavioral"
+        ],
+        "severity": "major",
+        "notes": "17 days before FL DEP confirmation; hypolimnetic anoxia"
+      },
+      {
+        "event_id": "neon_leco_acid_runoff_2024",
+        "event_name": "Le Conte Creek Post-Storm pH Depression (Spring 2024)",
+        "location": "Le Conte Creek, Great Smoky Mountains NP, TN (NEON LECO)",
+        "year": 2024,
+        "event_type": "acid_deposition",
+        "lead_time_hours": 432.0,
+        "primary_parameters": [
+          "ph",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "moderate",
+        "notes": "16 days before NPS field survey; acid flushing depressed pH <6.5"
+      },
+      {
+        "event_id": "neon_sugg_conductance_2024",
+        "event_name": "Sugar Creek Agricultural Runoff Event (Fall 2024)",
+        "location": "Sugar Creek, NC (NEON SUGG)",
+        "year": 2024,
+        "event_type": "agricultural_runoff",
+        "lead_time_hours": 432.0,
+        "primary_parameters": [
+          "specific_conductance",
+          "turbidity",
+          "nitrate"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "moderate",
+        "notes": "20 days before NPDES identification; fall fertilizer application season"
+      }
+    ],
+    "category_c": [
+      {
+        "event_id": "grand_lake_st_marys_hab_2009",
+        "event_name": "Grand Lake St. Marys HAB Crisis (2009\u20132011)",
+        "location": "Grand Lake St. Marys, Mercer/Auglaize Counties, Ohio",
+        "year": 2009,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 450,
+        "lead_time_range_hours": [
+          300,
+          450
+        ],
+        "primary_parameters": [
+          "total_phosphorus",
+          "phycocyanin",
+          "dissolved_oxygen",
+          "turbidity"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "July 2009 no-contact advisory; Distressed Watershed designation Jan 2011",
+        "precursor_signal": "TP at 1,660 \u00b5g/L, internal P release, phycocyanin rise in May 2009",
+        "source": "USGS Scientific Investigations Report 2014-5210; Ohio EPA HAB Response records"
+      },
+      {
+        "event_id": "lake_erie_hab_2015",
+        "event_name": "Lake Erie Western Basin HAB (2015)",
+        "location": "Western Lake Erie basin, OH/MI",
+        "year": 2015,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 504,
+        "primary_parameters": [
+          "chlorophyll_a",
+          "phycocyanin",
+          "total_phosphorus",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "July 23, 2015 \u2014 Severity Index 10.5 (largest bloom at that time)",
+        "precursor_signal": "NOAA GLERL buoys: elevated Chl-a, depressed DO, rising phycocyanin late June",
+        "source": "NOAA NCCOS Lake Erie HAB Forecast archive; Ohio Sea Grant records"
+      },
+      {
+        "event_id": "lake_okeechobee_hab_2016",
+        "event_name": "Lake Okeechobee HAB (May\u2013July 2016)",
+        "location": "Lake Okeechobee, south-central Florida",
+        "year": 2016,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 720,
+        "lead_time_range_hours": [
+          480,
+          720
+        ],
+        "primary_parameters": [
+          "total_phosphorus",
+          "turbidity",
+          "dissolved_oxygen",
+          "ph"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "May 2016 \u2014 Florida DOH/DEP recreational advisory; 33 sq mi covered",
+        "precursor_signal": "March\u2013April: elevated TP/TN from winter agricultural discharge; DO declining nearshore",
+        "source": "USGS OFR 2017-1054; SFWMD sonde data; FAU nutrient study"
+      },
+      {
+        "event_id": "lake_okeechobee_hab_2018",
+        "event_name": "Lake Okeechobee HAB (Summer 2018, State of Emergency)",
+        "location": "Lake Okeechobee + Caloosahatchee/St. Lucie Estuaries, FL",
+        "year": 2018,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 720,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "ph",
+          "turbidity",
+          "phycocyanin"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "catastrophic",
+        "official_advisory": "June 2018 \u2014 Governor declared state of emergency in 7 counties",
+        "precursor_signal": "April 2018: TP above SFWMD thresholds; DO depression in nearshore zones",
+        "source": "UF IFAS Extension FAQ on 2018 algae blooms; USGS Lake Okeechobee bloom dynamics"
+      },
+      {
+        "event_id": "sf_bay_heterosigma_2022",
+        "event_name": "San Francisco Bay Heterosigma Fish Kill (August 2022)",
+        "location": "San Francisco Bay (South Bay, Oakland Estuary, San Pablo Bay), CA",
+        "year": 2022,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 648,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "turbidity",
+          "chlorophyll_a"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "August 22\u201325, 2022 \u2014 DO <2 mg/L; mass fish kill (sturgeon, sharks, striped bass)",
+        "precursor_signal": "SFEI sonde network: DO declining ~July 25 (27 days before lethal levels)",
+        "source": "CA State Water Board press release Aug 2022; USGS CWSC Heterosigma study PMC70273277"
+      },
+      {
+        "event_id": "klamath_river_hab_2021",
+        "event_name": "Klamath River HAB \u2014 Copco Reservoir (2021)",
+        "location": "Klamath River, Copco/J.C. Boyle Reservoirs, CA/OR border",
+        "year": 2021,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 1224,
+        "primary_parameters": [
+          "ph",
+          "dissolved_oxygen",
+          "water_temperature",
+          "turbidity"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "major",
+        "official_advisory": "September 10, 2021 \u2014 full lake advisory (910 ppb microcystin; J.C. Boyle 18 ppb)",
+        "precursor_signal": "Mid-July: Karuk/Yurok tribal monitoring: Microcystis at monitoring stations; DO declining",
+        "source": "Oregon Health Authority advisory records; Klamath Tribes cyanobacteria page"
+      },
+      {
+        "event_id": "utah_lake_hab_2016",
+        "event_name": "Utah Lake HAB (Summer 2016, full-lake closure)",
+        "location": "Utah Lake, Utah County, Utah",
+        "year": 2016,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 672,
+        "lead_time_range_hours": [
+          504,
+          672
+        ],
+        "primary_parameters": [
+          "ph",
+          "dissolved_oxygen",
+          "turbidity",
+          "phycocyanin"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "major",
+        "official_advisory": "June 2016 \u2014 unprecedented full-lake closure; 100+ illness reports",
+        "precursor_signal": "May 2016: Utah DEQ continuous monitoring: TP/TN rising, phycocyanin up, temp >20\u00b0C",
+        "source": "University of Utah CEE HAB report; Utah DEQ HAB archives"
+      },
+      {
+        "event_id": "utah_lake_hab_2018",
+        "event_name": "Utah Lake HAB (Summer 2018)",
+        "location": "Utah Lake, Lincoln Beach and east shore, Utah",
+        "year": 2018,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 240,
+        "lead_time_range_hours": [
+          120,
+          336
+        ],
+        "primary_parameters": [
+          "phycocyanin",
+          "ph",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "major",
+        "official_advisory": "June 30, 2018 \u2014 Lincoln Beach closure and 'Danger' advisory",
+        "precursor_signal": "June 20: Dolichospermum measurable; June 25: 14\u00d7 higher (5 days before closure)",
+        "source": "Salt Lake Tribune June 30, 2018; Utah DEQ recreational monitoring archives"
+      },
+      {
+        "event_id": "mississippi_salinity_intrusion_2023",
+        "event_name": "Mississippi River Saltwater Intrusion (Fall 2023)",
+        "location": "Lower Mississippi River, Orleans/Plaquemines Parishes, Louisiana",
+        "year": 2023,
+        "event_type": "salinity_intrusion",
+        "lead_time_hours": 1200,
+        "primary_parameters": [
+          "specific_conductance",
+          "water_temperature",
+          "ph"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "catastrophic",
+        "official_advisory": "September 22, 2023 \u2014 Plaquemines Parish communities lost potable water",
+        "precursor_signal": "Late July: USGS continuous SpCond at >10 Lower Mississippi gauges showing chloride rise",
+        "source": "NBC News Oct 2023; GRL doi:10.1029/2024GL108545; Drought.gov Lower Mississippi dashboard"
+      },
+      {
+        "event_id": "delaware_river_salinity_2022",
+        "event_name": "Delaware River Estuary Saltwater Intrusion (2022\u20132023)",
+        "location": "Delaware River Estuary, Philadelphia region / southern NJ",
+        "year": 2022,
+        "event_type": "salinity_intrusion",
+        "lead_time_hours": 1080,
+        "lead_time_range_hours": [
+          720,
+          1440
+        ],
+        "primary_parameters": [
+          "specific_conductance",
+          "chloride",
+          "water_temperature"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "major",
+        "official_advisory": "DRBC salt front approaching 1.4M-person intake; formal warnings issued",
+        "precursor_signal": "Summer 2022: DRBC 82-station SpCond network tracking upstream salt front migration",
+        "source": "DRBC Salt Front page; USGS NGWOS Delaware River Basin; DRBC Dec 2025 technical report"
+      },
+      {
+        "event_id": "animas_river_amd_2015",
+        "event_name": "Animas River AMD Chronic Buildup (2015, pre-Gold King)",
+        "location": "Animas River / Cement Creek, Silverton to Farmington, CO/NM",
+        "year": 2015,
+        "event_type": "acid_mine_drainage",
+        "lead_time_hours": 720,
+        "primary_parameters": [
+          "ph",
+          "specific_conductance",
+          "turbidity",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "major",
+        "official_advisory": "August 5, 2015 (acute release); chronic buildup detectable weeks prior",
+        "precursor_signal": "pH 3.5\u20134.5 and metal loading rising in Cement Creek through spring/summer 2015",
+        "note": "SENTINEL applicable for CHRONIC trend only, not the acute August 5 release",
+        "source": "USGS Gold King Mine release page; EPA Emergency Response page; PMC5568564"
+      },
+      {
+        "event_id": "neuse_river_hypoxia_2020_2022",
+        "event_name": "Neuse River Estuary Hypoxia / Fish Kill (2020\u20132022)",
+        "location": "Neuse River Estuary, eastern North Carolina",
+        "year": 2022,
+        "event_type": "hypoxia",
+        "lead_time_hours": 1008,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "chlorophyll_a",
+          "water_temperature"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "Summer each year: NC DEQ fish kill reports; September 2023 formal monitoring",
+        "precursor_signal": "May\u2013June: bottom DO declining; NC State hypoxia forecast model predicts 6 weeks ahead",
+        "source": "NC Sea Grant Coastwatch Currents June 2022; NC DEQ press release Sept 2023"
+      },
+      {
+        "event_id": "jordan_lake_hab_nc",
+        "event_name": "Jordan Lake HAB / Cyanotoxins (2014\u20132016 recurring)",
+        "location": "Jordan Lake State Recreation Area, Chatham/Wake Counties, NC",
+        "year": 2016,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 720,
+        "lead_time_range_hours": [
+          480,
+          720
+        ],
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "ph",
+          "phycocyanin",
+          "nitrate"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "July\u2013Aug each year: NC DEQ recreational advisory when toxins exceed thresholds",
+        "precursor_signal": "April\u2013May: UNC Jordan Lake Observatory DO diurnal extremes (DO afternoon >130%, night <70%)",
+        "source": "PMC5848192; USGS SAWSC stratification study; Jordan Lake Observatory (jordanlakeobservatory.unc.edu)"
+      },
+      {
+        "event_id": "iowa_nitrate_crisis",
+        "event_name": "Raccoon/Des Moines River Nitrate Crisis (recurring 2013\u20132025)",
+        "location": "Raccoon River and Des Moines River, central Iowa",
+        "year": 2015,
+        "event_type": "agricultural_nitrate",
+        "lead_time_hours": 600,
+        "lead_time_range_hours": [
+          480,
+          720
+        ],
+        "primary_parameters": [
+          "nitrate_n",
+          "specific_conductance",
+          "turbidity",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "catastrophic",
+        "official_advisory": "2015: record 177 operating days of denitrification at DMWW ($1.5M cost)",
+        "precursor_signal": "March\u2013April: USGS NWIS 05482000 shows nitrate rising 3\u20134 weeks before MCL exceedance",
+        "source": "DMWW 2015 Denitrification Record; Iowa Public Radio; USGS NWIS 05482000"
+      },
+      {
+        "event_id": "chesapeake_bay_hypoxia_2018",
+        "event_name": "Chesapeake Bay Hypoxia (Summer 2018, above-average)",
+        "location": "Chesapeake Bay mainstem, Maryland/Virginia",
+        "year": 2018,
+        "event_type": "hypoxia",
+        "lead_time_hours": 2160,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "water_temperature",
+          "turbidity",
+          "nitrogen_flux"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "Late June 2018: Maryland DNR hypoxia cruise confirmed above-average volume",
+        "precursor_signal": "Jan\u2013May 2018: Susquehanna USGS stations show above-average spring N loading (90 days ahead)",
+        "source": "Maryland DNR Late July 2018 Hypoxia Report; USGS PA Water Science Center; CBP Oct 23, 2018"
+      },
+      {
+        "event_id": "green_bay_hypoxia",
+        "event_name": "Green Bay Lake Michigan Hypoxia (recurring 2009\u20132023)",
+        "location": "Southern Green Bay, Lake Michigan, Wisconsin",
+        "year": 2023,
+        "event_type": "hypoxia",
+        "lead_time_hours": 864,
+        "lead_time_range_hours": [
+          720,
+          1008
+        ],
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "water_temperature",
+          "total_phosphorus"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "major",
+        "official_advisory": "NCCOS-confirmed persistent summer hypoxia; DO <5 mg/L across ~500\u2013600 km\u00b2",
+        "precursor_signal": "May\u2013June each year: MMSD 23-year continuous DO monitoring (15-min intervals) tracks decline",
+        "source": "ScienceDirect doi:10.1016/j.jglr.2018...; NOAA NCCOS Green Bay Dead Zone project"
+      },
+      {
+        "event_id": "saginaw_bay_hab",
+        "event_name": "Saginaw Bay HAB (recurring annual 2012\u2013present)",
+        "location": "Saginaw Bay, Lake Huron, Michigan",
+        "year": 2023,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 420,
+        "lead_time_range_hours": [
+          336,
+          504
+        ],
+        "primary_parameters": [
+          "chlorophyll_a",
+          "phycocyanin",
+          "dissolved_oxygen",
+          "turbidity"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "Mid-July each year: NOAA cyanobacterial index triggers bloom-level detection",
+        "precursor_signal": "Late June/early July: NOAA GLERL/CIGLR biweekly sampling detects early Microcystis cells 14\u201321d ahead",
+        "source": "NOAA NCEI GLERL-CIGLR-HAB-SagBay; GLERL blog July 2024; NCCOS satellite monitoring"
+      },
+      {
+        "event_id": "hudson_river_hab_2025",
+        "event_name": "Hudson River Estuary HAB (August\u2013September 2025)",
+        "location": "Hudson River Estuary, Kingston to Norrie Point, New York (60-mile reach)",
+        "year": 2025,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 612,
+        "lead_time_range_hours": [
+          504,
+          720
+        ],
+        "primary_parameters": [
+          "phycocyanin",
+          "water_temperature",
+          "dissolved_oxygen",
+          "turbidity"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite",
+          "microbial"
+        ],
+        "severity": "major",
+        "official_advisory": "September 10, 2025 \u2014 Cary Institute reported; DEC issued advisories for affected reach",
+        "precursor_signal": "July\u2013Aug 2025: DEC/Cary monitoring elevated nutrients; rising temps; phytoplankton shifts",
+        "source": "Cary Institute press release Sept 10, 2025; NY DEC HAB Roadmap March 2026; NYSDEC 2025 factsheet"
+      },
+      {
+        "event_id": "clear_lake_hab_2024",
+        "event_name": "Clear Lake HAB (2024, 'Danger' advisory)",
+        "location": "Clear Lake, Lake County, California",
+        "year": 2024,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 720,
+        "primary_parameters": [
+          "dissolved_oxygen",
+          "phycocyanin",
+          "water_temperature",
+          "turbidity"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "July 2, 2024 \u2014 'Danger' advisory for Lower Arm and Oaks Arm (OEHHA threshold exceeded)",
+        "precursor_signal": "May\u2013June 2024: UC Davis hourly sensors show DO anomalies and phytoplankton fluorescence rising",
+        "source": "Gridley Herald July 2, 2024; CA Water Boards Clear Lake Nutrient Control Program; 2026 GeoHealth paper"
+      },
+      {
+        "event_id": "tar_creek_amd_oklahoma",
+        "event_name": "Tar Creek AMD \u2014 Tri-State Mining District (chronic)",
+        "location": "Tar Creek, Ottawa County, northeastern Oklahoma (EPA Superfund)",
+        "year": 2020,
+        "event_type": "acid_mine_drainage",
+        "lead_time_hours": 336,
+        "lead_time_range_hours": [
+          168,
+          504
+        ],
+        "primary_parameters": [
+          "ph",
+          "specific_conductance",
+          "dissolved_oxygen"
+        ],
+        "sentinel_modalities": [
+          "sensor"
+        ],
+        "severity": "catastrophic",
+        "official_advisory": "Continuous Superfund exceedances; cadmium 8\u00d7, lead 19\u00d7, zinc 83\u00d7 over OK standards",
+        "precursor_signal": "Rainfall events: pH drops within 24\u201372h; SpCond is continuous AMD loading indicator (1M gal/day discharge)",
+        "source": "EPA Superfund Site ID 0601269; USGS Picher mining area chemical analyses; USGS Mine Drainage page"
+      },
+      {
+        "event_id": "lake_winnebago_hab",
+        "event_name": "Lake Winnebago / Winnebago Pool HAB (recurring annual)",
+        "location": "Lake Winnebago and Winnebago Pool, Wisconsin",
+        "year": 2023,
+        "event_type": "harmful_algal_bloom",
+        "lead_time_hours": 600,
+        "lead_time_range_hours": [
+          480,
+          720
+        ],
+        "primary_parameters": [
+          "total_phosphorus",
+          "dissolved_oxygen",
+          "turbidity",
+          "phycocyanin"
+        ],
+        "sentinel_modalities": [
+          "sensor",
+          "satellite"
+        ],
+        "severity": "major",
+        "official_advisory": "Wisconsin DNR blue-green algae advisories each summer (drinking water source for 4 cities)",
+        "precursor_signal": "May\u2013June: NOAA satellite cyanobacterial index detects rising signal; USGS tracks Fox/Wolf River P loading",
+        "source": "NOAA NCCOS satellite monitoring; USGS Winnebago pool lakes study; Wisconsin DNR Blue-Green Algae page"
+      }
+    ]
+  },
+  "live_crises": [
+    {
+      "crisis_id": "lake_okeechobee_2026_active",
+      "crisis_name": "Lake Okeechobee Blue-Green HAB (ACTIVE, April 2026)",
+      "location": "Lake Okeechobee, Florida",
+      "status": "ACTIVE",
+      "status_date": "2026-04-13",
+      "sentinel_modalities": [
+        "sensor",
+        "satellite"
+      ],
+      "data_sources": [
+        "SFWMD continuous sonde network",
+        "Sentinel-2 satellite"
+      ],
+      "action": "AquaSSM can ingest SFWMD live sensor streams. HydroViT phycocyanin proxy can monitor bloom extent.",
+      "source": "DOH-Palm Beach advisory March 20, 2026; SFWMD Algal Bloom Dashboard"
+    },
+    {
+      "crisis_id": "iowa_nitrate_2026_ongoing",
+      "crisis_name": "Iowa Rivers Nitrate Crisis (ONGOING, Spring 2026)",
+      "location": "Raccoon River and Des Moines River, Iowa",
+      "status": "ONGOING",
+      "status_date": "2026-04-13",
+      "sentinel_modalities": [
+        "sensor"
+      ],
+      "data_sources": [
+        "USGS NWIS 05482000 (Des Moines River)",
+        "USGS NWIS 05484500 (Raccoon River)"
+      ],
+      "action": "AquaSSM spring nitrate loading model can provide 3\u20134 week advance warning for DMWW treatment capacity.",
+      "source": "Iowa Capital Dispatch Dec 2025; US News April 1, 2026; DMWW Stage III protocols"
+    },
+    {
+      "crisis_id": "chesapeake_hypoxia_2026",
+      "crisis_name": "Chesapeake Bay Hypoxia (2026 Season Starting)",
+      "location": "Chesapeake Bay mainstem, MD/VA",
+      "status": "UPCOMING",
+      "status_date": "2026-04-13",
+      "sentinel_modalities": [
+        "sensor",
+        "satellite"
+      ],
+      "data_sources": [
+        "Maryland DNR biweekly hypoxia cruises",
+        "NOAA Chesapeake Bay buoys"
+      ],
+      "action": "90-day spring nitrogen loading precursor already detectable via Susquehanna USGS stations.",
+      "source": "Maryland DNR Dec 3, 2025 report; VIMS 2025 Chesapeake dead zone assessment"
+    },
+    {
+      "crisis_id": "gulf_hypoxia_2026",
+      "crisis_name": "Gulf of Mexico Hypoxia (2026 Season, May Onset)",
+      "location": "Northern Gulf of Mexico (mouth of Mississippi/Atchafalaya)",
+      "status": "UPCOMING",
+      "status_date": "2026-04-13",
+      "sentinel_modalities": [
+        "sensor",
+        "satellite"
+      ],
+      "data_sources": [
+        "USGS Mississippi River nutrient monitoring",
+        "NOAA NCCOS ASV sensor streams"
+      ],
+      "action": "Spring 2026 Mississippi loading data already available. SENTINEL can forecast dead zone size 60\u201390 days ahead.",
+      "source": "NOAA NCCOS 'Below Average Summer 2025 Dead Zone'; Friends of the Mississippi River 2025 report"
+    },
+    {
+      "crisis_id": "pfas_national_2026",
+      "crisis_name": "PFAS National Contamination Wave (ESCALATING, 2025\u20132026)",
+      "location": "Nationwide (9,728 confirmed sites as of March 2026)",
+      "status": "ESCALATING",
+      "status_date": "2026-04-13",
+      "sentinel_modalities": [
+        "microbial",
+        "molecular"
+      ],
+      "data_sources": [
+        "EPA UCMR 5 data (March 2026)",
+        "EWG PFAS Contamination Map"
+      ],
+      "action": "NOVEL USE CASE: Standard sensors cannot detect PFAS. MicroBiomeNet microbiome shifts and ToxiGene transcriptomic patterns can serve as indirect PFAS biomarkers.",
+      "source": "EPA UCMR 5 press release March 2026; MDPI Gunpowder River PFAS study Jan 2026; EWG map"
+    },
+    {
+      "crisis_id": "california_hab_escalation_2026",
+      "crisis_name": "California Statewide HAB Escalation (ESCALATING TREND)",
+      "location": "50+ lakes/reservoirs statewide, California",
+      "status": "ESCALATING",
+      "status_date": "2026-04-13",
+      "sentinel_modalities": [
+        "sensor",
+        "satellite"
+      ],
+      "data_sources": [
+        "UC Davis Clear Lake 5-year hourly sensors",
+        "CA SWAMP CyanoHABs program"
+      ],
+      "action": "2026 GeoHealth paper provides statewide validation dataset. Clear Lake's hourly AIS-style data is ideal for AquaSSM.",
+      "source": "GeoHealth doi:10.1029/2025GH001627; CA Water Boards SWAMP CyanoHABs; UC Davis Clear Lake monitoring"
+    },
+    {
+      "crisis_id": "hudson_river_hab_2026",
+      "crisis_name": "Hudson River HAB 2026 Season (APPROACHING)",
+      "location": "Hudson River Estuary, New York",
+      "status": "APPROACHING",
+      "status_date": "2026-04-13",
+      "sentinel_modalities": [
+        "sensor",
+        "microbial"
+      ],
+      "data_sources": [
+        "NY DEC continuous water quality network",
+        "Cary Institute monitoring"
+      ],
+      "action": "DEC HAB Roadmap (March 2026) creates direct policy partnership opportunity. MicroBiomeNet can characterize bloom microbiome. 2025 patterns inform 2026 early warning threshold calibration.",
+      "source": "Cary Institute Sept 2025; NY DEC HAB Roadmap March 2026; NYSDEC 2025 factsheet"
+    }
+  ],
+  "elapsed_s": 0.01
+}
