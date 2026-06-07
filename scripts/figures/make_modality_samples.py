@@ -109,68 +109,77 @@ HABITAT_ORDER = ["freshwater_natural", "freshwater_impacted", "freshwater_sedime
                  "plant_associated", "animal_fecal"]
 
 
-def _confidence_ellipse(x, y, ax, n_std=2.0, **kw):
-    """Draw an n_std covariance ellipse for a point cloud."""
-    from matplotlib.patches import Ellipse
-    import matplotlib.transforms as transforms
-    if x.size < 3:
-        return
-    cov = np.cov(x, y)
-    pear = cov[0, 1] / (np.sqrt(cov[0, 0] * cov[1, 1]) + 1e-12)
-    rx, ry = np.sqrt(1 + pear), np.sqrt(1 - pear)
-    ell = Ellipse((0, 0), width=rx * 2, height=ry * 2, **kw)
-    sx, sy = np.sqrt(cov[0, 0]) * n_std, np.sqrt(cov[1, 1]) * n_std
-    tr = (transforms.Affine2D().rotate_deg(45).scale(sx, sy)
-          .translate(x.mean(), y.mean()))
-    ell.set_transform(tr + ax.transData)
-    ax.add_patch(ell)
+def make_microbial(n_leaves=190):
+    """Circular cladogram of the real 16S rRNA OTUs.
 
-
-def make_microbial():
-    """16S rRNA communities are too high-dimensional/diverse to read as a heatmap.
-    We instead show a supervised ordination (CLR → PCA → LDA): each point is one
-    real EMP water sample's microbiome, and the eight aquatic source classes
-    separate into distinct regions — exactly the signal MicroBiomeNet classifies."""
-    from sklearn.decomposition import PCA
-    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+    The dominant OTUs are clustered by 16S sequence similarity (Hamming distance,
+    average linkage) and drawn as a radial tree; the outer ring colors each
+    taxon by the aquatic source habitat where it is most abundant. This shows
+    both the phylogenetic breadth of the community and its habitat structure —
+    far more legible than a sparse OTU heatmap."""
+    from scipy.cluster.hierarchy import linkage, dendrogram
+    from scipy.spatial.distance import pdist
+    from matplotlib.patches import Wedge, Patch
     base = "data/processed/microbial/emp_16s"
-    X, y = [], []
+    seqs = np.load(os.path.join(base, "selected_otu_ids.npy"), allow_pickle=True)
+    # mean relative abundance per habitat
+    acc = {h: [] for h in HABITAT_ORDER}
     for fn in os.listdir(base):
         if not fn.endswith(".npz"):
             continue
         dd = np.load(os.path.join(base, fn), allow_pickle=True)
-        hab = str(dd["source_name"])
-        if hab in HABITAT_ORDER:
-            X.append(np.asarray(dd["abundances"], np.float32))
-            y.append(HABITAT_ORDER.index(hab))
-    X, y = np.array(X), np.array(y)
-    # CLR transform (Aitchison geometry — MicroBiomeNet's native space)
-    Xp = X + 1e-6
-    Xp = Xp / Xp.sum(1, keepdims=True)
-    clr = np.log(Xp) - np.log(Xp).mean(1, keepdims=True)
-    p = PCA(50, random_state=0).fit_transform(clr)
-    Z = LDA(n_components=2).fit_transform(p, y)
+        h = str(dd["source_name"])
+        if h in acc:
+            acc[h].append(np.asarray(dd["abundances"], np.float32))
+    Mh = np.stack([np.mean(acc[h], 0) for h in HABITAT_ORDER])
+    Mh = Mh / Mh.sum(1, keepdims=True)
+    sel = np.argsort(Mh.mean(0))[::-1][:n_leaves]      # most prevalent OTUs
+    dom = Mh[:, sel].argmax(0)                          # dominant habitat / OTU
+    # Hamming distance on the 90-bp 16S reads -> UPGMA tree
+    mp = {"A": 0, "C": 1, "G": 2, "T": 3}
+    S = np.array([[mp[c] for c in seqs[i]] for i in sel])
+    Z = linkage(pdist(S, metric="hamming"), method="average")
+    dn = dendrogram(Z, no_plot=True)
+    ic, dc = np.array(dn["icoord"]), np.array(dn["dcoord"])
+    order = dn["leaves"]
+    ymax, xmax = dc.max(), 10 * n_leaves
+    GAP, R0, R1 = 0.16, 0.16, 1.0
+
+    def th(x):
+        return (np.pi / 2) - (1 - GAP) * 2 * np.pi * x / xmax
+
+    def rr(y):
+        return R1 - (y / ymax) * (R1 - R0)
+
+    def xy(x, y):
+        return rr(y) * np.cos(th(x)), rr(y) * np.sin(th(x))
 
     colors = plt.cm.tab10(np.linspace(0, 1, len(HABITAT_ORDER)))
-    fig, ax = plt.subplots(figsize=(14, 11))
-    for i, h in enumerate(HABITAT_ORDER):
-        m = y == i
-        if not m.any():
-            continue
-        ax.scatter(Z[m, 0], Z[m, 1], s=38, color=colors[i], alpha=0.45,
-                   edgecolors="none", label=h.replace("_", " "))
-        _confidence_ellipse(Z[m, 0], Z[m, 1], ax, n_std=2.0,
-                            facecolor="none", edgecolor=colors[i], lw=2.5)
-    ax.set_xlabel("LD1", fontsize=AXLAB)
-    ax.set_ylabel("LD2", fontsize=AXLAB)
-    ax.tick_params(labelsize=TICK)
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-    ax.legend(fontsize=16, loc="best", frameon=True, markerscale=2.0)
-    plt.subplots_adjust(left=0.11, right=0.97, top=0.97, bottom=0.10)
+    fig, ax = plt.subplots(figsize=(12, 12.5))
+    ax.set_aspect("equal"); ax.axis("off")
+    for xs, ys in zip(ic, dc):
+        (x1, _, x3, x4), (y1, y2, _, y4) = xs, ys
+        ax.plot(*zip(xy(x1, y1), xy(x1, y2)), color="0.35", lw=0.9)
+        ax.plot(*zip(xy(x4, y4), xy(x4, y2)), color="0.35", lw=0.9)
+        ts = np.linspace(th(x1), th(x3), 24)
+        r = rr(y2)
+        ax.plot(r * np.cos(ts), r * np.sin(ts), color="0.35", lw=0.9)
+    leaf_x = np.array([5 + 10 * i for i in range(n_leaves)])
+    ang = np.degrees(th(leaf_x))
+    half = np.degrees((1 - GAP) * 2 * np.pi / xmax) * 5
+    for k, i in enumerate(order):
+        ax.add_patch(Wedge((0, 0), 1.15, ang[k] - half, ang[k] + half,
+                           width=0.11, facecolor=colors[dom[i]], edgecolor="none"))
+    ax.set_xlim(-1.25, 1.25); ax.set_ylim(-1.45, 1.25)
+    leg = [Patch(facecolor=colors[i], label=HABITAT_ORDER[i].replace("_", " "))
+           for i in range(len(HABITAT_ORDER))]
+    ax.legend(handles=leg, fontsize=15, loc="lower center", frameon=False,
+              ncol=4, bbox_to_anchor=(0.5, -0.02), columnspacing=1.2,
+              handletextpad=0.4)
+    plt.subplots_adjust(0, 0.04, 1, 1)
     fig.savefig(f"{OUT}/modality_microbial.png", dpi=200, facecolor="white")
     plt.close(fig)
-    print("wrote modality_microbial.png (16S source ordination)")
+    print("wrote modality_microbial.png (16S circular cladogram)")
 
 
 # --------------------------------------------------------------------------
