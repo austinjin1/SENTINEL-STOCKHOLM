@@ -86,3 +86,9 @@ texput.log
 demo/node_modules/
 demo/dist/
 demo/.vite/
+
+# Internal case-study analysis (kept local, not published)
+results/case_studies_v3/CASE_STUDY_TESTING_METHODOLOGY.md
+results/case_studies_v3/case_studies_v3_REAL_inference.json
+results/case_studies_v3/case_studies_v3_OLD_hardcoded_paper.json
+scripts/evaluation/reeval_case_studies_31.py
