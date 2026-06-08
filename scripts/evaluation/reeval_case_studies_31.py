@@ -65,10 +65,19 @@ THRESH = 0.10
 
 def run_one(model, head, ev_id, site, advisory, pre, post):
     from datetime import timedelta
+    import time
     adv = datetime.strptime(advisory, "%Y-%m-%d")
     start = (adv - timedelta(days=pre)).strftime("%Y-%m-%d")
     end = (adv + timedelta(days=post)).strftime("%Y-%m-%d")
-    df = cs.fetch_usgs_iv(site, start, end)
+    df = None
+    for attempt in range(4):                      # retry transient USGS failures
+        try:
+            df = cs.fetch_usgs_iv(site, start, end)
+        except Exception:
+            df = None
+        if df is not None and len(df) >= 200:
+            break
+        time.sleep(3)
     if df is None or len(df) < 200:
         return {"event_id": ev_id, "usgs_site": site, "tested": False,
                 "reason": "no/insufficient USGS IV data", "n_records": 0 if df is None else len(df)}
