@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "On real sensor embeddings the held-out conformal coverage at alpha=0.05 is 0.9367 — the 95% guarantee is NOT met (coverage_guarantee_met=false here and in real_conformal_results.json). Do not report this as '0.95' or '94% coverage' success. Microbial/satellite calibration sets here are tiny (n=23/55) and their coverage values are not reliable.",
   "alpha_levels": [
     0.05,
     0.1

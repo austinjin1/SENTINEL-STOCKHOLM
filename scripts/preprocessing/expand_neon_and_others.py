@@ -422,7 +422,7 @@ def download_gbif_freshwater():
 
 # ─────────────────────────────────────────────────────
 # OpenAQ - air quality near water monitoring (proxy sensor)
-# Actually: Let's get more WQP data - by state, more history
+# Pull more WQP data by state for longer history
 # ─────────────────────────────────────────────────────
 def download_more_wqp_by_state():
     out_dir = BASE / 'epa_wqp_states'

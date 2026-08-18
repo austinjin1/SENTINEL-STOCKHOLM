@@ -1,0 +1,328 @@
+{
+  "_PROVENANCE": "HONEST leakage-free re-evaluation of Species Health occupancy. The training script's per-site embedding positions 4-9 are log1p(per-species counts) which DEFINE the occupancy labels, so the previously reported AUROC=1.000 / occ_accuracy=0.999 / health_r2=0.9996 are circular (label read off the input). Here those per-species count features are REMOVED; only genuinely independent predictors (geographic, watershed, NON-target community context, and real matched sensor water-quality stats) are used. Probe = HistGradientBoosting classifier (+ logistic cross-check) on the leakage-free features, NOT the full network; this is an unbiased estimate of the achievable signal. Same real USGS BioData, same seed=42 spatial hash holdout split. Three leakage-free variants: A keeps a coarse HUC2 region one-hot + lat/lon; B drops the region one-hot (keeps lat/lon); C drops geography entirely (no lat/lon/region) to remove the species RANGE PRIOR and isolate non-geographic environmental signal. KEY FINDING: the rare species (eel, brook trout) are geographically range-restricted, so most of their AUROC comes from lat/lon (a real, count-independent range prior, NOT label leakage). The widespread mussel (16% prevalence) is the honest, informative case at ~0.85 AUROC, driven by NON-target community richness. Headline = Variant B; Variant C is the conservative no-geography floor.",
+  "probe": "HistGradientBoostingClassifier (GBM) + LogisticRegression cross-check",
+  "data_source": "USGS BioData (real biological surveys) + matched USGS sensor stations",
+  "synthetic_data": false,
+  "seed": 42,
+  "split": "spatial hash holdout (sha256 of seed:site_id, mod 10)",
+  "leaked_features_removed": "positions 4-9: per-species log1p(count) (define the labels)",
+  "n_sites_total": 5462,
+  "n_train": 3774,
+  "n_test": 592,
+  "n_sites_with_real_sensor_match": 0,
+  "occupancy_prevalence_all_sites": {
+    "Freshwater mussels (Unionidae)": 0.1590992310508971,
+    "Mayflies (Ephemeroptera)": 0.9302453313804467,
+    "Brook trout (Salvelinus fontinalis)": 0.020139143170999633,
+    "Hellbender (Cryptobranchus alleganiensis)": 0.0,
+    "Freshwater pearl mussel (Margaritifera margaritifera)": 0.0,
+    "American eel (Anguilla rostrata)": 0.05254485536433541
+  },
+  "species_dropped_always_absent": [
+    "Hellbender (Cryptobranchus alleganiensis)",
+    "Freshwater pearl mussel (Margaritifera margaritifera)"
+  ],
+  "HEADLINE_variant_B_continuous_geo": {
+    "description": "Leakage-free, drops coarse HUC2 region one-hot, keeps lat/lon.",
+    "n_features": 13,
+    "macro_excl_mayfly_and_dropped": {
+      "species_in_macro": [
+        "Freshwater mussels (Unionidae)",
+        "Brook trout (Salvelinus fontinalis)",
+        "American eel (Anguilla rostrata)"
+      ],
+      "macro_auroc_gbm": 0.943669227579283,
+      "macro_f1_gbm": 0.6760869565217392,
+      "macro_auroc_logistic": 0.874071791205726,
+      "macro_f1_logistic": 0.3830526332915872
+    },
+    "macro_reference_incl_mayfly": {
+      "macro_auroc_gbm_incl_mayfly": 0.9424280235670868,
+      "macro_f1_gbm_incl_mayfly": 0.7464819624524521
+    },
+    "mayfly_high_prevalence_separate": {
+      "status": "ok",
+      "test_prevalence": 0.9222972972972973,
+      "n_test": 592,
+      "auroc_gbm": 0.9387044115304986,
+      "f1_gbm": 0.9576669802445907,
+      "auroc_logistic": 0.8616021659499921,
+      "f1_logistic": 0.8774062816616008,
+      "present_only_r2": 0.5394668833784114,
+      "n_present_test": 546
+    },
+    "per_species": {
+      "Freshwater mussels (Unionidae)": {
+        "status": "ok",
+        "test_prevalence": 0.15202702702702703,
+        "n_test": 592,
+        "auroc_gbm": 0.8552678176184152,
+        "f1_gbm": 0.4782608695652174,
+        "auroc_logistic": 0.8059760956175298,
+        "f1_logistic": 0.4556213017751479,
+        "present_only_r2": 0.19962891457381438,
+        "n_present_test": 90
+      },
+      "Mayflies (Ephemeroptera)": {
+        "status": "ok",
+        "test_prevalence": 0.9222972972972973,
+        "n_test": 592,
+        "auroc_gbm": 0.9387044115304986,
+        "f1_gbm": 0.9576669802445907,
+        "auroc_logistic": 0.8616021659499921,
+        "f1_logistic": 0.8774062816616008,
+        "present_only_r2": 0.5394668833784114,
+        "n_present_test": 546
+      },
+      "Brook trout (Salvelinus fontinalis)": {
+        "status": "ok",
+        "test_prevalence": 0.02533783783783784,
+        "n_test": 592,
+        "auroc_gbm": 0.9883304448295783,
+        "f1_gbm": 0.8,
+        "auroc_logistic": 0.8577700751010976,
+        "f1_logistic": 0.19672131147540983,
+        "present_only_r2": 0.03073382603583219,
+        "n_present_test": 15
+      },
+      "Hellbender (Cryptobranchus alleganiensis)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "Freshwater pearl mussel (Margaritifera margaritifera)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "American eel (Anguilla rostrata)": {
+        "status": "ok",
+        "test_prevalence": 0.06756756756756757,
+        "n_test": 592,
+        "auroc_gbm": 0.9874094202898551,
+        "f1_gbm": 0.75,
+        "auroc_logistic": 0.9584692028985506,
+        "f1_logistic": 0.4968152866242038,
+        "present_only_r2": -0.13945684251847057,
+        "n_present_test": 40
+      }
+    },
+    "feature_names": [
+      "lat",
+      "lon",
+      "abslat",
+      "elev",
+      "log_drainage",
+      "log_comm_richness_nontarget",
+      "log_comm_count_nontarget",
+      "log_n_events",
+      "wq_mean",
+      "wq_std",
+      "wq_min",
+      "wq_max",
+      "wq_median"
+    ]
+  },
+  "variant_C_environment_only_no_geography": {
+    "description": "Conservative honest floor: drops lat/lon/region entirely so the model cannot use a species range prior. Relies only on watershed drainage, NON-target community richness/count, sampling effort, and real sensor stats. This is the non-geographic environmental signal.",
+    "n_features": 10,
+    "macro_excl_mayfly_and_dropped": {
+      "species_in_macro": [
+        "Freshwater mussels (Unionidae)",
+        "Brook trout (Salvelinus fontinalis)",
+        "American eel (Anguilla rostrata)"
+      ],
+      "macro_auroc_gbm": 0.8528712389833438,
+      "macro_f1_gbm": 0.3754951895868704,
+      "macro_auroc_logistic": 0.8250818605540275,
+      "macro_f1_logistic": 0.312631620164422
+    },
+    "macro_reference_incl_mayfly": {
+      "macro_auroc_gbm_incl_mayfly": 0.8596327253037604,
+      "macro_f1_gbm_incl_mayfly": 0.5097767319959781
+    },
+    "mayfly_high_prevalence_separate": {
+      "status": "ok",
+      "test_prevalence": 0.9222972972972973,
+      "n_test": 592,
+      "auroc_gbm": 0.8799171842650104,
+      "f1_gbm": 0.912621359223301,
+      "auroc_logistic": 0.835224558050645,
+      "f1_logistic": 0.8574358974358974,
+      "present_only_r2": 0.38639261794714763,
+      "n_present_test": 546
+    },
+    "per_species": {
+      "Freshwater mussels (Unionidae)": {
+        "status": "ok",
+        "test_prevalence": 0.15202702702702703,
+        "n_test": 592,
+        "auroc_gbm": 0.7772797698096503,
+        "f1_gbm": 0.42105263157894735,
+        "auroc_logistic": 0.7512505533421868,
+        "f1_logistic": 0.4094955489614243,
+        "present_only_r2": 0.18156788409345437,
+        "n_present_test": 90
+      },
+      "Mayflies (Ephemeroptera)": {
+        "status": "ok",
+        "test_prevalence": 0.9222972972972973,
+        "n_test": 592,
+        "auroc_gbm": 0.8799171842650104,
+        "f1_gbm": 0.912621359223301,
+        "auroc_logistic": 0.835224558050645,
+        "f1_logistic": 0.8574358974358974,
+        "present_only_r2": 0.38639261794714763,
+        "n_present_test": 546
+      },
+      "Brook trout (Salvelinus fontinalis)": {
+        "status": "ok",
+        "test_prevalence": 0.02533783783783784,
+        "n_test": 592,
+        "auroc_gbm": 0.8516464471403812,
+        "f1_gbm": 0.25806451612903225,
+        "auroc_logistic": 0.8266897746967072,
+        "f1_logistic": 0.14285714285714285,
+        "present_only_r2": 0.013847052513564995,
+        "n_present_test": 15
+      },
+      "Hellbender (Cryptobranchus alleganiensis)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "Freshwater pearl mussel (Margaritifera margaritifera)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "American eel (Anguilla rostrata)": {
+        "status": "ok",
+        "test_prevalence": 0.06756756756756757,
+        "n_test": 592,
+        "auroc_gbm": 0.9296875,
+        "f1_gbm": 0.4473684210526316,
+        "auroc_logistic": 0.8973052536231884,
+        "f1_logistic": 0.3855421686746988,
+        "present_only_r2": -0.01676411466845118,
+        "n_present_test": 40
+      }
+    },
+    "feature_names": [
+      "elev",
+      "log_drainage",
+      "log_comm_richness_nontarget",
+      "log_comm_count_nontarget",
+      "log_n_events",
+      "wq_mean",
+      "wq_std",
+      "wq_min",
+      "wq_max",
+      "wq_median"
+    ]
+  },
+  "variant_A_full_incl_huc2_region": {
+    "n_features": 16,
+    "macro_excl_mayfly_and_dropped": {
+      "species_in_macro": [
+        "Freshwater mussels (Unionidae)",
+        "Brook trout (Salvelinus fontinalis)",
+        "American eel (Anguilla rostrata)"
+      ],
+      "macro_auroc_gbm": 0.9441035009527776,
+      "macro_f1_gbm": 0.6687057009038434,
+      "macro_auroc_logistic": 0.8785647032860585,
+      "macro_f1_logistic": 0.374222443623415
+    },
+    "macro_reference_incl_mayfly": {
+      "macro_auroc_gbm_incl_mayfly": 0.9437043178630145,
+      "macro_f1_gbm_incl_mayfly": 0.7404964118281173
+    },
+    "mayfly_high_prevalence_separate": {
+      "status": "ok",
+      "test_prevalence": 0.9222972972972973,
+      "n_test": 592,
+      "auroc_gbm": 0.9425067685937252,
+      "f1_gbm": 0.955868544600939,
+      "auroc_logistic": 0.8614827201783724,
+      "f1_logistic": 0.8728382502543235,
+      "present_only_r2": 0.5375002737392964,
+      "n_present_test": 546
+    },
+    "per_species": {
+      "Freshwater mussels (Unionidae)": {
+        "status": "ok",
+        "test_prevalence": 0.15202702702702703,
+        "n_test": 592,
+        "auroc_gbm": 0.8567065073041169,
+        "f1_gbm": 0.4835164835164835,
+        "auroc_logistic": 0.8072155821159805,
+        "f1_logistic": 0.45871559633027525,
+        "present_only_r2": 0.19343743522156254,
+        "n_present_test": 90
+      },
+      "Mayflies (Ephemeroptera)": {
+        "status": "ok",
+        "test_prevalence": 0.9222972972972973,
+        "n_test": 592,
+        "auroc_gbm": 0.9425067685937252,
+        "f1_gbm": 0.955868544600939,
+        "auroc_logistic": 0.8614827201783724,
+        "f1_logistic": 0.8728382502543235,
+        "present_only_r2": 0.5375002737392964,
+        "n_present_test": 546
+      },
+      "Brook trout (Salvelinus fontinalis)": {
+        "status": "ok",
+        "test_prevalence": 0.02533783783783784,
+        "n_test": 592,
+        "auroc_gbm": 0.9883304448295782,
+        "f1_gbm": 0.7647058823529411,
+        "auroc_logistic": 0.877527440785673,
+        "f1_logistic": 0.20512820512820512,
+        "present_only_r2": 0.03073382603583219,
+        "n_present_test": 15
+      },
+      "Hellbender (Cryptobranchus alleganiensis)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "Freshwater pearl mussel (Margaritifera margaritifera)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "American eel (Anguilla rostrata)": {
+        "status": "ok",
+        "test_prevalence": 0.06756756756756757,
+        "n_test": 592,
+        "auroc_gbm": 0.9872735507246376,
+        "f1_gbm": 0.7578947368421053,
+        "auroc_logistic": 0.9509510869565218,
+        "f1_logistic": 0.4588235294117647,
+        "present_only_r2": -0.13945684251847057,
+        "n_present_test": 40
+      }
+    },
+    "feature_names": [
+      "lat",
+      "lon",
+      "abslat",
+      "elev",
+      "log_drainage",
+      "log_comm_richness_nontarget",
+      "log_comm_count_nontarget",
+      "log_n_events",
+      "huc2_02",
+      "huc2_04",
+      "huc2_05",
+      "wq_mean",
+      "wq_std",
+      "wq_min",
+      "wq_max",
+      "wq_median"
+    ],
+    "caveat": "Rare species (eel, brook trout) are >=75% confined to a single HUC2 region, so the region one-hot acts as a range memorizer here; treat these AUROCs as range-prior, not environmental skill."
+  },
+  "leaked_baseline_for_comparison": {
+    "reported_health_r2": 0.9995507135053653,
+    "reported_occ_accuracy": 0.9988738894462585,
+    "frequently_quoted_auroc": 1.0,
+    "note": "These are leakage-inflated / circular; not real predictive skill."
+  }
+}

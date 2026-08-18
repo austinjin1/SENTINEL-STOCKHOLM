@@ -1,0 +1,85 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Honest replacement for the QUARANTINED hydrovit_holdout water_temp R2=0.893 (computed on FABRICATED augmented targets in paired_wq_v5.npz, now absent).",
+    "data": "data/processed/satellite/drone_wq_pairs.npz",
+    "data_description": "REAL Sentinel-2 L2A tiles (B02,B03,B04,B08) paired with REAL same-day in-situ USGS/NWIS water-quality measurements.",
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site_id) holdout \u2014 no station shared across train/val/test; model cannot memorize site identity.",
+    "standardization": "targets + bands standardized on TRAIN only",
+    "nan_handling": "NaN targets masked from loss and per-param metrics"
+  },
+  "model": "HydroViT (ViT-S/16, timm) + multi-head WQ regressor",
+  "backbone": "HydroViTBackbone, in_chans=4, ImageNet-pretrained adapted",
+  "n_params": 24020549,
+  "n_stations": {
+    "train": 265,
+    "val": 57,
+    "test": 57
+  },
+  "n_tiles": {
+    "train": 8564,
+    "val": 1647,
+    "test": 1789
+  },
+  "target_names": [
+    "DO",
+    "pH",
+    "Turb",
+    "Temp",
+    "SpCond"
+  ],
+  "bands": [
+    "B02",
+    "B03",
+    "B04",
+    "B08"
+  ],
+  "epochs": 40,
+  "batch_size": 96,
+  "best_val_mean_r2_standardized": 0.3963,
+  "per_param": {
+    "DO": {
+      "r2": 0.5818,
+      "mae": 1.2398,
+      "n_test_valid": 1665,
+      "baseline_mean_r2": -0.001
+    },
+    "pH": {
+      "r2": 0.3109,
+      "mae": 0.3636,
+      "n_test_valid": 1520,
+      "baseline_mean_r2": -0.0053
+    },
+    "Turb": {
+      "r2": -0.0054,
+      "mae": 12.2854,
+      "n_test_valid": 1318,
+      "baseline_mean_r2": -0.0001
+    },
+    "Temp": {
+      "r2": 0.7286,
+      "mae": 3.0347,
+      "n_test_valid": 1786,
+      "baseline_mean_r2": -0.0
+    },
+    "SpCond": {
+      "r2": 0.5896,
+      "mae": 1951.8627,
+      "n_test_valid": 1750,
+      "baseline_mean_r2": -0.0019
+    }
+  },
+  "mean_r2_test": 0.4411,
+  "water_temp_r2_test": 0.7286,
+  "water_temp_baseline_mean_r2": -0.0,
+  "quarantined_for_comparison": {
+    "water_temp_r2": 0.8927,
+    "mean_r2": 0.6524,
+    "note": "FABRICATED augmented targets \u2014 NOT comparable; for context only."
+  },
+  "checkpoint": "checkpoints/satellite/hydrovit_wq_real.pt",
+  "elapsed_seconds": 578.0,
+  "quick_mode": false
+}

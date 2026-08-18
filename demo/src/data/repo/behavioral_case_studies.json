@@ -1,9 +1,13 @@
 {
-  "model": "BioMotion (TrajectoryDiffusionEncoder + AnomalyClassifier)",
+  "_PROVENANCE": "RETRACTED headline framing. BioMotion is a toxicity-ENDPOINT classifier on real EPA ECOTOX data, NOT animal/Daphnia trajectory tracking. The real AUROC is 0.807. The published_test_auroc 0.9999 / published_test_f1 0.9989 and the n_real_trajectories=17074 trajectory framing are not validated and are retracted. Per-case real_data_anomaly_detection_rate values (≈1.0) are not validated detection.",
+  "model": "BioMotion (toxicity-endpoint classifier on real EPA ECOTOX)",
   "checkpoint": "biomotion_expanded_best.pt",
-  "published_test_auroc": 0.9999995590158115,
+  "published_test_auroc": 0.807,
+  "_published_test_auroc_note": "REPLACED. Was 0.9999 (retracted). Real AUROC = 0.807 on real EPA ECOTOX endpoint data.",
   "published_test_f1": 0.9989401165871754,
+  "_published_test_f1_note": "RETRACTED — derived from the same synthetic trajectory framing; not validated.",
   "n_real_trajectories": 17074,
+  "_n_real_trajectories_note": "RETRACTED — BioMotion does not track trajectories; it classifies ECOTOX toxicity endpoints.",
   "baseline_overall_detection_rate": 0.26127445238374136,
   "case_studies": [
     {

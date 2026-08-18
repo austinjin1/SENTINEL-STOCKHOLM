@@ -1,0 +1,128 @@
+{
+  "_SUPERSEDED_BY": "fusion_results_v2.json + gbm_fusion_chl.json. This run used a linear-projection fusion that UNDERFIT (sensor-only forecast 0.54). The strengthened result: satellite spectral band-ratios 0.70 on chl-a (strongest single modality, up from 0.55); fusion 0.70 matches but does not beat best single. The DO-forecast AUROCs here are persistence-dominated (current-DO rule alone 0.99) — not a fusion discriminator. See forecast_persistence_check.json.",
+  "device": "cuda",
+  "epochs": 60,
+  "seeds": [
+    0,
+    1
+  ],
+  "tasks": {
+    "chl_gt8": {
+      "n": 362,
+      "pos": 52,
+      "n_sites": 33,
+      "fusion": {
+        "auroc": 0.6330645161290321,
+        "ci95": [
+          0.546783768752088,
+          0.7193452635059763
+        ],
+        "pr_auc": 0.26129936258252195
+      },
+      "sensor": {
+        "auroc": 0.6521712158808933,
+        "ci95": [
+          0.5663841890701395,
+          0.7379582426916471
+        ],
+        "pr_auc": 0.2798617564869085
+      },
+      "sat": {
+        "auroc": 0.5477047146401985,
+        "ci95": [
+          0.4613782934118113,
+          0.6340311358685857
+        ],
+        "pr_auc": 0.1900509127493341
+      },
+      "late": {
+        "auroc": 0.6540942928039702,
+        "ci95": [
+          0.568367311932963,
+          0.7398212736749775
+        ],
+        "pr_auc": 0.2512013324411258
+      },
+      "fusion_minus_best_unimodal": -0.021029776674938105,
+      "fusion_helps": false
+    },
+    "forecast_do_lt5_h7": {
+      "n": 11163,
+      "pos": 912,
+      "n_sites": 372,
+      "fusion": {
+        "auroc": 0.5506617240594414,
+        "ci95": [
+          0.5306891726373588,
+          0.5706342754815239
+        ],
+        "pr_auc": 0.09823638263582736
+      },
+      "sensor": {
+        "auroc": 0.5413917148861814,
+        "ci95": [
+          0.5214761362780372,
+          0.5613072934943256
+        ],
+        "pr_auc": 0.09261602056986162
+      },
+      "sat": {
+        "auroc": 0.5333601385915281,
+        "ci95": [
+          0.5135012130706796,
+          0.5532190641123765
+        ],
+        "pr_auc": 0.08805451952183785
+      },
+      "late": {
+        "auroc": 0.5350097423101212,
+        "ci95": [
+          0.5151386309829783,
+          0.5548808536372641
+        ],
+        "pr_auc": 0.0930871769239057
+      },
+      "fusion_minus_best_unimodal": 0.00927000917325993,
+      "fusion_helps": false
+    },
+    "forecast_do_lt5_h14": {
+      "n": 11163,
+      "pos": 947,
+      "n_sites": 372,
+      "fusion": {
+        "auroc": 0.5371036302249448,
+        "ci95": [
+          0.5175579201599746,
+          0.556649340289915
+        ],
+        "pr_auc": 0.09620966966283093
+      },
+      "sensor": {
+        "auroc": 0.535457094033915,
+        "ci95": [
+          0.5159228602046093,
+          0.5549913278632206
+        ],
+        "pr_auc": 0.09476500730655642
+      },
+      "sat": {
+        "auroc": 0.5217249336196652,
+        "ci95": [
+          0.5022971966983967,
+          0.5411526705409337
+        ],
+        "pr_auc": 0.08774469278279465
+      },
+      "late": {
+        "auroc": 0.5205094251392726,
+        "ci95": [
+          0.5010920385557964,
+          0.5399268117227487
+        ],
+        "pr_auc": 0.09251029243480222
+      },
+      "fusion_minus_best_unimodal": 0.0016465361910298348,
+      "fusion_helps": false
+    }
+  }
+}

@@ -485,9 +485,16 @@ def sentinel_scores(fusion, head, embeddings: torch.Tensor) -> np.ndarray:
                     p = torch.sigmoid(p) if p.max().item() > 1.0 else p
                     prob = float(p.squeeze().item())
                 else:
-                    prob = float(torch.clamp(emb.norm() / 10.0, 0, 1).item())
-            except Exception:
-                prob = float(torch.clamp(emb.norm() / 10.0, 0, 1).item())
+                    # Do NOT fabricate a probability from the embedding norm.
+                    raise RuntimeError(
+                        "Anomaly head produced no probability; refusing to "
+                        "fabricate a probability from emb.norm()."
+                    )
+            except Exception as e:
+                raise RuntimeError(
+                    "Anomaly head forward failed; refusing to fabricate a "
+                    "probability from emb.norm()."
+                ) from e
 
             probs.append(prob)
 

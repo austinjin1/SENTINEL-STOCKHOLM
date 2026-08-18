@@ -1,0 +1,54 @@
+{
+  "device": "cuda",
+  "note": "Small CNN on raw 6-band S2 tiles, GroupKFold by site, time-boxed 2.5min/fold. CNN sat-score vs hand-crafted indices (08). Fusion = [CNN embedding + in-situ pigment] HGB.",
+  "labels": {
+    "mc_gt1.6_WHO_drinking": {
+      "pos": 633,
+      "cnn_satellite_auroc": 0.715,
+      "insitu_auroc": 0.684,
+      "cnn_fusion_emb_auroc": 0.693,
+      "cnn_fusion_score_auroc": 0.764,
+      "cnn_fusion_ci95": [
+        0.669,
+        0.718
+      ],
+      "best_single": "cnn_sat",
+      "fusion_minus_best": -0.022,
+      "boot_fusion_vs_best": {
+        "delta_median": -0.022,
+        "ci95": [
+          -0.077,
+          0.03
+        ],
+        "P_delta_gt0": 0.209
+      },
+      "fusion_helps": false,
+      "mean_epochs": 60.0,
+      "wall_min": 1.31
+    },
+    "mc_gt0.3_detection": {
+      "pos": 1286,
+      "cnn_satellite_auroc": 0.706,
+      "insitu_auroc": 0.718,
+      "cnn_fusion_emb_auroc": 0.665,
+      "cnn_fusion_score_auroc": 0.779,
+      "cnn_fusion_ci95": [
+        0.646,
+        0.684
+      ],
+      "best_single": "insitu",
+      "fusion_minus_best": -0.053,
+      "boot_fusion_vs_best": {
+        "delta_median": -0.054,
+        "ci95": [
+          -0.087,
+          -0.015
+        ],
+        "P_delta_gt0": 0.004
+      },
+      "fusion_helps": false,
+      "mean_epochs": 60.0,
+      "wall_min": 1.28
+    }
+  }
+}

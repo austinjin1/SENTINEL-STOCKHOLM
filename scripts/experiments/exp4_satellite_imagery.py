@@ -74,13 +74,10 @@ def _load_satellite_imports():
 
 CKPT_PATHS = [
     PROJECT_ROOT / "checkpoints" / "satellite" / "hydrovit_wq_v6.pt",
-    Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints/satellite/hydrovit_wq_v6.pt"),
 ]
 FUSION_CKPT_PATHS = [
     PROJECT_ROOT / "checkpoints" / "fusion" / "fusion_head_best.pt",
     PROJECT_ROOT / "checkpoints" / "fusion" / "fusion_real_best.pt",
-    Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints/fusion/fusion_head_best.pt"),
-    Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints/fusion/fusion_real_best.pt"),
 ]
 FALLBACK_EMBEDDINGS = PROJECT_ROOT / "data" / "real_embeddings" / "satellite_embeddings.pt"
 RESULTS_DIR = PROJECT_ROOT / "results" / "exp4_satellite"

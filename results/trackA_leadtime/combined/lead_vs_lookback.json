@@ -1,0 +1,656 @@
+{
+  "purpose": "Phase 1 CHARACTERIZE/DEFEND the DO-hypoxia lead: LEAD-vs-LOOKBACK sweep + sustained-precursor evidence + salinization balloon contrast, on COMBINED NEON+USGS at matched <=5% held-out control FPR with the FROZEN CSD-EWS detector. Lookback is the ONLY sweep; calibration/FPR never use it.",
+  "detector": {
+    "channel": "dev_plus = dev + BETA*dev_ews (frozen CSD-EWS)",
+    "hyperparameters": {
+      "W_BASE": 240,
+      "GUARD": 12,
+      "SLACK_K": 1.0,
+      "EWS_WIN": 180,
+      "EWS_MIN_BASE": 20,
+      "BETA": 1.0,
+      "TARGET_FPR": 0.05,
+      "split": "interleave (M.cal_hold_split)"
+    }
+  },
+  "operating_points": {
+    "neon": {
+      "thr": 1148.7749,
+      "held_out_control_fpr": 0.0472,
+      "n_episodes": 15,
+      "n_controls": 17
+    },
+    "usgs": {
+      "thr": 521.4797,
+      "held_out_control_fpr": 0.0479,
+      "n_episodes": 17,
+      "n_controls": 22
+    },
+    "note": "per-network thresholds self-calibrated on that network's controls at 5% held-out FPR; IDENTICAL to the headline. Lookback sweep uses these SAME thresholds/alarms."
+  },
+  "lead_vs_lookback_curve": {
+    "30": {
+      "lookback_days": 30,
+      "neon_detected": "11/15",
+      "usgs_detected": "13/17",
+      "combined_detected": "24/32",
+      "neon_median_lead_days": 26.6667,
+      "usgs_median_lead_days": 23.9479,
+      "combined_median_lead_days": 24.375,
+      "combined_max_lead_days": 29.91,
+      "combined_min_lead_days": 13.3
+    },
+    "45": {
+      "lookback_days": 45,
+      "neon_detected": "11/15",
+      "usgs_detected": "14/17",
+      "combined_detected": "25/32",
+      "neon_median_lead_days": 41.3438,
+      "usgs_median_lead_days": 41.3906,
+      "combined_median_lead_days": 41.3438,
+      "combined_max_lead_days": 44.99,
+      "combined_min_lead_days": 13.79
+    },
+    "60": {
+      "lookback_days": 60,
+      "neon_detected": "11/15",
+      "usgs_detected": "14/17",
+      "combined_detected": "25/32",
+      "neon_median_lead_days": 49.9375,
+      "usgs_median_lead_days": 45.901,
+      "combined_median_lead_days": 48.1979,
+      "combined_max_lead_days": 59.86,
+      "combined_min_lead_days": 13.79
+    },
+    "90": {
+      "lookback_days": 90,
+      "neon_detected": "11/15",
+      "usgs_detected": "15/17",
+      "combined_detected": "26/32",
+      "neon_median_lead_days": 79.75,
+      "usgs_median_lead_days": 73.1979,
+      "combined_median_lead_days": 76.599,
+      "combined_max_lead_days": 89.82,
+      "combined_min_lead_days": 13.79
+    },
+    "120": {
+      "lookback_days": 120,
+      "neon_detected": "11/15",
+      "usgs_detected": "15/17",
+      "combined_detected": "26/32",
+      "neon_median_lead_days": 108.0938,
+      "usgs_median_lead_days": 74.5208,
+      "combined_median_lead_days": 107.3125,
+      "combined_max_lead_days": 119.99,
+      "combined_min_lead_days": 13.79
+    },
+    "uncapped": {
+      "lookback_days": "uncapped",
+      "neon_detected": "11/15",
+      "usgs_detected": "16/17",
+      "combined_detected": "27/32",
+      "neon_median_lead_days": 210.0729,
+      "usgs_median_lead_days": 103.9844,
+      "combined_median_lead_days": 133.4479,
+      "combined_max_lead_days": 1024.44,
+      "combined_min_lead_days": 13.79
+    }
+  },
+  "sustained_precursor": {
+    "45": {
+      "n_detected": 25,
+      "deciding_test": "builds_toward_onset (dev_plus grows toward onset: buildup_ratio>1 AND Theil-Sen slope>0)",
+      "n_builds_toward_onset": 8,
+      "builds_fraction": 0.32,
+      "n_elevated_permissive": 25,
+      "elevated_permissive_fraction": 1.0,
+      "elevated_permissive_note": "WEAK check (dev_plus>SLACK_K for >=50% of segment); chronic drift also passes it, so it is NOT used to credit a genuine precursor.",
+      "n_connects_to_onset": 22,
+      "connects_fraction": 0.88,
+      "median_lead_all_detected": 41.34,
+      "median_lead_builds_only": 42.945,
+      "sustain_floor": 1.0,
+      "per_episode": {
+        "NEON:MCDI": {
+          "n_windows": 413,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.2548,
+          "theilsen_slope_per_day": -1.297475,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 41.34
+        },
+        "NEON:KING": {
+          "n_windows": 370,
+          "elevated_frac": 0.9892,
+          "buildup_ratio": 0.303,
+          "theilsen_slope_per_day": 0.057921,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 39.75
+        },
+        "NEON:BIGC": {
+          "n_windows": 445,
+          "elevated_frac": 0.8652,
+          "buildup_ratio": 0.0436,
+          "theilsen_slope_per_day": -1.666724,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 44.67
+        },
+        "NEON:PRIN": {
+          "n_windows": 82,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.2117,
+          "theilsen_slope_per_day": -9.167137,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 13.79
+        },
+        "NEON:COMO": {
+          "n_windows": 134,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 5.0585,
+          "theilsen_slope_per_day": 2.349889,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 18.86
+        },
+        "NEON:MAYF": {
+          "n_windows": 375,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 1.562,
+          "theilsen_slope_per_day": 1.301109,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 38.2
+        },
+        "NEON:LECO": {
+          "n_windows": 416,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.5046,
+          "theilsen_slope_per_day": -0.188602,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 41.59
+        },
+        "NEON:LIRO": {
+          "n_windows": 170,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.8599,
+          "theilsen_slope_per_day": -0.083793,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 22.96
+        },
+        "NEON:BARC": {
+          "n_windows": 421,
+          "elevated_frac": 0.6936,
+          "buildup_ratio": 0.884,
+          "theilsen_slope_per_day": -0.068534,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 42.07
+        },
+        "NEON:GUIL": {
+          "n_windows": 454,
+          "elevated_frac": 0.9868,
+          "buildup_ratio": 10.2461,
+          "theilsen_slope_per_day": 1.251758,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 44.76
+        },
+        "NEON:BLWA": {
+          "n_windows": 447,
+          "elevated_frac": 0.8926,
+          "buildup_ratio": 0.1067,
+          "theilsen_slope_per_day": -0.489955,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 44.19
+        },
+        "USGS:01649500": {
+          "n_windows": 454,
+          "elevated_frac": 0.8656,
+          "buildup_ratio": 1.3576,
+          "theilsen_slope_per_day": 0.075487,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 44.82
+        },
+        "USGS:01656903": {
+          "n_windows": 214,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.4868,
+          "theilsen_slope_per_day": -0.953762,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 24.8
+        },
+        "USGS:040851385": {
+          "n_windows": 227,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 2.1441,
+          "theilsen_slope_per_day": 2.123819,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 25.86
+        },
+        "USGS:07288500": {
+          "n_windows": 307,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.0489,
+          "theilsen_slope_per_day": -3.233408,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 33.99
+        },
+        "USGS:073802512": {
+          "n_windows": 383,
+          "elevated_frac": 0.8198,
+          "buildup_ratio": 1.2156,
+          "theilsen_slope_per_day": 0.20974,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 43.8
+        },
+        "USGS:07381600": {
+          "n_windows": 361,
+          "elevated_frac": 0.6898,
+          "buildup_ratio": 0.4008,
+          "theilsen_slope_per_day": -0.200912,
+          "connects_to_onset": false,
+          "builds_toward_onset": false,
+          "lead_days": 37.05
+        },
+        "USGS:08062500": {
+          "n_windows": 401,
+          "elevated_frac": 0.5611,
+          "buildup_ratio": 0.0125,
+          "theilsen_slope_per_day": -0.45162,
+          "connects_to_onset": false,
+          "builds_toward_onset": false,
+          "lead_days": 40.36
+        },
+        "USGS:08065350": {
+          "n_windows": 57,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.5487,
+          "theilsen_slope_per_day": -0.451352,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 14.44
+        },
+        "USGS:08181500": {
+          "n_windows": 425,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 2.3311,
+          "theilsen_slope_per_day": 0.235133,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 42.42
+        },
+        "USGS:08181800": {
+          "n_windows": 144,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.2169,
+          "theilsen_slope_per_day": -3.413573,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 18.94
+        },
+        "USGS:08211200": {
+          "n_windows": 449,
+          "elevated_frac": 0.6303,
+          "buildup_ratio": 0.0,
+          "theilsen_slope_per_day": -0.403527,
+          "connects_to_onset": false,
+          "builds_toward_onset": false,
+          "lead_days": 44.35
+        },
+        "USGS:14206950": {
+          "n_windows": 438,
+          "elevated_frac": 0.7991,
+          "buildup_ratio": 19.3098,
+          "theilsen_slope_per_day": 0.509248,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 43.47
+        },
+        "USGS:453004122510301": {
+          "n_windows": 385,
+          "elevated_frac": 0.9662,
+          "buildup_ratio": 0.5663,
+          "theilsen_slope_per_day": -0.124856,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 44.95
+        },
+        "USGS:453030122560101": {
+          "n_windows": 456,
+          "elevated_frac": 0.8662,
+          "buildup_ratio": 0.3554,
+          "theilsen_slope_per_day": -0.121444,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 44.99
+        }
+      }
+    },
+    "uncapped": {
+      "n_detected": 27,
+      "deciding_test": "builds_toward_onset (dev_plus grows toward onset: buildup_ratio>1 AND Theil-Sen slope>0)",
+      "n_builds_toward_onset": 7,
+      "builds_fraction": 0.2593,
+      "n_elevated_permissive": 27,
+      "elevated_permissive_fraction": 1.0,
+      "elevated_permissive_note": "WEAK check (dev_plus>SLACK_K for >=50% of segment); chronic drift also passes it, so it is NOT used to credit a genuine precursor.",
+      "n_connects_to_onset": 23,
+      "connects_fraction": 0.8519,
+      "median_lead_all_detected": 133.45,
+      "median_lead_builds_only": 77.84,
+      "sustain_floor": 1.0,
+      "per_episode": {
+        "NEON:MCDI": {
+          "n_windows": 851,
+          "elevated_frac": 0.9882,
+          "buildup_ratio": 4.7271,
+          "theilsen_slope_per_day": 0.172288,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 77.84
+        },
+        "NEON:KING": {
+          "n_windows": 765,
+          "elevated_frac": 0.9582,
+          "buildup_ratio": 5.0857,
+          "theilsen_slope_per_day": 0.165262,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 72.67
+        },
+        "NEON:BIGC": {
+          "n_windows": 5165,
+          "elevated_frac": 0.9495,
+          "buildup_ratio": 0.8783,
+          "theilsen_slope_per_day": -0.000745,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 446.0
+        },
+        "NEON:PRIN": {
+          "n_windows": 82,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.2117,
+          "theilsen_slope_per_day": -9.167137,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 13.79
+        },
+        "NEON:COMO": {
+          "n_windows": 7245,
+          "elevated_frac": 0.9292,
+          "buildup_ratio": 1.2247,
+          "theilsen_slope_per_day": 0.002913,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 632.03
+        },
+        "NEON:MAYF": {
+          "n_windows": 4008,
+          "elevated_frac": 0.9763,
+          "buildup_ratio": 0.6218,
+          "theilsen_slope_per_day": -0.018241,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 341.78
+        },
+        "NEON:LECO": {
+          "n_windows": 5324,
+          "elevated_frac": 0.9728,
+          "buildup_ratio": 0.8445,
+          "theilsen_slope_per_day": -0.006467,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 450.59
+        },
+        "NEON:LIRO": {
+          "n_windows": 170,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.8599,
+          "theilsen_slope_per_day": -0.083793,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 22.96
+        },
+        "NEON:BARC": {
+          "n_windows": 2342,
+          "elevated_frac": 0.8809,
+          "buildup_ratio": 0.3541,
+          "theilsen_slope_per_day": -0.067678,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 210.07
+        },
+        "NEON:GUIL": {
+          "n_windows": 7135,
+          "elevated_frac": 0.9231,
+          "buildup_ratio": 2.4445,
+          "theilsen_slope_per_day": 0.005081,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 643.01
+        },
+        "NEON:BLWA": {
+          "n_windows": 1307,
+          "elevated_frac": 0.8753,
+          "buildup_ratio": 4.7947,
+          "theilsen_slope_per_day": 0.074324,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 115.85
+        },
+        "USGS:01649500": {
+          "n_windows": 4323,
+          "elevated_frac": 0.9297,
+          "buildup_ratio": 1.1631,
+          "theilsen_slope_per_day": -0.00031,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 367.24
+        },
+        "USGS:01656903": {
+          "n_windows": 214,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.4868,
+          "theilsen_slope_per_day": -0.953762,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 24.8
+        },
+        "USGS:040851385": {
+          "n_windows": 227,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 2.1441,
+          "theilsen_slope_per_day": 2.123819,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 25.86
+        },
+        "USGS:04087170": {
+          "n_windows": 3074,
+          "elevated_frac": 0.9509,
+          "buildup_ratio": 0.8178,
+          "theilsen_slope_per_day": -0.001543,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 393.18
+        },
+        "USGS:07288500": {
+          "n_windows": 307,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.0489,
+          "theilsen_slope_per_day": -3.233408,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 33.99
+        },
+        "USGS:073802512": {
+          "n_windows": 2685,
+          "elevated_frac": 0.9203,
+          "buildup_ratio": 0.3594,
+          "theilsen_slope_per_day": -0.030804,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 253.22
+        },
+        "USGS:07381600": {
+          "n_windows": 5476,
+          "elevated_frac": 0.9149,
+          "buildup_ratio": 0.599,
+          "theilsen_slope_per_day": -0.004774,
+          "connects_to_onset": false,
+          "builds_toward_onset": false,
+          "lead_days": 467.64
+        },
+        "USGS:08049500": {
+          "n_windows": 216,
+          "elevated_frac": 0.6296,
+          "buildup_ratio": 0.0262,
+          "theilsen_slope_per_day": -0.825969,
+          "connects_to_onset": false,
+          "builds_toward_onset": false,
+          "lead_days": 71.33
+        },
+        "USGS:08062500": {
+          "n_windows": 1229,
+          "elevated_frac": 0.8251,
+          "buildup_ratio": 0.214,
+          "theilsen_slope_per_day": -0.051432,
+          "connects_to_onset": false,
+          "builds_toward_onset": false,
+          "lead_days": 133.45
+        },
+        "USGS:08065350": {
+          "n_windows": 353,
+          "elevated_frac": 0.9688,
+          "buildup_ratio": 0.1682,
+          "theilsen_slope_per_day": -0.133773,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 74.52
+        },
+        "USGS:08181500": {
+          "n_windows": 492,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 1.8438,
+          "theilsen_slope_per_day": 0.005066,
+          "connects_to_onset": true,
+          "builds_toward_onset": true,
+          "lead_days": 48.0
+        },
+        "USGS:08181800": {
+          "n_windows": 144,
+          "elevated_frac": 1.0,
+          "buildup_ratio": 0.2169,
+          "theilsen_slope_per_day": -3.413573,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 18.94
+        },
+        "USGS:08211200": {
+          "n_windows": 11794,
+          "elevated_frac": 0.9261,
+          "buildup_ratio": 0.7121,
+          "theilsen_slope_per_day": -0.004735,
+          "connects_to_onset": false,
+          "builds_toward_onset": false,
+          "lead_days": 1024.44
+        },
+        "USGS:14206950": {
+          "n_windows": 5223,
+          "elevated_frac": 0.95,
+          "buildup_ratio": 1.002,
+          "theilsen_slope_per_day": -0.001148,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 442.22
+        },
+        "USGS:453004122510301": {
+          "n_windows": 424,
+          "elevated_frac": 0.9693,
+          "buildup_ratio": 0.2809,
+          "theilsen_slope_per_day": -0.304408,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 48.2
+        },
+        "USGS:453030122560101": {
+          "n_windows": 4972,
+          "elevated_frac": 0.8892,
+          "buildup_ratio": 0.6894,
+          "theilsen_slope_per_day": -0.008963,
+          "connects_to_onset": true,
+          "builds_toward_onset": false,
+          "lead_days": 430.91
+        }
+      }
+    }
+  },
+  "balloon_contrast": {
+    "salinization_reference": {
+      "capped_lead_days_approx": 40,
+      "uncapped_lead_range_days": [
+        106,
+        1338
+      ],
+      "uncapped_median_days": 263,
+      "verdict": "CAP ARTIFACT (seasonal urban-conductance drift); NOT headlined"
+    },
+    "do_hypoxia": {
+      "combined_median_lead_45d": 41.3438,
+      "combined_median_lead_uncapped": 133.4479,
+      "combined_max_lead_uncapped": 1024.44,
+      "median_growth_ratio_uncapped_over_45d": 3.228,
+      "max_lead_within_2x_of_45d_cap": false,
+      "cap_tracking": {
+        "finite_caps_days": [
+          30,
+          45,
+          60,
+          90,
+          120
+        ],
+        "combined_median_leads_days": [
+          24.375,
+          41.3438,
+          48.1979,
+          76.599,
+          107.3125
+        ],
+        "median_lead_vs_cap_slope": 0.9013,
+        "median_lead_vs_cap_intercept": -2.625,
+        "median_lead_vs_cap_corr": 0.9966,
+        "interpretation": "slope~1 & corr~1 => median lead TRACKS the cap => the lead is CAP-DETERMINED (first alarm latches on the search-window edge) => cap ARTIFACT, not a bounded precursor."
+      },
+      "bounded_not_ballooning": false
+    },
+    "contrast_verdict": "DO lead is a CAP ARTIFACT in the SAME family as salinization: the combined median lead tracks the cap almost exactly (median_lead ~= 0.90*cap, corr=0.997; 30->45->60->90->120 d caps give [24.4, 41.3, 48.2, 76.6, 107.3] d, and uncapped reaches median 133.4479 d / max 1024.44 d). The absolute balloon is smaller than salinization's (263 d, 1338 d) only because these sensor records are shorter -- the MECHANISM is identical: dev_plus is chronically elevated pre-onset, so the first sustained alarm latches onto whatever edge the search window opens. It does NOT build toward onset. Therefore the ABSOLUTE lead number is not defensible; the 45-day figure is a search-window artifact, not a bounded precursor."
+  },
+  "honest_verdict": {
+    "detection_is_real": "The DETECTION result is robust: 25/32 (45 d) growing only to 27/32 (uncapped) episodes fire pre-onset at matched <=5% held-out control FPR on BOTH networks. Nearly all detected episodes already alarm inside the tightest windows, so the sensitivity claim is genuine.",
+    "absolute_lead_is_cap_determined": "The ABSOLUTE lead is NOT a bounded precursor: combined median lead tracks the cap almost exactly (slope 0.90, corr 0.997), ballooning 24->41->48->77->107->133 d (uncapped) with a 1024 d max. dev_plus is chronically elevated pre-onset and does not build toward onset (builds-toward-onset fraction is low), so the first sustained alarm latches onto the search-window edge. This is the SAME mechanism as salinization; the 41.3 d figure is a 45-day-cap artifact, not evidence of a ~6-week physical precursor.",
+    "defensible_statement": "Defensible: 'at matched <=5% held-out FPR the frozen CSD-EWS detector flags 25/32 combined DO-hypoxia episodes with a sustained anomaly at least ~40 days before onset (within a 45-day operating window)'. NOT defensible: headlining 41.3 d (or any longer number) as the physical warning horizon -- the lead is set by the chosen lookback, not by a measured precursor buildup.",
+    "headline_change_justified": false
+  },
+  "precursor_diagnostic_definition": "TWO diagnostics: (weak) elevated_frac = fraction of pre-onset windows with dev_plus>SLACK_K=1.0 -- chronic drift also passes, so NOT used to credit a lead. (deciding) builds_toward_onset = dev_plus GROWS toward onset (late-third median > early-third median AND Theil-Sen slope>0), the signature of a genuine incipient-transition precursor as opposed to a cap-latched chronic elevation.",
+  "guardrails": {
+    "label_free": true,
+    "lookback_only_sweep": "LOOKBACK enters ONLY the pre-onset detection-window search; calibration/FPR are unchanged.",
+    "matched_heldout_fpr": "threshold on CONTROL clean @5% held-out FPR; episodes never calibrate.",
+    "precursor_gate": "alarm strictly pre-onset AND ~hypoxia-near.",
+    "frozen_detector": true,
+    "no_median_gaming": "a longer lead is only credited if it is a genuine connected sustained precursor at matched FPR."
+  }
+}

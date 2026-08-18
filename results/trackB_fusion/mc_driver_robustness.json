@@ -1,0 +1,39 @@
+{
+  "n": 3649,
+  "labels": {
+    "mc_gt1.6": {
+      "pos": 633,
+      "temporal": {
+        "two_way": 0.8180880152711139,
+        "three_way": 0.822961271904934,
+        "best_single": 0.7585857022476741
+      },
+      "cross_region": {
+        "two_way": 0.49,
+        "three_way": 0.485,
+        "n_regions": 5,
+        "n": 3594
+      },
+      "neg_control_3way_shuffled_drivers": 0.781,
+      "two_way_ref": 0.776,
+      "three_way_ref": 0.823
+    },
+    "mc_gt0.3": {
+      "pos": 1286,
+      "temporal": {
+        "two_way": 0.7779941329495765,
+        "three_way": 0.76093540709581,
+        "best_single": 0.746006531244811
+      },
+      "cross_region": {
+        "two_way": 0.524,
+        "three_way": 0.49,
+        "n_regions": 5,
+        "n": 3594
+      },
+      "neg_control_3way_shuffled_drivers": 0.784,
+      "two_way_ref": 0.786,
+      "three_way_ref": 0.8
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "n": 364,
+  "pos": 53,
+  "wdn_clsfeat_auroc": 0.548,
+  "spectral_logreg": 0.5118000364011406,
+  "spectral_gbm": 0.6968998361948675
+}

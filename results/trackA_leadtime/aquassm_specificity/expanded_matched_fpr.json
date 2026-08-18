@@ -1,0 +1,920 @@
+{
+  "purpose": "EXPANDED real-event matched-FPR head-to-head: original 12 DO-hypoxia episodes + 3 NEW NEON episodes (BLWA,PRLA,SUGG); 10 + 7 NEW controls. Re-runs CUSUM(global-h) & per-site-adaptive vs baseline at matched pooled clean-control HELD-OUT FPR {3%,5%,7%}. Label-free residual.",
+  "new_episodes": [
+    "BLWA",
+    "PRLA",
+    "SUGG"
+  ],
+  "new_controls": [
+    "POSE",
+    "PRPO",
+    "REDB",
+    "TECR",
+    "TOMB",
+    "WALK",
+    "WLOU"
+  ],
+  "guardrails": {
+    "precursor": "alarm ends strictly < DO<4 onset AND window NOT hypoxia-near (re-verified from RAW DO for CUSUM at 5%)",
+    "heldout_fpr": "global thresholds calibrated on pooled CONTROL cal-clean; FPR on DISJOINT pooled CONTROL hold-clean; episodes never calibrate",
+    "real_episodes": "all onsets QC-clean DO<4 crossings, each >=7 d clean runway",
+    "label_free": true
+  },
+  "targets": [
+    0.03,
+    0.05,
+    0.07
+  ],
+  "results": {
+    "primary_interleave_split": {
+      "split": "interleave",
+      "control_sites_with_cal_hold_overlap": 7,
+      "n_control_sites": 17,
+      "n_episode_sites": 15,
+      "control_sites": [
+        "BLDE",
+        "BLUE",
+        "CARI",
+        "CUPE",
+        "FLNT",
+        "HOPB",
+        "LEWI",
+        "MART",
+        "MCRA",
+        "OKSR",
+        "POSE",
+        "PRPO",
+        "REDB",
+        "TECR",
+        "TOMB",
+        "WALK",
+        "WLOU"
+      ],
+      "episode_sites": [
+        "ARIK",
+        "BARC",
+        "BIGC",
+        "BLWA",
+        "COMO",
+        "CRAM",
+        "GUIL",
+        "KING",
+        "LECO",
+        "LIRO",
+        "MAYF",
+        "MCDI",
+        "PRIN",
+        "PRLA",
+        "SUGG"
+      ],
+      "sweep": [
+        {
+          "target_control_fpr": 0.03,
+          "baseline": {
+            "global_tau": 6.2174,
+            "pooled_control_heldout_fpr": 0.0299,
+            "episodes_detected": 3,
+            "of": 15,
+            "median_lead_days": 12.58,
+            "detected_sites": [
+              "ARIK",
+              "MAYF",
+              "MCDI"
+            ],
+            "leads": {
+              "MAYF": 10.45,
+              "ARIK": 12.58,
+              "MCDI": 24.68
+            }
+          },
+          "cusum_global_h": {
+            "global_h": 115.8028,
+            "pooled_control_heldout_fpr": 0.0299,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 35.35,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 35.35,
+              "MCDI": 41.43,
+              "LIRO": 22.54,
+              "GUIL": 42.09,
+              "PRIN": 8.38,
+              "MAYF": 32.11,
+              "COMO": 17.53,
+              "KING": 44.58,
+              "LECO": 43.76,
+              "BARC": 43.41,
+              "BIGC": 28.83
+            }
+          },
+          "cusum_per_site_adaptive": {
+            "per_site_target_q": 0.0124,
+            "pooled_control_heldout_fpr": 0.0293,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 32.11,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 35.69,
+              "MCDI": 41.34,
+              "LIRO": 22.96,
+              "GUIL": 27.68,
+              "PRIN": 16.21,
+              "MAYF": 32.11,
+              "COMO": 21.45,
+              "KING": 44.58,
+              "LECO": 43.76,
+              "BARC": 44.82,
+              "BIGC": 29.75
+            }
+          },
+          "both_within_target_fpr": true,
+          "pareto_win_cusum_over_baseline": true,
+          "adaptive_beats_global_cusum": false,
+          "cusum_extra_vs_baseline": [
+            "BARC",
+            "BIGC",
+            "BLWA",
+            "COMO",
+            "GUIL",
+            "KING",
+            "LECO",
+            "LIRO",
+            "PRIN"
+          ],
+          "baseline_extra_vs_cusum": [
+            "ARIK"
+          ],
+          "new_episodes_detected_by_cusum": [
+            "BLWA"
+          ]
+        },
+        {
+          "target_control_fpr": 0.05,
+          "baseline": {
+            "global_tau": 3.9174,
+            "pooled_control_heldout_fpr": 0.0481,
+            "episodes_detected": 5,
+            "of": 15,
+            "median_lead_days": 25.51,
+            "detected_sites": [
+              "ARIK",
+              "BIGC",
+              "GUIL",
+              "MAYF",
+              "MCDI"
+            ],
+            "leads": {
+              "MCDI": 25.51,
+              "GUIL": 7.59,
+              "MAYF": 31.45,
+              "ARIK": 12.67,
+              "BIGC": 28.5
+            }
+          },
+          "cusum_global_h": {
+            "global_h": 54.4698,
+            "pooled_control_heldout_fpr": 0.0497,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 36.1,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 36.1,
+              "MCDI": 43.09,
+              "LIRO": 23.12,
+              "GUIL": 43.01,
+              "PRIN": 15.54,
+              "MAYF": 32.28,
+              "COMO": 20.11,
+              "KING": 44.67,
+              "LECO": 44.01,
+              "BARC": 44.91,
+              "BIGC": 29.42
+            }
+          },
+          "cusum_per_site_adaptive": {
+            "per_site_target_q": 0.032,
+            "pooled_control_heldout_fpr": 0.0492,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 36.1,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 36.1,
+              "MCDI": 41.34,
+              "LIRO": 23.12,
+              "GUIL": 37.43,
+              "PRIN": 16.21,
+              "MAYF": 32.2,
+              "COMO": 21.45,
+              "KING": 44.58,
+              "LECO": 44.09,
+              "BARC": 44.82,
+              "BIGC": 29.75
+            }
+          },
+          "both_within_target_fpr": true,
+          "pareto_win_cusum_over_baseline": true,
+          "adaptive_beats_global_cusum": false,
+          "cusum_extra_vs_baseline": [
+            "BARC",
+            "BLWA",
+            "COMO",
+            "KING",
+            "LECO",
+            "LIRO",
+            "PRIN"
+          ],
+          "baseline_extra_vs_cusum": [
+            "ARIK"
+          ],
+          "new_episodes_detected_by_cusum": [
+            "BLWA"
+          ]
+        },
+        {
+          "target_control_fpr": 0.07,
+          "baseline": {
+            "global_tau": 3.1687,
+            "pooled_control_heldout_fpr": 0.069,
+            "episodes_detected": 6,
+            "of": 15,
+            "median_lead_days": 29.0,
+            "detected_sites": [
+              "ARIK",
+              "BIGC",
+              "GUIL",
+              "KING",
+              "MAYF",
+              "MCDI"
+            ],
+            "leads": {
+              "MCDI": 41.84,
+              "GUIL": 7.68,
+              "MAYF": 31.7,
+              "KING": 29.08,
+              "ARIK": 12.75,
+              "BIGC": 28.92
+            }
+          },
+          "cusum_global_h": {
+            "global_h": 34.0255,
+            "pooled_control_heldout_fpr": 0.0681,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 37.53,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 36.6,
+              "MCDI": 44.68,
+              "LIRO": 23.29,
+              "GUIL": 43.09,
+              "PRIN": 15.88,
+              "MAYF": 37.53,
+              "COMO": 21.11,
+              "KING": 44.67,
+              "LECO": 44.09,
+              "BARC": 44.74,
+              "BIGC": 29.75
+            }
+          },
+          "cusum_per_site_adaptive": {
+            "per_site_target_q": 0.0517,
+            "pooled_control_heldout_fpr": 0.0679,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 35.59,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 36.6,
+              "MCDI": 42.59,
+              "LIRO": 23.29,
+              "GUIL": 35.59,
+              "PRIN": 16.21,
+              "MAYF": 32.28,
+              "COMO": 21.45,
+              "KING": 44.58,
+              "LECO": 44.18,
+              "BARC": 44.82,
+              "BIGC": 30.42
+            }
+          },
+          "both_within_target_fpr": true,
+          "pareto_win_cusum_over_baseline": true,
+          "adaptive_beats_global_cusum": false,
+          "cusum_extra_vs_baseline": [
+            "BARC",
+            "BLWA",
+            "COMO",
+            "LECO",
+            "LIRO",
+            "PRIN"
+          ],
+          "baseline_extra_vs_cusum": [
+            "ARIK"
+          ],
+          "new_episodes_detected_by_cusum": [
+            "BLWA"
+          ]
+        }
+      ],
+      "precursor_check_cusum_at_5pct": {
+        "BLWA": {
+          "lead_days": 36.1,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "MCDI": {
+          "lead_days": 43.09,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "LIRO": {
+          "lead_days": 23.12,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "GUIL": {
+          "lead_days": 43.01,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "PRIN": {
+          "lead_days": 15.54,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "MAYF": {
+          "lead_days": 32.28,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "COMO": {
+          "lead_days": 20.11,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "KING": {
+          "lead_days": 44.67,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "LECO": {
+          "lead_days": 44.01,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "BARC": {
+          "lead_days": 44.91,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "BIGC": {
+          "lead_days": 29.42,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        }
+      }
+    },
+    "robustness_temporal_split": {
+      "split": "temporal_single_run_fix",
+      "control_sites_with_cal_hold_overlap": 0,
+      "n_control_sites": 17,
+      "n_episode_sites": 15,
+      "control_sites": [
+        "BLDE",
+        "BLUE",
+        "CARI",
+        "CUPE",
+        "FLNT",
+        "HOPB",
+        "LEWI",
+        "MART",
+        "MCRA",
+        "OKSR",
+        "POSE",
+        "PRPO",
+        "REDB",
+        "TECR",
+        "TOMB",
+        "WALK",
+        "WLOU"
+      ],
+      "episode_sites": [
+        "ARIK",
+        "BARC",
+        "BIGC",
+        "BLWA",
+        "COMO",
+        "CRAM",
+        "GUIL",
+        "KING",
+        "LECO",
+        "LIRO",
+        "MAYF",
+        "MCDI",
+        "PRIN",
+        "PRLA",
+        "SUGG"
+      ],
+      "sweep": [
+        {
+          "target_control_fpr": 0.03,
+          "baseline": {
+            "global_tau": 9.518,
+            "pooled_control_heldout_fpr": 0.025,
+            "episodes_detected": 2,
+            "of": 15,
+            "median_lead_days": 11.27,
+            "detected_sites": [
+              "ARIK",
+              "MAYF"
+            ],
+            "leads": {
+              "MAYF": 10.45,
+              "ARIK": 12.08
+            }
+          },
+          "cusum_global_h": {
+            "global_h": 129.4401,
+            "pooled_control_heldout_fpr": 0.0297,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 35.27,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 35.27,
+              "MCDI": 40.93,
+              "LIRO": 22.46,
+              "GUIL": 40.51,
+              "PRIN": 8.12,
+              "MAYF": 32.11,
+              "COMO": 16.86,
+              "KING": 44.58,
+              "LECO": 43.51,
+              "BARC": 44.91,
+              "BIGC": 28.75
+            }
+          },
+          "cusum_per_site_adaptive": {
+            "per_site_target_q": 0.005,
+            "pooled_control_heldout_fpr": 0.0293,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 32.11,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 35.69,
+              "MCDI": 41.34,
+              "LIRO": 22.96,
+              "GUIL": 8.09,
+              "PRIN": 16.21,
+              "MAYF": 32.11,
+              "COMO": 21.45,
+              "KING": 44.58,
+              "LECO": 43.93,
+              "BARC": 44.82,
+              "BIGC": 29.75
+            }
+          },
+          "both_within_target_fpr": true,
+          "pareto_win_cusum_over_baseline": true,
+          "adaptive_beats_global_cusum": false,
+          "cusum_extra_vs_baseline": [
+            "BARC",
+            "BIGC",
+            "BLWA",
+            "COMO",
+            "GUIL",
+            "KING",
+            "LECO",
+            "LIRO",
+            "MCDI",
+            "PRIN"
+          ],
+          "baseline_extra_vs_cusum": [
+            "ARIK"
+          ],
+          "new_episodes_detected_by_cusum": [
+            "BLWA"
+          ]
+        },
+        {
+          "target_control_fpr": 0.05,
+          "baseline": {
+            "global_tau": 5.0296,
+            "pooled_control_heldout_fpr": 0.0463,
+            "episodes_detected": 5,
+            "of": 15,
+            "median_lead_days": 10.45,
+            "detected_sites": [
+              "ARIK",
+              "GUIL",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "MCDI": 25.34,
+              "GUIL": 7.51,
+              "PRIN": 8.46,
+              "MAYF": 10.45,
+              "ARIK": 12.67
+            }
+          },
+          "cusum_global_h": {
+            "global_h": 60.5664,
+            "pooled_control_heldout_fpr": 0.0499,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 36.02,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 36.02,
+              "MCDI": 42.93,
+              "LIRO": 23.04,
+              "GUIL": 42.09,
+              "PRIN": 15.04,
+              "MAYF": 32.28,
+              "COMO": 19.78,
+              "KING": 44.67,
+              "LECO": 44.01,
+              "BARC": 43.99,
+              "BIGC": 29.42
+            }
+          },
+          "cusum_per_site_adaptive": {
+            "per_site_target_q": 0.0222,
+            "pooled_control_heldout_fpr": 0.0484,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 32.11,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 35.69,
+              "MCDI": 41.34,
+              "LIRO": 22.96,
+              "GUIL": 28.18,
+              "PRIN": 16.21,
+              "MAYF": 32.11,
+              "COMO": 21.45,
+              "KING": 44.58,
+              "LECO": 44.01,
+              "BARC": 44.82,
+              "BIGC": 29.75
+            }
+          },
+          "both_within_target_fpr": true,
+          "pareto_win_cusum_over_baseline": true,
+          "adaptive_beats_global_cusum": false,
+          "cusum_extra_vs_baseline": [
+            "BARC",
+            "BIGC",
+            "BLWA",
+            "COMO",
+            "KING",
+            "LECO",
+            "LIRO"
+          ],
+          "baseline_extra_vs_cusum": [
+            "ARIK"
+          ],
+          "new_episodes_detected_by_cusum": [
+            "BLWA"
+          ]
+        },
+        {
+          "target_control_fpr": 0.07,
+          "baseline": {
+            "global_tau": 3.655,
+            "pooled_control_heldout_fpr": 0.0684,
+            "episodes_detected": 7,
+            "of": 15,
+            "median_lead_days": 25.59,
+            "detected_sites": [
+              "ARIK",
+              "BIGC",
+              "GUIL",
+              "KING",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "MCDI": 25.59,
+              "GUIL": 7.59,
+              "PRIN": 8.71,
+              "MAYF": 31.53,
+              "KING": 28.75,
+              "ARIK": 12.67,
+              "BIGC": 28.58
+            }
+          },
+          "cusum_global_h": {
+            "global_h": 38.229,
+            "pooled_control_heldout_fpr": 0.0683,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 36.95,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 36.52,
+              "MCDI": 44.01,
+              "LIRO": 23.21,
+              "GUIL": 42.68,
+              "PRIN": 15.79,
+              "MAYF": 36.95,
+              "COMO": 20.95,
+              "KING": 44.67,
+              "LECO": 44.09,
+              "BARC": 44.91,
+              "BIGC": 29.67
+            }
+          },
+          "cusum_per_site_adaptive": {
+            "per_site_target_q": 0.0394,
+            "pooled_control_heldout_fpr": 0.068,
+            "episodes_detected": 11,
+            "of": 15,
+            "median_lead_days": 36.35,
+            "detected_sites": [
+              "BARC",
+              "BIGC",
+              "BLWA",
+              "COMO",
+              "GUIL",
+              "KING",
+              "LECO",
+              "LIRO",
+              "MAYF",
+              "MCDI",
+              "PRIN"
+            ],
+            "leads": {
+              "BLWA": 36.35,
+              "MCDI": 41.76,
+              "LIRO": 23.21,
+              "GUIL": 43.26,
+              "PRIN": 16.21,
+              "MAYF": 32.2,
+              "COMO": 21.45,
+              "KING": 44.58,
+              "LECO": 44.18,
+              "BARC": 44.82,
+              "BIGC": 29.83
+            }
+          },
+          "both_within_target_fpr": true,
+          "pareto_win_cusum_over_baseline": true,
+          "adaptive_beats_global_cusum": false,
+          "cusum_extra_vs_baseline": [
+            "BARC",
+            "BLWA",
+            "COMO",
+            "LECO",
+            "LIRO"
+          ],
+          "baseline_extra_vs_cusum": [
+            "ARIK"
+          ],
+          "new_episodes_detected_by_cusum": [
+            "BLWA"
+          ]
+        }
+      ],
+      "precursor_check_cusum_at_5pct": {
+        "BLWA": {
+          "lead_days": 36.02,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "MCDI": {
+          "lead_days": 42.93,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "LIRO": {
+          "lead_days": 23.04,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "GUIL": {
+          "lead_days": 42.09,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "PRIN": {
+          "lead_days": 15.04,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "MAYF": {
+          "lead_days": 32.28,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "COMO": {
+          "lead_days": 19.78,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "KING": {
+          "lead_days": 44.67,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "LECO": {
+          "lead_days": 44.01,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "BARC": {
+          "lead_days": 43.99,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        },
+        "BIGC": {
+          "lead_days": 29.42,
+          "alarm_before_onset": true,
+          "alarm_window_not_hypoxia_near": true,
+          "alarm_before_first_ever_hypoxia": true
+        }
+      }
+    }
+  },
+  "verdict": {
+    "n_episodes": 15,
+    "n_controls": 17,
+    "cusum_pareto_dominates_at_all_fpr_interleave": true,
+    "cusum_pareto_dominates_at_all_fpr_temporal": true,
+    "headline_5pct": {
+      "baseline_det": 5,
+      "baseline_lead": 25.51,
+      "baseline_fpr": 0.0481,
+      "cusum_det": 11,
+      "cusum_lead": 36.1,
+      "cusum_fpr": 0.0497,
+      "adaptive_det": 11,
+      "adaptive_lead": 36.1,
+      "adaptive_fpr": 0.0492,
+      "new_episodes_caught_by_cusum": [
+        "BLWA"
+      ]
+    }
+  }
+}

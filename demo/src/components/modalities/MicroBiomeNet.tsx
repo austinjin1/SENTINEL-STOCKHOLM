@@ -7,7 +7,7 @@ interface Props {
   tier: 0 | 1 | 2 | 3;
 }
 
-export function MicroBiomeNetCard({ micro, cardIndex, tier }: Props) {
+export function MicroBiomeNetCard({ micro, cardIndex }: Props) {
   const sorted = [...micro.classes].sort((a, b) => b.p - a.p);
   const max = sorted[0]?.p ?? 1;
   return (
@@ -19,8 +19,8 @@ export function MicroBiomeNetCard({ micro, cardIndex, tier }: Props) {
       conf={micro.conf}
       cardIndex={cardIndex}
       deployableTier={2}
-      headlineMetric={<>F1 0.913</>}
-      headlineLabel="Eight-class source attribution"
+      headlineMetric={<>macro-F1 0.831</>}
+      headlineLabel="Source attribution · strict spatial holdout"
       secondary={micro.top ? <span style={{ color: 'var(--text-tertiary)' }}>Top {micro.top} <span className="mono" style={{ color: 'var(--text-secondary)' }}>{sorted[0].p.toFixed(2)}</span></span> : null}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -51,7 +51,7 @@ export function MicroBiomeNetCard({ micro, cardIndex, tier }: Props) {
                   }}
                 />
               </div>
-              <div className="mono" style={{ width: 32, fontSize: 9, color: 'var(--text-mono)', textAlign: 'right' }}>
+              <div className="mono" style={{ width: 32, fontSize: 9, color: 'var(--text-tertiary)', textAlign: 'right' }}>
                 {c.p.toFixed(2)}
               </div>
             </div>

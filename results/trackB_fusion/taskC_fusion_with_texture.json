@@ -1,0 +1,32 @@
+{
+  "n": 362,
+  "pos": 51,
+  "n_sites": 33,
+  "sensor": {
+    "auroc": 0.681,
+    "ci95": [
+      0.595,
+      0.766
+    ],
+    "pr_auc": 0.224
+  },
+  "satellite_strong(spectral+texture)": {
+    "auroc": 0.747,
+    "ci95": [
+      0.666,
+      0.828
+    ],
+    "pr_auc": 0.37
+  },
+  "FUSION sensor+sat_strong": {
+    "auroc": 0.706,
+    "ci95": [
+      0.622,
+      0.79
+    ],
+    "pr_auc": 0.251
+  },
+  "best_single": 0.747,
+  "fusion_gain": -0.041,
+  "fusion_helps_CI": false
+}

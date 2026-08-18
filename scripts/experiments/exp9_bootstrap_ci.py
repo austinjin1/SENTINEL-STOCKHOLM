@@ -287,23 +287,30 @@ def eval_hydrovit():
 
 
 def eval_microbiomenet():
-    """MicroBiomeNet macro-F1 on EMP 16S test set.
+    """MicroBiomeNet macro-F1 on EMP 16S test set — LEGACY, no valid CI emitted.
 
-    The MicrobialEncoder contains a DNABERT-S backbone that causes a bus error
-    on instantiation in this environment (SIGBUS from the trust_remote_code
-    custom ops).  Instead, we use the validated test result from results_real.json
-    (F1_macro=0.9134, n_test=3038) and compute a legitimate analytical CI using
-    the normal approximation for the macro-F1 standard error.
+    Two integrity problems make a CI here indefensible, so we DO NOT emit one:
 
-    For multiclass macro-F1 with 8 balanced classes and n=3038, the SE is
-    estimated as sqrt(F1*(1-F1)/n_test) — a conservative upper bound on the
-    true SE that is standard for reporting purposes.
+    1. Statistics: macro-F1 is a harmonic mean of per-class precision/recall
+       averaged over 8 classes, NOT a mean of Bernoulli trials, so the binomial
+       standard error sqrt(F1*(1-F1)/n) has no valid interpretation and any
+       normal-approx CI built from it is spurious.  A defensible CI would require
+       a bootstrap over the stored per-sample test predictions/labels — but the
+       DNABERT-S backbone SIGBUSes on instantiation in this env, so those
+       predictions cannot be regenerated here.
+
+    2. Scope: the stored F1_macro=0.9134 is a pre-remediation RANDOM-SPLIT /
+       in-distribution number that the integrity remediation superseded (the
+       live pipeline reports the geographic-holdout OOD metric instead).
+
+    We therefore return the point value with NULL CI bounds and a flag so the
+    forest plot / summary can show it is unbaseled, rather than fabricate a CI.
     """
     import json as _json
 
-    logger.info("MicroBiomeNet: computing analytical CI from results_real.json...")
+    logger.info("MicroBiomeNet: LEGACY in-distribution F1 — no valid CI (see docstring)...")
 
-    # Primary: results_real.json (EMP 16S, n=3038)
+    # Primary: results_real.json (EMP 16S, n=3038) — legacy random-split number.
     results_path = PROJECT_ROOT / "checkpoints" / "microbial" / "results_real.json"
     if results_path.exists():
         with open(results_path) as f:
@@ -315,22 +322,20 @@ def eval_microbiomenet():
         f1, n = 0.9134, 3038
         logger.info("  Using hardcoded result: F1=0.9134, n=3038")
 
-    # Standard error for macro-F1: sqrt(F1*(1-F1)/n)  (conservative normal approx)
-    se = float(np.sqrt(f1 * (1 - f1) / n))
-    z  = 1.959964
     result = {
         "point":       float(f1),
-        "ci_lo":       float(np.clip(f1 - z * se, 0.0, 1.0)),
-        "ci_hi":       float(np.clip(f1 + z * se, 0.0, 1.0)),
+        "ci_lo":       None,
+        "ci_hi":       None,
         "n_bootstrap": 0,
-        "se":          se,
+        "se":          None,
         "_simulated":  False,
-        "_method":     "normal_approx_F1",
-        "_source":     "results_real_json_EMP16S",
-        "_note":       "DNABERT-S backbone causes SIGBUS in this env; analytical CI on stored result",
+        "_method":     "none_no_valid_CI",
+        "_source":     "results_real_json_EMP16S_LEGACY_random_split",
+        "_note":       ("binomial SE on macro-F1 is statistically invalid and "
+                        "DNABERT-S SIGBUSes so no bootstrap is possible; this is "
+                        "a superseded pre-remediation in-distribution number"),
     }
-    logger.info(f"  F1 (analytical CI, n={n}): "
-                f"{result['point']:.4f} [{result['ci_lo']:.4f}, {result['ci_hi']:.4f}]")
+    logger.info(f"  F1 (point only, NO CI, n={n}): {result['point']:.4f} [no valid CI]")
     return result
 
 
@@ -489,9 +494,10 @@ def eval_biomotion():
     labels used during training, so running inference on those raw files gives
     unreliable AUROC (~0.45-0.60).
 
-    Instead, uses the Hanley-McNeil analytical CI on the validated benchmark
-    result (AUROC=0.9999996, n_test=4291, n_pos=1885) from results_expanded.json.
-    This is a legitimate analytical confidence interval — not a simulation.
+    NOTE (integrity): the previously-used AUROC=0.9999996 was a LEAKED/near-perfect
+    metric and is retracted. The honest held-out BioMotion AUROC is 0.807 (real EPA
+    ECOTOX endpoint data; see results/benchmarks/biomotion_holdout.json). The CI
+    below is computed on that real value, not the leaked one.
     """
     import json as _json
 
@@ -501,14 +507,13 @@ def eval_biomotion():
     if results_path.exists():
         with open(results_path) as f:
             r = _json.load(f)
-        auroc  = r.get("test_auroc", 0.9999996)
+        auroc  = 0.807  # honest held-out AUROC; the leaked test_auroc in the file is retracted
         n_test = r["test"].get("n_test", 4291) if "test" in r else r.get("n_test", 4291)
         n_pos  = r["test"].get("n_anomalous", 1885) if "test" in r else int(n_test * 0.4393)
-        logger.info(f"  Loaded from results_expanded.json: AUROC={auroc:.7f}, "
-                    f"n_test={n_test}, n_pos={n_pos}")
+        logger.info(f"  BioMotion honest AUROC={auroc:.3f} (n_test={n_test}, n_pos={n_pos})")
     else:
-        auroc, n_test, n_pos = 0.9999996, 4291, 1885
-        logger.info("  Using hardcoded expanded benchmark result")
+        auroc, n_test, n_pos = 0.807, 4291, 1885
+        logger.info("  Using honest held-out BioMotion AUROC 0.807")
 
     n_neg  = n_test - n_pos
     result = hanley_mcneil_ci(auroc, n_pos, n_neg)
@@ -596,6 +601,12 @@ def plot_forest(ci_results: dict):
     for name, res in ci_results.items():
         if res is None:
             continue
+        # Skip entries with no valid CI (e.g. legacy MicroBiomeNet: binomial SE on
+        # macro-F1 is invalid and no bootstrap is possible) rather than plot a
+        # fabricated interval.
+        if res.get("ci_lo") is None or res.get("ci_hi") is None:
+            logger.info(f"  {name}: no valid CI — excluded from forest plot")
+            continue
         entries.append({
             "label": metric_names.get(name, name),
             "point": res["point"],
@@ -681,7 +692,9 @@ def main():
             "ToxiGene uses percentile bootstrap on real model inference (n=256). "
             "AquaSSM, BioMotion, Fusion use Hanley-McNeil analytical CIs on "
             "validated test AUROCs (not simulated). "
-            "MicroBiomeNet uses normal-approx CI on stored F1 (DNABERT-S env issue). "
+            "MicroBiomeNet reports point only with NO CI (binomial SE on macro-F1 "
+            "is invalid and DNABERT-S SIGBUSes so no bootstrap is possible; also a "
+            "superseded pre-remediation in-distribution number). "
             "HydroViT skipped (no paired water_temp labels in satellite data).",
         "elapsed_s": round(time.time() - t0, 1),
     }
@@ -701,6 +714,12 @@ def main():
         if res is None:
             continue
         sim = "(*)" if res.get("_simulated") else "   "
+        if res.get("ci_lo") is None or res.get("ci_hi") is None:
+            logger.info(
+                f"{name:<18} {res['point']:>7.4f} "
+                f"{'[no valid CI]':>22} {sim} {'   n/a':>8}"
+            )
+            continue
         logger.info(
             f"{name:<18} {res['point']:>7.4f} "
             f"[{res['ci_lo']:.4f}, {res['ci_hi']:.4f}] {sim} "

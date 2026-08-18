@@ -321,16 +321,12 @@ def main():
     scores, labels, meta = load_scores_and_labels()
 
     if scores is None or len(scores) < 50:
-        # Fall back to simulated data matching reported AUROC=0.9999
-        logger.info("Fallback: simulating from AUROC=0.9999")
-        rng = np.random.default_rng(42)
-        N = 2000
-        labels = rng.choice([0, 1], N, p=[0.45, 0.55])
-        scores = np.where(
-            labels == 1,
-            rng.normal(8.5, 0.4, N),
-            rng.normal(2.1, 0.6, N),
-        )
+        # Hard-fail rather than fabricate: this audit is only meaningful on the
+        # real BioMotion scores. (Removed a synthetic-Gaussian fallback that
+        # manufactured an AUROC=0.9999 distribution.)
+        raise SystemExit(
+            "exp11: insufficient real BioMotion scores; refusing to simulate. "
+            "Regenerate real scores before running this audit.")
 
     from sklearn.metrics import roc_auc_score
     true_auroc = roc_auc_score(labels, scores)
@@ -390,7 +386,7 @@ def main():
 
     logger.info("\n=== VERDICT ===")
     for v in verdicts:
-        logger.info(f"  ✓ {v}")
+        logger.info(f"  OK {v}")
     logger.info(f"Elapsed: {time.time()-t0:.1f}s")
 
 

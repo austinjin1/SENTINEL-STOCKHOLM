@@ -46,6 +46,8 @@ MIT License — Bryan Cheng, 2026
 
 from __future__ import annotations
 
+import argparse
+import csv
 import io
 import json
 import logging
@@ -68,6 +70,7 @@ from sklearn.metrics import f1_score, accuracy_score
 from sentinel.data.splits import (
     assign_spatial_fold,
     split_indices_spatial_only,
+    geographic_holdout_split,
     SplitConfig,
 )
 
@@ -75,6 +78,7 @@ os.environ.setdefault("CUDA_VISIBLE_DEVICES", "2")
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 DATA_DIR     = PROJECT_ROOT / "data" / "processed" / "microbial" / "emp_16s"
+EMP_MAPPING  = PROJECT_ROOT / "data" / "raw" / "emp" / "emp_qiime_mapping_release1.tsv"
 CKPT_DIR     = PROJECT_ROOT / "checkpoints" / "microbial"
 LOG_DIR      = PROJECT_ROOT / "logs"
 RESULTS_DIR  = PROJECT_ROOT / "results" / "benchmarks"
@@ -439,6 +443,69 @@ def eval_epoch(model, loader, criterion, device):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# EMP mapping helpers (real lat/lon + coin-flip label detection)
+# ─────────────────────────────────────────────────────────────────────────────
+# Keyword lists copied verbatim from scripts/data_acquisition/download_emp_microbiome.py
+# (assign_source_label) so we can reconstruct which freshwater labels were assigned
+# by the MD5(sample_id)%3 coin-flip rather than by a real environmental keyword.
+_IMPACTED_KEYWORDS = [
+    "wastewater", "sewage", "urban", "pollut", "eutrophic",
+    "treatment", "industrial", "runoff", "effluent", "contaminat",
+    "river", "stream", "canal", "ditch",
+]
+_NATURAL_KEYWORDS = [
+    "lake", "pond", "spring", "pristine", "glacier", "mountain",
+    "oligotrophic", "alpine", "reservoir", "groundwater",
+]
+
+
+def load_emp_mapping(log: logging.Logger) -> dict[str, dict]:
+    """Load the EMP QIIME mapping file (sample_id -> metadata row)."""
+    if not EMP_MAPPING.exists():
+        raise FileNotFoundError(
+            f"EMP mapping file not found: {EMP_MAPPING}\n"
+            f"Required for --geographic-holdout (provides real lat/lon)."
+        )
+    with open(EMP_MAPPING) as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        mapping = {row["#SampleID"]: row for row in reader}
+    log.info(f"Loaded EMP metadata for {len(mapping):,} samples from {EMP_MAPPING.name}")
+    return mapping
+
+
+def is_coinflip_label(row: dict) -> bool:
+    """True if this sample's source label came from the MD5(sample_id)%3 coin-flip.
+
+    Mirrors assign_source_label() in download_emp_microbiome.py: freshwater
+    (non-saline water) samples whose env_biome/env_feature text matches NEITHER
+    the impacted keywords NOR the natural keywords (or matches BOTH) had their
+    label assigned arbitrarily by hashing the sample id — these are not real
+    environmental labels and must not be trained on.
+    """
+    if row.get("empo_3", "") != "Water (non-saline)":
+        return False
+    text = f"{row.get('env_biome', '').lower()} {row.get('env_feature', '').lower()}".lower()
+    is_impacted = any(kw in text for kw in _IMPACTED_KEYWORDS)
+    is_natural = any(kw in text for kw in _NATURAL_KEYWORDS)
+    # Real (keyword-derived) only when exactly one of the two matched.
+    return not (is_impacted ^ is_natural)
+
+
+def get_lat_lon(row: dict) -> tuple[float, float] | None:
+    """Extract a valid (lat, lon) pair from an EMP mapping row, or None."""
+    try:
+        lat = float(row.get("latitude_deg", ""))
+        lon = float(row.get("longitude_deg", ""))
+    except (TypeError, ValueError):
+        return None
+    if not (np.isfinite(lat) and np.isfinite(lon)):
+        return None
+    if abs(lat) > 90 or abs(lon) > 180 or (lat == 0.0 and lon == 0.0):
+        return None
+    return lat, lon
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Data loading with spatial holdout splits
 # ─────────────────────────────────────────────────────────────────────────────
 def load_and_split_data(log: logging.Logger) -> tuple[
@@ -576,17 +643,179 @@ def load_and_split_data(log: logging.Logger) -> tuple[
     return valid_files, valid_labels, valid_site_ids, split_idx
 
 
+def load_and_split_data_geographic(log: logging.Logger) -> tuple[
+    list[Path], list[int], list[str],
+    list[float], list[float],
+    dict[str, list[int]],
+    dict[str, object],
+]:
+    """Load real EMP 16S samples and apply a TRUE geographic holdout split.
+
+    Differences from the (effectively random) hash split:
+      1. Joins each sample to its REAL (lat, lon) from the EMP mapping file.
+      2. EXCLUDES freshwater samples whose label came from the MD5%3 coin-flip
+         (these are not real environmental labels — disclosed in results).
+      3. Splits by whole k-means geographic regions so no region is in two splits.
+
+    Returns valid_files, valid_labels, valid_site_ids, lats, lons, split_idx,
+    and an extra ``meta`` dict with exclusion/region bookkeeping for reporting.
+    """
+    if not DATA_DIR.exists():
+        raise FileNotFoundError(f"Data directory not found: {DATA_DIR}")
+    all_files = sorted(DATA_DIR.glob("*.npz"))
+    if len(all_files) == 0:
+        raise FileNotFoundError(f"No .npz files found in {DATA_DIR}")
+
+    mapping = load_emp_mapping(log)
+    log.info(f"Scanning {len(all_files)} .npz files in {DATA_DIR}")
+
+    valid_files: list[Path] = []
+    valid_labels: list[int] = []
+    valid_site_ids: list[str] = []
+    lats: list[float] = []
+    lons: list[float] = []
+
+    skipped_bad = 0
+    n_coinflip_excluded = 0
+    n_no_metadata = 0
+    n_no_latlon = 0
+
+    for f in all_files:
+        try:
+            with open(f, "rb") as fh:
+                raw = fh.read()
+            d = np.load(io.BytesIO(raw), allow_pickle=True)
+            abund = d["abundances"].astype(np.float32)
+            if abund.shape[0] != INPUT_DIM or abund.sum() < 1e-8:
+                skipped_bad += 1
+                continue
+            label = int(d["source_label"])
+            if label < 0 or label >= NUM_SOURCES:
+                skipped_bad += 1
+                continue
+            site_id_raw = d["site_id"]
+            site_id = str(site_id_raw.item()) if hasattr(site_id_raw, "item") else str(site_id_raw)
+        except Exception as e:
+            log.warning(f"Skipping {f.name}: {e}")
+            skipped_bad += 1
+            continue
+
+        row = mapping.get(site_id)
+        if row is None:
+            n_no_metadata += 1
+            continue
+        # Exclude MD5 coin-flip freshwater labels (not real environmental labels).
+        if is_coinflip_label(row):
+            n_coinflip_excluded += 1
+            continue
+        ll = get_lat_lon(row)
+        if ll is None:
+            n_no_latlon += 1
+            continue
+
+        valid_files.append(f)
+        valid_labels.append(label)
+        valid_site_ids.append(site_id)
+        lats.append(ll[0])
+        lons.append(ll[1])
+
+    n = len(valid_files)
+    if n == 0:
+        raise RuntimeError("No valid geolocated samples after coin-flip exclusion.")
+
+    log.info(
+        f"Geographic-holdout sample accounting: kept={n}  "
+        f"coin_flip_excluded={n_coinflip_excluded}  "
+        f"no_metadata={n_no_metadata}  no_latlon={n_no_latlon}  bad_file={skipped_bad}"
+    )
+
+    cnt = Counter(valid_labels)
+    log.info("Overall class distribution (coin-flips excluded):")
+    for lid in sorted(cnt):
+        name = SOURCE_NAMES[lid] if lid < len(SOURCE_NAMES) else f"class_{lid}"
+        log.info(f"  {name:>25}: {cnt[lid]:>6,}  ({100 * cnt[lid] / n:.1f}%)")
+
+    # ── TRUE geographic holdout: whole k-means regions per split ─────────────
+    log.info("Applying TRUE geographic holdout (k-means regions on real lat/lon)...")
+    split_idx = geographic_holdout_split(
+        np.array(lats), np.array(lons), valid_labels,
+        num_clusters=20, test_frac=0.20, val_frac=0.20, seed=SEED,
+    )
+
+    # ── Verify zero geographic-region leakage across splits ──────────────────
+    def region_key(i: int) -> tuple[float, float]:
+        return (round(lats[i], 4), round(lons[i], 4))
+
+    split_regions = {
+        s: set(region_key(i) for i in idxs) for s, idxs in split_idx.items()
+    }
+    for a in ["train", "val", "test"]:
+        for b in ["train", "val", "test"]:
+            if a >= b:
+                continue
+            overlap = split_regions[a] & split_regions[b]
+            if overlap:
+                raise RuntimeError(
+                    f"GEOGRAPHIC LEAKAGE between {a} and {b}: "
+                    f"{len(overlap)} shared coordinates e.g. {list(overlap)[:3]}"
+                )
+    log.info("Geographic leakage check PASSED: no coordinate appears in two splits")
+
+    # ── Per-split stats ──────────────────────────────────────────────────────
+    for split_name in ["train", "val", "test"]:
+        indices = split_idx[split_name]
+        n_split = len(indices)
+        n_regions = len(split_regions[split_name])
+        split_cnt = Counter(valid_labels[i] for i in indices)
+        log.info("\n" + "=" * 50)
+        log.info(f"{split_name.upper()} split: {n_split} samples, {n_regions} distinct coordinates")
+        log.info("=" * 50)
+        for lid in sorted(split_cnt):
+            name = SOURCE_NAMES[lid] if lid < len(SOURCE_NAMES) else f"class_{lid}"
+            pct = 100 * split_cnt[lid] / n_split if n_split > 0 else 0
+            log.info(f"  {name:>25}: {split_cnt[lid]:>6,}  ({pct:.1f}%)")
+
+    meta = {
+        "n_coinflip_excluded": n_coinflip_excluded,
+        "n_no_metadata": n_no_metadata,
+        "n_no_latlon": n_no_latlon,
+        "n_bad_file": skipped_bad,
+        "n_distinct_coords": {s: len(split_regions[s]) for s in split_regions},
+    }
+    return valid_files, valid_labels, valid_site_ids, lats, lons, split_idx, meta
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Main
 # ─────────────────────────────────────────────────────────────────────────────
-def main() -> None:
+def main(geographic_holdout: bool = False, data_dir: "Path | None" = None,
+         tag: str = "") -> None:
     t0 = time.time()
     log = _setup_logging()
     torch.manual_seed(SEED)
     np.random.seed(SEED)
 
+    # Optional data-dir override (e.g. the FULL EMP release) without disturbing
+    # the default 2k-subset path used for the published 0.304 baseline.
+    if data_dir is not None:
+        global DATA_DIR
+        DATA_DIR = Path(data_dir)
+        log.info(f"DATA_DIR overridden to: {DATA_DIR}")
+
+    suffix = f"_{tag}" if tag else ""
+
+    # Geographic-holdout mode writes to its own checkpoint/results paths so it
+    # never overwrites the (random-split) baseline artifacts.
+    if geographic_holdout:
+        ckpt_path = CKPT_DIR / f"microbiomenet_geographic_holdout{suffix}_best.pt"
+        results_path = RESULTS_DIR / f"microbiomenet_geographic_holdout{suffix}.json"
+    else:
+        ckpt_path = CKPT_PATH
+        results_path = RESULTS_PATH
+
     log.info("=" * 70)
-    log.info("MicroBiomeNet v3 — Spatial Holdout Training (REAL DATA ONLY)")
+    mode = "TRUE Geographic Holdout" if geographic_holdout else "Hash Spatial Holdout"
+    log.info(f"MicroBiomeNet — {mode} Training (REAL DATA ONLY)")
     log.info("=" * 70)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -595,8 +824,13 @@ def main() -> None:
         log.info(f"GPU: {torch.cuda.get_device_name(0)}")
         log.info(f"CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES', 'not set')}")
 
-    # ── Load data with spatial holdout splits ────────────────────────────────
-    valid_files, valid_labels, valid_site_ids, split_idx = load_and_split_data(log)
+    # ── Load data with the requested split protocol ──────────────────────────
+    geo_meta: dict[str, object] = {}
+    if geographic_holdout:
+        (valid_files, valid_labels, valid_site_ids,
+         valid_lats, valid_lons, split_idx, geo_meta) = load_and_split_data_geographic(log)
+    else:
+        valid_files, valid_labels, valid_site_ids, split_idx = load_and_split_data(log)
 
     # Build datasets from split indices
     tr_files  = [valid_files[i]  for i in split_idx["train"]]
@@ -669,8 +903,8 @@ def main() -> None:
         if va_f1 > best_val_f1:
             best_val_f1 = va_f1
             no_improve  = 0
-            torch.save(model.state_dict(), CKPT_PATH)
-            log.info(f"  -> New best val F1: {va_f1:.4f}  (saved to {CKPT_PATH.name})")
+            torch.save(model.state_dict(), ckpt_path)
+            log.info(f"  -> New best val F1: {va_f1:.4f}  (saved to {ckpt_path.name})")
         else:
             no_improve += 1
 
@@ -683,26 +917,43 @@ def main() -> None:
     log.info("TEST EVALUATION (spatial holdout — held-out sites)")
     log.info("=" * 70)
 
-    if CKPT_PATH.exists():
-        model.load_state_dict(torch.load(str(CKPT_PATH), map_location=device, weights_only=True))
-        log.info(f"Loaded best checkpoint from {CKPT_PATH}")
+    if ckpt_path.exists():
+        model.load_state_dict(torch.load(str(ckpt_path), map_location=device, weights_only=True))
+        log.info(f"Loaded best checkpoint from {ckpt_path}")
 
+    test_class_support: dict[str, int] = {}
+    classes_absent_from_test: list[str] = []
     if len(te_ds) > 0:
         _, te_f1, te_preds, te_labels_eval = eval_epoch(model, te_dl, criterion, device)
         te_acc = accuracy_score(te_labels_eval, te_preds)
-        per_class_f1 = f1_score(te_labels_eval, te_preds, average=None, zero_division=0)
-        unique_labels = sorted(set(te_labels_eval))
+        # Report per-class F1 over ALL NUM_SOURCES classes so any class that
+        # collapsed under the geographic holdout shows up explicitly (support 0).
+        all_labels = list(range(NUM_SOURCES))
+        per_class_f1 = f1_score(
+            te_labels_eval, te_preds, labels=all_labels, average=None, zero_division=0
+        )
+        macro_over_present = te_f1  # macro over classes present in test (sklearn default)
+        test_support = Counter(te_labels_eval)
 
-        log.info(f"Macro F1  : {te_f1:.4f}")
+        log.info(f"Macro F1 (classes present in test): {macro_over_present:.4f}")
         log.info(f"Accuracy  : {te_acc:.4f}")
         log.info(f"Best val  : {best_val_f1:.4f}")
-        log.info("Per-class F1:")
+        log.info("Per-class F1 (all classes; support=0 means absent from test):")
         per_class_dict = {}
-        for i, lid in enumerate(unique_labels):
+        for lid in all_labels:
             name = SOURCE_NAMES[lid] if lid < len(SOURCE_NAMES) else f"class_{lid}"
-            cf1 = per_class_f1[i] if i < len(per_class_f1) else 0.0
-            per_class_dict[name] = round(float(cf1), 6)
-            log.info(f"  {name:>25}: {cf1:.4f}")
+            cf1 = float(per_class_f1[lid])
+            support = int(test_support.get(lid, 0))
+            per_class_dict[name] = round(cf1, 6)
+            test_class_support[name] = support
+            if support == 0:
+                classes_absent_from_test.append(name)
+            log.info(f"  {name:>25}: F1={cf1:.4f}  (test support={support})")
+        if classes_absent_from_test:
+            log.warning(
+                f"{len(classes_absent_from_test)} class(es) absent from the geographic "
+                f"test fold: {classes_absent_from_test}"
+            )
     else:
         log.warning("Test split is empty — no test evaluation performed")
         te_f1 = 0.0
@@ -717,21 +968,61 @@ def main() -> None:
     val_sites   = set(valid_site_ids[i] for i in split_idx["val"])
     test_sites  = set(valid_site_ids[i] for i in split_idx["test"])
 
-    results = {
-        "model": "MicroBiomeNetV5",
-        "version": "v3_spatial_holdout",
-        "split_protocol": "spatial_holdout_hash_based",
-        "split_description": (
+    if geographic_holdout:
+        version = "geographic_holdout"
+        split_protocol = "geographic_holdout_kmeans_regions"
+        split_description = (
+            "TRUE geographic holdout. Samples joined to REAL (lat, lon) from the "
+            "EMP QIIME mapping file, then clustered into 20 geographic regions via "
+            "k-means on coordinates. Whole regions are assigned to train/val/test "
+            "(class-coverage-aware greedy) so NO geographic region appears in two "
+            "splits. This replaces the prior per-sample hash split, which (because "
+            "every EMP sample has a unique site_id) was effectively a RANDOM split "
+            "and inflated macro-F1 to ~0.831. MD5(sample_id)%3 coin-flip freshwater "
+            "labels were excluded (not real environmental labels)."
+        )
+        geographic_block: dict[str, object] = {
+            "n_coinflip_labels_excluded": geo_meta.get("n_coinflip_excluded", 0),
+            "n_samples_no_metadata": geo_meta.get("n_no_metadata", 0),
+            "n_samples_no_latlon": geo_meta.get("n_no_latlon", 0),
+            "n_geographic_regions_kmeans": 20,
+            "n_distinct_test_coords": geo_meta.get("n_distinct_coords", {}).get("test", 0),
+            "n_distinct_train_coords": geo_meta.get("n_distinct_coords", {}).get("train", 0),
+            "n_distinct_val_coords": geo_meta.get("n_distinct_coords", {}).get("val", 0),
+            "geographic_region_leakage": 0,
+            "test_class_support": test_class_support,
+            "classes_absent_from_test": classes_absent_from_test,
+            "n_classes_present_in_test": NUM_SOURCES - len(classes_absent_from_test),
+            "macro_f1_over_classes_present_in_test": round(float(te_f1), 6),
+        }
+    else:
+        version = "v3_spatial_holdout"
+        split_protocol = "spatial_holdout_hash_based"
+        split_description = (
             "Strict spatial holdout using sentinel.data.splits. "
             "Sites assigned to folds via SHA-256 hash of site_id. "
             "Folds 0,1,2 -> train, Fold 3 -> val, Fold 4 -> test. "
             "Zero site leakage verified."
+        )
+        geographic_block = {}
+
+    results = {
+        "model": "MicroBiomeNetV5",
+        "version": version,
+        "split_protocol": split_protocol,
+        "split_description": split_description,
+        "random_split_baseline_macro_f1": 0.831,
+        "random_split_baseline_note": (
+            "Prior reported 'strict spatial holdout' macro-F1 of 0.831 was in "
+            "fact a per-sample random split (unique site_id per sample => hash "
+            "fold == random). Listed here only for honest comparison."
         ),
         "data_source": "Real EMP 16S rRNA only (no synthetic data)",
         "test_macro_f1": round(float(te_f1), 6),
         "test_accuracy": round(float(te_acc), 6),
         "best_val_f1": round(float(best_val_f1), 6),
         "per_class_f1": per_class_dict,
+        "geographic_holdout": geographic_block,
         "n_train": len(tr_ds),
         "n_val": len(va_ds),
         "n_test": len(te_ds),
@@ -770,17 +1061,52 @@ def main() -> None:
             "augmentation": "Mixup(50%), Dirichlet(50%), OTU_subsample(15%), lognormal(30%)",
         },
         "elapsed_seconds": round(elapsed, 2),
-        "checkpoint_path": str(CKPT_PATH),
+        "checkpoint_path": str(ckpt_path),
     }
 
-    with open(str(RESULTS_PATH), "w") as f:
+    with open(str(results_path), "w") as f:
         json.dump(results, f, indent=2)
-    log.info(f"Results saved to {RESULTS_PATH}")
+    log.info(f"Results saved to {results_path}")
 
-    print(f"\nMicroBiomeNet v3 (spatial holdout) TEST F1: {te_f1:.4f}")
-    print(f"Results: {RESULTS_PATH}")
-    print(f"Checkpoint: {CKPT_PATH}")
+    print(f"\nMicroBiomeNet ({mode}) TEST macro-F1: {te_f1:.4f}")
+    if geographic_holdout:
+        print(f"  vs random-split baseline macro-F1: 0.831")
+        if classes_absent_from_test:
+            print(f"  CAVEAT: classes absent from geographic test fold: {classes_absent_from_test}")
+    print(f"Results: {results_path}")
+    print(f"Checkpoint: {ckpt_path}")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Train MicroBiomeNet on real EMP 16S data.")
+    parser.add_argument(
+        "--geographic-holdout",
+        action="store_true",
+        help=(
+            "Use a TRUE geographic holdout (k-means regions on real lat/lon, "
+            "coin-flip freshwater labels excluded) instead of the per-sample "
+            "hash split. Writes results to "
+            "results/benchmarks/microbiomenet_geographic_holdout.json."
+        ),
+    )
+    parser.add_argument(
+        "--data-dir",
+        type=str,
+        default=None,
+        help=(
+            "Override the processed-npz directory (e.g. the FULL EMP release at "
+            "data/processed/microbial/emp_16s_full). Default uses the 2k subset."
+        ),
+    )
+    parser.add_argument(
+        "--tag",
+        type=str,
+        default="",
+        help="Suffix for checkpoint/results filenames (e.g. 'full_emp').",
+    )
+    args = parser.parse_args()
+    main(
+        geographic_holdout=args.geographic_holdout,
+        data_dir=args.data_dir,
+        tag=args.tag,
+    )

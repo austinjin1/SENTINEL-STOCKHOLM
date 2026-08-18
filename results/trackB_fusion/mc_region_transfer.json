@@ -1,0 +1,23 @@
+{
+  "n": 3649,
+  "labels": {
+    "mc_gt1.6": {
+      "pos": 633,
+      "raw": 0.485,
+      "+domain(lat,lon,month)": 0.527,
+      "within_site_relative": 0.517,
+      "fold_rank": 0.495,
+      "n_cross_region": 3594,
+      "n_regions": 5
+    },
+    "mc_gt0.3": {
+      "pos": 1286,
+      "raw": 0.49,
+      "+domain(lat,lon,month)": 0.456,
+      "within_site_relative": 0.416,
+      "fold_rank": 0.492,
+      "n_cross_region": 3594,
+      "n_regions": 5
+    }
+  }
+}

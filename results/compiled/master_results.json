@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "PARTIALLY SUPERSEDED — Several headline AUROCs in this compiled file are fabricated or simulation-derived and have real replacements: (1) Fusion AUROC 0.939 (exp9) does NOT beat sensor-only on real co-located data — real Track B held-out fusion is AUROC ~0.649 ~= sensor-only ~0.642 (the synthetic 0.992 ablation is RETRACTED). (2) BioMotion AUROC 0.9999 is fabricated; real BioMotion on EPA ECOTOX endpoint data is AUROC 0.807. (3) exp15 contrastive Recall@1=1.000 was an N=1 eval on hash-seeded noise (REMOVED). (4) Disease/species/causal claims carry the same disclosures as their source result files. Use the real numbers, not the headline values below.",
   "exp9_bootstrap_ci": {
     "n_bootstrap": 2000,
     "ci_results": {
@@ -33,7 +34,8 @@
         "se": 1.0817603866163784e-05,
         "_simulated": false,
         "_method": "hanley_mcneil",
-        "_source": "biomotion_expanded_benchmark_Hanley_McNeil"
+        "_source": "biomotion_expanded_benchmark_Hanley_McNeil",
+        "_RETRACTED": "AUROC 0.9999 is fabricated. Real BioMotion on EPA ECOTOX endpoint data is AUROC 0.807."
       },
       "Fusion": {
         "point": 0.9392549471586803,
@@ -43,7 +45,8 @@
         "se": 0.008639410794912683,
         "_simulated": false,
         "_method": "hanley_mcneil",
-        "_source": "fusion_real_results_Hanley_McNeil"
+        "_source": "fusion_real_results_Hanley_McNeil",
+        "_RETRACTED": "On real co-located data fusion does NOT beat sensor-only. Real Track B held-out fusion AUROC ~0.649 ~= sensor-only ~0.642; the 0.992 synthetic ablation is retracted."
       }
     },
     "critique_addressed": "All 5 evaluated metrics now have real 95% CIs. ToxiGene uses percentile bootstrap on real model inference (n=256). AquaSSM, BioMotion, Fusion use Hanley-McNeil analytical CIs on validated test AUROCs (not simulated). MicroBiomeNet uses normal-approx CI on stored F1 (DNABERT-S env issue). HydroViT skipped (no paired water_temp labels in satellite data).",

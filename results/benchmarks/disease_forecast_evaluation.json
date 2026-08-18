@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "CIRCULAR LABELS — targets are a rule-based WHO/CDC/EPA RISK INDEX, i.e. closed-form deterministic functions of the same sensor inputs the model receives. AUROC=0.988 (and per-pathogen AUROCs up to 1.000) reflect recovery of a known rule, NOT predictive skill. Do not present as forecasting performance.",
   "test_loss": 0.735274,
   "per_disease_loss": {
     "cyanotoxin": 0.287218,

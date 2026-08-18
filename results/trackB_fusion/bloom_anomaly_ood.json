@@ -1,0 +1,255 @@
+{
+  "dataset": "mc_fusion_dataset.parquet",
+  "n_labelled_with_antecedent": 2000,
+  "n_sites": 150,
+  "thresholds": {
+    "chla_gt24_WHO_high": "WHO Alert Level 2 / high recreational risk (Chorus&Bartram 1999; WHO 2003)",
+    "chla_gt8_eutrophic": "eutrophic/elevated-bloom screening level"
+  },
+  "label_independence": "label = CONCURRENT in-situ chl-a exceedance; predictors are satellite optics (independent sensor) + temp/phosphorus drivers + ANTECEDENT (prior-date) chl. NO concurrent chl probe among predictors.",
+  "nitrogen_excluded": "co-located at only 7 sites -> excluded from drivers",
+  "feature_blocks": {
+    "satellite_optics": [
+      "sf0",
+      "sf1",
+      "sf2",
+      "sf3",
+      "sf4",
+      "sf5",
+      "sf6",
+      "sf7",
+      "sf8",
+      "sf9",
+      "sf10",
+      "sf11",
+      "sf12",
+      "sf13",
+      "sf14",
+      "sf15",
+      "sf16",
+      "sf17",
+      "sf18",
+      "sf19",
+      "sf20",
+      "sf21",
+      "sf22",
+      "sf23",
+      "sf24",
+      "sf25"
+    ],
+    "drivers": [
+      "drv_temp",
+      "drv_phos"
+    ],
+    "antecedent": [
+      "prior_chla",
+      "prior_gap_days",
+      "prior_temp",
+      "temp_trend",
+      "month_sin",
+      "month_cos"
+    ]
+  },
+  "labels": {
+    "chla_gt24_WHO_high": {
+      "pos": 889,
+      "neg": 1111,
+      "within_region": {
+        "satellite_auroc": 0.7,
+        "drivers_auroc": 0.653,
+        "antecedent_auroc": 0.804,
+        "fusion_auroc": 0.835,
+        "best_single": "antecedent",
+        "best_single_auroc": 0.804,
+        "fusion_minus_best": 0.031,
+        "site_bootstrap_delta": {
+          "delta_median": 0.031,
+          "ci95": [
+            0.017,
+            0.047
+          ],
+          "P_delta_gt0": 1.0
+        },
+        "fusion_helps": true
+      },
+      "cross_region": {
+        "regions_used": [
+          "HUC30",
+          "CA",
+          "HUC31"
+        ],
+        "n_cross_region": 1847,
+        "n_regions": 3,
+        "fusion_auroc": 0.625,
+        "fusion_auroc_hm_ci95": [
+          0.6,
+          0.651
+        ],
+        "fusion_no_antecedent_chl_auroc": 0.457,
+        "satellite_auroc": 0.414,
+        "drivers_auroc": 0.46,
+        "antecedent_auroc": 0.688,
+        "antecedent_priorchl_only_auroc": 0.782,
+        "fusion_region_cluster_bootstrap": {
+          "auroc_boot_median": 0.677,
+          "ci95": [
+            0.595,
+            0.752
+          ],
+          "P_gt_0.5": 1.0,
+          "n_boot": 2000
+        },
+        "above_chance": true,
+        "per_region_heldout": {
+          "HUC30": {
+            "auroc": 0.677,
+            "n": 1430,
+            "pos": 621
+          },
+          "CA": {
+            "auroc": 0.717,
+            "n": 348,
+            "pos": 195
+          },
+          "HUC31": {
+            "auroc": 0.674,
+            "n": 69,
+            "pos": 57
+          }
+        }
+      }
+    },
+    "chla_gt8_eutrophic": {
+      "pos": 1541,
+      "neg": 459,
+      "within_region": {
+        "satellite_auroc": 0.738,
+        "drivers_auroc": 0.689,
+        "antecedent_auroc": 0.845,
+        "fusion_auroc": 0.866,
+        "best_single": "antecedent",
+        "best_single_auroc": 0.845,
+        "fusion_minus_best": 0.021,
+        "site_bootstrap_delta": {
+          "delta_median": 0.021,
+          "ci95": [
+            0.005,
+            0.037
+          ],
+          "P_delta_gt0": 0.997
+        },
+        "fusion_helps": true
+      },
+      "cross_region": {
+        "regions_used": [
+          "HUC30",
+          "CA",
+          "HUC31"
+        ],
+        "n_cross_region": 1847,
+        "n_regions": 3,
+        "fusion_auroc": 0.639,
+        "fusion_auroc_hm_ci95": [
+          0.609,
+          0.67
+        ],
+        "fusion_no_antecedent_chl_auroc": 0.501,
+        "satellite_auroc": 0.413,
+        "drivers_auroc": 0.508,
+        "antecedent_auroc": 0.703,
+        "antecedent_priorchl_only_auroc": 0.774,
+        "fusion_region_cluster_bootstrap": {
+          "auroc_boot_median": 0.65,
+          "ci95": [
+            0.639,
+            0.94
+          ],
+          "P_gt_0.5": 1.0,
+          "n_boot": 2000
+        },
+        "above_chance": true,
+        "per_region_heldout": {
+          "HUC30": {
+            "auroc": 0.665,
+            "n": 1430,
+            "pos": 1166
+          },
+          "CA": {
+            "auroc": 0.745,
+            "n": 348,
+            "pos": 274
+          },
+          "HUC31": {
+            "auroc": 0.94,
+            "n": 69,
+            "pos": 67
+          }
+        }
+      }
+    }
+  },
+  "microcystin_head_to_head_same_regions": {
+    "note": "microcystin fusion (sf* + concurrent CHLA + PC) under leave-one-region-out on the SAME coherent region set. Collapses to ~chance -> the toxin's optics->toxin mapping is region-specific (local genotype).",
+    "by_threshold": {
+      "mc_gt8_WHO_rec": {
+        "fusion_cross_region_auroc": 0.544,
+        "hm_ci95": [
+          0.504,
+          0.584
+        ],
+        "regions_used": [
+          "HUC30",
+          "CA",
+          "HUC31"
+        ],
+        "n": 3023,
+        "pos": 227
+      },
+      "mc_gt1.6_WHO_drink": {
+        "fusion_cross_region_auroc": 0.492,
+        "hm_ci95": [
+          0.465,
+          0.519
+        ],
+        "regions_used": [
+          "HUC30",
+          "CA",
+          "HUC31"
+        ],
+        "n": 3023,
+        "pos": 521
+      },
+      "mc_gt0.3_detect": {
+        "fusion_cross_region_auroc": 0.516,
+        "hm_ci95": [
+          0.495,
+          0.538
+        ],
+        "regions_used": [
+          "HUC30",
+          "CA",
+          "HUC31"
+        ],
+        "n": 3023,
+        "pos": 1086
+      }
+    }
+  },
+  "verdict": {
+    "bloom_cross_region_auroc": {
+      "chla_gt24": 0.625,
+      "chla_gt8": 0.639
+    },
+    "bloom_above_chance": {
+      "chla_gt24": true,
+      "chla_gt8": true
+    },
+    "microcystin_cross_region_auroc": {
+      "mc_gt8_WHO_rec": 0.544,
+      "mc_gt1.6_WHO_drink": 0.492,
+      "mc_gt0.3_detect": 0.516
+    },
+    "carrier_of_transfer": "antecedent chl-a persistence (temporal autocorrelation of biomass) \u2014 a universal property \u2014 NOT instantaneous satellite optics + drivers, which transfer only weakly on their own (see fusion_no_antecedent_chl).",
+    "conclusion": "YES \u2014 the physically-driven chl-a bloom anomaly transfers cross-region (fusion AUROC 0.62-0.65, region-clustered bootstrap CI excludes 0.5; antecedent-chl-alone 0.78-0.79) whereas microcystin collapses to chance (~0.49-0.54) on the SAME 3 coherent regions (CA, HUC30, HUC31). BUT the transfer is carried by ANTECEDENT chl-a PERSISTENCE (temporal autocorrelation of biomass \u2014 a universal property), NOT by the satellite+driver instantaneous physics originally hypothesised: those alone are AT chance cross-region (0.47-0.50) and, when added, DILUTE the antecedent signal (full fusion 0.62-0.65 < antecedent-alone 0.78). Honest verdict: fusion generalises OOD here, but not for the hypothesised reason."
+  }
+}

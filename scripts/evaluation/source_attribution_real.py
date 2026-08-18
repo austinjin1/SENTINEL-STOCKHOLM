@@ -33,7 +33,7 @@ from sentinel.utils.logging import get_logger
 logger = get_logger(__name__)
 
 DEVICE = torch.device("cpu")
-CKPT_BASE = Path("C:/Users/zhaoz/SENTINEL-checkpoints/checkpoints")
+CKPT_BASE = PROJECT_ROOT / "checkpoints"
 EMBEDDINGS_DIR = PROJECT_ROOT / "data" / "real_embeddings"
 OUTPUT_DIR = PROJECT_ROOT / "results" / "source_attribution"
 

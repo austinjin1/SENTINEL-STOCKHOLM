@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "CIRCULAR LABELS — the risk targets are closed-form WHO/CDC/EPA threshold functions of the same sensor inputs fed to the model. Any reported AUROC/accuracy measures recovery of a deterministic rule, NOT predictive skill on real outcomes.",
   "model": "IntegratedDiseaseRisk",
   "data_source": "USGS NWIS real sensor data",
   "risk_methodology": "Environmental risk scores from WHO/CDC/EPA thresholds applied to real water quality measurements",

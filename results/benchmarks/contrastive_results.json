@@ -1,7 +1,9 @@
 {
+  "_SIMULATION_WARNING": "The microbial-molecular Recall@1=1.000 below is an N=1 retrieval evaluation on hash-seeded noise — NOT a real cross-modal alignment result. std_cosine_sim is NaN (single sample). Do not cite this Recall@1.",
   "model": "ContrastivePretrainer (CLIP-style)",
   "pair_results": {
     "microbial-molecular": {
+      "_SIMULATION_WARNING": "N=1 eval on hash-seeded noise; Recall@1=1.000 is not meaningful.",
       "pair_name": "microbial-molecular",
       "modality_a": "microbial",
       "modality_b": "molecular",

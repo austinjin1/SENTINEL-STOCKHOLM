@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "ILLUSTRATIVE CASE STUDIES — NOT specificity-validated. The per-event lead_time_days (59.33/87.21/89.78/59.21/44.33/58.62) and max_anomaly_prob values here are NOT validated results and over-fire on clean controls. The real validated Track A result is a median 29.3-day lead on 3/6 NEON DO-hypoxia episodes (KING 36.8d, BIGC 29.3d, PRIN 22.5d), sensor-only, at held-out FPR 4.6%. Do not present these case-study lead times as validated detection.",
   "generated": "2026-05-28T11:10:13.161049Z",
   "checkpoint": "/home/bcheng/SENTINEL/checkpoints/sensor/aquassm_full_best.pt",
   "n_events_attempted": 10,

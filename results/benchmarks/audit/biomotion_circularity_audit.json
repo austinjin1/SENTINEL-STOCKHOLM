@@ -1,0 +1,13 @@
+{
+  "n_tests": 29421,
+  "anomaly_rate": 0.6682641650521736,
+  "grouped_auroc_full": 0.8641980110049673,
+  "grouped_auroc_effgrp_only": 0.7300855220251639,
+  "grouped_auroc_chan_only": 0.6487251905333193,
+  "grouped_auroc_design_only_no_biology": 0.8271302190513701,
+  "grouped_auroc_obs_duration_alone": 0.7305150824004301,
+  "grouped_auroc_biology_only": 0.7527506600125193,
+  "logreg_grouped_auroc": 0.8189765456008071,
+  "chemical_overlap": 0,
+  "elapsed_sec": 161.5
+}

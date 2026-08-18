@@ -1,0 +1,195 @@
+{
+  "variant_key": "ac_multilag_spectral",
+  "variant_name": "Higher-lag autocorrelation + spectral reddening",
+  "purpose": "Augment the verified CSD-EWS channel (trailing var + AC1) with lag-2/lag-3 autocorrelation and low-frequency spectral reddening (4 params x 5 feats = 20 self-normalized ews-z series), fused as dev_plus = dev + BETA*dev_ews. Evaluate at matched <=5% held-out control FPR on NEON + USGS (self-calibrated) and leave-one-network-out.",
+  "hyperparameters": {
+    "EWS_WIN": 180,
+    "EWS_GUARD": 12,
+    "W_BASE": 240,
+    "GUARD": 12,
+    "EWS_MIN_BASE": 20,
+    "FLOOR": 0.0,
+    "BETA": 1.0,
+    "SLACK_K": 1.0,
+    "TARGET_FPR": 0.05,
+    "LAGS": [
+      2,
+      3
+    ],
+    "SPEC_MINPTS": 32,
+    "AC_MIN_EXTRA": 8,
+    "spectral_split": "lowest half of positive freqs (Nyquist/2 cut)",
+    "spectral_window": "Hann",
+    "n_ews_series": 20,
+    "note": "all fixed a priori; NONE tuned on leads"
+  },
+  "headline_to_beat": {
+    "NEON_median_lead": 41.3,
+    "NEON_detected": 11,
+    "USGS_median_lead": 41.4,
+    "USGS_detected": 14,
+    "at_fpr": 0.05
+  },
+  "neon_self_calibrated": {
+    "global_thr": 1436.1452,
+    "control_heldout_fpr": 0.0486,
+    "episodes_detected": 12,
+    "n_episodes": 15,
+    "median_lead_days": 43.8333,
+    "detected_sites": [
+      "ARIK",
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "leads_by_site": {
+      "ARIK": 7.33,
+      "BARC": 43.66,
+      "BIGC": 44.92,
+      "BLWA": 42.94,
+      "COMO": 18.61,
+      "GUIL": 44.84,
+      "KING": 44.17,
+      "LECO": 44.26,
+      "LIRO": 22.71,
+      "MAYF": 44.61,
+      "MCDI": 44.01,
+      "PRIN": 14.29
+    }
+  },
+  "usgs_self_calibrated": {
+    "global_thr": 781.8932,
+    "control_heldout_fpr": 0.0445,
+    "episodes_detected": 14,
+    "n_episodes": 17,
+    "median_lead_days": 39.4583,
+    "detected_sites": [
+      "01649500",
+      "01656903",
+      "040851385",
+      "07288500",
+      "073802512",
+      "07381600",
+      "08062500",
+      "08065350",
+      "08181500",
+      "08181800",
+      "08211200",
+      "14206950",
+      "453004122510301",
+      "453030122560101"
+    ],
+    "leads_by_site": {
+      "01649500": 44.99,
+      "01656903": 25.22,
+      "040851385": 25.78,
+      "07288500": 33.82,
+      "073802512": 43.64,
+      "07381600": 37.64,
+      "08062500": 41.28,
+      "08065350": 16.52,
+      "08181500": 43.33,
+      "08181800": 19.44,
+      "08211200": 43.94,
+      "14206950": 29.47,
+      "453004122510301": 44.36,
+      "453030122560101": 44.66
+    }
+  },
+  "leave_one_network_out": {
+    "neon_thr_applied_to_usgs": {
+      "global_thr": 1436.1452,
+      "control_heldout_fpr": 0.0287,
+      "episodes_detected": 14,
+      "n_episodes": 17,
+      "median_lead_days": 39.8073,
+      "detected_sites": [
+        "01649500",
+        "01656903",
+        "040851385",
+        "07288500",
+        "073802512",
+        "07381600",
+        "08062500",
+        "08065350",
+        "08181500",
+        "08181800",
+        "08211200",
+        "14206950",
+        "453004122510301",
+        "453030122560101"
+      ],
+      "leads_by_site": {
+        "01649500": 43.66,
+        "01656903": 23.8,
+        "040851385": 25.36,
+        "07288500": 33.49,
+        "073802512": 43.39,
+        "07381600": 35.89,
+        "08062500": 40.2,
+        "08065350": 12.19,
+        "08181500": 39.42,
+        "08181800": 18.44,
+        "08211200": 43.27,
+        "14206950": 43.97,
+        "453004122510301": 43.95,
+        "453030122560101": 44.24
+      }
+    },
+    "usgs_thr_applied_to_neon": {
+      "global_thr": 781.8932,
+      "control_heldout_fpr": 0.0707,
+      "episodes_detected": 12,
+      "n_episodes": 15,
+      "median_lead_days": 43.9896,
+      "detected_sites": [
+        "ARIK",
+        "BARC",
+        "BIGC",
+        "BLWA",
+        "COMO",
+        "GUIL",
+        "KING",
+        "LECO",
+        "LIRO",
+        "MAYF",
+        "MCDI",
+        "PRIN"
+      ],
+      "leads_by_site": {
+        "ARIK": 7.92,
+        "BARC": 43.07,
+        "BIGC": 44.67,
+        "BLWA": 44.52,
+        "COMO": 43.78,
+        "GUIL": 44.51,
+        "KING": 44.33,
+        "LECO": 42.18,
+        "LIRO": 23.21,
+        "MAYF": 44.2,
+        "MCDI": 44.84,
+        "PRIN": 14.71
+      }
+    },
+    "neon_calib_heldout_fpr": 0.0486,
+    "usgs_calib_heldout_fpr": 0.0445
+  },
+  "verdict": {
+    "neon_beats_headline": true,
+    "usgs_beats_headline": false,
+    "is_cross_network_win": false,
+    "leave_one_network_out_holds": false,
+    "criteria": {
+      "is_cross_network_win": "median lead > headline (NEON 41.3 / USGS 41.4) with >= headline detections on BOTH networks at <=5% held-out FPR",
+      "leave_one_network_out_holds": "cross-network-calibrated lead still >= headline on both networks with detections and controlled FPR"
+    }
+  }
+}

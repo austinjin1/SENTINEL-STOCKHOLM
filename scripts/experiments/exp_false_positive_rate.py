@@ -126,11 +126,15 @@ def score_windows_batch(sensor, fusion, head, windows: list) -> list[float]:
                     prob = torch.sigmoid(prob) if prob.max() > 1 else prob
                     all_scores.extend(prob.cpu().tolist())
                     continue
-        except Exception:
-            pass
-        # Fallback: embedding norm for this batch
-        norms = emb.norm(dim=-1) if emb.dim() > 1 else emb.norm()
-        all_scores.extend(norms.cpu().tolist())
+        except Exception as e:
+            raise RuntimeError(
+                "Anomaly head forward failed during batch scoring; refusing to "
+                "fabricate probabilities from emb.norm()."
+            ) from e
+        raise RuntimeError(
+            "Anomaly head produced no probability during batch scoring; refusing "
+            "to fabricate probabilities from emb.norm()."
+        )
     return all_scores
 
 

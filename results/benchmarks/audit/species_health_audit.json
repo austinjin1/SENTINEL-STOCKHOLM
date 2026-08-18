@@ -1,0 +1,28 @@
+{
+  "audit": "Species Health headline (0.949 macro-AUROC) + env-mechanism (mussel StreamCat 0.818 vs geo-only 0.791)",
+  "auditor_reproduced": true,
+  "seed": 42,
+  "split": "per-site holdout (site_id unique index; each of 5462 sites in exactly one of train/val/test) -> NO record-level or site leakage",
+  "headline_0949": {
+    "value": 0.9488,
+    "source": "species_health_leakagefree_retrained.json macro_auroc (excl mayfly & 2 always-absent)",
+    "leakage_status": "FIXED. Original AUROC=1.000/R2=0.9996 were CIRCULAR (input embedding positions 4-9 = log1p per-species counts define the occupancy label). Retrained with those removed.",
+    "composition": {"mussel": 0.878, "brook_trout": 0.979, "eel": 0.989},
+    "caveat_acknowledged_in_repo": "README/summary already state 0.949 is 'mostly a geographic range prior; env-only floor ~0.85; widespread mussel 0.88 = genuine signal'. Rare-species AUROC (trout/eel ~0.98) is a lat/lon range prior, not env skill.",
+    "verdict": "SOLID as stated (properly qualified)"
+  },
+  "env_mechanism": {
+    "covered_same_subset_n_test": 583,
+    "mussel_auroc_S1_streamcat_env": 0.8183,
+    "mussel_auroc_S3_geo_only": 0.7914,
+    "mussel_auroc_S0_proxy_floor": 0.7418,
+    "same_subset_fair": true,
+    "baselines_regularized": "GBM l2=1.0 max_iter=300 lr=0.05 class_weight=balanced applied identically to S0/S1/S3 -> baselines NOT straw-men",
+    "paired_deltas_gbm_bootstrap_1000": {
+      "S1_env_minus_S0_proxyfloor": {"delta": 0.0744, "ci95": [0.0158, 0.1392], "p_gt_0": 0.993, "significant": true},
+      "S1_env_minus_S3_geo": {"delta": 0.0262, "ci95": [-0.0166, 0.0676], "p_gt_0": 0.891, "significant": false},
+      "S4_envgeo_minus_S3_geo": {"delta": 0.0338, "ci95": [-0.0046, 0.0739], "p_gt_0": 0.951, "significant": false}
+    },
+    "verdict": "MIXED. 'env beats the geography-free PROXY floor' is robust (CI excludes 0). But 'env 0.818 > geo-only 0.791' as a STANDALONE beat is NOT statistically robust: the paired env-vs-geo delta CI [-0.017,+0.068] includes 0 (p=0.891). The JSON's own VERDICT correctly claims mechanism vs the S0 proxy floor, not vs geo-only."
+  }
+}

@@ -141,9 +141,9 @@ export function ModalityCard({
                     left: 0,
                     right: 0,
                     height: 2,
-                    background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)`,
-                    boxShadow: `0 0 10px ${accentColor}`,
-                    animation: 'scanline-sweep 700ms linear forwards',
+                    background: accentColor,
+                    opacity: 0.8,
+                    animation: 'scanline-sweep 700ms var(--ease-standard) forwards',
                     pointerEvents: 'none',
                   }}
                 />

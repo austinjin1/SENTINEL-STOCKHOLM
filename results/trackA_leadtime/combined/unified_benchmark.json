@@ -1,0 +1,230 @@
+{
+  "purpose": "UNIFIED cross-network Track A lead-time benchmark: FROZEN CSD-EWS detector (dev_plus = dev + BETA*dev_ews) pooled over NEON + USGS NWIS. Pooled median lead with episode-bootstrap 95% CI, single global threshold, and leave-one-network-out generalization. Matched <=5% held-out control FPR everywhere; label-free; a-priori hyperparameters.",
+  "detector": {
+    "channel": "dev_plus = dev + BETA*dev_ews (audited mean-shift CUSUM + CSD-EWS)",
+    "hyperparameters": {
+      "W_BASE": 240,
+      "GUARD": 12,
+      "SLACK_K": 1.0,
+      "EWS_WIN": 180,
+      "EWS_MIN_BASE": 20,
+      "BETA": 1.0,
+      "TARGET_FPR": 0.05,
+      "split": "interleave (M.cal_hold_split)",
+      "note": "all fixed a priori from the NEON headline; nothing tuned on leads"
+    },
+    "self_normalization_note": "dev_plus = per-site strictly-causal rolling robust-z (median/MAD) of residuals and EWS features; scale is intrinsic to the detector, not the network -> a raw dev_plus threshold is a fair shared operating point."
+  },
+  "networks": {
+    "neon": {
+      "n_episodes": 15,
+      "n_controls": 17,
+      "self_calibrated": {
+        "global_thr": 1148.7749,
+        "control_heldout_fpr": 0.0472,
+        "episodes_detected": 11,
+        "n_episodes": 15,
+        "median_lead_days": 41.3438,
+        "detected_sites": [
+          "BARC",
+          "BIGC",
+          "BLWA",
+          "COMO",
+          "GUIL",
+          "KING",
+          "LECO",
+          "LIRO",
+          "MAYF",
+          "MCDI",
+          "PRIN"
+        ],
+        "leads_by_site": {
+          "BARC": 42.07,
+          "BIGC": 44.67,
+          "BLWA": 44.19,
+          "COMO": 18.86,
+          "GUIL": 44.76,
+          "KING": 39.75,
+          "LECO": 41.59,
+          "LIRO": 22.96,
+          "MAYF": 38.2,
+          "MCDI": 41.34,
+          "PRIN": 13.79
+        }
+      }
+    },
+    "usgs": {
+      "n_episodes": 17,
+      "n_controls": 22,
+      "self_calibrated": {
+        "global_thr": 521.4797,
+        "control_heldout_fpr": 0.0479,
+        "episodes_detected": 14,
+        "n_episodes": 17,
+        "median_lead_days": 41.3906,
+        "detected_sites": [
+          "01649500",
+          "01656903",
+          "040851385",
+          "07288500",
+          "073802512",
+          "07381600",
+          "08062500",
+          "08065350",
+          "08181500",
+          "08181800",
+          "08211200",
+          "14206950",
+          "453004122510301",
+          "453030122560101"
+        ],
+        "leads_by_site": {
+          "01649500": 44.82,
+          "01656903": 24.8,
+          "040851385": 25.86,
+          "07288500": 33.99,
+          "073802512": 43.8,
+          "07381600": 37.05,
+          "08062500": 40.36,
+          "08065350": 14.44,
+          "08181500": 42.42,
+          "08181800": 18.94,
+          "08211200": 44.35,
+          "14206950": 43.47,
+          "453004122510301": 44.95,
+          "453030122560101": 44.99
+        }
+      }
+    }
+  },
+  "pooled_self_calibrated": {
+    "note": "each network's threshold self-calibrated on that network's controls at 5% held-out FPR; episodes pooled for the combined lead distribution.",
+    "neon_thr": 1148.7749,
+    "usgs_thr": 521.4797,
+    "combined_detected": 25,
+    "combined_n_episodes": 32,
+    "combined_detected_str": "25/32",
+    "neon_control_heldout_fpr": 0.0472,
+    "usgs_control_heldout_fpr": 0.0479,
+    "combined_median_lead_days": 41.3438,
+    "combined_median_lead_ci95": [
+      33.9896,
+      43.8021
+    ],
+    "bootstrap": {
+      "n_boot": 10000,
+      "seed": 12345,
+      "n_detected_episodes": 25
+    }
+  },
+  "pooled_global_threshold": {
+    "note": "ONE threshold calibrated on ALL 39 controls (NEON+USGS pooled) at 5% pooled held-out FPR, applied to all 32 episodes. dev_plus is self-normalized so a single threshold is a fair shared operating point.",
+    "global_thr": 799.6103,
+    "pooled_control_heldout_fpr": 0.0403,
+    "combined_detected": 24,
+    "combined_n_episodes": 32,
+    "combined_detected_str": "24/32",
+    "combined_median_lead_days": 41.3542,
+    "combined_median_lead_ci95": [
+      33.2083,
+      43.9167
+    ],
+    "per_network": {
+      "neon": {
+        "detected": "11/15",
+        "median_lead_days": 42.4375,
+        "control_heldout_fpr": 0.0582
+      },
+      "usgs": {
+        "detected": "13/17",
+        "median_lead_days": 39.1979,
+        "control_heldout_fpr": 0.0352
+      }
+    },
+    "detected_sites": [
+      "NEON:BARC",
+      "NEON:BIGC",
+      "NEON:BLWA",
+      "NEON:COMO",
+      "NEON:GUIL",
+      "NEON:KING",
+      "NEON:LECO",
+      "NEON:LIRO",
+      "NEON:MAYF",
+      "NEON:MCDI",
+      "NEON:PRIN",
+      "USGS:01649500",
+      "USGS:01656903",
+      "USGS:040851385",
+      "USGS:07288500",
+      "USGS:073802512",
+      "USGS:07381600",
+      "USGS:08062500",
+      "USGS:08181500",
+      "USGS:08181800",
+      "USGS:08211200",
+      "USGS:14206950",
+      "USGS:453004122510301",
+      "USGS:453030122560101"
+    ]
+  },
+  "leave_one_network_out": {
+    "note": "cross-network generalization: threshold calibrated ONLY on the source network's controls (5% held-out) then applied to the OTHER network's episodes; held-out FPR reported on the TARGET network's controls.",
+    "calibrate_NEON_apply_USGS": {
+      "source_thr": 1148.7749,
+      "target_control_heldout_fpr": 0.0276,
+      "episodes_detected": "13/17",
+      "median_lead_days": 38.1146,
+      "median_lead_ci95": [
+        25.2812,
+        43.8021
+      ],
+      "detected_sites": [
+        "01649500",
+        "01656903",
+        "040851385",
+        "07288500",
+        "073802512",
+        "07381600",
+        "08062500",
+        "08181500",
+        "08181800",
+        "08211200",
+        "14206950",
+        "453004122510301",
+        "453030122560101"
+      ]
+    },
+    "calibrate_USGS_apply_NEON": {
+      "source_thr": 521.4797,
+      "target_control_heldout_fpr": 0.0751,
+      "episodes_detected": "12/15",
+      "median_lead_days": 43.6042,
+      "median_lead_ci95": [
+        22.5781,
+        44.5052
+      ],
+      "detected_sites": [
+        "ARIK",
+        "BARC",
+        "BIGC",
+        "BLWA",
+        "COMO",
+        "GUIL",
+        "KING",
+        "LECO",
+        "LIRO",
+        "MAYF",
+        "MCDI",
+        "PRIN"
+      ]
+    }
+  },
+  "guardrails": {
+    "label_free": true,
+    "precursor_only": "alarm strictly pre-onset AND not hypoxia-near (M.episode_leads)",
+    "matched_heldout_fpr": "thresholds on CONTROL clean windows; pooled control HELD-OUT FPR <=5%; episodes never calibrate",
+    "fixed_hyperparameters": true,
+    "honest_pareto": "report BOTH detection count and median lead everywhere"
+  }
+}

@@ -455,6 +455,9 @@ def eval_biomotion_mc():
                     except Exception:
                         out = model({"daphnia": {"keypoints": kp, "features": feat}})
                 emb = out.get("embedding", out) if isinstance(out, dict) else out
+                # PRIMARY SCORE (PROXY, NOT CALIBRATED): BioMotion has no anomaly
+                # head here, so the MC-dropout score is the embedding L2-norm.
+                # This is an uncalibrated ranking proxy, NOT a probability.
                 sc_pass.append(float(emb.norm().item()))
             except Exception:
                 sc_pass.append(0.0)

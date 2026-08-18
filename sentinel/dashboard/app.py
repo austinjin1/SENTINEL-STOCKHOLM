@@ -42,7 +42,7 @@ sys.path.insert(0, str(PROJECT))
 # ---------------------------------------------------------------------------
 st.set_page_config(
     page_title="SENTINEL — Freshwater Digital Twin",
-    page_icon="🌊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -224,7 +224,7 @@ def render_sidebar():
     }
 
     for name, available in models_available.items():
-        icon = "✅" if available else "⬜"
+        icon = "[x]" if available else "[ ]"
         st.sidebar.text(f"{icon} {name}")
 
     return page
@@ -249,9 +249,10 @@ def render_dashboard():
                        if p.get("alert_level", "LOW") != "LOW")
         st.metric("Active Alerts", n_alerts)
     with col3:
-        st.metric("Data Sources", "13")
+        st.metric("Data Sources", "14")
     with col4:
-        st.metric("Total Records", "390M+")
+        st.metric("Total Records", "~390M raw")
+        st.caption("Pre-QC; ~52M after NEON quality-flag filtering")
 
     st.divider()
 
@@ -308,13 +309,22 @@ def render_species_health():
         test_metrics = species_results.get("test_metrics", {})
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric("Health Score R²", f"{test_metrics.get('health_r2', 0):.4f}")
+            st.metric("Health Score R² (pooled)", f"{test_metrics.get('health_r2', 0):.4f}")
         with col2:
             st.metric("Health MAE", f"{test_metrics.get('health_mae', 0):.2f}")
         with col3:
             st.metric("Occupancy Acc", f"{test_metrics.get('occ_accuracy', 0):.1%}")
+        st.caption(
+            "Note: pooled R² is inflated by near-absent species (trivial-to-predict "
+            "zeros). Balanced per-species metrics are in progress and should be used "
+            "for any performance claim."
+        )
 
     st.divider()
+    st.caption(
+        "Per-species cards below are illustrative placeholders (seeded random demo "
+        "values), not live model predictions."
+    )
 
     # Species cards
     cols = st.columns(3)
@@ -350,8 +360,16 @@ def render_species_health():
 def render_disease_risk():
     st.title("Disease Outbreak Forecasting")
     st.markdown(
-        "4 named pathogen forecasts with WHO thresholds. "
-        "Updated daily from SENTINEL multimodal analysis."
+        "4 named pathogen risk indices with WHO thresholds, "
+        "derived from SENTINEL multimodal analysis."
+    )
+
+    st.warning(
+        "Disclosure: this module is a rule-based WHO/CDC/EPA risk index, not a "
+        "validated predictive model. Its labels are closed-form functions of the "
+        "sensor inputs (circular), so any reported AUROC (e.g. 0.988) reflects "
+        "label reconstruction, NOT out-of-sample predictive skill. Demo charts "
+        "below are illustrative."
     )
 
     benchmarks = load_benchmark_results()
@@ -421,10 +439,16 @@ def render_disease_risk():
 def render_arg_surveillance():
     st.title("Antibiotic Resistance Gene Surveillance")
     st.markdown("""
-    Real-time monitoring of antibiotic resistance gene (ARG) abundance in U.S.
+    Monitoring of antibiotic resistance gene (ARG) abundance in U.S.
     surface waters. SENTINEL predicts ARG levels from 16S community composition,
     enabling One Health surveillance of antimicrobial resistance in the environment.
     """)
+
+    st.warning(
+        "Disclosure: all values on this page (abundances, burden index, trends) are "
+        "seeded random demo data for layout illustration, NOT model outputs or real "
+        "measurements."
+    )
 
     arg_classes = [
         "mcr-1 (colistin)", "blaNDM (carbapenem)", "vanA (vancomycin)",
@@ -501,6 +525,10 @@ def render_digital_twin():
 
     # Counterfactual interface
     st.subheader("Counterfactual Scenario Builder")
+    st.caption(
+        "Predicted outcomes and forecast curves below are illustrative demo values "
+        "(seeded random), not twin-model inferences."
+    )
 
     col1, col2 = st.columns(2)
     with col1:
@@ -563,16 +591,22 @@ def render_ej():
         "below poverty thresholds or above POC population thresholds?"
     )
 
-    # Demo EJ metrics
+    st.warning(
+        "Disclosure: the metrics, map, and tables on this page are illustrative "
+        "placeholders (seeded random / hardcoded demo values), not computed from "
+        "real EJScreen overlays."
+    )
+
+    # Demo EJ metrics (illustrative placeholders — not computed)
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("Sites in EJ Communities", "34%")
+        st.metric("Sites in EJ Communities", "—")
     with col2:
-        st.metric("Undermonitored Communities", "127")
+        st.metric("Undermonitored Communities", "—")
     with col3:
-        st.metric("Detection Equity Index", "0.62")
+        st.metric("Detection Equity Index", "—")
     with col4:
-        st.metric("Alert-EJ Correlation", "0.41")
+        st.metric("Alert-EJ Correlation", "—")
 
     st.divider()
     st.subheader("Demographic Overlay")
@@ -800,14 +834,15 @@ These are fused via a **Perceiver IO** cross-attention architecture and a
 
 ### Capabilities
 
-1. **Detection**: Identify water quality anomalies across 13 data modalities
+1. **Detection**: Identify water quality anomalies across multiple data modalities
 2. **Diagnosis**: Attribute contamination sources and causal pathways
 3. **Prediction**: Forecast ecosystem state at 1–365 day horizons
 4. **Prescription**: Recommend restoration interventions with predicted outcomes
 
 ### Data
 
-SENTINEL-DB contains **390M+ records** from 13 sources spanning 105 countries:
+SENTINEL-DB draws on **~390M raw records** (pre-QC; ~52M after NEON
+quality-flag filtering) from **14 public sources**:
 USGS NWIS, EPA WQP, NEON, Copernicus, Earth Microbiome Project, ECOTOX,
 NCBI GEO, NHDPlusV2, NOAA HABs, and more.
 

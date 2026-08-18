@@ -1,4 +1,4 @@
-import { Play, Pause, FastForward, ChevronsRight } from 'lucide-react';
+import { Play, Pause, FastForward, ChevronsRight, Check } from 'lucide-react';
 import type { EventTimeline, MilestoneKind } from '../data/eventTimelines';
 import { daysFromAdvisory } from '../data/eventTimelines';
 import type { AppState, Action } from '../state';
@@ -152,12 +152,16 @@ export function EventTimelinePanel({ timeline, state, dispatch }: Props) {
                   {fired && (
                     <span
                       style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 2,
                         fontSize: 9,
                         color: 'var(--text-tertiary)',
                         marginLeft: 'auto',
                       }}
                     >
-                      ✓ shown
+                      <Check size={10} strokeWidth={2} aria-hidden />
+                      shown
                     </span>
                   )}
                 </div>

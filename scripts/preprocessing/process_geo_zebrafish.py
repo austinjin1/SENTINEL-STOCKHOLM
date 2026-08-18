@@ -164,7 +164,7 @@ def parse_soft_gz(filepath: Path) -> tuple[dict, list[dict]]:
                         # Also check for Ensembl columns
                         for ens_col in ['ACCESSION_STRING', 'Sequence_ID', 'GB_LIST']:
                             if ens_col in platform_header:
-                                # We'll check this col for ENSDARG/ENSDART
+                                # Check this column for ENSDARG/ENSDART
                                 pass
                         continue
                     parts = line.split('\t')

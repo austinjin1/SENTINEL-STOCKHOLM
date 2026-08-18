@@ -2,10 +2,15 @@
 """benchmark_toxigene_ml_v3.py — ML baselines on SAME split as ToxiGene v8.
 
 Runs RandomForest, XGBoost, LogisticRegression, PCA+LR, and ExtraTrees
-on the 1750/375/375 split (seed=42, expression_matrix_v3_expanded.npy).
+on the seed=42 split of expression_matrix_v3_expanded.npy.
 
-Uses the v3 expanded dataset (2500 samples: 1697 v2 + 708 new real GEO
-samples from 16 datasets + 95 class-conditional augmented).
+WARNING / PROVENANCE: The "v3_expanded" matrix is dominated by SYNTHETIC
+class-conditional Gaussian augmentation of the v2 data — only ~239 real GEO
+zebrafish samples are genuinely new. ML/DL F1 scores reported against this
+augmented matrix are INFLATED and not a real held-out benchmark. The honest
+ToxiGene number is F1=0.492 on n=9 real GEO holdout. The earlier
+"2,500 samples" / "F1>=0.877" claims used Gaussian-fabricated samples and are
+retracted. Treat any score here as SYNTHETIC-AUGMENTED, not validated.
 
 Feature selection: top 5000 by max t-statistic to keep RF/XGB tractable.
 
@@ -138,14 +143,21 @@ def main():
         "split": f"{N_TRAIN}/{N_VAL}/{n_total - N_TRAIN - N_VAL}",
         "n_total": n_total,
         "n_genes": N_GENES,
-        "dataset": "v3_expanded (2540 samples, 843 new real GEO)",
+        "dataset": "v3_expanded — SYNTHETIC-AUGMENTED (mostly class-conditional Gaussian aug; ~239 real new GEO samples). Scores INFLATED; honest real-holdout F1=0.492 (n=9). NOT validated.",
+        "_PROVENANCE": "SIMULATION — Gaussian-augmented matrix; F1 here is not a real held-out benchmark",
         "gene_selection": "max_t_statistic",
         "normalization": "z-score + clip[-10,10]",
         "threshold_opt": "per-class F1 on val (same as ToxiGene v8)",
+        # Reference DL scores below were measured on the SYNTHETIC-AUGMENTED
+        # matrix and are INFLATED (not real held-out skill). Honest real-GEO
+        # holdout F1 is 0.492 (n=9). Kept only for reproducibility of the
+        # augmented-matrix comparison; do NOT cite as validated.
         "reference_models": {
+            "_PROVENANCE":            "SIMULATION — scores on Gaussian-augmented matrix, inflated",
             "ToxiGene_v8":            "TBD",
-            "ToxiGene_v7":            0.8860,
-            "SimpleMLP_baseline":     0.8896,
+            "ToxiGene_v7_augmented":  0.8860,
+            "SimpleMLP_augmented":    0.8896,
+            "ToxiGene_real_holdout_F1": 0.492,
         },
         "models": {},
     }
@@ -264,12 +276,15 @@ def main():
 
     # ── Summary table ─────────────────────────────────────────────────────────
     print("\n" + "=" * 65)
-    print(f"ToxiGene — ML Baselines vs DL (v3 dataset, {N_TRAIN}/{N_VAL}/{n_total-N_TRAIN-N_VAL} split)")
+    print(f"ToxiGene — ML Baselines vs DL (SYNTHETIC-AUGMENTED v3 matrix, "
+          f"{N_TRAIN}/{N_VAL}/{n_total-N_TRAIN-N_VAL} split)")
+    print("  WARNING: F1 below is on a Gaussian-augmented matrix and is INFLATED.")
+    print("  Honest real-GEO holdout F1 = 0.492 (n=9). Not validated.")
     print(f"  {'Model':<30} {'F1 (opt thresh)':>16} {'F1 (t=0.5)':>11}  Type")
     print("-" * 65)
     ordered = [
-        ("ToxiGene v7 (v2 data)", 0.8860, None, "DL"),
-        ("SimpleMLP baseline",    0.8896, None, "DL"),
+        ("ToxiGene v7 (aug, INFLATED)", 0.8860, None, "DL"),
+        ("SimpleMLP (aug, INFLATED)",   0.8896, None, "DL"),
     ]
     for name, m in results["models"].items():
         ordered.append((name, m["test_f1_macro"], m["test_f1_t05"], "ML"))

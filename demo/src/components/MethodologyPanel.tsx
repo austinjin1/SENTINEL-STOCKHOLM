@@ -1,22 +1,34 @@
 import { X } from 'lucide-react';
 import type { Action } from '../state';
 import { MICROBIAL_VALIDATION, MOLECULAR_VALIDATION, BEHAVIORAL_VALIDATION } from '../data/realData';
+import { MODELS_BY_ID } from '../content/models';
+import { FUSION_HEADLINE, CROSS_REGION_TRANSFER } from '../content/fusion';
 
 interface Props {
   open: boolean;
   dispatch: React.Dispatch<Action>;
 }
 
+// Values are sourced from the single-source-of-truth content modules
+// (content/models.ts, content/fusion.ts) so this /live panel shows the
+// remediated, held-out numbers — never a retracted value.
+const aquassm = MODELS_BY_ID['aquassm'];
+const hydrovit = MODELS_BY_ID['hydrovit'];
+const microbiome = MODELS_BY_ID['microbiomenet'];
+const toxigene = MODELS_BY_ID['toxigene'];
+const biomotion = MODELS_BY_ID['biomotion'];
+const crossRegionMc = CROSS_REGION_TRANSFER[0].raw; // >1.6 µg/L cross-region collapse
+
 const ROWS: { metric: string; value: string; source: string }[] = [
-  { metric: 'AquaSSM AUROC', value: '0.920', source: 'Paper §3.1 · CI [0.91, 0.93]' },
-  { metric: 'HydroViT R² (water temperature)', value: '0.749', source: 'Paper §3.2 · 4,202 Sentinel-2 / in-situ pairs' },
-  { metric: 'MicroBiomeNet F1 (8-class)', value: '0.913', source: 'Paper §3.3 · EMP 16S rRNA' },
-  { metric: 'ToxiGene F1 (multi-label)', value: '0.894', source: 'Paper §3.4 · GEO + ECOTOX' },
-  { metric: 'BioMotion AUROC', value: '1.000', source: 'Paper §3.5 · lab benchmark, down-weighted in fusion' },
-  { metric: 'Fusion AUROC', value: '0.939', source: 'Paper §3.6 · CI [0.922, 0.956], p=0.002 vs sensor' },
-  { metric: 'Lake Erie HAB lead time', value: '59.3d', source: 'Repo · case_studies_real/lake_erie_hab_2023_scores.json' },
-  { metric: 'Cascade tier cost progression', value: '$15K / +$0.5K / +$15K / +$25K', source: 'Paper §4 cascade design' },
-  { metric: 'Modality decay half-lives', value: '5m / 2h / 3d / 5d / 7d', source: 'Paper §2 fusion module' },
+  { metric: 'AquaSSM reconstruction RMSE', value: aquassm.metricValue, source: 'Real NEON station holdout. The label-free pre-onset anomaly detector is scored separately (see Track A pre-onset detection below), not on synthetic anomalies.' },
+  { metric: 'HydroViT R² (water temperature)', value: hydrovit.metricValue, source: 'Real Sentinel-2 × in-situ pairs, station holdout. Replaces the retracted fabricated 0.893; chl-a is harder (R² 0.32, red-edge).' },
+  { metric: 'MicroBiomeNet macro-F1', value: microbiome.metricValue, source: 'True geographic holdout with transferable family/genus taxonomy (0.405 on raw OTUs). The retracted 0.831 was random-split leakage.' },
+  { metric: 'ToxiGene within-study AUROC', value: toxigene.metricValue, source: 'Real zebrafish GEO, within-study CV. Cross-study LOSO is only ~0.64 (rank-norm). The retracted 0.492 came from invalid non-aquatic GEO.' },
+  { metric: 'BioMotion AUROC', value: biomotion.metricValue, source: 'Real EPA ECOTOX assays, chemical-grouped split (tabular GBM; 0.807 was the diffusion-encoder baseline). Does not transfer across species.' },
+  { metric: 'Microcystin fusion AUROC (within region)', value: FUSION_HEADLINE.threeWay.toFixed(2), source: `3-way fusion beats best single (${FUSION_HEADLINE.bestSingle.toFixed(2)}) at the WHO drinking threshold under station-grouped CV — but collapses to ~${crossRegionMc.toFixed(2)} (chance) across unseen regions.` },
+  { metric: 'Track A pre-onset detection', value: '25 / 32 episodes', source: 'Real NEON+USGS, label-free rolling-CUSUM detector fires a sustained pre-onset alarm on 25/32 DO-hypoxia episodes across two networks at a matched ≤5% held-out false-alarm rate (baseline point-threshold: 5/15 on NEON). Reported as detection, not a fixed lead-time: a lead-vs-lookback audit shows the measured "lead" tracks the 45-day operating window (corr 0.997), so we do not headline an N-day forecast horizon.' },
+  { metric: 'Cascade tier cost progression', value: '$15K / +$0.5K / +$15K / +$25K', source: 'Illustrative cascade design.' },
+  { metric: 'Modality decay half-lives', value: '5m / 2h / 3d / 5d / 7d', source: 'Fusion module design parameters.' },
 ];
 
 export function MethodologyPanel({ open, dispatch }: Props) {
@@ -30,7 +42,7 @@ export function MethodologyPanel({ open, dispatch }: Props) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 'var(--z-demo)' as any,
+        zIndex: 'var(--z-demo)',
         animation: 'fade-in var(--dur-base) var(--ease-standard)',
       }}
       onClick={() => dispatch({ type: 'TOGGLE_METHODOLOGY' })}
@@ -97,7 +109,12 @@ export function MethodologyPanel({ open, dispatch }: Props) {
 
         <div style={{ marginTop: 28 }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 10 }}>
-            Off-event validation evidence
+            Off-event case-study screening (NOT validated detection)
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginBottom: 10, lineHeight: 1.6 }}>
+            These per-case rates are surrogate/screening outputs on illustrative case studies, not validated
+            detection on a real held-out set. Real held-out metrics: MicroBiomeNet macro-F1 {microbiome.metricValue}{' '}
+            (geographic holdout), ToxiGene within-study AUROC {toxigene.metricValue}, BioMotion AUROC {biomotion.metricValue}.
           </div>
           <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
             <div style={{ marginBottom: 6 }}>

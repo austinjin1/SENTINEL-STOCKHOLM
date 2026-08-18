@@ -1,0 +1,14 @@
+{
+  "label_h7": {
+    "persistence_currentDO_auroc": 0.992,
+    "pos_already_hypoxic_frac": 0.884,
+    "sensor_embed_logreg_auroc": 0.98,
+    "pos": 912
+  },
+  "label_h14": {
+    "persistence_currentDO_auroc": 0.983,
+    "pos_already_hypoxic_frac": 0.854,
+    "sensor_embed_logreg_auroc": 0.97,
+    "pos": 946
+  }
+}

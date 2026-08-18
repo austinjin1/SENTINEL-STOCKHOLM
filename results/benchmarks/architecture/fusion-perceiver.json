@@ -1,0 +1,189 @@
+{
+  "dataset": "mc_fusion_expanded.parquet",
+  "n": 4196,
+  "n_sites": 637,
+  "device": "cuda",
+  "cv": "GroupKFold(site) x5",
+  "modalities": {
+    "satellite": [
+      "sf0",
+      "sf1",
+      "sf2",
+      "sf3",
+      "sf4",
+      "sf5",
+      "sf6",
+      "sf7",
+      "sf8",
+      "sf9",
+      "sf10",
+      "sf11",
+      "sf12",
+      "sf13",
+      "sf14",
+      "sf15",
+      "sf16",
+      "sf17",
+      "sf18",
+      "sf19",
+      "sf20",
+      "sf21",
+      "sf22",
+      "sf23",
+      "sf24",
+      "sf25"
+    ],
+    "pigment": [
+      "CHLA",
+      "PC"
+    ],
+    "drivers": [
+      "temp_C",
+      "TP",
+      "TN"
+    ]
+  },
+  "diagnosis": "Shipped neural fusion (~0.75) trailed the GBM stack (~0.82) for three reasons: (1) it fused only 2 of the 3 real modalities (missing the physicochemical drivers that lift the GBM 0.776->0.823 on mc>1.6); (2) its ConfidenceGate was content-driven, not observability-driven, so it could not exploit the missingness/cloud signal the HGB routes natively; (3) raw few-dim tabular features fed a 256-d Perceiver that underfit the axis-aligned interaction. Fix: 3-way arms + a data-driven reliability gate on the observation mask+cloud + a compact cross-modal Perceiver with learned no-data tokens.",
+  "coverage": {
+    "satellite": 1.0,
+    "pigment": 0.655,
+    "drivers": 0.671
+  },
+  "labels": {
+    "mc_gt1.6_WHO_drinking": {
+      "pos": 783,
+      "neg": 3413,
+      "gbm_auroc": 0.8066,
+      "gbm_ci95": [
+        0.779,
+        0.8294
+      ],
+      "current_neural_auroc": 0.7324,
+      "current_ci95": [
+        0.7011,
+        0.7613
+      ],
+      "improved_neural_auroc": 0.7538,
+      "improved_ci95": [
+        0.7223,
+        0.7822
+      ],
+      "improved_vs_gbm": {
+        "delta_median": -0.0523,
+        "ci95": [
+          -0.0749,
+          -0.0322
+        ],
+        "P_gt0": 0.0
+      },
+      "improved_vs_current": {
+        "delta_median": 0.0209,
+        "ci95": [
+          -0.0054,
+          0.0467
+        ],
+        "P_gt0": 0.9465
+      },
+      "gbm_vs_current": {
+        "delta_median": 0.0731,
+        "ci95": [
+          0.0513,
+          0.0988
+        ],
+        "P_gt0": 1.0
+      },
+      "beats_gbm": false,
+      "beats_current": false
+    },
+    "mc_gt0.3_detection": {
+      "pos": 1701,
+      "neg": 2495,
+      "gbm_auroc": 0.8191,
+      "gbm_ci95": [
+        0.7969,
+        0.8383
+      ],
+      "current_neural_auroc": 0.7088,
+      "current_ci95": [
+        0.6776,
+        0.7379
+      ],
+      "improved_neural_auroc": 0.7856,
+      "improved_ci95": [
+        0.7621,
+        0.8062
+      ],
+      "improved_vs_gbm": {
+        "delta_median": -0.0338,
+        "ci95": [
+          -0.0479,
+          -0.0195
+        ],
+        "P_gt0": 0.0
+      },
+      "improved_vs_current": {
+        "delta_median": 0.0755,
+        "ci95": [
+          0.0502,
+          0.1048
+        ],
+        "P_gt0": 1.0
+      },
+      "gbm_vs_current": {
+        "delta_median": 0.1096,
+        "ci95": [
+          0.0845,
+          0.1395
+        ],
+        "P_gt0": 1.0
+      },
+      "beats_gbm": false,
+      "beats_current": true
+    },
+    "mc_gt8_WHO_recreational": {
+      "pos": 309,
+      "neg": 3887,
+      "gbm_auroc": 0.8337,
+      "gbm_ci95": [
+        0.7995,
+        0.8627
+      ],
+      "current_neural_auroc": 0.7518,
+      "current_ci95": [
+        0.7029,
+        0.7917
+      ],
+      "improved_neural_auroc": 0.7587,
+      "improved_ci95": [
+        0.7108,
+        0.8043
+      ],
+      "improved_vs_gbm": {
+        "delta_median": -0.0738,
+        "ci95": [
+          -0.1097,
+          -0.0424
+        ],
+        "P_gt0": 0.0
+      },
+      "improved_vs_current": {
+        "delta_median": 0.0077,
+        "ci95": [
+          -0.0332,
+          0.0439
+        ],
+        "P_gt0": 0.647
+      },
+      "gbm_vs_current": {
+        "delta_median": 0.0817,
+        "ci95": [
+          0.0522,
+          0.1139
+        ],
+        "P_gt0": 1.0
+      },
+      "beats_gbm": false,
+      "beats_current": false
+    }
+  }
+}

@@ -1,0 +1,348 @@
+{
+  "task": "beach_nowcast_fib_exceedance",
+  "target": "E. coli exceedance of EPA BAV (235 CFU/100mL, 2012 RWQC single-sample)",
+  "non_circularity": "Predictors are strictly antecedent/independent (NOAA GHCN prior-day rainfall, day-of-year/season, site lat/lon). The label is a SEPARATE channel (WQP E. coli culture result). No FIB value or function of it is a predictor.",
+  "region": "Ohio (US:39), Great Lakes / Ohio",
+  "date_range": [
+    "01-01-2015",
+    "12-31-2023"
+  ],
+  "n_samples": 23982,
+  "n_sites": 90,
+  "n_positives": 4831,
+  "base_rate": 0.2014,
+  "predictors": [
+    "rain_prior1_mm",
+    "rain_prior2_mm",
+    "rain_prior3_mm",
+    "rain_prior7_mm",
+    "rain_sameday_mm",
+    "doy_sin",
+    "doy_cos",
+    "month",
+    "lat",
+    "lon",
+    "ghcn_dist_km"
+  ],
+  "data_sources": {
+    "label": "Water Quality Portal (WQP) Result service, characteristic 'Escherichia coli'",
+    "rainfall": "NOAA GHCN-Daily (NCEI daily-summaries), nearest-with-data station"
+  },
+  "model": "HistGradientBoostingClassifier (CPU)",
+  "temporal_holdout": {
+    "split": "temporal",
+    "cut_date": "2021-05-19",
+    "n_train": 16789,
+    "n_test": 7193,
+    "test_base_rate": 0.224,
+    "train_base_rate": 0.1918,
+    "model_hydromet": {
+      "auroc": 0.7218,
+      "auroc_ci95": [
+        0.7075,
+        0.7358
+      ],
+      "pr_auc": 0.4698,
+      "pr_youden": {
+        "threshold": 0.2031,
+        "precision": 0.4075,
+        "recall": 0.5854
+      },
+      "pr_thr0.5": {
+        "threshold": 0.5,
+        "precision": 0.6168,
+        "recall": 0.2228
+      }
+    },
+    "baseline_base_rate": {
+      "auroc": 0.5,
+      "auroc_ci95": [
+        0.5,
+        0.5
+      ],
+      "pr_auc": 0.224,
+      "pr_youden": {
+        "threshold": 0.1918,
+        "precision": 0.224,
+        "recall": 1.0
+      },
+      "pr_thr0.5": {
+        "threshold": 0.5,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    "baseline_persistence": {
+      "n_with_prior": 7176,
+      "auroc": 0.587,
+      "auroc_ci95": [
+        0.5745,
+        0.6003
+      ],
+      "pr_auc": 0.2731,
+      "pr_youden": {
+        "threshold": 1.0,
+        "precision": 0.3599,
+        "recall": 0.3588
+      },
+      "pr_thr0.5": {
+        "threshold": 0.5,
+        "precision": 0.3599,
+        "recall": 0.3588
+      }
+    },
+    "model_hydromet_on_persistence_subset": {
+      "auroc": 0.722,
+      "auroc_ci95": [
+        0.708,
+        0.7366
+      ],
+      "pr_auc": 0.4705,
+      "pr_youden": {
+        "threshold": 0.2032,
+        "precision": 0.4086,
+        "recall": 0.5854
+      },
+      "pr_thr0.5": {
+        "threshold": 0.5,
+        "precision": 0.6168,
+        "recall": 0.2228
+      }
+    },
+    "permutation_importance_auroc_drop": {
+      "rain_sameday_mm": 0.093,
+      "lon": 0.0428,
+      "lat": 0.0374,
+      "rain_prior1_mm": 0.0123,
+      "ghcn_dist_km": 0.0092,
+      "rain_prior2_mm": 0.0042,
+      "doy_sin": 0.0028,
+      "doy_cos": 0.0016,
+      "month": 0.0,
+      "rain_prior3_mm": -0.0004,
+      "rain_prior7_mm": -0.0044
+    }
+  },
+  "site_grouped_holdout": {
+    "split": "site_grouped",
+    "n_splits": 5,
+    "n_sites": 90,
+    "base_rate": 0.2014,
+    "per_fold_auroc": [
+      0.7693,
+      0.734,
+      0.6819,
+      0.7687,
+      0.7329
+    ],
+    "per_fold_auroc_mean": 0.7374,
+    "per_fold_auroc_std": 0.032,
+    "model_hydromet_pooledOOF": {
+      "auroc": 0.7332,
+      "auroc_ci95": [
+        0.7249,
+        0.7413
+      ],
+      "pr_auc": 0.4724,
+      "pr_youden": {
+        "threshold": 0.2084,
+        "precision": 0.38,
+        "recall": 0.5877
+      },
+      "pr_thr0.5": {
+        "threshold": 0.5,
+        "precision": 0.6497,
+        "recall": 0.2331
+      }
+    },
+    "baseline_base_rate": {
+      "auroc": 0.5,
+      "auroc_ci95": [
+        0.5,
+        0.5
+      ],
+      "pr_auc": 0.2014,
+      "pr_youden": {
+        "threshold": 0.2014,
+        "precision": 0.2014,
+        "recall": 1.0
+      },
+      "pr_thr0.5": {
+        "threshold": 0.5,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    }
+  },
+  "strict_antecedent_sensitivity": {
+    "note": "Same-day rainfall (rain_sameday_mm) removed. A daily PRCP total can include rain after sample collection; dropping it makes every predictor unambiguously antecedent. Skill here is the conservative, deployable estimate.",
+    "predictors": [
+      "rain_prior1_mm",
+      "rain_prior2_mm",
+      "rain_prior3_mm",
+      "rain_prior7_mm",
+      "doy_sin",
+      "doy_cos",
+      "month",
+      "lat",
+      "lon",
+      "ghcn_dist_km"
+    ],
+    "temporal_holdout": {
+      "split": "temporal",
+      "cut_date": "2021-05-19",
+      "n_train": 16789,
+      "n_test": 7193,
+      "test_base_rate": 0.224,
+      "train_base_rate": 0.1918,
+      "model_hydromet": {
+        "auroc": 0.6466,
+        "auroc_ci95": [
+          0.632,
+          0.6615
+        ],
+        "pr_auc": 0.3512,
+        "pr_youden": {
+          "threshold": 0.1666,
+          "precision": 0.305,
+          "recall": 0.6294
+        },
+        "pr_thr0.5": {
+          "threshold": 0.5,
+          "precision": 0.4702,
+          "recall": 0.0881
+        }
+      },
+      "baseline_base_rate": {
+        "auroc": 0.5,
+        "auroc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.224,
+        "pr_youden": {
+          "threshold": 0.1918,
+          "precision": 0.224,
+          "recall": 1.0
+        },
+        "pr_thr0.5": {
+          "threshold": 0.5,
+          "precision": 0.0,
+          "recall": 0.0
+        }
+      },
+      "baseline_persistence": {
+        "n_with_prior": 7176,
+        "auroc": 0.587,
+        "auroc_ci95": [
+          0.5746,
+          0.5995
+        ],
+        "pr_auc": 0.2731,
+        "pr_youden": {
+          "threshold": 1.0,
+          "precision": 0.3599,
+          "recall": 0.3588
+        },
+        "pr_thr0.5": {
+          "threshold": 0.5,
+          "precision": 0.3599,
+          "recall": 0.3588
+        }
+      },
+      "model_hydromet_on_persistence_subset": {
+        "auroc": 0.6464,
+        "auroc_ci95": [
+          0.6317,
+          0.6611
+        ],
+        "pr_auc": 0.3516,
+        "pr_youden": {
+          "threshold": 0.1667,
+          "precision": 0.3056,
+          "recall": 0.6294
+        },
+        "pr_thr0.5": {
+          "threshold": 0.5,
+          "precision": 0.4702,
+          "recall": 0.0881
+        }
+      },
+      "permutation_importance_auroc_drop": {
+        "lon": 0.0624,
+        "lat": 0.0412,
+        "rain_prior1_mm": 0.031,
+        "ghcn_dist_km": 0.0146,
+        "doy_sin": 0.0032,
+        "doy_cos": 0.003,
+        "rain_prior2_mm": 0.0018,
+        "month": 0.0008,
+        "rain_prior7_mm": 0.0002,
+        "rain_prior3_mm": -0.0003
+      }
+    },
+    "site_grouped_holdout": {
+      "split": "site_grouped",
+      "n_splits": 5,
+      "n_sites": 90,
+      "base_rate": 0.2014,
+      "per_fold_auroc": [
+        0.736,
+        0.6795,
+        0.6145,
+        0.7417,
+        0.6873
+      ],
+      "per_fold_auroc_mean": 0.6918,
+      "per_fold_auroc_std": 0.046,
+      "model_hydromet_pooledOOF": {
+        "auroc": 0.688,
+        "auroc_ci95": [
+          0.6795,
+          0.6963
+        ],
+        "pr_auc": 0.3937,
+        "pr_youden": {
+          "threshold": 0.2169,
+          "precision": 0.3361,
+          "recall": 0.545
+        },
+        "pr_thr0.5": {
+          "threshold": 0.5,
+          "precision": 0.6162,
+          "recall": 0.112
+        }
+      },
+      "baseline_base_rate": {
+        "auroc": 0.5,
+        "auroc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.2014,
+        "pr_youden": {
+          "threshold": 0.2014,
+          "precision": 0.2014,
+          "recall": 1.0
+        },
+        "pr_thr0.5": {
+          "threshold": 0.5,
+          "precision": 0.0,
+          "recall": 0.0
+        }
+      }
+    }
+  },
+  "verdict": {
+    "summary": "REAL skill: hydromet beats base-rate out-of-sample under BOTH temporal and site-grouped holdouts and beats persistence.",
+    "detail": [
+      "Temporal hydromet AUROC=0.7218 vs base-rate 0.5 (=chance).",
+      "Persistence AUROC=0.587; hydromet on same subset=0.722. Beats persistence: True.",
+      "Site-grouped hydromet pooled-OOF AUROC=0.7332."
+    ],
+    "beats_baserate_temporal": true,
+    "beats_baserate_site_grouped": true,
+    "beats_persistence_temporal": true
+  },
+  "eval_seconds": 55.3
+}

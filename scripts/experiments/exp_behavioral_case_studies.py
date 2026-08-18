@@ -478,10 +478,15 @@ def main():
 
     # 5. Save results
     output = {
+        "_PROVENANCE": ("SIMULATION / tautological — per-chemical 'detection' here is run on "
+                        "perturbed trajectories the model then detects; this is not validated "
+                        "real-world detection. The near-perfect metrics below are RETRACTED: the "
+                        "honest held-out BioMotion AUROC is 0.807 on real EPA ECOTOX endpoint data "
+                        "(see results/benchmarks/biomotion_holdout.json)."),
         "model": "BioMotion (TrajectoryDiffusionEncoder + AnomalyClassifier)",
         "checkpoint": "biomotion_expanded_best.pt",
-        "published_test_auroc": 0.9999995590158115,
-        "published_test_f1": 0.9989401165871754,
+        "published_test_auroc": 0.807,
+        "published_test_f1": None,
         "n_real_trajectories": len(base_features),
         "baseline_overall_detection_rate": overall_det,
         "case_studies": results,

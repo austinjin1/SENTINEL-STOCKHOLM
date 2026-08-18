@@ -1,0 +1,176 @@
+{
+  "_PROVENANCE": {
+    "purpose": "AUDIT: is HydroDenseNet v4 (SENTINEL-Lite) really imagery-only? Rebuild retrieval on the SAME S2 x in-situ pairs, station GroupKFold, imagery-only vs imagery+in-situ-pH, per-param R2 + site-clustered CI. Quantify how much of SpCond/DO R2 is driven by the in-situ pH input.",
+    "data": "data/processed/satellite/drone_wq_pairs.npz (REAL Sentinel-2 L2A B02,B03,B04,B08 x REAL same-day USGS/NWIS in-situ WQ). N=12000 tiles, 379 sites.",
+    "bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B08"
+    ],
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "split": "STATION (site_id) GroupKFold; pooled out-of-fold predictions.",
+    "ci": "site-clustered bootstrap (resamples SITES), 2000 reps.",
+    "model": "HistGradientBoosting (CPU), same family as cycle-14 honest recipe.",
+    "ph_note": "pH feature = REAL in-situ pH-strip value (v4's FiLM input). Any gain it produces is IN-SITU-driven, NOT optical/imagery-only."
+  },
+  "finding_1_ph_is_input": {
+    "confirmed": true,
+    "evidence": "train_hydrodensenet.py: ALL_COLS=[DO,pH,Turb,Temp,SpCond]; TARGET_COLS=[DO,Turb,Temp,SpCond] (pH removed). TileDataset returns 'ph_input'; HydroDenseNet.ph_encoder->FiLMLayer at every scale (MultiScaleAggregator.films) modulates visual features; pH also concatenated into BandRatioEncoder input. => in-situ pH is consumed.",
+    "paper_claim_status": "INCORRECT: paper/v4 JSON say 'imagery only / no in-situ sensors', but the model requires an in-situ pH-strip reading."
+  },
+  "finding_2_target_norm_train_only": {
+    "leakage": false,
+    "evidence": "train_hydrodensenet.py computes target_mean/std via train_ds.compute_target_stats() on the TRAIN split only, then set_stats() shares those TRAIN stats to val/test. No test/global z-score fit -> no normalization leakage. (This audit's GBM predicts raw units, so it is independent of that path.)"
+  },
+  "v4_reported_r2": {
+    "DO": 0.463,
+    "Turb": 0.181,
+    "Temp": 0.776,
+    "SpCond": 0.442
+  },
+  "imagery_only_vit_r2": {
+    "DO": 0.257,
+    "Turb": -0.027,
+    "Temp": 0.508,
+    "SpCond": -0.951
+  },
+  "per_target": {
+    "DO": {
+      "n": 10584,
+      "n_sites": 328,
+      "imagery_only": {
+        "r2": 0.5176,
+        "r2_ci95": [
+          0.4695,
+          0.5604
+        ]
+      },
+      "imagery_plus_insitu_ph": {
+        "r2": 0.5888,
+        "r2_ci95": [
+          0.5486,
+          0.6258
+        ]
+      },
+      "ph_marginal_delta": {
+        "mean": 0.071,
+        "ci95": [
+          0.0473,
+          0.0938
+        ],
+        "prob_improvement": 1.0
+      },
+      "v4_reported_r2": 0.463,
+      "imagery_only_vit_r2": 0.257
+    },
+    "Turb": {
+      "n": 7953,
+      "n_sites": 253,
+      "imagery_only": {
+        "r2": 0.0586,
+        "r2_ci95": [
+          0.0215,
+          0.0968
+        ]
+      },
+      "imagery_plus_insitu_ph": {
+        "r2": 0.0511,
+        "r2_ci95": [
+          0.0113,
+          0.0899
+        ]
+      },
+      "ph_marginal_delta": {
+        "mean": -0.0076,
+        "ci95": [
+          -0.0216,
+          0.005
+        ],
+        "prob_improvement": 0.117
+      },
+      "v4_reported_r2": 0.181,
+      "imagery_only_vit_r2": -0.027
+    },
+    "Temp": {
+      "n": 10814,
+      "n_sites": 331,
+      "imagery_only": {
+        "r2": 0.7383,
+        "r2_ci95": [
+          0.7194,
+          0.7552
+        ]
+      },
+      "imagery_plus_insitu_ph": {
+        "r2": 0.7465,
+        "r2_ci95": [
+          0.728,
+          0.7626
+        ]
+      },
+      "ph_marginal_delta": {
+        "mean": 0.0081,
+        "ci95": [
+          0.0039,
+          0.0124
+        ],
+        "prob_improvement": 1.0
+      },
+      "v4_reported_r2": 0.776,
+      "imagery_only_vit_r2": 0.508
+    },
+    "SpCond": {
+      "n": 10678,
+      "n_sites": 331,
+      "imagery_only": {
+        "r2": 0.4795,
+        "r2_ci95": [
+          0.2287,
+          0.6495
+        ]
+      },
+      "imagery_plus_insitu_ph": {
+        "r2": 0.4836,
+        "r2_ci95": [
+          0.221,
+          0.6563
+        ]
+      },
+      "ph_marginal_delta": {
+        "mean": 0.0037,
+        "ci95": [
+          -0.0212,
+          0.0266
+        ],
+        "prob_improvement": 0.636
+      },
+      "v4_reported_r2": 0.442,
+      "imagery_only_vit_r2": -0.951,
+      "spcond_regional_proxy_probe": {
+        "site_mean_oracle_r2": 0.9692,
+        "site_mean_oracle_note": "between-site ceiling: R2 achievable by predicting each site's own mean SpCond.",
+        "n_after_dropping_brackish": 9789,
+        "n_sites_after": 308,
+        "imagery_only_r2_freshwater_only": -22.8913,
+        "imagery_plus_ph_r2_freshwater_only": -23.992,
+        "interpretation": "If SpCond R2 collapses toward ~0 once the few extreme brackish/high-ion sites are removed, the positive R2 is a spurious REGIONAL proxy (telling brackish sites from fresh), not a within-freshwater conductance retrieval."
+      }
+    }
+  },
+  "verdict": {
+    "imagery_only_is_the_honest_claim": {
+      "DO": 0.5176,
+      "Turb": 0.0586,
+      "Temp": 0.7383,
+      "SpCond": 0.4795,
+      "note": "These are the numbers the paper's 'imagery only / no in-situ sensors' claim actually supports. Temp is genuinely optical; Turb is weak; SpCond is near/below 0 (physics limit); DO is a modest chl/temp-proxy signal."
+    },
+    "ph_drives_spcond": "In THIS GBM retrieval pH does NOT drive SpCond: SpCond imagery-only R2=0.479 vs +in-situ-pH R2=0.484, pH marginal delta=+0.004 (CI -0.021..+0.027, includes 0). So the v4 SpCond~0.44 is NOT primarily a pH-input effect; it is a SPURIOUS REGIONAL PROXY (see spcond_regional_proxy_probe).",
+    "ph_drives_do": "pH DOES buy real DO R2: imagery-only 0.518 -> +pH 0.589, marginal delta=+0.071 (CI +0.047..+0.094, excludes 0, prob=1.0). This portion of v4's DO skill is IN-SITU-driven, not imagery. Honest imagery-only DO R2=0.52.",
+    "spcond_is_regional_proxy_not_optics": "DECISIVE: SpCond variance is ~entirely BETWEEN-site (site-mean oracle R2=0.969). The GroupKFold R2=0.48 is achieved ONLY by ranking a few extreme brackish/high-ion sites against fresh ones. Dropping sites with mean SpCond>5000 uS/cm collapses imagery-only R2 to -22.9 (far worse than predicting the mean) and +pH to -24.0. Within freshwater there is NO optical conductance retrieval. The v4 'SpCond R2=0.44' (and the CI 0.23..0.65 with lower bound near 0) is this brackish-vs-fresh regional artifact, consistent with dissolved-ion conductance having no RGB+NIR optical signature. The old imagery-only ViT's SpCond=-0.95 simply failed to latch the brackish sites; neither number reflects genuine optical conductance skill.",
+    "paper_fix": "Two corrections to \u00a73.6 / v4 JSON: (1) 'imagery only / no in-situ sensors' is INCORRECT \u2014 the shipped model consumes an in-situ pH-strip reading via FiLM; report the imagery-only R2 (DO 0.52, Turb 0.06, Temp 0.74, SpCond regional-artifact) as the honest no-in-situ number, and if the pH-conditioned model is kept, label its numbers explicitly as using an in-situ input. (2) The SpCond R2~0.44 must not be presented as an optical conductance retrieval; it is a between-site brackish-vs-fresh proxy that collapses to strongly negative within freshwater."
+  },
+  "elapsed_seconds": 438.2
+}

@@ -90,7 +90,7 @@ def compile_all():
         print(f"  Permutation p-value: {perm.get('p_value', '?'):.4f}")
         print(f"  Cohen's d: {dist.get('cohens_d', '?'):.4f}")
         for v in ln.get("verdicts", []):
-            print(f"  ✓ {v}")
+            print(f"  OK {v}")
     else:
         print("\n  [Exp11: Not yet complete]")
 
@@ -151,7 +151,7 @@ def compile_all():
         eco = cs.get("ecoregion_stats", {})
         if eco:
             print(f"  Ecoregions with data: {len(eco)}")
-        print(f"  ✓ {cs.get('critique_addressed', 'cross-site generalization characterized')}")
+        print(f"  OK {cs.get('critique_addressed', 'cross-site generalization characterized')}")
     else:
         print("\n  [Exp14: Not yet complete]")
 
@@ -384,24 +384,36 @@ def compile_all():
     print("KEY METRICS TABLE (for paper)")
     print("=" * 65)
 
-    # Default values — from real held-out test set evaluations on expanded datasets
-    # Updated 2026-04-13 (v5): ToxiGene v7 SimpleMLP + pathway supervision (best model)
-    #   MicroBiomeNet: v5 validates v2 (SparseOTUAttn+PhyloEmbed+GlobalPool)
-    #     v2=0.8989, v5=0.8980 (same arch, io.BytesIO safe loading)
-    #     First-in-class: no published 8-class EMP benchmark for 16S aquatic classification
-    #   ToxiGene: v7 SimpleMLP + pathway supervision F1=0.8860 (NEW BEST)
-    #     v7: full 61479 genes → 512 → 256, BN+ReLU+Dropout, pathway head (200 targets),
-    #     class-specific thresholds, gene_drop_rate=0.10, noise_prob=0.40
-    #     31.7M params; beats v6 transformer (0.8602) by +0.026
-    #     First-in-class: no published SOTA for zebrafish multi-label 7-outcome transcriptomics
-    #   HydroViT v8: SpectralBandAttention+ViT-S/16, confirmed R²=0.8707 (correct split)
+    # Values below are REAL strict-holdout estimates (see REVIEW notes). Several
+    # earlier "expanded dataset" numbers were inflated by synthetic anomalies,
+    # augmented targets, or Gaussian-fabricated samples and have been retracted:
+    #   MicroBiomeNet: strict spatial holdout macro-F1=0.831 (NOT augmented 0.899)
+    #   ToxiGene:      F1=0.492 on n=9 real GEO holdout (stale F1>=0.877 used
+    #                  Gaussian-fabricated samples — retracted)
+    #   AquaSSM:       recon RMSE=0.83; the 0.939 AUROC is recovery of SYNTHETIC
+    #                  injected anomalies (disclosed, not real contamination detection)
+    #   BioMotion:     AUROC=0.807 on real EPA ECOTOX (NOT 1.000/0.9999)
+    #   Fusion:        AUROC=0.649 on real co-located NEON+Sentinel-2 (NOT 0.992)
+    #   HydroViT:      water-temp R²~0.89 but split contaminated by augmented targets
+    # NOTE: values are real strict-holdout estimates. Several earlier headline
+    # numbers (AquaSSM 0.9386, MicroBiomeNet 0.8980, ToxiGene 0.8860, BioMotion
+    # 0.9999, Fusion 0.9728) were fabricated/inflated (synthetic anomalies,
+    # augmented targets, Gaussian-fabricated samples) and have been replaced.
     metrics_table = {
-        "AquaSSM (USGS sensor)": {"metric": "AUROC", "value": "0.9386",  "ci": "[TBD, TBD]"},
-        "HydroViT v8 (water temp)": {"metric": "R²",   "value": "0.8707",  "ci": "[TBD, TBD]"},
-        "MicroBiomeNet v5":      {"metric": "F1",    "value": "0.8980",  "ci": "[TBD, TBD]"},
-        "ToxiGene v7":           {"metric": "F1",    "value": "0.8860",  "ci": "[TBD, TBD]"},
-        "BioMotion (ECOTOX)":    {"metric": "AUROC", "value": "0.9999",  "ci": "[TBD, TBD]"},
-        "Fusion (real data)":    {"metric": "AUROC", "value": "0.9728",  "ci": "[TBD, TBD]"},
+        # AquaSSM 0.939 is anomaly AUROC on SYNTHETIC injected anomalies (recon RMSE 0.83 is the real recon metric) — disclose
+        "AquaSSM (synthetic-anomaly AUROC)": {"metric": "AUROC", "value": "0.939",  "ci": "[TBD, TBD]",
+            "note": "Recovery of SYNTHETIC injected anomalies, not real contamination detection; real recon RMSE=0.83"},
+        # HydroViT split contaminated by augmented targets; 2,861 real Sentinel-2/in-situ pairs
+        "HydroViT (water temp R²)": {"metric": "R²",   "value": "0.893",  "ci": "[TBD, TBD]",
+            "note": "Split contaminated by augmented targets; 2,861 real pairs"},
+        "MicroBiomeNet (strict spatial holdout)": {"metric": "F1", "value": "0.831",  "ci": "[TBD, TBD]",
+            "note": "Strict spatial holdout macro-F1; NOT the augmented 0.899"},
+        "ToxiGene (real GEO holdout)": {"metric": "F1", "value": "0.492",  "ci": "[TBD, TBD]",
+            "note": "n=9 real GEO holdout; stale F1>=0.877 used Gaussian-fabricated samples"},
+        "BioMotion (real EPA ECOTOX)": {"metric": "AUROC", "value": "0.807",  "ci": "[TBD, TBD]",
+            "note": "Real EPA ECOTOX endpoint data; NOT 1.000/0.9999"},
+        "Fusion (real co-located NEON+S2)": {"metric": "AUROC", "value": "0.649",  "ci": "[TBD, TBD]",
+            "note": "Station holdout n=362; sensor-only=0.642, late-fusion=0.649; does NOT beat best single encoder. NOT 0.992 (synthetic)"},
     }
     # Models whose CI should NOT be overridden from exp9 (problematic evaluations)
     CI_SKIP = set()  # All models now have proper CI from actual evaluations
@@ -432,16 +444,25 @@ def compile_all():
     print("\n" + "=" * 65)
     print("CRITIQUE RESOLUTION STATUS")
     print("=" * 65)
+    # Pull the actually-loaded Cohen's d / permutation p-value from exp11 rather
+    # than hardcoding a headline number (the 2.66 figure was a stale literal).
+    ln_dist = (ln or {}).get("score_distribution", {})
+    ln_perm = (ln or {}).get("permutation_test", {})
+    cohens_d_val = ln_dist.get("cohens_d")
+    perm_p_val   = ln_perm.get("p_value")
+    cohens_d_str = f"{cohens_d_val:.2f}" if isinstance(cohens_d_val, (int, float)) else "N/A"
+    perm_p_str   = f"{perm_p_val:.3f}" if isinstance(perm_p_val, (int, float)) else "N/A"
+
     critiques = [
-        ("No CIs on metrics",           "✅" if ci else "🔄",   "Exp9 bootstrap CI"),
-        ("No uncertainty quantification","✅" if mc else "🔄",   "Exp10 MC Dropout (Fusion ECE=0.0857)"),
-        ("BioMotion AUROC suspicious",  "✅" if ln else "🔄",   "Exp11 (p=0.000, Cohen's d=2.66)"),
-        ("Exp2 broken baseline",        "✅",                   "Exp12 proper fusion (sensor+behav=0.638)"),
-        ("Cross-modal CKA near-zero",   "✅" if cka15 else "📝","Exp15 contrastive (0.016→0.345, +21×)"),
-        ("AquaSSM mask shape bug",      "✅",                   "Fixed in neon_anomaly_scan.py"),
-        ("HydroViT weak multi-param",   "✅",                   "Paper reframed: water temp R²=0.749 primary"),
-        ("NEON trend artifacts",        "✅" if prpo else "🔄", "Exp13 PRPO audit (real hydro signal)"),
-        ("Single training seed",        "✅",                   "Exp9 bootstrap + Exp10 MC Dropout proxy"),
+        ("No CIs on metrics",           "[x]" if ci else "[ ]",   "Exp9 bootstrap CI"),
+        ("No uncertainty quantification","[x]" if mc else "[ ]",   "Exp10 MC Dropout (Fusion ECE=0.0857)"),
+        ("BioMotion AUROC suspicious",  "[x]" if ln else "[ ]",   f"Exp11 (p={perm_p_str}, Cohen's d={cohens_d_str})"),
+        ("Exp2 broken baseline",        "[x]",                   "Exp12 proper fusion (sensor+behav=0.638)"),
+        ("Cross-modal CKA near-zero",   "[x]" if cka15 else "[note]","Exp15 contrastive (0.016→0.345, +21×)"),
+        ("AquaSSM mask shape bug",      "[x]",                   "Fixed in neon_anomaly_scan.py"),
+        ("HydroViT weak multi-param",   "[x]",                   "Paper reframed: water temp R²=0.749 primary"),
+        ("NEON trend artifacts",        "[x]" if prpo else "[ ]", "Exp13 PRPO audit (real hydro signal)"),
+        ("Single training seed",        "[x]",                   "Exp9 bootstrap + Exp10 MC Dropout proxy"),
     ]
     for crit, status, exp in critiques:
         print(f"  {status} {crit:<42} ({exp})")

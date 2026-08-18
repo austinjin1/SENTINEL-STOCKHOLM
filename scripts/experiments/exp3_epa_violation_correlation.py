@@ -379,8 +379,12 @@ def compute_sentinel_scores_from_embeddings(fusion, head,
             try:
                 anom_out = head(fused)
                 p = float(anom_out.anomaly_probability.squeeze().item())
-            except Exception:
-                p = float(torch.clamp(emb.norm() / 10.0, 0, 1).item())
+            except Exception as e:
+                # Do NOT fabricate a probability from the embedding norm.
+                raise RuntimeError(
+                    "Anomaly head forward failed; refusing to fabricate a "
+                    "probability from emb.norm()."
+                ) from e
 
             scores.append({
                 "center_ts": ts,

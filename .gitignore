@@ -62,8 +62,6 @@ logs/
 
 # Paper sources and exports (kept local; not published)
 /paper/
-Stockholm Paper Final.docx
-Stockholm Paper Final.pdf
 
 # CI / GitHub workflows (removed from repo)
 /.github/
@@ -92,3 +90,7 @@ results/case_studies_v3/CASE_STUDY_TESTING_METHODOLOGY.md
 results/case_studies_v3/case_studies_v3_REAL_inference.json
 results/case_studies_v3/case_studies_v3_OLD_hardcoded_paper.json
 scripts/evaluation/reeval_case_studies_31.py
+
+# local scratch (paper revision working files)
+/.paperwork/
+/.audit_scratch/

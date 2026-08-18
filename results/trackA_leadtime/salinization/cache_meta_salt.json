@@ -1,0 +1,289 @@
+{
+  "01302020": {
+    "role": "episode",
+    "onset_index": 18565,
+    "onset_ts": 1641607200,
+    "onset_utc": "2022-01-08T02:00:00+00:00",
+    "n_windows": 17547
+  },
+  "01389005": {
+    "role": "episode",
+    "onset_index": 129428,
+    "onset_ts": 1739005200,
+    "onset_utc": "2025-02-08T09:00:00+00:00",
+    "n_windows": 17876
+  },
+  "01400500": {
+    "role": "episode",
+    "onset_index": 129287,
+    "onset_ts": 1738878300,
+    "onset_utc": "2025-02-06T21:45:00+00:00",
+    "n_windows": 17877
+  },
+  "01467087": {
+    "role": "episode",
+    "onset_index": 92209,
+    "onset_ts": 1705508100,
+    "onset_utc": "2024-01-17T16:15:00+00:00",
+    "n_windows": 17873
+  },
+  "01475530": {
+    "role": "episode",
+    "onset_index": 27333,
+    "onset_ts": 1647119700,
+    "onset_utc": "2022-03-12T21:15:00+00:00",
+    "n_windows": 17877
+  },
+  "01475548": {
+    "role": "episode",
+    "onset_index": 27500,
+    "onset_ts": 1647270000,
+    "onset_utc": "2022-03-14T15:00:00+00:00",
+    "n_windows": 17823
+  },
+  "01480617": {
+    "role": "episode",
+    "onset_index": 22083,
+    "onset_ts": 1642394700,
+    "onset_utc": "2022-01-17T04:45:00+00:00",
+    "n_windows": 17877
+  },
+  "01480870": {
+    "role": "episode",
+    "onset_index": 129271,
+    "onset_ts": 1738863900,
+    "onset_utc": "2025-02-06T17:45:00+00:00",
+    "n_windows": 17877
+  },
+  "01481000": {
+    "role": "episode",
+    "onset_index": 25905,
+    "onset_ts": 1645834500,
+    "onset_utc": "2022-02-26T00:15:00+00:00",
+    "n_windows": 17877
+  },
+  "01574000": {
+    "role": "episode",
+    "onset_index": 21455,
+    "onset_ts": 1641829500,
+    "onset_utc": "2022-01-10T15:45:00+00:00",
+    "n_windows": 17877
+  },
+  "01585219": {
+    "role": "episode",
+    "onset_index": 20714,
+    "onset_ts": 1641213000,
+    "onset_utc": "2022-01-03T12:30:00+00:00",
+    "n_windows": 10242
+  },
+  "01642199": {
+    "role": "episode",
+    "onset_index": 22084,
+    "onset_ts": 1642395600,
+    "onset_utc": "2022-01-17T05:00:00+00:00",
+    "n_windows": 16779
+  },
+  "01649500": {
+    "role": "episode",
+    "onset_index": 92110,
+    "onset_ts": 1705419000,
+    "onset_utc": "2024-01-16T15:30:00+00:00",
+    "n_windows": 17877
+  },
+  "01650800": {
+    "role": "episode",
+    "onset_index": 20933,
+    "onset_ts": 1641359700,
+    "onset_utc": "2022-01-05T05:15:00+00:00",
+    "n_windows": 17877
+  },
+  "01651000": {
+    "role": "episode",
+    "onset_index": 20914,
+    "onset_ts": 1641342600,
+    "onset_utc": "2022-01-05T00:30:00+00:00",
+    "n_windows": 5213
+  },
+  "01651003": {
+    "role": "episode",
+    "onset_index": 22378,
+    "onset_ts": 1705688100,
+    "onset_utc": "2024-01-19T18:15:00+00:00",
+    "n_windows": 9123
+  },
+  "01653560": {
+    "role": "episode",
+    "onset_index": 11196,
+    "onset_ts": 1736330400,
+    "onset_utc": "2025-01-08T10:00:00+00:00",
+    "n_windows": 3469
+  },
+  "04087234": {
+    "role": "episode",
+    "onset_index": 51308,
+    "onset_ts": 1668700800,
+    "onset_utc": "2022-11-17T16:00:00+00:00",
+    "n_windows": 17876
+  },
+  "04092750": {
+    "role": "episode",
+    "onset_index": 92852,
+    "onset_ts": 1706086800,
+    "onset_utc": "2024-01-24T09:00:00+00:00",
+    "n_windows": 11889
+  },
+  "04161820": {
+    "role": "episode",
+    "onset_index": 23681,
+    "onset_ts": 1643836500,
+    "onset_utc": "2022-02-02T21:15:00+00:00",
+    "n_windows": 17877
+  },
+  "04165500": {
+    "role": "episode",
+    "onset_index": 23698,
+    "onset_ts": 1643851800,
+    "onset_utc": "2022-02-03T01:30:00+00:00",
+    "n_windows": 17877
+  },
+  "04166500": {
+    "role": "episode",
+    "onset_index": 92781,
+    "onset_ts": 1706026500,
+    "onset_utc": "2024-01-23T16:15:00+00:00",
+    "n_windows": 17877
+  },
+  "04168400": {
+    "role": "episode",
+    "onset_index": 58002,
+    "onset_ts": 1674725400,
+    "onset_utc": "2023-01-26T09:30:00+00:00",
+    "n_windows": 17835
+  },
+  "04208000": {
+    "role": "episode",
+    "onset_index": 23710,
+    "onset_ts": 1643859000,
+    "onset_utc": "2022-02-03T03:30:00+00:00",
+    "n_windows": 14775
+  },
+  "0423205010": {
+    "role": "episode",
+    "onset_index": 54118,
+    "onset_ts": 1671229800,
+    "onset_utc": "2022-12-16T22:30:00+00:00",
+    "n_windows": 17877
+  },
+  "05288705": {
+    "role": "episode",
+    "onset_index": 26179,
+    "onset_ts": 1646084700,
+    "onset_utc": "2022-02-28T21:45:00+00:00",
+    "n_windows": 17877
+  },
+  "05289800": {
+    "role": "episode",
+    "onset_index": 57127,
+    "onset_ts": 1673937900,
+    "onset_utc": "2023-01-17T06:45:00+00:00",
+    "n_windows": 17877
+  },
+  "05536995": {
+    "role": "episode",
+    "onset_index": 93005,
+    "onset_ts": 1706231700,
+    "onset_utc": "2024-01-26T01:15:00+00:00",
+    "n_windows": 17803
+  },
+  "05538020": {
+    "role": "episode",
+    "onset_index": 93063,
+    "onset_ts": 1706283900,
+    "onset_utc": "2024-01-26T15:45:00+00:00",
+    "n_windows": 14775
+  },
+  "06893620": {
+    "role": "episode",
+    "onset_index": 91568,
+    "onset_ts": 1704934800,
+    "onset_utc": "2024-01-11T01:00:00+00:00",
+    "n_windows": 11763
+  },
+  "01473900": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8625
+  },
+  "01474000": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8625
+  },
+  "01653521": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 973
+  },
+  "01653522": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 975
+  },
+  "03524000": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 17877
+  },
+  "04118997": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 11095
+  },
+  "04167625": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 880
+  },
+  "04199000": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 14786
+  },
+  "04231600": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 17877
+  },
+  "05538010": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 2929
+  },
+  "412240071574700": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 7773
+  }
+}

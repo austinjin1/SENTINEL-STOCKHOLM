@@ -74,17 +74,17 @@ export function BioMotionCard({ bio, cardIndex }: Props) {
   return (
     <ModalityCard
       name="BioMotion"
-      subtitle="Denoising-diffusion one-class · Daphnia 12-keypoint"
+      subtitle="Toxicity-endpoint classifier · real EPA ECOTOX (not animal tracking)"
       accentColor="var(--m-behavioral)"
       coverage={bio.state}
       conf={bio.conf}
       cardIndex={cardIndex}
       deployableTier={0}
-      headlineMetric={<>AUROC {bio.anomaly.toFixed(3)}</>}
-      headlineLabel="Behavioral anomaly"
+      headlineMetric={<>AUROC 0.807</>}
+      headlineLabel="ECOTOX endpoint AUROC"
       secondary={
         <span style={{ color: 'var(--text-tertiary)' }}>
-          {bio.signature.charAt(0).toUpperCase() + bio.signature.slice(1)} · lab benchmark
+          {bio.signature.charAt(0).toUpperCase() + bio.signature.slice(1)} · animation is illustrative
         </span>
       }
     >
@@ -93,7 +93,7 @@ export function BioMotionCard({ bio, cardIndex }: Props) {
         style={{ width: '100%', height: 96, display: 'block', background: 'transparent' }}
       />
       <div className="mono" style={{ fontSize: 8, color: 'var(--text-tertiary)', marginTop: 4 }}>
-        Near-perfect AUROC reflects controlled lab assays; fusion down-weights in the field.
+        AUROC 0.807 on real EPA ECOTOX endpoints. Trajectory animation is illustrative, not tracked motion.
       </div>
     </ModalityCard>
   );

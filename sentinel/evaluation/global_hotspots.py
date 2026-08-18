@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
@@ -106,6 +107,11 @@ class GlobalHotspotMapper:
         model: HydroViT model instance (or None for offline mode).
         device: Torch device string ('cuda', 'cpu', 'mps').
         h3_resolution: H3 hexagonal grid resolution (0-15, default 5).
+        allow_synthetic: If True, missing satellite tiles / model predictions are
+            replaced with clearly-logged SYNTHETIC random data for demo/testing.
+            Defaults to False so that real runs fail loudly rather than silently
+            fabricating tiles or predictions. Can also be enabled via the
+            ``SENTINEL_ALLOW_SYNTHETIC=1`` environment variable.
     """
 
     def __init__(
@@ -113,10 +119,14 @@ class GlobalHotspotMapper:
         model: Any = None,
         device: str = "cpu",
         h3_resolution: int = H3_RESOLUTION,
+        allow_synthetic: bool = False,
     ) -> None:
         self.model = model
         self.device = device
         self.h3_resolution = h3_resolution
+        self.allow_synthetic = allow_synthetic or (
+            os.environ.get("SENTINEL_ALLOW_SYNTHETIC", "0") == "1"
+        )
         self._predictions_cache: Dict[str, List[Dict[str, Any]]] = {}
 
     def process_tile(
@@ -175,11 +185,24 @@ class GlobalHotspotMapper:
                     tags.get("datetime", None),
                 )
         except ImportError:
-            logger.warning("rasterio not available; using synthetic tile data")
+            if not self.allow_synthetic:
+                raise RuntimeError(
+                    f"rasterio is not available, so tile {tile_path.name!r} cannot "
+                    "be read. Refusing to fabricate satellite data. Install rasterio "
+                    "to process real tiles, or set allow_synthetic=True "
+                    "(or SENTINEL_ALLOW_SYNTHETIC=1) to use clearly-labeled synthetic "
+                    "demo data."
+                )
+            logger.warning(
+                "SYNTHETIC: rasterio not available; fabricating RANDOM tile data for "
+                "%s — NOT real satellite imagery (allow_synthetic enabled).",
+                tile_id,
+            )
             rng = np.random.default_rng(hash(tile_id) % 2**31)
             data = rng.random((13, 256, 256)).astype(np.float32)
             result["bbox"] = (0, 0, 1, 1)
             result["timestamp"] = "2023-01-01T00:00:00"
+            result["quality_flags"]["synthetic"] = True
         except Exception as e:
             logger.error(f"Failed to read tile {tile_path}: {e}")
             return result
@@ -199,11 +222,25 @@ class GlobalHotspotMapper:
             except Exception as e:
                 logger.error(f"Model inference failed for {tile_id}: {e}")
         else:
-            # Synthetic predictions for testing
+            if not self.allow_synthetic:
+                raise RuntimeError(
+                    f"No HydroViT model was provided, so predictions for tile "
+                    f"{tile_id!r} cannot be computed. Refusing to fabricate water "
+                    "quality predictions. Pass a trained model, or set "
+                    "allow_synthetic=True (or SENTINEL_ALLOW_SYNTHETIC=1) to use "
+                    "clearly-labeled synthetic demo predictions."
+                )
+            # SYNTHETIC predictions for demo/testing only — NOT model outputs.
+            logger.warning(
+                "SYNTHETIC: no model supplied; fabricating RANDOM water-quality "
+                "predictions for %s — NOT real inference (allow_synthetic enabled).",
+                tile_id,
+            )
             rng = np.random.default_rng(hash(tile_id) % 2**31)
             h, w = data.shape[1] if data.ndim > 2 else 256, data.shape[2] if data.ndim > 2 else 256
             for param in WQ_PARAMETERS:
                 result["predictions"][param] = rng.random((h, w)).tolist()
+            result["quality_flags"]["synthetic_predictions"] = True
 
         # Water mask (simplified: NDWI threshold)
         if data.ndim == 3 and data.shape[0] >= 9:
@@ -546,8 +583,22 @@ class GlobalHotspotMapper:
                     lons.append(h.longitude)
                     severities.append(len(h.parameters_declining))
 
+        real_hotspots = bool(lats)
+
         if not lats:
-            # Demo data
+            if not self.allow_synthetic:
+                raise ValueError(
+                    "No hotspots were provided to generate_hotspot_map. Refusing to "
+                    "fabricate random hotspot markers on the map. Pass real hotspot "
+                    "results, or set allow_synthetic=True (or "
+                    "SENTINEL_ALLOW_SYNTHETIC=1) to render a clearly-labeled "
+                    "synthetic demo map."
+                )
+            # SYNTHETIC demo markers — NOT detected hotspots.
+            logger.warning(
+                "SYNTHETIC: no hotspots supplied; rendering RANDOM demo markers — "
+                "these are NOT real detected hotspots (allow_synthetic enabled)."
+            )
             rng = np.random.default_rng(42)
             n_demo = 50
             lats = (rng.random(n_demo) * 100 - 30).tolist()
@@ -587,8 +638,11 @@ class GlobalHotspotMapper:
             label="Number of Declining Parameters",
         )
 
+        title = "Global Water Quality Hotspots: Declining Trends"
+        if self.allow_synthetic and not real_hotspots:
+            title += "  [SYNTHETIC DEMO DATA — NOT REAL]"
         ax.set_title(
-            "Global Water Quality Hotspots: Declining Trends",
+            title,
             fontsize=14, fontweight="bold", pad=15,
         )
 
@@ -623,7 +677,17 @@ class GlobalHotspotMapper:
                 tiles.extend(d.glob("*.tiff"))
 
         if not tiles:
-            logger.info("No local tiles found; scan_region will use synthetic data")
+            if self.allow_synthetic:
+                logger.warning(
+                    "No local tiles found; scan_region will rely on SYNTHETIC data "
+                    "(allow_synthetic enabled) — results are NOT real."
+                )
+            else:
+                logger.info(
+                    "No local tiles found. scan_region will process 0 tiles "
+                    "(synthetic fabrication is disabled; pass allow_synthetic=True "
+                    "to use demo data)."
+                )
 
         return tiles
 
@@ -837,6 +901,15 @@ def build_parser() -> argparse.ArgumentParser:
         default="cpu",
         help="Torch device (default: cpu).",
     )
+    parser.add_argument(
+        "--allow-synthetic",
+        action="store_true",
+        help=(
+            "Allow clearly-labeled SYNTHETIC random data when satellite tiles or a "
+            "model are unavailable (demo/testing only — results are NOT real). "
+            "Disabled by default so real runs fail loudly instead of fabricating."
+        ),
+    )
     return parser
 
 
@@ -867,7 +940,9 @@ def main(argv: Sequence[str] | None = None) -> None:
             logger.error(f"Failed to load model: {e}")
 
     # Run hotspot mapping
-    mapper = GlobalHotspotMapper(model=model, device=args.device)
+    mapper = GlobalHotspotMapper(
+        model=model, device=args.device, allow_synthetic=args.allow_synthetic
+    )
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

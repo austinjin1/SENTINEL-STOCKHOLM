@@ -1,0 +1,33 @@
+{
+  "n": 362,
+  "pos": 51,
+  "n_sites": 33,
+  "baseline_spectral_ratio_gbm": 0.716,
+  "texture_only": {
+    "auroc": 0.702,
+    "ci95": [
+      0.617,
+      0.786
+    ],
+    "pr_auc": 0.331,
+    "beats_0716_CI": false
+  },
+  "spectral_ratio_only": {
+    "auroc": 0.716,
+    "ci95": [
+      0.633,
+      0.799
+    ],
+    "pr_auc": 0.38,
+    "beats_0716_CI": false
+  },
+  "spectral+texture": {
+    "auroc": 0.747,
+    "ci95": [
+      0.666,
+      0.828
+    ],
+    "pr_auc": 0.37,
+    "beats_0716_CI": false
+  }
+}

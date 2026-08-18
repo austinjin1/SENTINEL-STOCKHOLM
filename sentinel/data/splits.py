@@ -155,6 +155,115 @@ def assign_spatial_fold_geographic(
     return {sid: int(remapped[i]) for i, sid in enumerate(site_ids)}
 
 
+def geographic_holdout_split(
+    latitudes: np.ndarray,
+    longitudes: np.ndarray,
+    class_labels: Sequence[int],
+    num_clusters: int = 20,
+    test_frac: float = 0.20,
+    val_frac: float = 0.20,
+    seed: int = SPLIT_SEED,
+) -> dict[str, list[int]]:
+    """TRUE geographic holdout: assign whole k-means regions to train/val/test.
+
+    This is the honest replacement for the per-sample (effectively random) split.
+    Samples are clustered into ``num_clusters`` geographic regions via k-means on
+    (lat, lon).  Whole regions are then assigned to test/val/train so that **no
+    geographic region appears in more than one split** — eliminating spatial
+    autocorrelation leakage.
+
+    Region-to-split assignment is *class-coverage-aware greedy*: we first fill the
+    test set with whole regions, at each step picking the region that introduces
+    the most previously-unseen classes (ties broken by region size), until the
+    test set reaches ``test_frac`` of the data.  The validation set is filled the
+    same way from the remaining regions; everything left becomes train.  This
+    keeps as many classes as possible present in every split while still being a
+    strict geographic holdout.
+
+    Parameters
+    ----------
+    latitudes, longitudes:
+        Per-sample WGS-84 coordinates (length N).
+    class_labels:
+        Per-sample integer class labels (length N), used only for the
+        coverage-aware greedy ordering — never for leakage.
+    num_clusters:
+        Number of geographic regions (k-means clusters).  More clusters → finer
+        regions → easier to balance class coverage across splits.  Default 20.
+    test_frac, val_frac:
+        Target fraction of samples in test / val.  Remainder is train.
+    seed:
+        Random seed for k-means and the region permutation.
+
+    Returns
+    -------
+    Dict with keys ``"train"``, ``"val"``, ``"test"`` mapping to lists of sample
+    indices into the input arrays.  Every sample is assigned to exactly one split.
+    """
+    from sklearn.cluster import KMeans
+
+    latitudes = np.asarray(latitudes, dtype=float)
+    longitudes = np.asarray(longitudes, dtype=float)
+    class_labels = np.asarray(class_labels)
+    n = len(latitudes)
+    if not (len(longitudes) == len(class_labels) == n):
+        raise ValueError("latitudes, longitudes, class_labels must be same length")
+
+    num_clusters = int(min(num_clusters, max(1, n)))
+    coords = np.column_stack([latitudes, longitudes])
+    km = KMeans(n_clusters=num_clusters, random_state=seed, n_init=10)
+    cluster_of = km.fit_predict(coords)
+
+    clusters = list(range(num_clusters))
+    cl_size = {c: int((cluster_of == c).sum()) for c in clusters}
+    cl_classes = {
+        c: set(int(x) for x in np.unique(class_labels[cluster_of == c]))
+        for c in clusters
+    }
+
+    def _greedy_fill(remaining: set[int], target: float) -> set[int]:
+        """Greedily pull whole regions until their sample count reaches target."""
+        chosen: set[int] = set()
+        covered: set[int] = set()
+        size = 0
+        while size < target and remaining:
+            # pick region adding most new classes, tie-break by larger size
+            best, best_score = None, None
+            for c in remaining:
+                new_classes = len(cl_classes[c] - covered)
+                score = (new_classes, cl_size[c])
+                if best_score is None or score > best_score:
+                    best_score, best = score, c
+            chosen.add(best)
+            remaining.discard(best)
+            covered |= cl_classes[best]
+            size += cl_size[best]
+        return chosen
+
+    remaining = set(clusters)
+    test_clusters = _greedy_fill(remaining, test_frac * n)
+    val_clusters = _greedy_fill(remaining, val_frac * n)
+    train_clusters = remaining  # whatever is left
+
+    result: dict[str, list[int]] = {"train": [], "val": [], "test": []}
+    for i in range(n):
+        c = int(cluster_of[i])
+        if c in test_clusters:
+            result["test"].append(i)
+        elif c in val_clusters:
+            result["val"].append(i)
+        else:
+            result["train"].append(i)
+
+    logger.info(
+        f"Geographic holdout ({num_clusters} k-means regions): "
+        f"train={len(result['train'])} ({len(train_clusters)} regions), "
+        f"val={len(result['val'])} ({len(val_clusters)} regions), "
+        f"test={len(result['test'])} ({len(test_clusters)} regions)"
+    )
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Temporal assignment
 # ---------------------------------------------------------------------------

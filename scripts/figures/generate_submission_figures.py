@@ -96,18 +96,22 @@ def fig1_model_performance():
         "Contrastive\nPretrain",
     ]
 
-    # Key metric per model (best applicable metric, see Results Summary)
+    # Key metric per model (best applicable metric, see Results Summary).
+    # NOTE: values below are real held-out estimates where available; several
+    # of the original headline numbers were fabricated/inflated and have been
+    # replaced with the real strict-holdout values (see REVIEW notes).
     metrics = [
-        0.9386,   # AquaSSM v1 AUROC
-        0.8927,   # HydroViT R^2
-        0.8989,   # MicroBiomeNet F1
-        0.9520,   # ToxiGene F1
-        0.9999,   # BioMotion AUROC
-        0.9919,   # Perceiver IO Fusion AUROC
-        gnn["test_metrics"]["auroc"],                            # Stream GNN AUROC ~1.0
+        0.939,    # AquaSSM recon-anomaly AUROC on SYNTHETIC injected anomalies (recon RMSE 0.83); NOT real contamination detection
+        0.893,    # HydroViT R^2 water temp (note: split contaminated by augmented targets; 2,861 real pairs)
+        0.831,    # MicroBiomeNet macro-F1 (strict spatial holdout); NOT the augmented 0.899
+        0.492,    # ToxiGene F1 (n=9 real GEO holdout); NOT the stale F1>=0.877 (Gaussian-fabricated samples)
+        0.807,    # BioMotion AUROC (real EPA ECOTOX endpoint data); NOT 1.000/0.9999
+        0.649,    # Track B real co-located fusion AUROC (station holdout, n=362); NOT 0.992 (synthetic)
+        # Stream GNN: SIMULATION ONLY (synthetic contamination-propagation labels on real NHDPlus topology) — NOT validated 1.000
+        gnn["test_metrics"]["auroc"],                            # Stream GNN AUROC (SIMULATION — synthetic labels, not validated)
         wdn["test_metrics"]["per_target"]["DO"]["r2"],           # WDN DO R^2
-        species["test_metrics"]["occ_accuracy"],                 # Species occ accuracy
-        contrastive["pair_results"]["microbial-molecular"]["test_retrieval"]["recall@1_a2b"],  # Contrastive recall@1
+        species["test_metrics"]["occ_accuracy"],                 # Species occ accuracy (pooled R^2 0.9996 is inflated by near-absent species)
+        contrastive["pair_results"]["microbial-molecular"]["test_retrieval"]["recall@1_a2b"],  # Contrastive recall@1 (REMOVE: N=1 eval on hash-seeded noise)
     ]
 
     metric_labels = [
@@ -287,7 +291,7 @@ def fig4_waterdronenet():
     ax2.set_ylabel("MAE")
     ax2.set_title("Test MAE by Target")
 
-    fig.suptitle("WaterDroneNet v2 \u2014 Per-Target Test Performance (165K samples)",
+    fig.suptitle("WaterDroneNet v2 \u2014 Per-Target Test Performance (real Sentinel-2/in-situ pairs)",
                  fontsize=13, fontweight="bold", y=1.02)
 
     out = FIG_DIR / "fig4_waterdronenet_targets.png"
@@ -592,7 +596,8 @@ def fig8_stream_network():
                  transform=ax2.transAxes, fontsize=8, ha="right", va="top",
                  bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=COLORS["gray"], alpha=0.7))
 
-    fig.suptitle("Stream Network GNN — Real NHDPlusV2 Topology (AUROC = 1.000)",
+    fig.suptitle("Stream Network GNN — Real NHDPlusV2 Topology "
+                 "(SIMULATION: synthetic contamination-propagation labels, not validated)",
                  fontsize=13, fontweight="bold", y=1.02)
     fig.tight_layout()
 
@@ -639,7 +644,7 @@ def fig9_architecture():
 
     # ── Section backgrounds ──
     # Data Sources (bottom)
-    section_bg(0.2, 0.2, 13.5, 1.6, "Data Sources (390M+ records)", COLORS["cyan"])
+    section_bg(0.2, 0.2, 13.5, 1.6, "Data Sources (~390M raw records pre-QC; ~52M after NEON QC; 14 public sources)", COLORS["cyan"])
     # Encoders (lower middle)
     section_bg(0.2, 2.2, 13.5, 1.6, "SENTINEL 1.0 Encoders", COLORS["blue"])
     # Fusion + New Models (middle)
@@ -666,11 +671,11 @@ def fig9_architecture():
 
     # ── Encoder row ──
     enc_y, enc_h = 2.5, 0.7
-    box(0.5,  enc_y, 2.2, enc_h, "AquaSSM v2\nAUROC 0.94", COLORS["blue"], 7)
+    box(0.5,  enc_y, 2.2, enc_h, "AquaSSM\nrecon RMSE 0.83", COLORS["blue"], 7)
     box(2.9,  enc_y, 2.2, enc_h, "HydroViT\nR\u00b2 0.89", COLORS["blue"], 7)
-    box(5.3,  enc_y, 2.2, enc_h, "MicroBiomeNet\nF1 0.90", COLORS["blue"], 7)
-    box(7.7,  enc_y, 2.2, enc_h, "ToxiGene\nF1 0.95", COLORS["blue"], 7)
-    box(10.1, enc_y, 2.2, enc_h, "BioMotion\nAUROC 1.00", COLORS["blue"], 7)
+    box(5.3,  enc_y, 2.2, enc_h, "MicroBiomeNet\nF1 0.83", COLORS["blue"], 7)
+    box(7.7,  enc_y, 2.2, enc_h, "ToxiGene\nF1 0.49", COLORS["blue"], 7)
+    box(10.1, enc_y, 2.2, enc_h, "BioMotion\nAUROC 0.81", COLORS["blue"], 7)
 
     # Arrows from data to encoders
     for dx, ex in [(1.5, 1.6), (3.6, 4.0), (7.6, 6.4), (9.6, 8.8), (5.6, 11.2)]:
@@ -678,9 +683,9 @@ def fig9_architecture():
 
     # ── Fusion + spatial row ──
     fus_y, fus_h = 4.5, 0.8
-    box(0.5,  fus_y, 2.5, fus_h, "Perceiver IO Fusion\nAUROC 0.99", COLORS["green"], 7)
+    box(0.5,  fus_y, 2.5, fus_h, "Co-located Fusion\nAUROC 0.65 (real)", COLORS["green"], 7)
     box(3.3,  fus_y, 2.5, fus_h, "Foundation Model\n(Joint Pretrain)", COLORS["green"], 7)
-    box(6.1,  fus_y, 2.5, fus_h, "Stream GNN v2\nAUROC 1.00", COLORS["green"], 7)
+    box(6.1,  fus_y, 2.5, fus_h, "Stream GNN v2\n(SIMULATION only)", COLORS["green"], 7)
     box(9.0,  fus_y, 2.2, fus_h, "WaterDroneNet\nDO R\u00b2 0.98", COLORS["green"], 7)
     box(11.5, fus_y, 2.0, fus_h, "Contrastive\nAlign", COLORS["green"], 7)
 

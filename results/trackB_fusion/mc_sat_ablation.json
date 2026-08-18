@@ -1,0 +1,60 @@
+{
+  "labels": {
+    "mc_gt1.6": {
+      "full_auroc": 0.708,
+      "single_family_plus_bands": {
+        "BANDS_only": 0.619,
+        "NDCI+bands": 0.658,
+        "REratio+bands": 0.657,
+        "PCpotes+bands": 0.624,
+        "MCIre+bands": 0.66,
+        "FAI+bands": 0.639,
+        "NDVI+bands": 0.653,
+        "NDWI+bands": 0.657,
+        "GR+bands": 0.647,
+        "GB+bands": 0.655,
+        "B5B3+bands": 0.629
+      },
+      "drop_one_family": {
+        "drop_NDCI": 0.708,
+        "drop_REratio": 0.705,
+        "drop_PCpotes": 0.709,
+        "drop_MCIre": 0.71,
+        "drop_FAI": 0.712,
+        "drop_NDVI": 0.701,
+        "drop_NDWI": 0.712,
+        "drop_GR": 0.709,
+        "drop_GB": 0.708,
+        "drop_B5B3": 0.715
+      }
+    },
+    "mc_gt0.3": {
+      "full_auroc": 0.713,
+      "single_family_plus_bands": {
+        "BANDS_only": 0.639,
+        "NDCI+bands": 0.654,
+        "REratio+bands": 0.655,
+        "PCpotes+bands": 0.64,
+        "MCIre+bands": 0.663,
+        "FAI+bands": 0.665,
+        "NDVI+bands": 0.675,
+        "NDWI+bands": 0.669,
+        "GR+bands": 0.668,
+        "GB+bands": 0.675,
+        "B5B3+bands": 0.648
+      },
+      "drop_one_family": {
+        "drop_NDCI": 0.715,
+        "drop_REratio": 0.712,
+        "drop_PCpotes": 0.714,
+        "drop_MCIre": 0.706,
+        "drop_FAI": 0.704,
+        "drop_NDVI": 0.707,
+        "drop_NDWI": 0.71,
+        "drop_GR": 0.713,
+        "drop_GB": 0.705,
+        "drop_B5B3": 0.714
+      }
+    }
+  }
+}

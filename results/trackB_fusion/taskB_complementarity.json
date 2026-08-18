@@ -1,0 +1,260 @@
+{
+  "chl_gt8": {
+    "note": "non-circular (chl not a sensor channel); original sensor window",
+    "n": 362,
+    "pos": 51,
+    "prev": 0.141,
+    "n_sites": 33,
+    "cv_folds": 5,
+    "auroc": {
+      "sensor": 0.686,
+      "satellite": 0.598,
+      "sat_spectral_only": 0.677,
+      "fusion": 0.757
+    },
+    "ci95": {
+      "sensor": [
+        0.6,
+        0.771
+      ],
+      "satellite": [
+        0.511,
+        0.685
+      ],
+      "sat_spectral_only": [
+        0.592,
+        0.763
+      ],
+      "fusion": [
+        0.677,
+        0.837
+      ]
+    },
+    "fusion_ci_beats_sensor": false,
+    "fusion_ci_beats_satellite": true,
+    "fusion_gain_over_best_single": 0.072,
+    "best_single": "sensor",
+    "conditional": {
+      "sensor_alone": 0.686,
+      "add_satellite_over_sensor": 0.624,
+      "gain_satellite_over_sensor": -0.061,
+      "satellite_alone": 0.598,
+      "add_sensor_over_satellite": 0.71,
+      "gain_sensor_over_satellite": 0.112
+    },
+    "both_conditional_gains_positive": false,
+    "bimodal": false,
+    "perm_importance_blocks": {
+      "sensor": 0.1045,
+      "sat_cls": 0.0458,
+      "sat_spectral": 0.0223
+    }
+  },
+  "turb_gt10": {
+    "note": "Turb is a sensor channel; sensor window is STRICTLY BEFORE label day",
+    "n": 8175,
+    "pos": 2448,
+    "prev": 0.299,
+    "n_sites": 286,
+    "cv_folds": 5,
+    "auroc": {
+      "sensor": 0.935,
+      "satellite": 0.712,
+      "sat_spectral_only": 0.683,
+      "fusion": 0.939
+    },
+    "ci95": {
+      "sensor": [
+        0.928,
+        0.942
+      ],
+      "satellite": [
+        0.699,
+        0.725
+      ],
+      "sat_spectral_only": [
+        0.67,
+        0.697
+      ],
+      "fusion": [
+        0.932,
+        0.946
+      ]
+    },
+    "fusion_ci_beats_sensor": false,
+    "fusion_ci_beats_satellite": true,
+    "fusion_gain_over_best_single": 0.004,
+    "best_single": "sensor",
+    "conditional": {
+      "sensor_alone": 0.935,
+      "add_satellite_over_sensor": 0.934,
+      "gain_satellite_over_sensor": -0.001,
+      "satellite_alone": 0.712,
+      "add_sensor_over_satellite": 0.935,
+      "gain_sensor_over_satellite": 0.223
+    },
+    "both_conditional_gains_positive": false,
+    "bimodal": false,
+    "perm_importance_blocks": {
+      "sensor": 0.0449,
+      "sat_cls": -0.0027,
+      "sat_spectral": 0.0008
+    }
+  },
+  "multi_DOorTurb": {
+    "note": "multi-parameter, non-circular sensor window (strictly before label day)",
+    "n": 8132,
+    "pos": 2534,
+    "prev": 0.312,
+    "n_sites": 286,
+    "cv_folds": 5,
+    "auroc": {
+      "sensor": 0.932,
+      "satellite": 0.709,
+      "sat_spectral_only": 0.692,
+      "fusion": 0.937
+    },
+    "ci95": {
+      "sensor": [
+        0.925,
+        0.939
+      ],
+      "satellite": [
+        0.697,
+        0.722
+      ],
+      "sat_spectral_only": [
+        0.679,
+        0.705
+      ],
+      "fusion": [
+        0.93,
+        0.944
+      ]
+    },
+    "fusion_ci_beats_sensor": false,
+    "fusion_ci_beats_satellite": true,
+    "fusion_gain_over_best_single": 0.005,
+    "best_single": "sensor",
+    "conditional": {
+      "sensor_alone": 0.932,
+      "add_satellite_over_sensor": 0.933,
+      "gain_satellite_over_sensor": 0.001,
+      "satellite_alone": 0.709,
+      "add_sensor_over_satellite": 0.934,
+      "gain_sensor_over_satellite": 0.225
+    },
+    "both_conditional_gains_positive": false,
+    "bimodal": false,
+    "perm_importance_blocks": {
+      "sensor": 0.047,
+      "sat_cls": 0.0042,
+      "sat_spectral": -0.0001
+    }
+  },
+  "multi_DOchlTurb": {
+    "note": "3-parameter multi on chl-labeled subset; non-circular sensor",
+    "n": 304,
+    "pos": 149,
+    "prev": 0.49,
+    "n_sites": 32,
+    "cv_folds": 5,
+    "auroc": {
+      "sensor": 0.917,
+      "satellite": 0.647,
+      "sat_spectral_only": 0.578,
+      "fusion": 0.92
+    },
+    "ci95": {
+      "sensor": [
+        0.884,
+        0.95
+      ],
+      "satellite": [
+        0.585,
+        0.709
+      ],
+      "sat_spectral_only": [
+        0.513,
+        0.642
+      ],
+      "fusion": [
+        0.888,
+        0.952
+      ]
+    },
+    "fusion_ci_beats_sensor": false,
+    "fusion_ci_beats_satellite": true,
+    "fusion_gain_over_best_single": 0.003,
+    "best_single": "sensor",
+    "conditional": {
+      "sensor_alone": 0.917,
+      "add_satellite_over_sensor": 0.912,
+      "gain_satellite_over_sensor": -0.005,
+      "satellite_alone": 0.647,
+      "add_sensor_over_satellite": 0.915,
+      "gain_sensor_over_satellite": 0.268
+    },
+    "both_conditional_gains_positive": false,
+    "bimodal": false,
+    "perm_importance_blocks": {
+      "sensor": 0.1526,
+      "sat_cls": 0.0355,
+      "sat_spectral": 0.0019
+    }
+  },
+  "_summary": {
+    "tasks": [
+      "chl_gt8",
+      "turb_gt10",
+      "multi_DOorTurb",
+      "multi_DOchlTurb"
+    ],
+    "bimodal_tasks": [],
+    "phycocyanin": "NOT TESTABLE: phyco WQP data is 2019-2021 but all Sentinel-2 tiles are 2022-2025; min site-date gap >=233 days, so zero co-located pairs exist within any usable tolerance. Reported as a data-coverage null."
+  },
+  "chl_gt8_spectral_only": {
+    "note": "REFINED: satellite modality = spectral[16:32] ONLY (WaterDroneNet 384-d cls dropped; it is noise for chl-a and masks satellite conditional gain). This is the one genuinely bimodal decomposition found.",
+    "n": 362,
+    "pos": 51,
+    "n_sites": 33,
+    "cv_folds": 5,
+    "auroc": {
+      "sensor": 0.686,
+      "sat_spectral": 0.677,
+      "fusion_concat": 0.772,
+      "late_prob_avg": 0.741
+    },
+    "ci95_hanley": {
+      "sensor": [
+        0.6,
+        0.771
+      ],
+      "sat_spectral": [
+        0.592,
+        0.763
+      ],
+      "fusion": [
+        0.693,
+        0.85
+      ]
+    },
+    "conditional": {
+      "gain_spectral_over_sensor": 0.074,
+      "gain_sensor_over_spectral": 0.044,
+      "both_positive": true
+    },
+    "fusion_gain_over_best_single": 0.086,
+    "fusion_ci_lo_beats_both_singles": true,
+    "site_clustered_bootstrap_gain": {
+      "point": 0.086,
+      "median": 0.061,
+      "ci95": [
+        -0.07,
+        0.103
+      ],
+      "P_gain_gt_0": 0.891
+    },
+    "verdict": "Bimodal by Hanley-McNeil CI + both conditional gains positive, but site-clustered bootstrap CI crosses zero (P=0.89). Suggestive, not decisive at n=362/33 sites."
+  }
+}

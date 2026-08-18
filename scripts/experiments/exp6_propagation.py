@@ -409,8 +409,11 @@ def run_aquassm_inference(model: AquaSSM, windows: torch.Tensor) -> torch.Tensor
                     emb = emb.unsqueeze(0)
                 embeddings.append(emb.cpu())
             except Exception as e:
-                # Fallback: random embedding
-                embeddings.append(torch.randn(1, 256) * 0.01)
+                # Do NOT fabricate: a random embedding would silently feed noise
+                # into the propagation analysis. Fail loudly instead.
+                raise RuntimeError(
+                    f"AquaSSM embedding failed on window {i}; refusing to "
+                    f"substitute a random embedding.") from e
 
             if (i + 1) % 100 == 0:
                 logger.info(f"    AquaSSM: {i+1}/{windows.shape[0]}")

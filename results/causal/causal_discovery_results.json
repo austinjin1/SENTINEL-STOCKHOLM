@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "Lagged partial-correlation SCREENING on multi-modal event series (NOT PCMCI+, NOT validated causal discovery). The vast majority of chains are flagged 'No matching known chain found (may be novel)' — these are unvalidated correlational lead-lags, not 'novel causal discoveries'. Cross-modal series here include synthetic/proxy modality channels. Do not cite chain counts as validated causal findings.",
   "n_events": 10,
   "max_lag_hours": 72,
   "significance_level": 0.05,

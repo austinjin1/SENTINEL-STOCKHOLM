@@ -1,0 +1,224 @@
+{
+  "config": {
+    "target_fpr": 0.05,
+    "k_sustain": 3,
+    "checkpoint": "aquassm_neon_ft.pt",
+    "n_sites": 22
+  },
+  "per_site_tau": {
+    "MCDI": 2.4996665057014016,
+    "ARIK": 2.8553863064261042,
+    "KING": 2.8748136632101873,
+    "BIGC": 2.302945654588587,
+    "PRIN": 2.3951234804722445,
+    "COMO": 2.649252288097094,
+    "MAYF": 3.4866734018045316,
+    "LECO": 3.030825905102642,
+    "CRAM": 2.170061275846817,
+    "LIRO": 2.58578846061931,
+    "BARC": 2.5598138453399453,
+    "GUIL": 2.863254066916073,
+    "HOPB": 2.870819011517934,
+    "LEWI": 2.4520014362094757,
+    "MART": 2.427281065612281,
+    "MCRA": 3.1053991317749023,
+    "BLDE": 2.4763062667365863,
+    "CARI": 2.946230529911378,
+    "CUPE": 2.6236323394494914,
+    "BLUE": 3.5656774307699766,
+    "FLNT": 2.140927368753097,
+    "OKSR": 2.1651181839053373
+  },
+  "loso": {
+    "MCDI": {
+      "role": "episode",
+      "global_tau": 2.7990968109900245,
+      "per_site_tau": 2.4996665057014016,
+      "fpr_heldout_global": 0.2583065380493033,
+      "n_fpr_windows": 1866,
+      "onset_utc": "2024-07-27T08:00:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 40.177083333333336
+    },
+    "ARIK": {
+      "role": "episode",
+      "global_tau": 2.784837795401822,
+      "per_site_tau": 2.8553863064261042,
+      "fpr_heldout_global": 0.10164835164835165,
+      "n_fpr_windows": 1092,
+      "onset_utc": "2024-05-17T03:45:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 12.75
+    },
+    "KING": {
+      "role": "episode",
+      "global_tau": 2.779452038588644,
+      "per_site_tau": 2.8748136632101873,
+      "fpr_heldout_global": 0.0,
+      "n_fpr_windows": 168,
+      "onset_utc": "2024-07-31T07:45:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 36.833333333333336
+    },
+    "BIGC": {
+      "role": "episode",
+      "global_tau": 2.8057477824427504,
+      "per_site_tau": 2.302945654588587,
+      "fpr_heldout_global": 0.03720486525160983,
+      "n_fpr_windows": 4193,
+      "onset_utc": "2025-08-01T17:45:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 29.166666666666668
+    },
+    "PRIN": {
+      "role": "episode",
+      "global_tau": 2.7922720473113225,
+      "per_site_tau": 2.3951234804722445,
+      "fpr_heldout_global": 0.005154639175257732,
+      "n_fpr_windows": 194,
+      "onset_utc": "2024-10-25T10:45:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 22.458333333333332
+    },
+    "COMO": {
+      "role": "episode",
+      "global_tau": 2.813526805707387,
+      "per_site_tau": 2.649252288097094,
+      "fpr_heldout_global": 0.0360014619883041,
+      "n_fpr_windows": 5472,
+      "onset_utc": "2026-01-30T16:30:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 4.03125
+    },
+    "MAYF": {
+      "role": "episode",
+      "global_tau": 2.7607591756732526,
+      "per_site_tau": 3.4866734018045316,
+      "fpr_heldout_global": 0.07342183690056896,
+      "n_fpr_windows": 3691,
+      "onset_utc": "2025-04-17T14:30:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 31.947916666666668
+    },
+    "LECO": {
+      "role": "episode",
+      "global_tau": 2.75223446397221,
+      "per_site_tau": 3.030825905102642,
+      "fpr_heldout_global": 0.0704381586245147,
+      "n_fpr_windows": 5409,
+      "onset_utc": "2025-08-03T00:00:00+00:00",
+      "detected_pre_onset_global": false,
+      "lead_days_global": null
+    },
+    "CRAM": {
+      "role": "episode",
+      "global_tau": 2.7933042144354654,
+      "per_site_tau": 2.170061275846817,
+      "fpr_heldout_global": 0.6195804195804195,
+      "n_fpr_windows": 715,
+      "onset_utc": "2023-05-03T19:30:00+00:00",
+      "detected_pre_onset_global": false,
+      "lead_days_global": null
+    },
+    "LIRO": {
+      "role": "episode",
+      "global_tau": 2.7933243567402624,
+      "per_site_tau": 2.58578846061931,
+      "fpr_heldout_global": 0.19937694704049844,
+      "n_fpr_windows": 1605,
+      "onset_utc": "2023-06-09T12:45:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 26.125
+    },
+    "BARC": {
+      "role": "episode",
+      "global_tau": 2.805827381835264,
+      "per_site_tau": 2.5598138453399453,
+      "fpr_heldout_global": 0.165283540802213,
+      "n_fpr_windows": 1446,
+      "onset_utc": "2024-12-08T21:30:00+00:00",
+      "detected_pre_onset_global": false,
+      "lead_days_global": null
+    },
+    "GUIL": {
+      "role": "episode",
+      "global_tau": 2.7859325648355893,
+      "per_site_tau": 2.863254066916073,
+      "fpr_heldout_global": 0.39150354019158684,
+      "n_fpr_windows": 2401,
+      "onset_utc": "2026-02-10T08:00:00+00:00",
+      "detected_pre_onset_global": true,
+      "lead_days_global": 44.760416666666664
+    },
+    "HOPB": {
+      "role": "control",
+      "global_tau": 2.784788989299486,
+      "per_site_tau": 2.870819011517934,
+      "fpr_heldout_global": 0.05171762929407323,
+      "n_fpr_windows": 5298
+    },
+    "LEWI": {
+      "role": "control",
+      "global_tau": 2.7996318046645956,
+      "per_site_tau": 2.4520014362094757,
+      "fpr_heldout_global": 0.03785310734463277,
+      "n_fpr_windows": 3540
+    },
+    "MART": {
+      "role": "control",
+      "global_tau": 2.8588929654450017,
+      "per_site_tau": 2.427281065612281,
+      "fpr_heldout_global": 0.023785020011435107,
+      "n_fpr_windows": 8745
+    },
+    "MCRA": {
+      "role": "control",
+      "global_tau": 2.765380556583405,
+      "per_site_tau": 3.1053991317749023,
+      "fpr_heldout_global": 0.07176433719837041,
+      "n_fpr_windows": 3191
+    },
+    "BLDE": {
+      "role": "control",
+      "global_tau": 2.8072137941632955,
+      "per_site_tau": 2.4763062667365863,
+      "fpr_heldout_global": 0.03851236548989995,
+      "n_fpr_windows": 5297
+    },
+    "CARI": {
+      "role": "control",
+      "global_tau": 2.7771116203420325,
+      "per_site_tau": 2.946230529911378,
+      "fpr_heldout_global": 0.06196156394963552,
+      "n_fpr_windows": 3018
+    },
+    "CUPE": {
+      "role": "control",
+      "global_tau": 2.7913916206039326,
+      "per_site_tau": 2.6236323394494914,
+      "fpr_heldout_global": 0.2732811140121845,
+      "n_fpr_windows": 2298
+    },
+    "BLUE": {
+      "role": "control",
+      "global_tau": 2.7457377510311227,
+      "per_site_tau": 3.5656774307699766,
+      "fpr_heldout_global": 0.1044613710554951,
+      "n_fpr_windows": 2757
+    },
+    "FLNT": {
+      "role": "control",
+      "global_tau": 2.8153993846869274,
+      "per_site_tau": 2.140927368753097,
+      "fpr_heldout_global": 0.018060463290145268,
+      "n_fpr_windows": 2547
+    },
+    "OKSR": {
+      "role": "control",
+      "global_tau": 2.794321419431382,
+      "per_site_tau": 2.1651181839053373,
+      "fpr_heldout_global": 0.483695652173913,
+      "n_fpr_windows": 368
+    }
+  }
+}

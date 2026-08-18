@@ -1,0 +1,115 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Honest diagnosis + improvement of DO (dissolved oxygen) from optics on REAL Sentinel-2 x USGS data. Decomposes DO signal into optics-only vs temperature-only vs combined.",
+    "data": "data/processed/satellite/drone_wq_pairs.npz (REAL Sentinel-2 L2A B02,B03,B04,B08 paired with REAL same-day USGS/NWIS in-situ WQ).",
+    "bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B08"
+    ],
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site_id) GroupKFold \u2014 no site shared train/test; pooled out-of-fold predictions.",
+    "ci": "site-clustered bootstrap (resamples SITES, not rows), 2000 reps; paired delta CI vs shipped baseline.",
+    "model": "HistGradientBoosting regressor (CPU), same family as the red-edge chl-a study that beat the ViT.",
+    "temperature_note": "Temp feature = REAL in-situ same-day water temperature, a legitimately available covariate. DO gain attributable to Temp is labeled temperature-driven, NOT optical."
+  },
+  "shipped_baselines": {
+    "drone_DO_r2": 0.2569,
+    "hydrovit_DO_r2": 0.5818,
+    "note": "both use the same 4 bands + station holdout; drone is the pure-optics comparator for the optics-only arm."
+  },
+  "n_valid": {
+    "optics": 11318,
+    "optics_temp": 11279
+  },
+  "arms": {
+    "A_optics_only": {
+      "features": "4-band spatial stats + chl/turbidity proxy indices (no temp)",
+      "n": 11318,
+      "n_sites": 372,
+      "r2": 0.4909,
+      "r2_ci95": [
+        0.4418,
+        0.5384
+      ]
+    },
+    "B_temp_only": {
+      "features": "in-situ water temperature only (1 feature)",
+      "n": 11279,
+      "n_sites": 371,
+      "r2": 0.5849,
+      "r2_ci95": [
+        0.5433,
+        0.6243
+      ]
+    },
+    "C_optics_plus_temp": {
+      "features": "optical proxies + in-situ temperature",
+      "n": 11279,
+      "n_sites": 371,
+      "r2": 0.7245,
+      "r2_ci95": [
+        0.6948,
+        0.7523
+      ]
+    },
+    "A_optics_only_matched_set": {
+      "note": "optics-only evaluated on the SAME rows as B/C for fair paired deltas",
+      "r2": 0.5157,
+      "r2_ci95": [
+        0.4722,
+        0.5569
+      ]
+    }
+  },
+  "deltas": {
+    "optics_vs_drone_shipped": {
+      "new_r2": 0.4909,
+      "old_r2": 0.2569,
+      "delta": 0.234,
+      "new_r2_ci95": [
+        0.4418,
+        0.5384
+      ],
+      "interpretation": "pure-optics GBM vs pure-optics drone ViT, same bands & station holdout. Improved iff new_r2 CI lower bound > drone 0.257."
+    },
+    "optics_vs_hydrovit_shipped": {
+      "new_r2": 0.4909,
+      "old_r2": 0.5818,
+      "delta": -0.0909,
+      "new_r2_ci95": [
+        0.4418,
+        0.5384
+      ]
+    },
+    "temp_marginal_C_minus_Aoptics": {
+      "mean": 0.2099,
+      "ci95": [
+        0.1776,
+        0.2428
+      ],
+      "prob_improvement": 1.0,
+      "interpretation": "R2 gain from ADDING temperature to optics (paired, same sites). This gain is TEMPERATURE-driven, not new optical signal."
+    },
+    "optics_marginal_C_minus_temp": {
+      "mean": 0.1381,
+      "ci95": [
+        0.0973,
+        0.177
+      ],
+      "prob_improvement": 1.0,
+      "interpretation": "R2 gain from ADDING optics on top of temperature (paired). This isolates GENUINE optical DO information beyond temperature."
+    }
+  },
+  "verdict": {
+    "optics_vs_drone": "IMPROVED: optics-only R2=0.491 (CI lower 0.442) > drone shipped 0.257. Genuine optical DO gain (GBM > ViT, same bands).",
+    "optics_beyond_temp": "Optics adds REAL signal beyond temperature: C-B delta=+0.138 CI[+0.097,+0.177] excludes 0.",
+    "temperature_share": "Temp-only R2=0.585 vs optics-only R2=0.516 vs combined R2=0.725. Adding temp to optics lifts R2 by +0.210 (CI[+0.178,+0.243]). Any DO 'improvement' from the combined model is largely TEMPERATURE information."
+  },
+  "improved": true,
+  "improved_definition": "new_r2 (optics-only) CI-lower-bound > shipped drone pure-optics DO R2 0.257, on a station GroupKFold holdout. This is a pure-optics claim; the optics+temp arm is reported but flagged temperature-driven.",
+  "elapsed_seconds": 376.4
+}

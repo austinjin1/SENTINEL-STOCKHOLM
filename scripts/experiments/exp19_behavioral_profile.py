@@ -157,6 +157,11 @@ def _call_model(model, kp, feat):
         out = model({"daphnia": {"keypoints": kp, "features": feat}})
     sc = out.get("anomaly_score", None) if isinstance(out, dict) else None
     if sc is None:
+        # PRIMARY SCORE (PROXY, NOT CALIBRATED): the BioMotion encoder does not
+        # expose a calibrated anomaly probability here, so this experiment scores
+        # trajectories by the embedding L2-norm. This is an uncalibrated proxy
+        # used only for ranking/AUROC — it is NOT a probability. Do not present
+        # these scores as calibrated detection probabilities.
         emb = out.get("embedding", None) if isinstance(out, dict) else out
         sc  = emb.norm() if emb is not None else torch.tensor(0.0)
     return float(sc.item()) if sc.numel() == 1 else float(sc.squeeze().item())

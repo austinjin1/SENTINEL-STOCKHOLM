@@ -55,7 +55,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
     sentinelAlertDate: '2023-05-16',
     advisoryDate: '2023-07-15',
     leadSummary:
-      'SENTINEL crossed its detection threshold 59 days before the EPA advisory; per-modality scoring shows HydroViT chlorophyll-a anomaly leading by 10 days and AquaSSM DO/turbidity by 5 days.',
+      'ILLUSTRATIVE CASE STUDY (not specificity-validated). This narrative is not part of the validated Track A result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     milestones: [
       {
         date: '2023-04-15',
@@ -89,8 +89,8 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
       {
         date: '2023-07-12',
         kind: 'sentinel-alert',
-        title: 'Cascade controller fires ALERT (+201.6h before advisory)',
-        body: 'Fused anomaly probability crosses the operational alert threshold; deployment-relevant lead time.',
+        title: 'Cascade controller fires ALERT',
+        body: 'Illustrative case-study narrative (not specificity-validated). The lead-time figure here is not a validated Track A result.',
         source: { label: 'SENTINEL paper §5' },
         escalateTo: 2,
       },
@@ -119,7 +119,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
     sentinelAlertDate: '2023-04-04',
     advisoryDate: '2023-07-01',
     leadSummary:
-      'Longest validated lead time in the cohort: 87 days. The precursor signal is total-N loading from the Mississippi-Atchafalaya basin, weeks before any bottom-water hypoxia is measurable in situ.',
+      'ILLUSTRATIVE CASE STUDY (not specificity-validated). The "87-day" figure is NOT a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     milestones: [
       {
         date: '2023-02-20',
@@ -132,7 +132,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
         date: '2023-04-04',
         kind: 'sentinel-alert',
         title: 'SENTINEL anomaly threshold crossed',
-        body: 'AquaSSM detects the conductivity + TN anomaly signature; 87 days before NOAA field-survey confirmation.',
+        body: 'Illustrative case-study narrative (not specificity-validated). The "87 days" figure is not a validated Track A result.',
         source: { label: 'SENTINEL benchmark, case_studies_real.json' },
         escalateTo: 1,
       },
@@ -179,7 +179,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
     sentinelAlertDate: '2018-04-21',
     advisoryDate: '2018-07-20',
     leadSummary:
-      'The largest lead time in the validation cohort (89.8 days). Anomalous freshwater discharge from Susquehanna in March-April 2018 was a dominant precursor of the July hypoxic volume.',
+      'ILLUSTRATIVE CASE STUDY (not specificity-validated). The "89.8-day" figure is NOT a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     milestones: [
       {
         date: '2018-03-15',
@@ -236,7 +236,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
     sentinelAlertDate: '2021-06-03',
     advisoryDate: '2021-08-01',
     leadSummary:
-      'Drought-driven Microcystis bloom in Copco and Iron Gate reservoirs. SENTINEL flagged 59 days early on pH + DO swings characteristic of pre-bloom productivity surges.',
+      'ILLUSTRATIVE CASE STUDY (not specificity-validated). The "59-day" figure is NOT a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     milestones: [
       {
         date: '2021-04-20',
@@ -287,7 +287,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
     sentinelAlertDate: '2023-08-03',
     advisoryDate: '2023-10-01',
     leadSummary:
-      'Drought + low river flow allowed a salt wedge to migrate upriver toward New Orleans drinking-water intakes — a 1988-style emergency. SENTINEL flagged conductance trajectory anomalies 58 days early.',
+      'ILLUSTRATIVE CASE STUDY (not specificity-validated). The "58-day" figure is NOT a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     milestones: [
       {
         date: '2023-06-15',
@@ -300,7 +300,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
         date: '2023-08-03',
         kind: 'sentinel-alert',
         title: 'SENTINEL conductance trajectory anomaly',
-        body: 'AquaSSM detects the conductance + chloride trajectory signature 58 days before parish-level advisories.',
+        body: 'Illustrative case-study narrative (not specificity-validated). The "58 days" figure is not a validated Track A result.',
         source: { label: 'SENTINEL benchmark, case_studies_real.json' },
         escalateTo: 1,
       },
@@ -345,7 +345,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
     sentinelAlertDate: '2022-05-31',
     advisoryDate: '2022-07-15',
     leadSummary:
-      'Recurring cyanobacterial bloom in Jordan Lake — a primary drinking-water reservoir for the Research Triangle. SENTINEL flagged 44 days ahead of the state recreational advisory.',
+      'ILLUSTRATIVE CASE STUDY (not specificity-validated). The "44-day" figure is NOT a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     milestones: [
       {
         date: '2022-05-01',
@@ -358,7 +358,7 @@ export const EVENT_TIMELINES: Record<string, EventTimeline> = {
         date: '2022-05-31',
         kind: 'sentinel-alert',
         title: 'SENTINEL fused-alert threshold crossed',
-        body: 'AquaSSM detects the pre-bloom DO + chlorophyll trajectory 44 days before public notice.',
+        body: 'Illustrative case-study narrative (not specificity-validated). The "44 days" figure is not a validated Track A result.',
         source: { label: 'SENTINEL benchmark, case_studies_real.json' },
         escalateTo: 1,
       },

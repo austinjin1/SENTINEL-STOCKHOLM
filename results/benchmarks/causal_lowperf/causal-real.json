@@ -1,0 +1,1513 @@
+{
+  "method": "PCMCI+ (tigramite, ParCorr CI test, BH-FDR alpha=0.05, tau_max from ACF)",
+  "data_source": "NEON DP1.20288.001 water-quality multisonde + DP1.20264.001 thermistor (REAL, 30-min)",
+  "note_vs_prior": "Prior result was 375 bivariate lagged partial-corr screens, all mapped to 'sensor', symmetric (non-directional), no FDR, no confounder control -> 0/375 validated. This is genuine multivariate confounder-controlled directional discovery.",
+  "datasets": [
+    {
+      "label": "BARC_2025-10_multivariate",
+      "n_timesteps": 1488,
+      "variables": [
+        "dissolved_oxygen",
+        "chlorophyll_a",
+        "turbidity",
+        "conductivity",
+        "pH",
+        "fdom",
+        "water_temperature"
+      ],
+      "tau_max": 12,
+      "alpha": 0.05,
+      "n_links": 29,
+      "links": [
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.251256403080463,
+          "direction": "positive",
+          "p_fdr": 2.5811285231565747e-20
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.18193530090743223,
+          "direction": "positive",
+          "p_fdr": 2.022048631875872e-10
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.13467925921557292,
+          "direction": "positive",
+          "p_fdr": 1.2508963575948923e-05
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.08318352880504001,
+          "direction": "positive",
+          "p_fdr": 0.04231889926222413
+        },
+        {
+          "cause": "chlorophyll_a",
+          "effect": "chlorophyll_a",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.47925073416588093,
+          "direction": "positive",
+          "p_fdr": 4.010243693677794e-82
+        },
+        {
+          "cause": "chlorophyll_a",
+          "effect": "chlorophyll_a",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.19114498401060181,
+          "direction": "positive",
+          "p_fdr": 1.570379384312581e-11
+        },
+        {
+          "cause": "chlorophyll_a",
+          "effect": "chlorophyll_a",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.15634036541473575,
+          "direction": "positive",
+          "p_fdr": 1.0720452472902058e-07
+        },
+        {
+          "cause": "chlorophyll_a",
+          "effect": "turbidity",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": false,
+          "graph_symbol": "o-o",
+          "partial_corr": 0.0799765124653109,
+          "direction": "positive",
+          "p_fdr": 0.0022981563896119204
+        },
+        {
+          "cause": "chlorophyll_a",
+          "effect": "water_temperature",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.11554882268917083,
+          "direction": "negative",
+          "p_fdr": 1.0147721288956268e-05
+        },
+        {
+          "cause": "turbidity",
+          "effect": "chlorophyll_a",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": false,
+          "graph_symbol": "o-o",
+          "partial_corr": 0.0799765124653109,
+          "direction": "positive",
+          "p_fdr": 0.0022981563896119204
+        },
+        {
+          "cause": "turbidity",
+          "effect": "chlorophyll_a",
+          "lag_steps": 7,
+          "lag_hours": 3.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.12985229516801775,
+          "direction": "positive",
+          "p_fdr": 2.7437262375885153e-05
+        },
+        {
+          "cause": "turbidity",
+          "effect": "pH",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": false,
+          "graph_symbol": "o-o",
+          "partial_corr": -0.05182375314962748,
+          "direction": "negative",
+          "p_fdr": 0.04872752844983416
+        },
+        {
+          "cause": "conductivity",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.271063373654798,
+          "direction": "negative",
+          "p_fdr": 6.149662988443834e-26
+        },
+        {
+          "cause": "conductivity",
+          "effect": "turbidity",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.13165580704578494,
+          "direction": "negative",
+          "p_fdr": 1.995432085299021e-05
+        },
+        {
+          "cause": "conductivity",
+          "effect": "turbidity",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.09876225877856452,
+          "direction": "negative",
+          "p_fdr": 0.00501327056754946
+        },
+        {
+          "cause": "conductivity",
+          "effect": "turbidity",
+          "lag_steps": 8,
+          "lag_hours": 4.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.08834250450763358,
+          "direction": "negative",
+          "p_fdr": 0.022006974895570335
+        },
+        {
+          "cause": "pH",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.16444432818600951,
+          "direction": "positive",
+          "p_fdr": 1.7326401072115367e-08
+        },
+        {
+          "cause": "pH",
+          "effect": "turbidity",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": false,
+          "graph_symbol": "o-o",
+          "partial_corr": -0.05182375314962748,
+          "direction": "negative",
+          "p_fdr": 0.04872752844983416
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.28987772126344763,
+          "direction": "positive",
+          "p_fdr": 3.1119464959032597e-27
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.20155408887524792,
+          "direction": "positive",
+          "p_fdr": 8.589481739539453e-13
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.16698054533617288,
+          "direction": "positive",
+          "p_fdr": 1.0143052607178049e-08
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.12294487825231804,
+          "direction": "positive",
+          "p_fdr": 9.131265065904392e-05
+        },
+        {
+          "cause": "pH",
+          "effect": "water_temperature",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.06141008307285367,
+          "direction": "positive",
+          "p_fdr": 0.01948122032902198
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.1257718164021999,
+          "direction": "positive",
+          "p_fdr": 5.902313682561141e-05
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 6,
+          "lag_hours": 3.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.10309317997738317,
+          "direction": "positive",
+          "p_fdr": 0.002837773682376532
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 7,
+          "lag_hours": 3.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.13477650707755778,
+          "direction": "positive",
+          "p_fdr": 1.2508963575948923e-05
+        },
+        {
+          "cause": "water_temperature",
+          "effect": "fdom",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.05580262025754882,
+          "direction": "negative",
+          "p_fdr": 0.03397945136188945
+        },
+        {
+          "cause": "water_temperature",
+          "effect": "water_temperature",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.8369734986420783,
+          "direction": "positive",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "water_temperature",
+          "effect": "water_temperature",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.2602245072475909,
+          "direction": "negative",
+          "p_fdr": 1.2121741161698445e-21
+        }
+      ],
+      "site": "BARC",
+      "month": "2025-10",
+      "coverage": {
+        "dissolved_oxygen": 1.0,
+        "chlorophyll_a": 1.0,
+        "turbidity": 1.0,
+        "conductivity": 1.0,
+        "pH": 1.0,
+        "fdom": 1.0,
+        "water_temperature": 1.0
+      }
+    },
+    {
+      "label": "LIRO_2025-08_multivariate",
+      "n_timesteps": 1487,
+      "variables": [
+        "dissolved_oxygen",
+        "chlorophyll_a",
+        "turbidity",
+        "conductivity",
+        "pH",
+        "fdom",
+        "water_temperature"
+      ],
+      "tau_max": 12,
+      "alpha": 0.05,
+      "n_links": 19,
+      "links": [
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 8,
+          "lag_hours": 4.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.36106670800229046,
+          "direction": "positive",
+          "p_fdr": 7.687768010791229e-44
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "chlorophyll_a",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.05216697941276847,
+          "direction": "negative",
+          "p_fdr": 0.047174955815728954
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "conductivity",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.3171168439888636,
+          "direction": "negative",
+          "p_fdr": 2.793105112037212e-35
+        },
+        {
+          "cause": "chlorophyll_a",
+          "effect": "chlorophyll_a",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.3100320377216311,
+          "direction": "positive",
+          "p_fdr": 1.7077456691258846e-31
+        },
+        {
+          "cause": "chlorophyll_a",
+          "effect": "chlorophyll_a",
+          "lag_steps": 8,
+          "lag_hours": 4.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.2084127577884303,
+          "direction": "positive",
+          "p_fdr": 7.893551091044357e-14
+        },
+        {
+          "cause": "turbidity",
+          "effect": "turbidity",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.19842031161321877,
+          "direction": "positive",
+          "p_fdr": 1.26908948758069e-12
+        },
+        {
+          "cause": "turbidity",
+          "effect": "water_temperature",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.09649776665374177,
+          "direction": "positive",
+          "p_fdr": 0.00865902418401846
+        },
+        {
+          "cause": "turbidity",
+          "effect": "water_temperature",
+          "lag_steps": 7,
+          "lag_hours": 3.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.10471238271246651,
+          "direction": "positive",
+          "p_fdr": 0.00258206303217545
+        },
+        {
+          "cause": "conductivity",
+          "effect": "conductivity",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.43820672720308745,
+          "direction": "positive",
+          "p_fdr": 9.19584199032997e-67
+        },
+        {
+          "cause": "conductivity",
+          "effect": "conductivity",
+          "lag_steps": 8,
+          "lag_hours": 4.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.16958912427855247,
+          "direction": "positive",
+          "p_fdr": 4.248929004515771e-09
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 8,
+          "lag_hours": 4.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.4278252456674603,
+          "direction": "positive",
+          "p_fdr": 3.9160377132807537e-63
+        },
+        {
+          "cause": "fdom",
+          "effect": "pH",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.40107283588738746,
+          "direction": "negative",
+          "p_fdr": 4.4618207319135583e-57
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.22239298544003838,
+          "direction": "positive",
+          "p_fdr": 1.1663546797864597e-15
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 8,
+          "lag_hours": 4.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.2169793248256831,
+          "direction": "positive",
+          "p_fdr": 5.437892810616042e-15
+        },
+        {
+          "cause": "fdom",
+          "effect": "water_temperature",
+          "lag_steps": 11,
+          "lag_hours": 5.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.11165132026293717,
+          "direction": "positive",
+          "p_fdr": 0.0008942253094888628
+        },
+        {
+          "cause": "water_temperature",
+          "effect": "water_temperature",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.8113259363172903,
+          "direction": "positive",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "water_temperature",
+          "effect": "water_temperature",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.21785920736334669,
+          "direction": "negative",
+          "p_fdr": 4.988780826708667e-15
+        },
+        {
+          "cause": "water_temperature",
+          "effect": "water_temperature",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.12821209717897858,
+          "direction": "positive",
+          "p_fdr": 4.768265110758863e-05
+        },
+        {
+          "cause": "water_temperature",
+          "effect": "water_temperature",
+          "lag_steps": 7,
+          "lag_hours": 3.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.16981173332756905,
+          "direction": "negative",
+          "p_fdr": 4.399894704766432e-09
+        }
+      ],
+      "site": "LIRO",
+      "month": "2025-08",
+      "coverage": {
+        "dissolved_oxygen": 1.0,
+        "chlorophyll_a": 1.0,
+        "turbidity": 1.0,
+        "conductivity": 1.0,
+        "pH": 1.0,
+        "fdom": 1.0,
+        "water_temperature": 1.0
+      }
+    },
+    {
+      "label": "LEWI_longrecord_waq",
+      "n_timesteps": 31892,
+      "variables": [
+        "dissolved_oxygen",
+        "turbidity",
+        "conductivity",
+        "pH",
+        "fdom"
+      ],
+      "tau_max": 12,
+      "alpha": 0.05,
+      "n_links": 40,
+      "links": [
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.5288588298888571,
+          "direction": "positive",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.06237766967474157,
+          "direction": "positive",
+          "p_fdr": 1.3826563090564767e-27
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.0723042832002035,
+          "direction": "positive",
+          "p_fdr": 6.9762391620843765e-37
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.04030912614187337,
+          "direction": "positive",
+          "p_fdr": 7.453651052110122e-12
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 5,
+          "lag_hours": 2.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.027245908263343742,
+          "direction": "positive",
+          "p_fdr": 1.1205236599827475e-05
+        },
+        {
+          "cause": "dissolved_oxygen",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 6,
+          "lag_hours": 3.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.041863465241135066,
+          "direction": "positive",
+          "p_fdr": 1.0660415272941501e-12
+        },
+        {
+          "cause": "turbidity",
+          "effect": "turbidity",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.6908589818225117,
+          "direction": "positive",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "turbidity",
+          "effect": "turbidity",
+          "lag_steps": 7,
+          "lag_hours": 3.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.058367490501266835,
+          "direction": "positive",
+          "p_fdr": 3.169753060183011e-24
+        },
+        {
+          "cause": "turbidity",
+          "effect": "turbidity",
+          "lag_steps": 9,
+          "lag_hours": 4.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.04033454975206404,
+          "direction": "negative",
+          "p_fdr": 7.453651052110122e-12
+        },
+        {
+          "cause": "turbidity",
+          "effect": "conductivity",
+          "lag_steps": 0,
+          "lag_hours": 0.0,
+          "contemporaneous": true,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.030495361928434512,
+          "direction": "negative",
+          "p_fdr": 5.2390477971500784e-08
+        },
+        {
+          "cause": "conductivity",
+          "effect": "dissolved_oxygen",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.04466807782332127,
+          "direction": "positive",
+          "p_fdr": 2.1899559044427413e-14
+        },
+        {
+          "cause": "conductivity",
+          "effect": "conductivity",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.8750302200166493,
+          "direction": "positive",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "conductivity",
+          "effect": "conductivity",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.5172154775840078,
+          "direction": "negative",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "conductivity",
+          "effect": "conductivity",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.20506292303847432,
+          "direction": "positive",
+          "p_fdr": 7.502361997379419e-298
+        },
+        {
+          "cause": "conductivity",
+          "effect": "conductivity",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.07067093333642102,
+          "direction": "negative",
+          "p_fdr": 2.8232159161043447e-35
+        },
+        {
+          "cause": "conductivity",
+          "effect": "conductivity",
+          "lag_steps": 6,
+          "lag_hours": 3.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.03167615690754873,
+          "direction": "positive",
+          "p_fdr": 1.570462436598217e-07
+        },
+        {
+          "cause": "conductivity",
+          "effect": "pH",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.03501416034650802,
+          "direction": "positive",
+          "p_fdr": 4.391999448174435e-09
+        },
+        {
+          "cause": "pH",
+          "effect": "conductivity",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.09804079709385423,
+          "direction": "negative",
+          "p_fdr": 1.7135995569202487e-67
+        },
+        {
+          "cause": "pH",
+          "effect": "conductivity",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.05401049026231663,
+          "direction": "negative",
+          "p_fdr": 8.131137284734313e-21
+        },
+        {
+          "cause": "pH",
+          "effect": "conductivity",
+          "lag_steps": 5,
+          "lag_hours": 2.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.04091277485248571,
+          "direction": "positive",
+          "p_fdr": 3.654106761443474e-12
+        },
+        {
+          "cause": "pH",
+          "effect": "conductivity",
+          "lag_steps": 6,
+          "lag_hours": 3.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.02539781914753897,
+          "direction": "positive",
+          "p_fdr": 5.4577937604538615e-05
+        },
+        {
+          "cause": "pH",
+          "effect": "conductivity",
+          "lag_steps": 10,
+          "lag_hours": 5.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.018387756647976396,
+          "direction": "positive",
+          "p_fdr": 0.00837902744044031
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.2609607149883314,
+          "direction": "positive",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.1448615839447624,
+          "direction": "positive",
+          "p_fdr": 2.0209539737167547e-147
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.09971481594994214,
+          "direction": "positive",
+          "p_fdr": 8.81607503830024e-70
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.10364739191119893,
+          "direction": "positive",
+          "p_fdr": 2.4147441740467124e-75
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 5,
+          "lag_hours": 2.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.0475314486336636,
+          "direction": "positive",
+          "p_fdr": 3.189820310185897e-16
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 6,
+          "lag_hours": 3.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.039298532919759224,
+          "direction": "positive",
+          "p_fdr": 2.649211429995545e-11
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 7,
+          "lag_hours": 3.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.03675235737878532,
+          "direction": "positive",
+          "p_fdr": 5.967727455977491e-10
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 8,
+          "lag_hours": 4.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.03206117700861541,
+          "direction": "positive",
+          "p_fdr": 1.0868491188995246e-07
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 9,
+          "lag_hours": 4.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.02292017910298957,
+          "direction": "positive",
+          "p_fdr": 0.00038008485765308645
+        },
+        {
+          "cause": "pH",
+          "effect": "pH",
+          "lag_steps": 10,
+          "lag_hours": 5.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.020100592519276848,
+          "direction": "positive",
+          "p_fdr": 0.0028673926043442525
+        },
+        {
+          "cause": "fdom",
+          "effect": "turbidity",
+          "lag_steps": 4,
+          "lag_hours": 2.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.016150968909747362,
+          "direction": "negative",
+          "p_fdr": 0.030347371916292186
+        },
+        {
+          "cause": "fdom",
+          "effect": "turbidity",
+          "lag_steps": 12,
+          "lag_hours": 6.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.09127648955335824,
+          "direction": "positive",
+          "p_fdr": 1.4292304189685755e-58
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 1,
+          "lag_hours": 0.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.7275710390351247,
+          "direction": "positive",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 2,
+          "lag_hours": 1.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": -0.2822025878009931,
+          "direction": "negative",
+          "p_fdr": 0.0
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 3,
+          "lag_hours": 1.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.18721363507066663,
+          "direction": "positive",
+          "p_fdr": 1.4035101994585544e-247
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 6,
+          "lag_hours": 3.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.023980562545646657,
+          "direction": "positive",
+          "p_fdr": 0.0001697334993260276
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 7,
+          "lag_hours": 3.5,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.016641568377878627,
+          "direction": "positive",
+          "p_fdr": 0.02349689984441094
+        },
+        {
+          "cause": "fdom",
+          "effect": "fdom",
+          "lag_steps": 10,
+          "lag_hours": 5.0,
+          "contemporaneous": false,
+          "oriented": true,
+          "graph_symbol": "-->",
+          "partial_corr": 0.018452377448924827,
+          "direction": "positive",
+          "p_fdr": 0.008249489537920176
+        }
+      ],
+      "site": "LEWI"
+    }
+  ],
+  "n_total_directional_links_fdr": 88,
+  "discovered_causal_graph_summary": {
+    "n_cross_variable_directed_links": 22,
+    "n_autocorrelation_links": 59,
+    "links": {
+      "fdom -> pH (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.40107283588738746,
+        "p_fdr": 4.4618207319135583e-57,
+        "dataset": "LIRO_2025-08_multivariate",
+        "contemporaneous": true
+      },
+      "dissolved_oxygen -> conductivity (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.3171168439888636,
+        "p_fdr": 2.793105112037212e-35,
+        "dataset": "LIRO_2025-08_multivariate",
+        "contemporaneous": true
+      },
+      "conductivity -> dissolved_oxygen (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.271063373654798,
+        "p_fdr": 6.149662988443834e-26,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": true
+      },
+      "pH -> dissolved_oxygen (positive)": {
+        "lag_hours": 0.5,
+        "partial_corr": 0.16444432818600951,
+        "p_fdr": 1.7326401072115367e-08,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": false
+      },
+      "conductivity -> turbidity (negative)": {
+        "lag_hours": 0.5,
+        "partial_corr": -0.13165580704578494,
+        "p_fdr": 1.995432085299021e-05,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": false
+      },
+      "turbidity -> chlorophyll_a (positive)": {
+        "lag_hours": 3.5,
+        "partial_corr": 0.12985229516801775,
+        "p_fdr": 2.7437262375885153e-05,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": false
+      },
+      "chlorophyll_a -> water_temperature (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.11554882268917083,
+        "p_fdr": 1.0147721288956268e-05,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": true
+      },
+      "fdom -> water_temperature (positive)": {
+        "lag_hours": 5.5,
+        "partial_corr": 0.11165132026293717,
+        "p_fdr": 0.0008942253094888628,
+        "dataset": "LIRO_2025-08_multivariate",
+        "contemporaneous": false
+      },
+      "turbidity -> water_temperature (positive)": {
+        "lag_hours": 3.5,
+        "partial_corr": 0.10471238271246651,
+        "p_fdr": 0.00258206303217545,
+        "dataset": "LIRO_2025-08_multivariate",
+        "contemporaneous": false
+      },
+      "pH -> conductivity (negative)": {
+        "lag_hours": 0.5,
+        "partial_corr": -0.09804079709385423,
+        "p_fdr": 1.7135995569202487e-67,
+        "dataset": "LEWI_longrecord_waq",
+        "contemporaneous": false
+      },
+      "fdom -> turbidity (positive)": {
+        "lag_hours": 6.0,
+        "partial_corr": 0.09127648955335824,
+        "p_fdr": 1.4292304189685755e-58,
+        "dataset": "LEWI_longrecord_waq",
+        "contemporaneous": false
+      },
+      "chlorophyll_a -> turbidity (positive)": {
+        "lag_hours": 0.0,
+        "partial_corr": 0.0799765124653109,
+        "p_fdr": 0.0022981563896119204,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": true
+      },
+      "pH -> water_temperature (positive)": {
+        "lag_hours": 0.0,
+        "partial_corr": 0.06141008307285367,
+        "p_fdr": 0.01948122032902198,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": true
+      },
+      "water_temperature -> fdom (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.05580262025754882,
+        "p_fdr": 0.03397945136188945,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": true
+      },
+      "dissolved_oxygen -> chlorophyll_a (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.05216697941276847,
+        "p_fdr": 0.047174955815728954,
+        "dataset": "LIRO_2025-08_multivariate",
+        "contemporaneous": true
+      },
+      "turbidity -> pH (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.05182375314962748,
+        "p_fdr": 0.04872752844983416,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": true
+      },
+      "pH -> turbidity (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.05182375314962748,
+        "p_fdr": 0.04872752844983416,
+        "dataset": "BARC_2025-10_multivariate",
+        "contemporaneous": true
+      },
+      "conductivity -> dissolved_oxygen (positive)": {
+        "lag_hours": 0.5,
+        "partial_corr": 0.04466807782332127,
+        "p_fdr": 2.1899559044427413e-14,
+        "dataset": "LEWI_longrecord_waq",
+        "contemporaneous": false
+      },
+      "pH -> conductivity (positive)": {
+        "lag_hours": 2.5,
+        "partial_corr": 0.04091277485248571,
+        "p_fdr": 3.654106761443474e-12,
+        "dataset": "LEWI_longrecord_waq",
+        "contemporaneous": false
+      },
+      "conductivity -> pH (positive)": {
+        "lag_hours": 0.5,
+        "partial_corr": 0.03501416034650802,
+        "p_fdr": 4.391999448174435e-09,
+        "dataset": "LEWI_longrecord_waq",
+        "contemporaneous": false
+      },
+      "turbidity -> conductivity (negative)": {
+        "lag_hours": 0.0,
+        "partial_corr": -0.030495361928434512,
+        "p_fdr": 5.2390477971500784e-08,
+        "dataset": "LEWI_longrecord_waq",
+        "contemporaneous": true
+      },
+      "fdom -> turbidity (negative)": {
+        "lag_hours": 2.0,
+        "partial_corr": -0.016150968909747362,
+        "p_fdr": 0.030347371916292186,
+        "dataset": "LEWI_longrecord_waq",
+        "contemporaneous": false
+      }
+    }
+  },
+  "validation": {
+    "n_known_chains": 15,
+    "n_testable_with_available_data": 3,
+    "n_recovered_directional": 0,
+    "recovery_rate_of_testable": 0.0,
+    "recovery_rate_of_all_known": 0.0,
+    "per_chain": [
+      {
+        "known": "turbidity -> dissolved_oxygen",
+        "known_direction": "negative",
+        "known_lag_range_h": [
+          2,
+          48
+        ],
+        "description": "Increased turbidity reduces light penetration, decreasing photosynthetic oxygen production.",
+        "testable_with_available_data": true,
+        "status": "testable_not_found",
+        "matched_link": null,
+        "raw_unconditioned_context": {
+          "best_raw_corr": -0.21868438909887217,
+          "lag_hours": 0.0
+        }
+      },
+      {
+        "known": "turbidity -> secchi_depth",
+        "known_direction": "negative",
+        "known_lag_range_h": [
+          0,
+          24
+        ],
+        "description": "Turbidity directly reduces water clarity / Secchi depth.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "total_phosphorus -> chlorophyll_a",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          24,
+          168
+        ],
+        "description": "Phosphorus loading stimulates algal growth within days to a week.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "total_nitrogen -> chlorophyll_a",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          24,
+          168
+        ],
+        "description": "Nitrogen enrichment promotes algal bloom formation.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "chlorophyll_a -> dissolved_oxygen",
+        "known_direction": "negative",
+        "known_lag_range_h": [
+          24,
+          120
+        ],
+        "description": "Algal bloom die-off and decomposition depletes dissolved oxygen.",
+        "testable_with_available_data": true,
+        "status": "testable_not_found",
+        "matched_link": null,
+        "raw_unconditioned_context": {
+          "best_raw_corr": 0.45496595142292645,
+          "lag_hours": 0.0
+        }
+      },
+      {
+        "known": "dissolved_oxygen -> alpha_diversity",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          12,
+          72
+        ],
+        "description": "Hypoxia reduces aerobic microbial diversity.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "dissolved_oxygen -> anaerobe_fraction",
+        "known_direction": "negative",
+        "known_lag_range_h": [
+          12,
+          72
+        ],
+        "description": "Low DO selects for anaerobic organisms.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "heavy_metal_index -> metallothionein_expression",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          6,
+          48
+        ],
+        "description": "Metal exposure upregulates metallothionein defense genes.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "heavy_metal_index -> cyp1a_expression",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          6,
+          72
+        ],
+        "description": "Heavy metals induce cytochrome P450 detoxification pathways.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "conductivity -> activity_index",
+        "known_direction": "negative",
+        "known_lag_range_h": [
+          1,
+          24
+        ],
+        "description": "Sudden conductivity changes indicate chemical spills; fish show reduced activity.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "acetylcholinesterase_activity -> activity_index",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          2,
+          48
+        ],
+        "description": "Organophosphate inhibition of AChE reduces fish locomotion.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "water_temperature -> dissolved_oxygen",
+        "known_direction": "negative",
+        "known_lag_range_h": [
+          0,
+          6
+        ],
+        "description": "Warmer water holds less dissolved oxygen.",
+        "testable_with_available_data": true,
+        "status": "testable_not_found",
+        "matched_link": null,
+        "raw_unconditioned_context": {
+          "best_raw_corr": -0.8203831565256794,
+          "lag_hours": 6.0
+        }
+      },
+      {
+        "known": "water_temperature -> community_turnover_rate",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          24,
+          168
+        ],
+        "description": "Temperature changes drive microbial community restructuring.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "phycocyanin -> microcystin_concentration",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          0,
+          48
+        ],
+        "description": "Phycocyanin pigment from cyanobacteria correlates with microcystin toxin production.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      },
+      {
+        "known": "microcystin_concentration -> avoidance_index",
+        "known_direction": "positive",
+        "known_lag_range_h": [
+          6,
+          72
+        ],
+        "description": "Fish avoid areas with high cyanotoxin concentrations.",
+        "testable_with_available_data": false,
+        "status": "not_testable_no_data",
+        "matched_link": null,
+        "raw_unconditioned_context": null
+      }
+    ]
+  },
+  "honest_interpretation": "PCMCI+ recovers a genuine FDR-controlled DIRECTIONAL causal graph (22 cross-variable directed links) replacing the prior non-directional 0/375 screen. However, of the 15 hard-coded known chains only 3 are testable with single-site high-frequency sensor data (temperature->DO, turbidity->DO, chlorophyll_a->DO); the other 12 require satellite secchi/phycocyanin, microbial, molecular or behavioural modalities, or nutrient (N/P) sensors not present here. Of the 3 testable, PCMCI+ recovers 0 as hard causal links: their strong RAW correlations (temperature->DO r=-0.82, chlorophyll->DO r=+0.45, turbidity->DO r=-0.22) are conditioned away because at 30-min single-site resolution they are dominated by a shared diel solar cycle and the target's own autocorrelation. This is the honest, defensible outcome: the raw associations exist and have the textbook sign, but they are NOT identifiable as direct causal links at this timescale/modality without the co-variate context (nutrients, radiation over multi-day windows) the known chains presuppose."
+}

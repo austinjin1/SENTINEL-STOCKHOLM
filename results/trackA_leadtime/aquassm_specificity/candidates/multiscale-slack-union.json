@@ -1,0 +1,114 @@
+{
+  "candidate_key": "multiscale-slack-union",
+  "name": "Multi-scale slack union CUSUM",
+  "idea": "OR CUSUM alarms across a-priori (w_base,slack_k) channels; union first-alarm = min over channels. Fast catches abrupt shifts, slow catches drift. One shared threshold on union control held-out FPR.",
+  "channels": [
+    {
+      "w_base": 120,
+      "slack_k": 0.5,
+      "guard": 12,
+      "min_base": 20,
+      "floor": 1.0
+    },
+    {
+      "w_base": 240,
+      "slack_k": 1.0,
+      "guard": 12,
+      "min_base": 20,
+      "floor": 1.0
+    },
+    {
+      "w_base": 480,
+      "slack_k": 1.0,
+      "guard": 12,
+      "min_base": 20,
+      "floor": 1.0
+    }
+  ],
+  "shared": {
+    "guard": 12,
+    "min_base": 20,
+    "floor": 1.0,
+    "target_control_heldout_fpr": 0.05
+  },
+  "hyperparameters_fixed_a_priori": true,
+  "primary_interleave_split": {
+    "split": "interleave",
+    "thr": 190.9946,
+    "used_fallback_quantile": false,
+    "control_heldout_fpr": 0.049634,
+    "n_episode_sites": 15,
+    "n_control_sites": 17,
+    "episodes_detected": 12,
+    "median_lead_days": 37.5677,
+    "detected_sites": [
+      "ARIK",
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "leads_by_site": {
+      "ARIK": 9.1667,
+      "BARC": 43.3229,
+      "BIGC": 34.0833,
+      "BLWA": 36.4375,
+      "COMO": 17.6979,
+      "GUIL": 44.9271,
+      "KING": 44.5833,
+      "LECO": 44.0104,
+      "LIRO": 26.2083,
+      "MAYF": 38.6979,
+      "MCDI": 42.0104,
+      "PRIN": 7.4583
+    },
+    "is_pareto_win": true
+  },
+  "robustness_temporal_split": {
+    "split": "temporal",
+    "thr": 216.5525,
+    "used_fallback_quantile": false,
+    "control_heldout_fpr": 0.049454,
+    "n_episode_sites": 15,
+    "n_control_sites": 17,
+    "episodes_detected": 10,
+    "median_lead_days": 41.2708,
+    "detected_sites": [
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI"
+    ],
+    "leads_by_site": {
+      "BARC": 44.4896,
+      "BIGC": 33.25,
+      "BLWA": 36.1875,
+      "COMO": 17.2812,
+      "GUIL": 44.1771,
+      "KING": 44.75,
+      "LECO": 44.0104,
+      "LIRO": 26.125,
+      "MAYF": 40.6146,
+      "MCDI": 41.9271
+    },
+    "is_pareto_win": false
+  },
+  "headline_baseline_to_beat": {
+    "episodes_detected": 11,
+    "median_lead_days": 36.1,
+    "at_matched_control_heldout_fpr": 0.05
+  }
+}

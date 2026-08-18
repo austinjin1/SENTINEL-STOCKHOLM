@@ -1,0 +1,129 @@
+{
+  "_PROVENANCE": "LEAKAGE-FREE RETRAIN of the actual SentinelSpeciesHealthIndex network. The shipped training script built the 256-d input embedding with positions 4-9 = log1p(per-species counts), which DEFINE the occupancy labels (count>0 == present) -> the previously reported AUROC=1.000 / occ_acc=0.999 / health_r2=0.9996 are CIRCULAR (label read off the input). Here the input embedding is rebuilt from genuinely independent predictors ONLY (geographic lat/lon/|lat|/elev, watershed log-drainage + HUC2 one-hot, NON-target community richness/count computed AFTER dropping the 6 target taxa, sampling effort, and real matched USGS sensor water-quality stats for 54 sites). Per-species counts are REMOVED entirely. Same real USGS BioData, same seed=42 spatial hash holdout split. The 2 always-absent species (Hellbender, Pearl Mussel) are dropped. This is the full network retrained end-to-end, NOT a probe -- the reported numbers are this honest network's held-out test skill.",
+  "model": "SentinelSpeciesHealthIndex (full network, retrained leakage-free)",
+  "data_source": "USGS BioData (real surveys) + matched USGS sensor stations",
+  "synthetic_data": false,
+  "seed": 42,
+  "split": "spatial hash holdout (sha256 of seed:site_id, mod 10)",
+  "leaked_features_removed": "embedding positions 4-9: per-species log1p(count) (define the labels)",
+  "leakage_free_features": [
+    "lat",
+    "lon",
+    "abslat",
+    "elev",
+    "log_drainage",
+    "log_comm_richness_nontarget",
+    "log_comm_count_nontarget",
+    "log_n_events",
+    "huc2_02",
+    "huc2_04",
+    "huc2_05",
+    "wq_mean",
+    "wq_std",
+    "wq_min",
+    "wq_max",
+    "wq_median"
+  ],
+  "n_leakage_free_features": 16,
+  "embedding_dim": 256,
+  "n_params": 797591,
+  "n_sites_total": 5462,
+  "n_train": 3774,
+  "n_val": 1096,
+  "n_test": 592,
+  "n_sites_with_real_sensor_match": 0,
+  "sensor_note": "54 USGS NWIS sensor stations match site-IDs in the FULL sites table, but NONE of them overlap the 5462 sites that have any of the 6 target taxa, so within this model's site universe there are 0 real sensor matches. The wq_* feature columns are therefore entirely median-imputed (constant) and contribute no real signal here -- they are kept for schema parity but are effectively inert. The reported skill comes from geography, watershed, NON-target community context, and sampling effort.",
+  "n_invertebrate_records": 384885,
+  "n_fish_records": 16242,
+  "occupancy_prevalence_all_sites": {
+    "Freshwater mussels (Unionidae)": 0.1590992310508971,
+    "Mayflies (Ephemeroptera)": 0.9302453313804467,
+    "Brook trout (Salvelinus fontinalis)": 0.020139143170999633,
+    "Hellbender (Cryptobranchus alleganiensis)": 0.0,
+    "Freshwater pearl mussel (Margaritifera margaritifera)": 0.0,
+    "American eel (Anguilla rostrata)": 0.05254485536433541
+  },
+  "species_dropped_always_absent": [
+    "Hellbender (Cryptobranchus alleganiensis)",
+    "Freshwater pearl mussel (Margaritifera margaritifera)"
+  ],
+  "best_val_macro_auroc": 0.9509663082709902,
+  "test_metrics": {
+    "macro_excl_mayfly_and_dropped": {
+      "species_in_macro": [
+        "Freshwater mussels (Unionidae)",
+        "Brook trout (Salvelinus fontinalis)",
+        "American eel (Anguilla rostrata)"
+      ],
+      "macro_auroc": 0.9487844778686864,
+      "macro_f1": 0.561654157695484
+    },
+    "macro_reference_incl_mayfly": {
+      "macro_auroc_incl_mayfly": 0.9440696452306276,
+      "macro_f1_incl_mayfly": 0.655150320481027
+    },
+    "mayfly_high_prevalence_separate": {
+      "status": "ok",
+      "test_prevalence": 0.9222972972972973,
+      "n_test": 592,
+      "auroc": 0.9299251473164517,
+      "f1": 0.9356388088376562,
+      "present_only_r2": 0.4847080707550049,
+      "n_present_test": 546
+    },
+    "per_species": {
+      "Freshwater mussels (Unionidae)": {
+        "status": "ok",
+        "test_prevalence": 0.15202702702702703,
+        "n_test": 592,
+        "auroc": 0.8780655157149181,
+        "f1": 0.49517684887459806,
+        "present_only_r2": 0.15286040306091309,
+        "n_present_test": 90
+      },
+      "Mayflies (Ephemeroptera)": {
+        "status": "ok",
+        "test_prevalence": 0.9222972972972973,
+        "n_test": 592,
+        "auroc": 0.9299251473164517,
+        "f1": 0.9356388088376562,
+        "present_only_r2": 0.4847080707550049,
+        "n_present_test": 546
+      },
+      "Brook trout (Salvelinus fontinalis)": {
+        "status": "ok",
+        "test_prevalence": 0.02533783783783784,
+        "n_test": 592,
+        "auroc": 0.9792027729636049,
+        "f1": 0.45901639344262296,
+        "present_only_r2": -0.24954628944396973,
+        "n_present_test": 15
+      },
+      "Hellbender (Cryptobranchus alleganiensis)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "Freshwater pearl mussel (Margaritifera margaritifera)": {
+        "status": "dropped_always_absent",
+        "present_sites_total": 0
+      },
+      "American eel (Anguilla rostrata)": {
+        "status": "ok",
+        "test_prevalence": 0.06756756756756757,
+        "n_test": 592,
+        "auroc": 0.9890851449275362,
+        "f1": 0.7307692307692307,
+        "present_only_r2": 0.015406131744384766,
+        "n_present_test": 40
+      }
+    }
+  },
+  "baseline_comparison": {
+    "leaked_circular_auroc": 1.0,
+    "leaked_circular_occ_accuracy": 0.9988738894462585,
+    "leaked_circular_health_r2": 0.9995507135053653,
+    "honest_gbm_probe_variantB_macro_auroc": 0.943669227579283,
+    "honest_gbm_probe_variantC_nogeo_macro_auroc": 0.8528712389833438,
+    "note": "Leaked numbers are circular. The honest GBM probe was an unbiased ESTIMATE on the leakage-free features; this entry is the ACTUAL full network retrained on those features."
+  }
+}

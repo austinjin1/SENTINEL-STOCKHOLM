@@ -13,6 +13,23 @@ update cadences and information persistence by combining:
 
 A single forward call represents one *observation event*: a new reading
 arrives from some modality and the waterway state is updated.
+
+Batched training note (audit item d)
+------------------------------------
+:class:`PerceiverIOFusion` is a *stateful* streaming layer: it caches the
+latest embedding per modality in :class:`EmbeddingRegistry`.  It now
+stores the full ``[B, D]`` batch (previously only sample-0), so batched
+forward passes with a stale reused modality no longer broadcast sample-0.
+For pure batched *training* on co-located pairs, the canonical path is the
+stateless ``FusionClassifier`` / ``FusionClassifierV2`` in
+``scripts/experiments/trackB_fusion/_fusion.py``, which re-wires these same
+Perceiver submodules without the registry so every sample is independent.
+
+Note: the stateful path used by ``sentinel/training/train_fusion.py`` via
+``FusionWithHeads.forward`` processes samples one-at-a-time (``for b in
+range(B)``), i.e. per-observation streaming semantics.  It is therefore a
+training-only path, NOT a batched-inference path; the cohesive-runner uses the
+stateless ``FusionClassifier`` above.
 """
 
 from __future__ import annotations
@@ -171,9 +188,16 @@ class PerceiverIOFusion(nn.Module):
         B = projected.shape[0]
 
         # --- 2. Update registry ---
+        # BUGFIX (audit item d): store the FULL [B, D] batch, not
+        # projected[0].  Previously only sample-0's embedding was cached,
+        # so when this modality later became stale and was reused from the
+        # registry, sample-0's content was broadcast across the whole
+        # batch -- corrupting batched fusion whenever >1 modality was
+        # present.  We keep the [D] shape only for the genuine B==1 case
+        # (backwards compat with single-observation streaming).
         self.registry.update(
             modality_id,
-            projected.detach().squeeze(0) if B == 1 else projected[0].detach(),
+            projected.detach().squeeze(0) if B == 1 else projected.detach(),
             timestamp,
             confidence,
         )

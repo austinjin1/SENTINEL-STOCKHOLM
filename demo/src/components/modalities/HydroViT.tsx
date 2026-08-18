@@ -109,8 +109,8 @@ export function HydroViTCard({ satellite, cardIndex, date, bbox }: Props) {
       coverage={satellite.state}
       conf={satellite.conf}
       cardIndex={cardIndex}
-      headlineMetric={<>R² 0.749</>}
-      headlineLabel="Water temperature"
+      headlineMetric={<>R² 0.893</>}
+      headlineLabel="Water temp · split contaminated by augmented targets (2,861 real pairs)"
       secondary={<span style={{ color: 'var(--text-tertiary)' }}>Chl-a <span className="mono" style={{ color: 'var(--text-secondary)' }}>{satellite.params.chla}</span> µg/L</span>}
     >
       {/* index meters */}

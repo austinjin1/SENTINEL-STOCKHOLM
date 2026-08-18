@@ -1,0 +1,76 @@
+{
+  "n": 3649,
+  "n_sites": 227,
+  "driver_coverage": {
+    "temp": 0.801,
+    "phosphorus": 0.542,
+    "nitrogen": 0.056
+  },
+  "note": "3rd modality = WQP physicochemical drivers (water temp, P, N), literature drivers of cyanotoxin production. Tests whether drivers add over the satellite+pigment fusion.",
+  "labels": {
+    "mc_gt1.6": {
+      "pos": 633,
+      "satellite": 0.65,
+      "pigment": 0.684,
+      "drivers": 0.626,
+      "sat+pigment": 0.776,
+      "sat+pigment+drivers": 0.823,
+      "driver_gain_vs_satpig": 0.047,
+      "boot_3way_vs_2way": {
+        "median": 0.045,
+        "ci95": [
+          0.028,
+          0.068
+        ],
+        "P_gt0": 1.0
+      },
+      "boot_3way_vs_bestsingle": {
+        "median": 0.138,
+        "ci95": [
+          0.097,
+          0.187
+        ],
+        "P_gt0": 1.0
+      },
+      "boot_3way_absolute": {
+        "median": 0.823,
+        "ci95": [
+          0.79,
+          0.851
+        ]
+      }
+    },
+    "mc_gt0.3": {
+      "pos": 1286,
+      "satellite": 0.664,
+      "pigment": 0.718,
+      "drivers": 0.569,
+      "sat+pigment": 0.786,
+      "sat+pigment+drivers": 0.8,
+      "driver_gain_vs_satpig": 0.014,
+      "boot_3way_vs_2way": {
+        "median": 0.013,
+        "ci95": [
+          0.005,
+          0.023
+        ],
+        "P_gt0": 1.0
+      },
+      "boot_3way_vs_bestsingle": {
+        "median": 0.082,
+        "ci95": [
+          0.052,
+          0.117
+        ],
+        "P_gt0": 1.0
+      },
+      "boot_3way_absolute": {
+        "median": 0.8,
+        "ci95": [
+          0.769,
+          0.828
+        ]
+      }
+    }
+  }
+}

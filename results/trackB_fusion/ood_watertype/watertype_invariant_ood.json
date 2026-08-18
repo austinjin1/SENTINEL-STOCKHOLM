@@ -1,0 +1,466 @@
+{
+  "dataset": "mc_fusion_expanded.parquet",
+  "task": "chl-a exceedance from SATELLITE OPTICS ONLY; water-type-invariant OOD correction",
+  "n_labelled": 2338,
+  "n_sites": 273,
+  "label_source": "measured CHLA (lab/probe); NOT derived from sf* input features (non-circular)",
+  "spectral_map": "sf0-2 blue|3-5 green|6-8 red|9-11 rededge|12-14 nir|15-17 swir|18-19 NDVI|20-21 NDCI|22-23 NDWI|24-25 G/R (expand_03_build_dataset.py)",
+  "n_watertypes_kmeans": 4,
+  "protocol": "LORO cross-region + GroupKFold-by-site within-region; ALL transforms fit train-only (held-out region never touches any clustering/scaler/model fit).",
+  "methods": [
+    "M0_ERM_raw_optics",
+    "M1_watertype_standardized",
+    "M2_robust_bloom_indices",
+    "M3_robust_plus_watertype",
+    "M4_watertype_CORAL"
+  ],
+  "labels": {
+    "chla_gt8_eutrophic": {
+      "threshold": 8.0,
+      "pos": 1751,
+      "neg": 514,
+      "regions_used": [
+        "03",
+        "18"
+      ],
+      "n_regions": 2,
+      "n_cross_region_rows": 2265,
+      "loro_realization": "Florida(03) <-> California(18) optical transfer",
+      "methods": {
+        "M0_ERM_raw_optics": {
+          "loro_auroc": 0.449,
+          "within_region_auroc": 0.729,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.449,
+            "ci95": [
+              0.449,
+              0.5
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.45,
+            "ci95": [
+              0.408,
+              0.491
+            ],
+            "P_gt_0.5": 0.011,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.408,
+            0.491
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.477,
+              "n": 1700,
+              "pos": 1416
+            },
+            "18": {
+              "auroc": 0.5,
+              "n": 565,
+              "pos": 335
+            }
+          }
+        },
+        "M1_watertype_standardized": {
+          "loro_auroc": 0.419,
+          "within_region_auroc": 0.7,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.419,
+            "ci95": [
+              0.419,
+              0.455
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.42,
+            "ci95": [
+              0.382,
+              0.462
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.382,
+            0.462
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.453,
+              "n": 1700,
+              "pos": 1416
+            },
+            "18": {
+              "auroc": 0.455,
+              "n": 565,
+              "pos": 335
+            }
+          }
+        },
+        "M2_robust_bloom_indices": {
+          "loro_auroc": 0.457,
+          "within_region_auroc": 0.702,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.457,
+            "ci95": [
+              0.447,
+              0.463
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.456,
+            "ci95": [
+              0.418,
+              0.496
+            ],
+            "P_gt_0.5": 0.015,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.418,
+            0.496
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.463,
+              "n": 1700,
+              "pos": 1416
+            },
+            "18": {
+              "auroc": 0.447,
+              "n": 565,
+              "pos": 335
+            }
+          }
+        },
+        "M3_robust_plus_watertype": {
+          "loro_auroc": 0.391,
+          "within_region_auroc": 0.697,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.391,
+            "ci95": [
+              0.384,
+              0.451
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.394,
+            "ci95": [
+              0.335,
+              0.452
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.335,
+            0.452
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.451,
+              "n": 1700,
+              "pos": 1416
+            },
+            "18": {
+              "auroc": 0.384,
+              "n": 565,
+              "pos": 335
+            }
+          }
+        },
+        "M4_watertype_CORAL": {
+          "loro_auroc": 0.449,
+          "within_region_auroc": 0.687,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.449,
+            "ci95": [
+              0.449,
+              0.503
+            ],
+            "P_gt_0.5": 0.483,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.451,
+            "ci95": [
+              0.404,
+              0.498
+            ],
+            "P_gt_0.5": 0.021,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.404,
+            0.498
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.503,
+              "n": 1700,
+              "pos": 1416
+            },
+            "18": {
+              "auroc": 0.5,
+              "n": 565,
+              "pos": 335
+            }
+          }
+        }
+      }
+    },
+    "chla_gt24_WHO_high": {
+      "threshold": 24.0,
+      "pos": 1038,
+      "neg": 1227,
+      "regions_used": [
+        "03",
+        "18"
+      ],
+      "n_regions": 2,
+      "n_cross_region_rows": 2265,
+      "loro_realization": "Florida(03) <-> California(18) optical transfer",
+      "methods": {
+        "M0_ERM_raw_optics": {
+          "loro_auroc": 0.448,
+          "within_region_auroc": 0.69,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.448,
+            "ci95": [
+              0.447,
+              0.478
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.447,
+            "ci95": [
+              0.405,
+              0.487
+            ],
+            "P_gt_0.5": 0.004,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.405,
+            0.487
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.447,
+              "n": 1700,
+              "pos": 810
+            },
+            "18": {
+              "auroc": 0.478,
+              "n": 565,
+              "pos": 228
+            }
+          }
+        },
+        "M1_watertype_standardized": {
+          "loro_auroc": 0.452,
+          "within_region_auroc": 0.674,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.452,
+            "ci95": [
+              0.439,
+              0.511
+            ],
+            "P_gt_0.5": 0.249,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.452,
+            "ci95": [
+              0.413,
+              0.49
+            ],
+            "P_gt_0.5": 0.006,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.413,
+            0.49
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.439,
+              "n": 1700,
+              "pos": 810
+            },
+            "18": {
+              "auroc": 0.511,
+              "n": 565,
+              "pos": 228
+            }
+          }
+        },
+        "M2_robust_bloom_indices": {
+          "loro_auroc": 0.453,
+          "within_region_auroc": 0.672,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.453,
+            "ci95": [
+              0.441,
+              0.471
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.452,
+            "ci95": [
+              0.404,
+              0.501
+            ],
+            "P_gt_0.5": 0.026,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.404,
+            0.501
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.441,
+              "n": 1700,
+              "pos": 810
+            },
+            "18": {
+              "auroc": 0.471,
+              "n": 565,
+              "pos": 228
+            }
+          }
+        },
+        "M3_robust_plus_watertype": {
+          "loro_auroc": 0.467,
+          "within_region_auroc": 0.676,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.467,
+            "ci95": [
+              0.453,
+              0.5
+            ],
+            "P_gt_0.5": 0.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.467,
+            "ci95": [
+              0.423,
+              0.506
+            ],
+            "P_gt_0.5": 0.054,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.423,
+            0.506
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.453,
+              "n": 1700,
+              "pos": 810
+            },
+            "18": {
+              "auroc": 0.5,
+              "n": 565,
+              "pos": 228
+            }
+          }
+        },
+        "M4_watertype_CORAL": {
+          "loro_auroc": 0.521,
+          "within_region_auroc": 0.674,
+          "region_cluster_bootstrap": {
+            "auroc_boot_median": 0.521,
+            "ci95": [
+              0.506,
+              0.54
+            ],
+            "P_gt_0.5": 1.0,
+            "n_boot": 2000
+          },
+          "site_cluster_bootstrap": {
+            "auroc_boot_median": 0.522,
+            "ci95": [
+              0.473,
+              0.566
+            ],
+            "P_gt_0.5": 0.812,
+            "n_boot": 2000
+          },
+          "primary_ci_basis": "site-clustered (only 2 regions; region-bootstrap degenerate)",
+          "ci95_primary": [
+            0.473,
+            0.566
+          ],
+          "ci_excludes_chance": false,
+          "above_chance": false,
+          "per_region_heldout": {
+            "03": {
+              "auroc": 0.54,
+              "n": 1700,
+              "pos": 810
+            },
+            "18": {
+              "auroc": 0.506,
+              "n": 565,
+              "pos": 228
+            }
+          }
+        }
+      }
+    }
+  },
+  "verdict": {
+    "erm_optics_only_loro_auroc": {
+      "chla_gt8_eutrophic": 0.449,
+      "chla_gt24_WHO_high": 0.448
+    },
+    "ood_recovered": false,
+    "best_corrected": null,
+    "conclusion": "NULL: no water-type-invariant correction (clustering-standardization, robust line-height indices, per-water-type CORAL, or their combination) lifted OPTICS-ONLY cross-region AUROC meaningfully above chance with CI excluding 0.5. The optical/bloom cross-region collapse is NOT recoverable by removing water-type variance -> the region-specific optics->chl mapping is not merely a water-type nuisance transform. Fusion for the bloom task should be scoped to WITHIN-region (where it wins), with cross-region carried only by antecedent chl-a persistence (established separately)."
+  }
+}

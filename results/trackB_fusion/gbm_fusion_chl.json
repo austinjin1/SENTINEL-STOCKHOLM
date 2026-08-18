@@ -1,0 +1,46 @@
+{
+  "sensor": {
+    "auroc": 0.681,
+    "ci95": [
+      0.595,
+      0.766
+    ]
+  },
+  "satellite(spectral)": {
+    "auroc": 0.716,
+    "ci95": [
+      0.633,
+      0.799
+    ]
+  },
+  "satellite(spectral+cls)": {
+    "auroc": 0.567,
+    "ci95": [
+      0.479,
+      0.654
+    ]
+  },
+  "FUSION sensor+spectral": {
+    "auroc": 0.708,
+    "ci95": [
+      0.624,
+      0.792
+    ]
+  },
+  "FUSION sensor+spectral+cls": {
+    "auroc": 0.675,
+    "ci95": [
+      0.589,
+      0.76
+    ]
+  },
+  "_summary": {
+    "n": 362,
+    "pos": 51,
+    "best_single": 0.716,
+    "best_fusion": "FUSION sensor+spectral",
+    "fusion": 0.708,
+    "gain": -0.008,
+    "fusion_helps_CI": false
+  }
+}

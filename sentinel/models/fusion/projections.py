@@ -29,22 +29,44 @@ NATIVE_DIMS: Dict[str, int] = {
 
 
 class ModalityProjection(nn.Module):
-    """Linear + LayerNorm projection from native dim to shared space.
+    """Nonlinear projection from native dim to shared space.
+
+    BUGFIX (audit item b): the previous implementation was a single
+    ``LayerNorm(Linear(x))`` head, i.e. a purely *linear* map into the
+    shared space.  Because every downstream fusion operation the GBM
+    baseline exploited relies on a nonlinear interaction between the
+    projected modalities, a linear projection head throws away exactly
+    the representational capacity that lets fusion beat a single
+    modality.  The head is now ``Linear -> GELU -> LayerNorm -> Linear``
+    with a residual-friendly output ``LayerNorm``, preserving the
+    ``[..., out_dim]`` output shape/dim.
 
     Args:
         in_dim: Native embedding dimensionality.
         out_dim: Shared space dimensionality.
+        hidden_dim: Width of the nonlinear bottleneck.  Defaults to
+            ``out_dim``.
     """
 
-    def __init__(self, in_dim: int, out_dim: int = SHARED_EMBEDDING_DIM) -> None:
+    def __init__(
+        self,
+        in_dim: int,
+        out_dim: int = SHARED_EMBEDDING_DIM,
+        hidden_dim: int | None = None,
+    ) -> None:
         super().__init__()
-        self.linear = nn.Linear(in_dim, out_dim)
+        hidden_dim = hidden_dim or out_dim
+        self.fc1 = nn.Linear(in_dim, hidden_dim)
+        self.act = nn.GELU()
+        self.hidden_norm = nn.LayerNorm(hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, out_dim)
         self.norm = nn.LayerNorm(out_dim)
         self._init_weights()
 
     def _init_weights(self) -> None:
-        nn.init.xavier_uniform_(self.linear.weight)
-        nn.init.zeros_(self.linear.bias)
+        for linear in (self.fc1, self.fc2):
+            nn.init.xavier_uniform_(linear.weight)
+            nn.init.zeros_(linear.bias)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Project input embedding(s) to shared space.
@@ -55,7 +77,8 @@ class ModalityProjection(nn.Module):
         Returns:
             Projected tensor of shape ``[..., out_dim]``.
         """
-        return self.norm(self.linear(x))
+        h = self.hidden_norm(self.act(self.fc1(x)))
+        return self.norm(self.fc2(h))
 
 
 class ProjectionBank(nn.Module):

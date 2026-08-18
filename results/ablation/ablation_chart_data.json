@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "SYNTHETIC — these AUCs are from a synthetic multimodal simulation harness, not real co-located multimodal data. Real co-located fusion (Track B) is AUROC ~0.649 and does NOT beat sensor-only (~0.642). Simulation only.",
   "sensor": {
     "auc": 0.9428809120814323,
     "n_modalities": 1,

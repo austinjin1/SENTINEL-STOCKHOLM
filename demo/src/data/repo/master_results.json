@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "RETRACTED / DISCLOSURE — orphaned artifact (not imported by the demo app). Fabricated headline numbers herein are retracted: Fusion AUROC 0.939/0.992 -> real co-located fusion 0.65 (does NOT beat sensor-only 0.64); BioMotion 0.9999 -> honest 0.807 (real EPA ECOTOX); contrastive Recall@1 1.000 -> removed (N=1 noise); AquaSSM 0.9386 measures synthetic-anomaly recovery (real metric is recon RMSE 0.83). See results/trackA_leadtime and results/trackB_fusion for the real numbers.",
   "exp9_bootstrap_ci": {
     "n_bootstrap": 2000,
     "ci_results": {

@@ -1,0 +1,156 @@
+{
+  "MCDI": {
+    "role": "episode",
+    "onset_index": 8384,
+    "onset_ts": 1722067200,
+    "onset_utc": "2024-07-27T08:00:00+00:00",
+    "n_windows": 8745
+  },
+  "ARIK": {
+    "role": "episode",
+    "onset_index": 1551,
+    "onset_ts": 1715917500,
+    "onset_utc": "2024-05-17T03:45:00+00:00",
+    "n_windows": 8745
+  },
+  "KING": {
+    "role": "episode",
+    "onset_index": 8767,
+    "onset_ts": 1722411900,
+    "onset_utc": "2024-07-31T07:45:00+00:00",
+    "n_windows": 8745
+  },
+  "BIGC": {
+    "role": "episode",
+    "onset_index": 43943,
+    "onset_ts": 1754070300,
+    "onset_utc": "2025-08-01T17:45:00+00:00",
+    "n_windows": 8745
+  },
+  "PRIN": {
+    "role": "episode",
+    "onset_index": 2347,
+    "onset_ts": 1729853100,
+    "onset_utc": "2024-10-25T10:45:00+00:00",
+    "n_windows": 357
+  },
+  "COMO": {
+    "role": "episode",
+    "onset_index": 61410,
+    "onset_ts": 1769790600,
+    "onset_utc": "2026-01-30T16:30:00+00:00",
+    "n_windows": 8745
+  },
+  "MAYF": {
+    "role": "episode",
+    "onset_index": 33754,
+    "onset_ts": 1744900200,
+    "onset_utc": "2025-04-17T14:30:00+00:00",
+    "n_windows": 8745
+  },
+  "LECO": {
+    "role": "episode",
+    "onset_index": 44064,
+    "onset_ts": 1754179200,
+    "onset_utc": "2025-08-03T00:00:00+00:00",
+    "n_windows": 8745
+  },
+  "CRAM": {
+    "role": "episode",
+    "onset_index": 78,
+    "onset_ts": 1683142200,
+    "onset_utc": "2023-05-03T19:30:00+00:00",
+    "n_windows": 13113
+  },
+  "LIRO": {
+    "role": "episode",
+    "onset_index": 3123,
+    "onset_ts": 1686314700,
+    "onset_utc": "2023-06-09T12:45:00+00:00",
+    "n_windows": 13053
+  },
+  "BARC": {
+    "role": "episode",
+    "onset_index": 21302,
+    "onset_ts": 1733693400,
+    "onset_utc": "2024-12-08T21:30:00+00:00",
+    "n_windows": 8745
+  },
+  "GUIL": {
+    "role": "episode",
+    "onset_index": 62432,
+    "onset_ts": 1770710400,
+    "onset_utc": "2026-02-10T08:00:00+00:00",
+    "n_windows": 8745
+  },
+  "HOPB": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8745
+  },
+  "LEWI": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8745
+  },
+  "MART": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8745
+  },
+  "MCRA": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8013
+  },
+  "BLDE": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8745
+  },
+  "CARI": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8745
+  },
+  "CUPE": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8745
+  },
+  "BLUE": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8745
+  },
+  "FLNT": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 8748
+  },
+  "OKSR": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 12393
+  }
+}

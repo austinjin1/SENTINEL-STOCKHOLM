@@ -47,7 +47,7 @@ export function useToasts() {
 }
 
 const KIND_COLORS: Record<ToastKind, { bg: string; fg: string; border: string }> = {
-  info: { bg: 'rgba(255,255,255,0.96)', fg: 'var(--text-primary)', border: 'var(--border-subtle)' },
+  info: { bg: 'var(--bg-surface)', fg: 'var(--text-primary)', border: 'var(--border-subtle)' },
   success: { bg: 'rgba(235,250,238,0.96)', fg: 'var(--nominal, #2e8540)', border: 'var(--nominal, #2e8540)' },
   error: { bg: 'rgba(255,235,235,0.96)', fg: 'var(--alert, #c0362c)', border: 'var(--alert, #c0362c)' },
 };

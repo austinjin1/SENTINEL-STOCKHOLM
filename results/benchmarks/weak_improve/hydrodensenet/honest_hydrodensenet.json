@@ -1,0 +1,249 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Honest per-parameter WQ retrieval on the SAME 4 bands + station holdout used by the shipped HydroDenseNet (SENTINEL-Lite). Reports imagery-ONLY (the paper's 'no in-situ sensors' claim) vs imagery+in-situ-pH-strip (what train_hydrodensenet.py actually feeds the net via FiLM). Marks which parameters are optically recoverable vs physics-limited.",
+    "data": "data/processed/satellite/drone_wq_pairs.npz (REAL Sentinel-2 L2A B02,B03,B04,B08 paired with same-day USGS/NWIS in-situ WQ).",
+    "bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B08"
+    ],
+    "n_tiles": 12000,
+    "n_sites": 379,
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "target_zscore_leakage": "NONE \u2014 GBM predicts raw/log targets; R2 on pooled out-of-fold predictions. No global target-mean/std bleed.",
+    "split": "STATION (site_id) GroupKFold \u2014 no site shared train/test.",
+    "ci": "site-clustered bootstrap (resamples SITES), 2000 reps.",
+    "model": "HistGradientBoosting regressor (CPU), cycle-14 recipe extended.",
+    "log_targets": [
+      "SpCond",
+      "Turb"
+    ],
+    "chl_a": "No chl-a target exists in this dataset (targets = DO,pH,Turb,Temp,SpCond)."
+  },
+  "shipped_v4_with_insitu_pH": {
+    "note": "waterdronenet_v4_holdout.json \u2014 these numbers USE an in-situ pH-strip input via FiLM, so they are NOT imagery-only despite the paper's claim.",
+    "per_target_r2": {
+      "Temp": 0.7756,
+      "DO": 0.4632,
+      "SpCond": 0.4422,
+      "Turb": 0.1806
+    }
+  },
+  "old_imagery_only_SpCond_r2": -0.95,
+  "results": {
+    "DO": {
+      "physical_note": "Dissolved O2 has no color; only weakly optical via algae/turbidity proxies.",
+      "imagery_only": {
+        "raw": {
+          "r2": 0.4984,
+          "r2_ci95": [
+            0.4508,
+            0.5448
+          ],
+          "n": 11318,
+          "n_sites": 372
+        }
+      },
+      "imagery_plus_pH": {
+        "raw": {
+          "r2": 0.5858,
+          "r2_ci95": [
+            0.5447,
+            0.6242
+          ],
+          "n": 10584,
+          "n_sites": 328
+        }
+      }
+    },
+    "pH": {
+      "physical_note": "pH is only weakly optical; here it is primarily used as an INPUT feature.",
+      "imagery_only": {
+        "raw": {
+          "r2": 0.2852,
+          "r2_ci95": [
+            0.2238,
+            0.3359
+          ],
+          "n": 10859,
+          "n_sites": 332
+        }
+      }
+    },
+    "Turb": {
+      "physical_note": "Turbidity/TSS IS optical (red/NIR backscatter) but heavy-tailed -> log space.",
+      "imagery_only": {
+        "raw": {
+          "r2": 0.0119,
+          "r2_ci95": [
+            -0.0241,
+            0.0443
+          ],
+          "n": 8657,
+          "n_sites": 293
+        },
+        "log": {
+          "r2": 0.2634,
+          "r2_ci95": [
+            0.2137,
+            0.3079
+          ],
+          "n": 8656,
+          "n_sites": 293,
+          "r2_raw_units_from_logfit": 0.0236,
+          "note": "log-space R2 is the honest recoverability metric for this heavy-tailed target; raw-unit R2 is distorted by rare extreme values."
+        }
+      },
+      "imagery_plus_pH": {
+        "raw": {
+          "r2": 0.0591,
+          "r2_ci95": [
+            0.0193,
+            0.0999
+          ],
+          "n": 7953,
+          "n_sites": 253
+        },
+        "log": {
+          "r2": 0.2572,
+          "r2_ci95": [
+            0.194,
+            0.3168
+          ],
+          "n": 7952,
+          "n_sites": 253,
+          "r2_raw_units_from_logfit": 0.0523,
+          "note": "log-space R2 is the honest recoverability metric for this heavy-tailed target; raw-unit R2 is distorted by rare extreme values."
+        }
+      }
+    },
+    "Temp": {
+      "physical_note": "Water temperature has a genuine optical/seasonal signature; recoverable.",
+      "imagery_only": {
+        "raw": {
+          "r2": 0.7366,
+          "r2_ci95": [
+            0.7169,
+            0.7548
+          ],
+          "n": 11954,
+          "n_sites": 378
+        }
+      },
+      "imagery_plus_pH": {
+        "raw": {
+          "r2": 0.7482,
+          "r2_ci95": [
+            0.7295,
+            0.7643
+          ],
+          "n": 10814,
+          "n_sites": 331
+        }
+      }
+    },
+    "SpCond": {
+      "physical_note": "Specific conductance = dissolved-ion conductance; NOT an optical property. Physics-limited from reflectance alone.",
+      "imagery_only": {
+        "raw": {
+          "r2": 0.511,
+          "r2_ci95": [
+            0.2625,
+            0.6844
+          ],
+          "n": 11752,
+          "n_sites": 378
+        },
+        "log": {
+          "r2": 0.4981,
+          "r2_ci95": [
+            0.3806,
+            0.5878
+          ],
+          "n": 11752,
+          "n_sites": 378,
+          "r2_raw_units_from_logfit": 0.3461,
+          "note": "log-space R2 is the honest recoverability metric for this heavy-tailed target; raw-unit R2 is distorted by rare extreme values."
+        }
+      },
+      "imagery_plus_pH": {
+        "raw": {
+          "r2": 0.5037,
+          "r2_ci95": [
+            0.2302,
+            0.6879
+          ],
+          "n": 10678,
+          "n_sites": 331
+        },
+        "log": {
+          "r2": 0.5475,
+          "r2_ci95": [
+            0.427,
+            0.6379
+          ],
+          "n": 10678,
+          "n_sites": 331,
+          "r2_raw_units_from_logfit": 0.325,
+          "note": "log-space R2 is the honest recoverability metric for this heavy-tailed target; raw-unit R2 is distorted by rare extreme values."
+        }
+      }
+    }
+  },
+  "pH_input_inflation": {
+    "DO": {
+      "imagery_only_r2_matched": 0.5192,
+      "imagery_plus_pH_r2_matched": 0.5858,
+      "delta_from_pH_input": 0.0664,
+      "delta_ci95": [
+        0.0416,
+        0.09
+      ],
+      "prob_pH_helps": 1.0,
+      "interpretation": "Adding the in-situ pH strip changes DO R2 by +0.066 (CI[+0.042,+0.090]). If this is large & CI excludes 0, the shipped v4 DO number is pH-driven, not imagery-only."
+    },
+    "Turb": {
+      "imagery_only_r2_matched": 0.0583,
+      "imagery_plus_pH_r2_matched": 0.0591,
+      "delta_from_pH_input": 0.0009,
+      "delta_ci95": [
+        -0.0113,
+        0.0135
+      ],
+      "prob_pH_helps": 0.567,
+      "interpretation": "Adding the in-situ pH strip changes Turb R2 by +0.001 (CI[-0.011,+0.013]). If this is large & CI excludes 0, the shipped v4 Turb number is pH-driven, not imagery-only."
+    },
+    "Temp": {
+      "imagery_only_r2_matched": 0.7394,
+      "imagery_plus_pH_r2_matched": 0.7482,
+      "delta_from_pH_input": 0.0088,
+      "delta_ci95": [
+        0.0047,
+        0.0129
+      ],
+      "prob_pH_helps": 1.0,
+      "interpretation": "Adding the in-situ pH strip changes Temp R2 by +0.009 (CI[+0.005,+0.013]). If this is large & CI excludes 0, the shipped v4 Temp number is pH-driven, not imagery-only."
+    },
+    "SpCond": {
+      "imagery_only_r2_matched": 0.5054,
+      "imagery_plus_pH_r2_matched": 0.5037,
+      "delta_from_pH_input": -0.0022,
+      "delta_ci95": [
+        -0.0228,
+        0.0146
+      ],
+      "prob_pH_helps": 0.43,
+      "interpretation": "Adding the in-situ pH strip changes SpCond R2 by -0.002 (CI[-0.023,+0.015]). If this is large & CI excludes 0, the shipped v4 SpCond number is pH-driven, not imagery-only."
+    }
+  },
+  "verdict": {
+    "SpCond": "Imagery-only SpCond R2=0.505 (raw). Adding the in-situ pH strip moves it to 0.504 (delta -0.002, CI[-0.0228, 0.0146]). Dissolved-ion conductance is NOT optical; the shipped v4 SpCond R2=0.44 is driven by the pH input, not imagery. In log space, imagery-only SpCond log-R2=0.498.",
+    "DO": "Imagery-only DO R2=0.519; +pH strip -> 0.586 (delta +0.066, CI[0.0416, 0.09]). DO is weakly optical (algae/turbidity proxies); the pH input adds +0.066.",
+    "Temp": "Imagery-only Temp R2=0.737 CI[0.7169, 0.7548]. Genuinely optical (seasonal/thermal-optical signal); the strongest honest imagery-only parameter.",
+    "Turb": "Imagery-only Turb: raw R2=0.012 (heavy-tailed artifact), LOG-R2=0.263 CI[0.2137, 0.3079]. Turbidity IS optical but only recoverable in log space; raw-NTU R2 is a metric artifact of extreme values."
+  },
+  "headline": "HydroDenseNet is NOT imagery-only: it feeds an in-situ pH strip via FiLM. Honest imagery-only recoverability: Temp strong, Turb (log) moderate, DO weak, SpCond physics-limited (~0, not 0.44). The SpCond/DO gains in v4 come from the in-situ pH input.",
+  "elapsed_seconds": 677.4
+}

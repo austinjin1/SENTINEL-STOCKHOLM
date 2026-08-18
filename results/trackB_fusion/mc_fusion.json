@@ -1,0 +1,77 @@
+{
+  "dataset": "mc_fusion_dataset.parquet",
+  "n": 3649,
+  "n_sites": 227,
+  "note": "satellite spectral (sf*) + in-situ PIGMENT (CHLA,PC); NOT physicochemical sonde. Label = microcystin threshold (non-circular: independent of both inputs).",
+  "labels": {
+    "mc_gt8_WHO_recreational": {
+      "pos": 286,
+      "n_sites_pos": 72,
+      "satellite_auroc": 0.669,
+      "insitu_auroc": 0.746,
+      "fusion_auroc": 0.791,
+      "fusion_ci95": [
+        0.759,
+        0.823
+      ],
+      "best_single": "insitu",
+      "fusion_minus_best": 0.045,
+      "site_bootstrap_delta": {
+        "delta_median": 0.046,
+        "ci95": [
+          -0.008,
+          0.101
+        ],
+        "P_delta_gt0": 0.954
+      },
+      "fusion_helps": false,
+      "permutation_control_fusion_auroc": 0.712
+    },
+    "mc_gt1.6_WHO_drinking": {
+      "pos": 633,
+      "n_sites_pos": 126,
+      "satellite_auroc": 0.65,
+      "insitu_auroc": 0.683,
+      "fusion_auroc": 0.781,
+      "fusion_ci95": [
+        0.759,
+        0.804
+      ],
+      "best_single": "insitu",
+      "fusion_minus_best": 0.098,
+      "site_bootstrap_delta": {
+        "delta_median": 0.098,
+        "ci95": [
+          0.058,
+          0.142
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "fusion_helps": true,
+      "permutation_control_fusion_auroc": 0.686
+    },
+    "mc_gt0.3_detection": {
+      "pos": 1286,
+      "n_sites_pos": 184,
+      "satellite_auroc": 0.664,
+      "insitu_auroc": 0.716,
+      "fusion_auroc": 0.786,
+      "fusion_ci95": [
+        0.769,
+        0.802
+      ],
+      "best_single": "insitu",
+      "fusion_minus_best": 0.069,
+      "site_bootstrap_delta": {
+        "delta_median": 0.069,
+        "ci95": [
+          0.041,
+          0.101
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "fusion_helps": true,
+      "permutation_control_fusion_auroc": 0.708
+    }
+  }
+}

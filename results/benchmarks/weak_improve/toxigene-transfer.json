@@ -1,0 +1,191 @@
+{
+  "benchmark": "ToxiGene cross-study (leave-one-study-out) toxicant-exposure AUROC",
+  "task": "binary control-vs-exposed classification, zebrafish GEO microarray",
+  "data_source": "real NCBI GEO series matrices, 12 studies, 279 samples, 7902 shared genes",
+  "holdout": "leave-one-study-out (LOSO); feature selection + classifier fit per fold on TRAIN studies only; alignment stats train-referenced, held-out study aligned by its OWN features (no labels)",
+  "n_studies": 12,
+  "n_samples": 279,
+  "prior_best_condition": "H_L1_rankNorm_genes (audited)",
+  "prior_best_loso_auroc": 0.6809085681426107,
+  "stated_headline_baseline": 0.55,
+  "within_study_reference_auroc": 0.858,
+  "n_boot_study_block": 2000,
+  "methods": {
+    "R0_prior_best_rank_L1": {
+      "loso_auroc": 0.6809085681426107,
+      "auroc_ci95": [
+        0.6107523385731541,
+        0.7557783597970209
+      ],
+      "desc": "prior best: per-sample rank-norm genes, top-1500 var, L1 logreg C=0.1",
+      "per_study_auroc": {
+        "GSE110340": 1.0,
+        "GSE110543": 0.6265432098765432,
+        "GSE112016": 0.29629629629629634,
+        "GSE116641": 0.6458333333333333,
+        "GSE121338": 0.9336734693877551,
+        "GSE129812": 0.38888888888888884,
+        "GSE84394": 0.7361111111111112,
+        "GSE89653": 0.5,
+        "GSE89756": 0.8020833333333333,
+        "GSE90457": 0.7309941520467836,
+        "GSE93227": 0.7833333333333333,
+        "GSE93532": 0.65
+      }
+    },
+    "PSS_rank_perStudyStd_L1": {
+      "loso_auroc": 0.594767107533065,
+      "auroc_ci95": [
+        0.48788252555537615,
+        0.72168372165822
+      ],
+      "desc": "rank-norm then per-study standardize, top-1500 var, L1 C=0.1",
+      "per_study_auroc": {
+        "GSE110340": 0.5,
+        "GSE110543": 0.5185185185185185,
+        "GSE112016": 0.40740740740740744,
+        "GSE116641": 0.5,
+        "GSE121338": 0.9081632653061225,
+        "GSE129812": 0.5,
+        "GSE84394": 0.9166666666666667,
+        "GSE89653": 0.256578947368421,
+        "GSE89756": 0.6041666666666666,
+        "GSE90457": 0.5701754385964912,
+        "GSE93227": 0.6083333333333333,
+        "GSE93532": 0.9
+      },
+      "delta_vs_prior_best": -0.08345503040474454,
+      "delta_ci95": [
+        -0.1513699162612749,
+        -0.003266522890445723
+      ],
+      "p_delta_gt_0": 0.02
+    },
+    "QN_crossStudy_quantile_L1": {
+      "loso_auroc": 0.6932719953996551,
+      "auroc_ci95": [
+        0.6181680349408416,
+        0.7807593488567647
+      ],
+      "desc": "cross-study quantile-normalized raw expression to TRAIN ref, top-1500 var, L1 C=0.1",
+      "per_study_auroc": {
+        "GSE110340": 0.75,
+        "GSE110543": 0.5216049382716049,
+        "GSE112016": 0.4814814814814815,
+        "GSE116641": 0.5989583333333333,
+        "GSE121338": 0.9489795918367347,
+        "GSE129812": 0.6944444444444444,
+        "GSE84394": 0.8611111111111112,
+        "GSE89653": 0.5723684210526315,
+        "GSE89756": 0.7604166666666667,
+        "GSE90457": 0.7163742690058479,
+        "GSE93227": 0.875,
+        "GSE93532": 0.875
+      },
+      "delta_vs_prior_best": 0.014871377425869125,
+      "delta_ci95": [
+        -0.033935031244401476,
+        0.07459551184965542
+      ],
+      "p_delta_gt_0": 0.6905
+    },
+    "CORAL_rank_L1": {
+      "loso_auroc": 0.5,
+      "auroc_ci95": [
+        0.5,
+        0.5
+      ],
+      "desc": "rank-norm -> top-300 var (train) -> per-study CORAL align to TRAIN ref, L1 C=0.1",
+      "per_study_auroc": {
+        "GSE110340": 0.5,
+        "GSE110543": 0.5,
+        "GSE112016": 0.5,
+        "GSE116641": 0.5,
+        "GSE121338": 0.5,
+        "GSE129812": 0.5,
+        "GSE84394": 0.5,
+        "GSE89653": 0.5,
+        "GSE89756": 0.5,
+        "GSE90457": 0.5,
+        "GSE93227": 0.5,
+        "GSE93532": 0.5
+      },
+      "delta_vs_prior_best": -0.1809493865108647,
+      "delta_ci95": [
+        -0.2557783597970209,
+        -0.11075233857315442
+      ],
+      "p_delta_gt_0": 0.0
+    },
+    "R0_rank_L2": {
+      "loso_auroc": 0.6415181138585394,
+      "auroc_ci95": [
+        0.5606481248418829,
+        0.7350518655392903
+      ],
+      "desc": "rank-norm genes, top-1500 var, L2 logreg C=0.1",
+      "per_study_auroc": {
+        "GSE110340": 0.25,
+        "GSE110543": 0.6697530864197531,
+        "GSE112016": 0.6666666666666667,
+        "GSE116641": 0.75,
+        "GSE121338": 0.8622448979591837,
+        "GSE129812": 0.3611111111111111,
+        "GSE84394": 0.48611111111111116,
+        "GSE89653": 0.5921052631578947,
+        "GSE89756": 0.46875,
+        "GSE90457": 0.6374269005847953,
+        "GSE93227": 0.5583333333333333,
+        "GSE93532": 1.0
+      },
+      "delta_vs_prior_best": -0.03945572336966942,
+      "delta_ci95": [
+        -0.13584401645242564,
+        0.05991299606405349
+      ],
+      "p_delta_gt_0": 0.194
+    },
+    "QNthenRank_L1": {
+      "loso_auroc": 0.6809085681426107,
+      "auroc_ci95": [
+        0.6107523385731541,
+        0.7557783597970209
+      ],
+      "desc": "cross-study QN then per-sample rank, top-1500 var, L1 C=0.1",
+      "per_study_auroc": {
+        "GSE110340": 1.0,
+        "GSE110543": 0.6265432098765432,
+        "GSE112016": 0.29629629629629634,
+        "GSE116641": 0.6458333333333333,
+        "GSE121338": 0.9336734693877551,
+        "GSE129812": 0.38888888888888884,
+        "GSE84394": 0.7361111111111112,
+        "GSE89653": 0.5,
+        "GSE89756": 0.8020833333333333,
+        "GSE90457": 0.7309941520467836,
+        "GSE93227": 0.7833333333333333,
+        "GSE93532": 0.65
+      },
+      "delta_vs_prior_best": 0.0,
+      "delta_ci95": [
+        0.0,
+        0.0
+      ],
+      "p_delta_gt_0": 0.0
+    }
+  },
+  "best_new_method": "QN_crossStudy_quantile_L1",
+  "best_new_loso_auroc": 0.6932719953996551,
+  "best_new_auroc_ci95": [
+    0.6181680349408416,
+    0.7807593488567647
+  ],
+  "best_delta_vs_prior_best": 0.014871377425869125,
+  "best_delta_ci95": [
+    -0.033935031244401476,
+    0.07459551184965542
+  ],
+  "improved": false,
+  "elapsed_seconds": 21.6,
+  "verdict": "NO HONEST IMPROVEMENT over the audited prior best (0.681). Best new method QN_crossStudy_quantile_L1=0.693, paired delta CI [-0.033935031244401476, 0.07459551184965542] includes 0 (or point estimate below prior best). Stronger domain adaptation (cross-study quantile normalization, CORAL second-order alignment, per-study standardization on ranks) does NOT beat simple per-sample rank normalization + sparse L1 on this 12-study set. The residual gap to within-study 0.858 reflects genuine study-to-study biological/chemistry heterogeneity (different toxicants, doses, tissues, developmental stages), which alignment of marginal/second-order feature statistics cannot remove without the held-out study's labels."
+}

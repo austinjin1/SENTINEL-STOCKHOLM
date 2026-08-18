@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "SYNTHETIC — the 'full multimodal beats best single' significance test uses synthetic-simulation AUCs (full 0.992 vs sensor 0.943). On real co-located data (Track B) fusion AUROC ~0.649 ~= sensor-only ~0.642, i.e. fusion does NOT significantly beat the best single encoder. This test does not hold on real data.",
   "full_vs_best_single": {
     "full_auc": 0.9919417876481392,
     "best_single_name": "sensor",

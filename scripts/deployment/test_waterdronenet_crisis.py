@@ -318,19 +318,19 @@ def main():
             detected += 1
             first_alert = max(pre_alerts, key=lambda x: x["days_before_advisory"])
             lead_time = first_alert["days_before_advisory"]
-            log(f"  ✓ DETECTED — lead time: {lead_time} days")
+            log(f"  OK DETECTED — lead time: {lead_time} days")
         else:
             lead_time = None
             # Check if we got any imagery at all
             if not time_series:
-                log(f"  ✗ NO IMAGERY AVAILABLE")
+                log(f"  X NO IMAGERY AVAILABLE")
             else:
                 # Report max anomaly score seen
                 max_score = max(
                     max(e["anomaly_scores"].values()) if e["anomaly_scores"] else 0
                     for e in time_series
                 )
-                log(f"  ✗ NOT DETECTED (max anomaly score: {max_score:.2f})")
+                log(f"  X NOT DETECTED (max anomaly score: {max_score:.2f})")
 
         event_result = {
             "event_id": event["event_id"],

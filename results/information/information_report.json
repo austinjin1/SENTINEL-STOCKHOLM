@@ -1,4 +1,5 @@
 {
+  "_SIMULATION_WARNING": "SIMULATION / INVALID — all mutual-information values in this report were computed on SYNTHETIC Gaussian modality embeddings, not real data. The sensor-behavioral MI figures (0.01/0.14 nats) and every entry in mi_matrix/per_modality are NOT measured on real modalities. Do not cite any number from this file.",
   "summary": {
     "redundancy_ratio": 0.9582259275485785,
     "complementarity_score": 0.04177407245142151,

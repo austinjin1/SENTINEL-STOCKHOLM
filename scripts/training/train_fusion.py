@@ -33,6 +33,21 @@ Architecture:
 
 GPU: CUDA_VISIBLE_DEVICES=0
 
+CIRCULAR-LABEL GUARD (audit item a)
+-----------------------------------
+An earlier version derived the anomaly label as
+``has_anomaly = np.any(np.abs(z_scored_sensor_values) > 3.0)`` -- i.e. the
+supervised target was a deterministic function of the exact z-scored sensor
+tensor fed into the model.  That is a circular label: the model can trivially
+reconstruct it from its own input, so any reported anomaly AUROC is
+meaningless leakage, not learned skill.  It has been RETIRED.  Anomaly labels
+must come from a source INDEPENDENT of the model input (e.g. an external
+exceedance flag, a held-out lab measurement).  ``_derive_anomaly_from_input``
+now raises to make regression impossible, and the buggy per-sample sequential
+fusion path (which also hardcoded confidence=0.9) is guarded.  For a
+non-circular, verified fusion evaluation use the microcystin task in
+``scripts/experiments/trackB_fusion/07_microcystin_fusion.py``.
+
 MIT License -- Bryan Cheng, SENTINEL project, 2026
 """
 
@@ -398,8 +413,15 @@ def _load_sensor_parquet(path: Path) -> Optional[Dict[str, np.ndarray]]:
         delta_ts = np.zeros(T, dtype=np.float32)
         timestamps = []
 
-    # Anomaly detection: flag extreme z-scores as anomalies
-    has_anomaly = bool(np.any(np.abs(values) > 3.0))
+    # CIRCULAR-LABEL GUARD (audit item a): the anomaly label MUST NOT be a
+    # function of `values` (the exact z-scored tensor fed to the model).
+    # The retired line was:
+    #     has_anomaly = bool(np.any(np.abs(values) > 3.0))
+    # which made the target trivially recoverable from the model input. We
+    # emit a sentinel label of 0 and rely on an EXTERNAL, non-circular label
+    # source to be joined downstream. `_derive_anomaly_from_input` exists
+    # only to hard-fail if anyone reintroduces input-derived labeling.
+    has_anomaly = 0  # placeholder; real label must be joined from an independent source
 
     return {
         "values": values,
@@ -407,6 +429,26 @@ def _load_sensor_parquet(path: Path) -> Optional[Dict[str, np.ndarray]]:
         "timestamps": timestamps,
         "has_anomaly": has_anomaly,
     }
+
+
+def _derive_anomaly_from_input(values: np.ndarray) -> None:
+    """Hard guard: deriving an anomaly label from the model input is banned.
+
+    CIRCULAR-LABEL GUARD (audit item a). Any anomaly label computed as a
+    function of the (z-scored) sensor tensor that is ALSO the model input is
+    circular -- the model can reconstruct it trivially, so the resulting
+    AUROC is leakage, not skill. This function exists solely to raise if such
+    a derivation is ever reintroduced.
+
+    Raises:
+        RuntimeError: always.
+    """
+    raise RuntimeError(
+        "Circular label forbidden: the anomaly target must not be derived "
+        "from the model's own (z-scored) sensor input. Join an INDEPENDENT "
+        "label source (external exceedance flag / held-out lab measurement) "
+        "instead. See the circular-label guard note at the top of this file."
+    )
 
 
 # ==========================================================================
@@ -954,6 +996,20 @@ def run_fusion_step(
     """Run one batch through the sequential Perceiver IO fusion pipeline.
 
     Returns (loss, anomaly_preds, anomaly_labels, source_preds).
+
+    GUARDS (audit item a):
+
+    * The anomaly target ``batch["has_anomaly"]`` MUST originate from a
+      source independent of the model input. The input-derived label
+      (``|z| > 3``) has been retired upstream; this path now emits a
+      sentinel 0 unless an external label is joined. Training the anomaly
+      head against the sentinel label is a no-op / non-circular by
+      construction. If ``has_anomaly`` is all-constant we skip the anomaly
+      loss so no circular signal can leak in.
+    * ``confidence=0.9`` below is a legacy constant. With the fixed,
+      data-driven :class:`ConfidenceGate` the gate is now derived from the
+      projected embedding content, so this scalar only nudges the logit
+      bias -- it no longer collapses the gate to a constant 0.71.
     """
     B = len(batch["embeddings"])
     ha = batch["has_anomaly"].to(device)
@@ -992,9 +1048,18 @@ def run_fusion_step(
     # Losses
     # Note: anomaly_out.severity_score is already sigmoid-activated,
     # so we use binary_cross_entropy (not _with_logits).
-    anomaly_loss = F.binary_cross_entropy(
-        anomaly_out.severity_score.clamp(1e-7, 1 - 1e-7), ha
-    )
+    #
+    # CIRCULAR-LABEL GUARD (audit item a): only supervise the anomaly head
+    # when the label set is non-degenerate (both classes present). With the
+    # input-derived label retired, `ha` is a sentinel constant unless an
+    # external label is joined; supervising against a constant would be a
+    # no-op at best and, if anyone re-derived it from the input, circular.
+    if float(ha.min()) != float(ha.max()):
+        anomaly_loss = F.binary_cross_entropy(
+            anomaly_out.severity_score.clamp(1e-7, 1 - 1e-7), ha
+        )
+    else:
+        anomaly_loss = fused.new_zeros(())
     source_loss = F.cross_entropy(source_out.class_logits, sl)
     loss = anomaly_loss + SOURCE_LOSS_WEIGHT * source_loss
 

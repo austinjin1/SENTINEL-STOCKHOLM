@@ -1,0 +1,425 @@
+{
+  "audit": "ToxiGene transfer-gap contribution audit",
+  "question": "Is raw-gene LOSO 0.55 a weak-baseline artifact? Does a well-regularized RAW-gene model (same info, no rank transform) reach rank-norm 0.64-0.68 without the transform?",
+  "data_source": "real NCBI GEO (12 studies, 279 samples, 7902 genes)",
+  "protocol": "leave-one-study-out; feature selection + logreg fit per fold on TRAIN studies only; rank-norm & per-study-std are per-sample/study and label-free (leakage-free); study-block bootstrap (2000x) CIs and PAIRED delta CI.",
+  "n_studies": 12,
+  "n_samples": 279,
+  "raw_gene_models": [
+    {
+      "name": "RAW globalZ var-top1500 L2 C=0.1 (paper baseline)",
+      "auroc": 0.5569867740080506,
+      "auroc_ci95": [
+        0.4752165350140847,
+        0.6655280355253946
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L2 C=0.01",
+      "auroc": 0.5674525589419207,
+      "auroc_ci95": [
+        0.49903651607538796,
+        0.667843716900569
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.01
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L2 C=0.05",
+      "auroc": 0.5645198389879241,
+      "auroc_ci95": [
+        0.49106288944945925,
+        0.6718606360724743
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.05
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L2 C=0.1",
+      "auroc": 0.563887291546866,
+      "auroc_ci95": [
+        0.4884848457540585,
+        0.672519283121597
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L2 C=0.3",
+      "auroc": 0.5644048303622773,
+      "auroc_ci95": [
+        0.4888454977232067,
+        0.6721708095945652
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.3
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L2 C=1.0",
+      "auroc": 0.5643473260494538,
+      "auroc_ci95": [
+        0.4885399591306348,
+        0.6726819367052979
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 1.0
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L1 C=0.1",
+      "auroc": 0.6224266820011501,
+      "auroc_ci95": [
+        0.5529676418439716,
+        0.6841791788026074
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.1,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L1 C=0.2",
+      "auroc": 0.6244968372627948,
+      "auroc_ci95": [
+        0.5415785038795682,
+        0.7104720738820705
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.2,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L1 C=0.5",
+      "auroc": 0.6258769407705578,
+      "auroc_ci95": [
+        0.5451186533598873,
+        0.7153177308435243
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.5,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RAW perStudyStd var-top1500 L1 C=1.0",
+      "auroc": 0.6129384703852789,
+      "auroc_ci95": [
+        0.538200173440917,
+        0.7036376654344506
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 1.0,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RAW perStudyStd fclassif-top50 L2 C=0.1",
+      "auroc": 0.6361127084531341,
+      "auroc_ci95": [
+        0.5885130843077675,
+        0.6829467231301999
+      ],
+      "params": {
+        "n_select": 50,
+        "select": "fclassif",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd fclassif-top200 L2 C=0.1",
+      "auroc": 0.6635997699827487,
+      "auroc_ci95": [
+        0.6172363452556371,
+        0.7111307115290204
+      ],
+      "params": {
+        "n_select": 200,
+        "select": "fclassif",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd fclassif-top1500 L2 C=0.1",
+      "auroc": 0.579700977573318,
+      "auroc_ci95": [
+        0.5100645614311271,
+        0.6730498421043237
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "fclassif",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd mi-top50 L2 C=0.1",
+      "auroc": 0.5445658424381828,
+      "auroc_ci95": [
+        0.4970010248570627,
+        0.5947044002002962
+      ],
+      "params": {
+        "n_select": 50,
+        "select": "mi",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd mi-top200 L2 C=0.1",
+      "auroc": 0.5568717653824036,
+      "auroc_ci95": [
+        0.5010095133936148,
+        0.6079203019165393
+      ],
+      "params": {
+        "n_select": 200,
+        "select": "mi",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd mi-top1500 L2 C=0.1",
+      "auroc": 0.5649223691776883,
+      "auroc_ci95": [
+        0.48188312155472207,
+        0.6673916731416729
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "mi",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RAW perStudyStd fclassif-top200 L1 C=0.2",
+      "auroc": 0.6365727429557216,
+      "auroc_ci95": [
+        0.5688191197548172,
+        0.6892839767585305
+      ],
+      "params": {
+        "n_select": 200,
+        "select": "fclassif",
+        "C": 0.2,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RAW perStudyStd mi-top200 L1 C=0.2",
+      "auroc": 0.5584818861414607,
+      "auroc_ci95": [
+        0.45770109607870524,
+        0.6464862475451502
+      ],
+      "params": {
+        "n_select": 200,
+        "select": "mi",
+        "C": 0.2,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    }
+  ],
+  "rank_norm_models": [
+    {
+      "name": "RANK var-top1500 L2 C=0.05",
+      "auroc": 0.640080506037953,
+      "auroc_ci95": [
+        0.5634860268019997,
+        0.7346152452310966
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.05
+      }
+    },
+    {
+      "name": "RANK var-top1500 L2 C=0.1",
+      "auroc": 0.6415181138585394,
+      "auroc_ci95": [
+        0.5606481248418829,
+        0.7350518655392903
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.1
+      }
+    },
+    {
+      "name": "RANK var-top1500 L2 C=0.3",
+      "auroc": 0.6380678550891318,
+      "auroc_ci95": [
+        0.5573150453244442,
+        0.7331445165780304
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.3
+      }
+    },
+    {
+      "name": "RANK var-top1500 L2 C=1.0",
+      "auroc": 0.6321449108683151,
+      "auroc_ci95": [
+        0.5524637789475766,
+        0.7234893153431148
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 1.0
+      }
+    },
+    {
+      "name": "RANK var-top1500 L1 C=0.1",
+      "auroc": 0.6809085681426107,
+      "auroc_ci95": [
+        0.6107523385731541,
+        0.7557783597970209
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.1,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RANK var-top1500 L1 C=0.2",
+      "auroc": 0.6906267970097758,
+      "auroc_ci95": [
+        0.6171770693961764,
+        0.7820641882483987
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.2,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RANK var-top1500 L1 C=0.5",
+      "auroc": 0.650948821161587,
+      "auroc_ci95": [
+        0.5889183439948933,
+        0.7333199737261175
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 0.5,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    },
+    {
+      "name": "RANK var-top1500 L1 C=1.0",
+      "auroc": 0.648188614146061,
+      "auroc_ci95": [
+        0.59070589602944,
+        0.7280548713190365
+      ],
+      "params": {
+        "n_select": 1500,
+        "select": "var",
+        "C": 1.0,
+        "penalty": "l1",
+        "solver": "liblinear"
+      }
+    }
+  ],
+  "best_raw_gene_model": {
+    "name": "RAW perStudyStd fclassif-top200 L2 C=0.1",
+    "auroc": 0.6635997699827487,
+    "auroc_ci95": [
+      0.6172363452556371,
+      0.7111307115290204
+    ],
+    "params": {
+      "n_select": 200,
+      "select": "fclassif",
+      "C": 0.1
+    }
+  },
+  "best_rank_norm_model": {
+    "name": "RANK var-top1500 L1 C=0.2",
+    "auroc": 0.6906267970097758,
+    "auroc_ci95": [
+      0.6171770693961764,
+      0.7820641882483987
+    ],
+    "params": {
+      "n_select": 1500,
+      "select": "var",
+      "C": 0.2,
+      "penalty": "l1",
+      "solver": "liblinear"
+    }
+  },
+  "paper_weak_baseline_auroc": 0.5569867740080506,
+  "best_regularized_raw_auroc": 0.6635997699827487,
+  "best_rank_norm_auroc": 0.6906267970097758,
+  "regularized_raw_reaches_rank_level(>=0.64)": true,
+  "paired_delta_rank_minus_bestRaw": {
+    "delta_mean": 0.02633725814819408,
+    "delta_median": 0.02547228672249241,
+    "delta_ci95": [
+      -0.035227961070838254,
+      0.09590041409635391
+    ],
+    "frac_delta_gt0": 0.7705,
+    "n_boot_valid": 2000
+  },
+  "paired_delta_rank_minus_weakBaseline": {
+    "delta_mean": 0.13532500430588373,
+    "delta_median": 0.1329660456399515,
+    "delta_ci95": [
+      0.07790193659143602,
+      0.20487098587434588
+    ],
+    "frac_delta_gt0": 1.0,
+    "n_boot_valid": 2000
+  },
+  "genuine_representation_effect": false,
+  "verdict": "WEAK-BASELINE ARTIFACT: a well-regularized RAW-gene model reaches the rank-norm level (>=0.64) WITHOUT the rank transform; the 0.55 'collapse' is model-specific, not a representation gap.",
+  "elapsed_seconds": 647.1
+}

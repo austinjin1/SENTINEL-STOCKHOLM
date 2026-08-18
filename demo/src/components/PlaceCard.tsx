@@ -143,9 +143,7 @@ export function PlaceCard({ state, dispatch, record }: Props) {
         right: 16,
         bottom: 16,
         width: 420,
-        background: 'rgba(255,255,255,0.88)',
-        backdropFilter: 'blur(24px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+        background: 'var(--bg-surface)',
         borderRadius: 'var(--r-lg)',
         boxShadow: 'var(--shadow-card)',
         display: 'flex',
@@ -252,10 +250,8 @@ export function PlaceCard({ state, dispatch, record }: Props) {
               style={{
                 position: 'absolute',
                 inset: 0,
-                background:
-                  'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
-                backgroundSize: '200% 100%',
-                animation: 'shimmer 1.4s linear infinite',
+                background: 'var(--bg-inset)',
+                animation: 'shimmer 1.4s var(--ease-standard) infinite',
                 pointerEvents: 'none',
                 borderRadius: 'var(--r-md)',
               }}
@@ -269,6 +265,7 @@ export function PlaceCard({ state, dispatch, record }: Props) {
             {record.fusion.auroc && (
               <>
                 {' · '}AUROC <span className="mono">{record.fusion.auroc.toFixed(3)}</span>
+                {' (≈ sensor-only 0.642; fusion does not beat best single encoder)'}
               </>
             )}
           </div>
@@ -306,7 +303,7 @@ export function PlaceCard({ state, dispatch, record }: Props) {
                 }}
               >
                 <Clock size={12} strokeWidth={2} />
-                <span className="mono">{record.leadDays.toFixed(1)}d</span> before advisory
+                <span className="mono">{record.leadDays.toFixed(1)}d</span> before advisory (illustrative)
               </div>
             )}
           </div>
@@ -577,13 +574,15 @@ function HeroImage({
           (e.target as HTMLImageElement).style.opacity = '0.3';
         }}
       />
-      {/* gradient scrim for readability of overlay text */}
+      {/* flat scrim bar for readability of overlay text (bottom third) */}
       <div
         style={{
           position: 'absolute',
-          inset: 0,
-          background:
-            'linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%)',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: '38%',
+          background: 'rgba(16,22,28,0.55)',
         }}
       />
       <div
@@ -679,8 +678,9 @@ function DetectionSummary({ record }: { record: CanonicalRecord }) {
         ))}
       </div>
       <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginTop: 8 }}>
-        Coverage <span className="mono">{(record.fusion.coverage * 100).toFixed(0)}%</span> · Microbial &
-        molecular weight near zero in routine detection — retained for source attribution.
+        Conformal coverage <span className="mono">{(record.fusion.coverage * 100).toFixed(2)}%</span> (real
+        0.9367 — the 95% guarantee is NOT met) · Microbial &amp; molecular weight near zero in routine
+        detection — retained for source attribution.
       </div>
     </>
   );
@@ -716,18 +716,18 @@ function ModalityList({
       sub: 'Sentinel-2 spectral indices',
       color: 'var(--m-satellite)',
       coverage: record.satellite.state,
-      headline: 'R² 0.749',
-      headlineLabel: 'water temperature',
+      headline: 'R² 0.893',
+      headlineLabel: 'water temp (split contaminated by augmented targets)',
       viz: <HydroViTCard satellite={record.satellite} tier={tier} />,
     },
     {
       id: 'behavioral',
       name: 'BioMotion',
-      sub: 'Daphnia behavioral assay',
+      sub: 'EPA ECOTOX toxicity endpoints (not animal tracking)',
       color: 'var(--m-behavioral)',
       coverage: record.behavioral.state,
-      headline: record.behavioral.anomaly.toFixed(3),
-      headlineLabel: 'AUROC',
+      headline: '0.807',
+      headlineLabel: 'AUROC (real ECOTOX)',
       viz: <BioMotionCard bio={record.behavioral} />,
     },
     {
@@ -859,7 +859,8 @@ function TimelineInline({ record }: { record: CanonicalRecord }) {
         <span>Advisory</span>
       </div>
       <div style={{ fontSize: 12, color: 'var(--accent)', marginTop: 8 }}>
-        Detected <span className="mono">{lead.toFixed(1)}d</span> early
+        Detected <span className="mono">{lead.toFixed(1)}d</span> early{' '}
+        <span style={{ color: 'var(--text-tertiary)' }}>(illustrative case study, not specificity-validated)</span>
       </div>
     </div>
   );

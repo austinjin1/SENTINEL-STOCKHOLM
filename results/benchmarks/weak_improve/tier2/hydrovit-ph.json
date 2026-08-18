@@ -1,0 +1,120 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Honest diagnosis + improvement of pH from optics on REAL Sentinel-2 x USGS data. Decomposes pH signal into optics-only vs covariate-only (Temp+SpCond) vs combined. Bar = shipped HydroViT ViT pH R2 0.3109 (same bands, station holdout).",
+    "data": "data/processed/satellite/drone_wq_pairs.npz (REAL Sentinel-2 L2A B02,B03,B04,B08 paired with REAL same-day USGS/NWIS in-situ WQ).",
+    "bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B08"
+    ],
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site_id) GroupKFold \u2014 no site shared train/test; pooled out-of-fold predictions.",
+    "ci": "site-clustered bootstrap (resamples SITES, not rows), 2000 reps; paired delta CI vs matched-set optics; scalar delta CI vs shipped bar.",
+    "model": "HistGradientBoosting regressor (CPU), same family as the red-edge chl-a study that beat the ViT.",
+    "covariate_note": "Temp & SpCond features = REAL in-situ same-day covariates. SpCond (ionic strength/alkalinity) is chemically tied to pH but is NOT optical; any pH gain from Temp/SpCond is labeled covariate-driven, NOT an optical claim."
+  },
+  "shipped_baseline": {
+    "hydrovit_pH_r2": 0.3109,
+    "hydrovit_pH_mae": 0.3636,
+    "note": "ViT-S/16 on same 4 bands + station holdout; the pure-optics comparator."
+  },
+  "n_valid": {
+    "optics": 10859,
+    "optics_covar": 10653
+  },
+  "arms": {
+    "A_optics_only": {
+      "features": "4-band spatial stats + CDOM/chl/turbidity proxy indices (no covar)",
+      "n": 10859,
+      "n_sites": 332,
+      "n_features": 91,
+      "r2": 0.2866,
+      "r2_ci95": [
+        0.2249,
+        0.337
+      ]
+    },
+    "B_covar_only": {
+      "features": "in-situ Temp + SpCond only (2 features, non-optical chemistry)",
+      "n": 10653,
+      "n_sites": 330,
+      "r2": 0.3671,
+      "r2_ci95": [
+        0.2903,
+        0.4384
+      ]
+    },
+    "C_optics_plus_covar": {
+      "features": "optical proxies + in-situ Temp + SpCond",
+      "n": 10653,
+      "n_sites": 330,
+      "r2": 0.5081,
+      "r2_ci95": [
+        0.4521,
+        0.5592
+      ]
+    },
+    "A_optics_only_matched_set": {
+      "note": "optics-only evaluated on the SAME rows as B/C for fair paired deltas",
+      "r2": 0.2637,
+      "r2_ci95": [
+        0.2031,
+        0.3154
+      ]
+    }
+  },
+  "deltas": {
+    "optics_vs_hydrovit_shipped": {
+      "new_r2": 0.2866,
+      "old_r2": 0.3109,
+      "delta_mean": -0.0279,
+      "delta_ci95": [
+        -0.0891,
+        0.0281
+      ],
+      "prob_improvement": 0.163,
+      "interpretation": "pure-optics GBM vs pure-optics ViT, same bands & station holdout. IMPROVED iff delta CI lower bound > 0."
+    },
+    "covar_marginal_C_minus_Aoptics": {
+      "mean": 0.2456,
+      "ci95": [
+        0.199,
+        0.2969
+      ],
+      "prob_improvement": 1.0,
+      "interpretation": "R2 gain from ADDING Temp+SpCond to optics (paired). This gain is COVARIATE-driven chemistry, NOT new optical signal."
+    },
+    "optics_marginal_C_minus_covar": {
+      "mean": 0.1407,
+      "ci95": [
+        0.1008,
+        0.1837
+      ],
+      "prob_improvement": 1.0,
+      "interpretation": "R2 gain from ADDING optics on top of Temp+SpCond (paired). Isolates GENUINE optical pH information beyond chemistry."
+    },
+    "combined_vs_hydrovit_shipped": {
+      "new_r2": 0.5081,
+      "old_r2": 0.3109,
+      "delta_mean": 0.1947,
+      "delta_ci95": [
+        0.1399,
+        0.2445
+      ],
+      "prob_improvement": 1.0,
+      "interpretation": "optics+Temp+SpCond vs shipped ViT. NOT a pure-optics claim; any lift over optics-only is covariate-driven chemistry."
+    }
+  },
+  "verdict": {
+    "optics_vs_hydrovit": "NOT IMPROVED (pure optics): optics-only R2=0.287 <= 0.311. pH is weakly optical; this GBM does not beat the ViT on optics alone.",
+    "optics_beyond_covar": "Optics adds REAL signal beyond Temp+SpCond: C-B delta=+0.141 CI[+0.101,+0.184] excludes 0.",
+    "covariate_share": "Covar-only R2=0.367 vs optics-only R2=0.264 vs combined R2=0.508. Adding Temp+SpCond to optics lifts R2 by +0.246 (CI[+0.199,+0.297]). Any combined 'improvement' over optics is COVARIATE chemistry, not optical.",
+    "weak_optical_limit": "pH has no intrinsic color; optical recovery is capped by CDOM/chl/turbidity proxies. Optics-only R2=0.287 quantifies that weak-optical ceiling."
+  },
+  "improved": false,
+  "improved_definition": "PURE-OPTICS claim: optics-only (new_r2 - shipped ViT 0.3109) site-bootstrap delta CI lower bound > 0, on a station GroupKFold holdout. The optics+covar arm is reported but flagged covariate-driven, not an optical claim.",
+  "elapsed_seconds": 442.3
+}

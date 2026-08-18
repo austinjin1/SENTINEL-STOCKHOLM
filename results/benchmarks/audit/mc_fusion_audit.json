@@ -1,0 +1,28 @@
+{
+  "audit": "microcystin_fusion_centerpiece",
+  "date": "2026-07-19",
+  "verdict": "SOLID",
+  "reproduced": {
+    "mc_gt1.6": {"sat":0.650,"pig":0.684,"drv":0.626,"two_way":0.781,"three_way":0.823,"three_minus_bestsingle":0.139,"three_minus_two":0.046},
+    "mc_gt0.3": {"two_way":0.786,"three_way":0.800,"three_minus_bestsingle":0.082}
+  },
+  "strawman_test": {
+    "single_modality_uses_same_regularized_hgb": true,
+    "deeper_unreg_insitu_d6_l2_0": 0.671,
+    "logreg_insitu": 0.694,
+    "note": "stronger/alternative single-modality models do NOT beat regularized single; best-single ~0.68 is honest, not handicapped. Fusion IS the all-features regularized GBM."
+  },
+  "circularity": {"spearman_CHLA_mc":0.252,"spearman_PC_mc":0.652,"label_is_mc_threshold_independent_of_spectral_and_pigment_inputs":true},
+  "coverage_confound_resolved": {
+    "raw_PC_alone_on_finite_subset":0.904,
+    "PC_finite_coverage_overall":0.266,
+    "PC_finite_by_region":{"CA":0.725,"FL":0.0,"MI":0.0},
+    "PC_grouped_oof_hgb":0.664,
+    "PC_pooled_all_nanfilled":0.677,
+    "note":"apparent 0.904 was CA-subsample artifact (PC only measured in CA); honest all-region single-modality is ~0.68. Fusion evaluated on all 3649 rows/all regions is the fair comparison."
+  },
+  "negative_control_shuffled_drivers": {"three_way_shuffled":0.778,"vs_two_way_boot_median":-0.003,"ci95":[-0.009,0.003],"P_gt0":0.165,"collapses_correctly":true},
+  "three_way_vs_two_way_significance": {"boot_median":0.040,"ci95":[0.024,0.060],"P_gt0":1.0},
+  "cross_region_collapse_honest": {"LORO_2way_mc_gt1.6":{"CA":0.420,"FL":0.556,"MI":0.419,"other":0.516},"mean":"~0.49","matches_paper_claim":true},
+  "leakage": {"groupkfold_on_site":true,"no_site_in_train_and_test":true,"temporal_holdout_also_passes":true}
+}

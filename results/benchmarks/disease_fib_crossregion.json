@@ -1,0 +1,550 @@
+{
+  "task": "beach_nowcast_fib_exceedance_CROSS_REGION_TRANSFER",
+  "target": "E. coli exceedance of EPA BAV (235 CFU/100mL, 2012 RWQC single-sample)",
+  "thesis": "Transfer-gap thesis applied to the beach-nowcast disease model: does the antecedent-hydromet -> E. coli exceedance relationship port across geographically distinct regions?",
+  "non_circularity": "Predictors are strictly antecedent/independent (NOAA GHCN prior-day rainfall + season [+ site lat/lon in FULL only]). Label is a separate WQP E. coli channel. No FIB value or function of it is a predictor.",
+  "predictor_sets": {
+    "STRICT_geography_free_deployable": [
+      "rain_prior1_mm",
+      "rain_prior2_mm",
+      "rain_prior3_mm",
+      "rain_prior7_mm",
+      "doy_sin",
+      "doy_cos",
+      "month"
+    ],
+    "FULL": [
+      "rain_prior1_mm",
+      "rain_prior2_mm",
+      "rain_prior3_mm",
+      "rain_prior7_mm",
+      "doy_sin",
+      "doy_cos",
+      "month",
+      "rain_sameday_mm",
+      "lat",
+      "lon",
+      "ghcn_dist_km"
+    ]
+  },
+  "data_sources": {
+    "label": "WQP Result service, characteristic 'Escherichia coli', exceed>235 CFU/100mL",
+    "rainfall": "NOAA GHCN-Daily (NCEI daily-summaries), nearest-with-data station"
+  },
+  "model": "HistGradientBoostingClassifier (CPU)",
+  "regions": {
+    "OH": {
+      "region_name": "Ohio (US:39), Great Lakes / Ohio",
+      "statecode": "US:39",
+      "n_samples": 23982,
+      "n_sites": 90,
+      "n_positives": 4831,
+      "base_rate": 0.2014,
+      "date_range": [
+        "01-01-2015",
+        "12-31-2023"
+      ]
+    },
+    "MI": {
+      "region_name": "Michigan (Great Lakes)",
+      "statecode": "US:26",
+      "n_samples": 21919,
+      "n_sites": 274,
+      "n_positives": 1589,
+      "base_rate": 0.0725,
+      "date_range": [
+        "01-01-2015",
+        "12-31-2023"
+      ]
+    },
+    "WI": {
+      "region_name": "Wisconsin (Great Lakes / inland)",
+      "statecode": "US:55",
+      "n_samples": 49166,
+      "n_sites": 443,
+      "n_positives": 6855,
+      "base_rate": 0.1394,
+      "date_range": [
+        "01-01-2015",
+        "12-31-2023"
+      ]
+    }
+  },
+  "cross_region_transfer": {
+    "note": "train on region X, test on region Y. AUROC=0.5 == test-region base-rate (chance). Compare to within-region ceiling below.",
+    "strict_predictors": {
+      "OH->MI": {
+        "auroc": 0.5523,
+        "auroc_ci95": [
+          0.538,
+          0.5674
+        ],
+        "pr_auc": 0.0973,
+        "n": 21919,
+        "base_rate": 0.0725
+      },
+      "OH->WI": {
+        "auroc": 0.5632,
+        "auroc_ci95": [
+          0.5564,
+          0.5698
+        ],
+        "pr_auc": 0.1987,
+        "n": 49166,
+        "base_rate": 0.1394
+      },
+      "MI->OH": {
+        "auroc": 0.537,
+        "auroc_ci95": [
+          0.5289,
+          0.5459
+        ],
+        "pr_auc": 0.2295,
+        "n": 23982,
+        "base_rate": 0.2014
+      },
+      "MI->WI": {
+        "auroc": 0.5834,
+        "auroc_ci95": [
+          0.5762,
+          0.5919
+        ],
+        "pr_auc": 0.201,
+        "n": 49166,
+        "base_rate": 0.1394
+      },
+      "WI->OH": {
+        "auroc": 0.5317,
+        "auroc_ci95": [
+          0.5221,
+          0.5409
+        ],
+        "pr_auc": 0.2364,
+        "n": 23982,
+        "base_rate": 0.2014
+      },
+      "WI->MI": {
+        "auroc": 0.5585,
+        "auroc_ci95": [
+          0.5431,
+          0.575
+        ],
+        "pr_auc": 0.0979,
+        "n": 21919,
+        "base_rate": 0.0725
+      }
+    },
+    "full_predictors": {
+      "OH->MI": {
+        "auroc": 0.502,
+        "auroc_ci95": [
+          0.4865,
+          0.5168
+        ],
+        "pr_auc": 0.0915,
+        "n": 21919,
+        "base_rate": 0.0725
+      },
+      "OH->WI": {
+        "auroc": 0.5865,
+        "auroc_ci95": [
+          0.5791,
+          0.5939
+        ],
+        "pr_auc": 0.2054,
+        "n": 49166,
+        "base_rate": 0.1394
+      },
+      "MI->OH": {
+        "auroc": 0.6493,
+        "auroc_ci95": [
+          0.6406,
+          0.6584
+        ],
+        "pr_auc": 0.3284,
+        "n": 23982,
+        "base_rate": 0.2014
+      },
+      "MI->WI": {
+        "auroc": 0.6227,
+        "auroc_ci95": [
+          0.6156,
+          0.6297
+        ],
+        "pr_auc": 0.2279,
+        "n": 49166,
+        "base_rate": 0.1394
+      },
+      "WI->OH": {
+        "auroc": 0.6459,
+        "auroc_ci95": [
+          0.6364,
+          0.6549
+        ],
+        "pr_auc": 0.3538,
+        "n": 23982,
+        "base_rate": 0.2014
+      },
+      "WI->MI": {
+        "auroc": 0.5998,
+        "auroc_ci95": [
+          0.5853,
+          0.6146
+        ],
+        "pr_auc": 0.1188,
+        "n": 21919,
+        "base_rate": 0.0725
+      }
+    }
+  },
+  "within_region_leave_sites_out_ceiling": {
+    "note": "same-region GroupKFold-on-site OOF; upper bound for transfer.",
+    "strict_predictors": {
+      "OH": {
+        "auroc": 0.6687,
+        "auroc_ci95": [
+          0.6601,
+          0.6773
+        ],
+        "pr_auc": 0.3736,
+        "n": 23982,
+        "base_rate": 0.2014
+      },
+      "MI": {
+        "auroc": 0.6308,
+        "auroc_ci95": [
+          0.6166,
+          0.6465
+        ],
+        "pr_auc": 0.1477,
+        "n": 21919,
+        "base_rate": 0.0725
+      },
+      "WI": {
+        "auroc": 0.6901,
+        "auroc_ci95": [
+          0.6824,
+          0.6971
+        ],
+        "pr_auc": 0.3216,
+        "n": 49166,
+        "base_rate": 0.1394
+      }
+    },
+    "full_predictors": {
+      "OH": {
+        "auroc": 0.7332,
+        "auroc_ci95": [
+          0.7248,
+          0.7411
+        ],
+        "pr_auc": 0.4724,
+        "n": 23982,
+        "base_rate": 0.2014
+      },
+      "MI": {
+        "auroc": 0.7641,
+        "auroc_ci95": [
+          0.7495,
+          0.7764
+        ],
+        "pr_auc": 0.2552,
+        "n": 21919,
+        "base_rate": 0.0725
+      },
+      "WI": {
+        "auroc": 0.7958,
+        "auroc_ci95": [
+          0.7895,
+          0.8014
+        ],
+        "pr_auc": 0.5345,
+        "n": 49166,
+        "base_rate": 0.1394
+      }
+    }
+  },
+  "pooled_leave_one_region_out": {
+    "note": "train on all-but-one region, test on held-out region. Includes previous-sample persistence baseline on the held-out region.",
+    "strict_predictors": {
+      "OH": {
+        "model": {
+          "auroc": 0.53,
+          "auroc_ci95": [
+            0.5213,
+            0.5401
+          ],
+          "pr_auc": 0.2427,
+          "n": 23982,
+          "base_rate": 0.2014
+        },
+        "n_train": 71085,
+        "train_regions": [
+          "MI",
+          "WI"
+        ],
+        "baseline_persistence": {
+          "auroc": 0.5914,
+          "auroc_ci95": [
+            0.5844,
+            0.598
+          ],
+          "pr_auc": 0.252,
+          "n": 23892,
+          "base_rate": 0.2014
+        },
+        "model_on_persistence_subset": {
+          "auroc": 0.531,
+          "auroc_ci95": [
+            0.5212,
+            0.5403
+          ],
+          "pr_auc": 0.2429,
+          "n": 23892,
+          "base_rate": 0.2014
+        }
+      },
+      "MI": {
+        "model": {
+          "auroc": 0.5673,
+          "auroc_ci95": [
+            0.5523,
+            0.5821
+          ],
+          "pr_auc": 0.1022,
+          "n": 21919,
+          "base_rate": 0.0725
+        },
+        "n_train": 73148,
+        "train_regions": [
+          "OH",
+          "WI"
+        ],
+        "baseline_persistence": {
+          "auroc": 0.6002,
+          "auroc_ci95": [
+            0.59,
+            0.611
+          ],
+          "pr_auc": 0.1204,
+          "n": 21645,
+          "base_rate": 0.0724
+        },
+        "model_on_persistence_subset": {
+          "auroc": 0.5698,
+          "auroc_ci95": [
+            0.5556,
+            0.5849
+          ],
+          "pr_auc": 0.1032,
+          "n": 21645,
+          "base_rate": 0.0724
+        }
+      },
+      "WI": {
+        "model": {
+          "auroc": 0.5395,
+          "auroc_ci95": [
+            0.5319,
+            0.5474
+          ],
+          "pr_auc": 0.1873,
+          "n": 49166,
+          "base_rate": 0.1394
+        },
+        "n_train": 45901,
+        "train_regions": [
+          "OH",
+          "MI"
+        ],
+        "baseline_persistence": {
+          "auroc": 0.6777,
+          "auroc_ci95": [
+            0.6712,
+            0.6834
+          ],
+          "pr_auc": 0.2758,
+          "n": 48723,
+          "base_rate": 0.1395
+        },
+        "model_on_persistence_subset": {
+          "auroc": 0.5403,
+          "auroc_ci95": [
+            0.5328,
+            0.5484
+          ],
+          "pr_auc": 0.1892,
+          "n": 48723,
+          "base_rate": 0.1395
+        }
+      }
+    },
+    "full_predictors": {
+      "OH": {
+        "model": {
+          "auroc": 0.6359,
+          "auroc_ci95": [
+            0.6276,
+            0.645
+          ],
+          "pr_auc": 0.3365,
+          "n": 23982,
+          "base_rate": 0.2014
+        },
+        "n_train": 71085,
+        "train_regions": [
+          "MI",
+          "WI"
+        ],
+        "baseline_persistence": {
+          "auroc": 0.5914,
+          "auroc_ci95": [
+            0.5851,
+            0.5985
+          ],
+          "pr_auc": 0.252,
+          "n": 23892,
+          "base_rate": 0.2014
+        },
+        "model_on_persistence_subset": {
+          "auroc": 0.6355,
+          "auroc_ci95": [
+            0.626,
+            0.6447
+          ],
+          "pr_auc": 0.3365,
+          "n": 23892,
+          "base_rate": 0.2014
+        }
+      },
+      "MI": {
+        "model": {
+          "auroc": 0.5946,
+          "auroc_ci95": [
+            0.577,
+            0.6103
+          ],
+          "pr_auc": 0.1271,
+          "n": 21919,
+          "base_rate": 0.0725
+        },
+        "n_train": 73148,
+        "train_regions": [
+          "OH",
+          "WI"
+        ],
+        "baseline_persistence": {
+          "auroc": 0.6002,
+          "auroc_ci95": [
+            0.5887,
+            0.6102
+          ],
+          "pr_auc": 0.1204,
+          "n": 21645,
+          "base_rate": 0.0724
+        },
+        "model_on_persistence_subset": {
+          "auroc": 0.5961,
+          "auroc_ci95": [
+            0.5784,
+            0.6127
+          ],
+          "pr_auc": 0.1285,
+          "n": 21645,
+          "base_rate": 0.0724
+        }
+      },
+      "WI": {
+        "model": {
+          "auroc": 0.6533,
+          "auroc_ci95": [
+            0.6468,
+            0.6605
+          ],
+          "pr_auc": 0.2523,
+          "n": 49166,
+          "base_rate": 0.1394
+        },
+        "n_train": 45901,
+        "train_regions": [
+          "OH",
+          "MI"
+        ],
+        "baseline_persistence": {
+          "auroc": 0.6777,
+          "auroc_ci95": [
+            0.6709,
+            0.6841
+          ],
+          "pr_auc": 0.2758,
+          "n": 48723,
+          "base_rate": 0.1395
+        },
+        "model_on_persistence_subset": {
+          "auroc": 0.6539,
+          "auroc_ci95": [
+            0.6466,
+            0.6611
+          ],
+          "pr_auc": 0.2531,
+          "n": 48723,
+          "base_rate": 0.1395
+        }
+      }
+    }
+  },
+  "pooled_leave_sites_out": {
+    "note": "pool all regions, GroupKFold on site (every test site unseen anywhere).",
+    "strict_predictors": {
+      "pooled_oof": {
+        "auroc": 0.6348,
+        "auroc_ci95": [
+          0.6296,
+          0.6406
+        ],
+        "pr_auc": 0.2629,
+        "n": 95067,
+        "base_rate": 0.1396
+      },
+      "per_fold_auroc": [
+        0.6344,
+        0.6342,
+        0.6204,
+        0.6638,
+        0.6366
+      ],
+      "n_sites": 807,
+      "n": 95067
+    },
+    "full_predictors": {
+      "pooled_oof": {
+        "auroc": 0.7756,
+        "auroc_ci95": [
+          0.7711,
+          0.7805
+        ],
+        "pr_auc": 0.4757,
+        "n": 95067,
+        "base_rate": 0.1396
+      },
+      "per_fold_auroc": [
+        0.7389,
+        0.7923,
+        0.7736,
+        0.8025,
+        0.7733
+      ],
+      "n_sites": 807,
+      "n": 95067
+    }
+  },
+  "verdict": {
+    "predictor_set_for_verdict": "STRICT (geography-free, deployable)",
+    "cross_region_mean_auroc": 0.5544,
+    "within_region_mean_auroc_ceiling": 0.6632,
+    "leave_one_region_out_mean_auroc": 0.5456,
+    "transfer_gap_within_minus_cross": 0.1088,
+    "summary": "REGION-SPECIFIC: cross-region AUROC collapses toward base-rate; the hydromet relationship does not port to a new region."
+  },
+  "eval_seconds": 90.8
+}

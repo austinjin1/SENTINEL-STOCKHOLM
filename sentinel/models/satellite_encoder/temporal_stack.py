@@ -141,7 +141,7 @@ class TemporalCrossAttentionLayer(nn.Module):
             # [B, T, T]: each query sees same key bias
             attn_bias = log_conf.unsqueeze(1).expand(B, T, T)
             # MultiheadAttention expects [B*num_heads, T, T] or None
-            # We'll add it after pre-norm manually isn't supported,
+            # Adding it after pre-norm isn't supported manually,
             # so we scale the input instead (approximate approach)
             # Actually, use attn_mask parameter: additive mask
             num_heads = self.self_attn.num_heads

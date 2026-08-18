@@ -1,0 +1,832 @@
+{
+  "event_definition": "first QC-clean specific-conductance > site-relative HIGH threshold [max(median+4*IQR/1.349, p99.5)] sustained >=6 h, preceded by >=7 d clean baseline; artifact + monotone-ramp screened; peak/thr>=1.05 separation",
+  "n_event_sites_adequate": 30,
+  "n_control_sites_adequate": 11,
+  "enough": true,
+  "event_sites": [
+    "01302020",
+    "01389005",
+    "01400500",
+    "01467087",
+    "01475530",
+    "01475548",
+    "01480617",
+    "01480870",
+    "01481000",
+    "01574000",
+    "01585219",
+    "01642199",
+    "01649500",
+    "01650800",
+    "01651000",
+    "01651003",
+    "01653560",
+    "04087234",
+    "04092750",
+    "04161820",
+    "04165500",
+    "04166500",
+    "04168400",
+    "04208000",
+    "0423205010",
+    "05288705",
+    "05289800",
+    "05536995",
+    "05538020",
+    "06893620"
+  ],
+  "control_sites": [
+    "01473900",
+    "01474000",
+    "01653521",
+    "01653522",
+    "03524000",
+    "04118997",
+    "04167625",
+    "04199000",
+    "04231600",
+    "05538010",
+    "412240071574700"
+  ],
+  "sites": {
+    "01302020": {
+      "role": "episode",
+      "onset_ts": 1641607200,
+      "onset_utc": "2022-01-08T02:00:00+00:00",
+      "cond_peak": 5060.0,
+      "cond_thr": 4720.0,
+      "baseline": 940.0,
+      "runway_days": 193.4,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.964,
+      "n_clean_cond_bins": 135372,
+      "n_days": 1463.5
+    },
+    "01389005": {
+      "role": "episode",
+      "onset_ts": 1739005200,
+      "onset_utc": "2025-02-08T09:00:00+00:00",
+      "cond_peak": 2590.0,
+      "cond_thr": 2570.0,
+      "baseline": 1680.0,
+      "runway_days": 1348.2,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.246,
+      "n_clean_cond_bins": 35186,
+      "n_days": 1491.0
+    },
+    "01400500": {
+      "role": "episode",
+      "onset_ts": 1738878300,
+      "onset_utc": "2025-02-06T21:45:00+00:00",
+      "cond_peak": 1510.0,
+      "cond_thr": 1460.0,
+      "baseline": 642.0,
+      "runway_days": 1346.7,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.868,
+      "n_clean_cond_bins": 124189,
+      "n_days": 1491.0
+    },
+    "01467087": {
+      "role": "episode",
+      "onset_ts": 1705508100,
+      "onset_utc": "2024-01-17T16:15:00+00:00",
+      "cond_peak": 3100.0,
+      "cond_thr": 3090.0,
+      "baseline": 545.0,
+      "runway_days": 960.5,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.885,
+      "n_clean_cond_bins": 126614,
+      "n_days": 1490.7
+    },
+    "01473900": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 1656.6,
+      "baseline": 859.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.585,
+      "n_clean_cond_bins": 40452,
+      "n_days": 720.0
+    },
+    "01474000": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 1330.2,
+      "baseline": 755.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.364,
+      "n_clean_cond_bins": 25174,
+      "n_days": 720.0
+    },
+    "01475530": {
+      "role": "episode",
+      "onset_ts": 1647119700,
+      "onset_utc": "2022-03-12T21:15:00+00:00",
+      "cond_peak": 1200.0,
+      "cond_thr": 822.2,
+      "baseline": 638.0,
+      "runway_days": 284.7,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.718,
+      "n_clean_cond_bins": 102793,
+      "n_days": 1491.0
+    },
+    "01475548": {
+      "role": "episode",
+      "onset_ts": 1647270000,
+      "onset_utc": "2022-03-14T15:00:00+00:00",
+      "cond_peak": 1210.0,
+      "cond_thr": 1209.2,
+      "baseline": 657.0,
+      "runway_days": 286.5,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.728,
+      "n_clean_cond_bins": 103916,
+      "n_days": 1486.5
+    },
+    "01480617": {
+      "role": "episode",
+      "onset_ts": 1642394700,
+      "onset_utc": "2022-01-17T04:45:00+00:00",
+      "cond_peak": 921.0,
+      "cond_thr": 663.8,
+      "baseline": 442.0,
+      "runway_days": 230.0,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.997,
+      "n_clean_cond_bins": 142734,
+      "n_days": 1491.0
+    },
+    "01480870": {
+      "role": "episode",
+      "onset_ts": 1738863900,
+      "onset_utc": "2025-02-06T17:45:00+00:00",
+      "cond_peak": 790.0,
+      "cond_thr": 762.0,
+      "baseline": 504.0,
+      "runway_days": 1346.6,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.825,
+      "n_clean_cond_bins": 118068,
+      "n_days": 1491.0
+    },
+    "01481000": {
+      "role": "episode",
+      "onset_ts": 1645834500,
+      "onset_utc": "2022-02-26T00:15:00+00:00",
+      "cond_peak": 621.0,
+      "cond_thr": 619.0,
+      "baseline": 391.0,
+      "runway_days": 269.8,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.897,
+      "n_clean_cond_bins": 128341,
+      "n_days": 1491.0
+    },
+    "01574000": {
+      "role": "episode",
+      "onset_ts": 1641829500,
+      "onset_utc": "2022-01-10T15:45:00+00:00",
+      "cond_peak": 581.0,
+      "cond_thr": 578.0,
+      "baseline": 335.0,
+      "runway_days": 223.5,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.992,
+      "n_clean_cond_bins": 141982,
+      "n_days": 1491.0
+    },
+    "01585219": {
+      "role": "episode",
+      "onset_ts": 1641213000,
+      "onset_utc": "2022-01-03T12:30:00+00:00",
+      "cond_peak": 2410.0,
+      "cond_thr": 2120.0,
+      "baseline": 361.0,
+      "runway_days": 215.8,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.979,
+      "n_clean_cond_bins": 80358,
+      "n_days": 854.8
+    },
+    "01642199": {
+      "role": "episode",
+      "onset_ts": 1642395600,
+      "onset_utc": "2022-01-17T05:00:00+00:00",
+      "cond_peak": 1160.0,
+      "cond_thr": 1010.0,
+      "baseline": 657.0,
+      "runway_days": 230.0,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.994,
+      "n_clean_cond_bins": 133518,
+      "n_days": 1399.5
+    },
+    "01649500": {
+      "role": "episode",
+      "onset_ts": 1705419000,
+      "onset_utc": "2024-01-16T15:30:00+00:00",
+      "cond_peak": 2920.0,
+      "cond_thr": 2830.0,
+      "baseline": 220.5,
+      "runway_days": 959.5,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.98,
+      "n_clean_cond_bins": 140274,
+      "n_days": 1491.0
+    },
+    "01650800": {
+      "role": "episode",
+      "onset_ts": 1641359700,
+      "onset_utc": "2022-01-05T05:15:00+00:00",
+      "cond_peak": 5920.0,
+      "cond_thr": 5820.0,
+      "baseline": 582.5,
+      "runway_days": 218.1,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.996,
+      "n_clean_cond_bins": 142613,
+      "n_days": 1491.0
+    },
+    "01651000": {
+      "role": "episode",
+      "onset_ts": 1641342600,
+      "onset_utc": "2022-01-05T00:30:00+00:00",
+      "cond_peak": 3750.0,
+      "cond_thr": 3614.7,
+      "baseline": 430.0,
+      "runway_days": 217.9,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.988,
+      "n_clean_cond_bins": 41307,
+      "n_days": 435.7
+    },
+    "01651003": {
+      "role": "episode",
+      "onset_ts": 1705688100,
+      "onset_utc": "2024-01-19T18:15:00+00:00",
+      "cond_peak": 5690.0,
+      "cond_thr": 5560.0,
+      "baseline": 1135.0,
+      "runway_days": 233.1,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.986,
+      "n_clean_cond_bins": 72047,
+      "n_days": 761.5
+    },
+    "01653521": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 469.5,
+      "baseline": 259.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.991,
+      "n_clean_cond_bins": 7833,
+      "n_days": 82.4
+    },
+    "01653522": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 349.9,
+      "baseline": 252.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 1.0,
+      "n_clean_cond_bins": 7923,
+      "n_days": 82.5
+    },
+    "01653560": {
+      "role": "episode",
+      "onset_ts": 1736330400,
+      "onset_utc": "2025-01-08T10:00:00+00:00",
+      "cond_peak": 1540.0,
+      "cond_thr": 1520.0,
+      "baseline": 304.0,
+      "runway_days": 116.6,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.977,
+      "n_clean_cond_bins": 27233,
+      "n_days": 290.4
+    },
+    "03524000": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 444.5,
+      "baseline": 314.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.96,
+      "n_clean_cond_bins": 137426,
+      "n_days": 1491.0
+    },
+    "04087234": {
+      "role": "episode",
+      "onset_ts": 1668700800,
+      "onset_utc": "2022-11-17T16:00:00+00:00",
+      "cond_peak": 1740.0,
+      "cond_thr": 1693.8,
+      "baseline": 1080.0,
+      "runway_days": 534.5,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.182,
+      "n_clean_cond_bins": 26051,
+      "n_days": 1491.0
+    },
+    "04092750": {
+      "role": "episode",
+      "onset_ts": 1706086800,
+      "onset_utc": "2024-01-24T09:00:00+00:00",
+      "cond_peak": 913.0,
+      "cond_thr": 910.2,
+      "baseline": 699.0,
+      "runway_days": 967.2,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.418,
+      "n_clean_cond_bins": 39778,
+      "n_days": 992.0
+    },
+    "04118997": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 834.8,
+      "baseline": 648.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.611,
+      "n_clean_cond_bins": 54351,
+      "n_days": 925.9
+    },
+    "04161820": {
+      "role": "episode",
+      "onset_ts": 1643836500,
+      "onset_utc": "2022-02-02T21:15:00+00:00",
+      "cond_peak": 2390.0,
+      "cond_thr": 2320.0,
+      "baseline": 1270.0,
+      "runway_days": 246.7,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.886,
+      "n_clean_cond_bins": 126754,
+      "n_days": 1491.0
+    },
+    "04165500": {
+      "role": "episode",
+      "onset_ts": 1643851800,
+      "onset_utc": "2022-02-03T01:30:00+00:00",
+      "cond_peak": 3030.0,
+      "cond_thr": 2990.0,
+      "baseline": 1600.0,
+      "runway_days": 246.9,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.933,
+      "n_clean_cond_bins": 133558,
+      "n_days": 1491.0
+    },
+    "04166500": {
+      "role": "episode",
+      "onset_ts": 1706026500,
+      "onset_utc": "2024-01-23T16:15:00+00:00",
+      "cond_peak": 4850.0,
+      "cond_thr": 4840.0,
+      "baseline": 2930.0,
+      "runway_days": 966.5,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.984,
+      "n_clean_cond_bins": 140872,
+      "n_days": 1491.0
+    },
+    "04167625": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 1465.9,
+      "baseline": 1030.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.994,
+      "n_clean_cond_bins": 7120,
+      "n_days": 74.6
+    },
+    "04168400": {
+      "role": "episode",
+      "onset_ts": 1674725400,
+      "onset_utc": "2023-01-26T09:30:00+00:00",
+      "cond_peak": 3080.0,
+      "cond_thr": 3050.0,
+      "baseline": 1150.0,
+      "runway_days": 604.2,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.877,
+      "n_clean_cond_bins": 125266,
+      "n_days": 1487.5
+    },
+    "04199000": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 1046.3,
+      "baseline": 649.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.812,
+      "n_clean_cond_bins": 96175,
+      "n_days": 1233.4
+    },
+    "04208000": {
+      "role": "episode",
+      "onset_ts": 1643859000,
+      "onset_utc": "2022-02-03T03:30:00+00:00",
+      "cond_peak": 1860.0,
+      "cond_thr": 1830.0,
+      "baseline": 1420.0,
+      "runway_days": 247.0,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.457,
+      "n_clean_cond_bins": 54109,
+      "n_days": 1232.5
+    },
+    "04231600": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 1112.5,
+      "baseline": 558.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.988,
+      "n_clean_cond_bins": 141431,
+      "n_days": 1491.0
+    },
+    "0423205010": {
+      "role": "episode",
+      "onset_ts": 1671229800,
+      "onset_utc": "2022-12-16T22:30:00+00:00",
+      "cond_peak": 2740.0,
+      "cond_thr": 2700.0,
+      "baseline": 1500.0,
+      "runway_days": 563.7,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.989,
+      "n_clean_cond_bins": 141559,
+      "n_days": 1491.0
+    },
+    "05288705": {
+      "role": "episode",
+      "onset_ts": 1646084700,
+      "onset_utc": "2022-02-28T21:45:00+00:00",
+      "cond_peak": 4540.0,
+      "cond_thr": 3930.0,
+      "baseline": 2505.0,
+      "runway_days": 272.7,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.989,
+      "n_clean_cond_bins": 141559,
+      "n_days": 1491.0
+    },
+    "05289800": {
+      "role": "episode",
+      "onset_ts": 1673937900,
+      "onset_utc": "2023-01-17T06:45:00+00:00",
+      "cond_peak": 1580.0,
+      "cond_thr": 1563.9,
+      "baseline": 758.0,
+      "runway_days": 595.1,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.885,
+      "n_clean_cond_bins": 126707,
+      "n_days": 1491.0
+    },
+    "05536995": {
+      "role": "episode",
+      "onset_ts": 1706231700,
+      "onset_utc": "2024-01-26T01:15:00+00:00",
+      "cond_peak": 2480.0,
+      "cond_thr": 2450.0,
+      "baseline": 1640.0,
+      "runway_days": 968.8,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.942,
+      "n_clean_cond_bins": 134294,
+      "n_days": 1484.9
+    },
+    "05538010": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 2138.5,
+      "baseline": 1160.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.75,
+      "n_clean_cond_bins": 17659,
+      "n_days": 245.4
+    },
+    "05538020": {
+      "role": "episode",
+      "onset_ts": 1706283900,
+      "onset_utc": "2024-01-26T15:45:00+00:00",
+      "cond_peak": 2420.0,
+      "cond_thr": 2380.0,
+      "baseline": 1850.0,
+      "runway_days": 969.4,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": true,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.972,
+      "n_clean_cond_bins": 115028,
+      "n_days": 1232.5
+    },
+    "06893620": {
+      "role": "episode",
+      "onset_ts": 1704934800,
+      "onset_utc": "2024-01-11T01:00:00+00:00",
+      "cond_peak": 1910.0,
+      "cond_thr": 1900.0,
+      "baseline": 890.0,
+      "runway_days": 953.8,
+      "adequate": true,
+      "params_present": {
+        "DO": true,
+        "pH": false,
+        "turbidity": true,
+        "conductivity": true
+      },
+      "cond_cov": 0.956,
+      "n_clean_cond_bins": 90077,
+      "n_days": 981.6
+    },
+    "412240071574700": {
+      "role": "control",
+      "onset_ts": null,
+      "onset_utc": null,
+      "cond_peak": null,
+      "cond_thr": 79449.5,
+      "baseline": 32600.0,
+      "runway_days": null,
+      "adequate": true,
+      "params_present": {
+        "DO": false,
+        "pH": false,
+        "turbidity": false,
+        "conductivity": true
+      },
+      "cond_cov": 0.929,
+      "n_clean_cond_bins": 57901,
+      "n_days": 649.0
+    }
+  }
+}

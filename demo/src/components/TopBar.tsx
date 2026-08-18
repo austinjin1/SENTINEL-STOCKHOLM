@@ -22,9 +22,7 @@ export function TopBar({ dispatch, colorBlind }: Props) {
     <div
       style={{
         height: 56,
-        background: 'rgba(255,255,255,0.72)',
-        backdropFilter: 'blur(20px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        background: 'var(--bg-surface)',
         borderBottom: '1px solid var(--border-subtle)',
         display: 'flex',
         alignItems: 'center',

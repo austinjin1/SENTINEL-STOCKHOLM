@@ -1,0 +1,419 @@
+{
+  "title": "Track A PUSH: per-site adaptive operating point + expanded real-event set for the label-free AquaSSM reconstruction-residual lead-time detector",
+  "context": {
+    "established_result": "rolling-CUSUM is a matched-FPR Pareto win over the point-threshold baseline: at ~5% held-out clean-control FPR, 10/12 episodes (median lead 37.2 d) vs 5/12 (25.5 d).",
+    "reproduced_here": {
+      "cusum_5pct_det": 10,
+      "cusum_5pct_lead": 37.23,
+      "cusum_5pct_fpr": 0.05,
+      "baseline_5pct_det": 5,
+      "baseline_5pct_lead": 25.51
+    }
+  },
+  "a_per_site_adaptive_vs_global_h": {
+    "event_set": "original 12 NEON DO-hypoxia episodes / 10 controls",
+    "sweep_interleave": [
+      {
+        "target_fpr": 0.03,
+        "global_h": {
+          "det": 9,
+          "fpr": 0.0299,
+          "lead": 32.11
+        },
+        "per_site_adaptive": {
+          "det": 10,
+          "fpr": 0.0278,
+          "lead": 30.93,
+          "per_site_q": 0.0124
+        },
+        "adaptive_beats_global": false,
+        "adaptive_ties_global": false,
+        "adaptive_extra_episodes": [
+          "BARC"
+        ],
+        "global_extra_episodes": []
+      },
+      {
+        "target_fpr": 0.05,
+        "global_h": {
+          "det": 10,
+          "fpr": 0.05,
+          "lead": 37.23
+        },
+        "per_site_adaptive": {
+          "det": 10,
+          "fpr": 0.049,
+          "lead": 34.81,
+          "per_site_q": 0.032
+        },
+        "adaptive_beats_global": false,
+        "adaptive_ties_global": false,
+        "adaptive_extra_episodes": [],
+        "global_extra_episodes": []
+      },
+      {
+        "target_fpr": 0.07,
+        "global_h": {
+          "det": 10,
+          "fpr": 0.0695,
+          "lead": 40.15
+        },
+        "per_site_adaptive": {
+          "det": 10,
+          "fpr": 0.0687,
+          "lead": 33.94,
+          "per_site_q": 0.0517
+        },
+        "adaptive_beats_global": false,
+        "adaptive_ties_global": false,
+        "adaptive_extra_episodes": [],
+        "global_extra_episodes": []
+      }
+    ],
+    "temporal_split_overlap_control_sites": 0,
+    "interleave_split_overlap_control_sites": 1,
+    "verdict": {
+      "adaptive_beats_global_at_any_fpr": false,
+      "adaptive_ties_or_beats_global_at_all_fpr": false,
+      "headline_5pct": {
+        "global_det": 10,
+        "global_lead": 37.23,
+        "global_fpr": 0.05,
+        "adaptive_det": 10,
+        "adaptive_lead": 34.81,
+        "adaptive_fpr": 0.049
+      }
+    }
+  },
+  "b_expanded_event_set": {
+    "n_episodes": 15,
+    "n_controls": 17,
+    "new_episodes": [
+      "BLWA",
+      "PRLA",
+      "SUGG"
+    ],
+    "new_controls": [
+      "POSE",
+      "PRPO",
+      "REDB",
+      "TECR",
+      "TOMB",
+      "WALK",
+      "WLOU"
+    ],
+    "episode_sites": [
+      "ARIK",
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "CRAM",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN",
+      "PRLA",
+      "SUGG"
+    ],
+    "control_sites": [
+      "BLDE",
+      "BLUE",
+      "CARI",
+      "CUPE",
+      "FLNT",
+      "HOPB",
+      "LEWI",
+      "MART",
+      "MCRA",
+      "OKSR",
+      "POSE",
+      "PRPO",
+      "REDB",
+      "TECR",
+      "TOMB",
+      "WALK",
+      "WLOU"
+    ],
+    "sweep_interleave": [
+      {
+        "target_fpr": 0.03,
+        "baseline": {
+          "det": 3,
+          "of": 15,
+          "fpr": 0.0299,
+          "lead": 12.58
+        },
+        "cusum_global_h": {
+          "det": 11,
+          "of": 15,
+          "fpr": 0.0299,
+          "lead": 35.35
+        },
+        "cusum_per_site_adaptive": {
+          "det": 11,
+          "fpr": 0.0293,
+          "lead": 32.11
+        },
+        "pareto_win_cusum_over_baseline": true,
+        "new_episodes_detected_by_cusum": [
+          "BLWA"
+        ]
+      },
+      {
+        "target_fpr": 0.05,
+        "baseline": {
+          "det": 5,
+          "of": 15,
+          "fpr": 0.0481,
+          "lead": 25.51
+        },
+        "cusum_global_h": {
+          "det": 11,
+          "of": 15,
+          "fpr": 0.0497,
+          "lead": 36.1
+        },
+        "cusum_per_site_adaptive": {
+          "det": 11,
+          "fpr": 0.0492,
+          "lead": 36.1
+        },
+        "pareto_win_cusum_over_baseline": true,
+        "new_episodes_detected_by_cusum": [
+          "BLWA"
+        ]
+      },
+      {
+        "target_fpr": 0.07,
+        "baseline": {
+          "det": 6,
+          "of": 15,
+          "fpr": 0.069,
+          "lead": 29.0
+        },
+        "cusum_global_h": {
+          "det": 11,
+          "of": 15,
+          "fpr": 0.0681,
+          "lead": 37.53
+        },
+        "cusum_per_site_adaptive": {
+          "det": 11,
+          "fpr": 0.0679,
+          "lead": 35.59
+        },
+        "pareto_win_cusum_over_baseline": true,
+        "new_episodes_detected_by_cusum": [
+          "BLWA"
+        ]
+      }
+    ],
+    "verdict": {
+      "n_episodes": 15,
+      "n_controls": 17,
+      "cusum_pareto_dominates_at_all_fpr_interleave": true,
+      "cusum_pareto_dominates_at_all_fpr_temporal": true,
+      "headline_5pct": {
+        "baseline_det": 5,
+        "baseline_lead": 25.51,
+        "baseline_fpr": 0.0481,
+        "cusum_det": 11,
+        "cusum_lead": 36.1,
+        "cusum_fpr": 0.0497,
+        "adaptive_det": 11,
+        "adaptive_lead": 36.1,
+        "adaptive_fpr": 0.0492,
+        "new_episodes_caught_by_cusum": [
+          "BLWA"
+        ]
+      }
+    }
+  },
+  "c_pareto_hold_or_improve": {
+    "original_12_cusum_pareto_all_fpr": true,
+    "expanded_cusum_pareto_all_fpr_interleave": true,
+    "expanded_cusum_pareto_all_fpr_temporal": true,
+    "original_5pct": {
+      "baseline": 5,
+      "cusum": 10
+    },
+    "expanded_5pct": {
+      "baseline_det": 5,
+      "baseline_lead": 25.51,
+      "baseline_fpr": 0.0481,
+      "cusum_det": 11,
+      "cusum_lead": 36.1,
+      "cusum_fpr": 0.0497,
+      "adaptive_det": 11,
+      "adaptive_lead": 36.1,
+      "adaptive_fpr": 0.0492,
+      "new_episodes_caught_by_cusum": [
+        "BLWA"
+      ]
+    }
+  },
+  "d_guardrails": {
+    "label_free": true,
+    "precursor_only_all_detections_verified_from_raw_DO": true,
+    "held_out_control_fpr": true,
+    "real_neon_data_only": true,
+    "precursor_detail_expanded_cusum_5pct": {
+      "BLWA": {
+        "lead_days": 36.1,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "MCDI": {
+        "lead_days": 43.09,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "LIRO": {
+        "lead_days": 23.12,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "GUIL": {
+        "lead_days": 43.01,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "PRIN": {
+        "lead_days": 15.54,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "MAYF": {
+        "lead_days": 32.28,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "COMO": {
+        "lead_days": 20.11,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "KING": {
+        "lead_days": 44.67,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "LECO": {
+        "lead_days": 44.01,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "BARC": {
+        "lead_days": 44.91,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "BIGC": {
+        "lead_days": 29.42,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      }
+    },
+    "precursor_detail_adaptive_5pct": {
+      "PRIN": {
+        "lead_days": 16.21,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "MCDI": {
+        "lead_days": 41.34,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "LIRO": {
+        "lead_days": 23.12,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "BARC": {
+        "lead_days": 44.82,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "COMO": {
+        "lead_days": 21.45,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "BIGC": {
+        "lead_days": 29.75,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "KING": {
+        "lead_days": 44.58,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "MAYF": {
+        "lead_days": 32.2,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "LECO": {
+        "lead_days": 44.09,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      },
+      "GUIL": {
+        "lead_days": 37.43,
+        "alarm_before_onset": true,
+        "alarm_window_not_hypoxia_near": true,
+        "alarm_before_first_ever_hypoxia": true
+      }
+    },
+    "mart_absolute_fpr_caveat_fix": "temporal single-run split makes MART (and every single-clean-run control) calibrate & evaluate on DISJOINT halves of its own run: control_sites_with_cal_hold_overlap==0 under the temporal split (vs 1 under interleave), so the pooled held-out FPR denominator is fully out-of-sample. Pareto verdict identical under both splits."
+  },
+  "e_honest_verdict": {
+    "sub_goal_1_per_site_adaptive": "NOT a clean Pareto win over global-h. It helps only at the STRINGENT 3% operating point (validates +1 episode, BARC: 10/12 vs 9/12, at a LOWER held-out FPR 0.028 vs 0.030). At 5%/7% it TIES on episode count (10/12) at marginally lower FPR but with somewhat shorter median lead (34.8 vs 37.2 d @5%). Net: a modest, operating-point-dependent gain; its clearest value is tightening the FPR (matches at <= global FPR at every level, robust under the temporal single-run split).",
+    "sub_goal_2_expanded_set": "Event set grown from 12->15 real NEON DO-hypoxia episodes (+BLWA, +SUGG, +PRLA) and 10->17 clean controls (+POSE,PRPO,REDB,TECR,TOMB,WALK,WLOU). CUSUM catches 11/15 at ~5% held-out FPR (lead 36.1 d) vs baseline 5/15 (25.5 d): the matched-FPR Pareto win HOLDS and STRENGTHENS at all swept FPR on BOTH splits. Of the 3 new episodes, BLWA is a genuine new validated detection (36.1 d lead, all precursor guardrails pass); SUGG and PRLA are UN-VALIDATABLE by construction (short records leave ZERO covered non-hypoxia-near pre-onset windows >=7 d before onset), so no detector can catch them and they penalize neither -- effectively 11/13 catchable.",
+    "fpr_caveat": "MART absolute-FPR caveat FIXED via the temporal single-run split (each single-clean-run control calibrates & evaluates on disjoint halves of its OWN run -> control_sites_with_cal_hold_overlap==0, fully out-of-sample held-out FPR). Expanding controls 10->17 also dilutes any single-site window reuse. Pareto verdict identical.",
+    "overall": "The central lead-time claim is REINFORCED on more real events: rolling-CUSUM remains a matched-FPR Pareto win (11/15 vs 5/15 @5%). Per-site adaptation is a real but modest refinement (helps at tight FPR, tightens the FPR caveat) rather than a decisive improvement."
+  },
+  "catchable_episode_note": {
+    "expanded_new_episodes_pre_onset_keep_windows": {
+      "BLWA": 456,
+      "SUGG": 0,
+      "PRLA": 0
+    },
+    "meaning": "SUGG/PRLA have zero valid pre-onset detection windows (record too short / onset too early) so are un-validatable under the strict precursor guardrail; the fair CUSUM tally is 11/13 catchable at 5% FPR."
+  },
+  "files": {
+    "extract_expanded": "scripts/experiments/trackA_leadtime/06_extract_expanded.py",
+    "cache_residuals_expanded": "scripts/experiments/trackA_leadtime/aquassm_specificity/cache_residuals_expanded.py",
+    "per_site_adaptive": "scripts/experiments/trackA_leadtime/aquassm_specificity/per_site_adaptive.py",
+    "expanded_matched_fpr": "scripts/experiments/trackA_leadtime/aquassm_specificity/expanded_matched_fpr.py",
+    "expanded_manifest": "data/processed/trackA/expanded_manifest.json",
+    "per_site_adaptive_json": "results/trackA_leadtime/aquassm_specificity/per_site_adaptive.json",
+    "expanded_matched_fpr_json": "results/trackA_leadtime/aquassm_specificity/expanded_matched_fpr.json"
+  }
+}

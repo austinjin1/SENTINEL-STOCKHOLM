@@ -1,0 +1,98 @@
+{
+  "candidate_key": "do-soft-upweight",
+  "candidate_name": "DO soft up-weight",
+  "spec": {
+    "weights_pH_DO_turb_cond": [
+      1.0,
+      1.5,
+      1.0,
+      1.0
+    ],
+    "floor": 1.0,
+    "w_base": 240,
+    "guard": 12,
+    "min_base": 20,
+    "slack_k": 1.0,
+    "target_fpr": 0.05
+  },
+  "headline_bar": {
+    "episodes_detected>=": 11,
+    "median_lead_days>=": 36.1,
+    "control_heldout_fpr<=": 0.05
+  },
+  "primary_interleave": {
+    "split": "interleave",
+    "n_episode_sites": 15,
+    "n_control_sites": 17,
+    "global_h": 58.7415,
+    "control_heldout_fpr": 0.05,
+    "episodes_detected": 12,
+    "median_lead_days": 34.1927,
+    "detected_sites": [
+      "ARIK",
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "leads_by_site": {
+      "ARIK": 12.0,
+      "BARC": 44.4896,
+      "BIGC": 29.9167,
+      "BLWA": 36.1042,
+      "COMO": 20.9479,
+      "GUIL": 43.9271,
+      "KING": 44.6667,
+      "LECO": 44.0104,
+      "LIRO": 26.5417,
+      "MAYF": 32.2812,
+      "MCDI": 43.4271,
+      "PRIN": 15.2083
+    }
+  },
+  "robustness_temporal": {
+    "split": "temporal",
+    "n_episode_sites": 15,
+    "n_control_sites": 17,
+    "global_h": 68.9073,
+    "control_heldout_fpr": 0.0482,
+    "episodes_detected": 12,
+    "median_lead_days": 34.0677,
+    "detected_sites": [
+      "ARIK",
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "leads_by_site": {
+      "ARIK": 11.9167,
+      "BARC": 44.3229,
+      "BIGC": 29.6667,
+      "BLWA": 35.9375,
+      "COMO": 20.6146,
+      "GUIL": 43.1771,
+      "KING": 44.6667,
+      "LECO": 43.9271,
+      "LIRO": 26.4583,
+      "MAYF": 32.1979,
+      "MCDI": 42.9271,
+      "PRIN": 14.875
+    }
+  },
+  "is_pareto_win": false
+}

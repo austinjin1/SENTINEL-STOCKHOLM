@@ -89,13 +89,13 @@ export function AquaSSMCard({ sensor, cardIndex, maskPct = 1 }: Props) {
   return (
     <ModalityCard
       name="AquaSSM"
-      subtitle="Continuous-time SSM · 8 timescales · 25M params"
+      subtitle="Continuous-time SSM · recon RMSE 0.83 (real NEON)"
       accentColor="var(--m-sensor)"
       coverage={sensor.state}
       conf={sensor.conf}
       cardIndex={cardIndex}
       headlineMetric={sensor.anomaly.toFixed(3)}
-      headlineLabel="Anomaly probability"
+      headlineLabel="Anomaly prob (synthetic-injected-anomaly recovery, not real contamination)"
       secondary={<span style={{ color: 'var(--text-tertiary)' }}>Health nominal</span>}
     >
       {/* 6 sparklines */}
@@ -137,7 +137,7 @@ export function AquaSSMCard({ sensor, cardIndex, maskPct = 1 }: Props) {
                   top: 1,
                   right: 3,
                   fontSize: 8,
-                  color: 'var(--text-mono)',
+                  color: 'var(--text-tertiary)',
                 }}
               >
                 {last.toFixed(p.key === 'cond' ? 0 : 1)}
@@ -149,12 +149,6 @@ export function AquaSSMCard({ sensor, cardIndex, maskPct = 1 }: Props) {
       {/* anomaly line */}
       <div style={{ marginTop: 6, height: 40, position: 'relative', border: '1px solid var(--hairline)' }}>
         <svg width="100%" height="100%" viewBox="0 0 220 40" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="anomGrad" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="var(--alert)" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="var(--alert)" stopOpacity="0" />
-            </linearGradient>
-          </defs>
           {/* threshold */}
           <line x1="0" y1={40 - 0.9 * 40} x2="220" y2={40 - 0.9 * 40} stroke="var(--text-tertiary)" strokeWidth="0.5" strokeDasharray="2 2" />
           {/* fill */}
@@ -174,7 +168,7 @@ export function AquaSSMCard({ sensor, cardIndex, maskPct = 1 }: Props) {
             const fill = `${pastPts} L${lastX},40 L0,40 Z`;
             return (
               <>
-                <path d={fill} fill="url(#anomGrad)" />
+                <path d={fill} fill="var(--alert)" fillOpacity={0.12} />
                 <path d={pastPts} fill="none" stroke="var(--alert)" strokeWidth={1.4} />
                 {maskPct < 1 && (
                   <path

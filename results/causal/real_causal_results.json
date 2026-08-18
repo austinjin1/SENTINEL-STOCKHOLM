@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "Lagged partial-correlation SCREENING (not causal discovery, NOT PCMCI+). Of 375 discovered chains, 0/375 were validated against the known-chain set (validation_rate=0.0). Do not describe these as 'causal' or 'novel' findings; they are correlational lead-lag screens.",
   "source": "real_grqa_data",
   "n_sites_analyzed": 20,
   "max_lag_hours": 168,

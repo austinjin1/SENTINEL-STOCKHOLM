@@ -151,7 +151,7 @@ export function resolve(lat: number, lon: number): CanonicalRecord {
     behavioral: { state: 'DEPLOYABLE', conf: 0, anomaly: 0.05, signature: 'normal', keyframes: [] },
     fusion: {
       anomaly: anomaly * 0.9,
-      auroc: 0.939,
+      auroc: 0.649, // real co-located NEON+S2 station holdout (n=362); fusion does NOT beat best single encoder
       alert: fusionAlert,
       attention: [0.55, 0.45, 0, 0, 0],
       coverage: isObserved ? 0.9 : 0.6 + conf * 0.2,

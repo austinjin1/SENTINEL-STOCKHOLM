@@ -1,0 +1,827 @@
+{
+  "description": "Digital Twin reformulation study on REAL USGS test sites.",
+  "n_test_windows": 53581,
+  "row_alignment_to_cache": 1.0,
+  "state_variables": [
+    "dissolved_oxygen",
+    "bod",
+    "total_nitrogen",
+    "total_phosphorus",
+    "chlorophyll_a",
+    "temperature",
+    "ph",
+    "turbidity",
+    "doc",
+    "sediment"
+  ],
+  "real_observed_variables": [
+    "dissolved_oxygen",
+    "temperature",
+    "ph",
+    "turbidity"
+  ],
+  "note_6_of_10_vars_unobserved": "bod,total_nitrogen,total_phosphorus,chlorophyll_a,doc,sediment have ZERO valid test observations; absolute-state R2 is dominated by the SpCond-proxy channel.",
+  "forecast_horizons": [
+    1,
+    7,
+    14,
+    30,
+    90,
+    365
+  ],
+  "exceedance_definitions": {
+    "dissolved_oxygen": {
+      "name": "DO_hypoxia_lt5",
+      "dir": "below",
+      "threshold": 5.0
+    },
+    "temperature": {
+      "name": "temp_gt25C",
+      "dir": "above",
+      "threshold": 25.0
+    },
+    "ph": {
+      "name": "pH_gt8.5",
+      "dir": "above",
+      "threshold": 8.5
+    },
+    "turbidity": {
+      "name": "turb_gt100",
+      "dir": "above",
+      "threshold": 100.0
+    }
+  },
+  "model_delta_evaluated": true,
+  "reformulation_A_change": {
+    "dissolved_oxygen": {
+      "1": {
+        "n": 22649,
+        "true_delta_std": 1.0981850624084473,
+        "true_delta_mad": 0.37408503890037537,
+        "clim_delta_skill_vs_zero": -4.713781645309152,
+        "clim_dir_acc": 0.533568003264973,
+        "base_dir_acc": 0.5006631976328946,
+        "model_delta_skill_vs_zero": -28.998663172540383,
+        "model_dir_acc": 0.5142295353409914
+      },
+      "7": {
+        "n": 22621,
+        "true_delta_std": 2.005707025527954,
+        "true_delta_mad": 0.9934663772583008,
+        "clim_delta_skill_vs_zero": -0.6734330413717999,
+        "clim_dir_acc": 0.601867769363007,
+        "base_dir_acc": 0.5157273614273103,
+        "model_delta_skill_vs_zero": -9.201775726366625,
+        "model_dir_acc": 0.5359281437125748
+      },
+      "14": {
+        "n": 22629,
+        "true_delta_std": 2.351466178894043,
+        "true_delta_mad": 1.2489759922027588,
+        "clim_delta_skill_vs_zero": -0.20749103325575535,
+        "clim_dir_acc": 0.6321205439176774,
+        "base_dir_acc": 0.5191565600882029,
+        "model_delta_skill_vs_zero": -7.036704653227444,
+        "model_dir_acc": 0.5400406792488529
+      },
+      "30": {
+        "n": 22709,
+        "true_delta_std": 2.842372179031372,
+        "true_delta_mad": 1.676408052444458,
+        "clim_delta_skill_vs_zero": 0.1807087963993741,
+        "clim_dir_acc": 0.6888386805241753,
+        "base_dir_acc": 0.5218255761409851,
+        "model_delta_skill_vs_zero": -4.809980052131014,
+        "model_dir_acc": 0.5626414027149321
+      },
+      "90": {
+        "n": 21663,
+        "true_delta_std": 3.923011541366577,
+        "true_delta_mad": 2.8877124786376953,
+        "clim_delta_skill_vs_zero": 0.5700925852608649,
+        "clim_dir_acc": 0.8253812330433156,
+        "base_dir_acc": 0.5151557676115633,
+        "model_delta_skill_vs_zero": -1.4959323850018693,
+        "model_dir_acc": 0.6461914013849449
+      },
+      "365": {
+        "n": 19117,
+        "true_delta_std": 3.283827543258667,
+        "true_delta_mad": 1.8764129877090454,
+        "clim_delta_skill_vs_zero": 0.42448620256532044,
+        "clim_dir_acc": 0.6602470734207261,
+        "base_dir_acc": 0.556238873604143,
+        "model_delta_skill_vs_zero": -2.7207050472757,
+        "model_dir_acc": 0.5652472527472527
+      }
+    },
+    "temperature": {
+      "1": {
+        "n": 50130,
+        "true_delta_std": 1.8282362222671509,
+        "true_delta_mad": 0.7097683548927307,
+        "clim_delta_skill_vs_zero": -10.791787471194823,
+        "clim_dir_acc": 0.5193594959968499,
+        "base_dir_acc": 0.5321127007043794,
+        "model_delta_skill_vs_zero": -39.463031756861604,
+        "model_dir_acc": 0.4842326869806094
+      },
+      "7": {
+        "n": 50055,
+        "true_delta_std": 3.417207956314087,
+        "true_delta_mad": 1.9470521211624146,
+        "clim_delta_skill_vs_zero": -2.356259969460182,
+        "clim_dir_acc": 0.5833801118526373,
+        "base_dir_acc": 0.5174120044075761,
+        "model_delta_skill_vs_zero": -12.873874377041904,
+        "model_dir_acc": 0.5256869266783891
+      },
+      "14": {
+        "n": 50057,
+        "true_delta_std": 4.046261310577393,
+        "true_delta_mad": 2.477022647857666,
+        "clim_delta_skill_vs_zero": -1.3873007524366052,
+        "clim_dir_acc": 0.6127447945686044,
+        "base_dir_acc": 0.5225035597102705,
+        "model_delta_skill_vs_zero": -10.081015200350812,
+        "model_dir_acc": 0.5371837950928803
+      },
+      "30": {
+        "n": 50179,
+        "true_delta_std": 5.236695766448975,
+        "true_delta_mad": 3.6415586471557617,
+        "clim_delta_skill_vs_zero": -0.42154161389956357,
+        "clim_dir_acc": 0.6888870773808311,
+        "base_dir_acc": 0.5325969553078318,
+        "model_delta_skill_vs_zero": -5.813973914842204,
+        "model_dir_acc": 0.5608575816869701
+      },
+      "90": {
+        "n": 48007,
+        "true_delta_std": 9.741628646850586,
+        "true_delta_mad": 7.997017860412598,
+        "clim_delta_skill_vs_zero": 0.5933197931987411,
+        "clim_dir_acc": 0.8364819612055349,
+        "base_dir_acc": 0.5654472315241886,
+        "model_delta_skill_vs_zero": -0.6980889043819936,
+        "model_dir_acc": 0.6332122012994164
+      },
+      "365": {
+        "n": 42643,
+        "true_delta_std": 4.693781852722168,
+        "true_delta_mad": 2.6021921634674072,
+        "clim_delta_skill_vs_zero": -0.7520570839724681,
+        "clim_dir_acc": 0.5869774609901753,
+        "base_dir_acc": 0.5282941629743787,
+        "model_delta_skill_vs_zero": -9.577900376132387,
+        "model_dir_acc": 0.5235957873620862
+      }
+    },
+    "ph": {
+      "1": {
+        "n": 6774,
+        "true_delta_std": 0.3048740327358246,
+        "true_delta_mad": 0.051800042390823364,
+        "clim_delta_skill_vs_zero": -1.8014179966742652,
+        "clim_dir_acc": 0.5165914948453608,
+        "base_dir_acc": 0.5423646907216495,
+        "model_delta_skill_vs_zero": -463.92674139131606,
+        "model_dir_acc": 0.4775244299674267
+      },
+      "7": {
+        "n": 6791,
+        "true_delta_std": 1.0109015703201294,
+        "true_delta_mad": 0.24017736315727234,
+        "clim_delta_skill_vs_zero": 0.7480179509028049,
+        "clim_dir_acc": 0.5404651162790698,
+        "base_dir_acc": 0.532093023255814,
+        "model_delta_skill_vs_zero": -24.856073340398662,
+        "model_dir_acc": 0.5196465204355373
+      },
+      "14": {
+        "n": 6788,
+        "true_delta_std": 1.2564083337783813,
+        "true_delta_mad": 0.33345380425453186,
+        "clim_delta_skill_vs_zero": 0.8382593458655219,
+        "clim_dir_acc": 0.5518983466013472,
+        "base_dir_acc": 0.5341396203306797,
+        "model_delta_skill_vs_zero": -16.163517173575737,
+        "model_dir_acc": 0.5247183979974969
+      },
+      "30": {
+        "n": 6772,
+        "true_delta_std": 1.5670909881591797,
+        "true_delta_mad": 0.47137388586997986,
+        "clim_delta_skill_vs_zero": 0.8961673417428486,
+        "clim_dir_acc": 0.5733414485696896,
+        "base_dir_acc": 0.5299756542909312,
+        "model_delta_skill_vs_zero": -10.257711399571198,
+        "model_dir_acc": 0.5414511832001254
+      },
+      "90": {
+        "n": 6478,
+        "true_delta_std": 2.0522663593292236,
+        "true_delta_mad": 0.7634925842285156,
+        "clim_delta_skill_vs_zero": 0.9422693312907534,
+        "clim_dir_acc": 0.6088456712672522,
+        "base_dir_acc": 0.5343475533249686,
+        "model_delta_skill_vs_zero": -4.8593856759306595,
+        "model_dir_acc": 0.5676475423310866
+      },
+      "365": {
+        "n": 4972,
+        "true_delta_std": 2.0375678539276123,
+        "true_delta_mad": 0.7315731048583984,
+        "clim_delta_skill_vs_zero": 0.9396888446882974,
+        "clim_dir_acc": 0.5775106946424934,
+        "base_dir_acc": 0.541658178855164,
+        "model_delta_skill_vs_zero": -3.6137451905666023,
+        "model_dir_acc": 0.539147040101846
+      }
+    },
+    "turbidity": {
+      "1": {
+        "n": 43679,
+        "true_delta_std": 188.2867431640625,
+        "true_delta_mad": 28.70366859436035,
+        "clim_delta_skill_vs_zero": -50.29908273005598,
+        "clim_dir_acc": 0.5276181540987451,
+        "base_dir_acc": 0.5354755482584731,
+        "model_delta_skill_vs_zero": -21.83375593799247,
+        "model_dir_acc": 0.4547047121351584
+      },
+      "7": {
+        "n": 43613,
+        "true_delta_std": 351.9566955566406,
+        "true_delta_mad": 78.07947540283203,
+        "clim_delta_skill_vs_zero": -13.644123324971632,
+        "clim_dir_acc": 0.5470205850487541,
+        "base_dir_acc": 0.5434723726977249,
+        "model_delta_skill_vs_zero": -18.196708256570677,
+        "model_dir_acc": 0.505854089578616
+      },
+      "14": {
+        "n": 43621,
+        "true_delta_std": 407.78204345703125,
+        "true_delta_mad": 98.23713684082031,
+        "clim_delta_skill_vs_zero": -9.881762792332527,
+        "clim_dir_acc": 0.5510209536027368,
+        "base_dir_acc": 0.5453549283728886,
+        "model_delta_skill_vs_zero": -16.162277077004948,
+        "model_dir_acc": 0.5203011635865845
+      },
+      "30": {
+        "n": 43779,
+        "true_delta_std": 474.3523254394531,
+        "true_delta_mad": 125.65335845947266,
+        "clim_delta_skill_vs_zero": -6.998077067344981,
+        "clim_dir_acc": 0.5547427970003946,
+        "base_dir_acc": 0.5459807920010525,
+        "model_delta_skill_vs_zero": -11.60083903318902,
+        "model_dir_acc": 0.5345038458402414
+      },
+      "90": {
+        "n": 42154,
+        "true_delta_std": 587.1083374023438,
+        "true_delta_mad": 182.2590789794922,
+        "clim_delta_skill_vs_zero": -4.263162055874218,
+        "clim_dir_acc": 0.567473299986481,
+        "base_dir_acc": 0.5548195214276058,
+        "model_delta_skill_vs_zero": -7.238365142567446,
+        "model_dir_acc": 0.5435817512043072
+      },
+      "365": {
+        "n": 37213,
+        "true_delta_std": 550.4953002929688,
+        "true_delta_mad": 163.46339416503906,
+        "clim_delta_skill_vs_zero": -5.085595051468186,
+        "clim_dir_acc": 0.566093017517888,
+        "base_dir_acc": 0.5548359240069085,
+        "model_delta_skill_vs_zero": -8.966478446133761,
+        "model_dir_acc": 0.5439803598539911
+      }
+    }
+  },
+  "reformulation_B_exceedance": {
+    "DO_hypoxia_lt5": {
+      "1": {
+        "n": 22649,
+        "n_events": 2765,
+        "base_rate": 0.12208044505276171,
+        "auroc_persistence_of_state": 0.964580816475158,
+        "auprc_persistence_of_state": 0.7763688714111555,
+        "auroc_persistence_margin": 0.9855813901460296,
+        "auprc_persistence_margin": 0.7711528079525712,
+        "auroc_climatology": 0.5858913888619091,
+        "auprc_climatology": 0.15785968338211354,
+        "auroc_margin+clim_LR": 0.9855076350609302,
+        "auprc_margin+clim_LR": 0.7702802915780625,
+        "auroc_margin+clim+harm_LR": 0.9853729842853469,
+        "auprc_margin+clim+harm_LR": 0.7711998043795025,
+        "auroc_model": 0.7309269557047502,
+        "auprc_model": 0.18506703462797297,
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 22621,
+        "n_events": 2751,
+        "base_rate": 0.12161266080190973,
+        "auroc_persistence_of_state": 0.9098616379055646,
+        "auprc_persistence_of_state": 0.5195360422316732,
+        "auroc_persistence_margin": 0.9491684041507896,
+        "auprc_persistence_margin": 0.5491158022525089,
+        "auroc_climatology": 0.5883195423103682,
+        "auprc_climatology": 0.16038078699081196,
+        "auroc_margin+clim_LR": 0.9464295730316853,
+        "auprc_margin+clim_LR": 0.5443985348833625,
+        "auroc_margin+clim+harm_LR": 0.9457055466127795,
+        "auprc_margin+clim+harm_LR": 0.5433125484846133,
+        "auroc_model": 0.6310863482317747,
+        "auprc_model": 0.14351771667882576,
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 22629,
+        "n_events": 2753,
+        "base_rate": 0.12165804940562995,
+        "auroc_persistence_of_state": 0.8894958495669885,
+        "auprc_persistence_of_state": 0.4545611133264863,
+        "auroc_persistence_margin": 0.9300711085080569,
+        "auprc_persistence_margin": 0.47594788933493337,
+        "auroc_climatology": 0.5883646790266744,
+        "auprc_climatology": 0.157236986843222,
+        "auroc_margin+clim_LR": 0.9249233368936078,
+        "auprc_margin+clim_LR": 0.47421090839449603,
+        "auroc_margin+clim+harm_LR": 0.924185553409709,
+        "auprc_margin+clim+harm_LR": 0.4749072988246688,
+        "auroc_model": 0.5525625029034142,
+        "auprc_model": 0.12613248557355775,
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 22709,
+        "n_events": 2769,
+        "base_rate": 0.12193403496411115,
+        "auroc_persistence_of_state": 0.8596942325713145,
+        "auprc_persistence_of_state": 0.38002852702754725,
+        "auroc_persistence_margin": 0.901812153687498,
+        "auprc_persistence_margin": 0.3996084956223665,
+        "auroc_climatology": 0.5857800016155363,
+        "auprc_climatology": 0.15373251580352404,
+        "auroc_margin+clim_LR": 0.8929714930272943,
+        "auprc_margin+clim_LR": 0.40403570141357636,
+        "auroc_margin+clim+harm_LR": 0.8926899332884896,
+        "auprc_margin+clim+harm_LR": 0.4039629329292558,
+        "auroc_model": 0.62556031411284,
+        "auprc_model": 0.14433897933636225,
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 21663,
+        "n_events": 2690,
+        "base_rate": 0.12417486036098417,
+        "auroc_persistence_of_state": 0.7724643040971743,
+        "auprc_persistence_of_state": 0.271558280107284,
+        "auroc_persistence_margin": 0.8082128448233128,
+        "auprc_persistence_margin": 0.28087843712691407,
+        "auroc_climatology": 0.5917452741001349,
+        "auprc_climatology": 0.1636099898260487,
+        "auroc_margin+clim_LR": 0.811278725765062,
+        "auprc_margin+clim_LR": 0.3090848133584189,
+        "auroc_margin+clim+harm_LR": 0.8156734467312873,
+        "auprc_margin+clim+harm_LR": 0.30535087633426655,
+        "auroc_model": 0.5045933793612923,
+        "auprc_model": 0.12185936961506895,
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 19117,
+        "n_events": 2286,
+        "base_rate": 0.11957943191923419,
+        "auroc_persistence_of_state": 0.8295674336085567,
+        "auprc_persistence_of_state": 0.27438178558368714,
+        "auroc_persistence_margin": 0.8573770366963889,
+        "auprc_persistence_margin": 0.29922056131593383,
+        "auroc_climatology": 0.5968556073857175,
+        "auprc_climatology": 0.1565109196981623,
+        "auroc_margin+clim_LR": 0.84714845481817,
+        "auprc_margin+clim_LR": 0.3016963501816365,
+        "auroc_margin+clim+harm_LR": 0.8460913581067057,
+        "auprc_margin+clim+harm_LR": 0.30231758625706373,
+        "auroc_model": 0.5168380091678565,
+        "auprc_model": 0.11704601893239915,
+        "auroc_baseline_random": 0.5
+      }
+    },
+    "temp_gt25C": {
+      "1": {
+        "n": 50130,
+        "n_events": 8680,
+        "base_rate": 0.17314981049271894,
+        "auroc_persistence_of_state": 0.964860069596927,
+        "auprc_persistence_of_state": 0.9083686181185672,
+        "auroc_persistence_margin": 0.9893642832127987,
+        "auprc_persistence_margin": 0.9817305920500422,
+        "auroc_climatology": 0.8434037914204555,
+        "auprc_climatology": 0.4579296169635354,
+        "auroc_margin+clim_LR": 0.987479245996231,
+        "auprc_margin+clim_LR": 0.9724731773484813,
+        "auroc_margin+clim+harm_LR": 0.9872317377552211,
+        "auprc_margin+clim+harm_LR": 0.9715790364418257,
+        "auroc_model": 0.7734155358711697,
+        "auprc_model": 0.7602921250579004,
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 50055,
+        "n_events": 8701,
+        "base_rate": 0.17382878833283388,
+        "auroc_persistence_of_state": 0.8908332346129934,
+        "auprc_persistence_of_state": 0.7488673112308574,
+        "auroc_persistence_margin": 0.9586113605760933,
+        "auprc_persistence_margin": 0.8993191539508583,
+        "auroc_climatology": 0.8426374620542738,
+        "auprc_climatology": 0.45374704783633335,
+        "auroc_margin+clim_LR": 0.958093718692259,
+        "auprc_margin+clim_LR": 0.8926209115835869,
+        "auroc_margin+clim+harm_LR": 0.9593923291124791,
+        "auprc_margin+clim+harm_LR": 0.8969912949334411,
+        "auroc_model": 0.74020346893474,
+        "auprc_model": 0.6222684250164169,
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 50057,
+        "n_events": 8694,
+        "base_rate": 0.17368200251713048,
+        "auroc_persistence_of_state": 0.8650163162072041,
+        "auprc_persistence_of_state": 0.6966436826597839,
+        "auroc_persistence_margin": 0.9419074732871248,
+        "auprc_persistence_margin": 0.8584872251905985,
+        "auroc_climatology": 0.8425877442836519,
+        "auprc_climatology": 0.4612384059035388,
+        "auroc_margin+clim_LR": 0.943876873897823,
+        "auprc_margin+clim_LR": 0.8599636494689735,
+        "auroc_margin+clim+harm_LR": 0.948775529057844,
+        "auprc_margin+clim+harm_LR": 0.8755030086250771,
+        "auroc_model": 0.7335170073216761,
+        "auprc_model": 0.5452217267841589,
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 50179,
+        "n_events": 8589,
+        "base_rate": 0.17116722134757567,
+        "auroc_persistence_of_state": 0.8061052497265594,
+        "auprc_persistence_of_state": 0.5797910576246914,
+        "auroc_persistence_margin": 0.9046282911167796,
+        "auprc_persistence_margin": 0.7452600250891337,
+        "auroc_climatology": 0.8447211230522352,
+        "auprc_climatology": 0.4596228284439612,
+        "auroc_margin+clim_LR": 0.9222324452472815,
+        "auprc_margin+clim_LR": 0.798569373525574,
+        "auroc_margin+clim+harm_LR": 0.9377148007520705,
+        "auprc_margin+clim+harm_LR": 0.8461472459856193,
+        "auroc_model": 0.7462143348945086,
+        "auprc_model": 0.6057433244975613,
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 48007,
+        "n_events": 8439,
+        "base_rate": 0.17578686441560606,
+        "auroc_persistence_of_state": 0.5821090163863337,
+        "auprc_persistence_of_state": 0.28576401310348837,
+        "auroc_persistence_margin": 0.6936501594277086,
+        "auprc_persistence_margin": 0.29725484488707826,
+        "auroc_climatology": 0.8437321316455424,
+        "auprc_climatology": 0.46168363097092835,
+        "auroc_margin+clim_LR": 0.882149637281838,
+        "auprc_margin+clim_LR": 0.6738661968931904,
+        "auroc_margin+clim+harm_LR": 0.9210937659846379,
+        "auprc_margin+clim+harm_LR": 0.7359187755513285,
+        "auroc_model": 0.524394321927367,
+        "auprc_model": 0.18515627950459135,
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 42643,
+        "n_events": 7378,
+        "base_rate": 0.17301784583636234,
+        "auroc_persistence_of_state": 0.868069158207595,
+        "auprc_persistence_of_state": 0.711156483705317,
+        "auroc_persistence_margin": 0.926007958101532,
+        "auprc_persistence_margin": 0.859005182299676,
+        "auroc_climatology": 0.8451187629179634,
+        "auprc_climatology": 0.4514524608571688,
+        "auroc_margin+clim_LR": 0.9269707339584343,
+        "auprc_margin+clim_LR": 0.842097547153881,
+        "auroc_margin+clim+harm_LR": 0.928070168257476,
+        "auprc_margin+clim+harm_LR": 0.8442806424968383,
+        "auroc_model": 0.4985774631854382,
+        "auprc_model": 0.16545739304489188,
+        "auroc_baseline_random": 0.5
+      }
+    },
+    "pH_gt8.5": {
+      "1": {
+        "n": 6774,
+        "n_events": 165,
+        "base_rate": 0.024357838795394153,
+        "auroc_persistence_of_state": 0.9066699679500406,
+        "auprc_persistence_of_state": 0.7300746378136023,
+        "auroc_persistence_margin": 0.9834101340229348,
+        "auprc_persistence_margin": 0.8239920794632167,
+        "auroc_climatology": 0.5322122725209425,
+        "auprc_climatology": 0.026006713637825002,
+        "auroc_margin+clim_LR": 0.9801780858975594,
+        "auprc_margin+clim_LR": 0.7694448847546501,
+        "auroc_margin+clim+harm_LR": 0.9792890319445018,
+        "auprc_margin+clim+harm_LR": 0.7664177869165621,
+        "auroc_model": 0.5746556178927854,
+        "auprc_model": 0.39485059444913484,
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 6791,
+        "n_events": 172,
+        "base_rate": 0.025327639522897953,
+        "auroc_persistence_of_state": 0.7382183776794781,
+        "auprc_persistence_of_state": 0.3302678169255948,
+        "auroc_persistence_margin": 0.893311450124202,
+        "auprc_persistence_margin": 0.40739363474144513,
+        "auroc_climatology": 0.5066088814090515,
+        "auprc_climatology": 0.027103154557269186,
+        "auroc_margin+clim_LR": 0.8195812267011457,
+        "auprc_margin+clim_LR": 0.18981005684401422,
+        "auroc_margin+clim+harm_LR": 0.8065479222955761,
+        "auprc_margin+clim+harm_LR": 0.1920548981152864,
+        "auroc_model": 0.5724385526161541,
+        "auprc_model": 0.2280907743229191,
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 6788,
+        "n_events": 172,
+        "base_rate": 0.025338833235120803,
+        "auroc_persistence_of_state": 0.6937797024830573,
+        "auprc_persistence_of_state": 0.2304374105432739,
+        "auroc_persistence_margin": 0.8535179866989118,
+        "auprc_persistence_margin": 0.3293651698175768,
+        "auroc_climatology": 0.5007649707544782,
+        "auprc_climatology": 0.025866416407669464,
+        "auroc_margin+clim_LR": 0.7049229668738225,
+        "auprc_margin+clim_LR": 0.12364684676380801,
+        "auroc_margin+clim+harm_LR": 0.6877803281684992,
+        "auprc_margin+clim+harm_LR": 0.1160931202808694,
+        "auroc_model": 0.5550783665217434,
+        "auprc_model": 0.17208278405992067,
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 6772,
+        "n_events": 166,
+        "base_rate": 0.0245126993502658,
+        "auroc_persistence_of_state": 0.6096739364360256,
+        "auprc_persistence_of_state": 0.11601843048722482,
+        "auroc_persistence_margin": 0.7656174197243105,
+        "auprc_persistence_margin": 0.1800954429022921,
+        "auroc_climatology": 0.5024275120463689,
+        "auprc_climatology": 0.02654066955614741,
+        "auroc_margin+clim_LR": 0.5443882706119665,
+        "auprc_margin+clim_LR": 0.07644377207318405,
+        "auroc_margin+clim+harm_LR": 0.5350147182736396,
+        "auprc_margin+clim+harm_LR": 0.07719770302189084,
+        "auroc_model": 0.5527635637531577,
+        "auprc_model": 0.1021719916280173,
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 6478,
+        "n_events": 158,
+        "base_rate": 0.024390243902439025,
+        "auroc_persistence_of_state": 0.5417721518987342,
+        "auprc_persistence_of_state": 0.034010604472503606,
+        "auroc_persistence_margin": 0.6024570381349142,
+        "auprc_persistence_margin": 0.06269475144658959,
+        "auroc_climatology": 0.4799205856433264,
+        "auprc_climatology": 0.02305108717057395,
+        "auroc_margin+clim_LR": 0.43697023714148375,
+        "auprc_margin+clim_LR": 0.024397531095137145,
+        "auroc_margin+clim+harm_LR": 0.442928817497196,
+        "auprc_margin+clim+harm_LR": 0.0228506199492619,
+        "auroc_model": 0.3934377095022679,
+        "auprc_model": 0.013346262959075574,
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 4972,
+        "n_events": 123,
+        "base_rate": 0.024738535800482703,
+        "auroc_persistence_of_state": 0.5500019281487927,
+        "auprc_persistence_of_state": 0.06465227585445178,
+        "auroc_persistence_margin": 0.4833986388946174,
+        "auprc_persistence_margin": 0.06586387266884938,
+        "auroc_climatology": 0.4983149656202687,
+        "auprc_climatology": 0.025052480117409476,
+        "auroc_margin+clim_LR": 0.3700327114634314,
+        "auprc_margin+clim_LR": 0.03028625809801313,
+        "auroc_margin+clim+harm_LR": 0.366998811254353,
+        "auprc_margin+clim+harm_LR": 0.031920826213921345,
+        "auroc_model": 0.44986285683851723,
+        "auprc_model": 0.014815008189128913,
+        "auroc_baseline_random": 0.5
+      }
+    },
+    "turb_gt100": {
+      "1": {
+        "n": 43679,
+        "n_events": 26681,
+        "base_rate": 0.6108427390736968,
+        "auroc_persistence_of_state": 0.9775149559018135,
+        "auprc_persistence_of_state": 0.9793281595577354,
+        "auroc_persistence_margin": 0.9833369016148172,
+        "auprc_persistence_margin": 0.9928256364607908,
+        "auroc_climatology": 0.512623256034121,
+        "auprc_climatology": 0.6182440641177877,
+        "auroc_margin+clim_LR": 0.9843132310999851,
+        "auprc_margin+clim_LR": 0.9930401903526602,
+        "auroc_margin+clim+harm_LR": 0.9852535900234598,
+        "auprc_margin+clim+harm_LR": 0.9932403642038721,
+        "auroc_model": 0.8054018569959163,
+        "auprc_model": 0.9086018192885149,
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 43613,
+        "n_events": 26641,
+        "base_rate": 0.6108499759246097,
+        "auroc_persistence_of_state": 0.9426601732201654,
+        "auprc_persistence_of_state": 0.9513194417778642,
+        "auroc_persistence_margin": 0.9534281377719762,
+        "auprc_persistence_margin": 0.979288314815127,
+        "auroc_climatology": 0.5129992410147041,
+        "auprc_climatology": 0.6184423673041899,
+        "auroc_margin+clim_LR": 0.9561764272971326,
+        "auprc_margin+clim_LR": 0.9799090135293701,
+        "auroc_margin+clim+harm_LR": 0.9590804656581889,
+        "auprc_margin+clim+harm_LR": 0.9807166351139899,
+        "auroc_model": 0.7802938561366872,
+        "auprc_model": 0.8934427217890019,
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 43621,
+        "n_events": 26651,
+        "base_rate": 0.6109671946998005,
+        "auroc_persistence_of_state": 0.9303813648149402,
+        "auprc_persistence_of_state": 0.9438595441130968,
+        "auroc_persistence_margin": 0.9412867920834546,
+        "auprc_persistence_margin": 0.9736171395048631,
+        "auroc_climatology": 0.5128173335128436,
+        "auprc_climatology": 0.6176371415672878,
+        "auroc_margin+clim_LR": 0.9448635118506312,
+        "auprc_margin+clim_LR": 0.9746206499305707,
+        "auroc_margin+clim+harm_LR": 0.9484719606298458,
+        "auprc_margin+clim+harm_LR": 0.975664324968328,
+        "auroc_model": 0.7864286668356313,
+        "auprc_model": 0.8987564198662865,
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 43779,
+        "n_events": 26722,
+        "base_rate": 0.6103839740514859,
+        "auroc_persistence_of_state": 0.9179254309253542,
+        "auprc_persistence_of_state": 0.931816800065117,
+        "auroc_persistence_margin": 0.9269429323817147,
+        "auprc_persistence_margin": 0.9671236090888111,
+        "auroc_climatology": 0.5121845319815227,
+        "auprc_climatology": 0.617648513750074,
+        "auroc_margin+clim_LR": 0.9320212506197438,
+        "auprc_margin+clim_LR": 0.9685852344599889,
+        "auroc_margin+clim+harm_LR": 0.9362307174476127,
+        "auprc_margin+clim+harm_LR": 0.9698552313059658,
+        "auroc_model": 0.7838106072452441,
+        "auprc_model": 0.8939678839986176,
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 42154,
+        "n_events": 25933,
+        "base_rate": 0.6151966598662049,
+        "auroc_persistence_of_state": 0.8930142601210191,
+        "auprc_persistence_of_state": 0.9229569590731863,
+        "auroc_persistence_margin": 0.9032760791227972,
+        "auprc_persistence_margin": 0.9560528496040789,
+        "auroc_climatology": 0.5096200001505732,
+        "auprc_climatology": 0.6155148521482188,
+        "auroc_margin+clim_LR": 0.9140180480971921,
+        "auprc_margin+clim_LR": 0.9591378253813987,
+        "auroc_margin+clim+harm_LR": 0.9167368701722394,
+        "auprc_margin+clim+harm_LR": 0.9601110556547541,
+        "auroc_model": 0.48754613822004195,
+        "auprc_model": 0.5679154044972834,
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 37213,
+        "n_events": 23286,
+        "base_rate": 0.6257490661865477,
+        "auroc_persistence_of_state": 0.8930164831515771,
+        "auprc_persistence_of_state": 0.9099723808492853,
+        "auroc_persistence_margin": 0.8996825439671716,
+        "auprc_persistence_margin": 0.9565396549829183,
+        "auroc_climatology": 0.5120495662401725,
+        "auprc_climatology": 0.6367426270421416,
+        "auroc_margin+clim_LR": 0.907832289285549,
+        "auprc_margin+clim_LR": 0.958655864144011,
+        "auroc_margin+clim+harm_LR": 0.913186200575027,
+        "auprc_margin+clim+harm_LR": 0.9602022652552524,
+        "auroc_model": 0.4797151972228918,
+        "auprc_model": 0.5738795335712684,
+        "auroc_baseline_random": 0.5
+      }
+    }
+  },
+  "bootstrap_95ci": {
+    "A_clim_delta_skill_dissolved_oxygen_h30": {
+      "point": 0.1807087963993741,
+      "ci95": [
+        0.1385543154496016,
+        0.22034138738668904
+      ],
+      "n": 22709
+    },
+    "A_clim_delta_skill_dissolved_oxygen_h90": {
+      "point": 0.5700925852608649,
+      "ci95": [
+        0.5540444598402638,
+        0.585818927784023
+      ],
+      "n": 21663
+    },
+    "A_clim_delta_skill_dissolved_oxygen_h365": {
+      "point": 0.42448620256532044,
+      "ci95": [
+        0.3974245412224042,
+        0.44958796223663405
+      ],
+      "n": 19117
+    },
+    "A_clim_delta_skill_temperature_h90": {
+      "point": 0.5933197931987411,
+      "ci95": [
+        0.586577754654522,
+        0.599885880305681
+      ],
+      "n": 48007
+    },
+    "A_clim_delta_skill_ph_h7": {
+      "point": 0.7480179509028049,
+      "ci95": [
+        0.6970070112091452,
+        0.7888629528041479
+      ],
+      "n": 6791
+    },
+    "A_clim_delta_skill_ph_h30": {
+      "point": 0.8961673417428486,
+      "ci95": [
+        0.8817709337790193,
+        0.908160766236599
+      ],
+      "n": 6772
+    },
+    "A_clim_delta_skill_ph_h90": {
+      "point": 0.9422693312907534,
+      "ci95": [
+        0.9369736679032094,
+        0.9470197867985112
+      ],
+      "n": 6478
+    },
+    "B_temp_gt25C_h90_dAUROC_clim_minus_persistMargin": {
+      "point": 0.15008197221783381,
+      "ci95": [
+        0.14234953156572153,
+        0.1577091444627848
+      ],
+      "clim_auroc": 0.8437321316455424,
+      "persist_margin_auroc": 0.6936501594277086,
+      "n": 48007
+    }
+  },
+  "verdict": {
+    "absolute_state_baseline": "Persistence (delta=0) R2=0.923 vs trained model R2=0.069 -> persistence unbeatable for absolute state; the trained neural twin loses at every horizon and every variable.",
+    "reformulation_A_change": "Correct baseline = delta=0. The trained model NEVER beats it (all skill<0). BUT a leak-free seasonal-climatology delta predictor DOES beat delta=0 at seasonal horizons: pH from h>=7 (skill up to +0.94), DO/temperature at h>=30-90 (skill +0.18 to +0.59). Turbidity(SpCond proxy) never beats delta=0.",
+    "reformulation_B_exceedance": "Correct baseline = persistence-of-state / t0 margin, which is very strong (AUROC 0.9-0.99 short, 0.6-0.9 long). The trained model loses to it universally. The ONLY reformulation that genuinely beats the correct persistence baseline is temperature exceedance (>25C) at long horizon: climatology AUROC 0.844 vs persistence-margin 0.694 at h=90 (dAUROC +0.150, 95%CI [+0.143,+0.158]).",
+    "honest_win": "Change your target from absolute state to (a) seasonal CHANGE or (b) exceedance where seasonality dominates. A leak-free CLIMATOLOGY beats the correct naive baseline at seasonal horizons (pH change from 7d; DO/temp change from 30-90d; temperature>25C exceedance at 90d). This is a data-driven seasonal baseline, NOT the trained neural twin, which loses everywhere.",
+    "honest_ceiling": "At short horizons (1-14d) NOTHING beats persistence/delta=0 for any variable -- the dynamics are dominated by autocorrelation. The trained DigitalTwinEngine adds negative value everywhere; the real signal is pure seasonality captured by climatology.",
+    "caveats": [
+      "Only 4 of 10 state variables have real test observations (DO, temperature, pH, turbidity); 6 are entirely unobserved.",
+      "The 'turbidity' channel (index 7) is largely a specific-conductance (SpCond) proxy per the training-time column map; treat its exceedance/change results as proxy, not true NTU turbidity.",
+      "Climatology and the logistic combiner are fit ONLY on train-split sites (site-disjoint from test) -> leak-free."
+    ]
+  }
+}

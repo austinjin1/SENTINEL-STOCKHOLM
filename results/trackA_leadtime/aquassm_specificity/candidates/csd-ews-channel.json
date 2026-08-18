@@ -1,0 +1,95 @@
+{
+  "candidate": "csd-ews-channel",
+  "idea": "Add rising trailing variance + lag-1 autocorrelation of causal residuals as an orthogonal EWS channel fused additively with the audited mean-shift CUSUM deviation (dev_plus = dev + BETA*dev_ews).",
+  "hyperparameters": {
+    "EWS_WIN": 180,
+    "EWS_GUARD": 12,
+    "W_BASE": 240,
+    "GUARD": 12,
+    "EWS_MIN_BASE": 20,
+    "FLOOR": 0.0,
+    "BETA": 1.0,
+    "SLACK_K": 1.0,
+    "TARGET_FPR": 0.05,
+    "note": "all fixed a priori; none tuned on leads"
+  },
+  "headline_5pct": {
+    "interleave": {
+      "split": "interleave",
+      "n_episodes": 15,
+      "n_controls": 17,
+      "global_thr": 1148.7749,
+      "control_heldout_fpr": 0.0472,
+      "episodes_detected": 11,
+      "median_lead_days": 41.3438,
+      "detected_sites": [
+        "BARC",
+        "BIGC",
+        "BLWA",
+        "COMO",
+        "GUIL",
+        "KING",
+        "LECO",
+        "LIRO",
+        "MAYF",
+        "MCDI",
+        "PRIN"
+      ],
+      "leads_by_site": {
+        "BARC": 42.07,
+        "BIGC": 44.67,
+        "BLWA": 44.19,
+        "COMO": 18.86,
+        "GUIL": 44.76,
+        "KING": 39.75,
+        "LECO": 41.59,
+        "LIRO": 22.96,
+        "MAYF": 38.2,
+        "MCDI": 41.34,
+        "PRIN": 13.79
+      },
+      "is_pareto_win": true
+    }
+  },
+  "robustness_temporal": {
+    "split": "temporal_single_run_fix",
+    "n_episodes": 15,
+    "n_controls": 17,
+    "global_thr": 1149.2648,
+    "control_heldout_fpr": 0.0478,
+    "episodes_detected": 11,
+    "median_lead_days": 41.5938,
+    "detected_sites": [
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "leads_by_site": {
+      "BARC": 42.07,
+      "BIGC": 44.58,
+      "BLWA": 44.19,
+      "COMO": 18.86,
+      "GUIL": 44.76,
+      "KING": 39.75,
+      "LECO": 41.59,
+      "LIRO": 22.96,
+      "MAYF": 44.45,
+      "MCDI": 41.34,
+      "PRIN": 13.79
+    },
+    "is_pareto_win": true
+  },
+  "baseline_to_beat": {
+    "episodes_detected": 11,
+    "median_lead_days": 36.1,
+    "at_fpr": 0.05
+  }
+}

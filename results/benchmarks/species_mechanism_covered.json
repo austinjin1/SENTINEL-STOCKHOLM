@@ -1,0 +1,70 @@
+{
+  "n_covered": 5411,
+  "n_covered_train": 4828,
+  "n_covered_test": 583,
+  "n_metric_cols": 80,
+  "note": "Same-subset fair comparison: train+test restricted to sites WITH StreamCat coverage.",
+  "summary": {
+    "S0_proxy_env": {
+      "n_features": 5,
+      "macro_auroc_excl_mayfly": 0.8380868626076093,
+      "mussel_auroc": 0.7418080274378939,
+      "mussel_n_test": 583,
+      "mussel_pos": 87
+    },
+    "S1_streamcat": {
+      "n_features": 80,
+      "macro_auroc_excl_mayfly": 0.8889374333119707,
+      "mussel_auroc": 0.8183050611790879,
+      "mussel_n_test": 583,
+      "mussel_pos": 87
+    },
+    "S2_streamcat_comm": {
+      "n_features": 84,
+      "macro_auroc_excl_mayfly": 0.9567582499388113,
+      "mussel_auroc": 0.894581942899518,
+      "mussel_n_test": 583,
+      "mussel_pos": 87
+    },
+    "S3_geo_only": {
+      "n_features": 3,
+      "macro_auroc_excl_mayfly": 0.8977877275827026,
+      "mussel_auroc": 0.7914349276974417,
+      "mussel_n_test": 583,
+      "mussel_pos": 87
+    },
+    "S4_streamcat_geo": {
+      "n_features": 83,
+      "macro_auroc_excl_mayfly": 0.8966986213058928,
+      "mussel_auroc": 0.826821468298109,
+      "mussel_n_test": 583,
+      "mussel_pos": 87
+    }
+  },
+  "mussel_paired_deltas": {
+    "S1_streamcat_minus_S0_proxy": {
+      "delta_median": 0.07437261197481038,
+      "ci95": [
+        0.015789070126755518,
+        0.13924211690945965
+      ],
+      "p_gt_0_frac": 0.993
+    },
+    "S1_streamcat_minus_S3_geo": {
+      "delta_median": 0.02618002566456229,
+      "ci95": [
+        -0.01660562893333866,
+        0.06762447695672312
+      ],
+      "p_gt_0_frac": 0.891
+    },
+    "S4_streamcat_geo_minus_S3_geo": {
+      "delta_median": 0.03375198234481663,
+      "ci95": [
+        -0.0046047040885887,
+        0.07386486913164869
+      ],
+      "p_gt_0_frac": 0.951
+    }
+  }
+}

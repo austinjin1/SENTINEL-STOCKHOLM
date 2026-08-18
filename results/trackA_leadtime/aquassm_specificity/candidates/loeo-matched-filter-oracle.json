@@ -1,0 +1,116 @@
+{
+  "candidate": "loeo-matched-filter-oracle",
+  "ORACLE": true,
+  "disqualified_from_headline": true,
+  "guardrail_A_violation": "Template built from other episodes' dev signals ALIGNED TO DO<4 onset -> leaks onset-relative timing and precursor shape. Upper bound only.",
+  "hyperparameters_fixed_a_priori": {
+    "W_BASE": 240,
+    "GUARD": 12,
+    "MIN_BASE": 60,
+    "FLOOR": 1.0,
+    "SLACK_K": 1.0,
+    "TEMPLATE_LEN": 60,
+    "MIN_TEMPLATE_SRC": 20,
+    "LOOKBACK_DAYS": 45,
+    "TARGET_FPR": 0.05
+  },
+  "leave_one_episode_out": "mandatory (template for held-out e excludes e)",
+  "headline_to_beat": {
+    "episodes_detected": 11,
+    "median_lead_days": 36.1,
+    "control_heldout_fpr": 0.05
+  },
+  "primary_interleave_split": {
+    "split": "interleave",
+    "n_episode_sites": 15,
+    "n_control_sites": 17,
+    "n_template_donors": 12,
+    "template_donors": [
+      "ARIK",
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "global_thr": 0.857202,
+    "control_heldout_fpr": 0.0481,
+    "episodes_detected": 9,
+    "median_lead_days": 37.94,
+    "detected_sites": [
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "KING",
+      "LECO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "leads_by_site": {
+      "BARC": 23.07,
+      "BIGC": 29.08,
+      "BLWA": 37.94,
+      "COMO": 27.7,
+      "KING": 44.08,
+      "LECO": 43.59,
+      "MAYF": 43.28,
+      "MCDI": 39.93,
+      "PRIN": 8.21
+    }
+  },
+  "robustness_temporal_split": {
+    "split": "temporal_single_run_fix",
+    "n_episode_sites": 15,
+    "n_control_sites": 17,
+    "n_template_donors": 12,
+    "template_donors": [
+      "ARIK",
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "GUIL",
+      "KING",
+      "LECO",
+      "LIRO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "global_thr": 0.858829,
+    "control_heldout_fpr": 0.0497,
+    "episodes_detected": 9,
+    "median_lead_days": 37.94,
+    "detected_sites": [
+      "BARC",
+      "BIGC",
+      "BLWA",
+      "COMO",
+      "KING",
+      "LECO",
+      "MAYF",
+      "MCDI",
+      "PRIN"
+    ],
+    "leads_by_site": {
+      "BARC": 23.07,
+      "BIGC": 29.08,
+      "BLWA": 37.94,
+      "COMO": 27.7,
+      "KING": 44.08,
+      "LECO": 43.59,
+      "MAYF": 43.2,
+      "MCDI": 39.93,
+      "PRIN": 8.21
+    }
+  },
+  "is_pareto_win": false
+}

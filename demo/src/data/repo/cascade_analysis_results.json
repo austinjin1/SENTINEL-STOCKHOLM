@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "Lagged partial-correlation screening only — NOT PCMCI+ and NOT validated causal discovery. 0 of 375 chain instances are validated causal links; the 'n_novel' count does not denote validated novel causal mechanisms. Use only as descriptive co-occurrence/lag screening.",
   "causal_chain_analysis": {
     "n_chain_types": 91,
     "n_total_instances": 375,

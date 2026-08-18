@@ -1,0 +1,87 @@
+{
+  "target": "MoME/Foundation multimodal fusion (near-chance) \u2014 honest signal test",
+  "shipped_nearchance_models": {
+    "mome_fusion_test_auroc": 0.42,
+    "foundation_test_auroc": 0.3733,
+    "arg_surveillance_overall_r2": -0.0079
+  },
+  "diagnosis": {
+    "arg_surveillance": "EXCLUDED \u2014 not real data. ARG targets are pseudo-labels: a fixed linear function of the model's own CLR-OTU input plus injected Gaussian noise (rng.normal(0,0.4-0.6)). Circular task; R2~0 is the noise floor, no external signal exists to recover.",
+    "mome_foundation_fusion": "Trained on data/processed/synthetic_multimodal/ \u2014 modalities synthetically aligned (paired across site/times that never co-occurred). No real co-occurrence => no cross-modal structure => AUROC<0.5 on ~70 test samples. That data dir no longer exists; the near-chance numbers are an artifact, not a capability ceiling."
+  },
+  "real_cooccurrence_task": {
+    "name": "microcystin (cyanotoxin) bimodal fusion",
+    "why": "The only SENTINEL data with REAL co-located modalities: satellite spectral (sf0..sf25) + in-situ pigment (CHLA,PC) at the same site/date, with an INDEPENDENT microcystin assay as label. Cyanotoxin is optically invisible => modalities are non-redundant.",
+    "n_samples": 3649,
+    "n_sites": 227,
+    "pigment_missingness": {
+      "CHLA_frac_missing": 0.3814743765415182,
+      "PC_frac_missing": 0.7336256508632502
+    },
+    "eval": "GroupKFold(5) by site; pooled OOF AUROC; site-clustered bootstrap; permutation control",
+    "thresholds": {
+      "mc_gt0.3_detection": {
+        "threshold_ug_L": 0.3,
+        "n_pos": 1286,
+        "n_pos_sites": 184,
+        "satellite_auroc": 0.5791,
+        "pigment_auroc": 0.6557,
+        "fusion_auroc": 0.6879,
+        "best_single": "pigment",
+        "best_single_auroc": 0.6557,
+        "fusion_minus_best": 0.0322,
+        "fusion_gain_ci95_site_bootstrap": [
+          9.265137364662713e-05,
+          0.06544805704274685
+        ],
+        "fusion_gain_P_gt0": 0.975,
+        "permutation_control_fusion_auroc": 0.5772,
+        "fusion_helps": true
+      },
+      "mc_gt1.6_WHO_drinking": {
+        "threshold_ug_L": 1.6,
+        "n_pos": 633,
+        "n_pos_sites": 126,
+        "satellite_auroc": 0.5862,
+        "pigment_auroc": 0.6164,
+        "fusion_auroc": 0.6422,
+        "best_single": "pigment",
+        "best_single_auroc": 0.6164,
+        "fusion_minus_best": 0.0258,
+        "fusion_gain_ci95_site_bootstrap": [
+          -0.03448762559772829,
+          0.08053557262698688
+        ],
+        "fusion_gain_P_gt0": 0.798,
+        "permutation_control_fusion_auroc": 0.5859,
+        "fusion_helps": false
+      },
+      "mc_gt8_WHO_recreational": {
+        "threshold_ug_L": 8.0,
+        "n_pos": 286,
+        "n_pos_sites": 72,
+        "satellite_auroc": 0.6291,
+        "pigment_auroc": 0.5932,
+        "fusion_auroc": 0.6633,
+        "best_single": "satellite",
+        "best_single_auroc": 0.6291,
+        "fusion_minus_best": 0.0341,
+        "fusion_gain_ci95_site_bootstrap": [
+          -0.011616295970480205,
+          0.07621720806530699
+        ],
+        "fusion_gain_P_gt0": 0.932,
+        "permutation_control_fusion_auroc": 0.6272,
+        "fusion_helps": false
+      }
+    }
+  },
+  "honest_verdict": {
+    "real_signal_exists": true,
+    "fusion_ceiling_auroc": 0.6879,
+    "thresholds_where_fusion_gain_CI_excludes_zero": [
+      "mc_gt0.3_detection"
+    ],
+    "summary": "Real cross-modal signal EXISTS but is MODEST. On the genuinely co-occurring microcystin task (N=3649 co-located samples, 227 sites, from an INDEPENDENT toxin assay), a simple L2-logistic concat-fusion of REAL satellite + in-situ pigment beats the best single modality at every threshold (+0.026 to +0.034 AUROC), and the permutation control collapses the gain \u2014 so it is signal, not capacity. But under strict site-grouped CV the gain's site-clustered bootstrap CI excludes zero only at the detection threshold (mc>0.3, P=0.975); at the WHO thresholds the CI includes zero (data-limited: only 72-126 positive SITES, PC pigment 73% missing). Honest ceiling for this simple fusion: AUROC ~0.69. A stronger learner (GBM) was previously shown to reach ~0.79-0.82 on the same data, so ~0.69 is the linear-baseline floor, not the model ceiling. Crucially, the shipped MoME 0.42 / Foundation 0.37 were near chance NOT because fusion is hopeless but because they used SYNTHETICALLY aligned modalities (no real co-occurrence) \u2014 a data artifact. ARG surveillance is excluded entirely (circular pseudo-labels: targets manufactured from the model's own input)."
+  }
+}

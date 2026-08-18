@@ -1,0 +1,123 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Decompose the HydroViT transfer-gap headline (chl-a 4-band R2 ~0.21 -> red-edge indices R2 ~0.34) into ADDED-BAND vs index-REPRESENTATION, on the SAME real 6-band tiles.",
+    "paper_claim_row": "chl-a 4-band R2 0.18/0.21 -> red-edge indices R2 0.34",
+    "data": "data/processed/biology/noaa_habs/mc_tiles (REAL Sentinel-2 L2A 6-band) x mc_fusion_dataset.parquet (REAL WQP/NOAA in-situ chl-a).",
+    "tile_bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B08",
+      "B11"
+    ],
+    "arms": {
+      "raw6 (A)": "raw per-band spatial stats, all 6 bands, NO ratios",
+      "idx6 (B)": "engineered indices incl NDCI/CIre/MCIre/FAI (need B05/B11), NO raw stats",
+      "raw4 (C)": "raw per-band spatial stats, 4 HydroViT bands only, NO ratios",
+      "idx4 (D)": "only 4-band-computable indices (NDVI/NDWI/GR), NO raw stats"
+    },
+    "decomposition": {
+      "added_band_effect": "A - C (raw6 vs raw4): value of the extra B05/B11 BAND",
+      "representation_effect": "B - A (idx6 vs raw6): value of the index REPRESENTATION on SAME bands",
+      "rep_4band_control": "D - C (idx4 vs raw4): do indices help WITHOUT the new band",
+      "total_headline": "B - C (idx6 vs raw4): the paper's ~0.21 -> ~0.34 gain"
+    },
+    "split": "STATION (site) GroupKFold; no site shared train/test.",
+    "ci": "site-clustered bootstrap (resamples sites), 2000 reps; paired deltas.",
+    "model": "identical CPU HistGradientBoosting for all arms (no per-arm tuning).",
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false
+  },
+  "n_usable_tiles": 3649,
+  "n_chla": 2256,
+  "n_sites": 169,
+  "feature_counts": {
+    "raw6": 42,
+    "idx6": 49,
+    "raw4": 28,
+    "idx4": 21
+  },
+  "arm_r2": {
+    "raw6": {
+      "r2": 0.1857,
+      "r2_ci95": [
+        0.0601,
+        0.2776
+      ]
+    },
+    "idx6": {
+      "r2": 0.2975,
+      "r2_ci95": [
+        0.1884,
+        0.3701
+      ]
+    },
+    "raw4": {
+      "r2": 0.122,
+      "r2_ci95": [
+        -0.0032,
+        0.2152
+      ]
+    },
+    "idx4": {
+      "r2": 0.0967,
+      "r2_ci95": [
+        -0.0149,
+        0.1812
+      ]
+    }
+  },
+  "decomposition_deltas": {
+    "total_headline_idx6_minus_raw4": {
+      "pair": "idx6 - raw4",
+      "mean": 0.1781,
+      "ci95": [
+        0.1183,
+        0.2398
+      ],
+      "prob_positive": 1.0,
+      "verdict": "POSITIVE (95% CI excludes 0)"
+    },
+    "added_band_raw6_minus_raw4": {
+      "pair": "raw6 - raw4",
+      "mean": 0.0637,
+      "ci95": [
+        0.0233,
+        0.1065
+      ],
+      "prob_positive": 0.998,
+      "verdict": "POSITIVE (95% CI excludes 0)"
+    },
+    "representation_idx6_minus_raw6": {
+      "pair": "idx6 - raw6",
+      "mean": 0.1144,
+      "ci95": [
+        0.0662,
+        0.1605
+      ],
+      "prob_positive": 1.0,
+      "verdict": "POSITIVE (95% CI excludes 0)"
+    },
+    "rep_4band_idx4_minus_raw4": {
+      "pair": "idx4 - raw4",
+      "mean": -0.0243,
+      "ci95": [
+        -0.0909,
+        0.0513
+      ],
+      "prob_positive": 0.243,
+      "verdict": "NULL (CI includes 0; P>0=0.243)"
+    }
+  },
+  "attribution_of_total_gain": {
+    "total_gain_R2": 0.1781,
+    "added_band_share": 0.358,
+    "representation_share": 0.642,
+    "note": "shares are mean-delta ratios; interpret with the CIs above."
+  },
+  "verdict_type": "mixed",
+  "verdict_text": "BOTH the added red-edge band (A-C positive) AND the index representation on top of it (B-A positive) contribute; the headline gain is partly information, partly representation.",
+  "elapsed_seconds": 43.8
+}

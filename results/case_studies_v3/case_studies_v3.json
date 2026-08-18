@@ -25,7 +25,7 @@
         "acid_mine_drainage": 2,
         "agricultural_nitrate": 1
       },
-      "detection_rate": 1.0
+      "_PROVENANCE": "CURATED CATALOG \u2014 literature-reported lead times, not real-inference detections"
     },
     "category_a": {
       "n_events": 4,
@@ -37,7 +37,7 @@
         "harmful_algal_bloom": 3,
         "hypoxia": 1
       },
-      "detection_rate": 1.0
+      "_PROVENANCE": "CURATED CATALOG \u2014 literature-reported lead times, not real-inference detections"
     },
     "category_bc": {
       "n_events": 27,
@@ -56,7 +56,7 @@
         "hypoxia": 3,
         "agricultural_nitrate": 1
       },
-      "detection_rate": 1.0
+      "_PROVENANCE": "CURATED CATALOG \u2014 literature-reported lead times, not real-inference detections"
     }
   },
   "events": {

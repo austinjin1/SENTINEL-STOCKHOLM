@@ -1,0 +1,72 @@
+{
+  "BLWA": {
+    "role": "episode",
+    "onset_index": 12177,
+    "onset_ts": 1725480900,
+    "onset_utc": "2024-09-04T20:15:00+00:00",
+    "n_windows": 8745
+  },
+  "PRLA": {
+    "role": "episode",
+    "onset_index": 332,
+    "onset_ts": 1722769200,
+    "onset_utc": "2024-08-04T11:00:00+00:00",
+    "n_windows": 357
+  },
+  "SUGG": {
+    "role": "episode",
+    "onset_index": 4347,
+    "onset_ts": 1748907900,
+    "onset_utc": "2025-06-02T23:45:00+00:00",
+    "n_windows": 864
+  },
+  "POSE": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 357
+  },
+  "PRPO": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 864
+  },
+  "REDB": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 345
+  },
+  "TECR": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 1511
+  },
+  "TOMB": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 357
+  },
+  "WALK": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 357
+  },
+  "WLOU": {
+    "role": "control",
+    "onset_index": -1,
+    "onset_ts": null,
+    "onset_utc": null,
+    "n_windows": 345
+  }
+}

@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "SYNTHETIC — detection_auc values (incl. the ~0.99 full-modality scores) come from a synthetic multimodal simulation harness, not real co-located multimodal contamination data. The real co-located fusion result (Track B, held-out chl-a>8) is AUROC 0.649 ~= sensor-only 0.642; fusion does NOT beat the best single encoder. Treat these ablation AUCs as simulation only.",
   "_description": "Ablation study: 31 modality subsets (2^5 - 1) evaluated on 10 historical contamination events",
   "_n_modality_subsets": 31,
   "_n_events": 10,

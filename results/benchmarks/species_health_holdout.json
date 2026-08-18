@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "INFLATED METRIC — health_r2 0.9996 and occ_accuracy 0.999 are inflated by near-absent species: two species have per_species_mae ~1e-24/1e-19 (effectively always-absent, trivially predicted). These pooled figures overstate skill. Balanced per-species AUROC/F1 and present-only R2 are the honest metrics (in progress).",
   "model": "SentinelSpeciesHealthIndex",
   "data_source": "USGS BioData (real biological surveys)",
   "synthetic_data": false,

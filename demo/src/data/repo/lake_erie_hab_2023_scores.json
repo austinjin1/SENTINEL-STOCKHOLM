@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "ILLUSTRATIVE CASE-STUDY anomaly stream \u2014 these anomaly_probability values reflect AquaSSM reconstruction/synthetic-injected-anomaly recovery (AUROC 0.939 measures recovery of SYNTHETIC injected anomalies, not real contamination). Real AquaSSM recon RMSE = 0.83. This event is NOT specificity-validated; do not present as validated real-contamination detection. Real validated Track A lead time: median 29.3d on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN) at held-out FPR 4.6%.",
   "event_id": "lake_erie_hab_2023",
   "advisory_date": "2023-07-15",
   "usgs_site": "04199500",

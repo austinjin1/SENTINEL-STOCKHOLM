@@ -104,7 +104,6 @@ export function ImportDropZone({ dispatch }: Props) {
             position: 'absolute',
             inset: 0,
             background: 'rgba(0,113,227,0.08)',
-            backdropFilter: 'blur(6px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -114,7 +113,7 @@ export function ImportDropZone({ dispatch }: Props) {
           <div
             style={{
               padding: '32px 40px',
-              background: 'rgba(255,255,255,0.96)',
+              background: 'var(--bg-surface)',
               borderRadius: 'var(--r-lg)',
               border: '2px dashed var(--accent)',
               boxShadow: 'var(--shadow-lg)',

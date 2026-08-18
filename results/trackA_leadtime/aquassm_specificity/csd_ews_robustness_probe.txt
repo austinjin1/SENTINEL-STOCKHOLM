@@ -1,0 +1,24 @@
+=== reproduce (min_base=20, win=180, beta=1.0) ===
+base                         det=11/15  lead=41.3438d  fpr=0.0472  pareto=True
+
+=== EWS_MIN_BASE sweep (win=180, beta=1.0) ===
+min_base=15                  det=11/15  lead=43.4167d  fpr=0.0471  pareto=True
+min_base=20                  det=11/15  lead=41.3438d  fpr=0.0472  pareto=True
+min_base=30                  det=11/15  lead=42.6562d  fpr=0.0472  pareto=True
+min_base=45                  det=10/15  lead=42.2552d  fpr=0.0471  pareto=False
+min_base=60                  det=11/15  lead=41.1771d  fpr=0.0468  pareto=True
+
+=== EWS_WIN sweep (min_base=20, beta=1.0) ===
+ews_win=120                  det=11/15  lead=40.8646d  fpr=0.0499  pareto=True
+ews_win=150                  det=11/15  lead=40.5104d  fpr=0.0417  pareto=True
+ews_win=180                  det=11/15  lead=41.3438d  fpr=0.0472  pareto=True
+ews_win=240                  det=11/15  lead=43.4896d  fpr=0.0403  pareto=True
+
+=== BETA sweep (min_base=20, win=180) ===
+beta=0.5                     det=11/15  lead=43.3438d  fpr=0.0497  pareto=True
+beta=1.0                     det=11/15  lead=41.3438d  fpr=0.0472  pareto=True
+beta=1.5                     det=11/15  lead=41.0104d  fpr=0.0463  pareto=True
+beta=2.0                     det=11/15  lead=43.2604d  fpr=0.0458  pareto=True
+
+HEADLINE-TO-BEAT: 11/15, 36.1 d, fpr<=0.05
+WIN IS ROBUST iff detected>=11 AND lead>=36.1 across the neighbourhood, not just at the point.

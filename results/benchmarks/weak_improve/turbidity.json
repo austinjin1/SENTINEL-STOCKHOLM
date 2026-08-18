@@ -1,0 +1,82 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Improve REAL turbidity retrieval from Sentinel-2 optics vs the HydroViT station-holdout baseline (Turb R2=-0.0054).",
+    "data": "data/processed/satellite/drone_wq_pairs.npz",
+    "data_description": "REAL Sentinel-2 L2A (B02,B03,B04,B08) paired with REAL same-day in-situ USGS turbidity (NTU).",
+    "bands_available": [
+      "B02",
+      "B03",
+      "B04",
+      "B08"
+    ],
+    "turbidity_indices": [
+      "NDTI=(B04-B03)/(B04+B03)",
+      "red/green",
+      "NIR/red B08/B04",
+      "NIR/green",
+      "red/blue",
+      "NDVI",
+      "NDWI",
+      "Nechad B04*(1+B04)"
+    ],
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site_id) GroupKFold \u2014 no site shared train/test.",
+    "ci": "site-clustered bootstrap (resamples sites, not rows), 2000 reps.",
+    "model": "HistGradientBoosting (CPU); identical across arms.",
+    "target_fix": "log1p(NTU) stabilises the heavy tail (p99=112, max=953 NTU); predictions back-transformed to NTU for an honest original-scale R2."
+  },
+  "diagnosis": {
+    "turb_ntu_percentiles": {
+      "p50": 5.239,
+      "p90": 27.641,
+      "p99": 112.208,
+      "max": 953.264,
+      "mean": 12.638,
+      "std": 29.855
+    },
+    "why_baseline_near_zero": "Raw-NTU R2 is dominated by a few extreme (>>100 NTU) spikes; squared error on the heavy tail swamps skill on the bulk. A log-target + spectral turbidity indices recover held-out skill."
+  },
+  "n": 8656,
+  "n_sites": 293,
+  "n_features": 84,
+  "baseline_hydrovit_turb_r2": -0.0054,
+  "arms": {
+    "raw_target_original_scale": {
+      "r2": 0.012,
+      "r2_ci95": [
+        -0.0291,
+        0.0436
+      ],
+      "note": "GBM on raw NTU; reproduces the near-zero R2 pathology of the baseline."
+    },
+    "log_target_log_scale": {
+      "r2": 0.2529,
+      "r2_ci95": [
+        0.1984,
+        0.299
+      ],
+      "note": "R2 on log1p(NTU) \u2014 the scale the model optimises."
+    },
+    "log_target_original_scale": {
+      "r2": 0.0373,
+      "r2_ci95": [
+        0.012,
+        0.0814
+      ],
+      "note": "log-target predictions back-transformed to NTU; honest apples-to-apples vs the -0.0054 baseline."
+    }
+  },
+  "delta_log_minus_raw_original_scale": {
+    "mean": 0.0305,
+    "ci95": [
+      -0.0088,
+      0.0887
+    ],
+    "prob_improvement": 0.924
+  },
+  "improved": false,
+  "verdict": "NULL/limited (see arms and delta CI)",
+  "elapsed_seconds": 298.0
+}

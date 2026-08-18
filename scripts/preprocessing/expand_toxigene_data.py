@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 """expand_toxigene_v3.py — Download new GEO zebrafish toxicology datasets and
-expand ToxiGene from 1697 to 2500+ real samples.
+add the genuinely-new real samples to the ToxiGene corpus.
+
+PROVENANCE / HONEST COUNT: the GEO download yields only ~239 genuinely-new
+real zebrafish samples on top of the v2 corpus. The earlier "2,500+ real
+samples" claim was FALSE — the bulk of the "v3_expanded" matrix was
+class-conditional Gaussian augmentation of the v2 data, which is SYNTHETIC.
+Gaussian augmentation is now OFF BY DEFAULT (ENABLE_GAUSSIAN_AUGMENTATION);
+when enabled it is clearly labeled synthetic in the saved summary. Models
+evaluated on the augmented matrix are NOT validated (honest real-holdout
+F1=0.492, n=9).
 
 Steps:
   1. Download SOFT files for new GEO accessions to data/raw/molecular/geo_v3/
@@ -8,8 +17,9 @@ Steps:
   3. Map gene identifiers to the existing 61479-gene space
   4. Assign outcome labels from chemical/treatment annotations
   5. Generate pathway labels via hierarchy matrix
-  6. Save v3 expanded dataset:
-       expression_matrix_v3_expanded.npy  (N_new + 1697, 61479)
+  6. (OPTIONAL, OFF BY DEFAULT) class-conditional Gaussian augmentation — SYNTHETIC
+  7. Save v3 dataset:
+       expression_matrix_v3_expanded.npy  (N_real_new + 1697, 61479)
        outcome_labels_v3_expanded.npy
        pathway_labels_v3_expanded.npy
 
@@ -34,6 +44,12 @@ PROJECT_ROOT = Path("/home/bcheng/SENTINEL")
 GEO_V3_DIR   = PROJECT_ROOT / "data" / "raw" / "molecular" / "geo_v3"
 DATA_DIR      = PROJECT_ROOT / "data" / "processed" / "molecular"
 GEO_V3_DIR.mkdir(parents=True, exist_ok=True)
+
+# ── SYNTHETIC augmentation switch ────────────────────────────────────────────
+# Class-conditional Gaussian augmentation fabricates samples and INFLATES any
+# downstream metric. It is OFF BY DEFAULT; set the env var to "1" only for
+# explicit ablation, knowing the result is SYNTHETIC and not validated.
+ENABLE_GAUSSIAN_AUGMENTATION = os.environ.get("TOXIGENE_GAUSSIAN_AUG", "0") == "1"
 
 # ── GEO accessions to download (NOT already in v2) ───────────────────────────
 # 17 already used: GSE109496, GSE109498, GSE117260, GSE21680, GSE30035,
@@ -612,17 +628,23 @@ def main() -> None:
         log(f"  After normalization: min={new_X.min():.3f}, "
             f"max={new_X.max():.3f}, mean={new_X.mean():.3f}")
 
-    # ── Augment to reach 2500+ samples ────────────────────────────────────────
-    # If GEO yielded fewer than 800 new real samples, supplement with
-    # class-conditional Gaussian augmentation of v2 data to hit target.
+    # ── (OPTIONAL, OFF BY DEFAULT) class-conditional Gaussian augmentation ─────
+    # SYNTHETIC: this fabricates samples by Gaussian noise around per-class means
+    # and INFLATES downstream metrics. Disabled unless TOXIGENE_GAUSSIAN_AUG=1.
+    # The honest corpus is v2 + ~239 genuinely-new real GEO samples.
     TARGET_TOTAL = 2500
     n_current = X_v2.shape[0] + new_X.shape[0]
     n_deficit  = max(0, TARGET_TOTAL - n_current)
 
     log(f"\n  Current total: {n_current} (v2={X_v2.shape[0]}, new_geo={new_X.shape[0]})")
 
-    if n_deficit > 0:
-        log(f"  Augmenting {n_deficit} samples via class-conditional Gaussian noise …")
+    if n_deficit > 0 and not ENABLE_GAUSSIAN_AUGMENTATION:
+        log(f"  Gaussian augmentation DISABLED (default). Keeping {n_current} REAL samples; "
+            f"skipping {n_deficit} synthetic samples. Set TOXIGENE_GAUSSIAN_AUG=1 to enable "
+            f"(SYNTHETIC, inflates metrics, not validated).")
+
+    if n_deficit > 0 and ENABLE_GAUSSIAN_AUGMENTATION:
+        log(f"  [SYNTHETIC] Augmenting {n_deficit} samples via class-conditional Gaussian noise …")
         rng = np.random.default_rng(42)
 
         # Use v2 as augmentation base (it's already normalized)
@@ -696,9 +718,12 @@ def main() -> None:
 
     # Save summary
     summary = {
+        "_PROVENANCE": ("SYNTHETIC-AUGMENTED" if ENABLE_GAUSSIAN_AUGMENTATION
+                        else "REAL-ONLY (Gaussian augmentation disabled)"),
+        "gaussian_augmentation_enabled": bool(ENABLE_GAUSSIAN_AUGMENTATION),
         "v2_samples": int(X_v2.shape[0]),
         "new_geo_samples": int(n_from_geo),
-        "augmented_samples": int(new_X.shape[0] - n_from_geo),
+        "synthetic_augmented_samples": int(new_X.shape[0] - n_from_geo),
         "v3_total": int(X_v3.shape[0]),
         "n_genes": int(n_genes),
         "n_outcomes": 7,
@@ -716,9 +741,10 @@ def main() -> None:
     log("\n" + "=" * 70)
     log("SUMMARY")
     log("=" * 70)
-    log(f"  v2 baseline:       {X_v2.shape[0]:5d} samples")
-    log(f"  New from GEO:      {n_from_geo:5d} samples")
-    log(f"  Augmented:         {new_X.shape[0] - n_from_geo:5d} samples")
+    log(f"  v2 baseline:       {X_v2.shape[0]:5d} samples (real)")
+    log(f"  New from GEO:      {n_from_geo:5d} samples (real)")
+    log(f"  SYNTHETIC aug:     {new_X.shape[0] - n_from_geo:5d} samples "
+        f"({'ENABLED' if ENABLE_GAUSSIAN_AUGMENTATION else 'disabled'})")
     log(f"  v3 TOTAL:          {X_v3.shape[0]:5d} samples")
     log(f"  Genes:             {n_genes}")
     log(f"  Elapsed:           {time.time()-t0:.1f}s")

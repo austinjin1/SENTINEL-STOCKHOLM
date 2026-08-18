@@ -583,7 +583,13 @@ def compute_statistics(events: list[dict]) -> dict:
         "min_lead_time_hours": float(np.min(lead_times)),
         "max_lead_time_hours": float(np.max(lead_times)),
         "event_type_distribution": event_types,
-        "detection_rate": 1.0,  # All positive lead time events by construction
+        # NOTE: This catalog stores literature-curated lead times; it is NOT a
+        # real-inference detection benchmark. A "detection_rate" computed here
+        # would be a tautology (every event was selected for having positive
+        # lead time), so it is intentionally omitted. Real-inference lead-time
+        # validation lives in results/trackA_leadtime (median ~29.3 d on 3/6
+        # specificity-validated DO-hypoxia episodes; 4.6% sustained FPR).
+        "_PROVENANCE": "CURATED CATALOG — literature-reported lead times, not real-inference detections",
     }
 
 
@@ -645,7 +651,10 @@ def main():
     print(f"SENTINEL Case Studies v3 — {len(all_events)} Events")
     print(f"  Mean lead time:   {all_stats['mean_lead_time_hours']:.1f} hours ({all_stats['mean_lead_time_hours']/24:.1f} days)")
     print(f"  Median lead time: {all_stats['median_lead_time_hours']:.1f} hours ({all_stats['median_lead_time_hours']/24:.1f} days)")
-    print(f"  Detection rate:   100% (31/31)")
+    print(f"  NOTE: These are literature-curated lead times (CURATED CATALOG), not")
+    print(f"        real-inference detections. No detection-rate is reported here")
+    print(f"        because it would be tautological (events selected for positive")
+    print(f"        lead time). Real-inference validation: results/trackA_leadtime.")
     print(f"  Live crises monitored: {len(LIVE_CRISES)}")
     print("=" * 80)
 

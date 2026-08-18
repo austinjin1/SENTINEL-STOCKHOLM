@@ -1,9 +1,23 @@
 {
+  "_PROVENANCE": {
+    "STATUS": "QUARANTINED \u2014 NOT A VALID HELD-OUT METRIC",
+    "summary": "The HydroViT water-quality R2 reported in this file (water_temp R2 ~= 0.893, mean R2 ~= 0.652) was computed on paired_wq_v5.npz, which contains FABRICATED targets. It is NOT a valid held-out number and must not be cited.",
+    "fabrication_detail": "paired_wq_v5.npz is produced by scripts/preprocessing/expand_hydrovit_data.py. Its seasonal_augmentation() adds U(0,8) degrees C to the water_temp TARGET and multiplies every other target by U(0.9,1.1) (+-10%). These augmented (invented) rows are included in train/val/test, so the test labels are partly fabricated.",
+    "data_absent": "Both the fabricated paired_wq_v5.npz and the REAL paired_wq_v3.npz are ABSENT from disk as of 2026-06, so this number is also unreproducible.",
+    "required_action": "needs-new-data: a real number requires rebuilding the REAL paired_wq_v3.npz from NWIS x Sentinel-2 pairs (or placing real tiles in data/processed/satellite/real/) and re-running scripts/training/train_hydrovit.py. The training/eval code now hard-refuses the paired_wq_v5.npz fallback.",
+    "quarantined_metrics": {
+      "water_temp_r2": 0.8926961421966553,
+      "mean_r2": 0.6524179848757657,
+      "source_dataset": "data/processed/satellite/paired_wq_v5.npz (FABRICATED, ABSENT)"
+    },
+    "added": "2026-06 integrity quarantine"
+  },
   "generated": "2026-05-28T17:45:00",
   "project": "SENTINEL 2.0",
   "submission": "Stockholm Junior Water Prize 2026",
   "total_benchmarks": 23,
   "key_metrics": {
+    "_PROVENANCE": "stream_gnn_auroc=SIMULATION; contrastive_recall_at_1=N=1 noise (removed); species_health_r2=pooled/inflated; disease_forecast_auroc=circular labels (not predictive skill). See top-level _PROVENANCE.",
     "aquassm_v2_test_rmse": 0.8296109195586967,
     "stream_gnn_auroc": 0.9999997777364245,
     "waterdronenet_do_r2": 0.463,

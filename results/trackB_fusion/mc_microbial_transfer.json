@@ -1,0 +1,143 @@
+{
+  "question": "Can a microbial/cyanobacteria-community proxy (incl. mcyE/ndaF toxic-strain genotype qPCR) recover leave-one-HUC-region-out transfer of the microcystin fusion (collapses to ~0.485-0.527)?",
+  "method": "WQP Result service queried at the 227 fusion site IDs for community/genotype characteristics; co-located nearest +/-14 d; real HUC2 from WQP Station service.",
+  "cross_region_baseline_3way": {
+    "mc_gt1.6": 0.485,
+    "mc_gt0.3": 0.49,
+    "source": "mc_region_transfer.json / mc_driver_robustness.json"
+  },
+  "community_coverage": {
+    "mcyE_ndaF": {
+      "n_colocated": 28,
+      "n_sites": 15,
+      "regions": {
+        "18": 28
+      },
+      "pos_gt1.6": 16,
+      "pos_gt0.3": 27
+    },
+    "cyano_density": {
+      "n_colocated": 144,
+      "n_sites": 6,
+      "regions": {
+        "18": 144
+      },
+      "pos_gt1.6": 7,
+      "pos_gt0.3": 15
+    },
+    "cyano_percent": {
+      "n_colocated": 18,
+      "n_sites": 3,
+      "regions": {
+        "15": 18
+      },
+      "pos_gt1.6": 6,
+      "pos_gt0.3": 15
+    },
+    "algae_all_density": {
+      "n_colocated": 18,
+      "n_sites": 3,
+      "regions": {
+        "15": 18
+      },
+      "pos_gt1.6": 6,
+      "pos_gt0.3": 15
+    },
+    "cyano_chla_probe": {
+      "n_colocated": 11,
+      "n_sites": 1,
+      "regions": {
+        "00": 11
+      },
+      "pos_gt1.6": 0,
+      "pos_gt0.3": 0
+    }
+  },
+  "n_samples_with_any_community_record": 201,
+  "n_sites_with_any_community_record": 25,
+  "community_region_breakdown": {
+    "18": 172,
+    "15": 18,
+    "00": 11
+  },
+  "region_testability_per_characteristic": {
+    "mcyE_ndaF": {
+      "regions": {
+        "18": {
+          "n": 28,
+          "pos_gt1.6": 16,
+          "pos_gt0.3": 27
+        }
+      },
+      "n_regions_with_both_classes_and_n>=20": 1
+    },
+    "cyano_density": {
+      "regions": {
+        "18": {
+          "n": 144,
+          "pos_gt1.6": 7,
+          "pos_gt0.3": 15
+        }
+      },
+      "n_regions_with_both_classes_and_n>=20": 1
+    },
+    "cyano_percent": {
+      "regions": {
+        "15": {
+          "n": 18,
+          "pos_gt1.6": 6,
+          "pos_gt0.3": 15
+        }
+      },
+      "n_regions_with_both_classes_and_n>=20": 0
+    },
+    "algae_all_density": {
+      "regions": {
+        "15": {
+          "n": 18,
+          "pos_gt1.6": 6,
+          "pos_gt0.3": 15
+        }
+      },
+      "n_regions_with_both_classes_and_n>=20": 0
+    },
+    "cyano_chla_probe": {
+      "regions": {
+        "00": {
+          "n": 11,
+          "pos_gt1.6": 0,
+          "pos_gt0.3": 0
+        }
+      },
+      "n_regions_with_both_classes_and_n>=20": 0
+    }
+  },
+  "n_distinct_HUC2_regions_with_community_data": 3,
+  "leave_one_HUC_region_out_possible_with_community": false,
+  "within_region_sanity_HUC18": {
+    "18": {
+      "n": 172,
+      "n_sites": 21,
+      "mc_gt1.6": {
+        "pos": 23,
+        "auroc_3way_base": 0.779,
+        "auroc_4way_with_community": 0.863,
+        "ci_4way": [
+          0.744,
+          0.975
+        ]
+      },
+      "mc_gt0.3": {
+        "pos": 42,
+        "auroc_3way_base": 0.785,
+        "auroc_4way_with_community": 0.857,
+        "ci_4way": [
+          0.754,
+          0.995
+        ]
+      }
+    }
+  },
+  "verdict": "STILL DATA-BLOCKED (structural): every co-located community/genotype characteristic exists in exactly ONE HUC2 region (mcyE/ndaF & cyano density in HUC18 only; cyano percent & algae density in HUC15 only; cyano-chla-probe in one site). Leave-one-HUC-region-out is impossible for the community modality: no community feature is present in >=2 regions, so it cannot appear in both a train and a held-out test region. The genotype key exists at fusion sites but is spatially confined (3 orgs, 2 regions), so the cross-region recovery hypothesis cannot be tested. Cross-region AUROC with the 4th modality is UNCOMPUTABLE (not >0.53, not <=0.5 \u2014 undefined).",
+  "unblock_spec": "Need the SAME community/genotype characteristic (ideally Microcystin/nodularin genes mcyE/ndaF qPCR, or standardized cyanobacteria cell-count/biovolume) co-located (same site, +/-14 d of a microcystin sample) at monitoring programs in >=2 distinct HUC2 regions with both classes, e.g. >=2 regions x >=30 co-located samples x >=6 positives each. Concretely: add mcyE/qPCR at the Florida 21FL* HAB sites (bulk of fusion samples, currently zero community records) OR at Great-Lakes 21MICH/21OHIO/USGS sites. WQP already holds USGS mcyE gc/uL and NARS cyanobacteria counts, but at NON-fusion sites lacking co-located Sentinel-2 + pigment + microcystin."
+}

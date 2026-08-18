@@ -9,7 +9,9 @@ SENTINEL temporal-spatial holdout protocol:
 
 Data source: REAL satellite tiles only — no synthetic data.
   Primary:  Individual .npz tiles from data/processed/satellite/real/
-  Fallback: data/processed/satellite/paired_wq_v5.npz
+  Fallback: REAL data/processed/satellite/paired_wq_v3.npz ONLY.
+  paired_wq_v5.npz is FABRICATED (augmented targets) and is hard-refused
+  by load_data(); it must never be used for training or evaluation.
 
 Architecture (identical to v9):
   raw_10ch
@@ -479,22 +481,45 @@ def load_data() -> dict:
             logger.warning(f"No valid tiles found in {REAL_TILE_DIR}")
 
     # Strategy 2: Paired .npz fallback
+    #
+    # INTEGRITY GUARD (added 2026-06): paired_wq_v5.npz is FABRICATED.
+    # It is produced by scripts/preprocessing/expand_hydrovit_data.py, whose
+    # seasonal_augmentation() adds U(0,8) to the water_temp TARGET and perturbs
+    # every other target by +-10%. Training or evaluating on it yields invalid,
+    # non-held-out metrics (this is the origin of the quarantined
+    # water_temp R2=0.893 / mean R2=0.652 headline). We therefore HARD-REFUSE
+    # the v5 fallback rather than silently training on fabricated labels.
+    # paired_wq_v3.npz (the real source) is currently ABSENT from disk; if it is
+    # rebuilt it may be used, but v5 must never be.
     for paired_path in [PAIRED_DATA_V5, PAIRED_DATA_V3]:
         if paired_path.exists():
+            if paired_path == PAIRED_DATA_V5:
+                raise RuntimeError(
+                    "REFUSING to load paired_wq_v5.npz: it contains FABRICATED "
+                    "targets (seasonal_augmentation adds U(0,8) to water_temp and "
+                    "perturbs other targets by +-10%; see "
+                    "scripts/preprocessing/expand_hydrovit_data.py). Any R2 computed "
+                    "on it (e.g. the quarantined water_temp=0.893 / mean=0.652) is "
+                    "NOT a valid held-out number. Rebuild the REAL paired_wq_v3.npz "
+                    "from NWIS x Sentinel-2 pairs (needs-new-data) and place real "
+                    "tiles in data/processed/satellite/real/ instead."
+                )
             logger.info(f"Falling back to paired .npz: {paired_path}")
             data = load_paired_npz(paired_path)
             if len(data["images"]) > 0:
                 logger.info(f"Loaded {len(data['images'])} samples from {paired_path}")
                 return data
 
-    # No data available — fail with clear instructions
+    # No data available — fail with clear instructions.
+    # NOTE: paired_wq_v5.npz is intentionally NOT listed as a valid source — it
+    # contains fabricated targets and is hard-refused above.
     raise FileNotFoundError(
         "No real satellite data found. Expected one of:\n"
-        f"  1. Individual .npz tiles in: {REAL_TILE_DIR}/\n"
-        f"  2. Paired dataset at: {PAIRED_DATA_V5}\n"
-        f"  3. Paired dataset at: {PAIRED_DATA_V3}\n\n"
+        f"  1. Individual REAL .npz tiles in: {REAL_TILE_DIR}/\n"
+        f"  2. REAL paired dataset at: {PAIRED_DATA_V3}\n\n"
         "Run scripts/download_satellite_real.py first to acquire data, then\n"
-        "scripts/coregister_satellite_wq.py to create paired tiles."
+        "scripts/coregister_satellite_wq.py to create paired tiles.\n"
+        "Do NOT use paired_wq_v5.npz — it contains fabricated augmented targets."
     )
 
 

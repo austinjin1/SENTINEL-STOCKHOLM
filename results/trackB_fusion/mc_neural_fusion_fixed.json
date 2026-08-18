@@ -1,0 +1,63 @@
+{
+  "dataset": "mc_fusion_dataset.parquet",
+  "device": "cuda",
+  "n": 3649,
+  "n_sites": 227,
+  "sat_dim": 26,
+  "ins_dim": 4,
+  "model": "NeuralFusion (fixed ModalityProjection + data-driven ConfidenceGate + Perceiver)",
+  "cv": "GroupKFold(site) x5",
+  "labels": {
+    "mc_gt1.6_WHO_drinking": {
+      "pos": 633,
+      "satellite_auroc": 0.639,
+      "insitu_auroc": 0.68,
+      "fusion_auroc": 0.732,
+      "best_single": "insitu",
+      "fusion_minus_best": 0.052,
+      "site_bootstrap_delta": {
+        "delta_median": 0.052,
+        "ci95": [
+          0.0,
+          0.108
+        ],
+        "P_delta_gt0": 0.975
+      },
+      "fusion_helps": false
+    },
+    "mc_gt0.3_detection": {
+      "pos": 1286,
+      "satellite_auroc": 0.624,
+      "insitu_auroc": 0.707,
+      "fusion_auroc": 0.747,
+      "best_single": "insitu",
+      "fusion_minus_best": 0.04,
+      "site_bootstrap_delta": {
+        "delta_median": 0.041,
+        "ci95": [
+          0.007,
+          0.076
+        ],
+        "P_delta_gt0": 0.993
+      },
+      "fusion_helps": true
+    },
+    "mc_gt8_WHO_recreational": {
+      "pos": 286,
+      "satellite_auroc": 0.624,
+      "insitu_auroc": 0.649,
+      "fusion_auroc": 0.764,
+      "best_single": "insitu",
+      "fusion_minus_best": 0.116,
+      "site_bootstrap_delta": {
+        "delta_median": 0.113,
+        "ci95": [
+          0.045,
+          0.185
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "fusion_helps": true
+    }
+  }
+}

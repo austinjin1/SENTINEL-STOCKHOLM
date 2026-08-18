@@ -118,7 +118,6 @@ export function LivePlaybackPanel({ timeline, record, state, dispatch, onClose }
         position: 'fixed',
         inset: 0,
         background: 'rgba(0,0,0,0.55)',
-        backdropFilter: 'blur(8px)',
         zIndex: 9500,
         display: 'flex',
         alignItems: 'center',
@@ -133,7 +132,7 @@ export function LivePlaybackPanel({ timeline, record, state, dispatch, onClose }
         style={{
           width: 'min(1100px, 100%)',
           maxHeight: '100%',
-          background: 'rgba(255,255,255,0.97)',
+          background: 'var(--bg-surface)',
           borderRadius: 'var(--r-lg)',
           boxShadow: 'var(--shadow-lg)',
           display: 'flex',
@@ -234,7 +233,8 @@ export function LivePlaybackPanel({ timeline, record, state, dispatch, onClose }
             Lead time at threshold ·{' '}
             <span className="mono" style={{ color: 'var(--accent)' }}>
               {Math.abs(daysFromAdvisory(timeline, timeline.sentinelAlertDate))}d
-            </span>
+            </span>{' '}
+            (illustrative case study, not specificity-validated)
           </div>
         </div>
 
@@ -330,7 +330,7 @@ export function LivePlaybackPanel({ timeline, record, state, dispatch, onClose }
             gap: 12,
             padding: '12px 20px',
             borderTop: '1px solid var(--border-subtle)',
-            background: 'rgba(255,255,255,0.85)',
+            background: 'var(--bg-surface)',
           }}
         >
           <button

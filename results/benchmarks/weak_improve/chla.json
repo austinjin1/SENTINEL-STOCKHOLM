@@ -1,0 +1,105 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Improve REAL log10 chl-a retrieval beyond the red-edge GBM baseline (hydrovit_rededge.json R2=0.3383) with richer pigment features + small ensemble.",
+    "data": "data/processed/biology/noaa_habs/mc_tiles (REAL Sentinel-2 L2A 6-band tiles) x mc_fusion_dataset.parquet (REAL WQP/NOAA-HABS in-situ CHLA).",
+    "tile_bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B08",
+      "B11"
+    ],
+    "baseline_representation": "rededge (91 feats): 6 raw bands + NDVI/NDWI/GR + NDCI/CIre/MCIre/FAI",
+    "enhanced_adds": [
+      "FLHg(green-baseline)",
+      "B05/B04",
+      "B05/B03",
+      "B08/B05",
+      "redEdgeSlope_lo",
+      "redEdgeSlope_hi",
+      "slopeRatio",
+      "3bandIndex(TBI)",
+      "curvature",
+      "MCI_swirBaseline",
+      "NDCI_iqr8010",
+      "NDCI_fracpos"
+    ],
+    "ensemble": "HistGBM + ExtraTrees, OOF-averaged inside each fold (no test leakage).",
+    "FINDING": "The extra pigment features did NOT help (baseline rededge set already saturates the linear pigment signal); the honest gain comes from the HGB+ExtraTrees ENSEMBLE (model-class change) on the SAME 91 rededge features.",
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site) GroupKFold \u2014 no site shared train/test.",
+    "ci": "site-clustered bootstrap (resamples sites, not rows), 2000 reps; paired delta on same sites.",
+    "target": "log10 chlorophyll-a (ug/L), REAL WQP CHLA, 0<x<5000."
+  },
+  "n_rows": 2256,
+  "n_sites": 169,
+  "n_folds": 5,
+  "feature_counts": {
+    "rededge_baseline": 91,
+    "enhanced": 163
+  },
+  "old_baseline_reference_R2": 0.3383,
+  "baseline_rededge_HGB": {
+    "r2": 0.3383,
+    "r2_ci95": [
+      0.2307,
+      0.4138
+    ]
+  },
+  "enhanced_HGB": {
+    "r2": 0.314,
+    "r2_ci95": [
+      0.2193,
+      0.382
+    ],
+    "delta_vs_baseline": {
+      "mean": -0.0236,
+      "ci95": [
+        -0.0571,
+        0.0056
+      ],
+      "prob_improvement": 0.07
+    },
+    "verdict": "NULL (CI includes 0; prob_improvement=0.07)"
+  },
+  "enhanced_ENSEMBLE": {
+    "r2": 0.3376,
+    "r2_ci95": [
+      0.2424,
+      0.4076
+    ],
+    "delta_vs_baseline": {
+      "mean": -0.0001,
+      "ci95": [
+        -0.0235,
+        0.0242
+      ],
+      "prob_improvement": 0.491
+    },
+    "verdict": "NULL (CI includes 0; prob_improvement=0.491)"
+  },
+  "baselineFeat_ENSEMBLE": {
+    "note": "HGB+ExtraTrees ensemble on the SAME 91 rededge features (no new pigment feats). Isolates the model-class gain from the feature-engineering gain.",
+    "r2": 0.3554,
+    "r2_ci95": [
+      0.2539,
+      0.429
+    ],
+    "delta_vs_baseline": {
+      "mean": 0.0175,
+      "ci95": [
+        0.002,
+        0.0328
+      ],
+      "prob_improvement": 0.987
+    },
+    "verdict": "IMPROVED (delta 95% CI excludes 0)"
+  },
+  "elapsed_seconds": 118.1,
+  "best_arm": "baselineFeat_ENSEMBLE",
+  "improved": true,
+  "overall_verdict": "IMPROVED (delta 95% CI excludes 0)"
+}

@@ -1,0 +1,359 @@
+{
+  "model": "ToxiGene_realGEO_v1",
+  "task": "binary toxicant-exposure classification (control vs exposed)",
+  "organism": "Danio rerio (zebrafish)",
+  "platform": "GPL14664 (Agilent zebrafish microarray)",
+  "data_source": "real NCBI GEO series matrices; labels from real sample metadata",
+  "split_protocol": "leave-one-study-out (LOSO) cross-validation",
+  "n_studies": 12,
+  "n_samples": 279,
+  "n_control": 94,
+  "n_exposed": 185,
+  "n_genes_shared": 7902,
+  "n_top_genes_used": 1500,
+  "studies": [
+    "GSE110340",
+    "GSE110543",
+    "GSE112016",
+    "GSE116641",
+    "GSE121338",
+    "GSE129812",
+    "GSE84394",
+    "GSE89653",
+    "GSE89756",
+    "GSE90457",
+    "GSE93227",
+    "GSE93532"
+  ],
+  "previous_invalid_baseline": {
+    "value_f1_macro": 0.492,
+    "why_invalid": "trained on human/cattle DISEASE GEO (GSE73661 ulcerative colitis, GSE83514 cattle FMDV, GSE104776 ovarian cancer, GSE54800 HCC) with HARD-CODED per-study outcome labels and a RANDOM gene->pathway->outcome hierarchy; gene names were placeholders (gene_0000). Not aquatic toxicology."
+  },
+  "logreg_baseline": {
+    "pooled": {
+      "n_evaluated": 279,
+      "accuracy": 0.6057347670250897,
+      "f1_macro": 0.5216049382716049,
+      "f1_exposed": 0.7222222222222222,
+      "auroc": 0.5569867740080506,
+      "baseline_majority_acc": 0.6630824372759857
+    },
+    "per_study": {
+      "GSE110340": {
+        "n": 4,
+        "n_control": 2,
+        "n_exposed": 2,
+        "accuracy": 0.25,
+        "auroc": 0.5,
+        "f1_macro": 0.2
+      },
+      "GSE110543": {
+        "n": 36,
+        "n_control": 18,
+        "n_exposed": 18,
+        "accuracy": 0.5277777777777778,
+        "auroc": 0.5216049382716049,
+        "f1_macro": 0.42857142857142855
+      },
+      "GSE112016": {
+        "n": 12,
+        "n_control": 3,
+        "n_exposed": 9,
+        "accuracy": 0.6666666666666666,
+        "auroc": 0.40740740740740744,
+        "f1_macro": 0.4
+      },
+      "GSE116641": {
+        "n": 32,
+        "n_control": 8,
+        "n_exposed": 24,
+        "accuracy": 0.5625,
+        "auroc": 0.640625,
+        "f1_macro": 0.5151515151515151
+      },
+      "GSE121338": {
+        "n": 28,
+        "n_control": 14,
+        "n_exposed": 14,
+        "accuracy": 0.7857142857142857,
+        "auroc": 0.9336734693877551,
+        "f1_macro": 0.7754010695187166
+      },
+      "GSE129812": {
+        "n": 15,
+        "n_control": 3,
+        "n_exposed": 12,
+        "accuracy": 0.8,
+        "auroc": 0.5555555555555556,
+        "f1_macro": 0.64
+      },
+      "GSE84394": {
+        "n": 18,
+        "n_control": 6,
+        "n_exposed": 12,
+        "accuracy": 0.6666666666666666,
+        "auroc": 0.5416666666666667,
+        "f1_macro": 0.5846153846153846
+      },
+      "GSE89653": {
+        "n": 27,
+        "n_control": 8,
+        "n_exposed": 19,
+        "accuracy": 0.5555555555555556,
+        "auroc": 0.45394736842105265,
+        "f1_macro": 0.35714285714285715
+      },
+      "GSE89756": {
+        "n": 22,
+        "n_control": 6,
+        "n_exposed": 16,
+        "accuracy": 0.4090909090909091,
+        "auroc": 0.40624999999999994,
+        "f1_macro": 0.2903225806451613
+      },
+      "GSE90457": {
+        "n": 37,
+        "n_control": 18,
+        "n_exposed": 19,
+        "accuracy": 0.5675675675675675,
+        "auroc": 0.5760233918128654,
+        "f1_macro": 0.5515151515151515
+      },
+      "GSE93227": {
+        "n": 34,
+        "n_control": 4,
+        "n_exposed": 30,
+        "accuracy": 0.5882352941176471,
+        "auroc": 0.42499999999999993,
+        "f1_macro": 0.37037037037037035
+      },
+      "GSE93532": {
+        "n": 14,
+        "n_control": 4,
+        "n_exposed": 10,
+        "accuracy": 0.8571428571428571,
+        "auroc": 0.9,
+        "f1_macro": 0.7878787878787878
+      }
+    }
+  },
+  "molecular_encoder": {
+    "pooled": {
+      "n_evaluated": 279,
+      "accuracy": 0.5627240143369175,
+      "f1_macro": 0.5026011222819733,
+      "f1_exposed": 0.675531914893617,
+      "auroc": 0.5136860264519839,
+      "baseline_majority_acc": 0.6630824372759857
+    },
+    "per_study": {
+      "GSE110340": {
+        "n": 4,
+        "n_control": 2,
+        "n_exposed": 2,
+        "accuracy": 0.5,
+        "auroc": 0.25,
+        "f1_macro": 0.5
+      },
+      "GSE110543": {
+        "n": 36,
+        "n_control": 18,
+        "n_exposed": 18,
+        "accuracy": 0.4722222222222222,
+        "auroc": 0.5030864197530864,
+        "f1_macro": 0.3930789707187223
+      },
+      "GSE112016": {
+        "n": 12,
+        "n_control": 3,
+        "n_exposed": 9,
+        "accuracy": 0.5,
+        "auroc": 0.22222222222222224,
+        "f1_macro": 0.3333333333333333
+      },
+      "GSE116641": {
+        "n": 32,
+        "n_control": 8,
+        "n_exposed": 24,
+        "accuracy": 0.5,
+        "auroc": 0.46875,
+        "f1_macro": 0.4666666666666667
+      },
+      "GSE121338": {
+        "n": 28,
+        "n_control": 14,
+        "n_exposed": 14,
+        "accuracy": 0.6785714285714286,
+        "auroc": 0.6989795918367347,
+        "f1_macro": 0.6679841897233202
+      },
+      "GSE129812": {
+        "n": 15,
+        "n_control": 3,
+        "n_exposed": 12,
+        "accuracy": 0.7333333333333333,
+        "auroc": 0.7777777777777778,
+        "f1_macro": 0.6590909090909092
+      },
+      "GSE84394": {
+        "n": 18,
+        "n_control": 6,
+        "n_exposed": 12,
+        "accuracy": 0.5,
+        "auroc": 0.48611111111111116,
+        "f1_macro": 0.4109090909090909
+      },
+      "GSE89653": {
+        "n": 27,
+        "n_control": 8,
+        "n_exposed": 19,
+        "accuracy": 0.5555555555555556,
+        "auroc": 0.4671052631578948,
+        "f1_macro": 0.4214285714285714
+      },
+      "GSE89756": {
+        "n": 22,
+        "n_control": 6,
+        "n_exposed": 16,
+        "accuracy": 0.5454545454545454,
+        "auroc": 0.44791666666666663,
+        "f1_macro": 0.4270833333333333
+      },
+      "GSE90457": {
+        "n": 37,
+        "n_control": 18,
+        "n_exposed": 19,
+        "accuracy": 0.5135135135135135,
+        "auroc": 0.5350877192982456,
+        "f1_macro": 0.5102941176470588
+      },
+      "GSE93227": {
+        "n": 34,
+        "n_control": 4,
+        "n_exposed": 30,
+        "accuracy": 0.5882352941176471,
+        "auroc": 0.4666666666666667,
+        "f1_macro": 0.4711111111111111
+      },
+      "GSE93532": {
+        "n": 14,
+        "n_control": 4,
+        "n_exposed": 10,
+        "accuracy": 0.7857142857142857,
+        "auroc": 0.675,
+        "f1_macro": 0.6347826086956522
+      }
+    }
+  },
+  "within_study_cv_logreg": {
+    "note": "Complementary deployment scenario: detect exposed samples within the same study/platform/tissue (lab has its own controls). Stratified k-fold per study, pooled.",
+    "pooled": {
+      "n_evaluated": 279,
+      "accuracy": 0.7885304659498208,
+      "f1_macro": 0.744334860604178,
+      "f1_exposed": 0.850632911392405,
+      "auroc": 0.8584243818286373,
+      "baseline_majority_acc": 0.6630824372759857
+    },
+    "per_study": {
+      "GSE110340": {
+        "n": 4,
+        "n_control": 2,
+        "n_exposed": 2,
+        "accuracy": 0.5,
+        "auroc": 0.25,
+        "f1_macro": 0.5
+      },
+      "GSE110543": {
+        "n": 36,
+        "n_control": 18,
+        "n_exposed": 18,
+        "accuracy": 0.7777777777777778,
+        "auroc": 0.9074074074074074,
+        "f1_macro": 0.775
+      },
+      "GSE112016": {
+        "n": 12,
+        "n_control": 3,
+        "n_exposed": 9,
+        "accuracy": 0.75,
+        "auroc": 0.6666666666666667,
+        "f1_macro": 0.42857142857142855
+      },
+      "GSE116641": {
+        "n": 32,
+        "n_control": 8,
+        "n_exposed": 24,
+        "accuracy": 0.78125,
+        "auroc": 0.796875,
+        "f1_macro": 0.6621417797888387
+      },
+      "GSE121338": {
+        "n": 28,
+        "n_control": 14,
+        "n_exposed": 14,
+        "accuracy": 0.8214285714285714,
+        "auroc": 0.9132653061224489,
+        "f1_macro": 0.8212005108556832
+      },
+      "GSE129812": {
+        "n": 15,
+        "n_control": 3,
+        "n_exposed": 12,
+        "accuracy": 0.8,
+        "auroc": 0.7222222222222222,
+        "f1_macro": 0.4444444444444444
+      },
+      "GSE84394": {
+        "n": 18,
+        "n_control": 6,
+        "n_exposed": 12,
+        "accuracy": 0.6666666666666666,
+        "auroc": 0.9583333333333333,
+        "f1_macro": 0.4
+      },
+      "GSE89653": {
+        "n": 27,
+        "n_control": 8,
+        "n_exposed": 19,
+        "accuracy": 0.8148148148148148,
+        "auroc": 0.881578947368421,
+        "f1_macro": 0.7145877378435518
+      },
+      "GSE89756": {
+        "n": 22,
+        "n_control": 6,
+        "n_exposed": 16,
+        "accuracy": 0.8181818181818182,
+        "auroc": 0.9583333333333334,
+        "f1_macro": 0.7411764705882353
+      },
+      "GSE90457": {
+        "n": 37,
+        "n_control": 18,
+        "n_exposed": 19,
+        "accuracy": 0.7567567567567568,
+        "auroc": 0.7777777777777778,
+        "f1_macro": 0.7567567567567568
+      },
+      "GSE93227": {
+        "n": 34,
+        "n_control": 4,
+        "n_exposed": 30,
+        "accuracy": 0.8823529411764706,
+        "auroc": 0.95,
+        "f1_macro": 0.46875
+      },
+      "GSE93532": {
+        "n": 14,
+        "n_control": 4,
+        "n_exposed": 10,
+        "accuracy": 0.7857142857142857,
+        "auroc": 0.975,
+        "f1_macro": 0.6347826086956522
+      }
+    }
+  },
+  "honest_finding": "Under leave-one-study-out CV, a generic control-vs-exposed classifier barely beats chance (AUROC ~0.51-0.56): the exposure signature is chemical/tissue/study-specific and does NOT transfer to an unseen study. Only 2/12 held-out studies (GSE121338 thyroid disruptors, GSE93532 wastewater effluent) show strong transfer (AUROC ~0.9). WITHIN-study CV is much stronger, showing the expression DOES carry real exposure signal when the study context is shared. The MolecularEncoder does not beat a plain logistic regression on this real task. This is the genuine data ceiling for cross-study toxicant-exposure transfer on these 12 GEO studies.",
+  "elapsed_seconds": 164.6
+}

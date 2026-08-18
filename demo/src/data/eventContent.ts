@@ -11,7 +11,7 @@ export interface EventContent {
 export const EVENT_CONTENT: Record<string, EventContent> = {
   lake_erie_hab_2023: {
     narrative:
-      'In July 2023, NOAA forecast a moderate-to-severe cyanobacterial bloom in western Lake Erie driven by springtime phosphorus loading from the Maumee River basin. SENTINEL flagged the developing event 59 days before the advisory using only continuous physicochemical sensor data — the same window during which Toledo had to issue precautionary "do not drink" guidance during the 2014 event.',
+      'In July 2023, NOAA forecast a moderate-to-severe cyanobacterial bloom in western Lake Erie driven by springtime phosphorus loading from the Maumee River basin. NOTE: this is an illustrative case study and was NOT specificity-validated; the "59-day" lead is not a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     impact: [
       { label: 'At-risk drinking water consumers', value: '11 million' },
       { label: 'Estimated annual economic loss to Great Lakes', value: '$272M' },
@@ -28,7 +28,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
   },
   gulf_dead_zone_2023: {
     narrative:
-      'The 2023 Gulf of Mexico hypoxic zone reached 3,058 sq mi by July — the size of New Jersey — fed by nitrate and phosphorus runoff from the Mississippi-Atchafalaya watershed. SENTINEL detected the precursor oxygen drawdown 87 days before NOAA\'s field survey confirmed advisory conditions, the largest lead time observed in the validation set.',
+      'The 2023 Gulf of Mexico hypoxic zone reached 3,058 sq mi by July — the size of New Jersey — fed by nitrate and phosphorus runoff from the Mississippi-Atchafalaya watershed. NOTE: this is an illustrative case study and was NOT specificity-validated; the "87-day" lead is not a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     impact: [
       { label: 'Hypoxic zone area (2023)', value: '3,058 sq mi' },
       { label: 'Fisheries revenue at risk', value: '$2.4B / yr' },
@@ -41,7 +41,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
   },
   chesapeake_hypoxia_2018: {
     narrative:
-      'A combination of wet spring runoff and warm summer water produced a 2.7 cubic-mile hypoxic volume in the Chesapeake Bay during summer 2018 — the third-worst on record at the time. SENTINEL\'s 89.8-day lead was the longest of any event in the validation cohort, driven by anomalous freshwater discharge signatures that appeared in spring sensor data.',
+      'A combination of wet spring runoff and warm summer water produced a 2.7 cubic-mile hypoxic volume in the Chesapeake Bay during summer 2018 — the third-worst on record at the time. NOTE: this is an illustrative case study and was NOT specificity-validated; the "89.8-day" lead is not a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     impact: [
       { label: 'Hypoxic volume (peak)', value: '2.7 cu mi' },
       { label: 'Affected blue-crab fishery (2018 loss)', value: '~$30M' },
@@ -54,7 +54,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
   },
   klamath_river_hab_2021: {
     narrative:
-      'A persistent Microcystis bloom developed in the Klamath River reservoirs during 2021\'s extreme drought, with cyanotoxin levels exceeding California recreational thresholds for 60+ days. SENTINEL\'s 59-day lead-time anomaly emerged in pH and dissolved-oxygen swings characteristic of pre-bloom productivity surges.',
+      'A persistent Microcystis bloom developed in the Klamath River reservoirs during 2021\'s extreme drought, with cyanotoxin levels exceeding California recreational thresholds for 60+ days. NOTE: this is an illustrative case study and was NOT specificity-validated; the "59-day" lead is not a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     impact: [
       { label: 'Cyanotoxin advisory duration', value: '> 60 days' },
       { label: 'Yurok and Karuk tribal subsistence fishing', value: 'closed' },
@@ -67,7 +67,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
   },
   mississippi_salinity_2023: {
     narrative:
-      'In summer 2023, drought-driven low Mississippi River flow allowed a saltwater wedge to advance upriver toward New Orleans drinking water intakes — a recurrence of a 1988 emergency. SENTINEL identified the conductance trajectory 58 days before Army Corps countermeasures triggered, providing operational lead time for utilities downstream.',
+      'In summer 2023, drought-driven low Mississippi River flow allowed a saltwater wedge to advance upriver toward New Orleans drinking water intakes — a recurrence of a 1988 emergency. NOTE: this is an illustrative case study and was NOT specificity-validated; the "58-day" lead is not a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     impact: [
       { label: 'Population dependent on river intakes', value: '~1.2M' },
       { label: 'Army Corps sill construction cost', value: '$28M' },
@@ -80,7 +80,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
   },
   jordan_lake_hab_nc: {
     narrative:
-      'Jordan Lake — the drinking water source for Cary and Apex, NC — has experienced recurrent cyanobacterial blooms tied to upstream agricultural and urban nutrient loading. The 2022 event drew a 44-day SENTINEL lead from pH cycling consistent with rapid algal photosynthesis.',
+      'Jordan Lake — the drinking water source for Cary and Apex, NC — has experienced recurrent cyanobacterial blooms tied to upstream agricultural and urban nutrient loading. NOTE: this is an illustrative case study and was NOT specificity-validated; the "44-day" lead is not a validated result. The real validated Track A lead time is a median 29.3 days on 3/6 NEON DO-hypoxia episodes (KING/BIGC/PRIN), sensor-only, at held-out FPR 4.6%.',
     impact: [
       { label: 'Drinking water service area', value: '~300K residents' },
       { label: 'Recurrence frequency', value: 'annual since 2018' },

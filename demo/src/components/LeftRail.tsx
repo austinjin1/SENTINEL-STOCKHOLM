@@ -46,9 +46,7 @@ export function LeftRail({ dispatch, legendOpen, demoMode }: Props) {
     <div
       style={{
         width: 56,
-        background: 'rgba(255,255,255,0.72)',
-        backdropFilter: 'blur(20px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        background: 'var(--bg-surface)',
         borderRight: '1px solid var(--border-subtle)',
         display: 'flex',
         flexDirection: 'column',

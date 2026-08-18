@@ -1,0 +1,45 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Decompose imagery-only station-grouped R2 into BETWEEN-station (regional proxy) vs WITHIN-station (true optical retrieval) for SpCond, with Temp/DO/Turb as controls. Tests whether SpCond R2~0.5 is a spurious regional proxy for a non-optical analyte.",
+    "data": "drone_wq_pairs.npz (REAL Sentinel-2 x USGS). Imagery-only, 4 bands.",
+    "method": "GroupKFold OOF preds; remove per-station mean from truth AND pred; between = station-mean truth vs station-mean pred; within = residuals (stations with >=3 obs)."
+  },
+  "targets": {
+    "SpCond": {
+      "overall_r2": 0.4981,
+      "between_station_r2": 0.5202,
+      "within_station_r2": -1.6684,
+      "n_stations": 378,
+      "frac_variance_between": 0.9477,
+      "scale": "log"
+    },
+    "Temp": {
+      "overall_r2": 0.7366,
+      "between_station_r2": 0.6159,
+      "within_station_r2": 0.7463,
+      "n_stations": 378,
+      "frac_variance_between": 0.2156,
+      "scale": "raw"
+    },
+    "DO": {
+      "overall_r2": 0.4984,
+      "between_station_r2": 0.3195,
+      "within_station_r2": 0.4888,
+      "n_stations": 372,
+      "frac_variance_between": 0.559,
+      "scale": "raw"
+    },
+    "Turb": {
+      "overall_r2": 0.2634,
+      "between_station_r2": 0.4536,
+      "within_station_r2": 0.0544,
+      "n_stations": 293,
+      "frac_variance_between": 0.4711,
+      "scale": "log"
+    }
+  },
+  "verdict": {
+    "SpCond": "SpCond overall R2=0.4981 decomposes into between-station R2=0.5202 (regional proxy) and within-station R2=-1.6684 (true optical). 95% of SpCond variance is between-station. Within-station R2 <= 0 => the SpCond 'retrieval' is a SPURIOUS REGIONAL PROXY (optics reads location, not conductance), consistent with SpCond being non-optical.",
+    "Temp_control": "Temp within-station R2=0.7463 (should be positive if genuine optical/seasonal signal) \u2014 control that the decomposition detects real within-site skill."
+  }
+}

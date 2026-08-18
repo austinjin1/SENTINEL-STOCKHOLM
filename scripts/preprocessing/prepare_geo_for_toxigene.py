@@ -73,7 +73,7 @@ STUDY_METADATA = {
         "description": "Vedolizumab therapy in ulcerative colitis",
         "treatment_outcomes": [0, 0, 1, 0, 0, 1, 0],  # immunosuppression + oxidative
         # First ~half are baseline/untreated, second half are post-treatment
-        # We'll use a simple split: samples from responders vs non-responders
+        # Simple split: responders vs non-responders
         "label_strategy": "alternating_thirds",
     },
     "GSE83514": {

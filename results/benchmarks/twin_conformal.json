@@ -1,0 +1,285 @@
+{
+  "model": "DigitalTwinEngine",
+  "description": "Post-hoc split-conformal calibration of the Digital Twin 90% uncertainty interval. Calibration quantile fit on a held-out 50% calibration split of the real test-set predictions; coverage/width reported on the disjoint 50% evaluation split. No retraining, no label leakage into the evaluation split.",
+  "source_cache": "/home/bcheng/SENTINEL/results/benchmarks/twin_eval_cache.npz",
+  "n_test_samples": 51549,
+  "n_valid_entries": 694565,
+  "forecast_head_z": 1.6449,
+  "target_coverage": 0.9,
+  "alpha": 0.1,
+  "split": {
+    "cal_frac": 0.5,
+    "seed": 42,
+    "method": "random_exchangeable"
+  },
+  "coverage_before": 0.14066337828226547,
+  "coverage_after_normalized": 0.9011613007259209,
+  "coverage_after_absolute": 0.9011900956856512,
+  "stated_baseline_coverage_before": 0.14,
+  "normalized_conformal": {
+    "score_type": "normalized",
+    "alpha": 0.1,
+    "n_cal": 347282,
+    "n_eval": 347283,
+    "coverage_before": 0.14066337828226547,
+    "coverage_after": 0.9011613007259209,
+    "mean_width_before": 2.2719071269998534,
+    "mean_width_after": 2369.315995179812,
+    "median_width_before": 2.1014328002929688,
+    "median_width_after": 47.598210480069724,
+    "q": 567.9802221338426,
+    "per_horizon": {
+      "1d": {
+        "n_eval": 60910,
+        "coverage_before": 0.2407158102117879,
+        "coverage_after": 0.8975701855196191,
+        "mean_width_before": 2.0778166921155203,
+        "mean_width_after": 699.9178662699182,
+        "q": 290.39167911379064
+      },
+      "7d": {
+        "n_eval": 60381,
+        "coverage_before": 0.13486030373793081,
+        "coverage_after": 0.900233517165996,
+        "mean_width_before": 2.3841664958067508,
+        "mean_width_after": 2790.4868913081596,
+        "q": 579.5628959762314
+      },
+      "14d": {
+        "n_eval": 60170,
+        "coverage_before": 0.11442579358484295,
+        "coverage_after": 0.901196609606116,
+        "mean_width_before": 2.2522711369555237,
+        "mean_width_after": 2754.126430808543,
+        "q": 602.0874004744254
+      },
+      "30d": {
+        "n_eval": 59555,
+        "coverage_before": 0.11419696079254471,
+        "coverage_after": 0.9047603055998656,
+        "mean_width_before": 2.3200053664205975,
+        "mean_width_after": 2676.79951881047,
+        "q": 606.4078017284735
+      },
+      "90d": {
+        "n_eval": 56518,
+        "coverage_before": 0.117148519055876,
+        "coverage_after": 0.901871969991861,
+        "mean_width_before": 2.286134666958185,
+        "mean_width_after": 2732.7502564302044,
+        "q": 601.803342522284
+      },
+      "365d": {
+        "n_eval": 49749,
+        "coverage_before": 0.11533900178898068,
+        "coverage_after": 0.9015256588072122,
+        "mean_width_before": 2.3232973099135883,
+        "mean_width_after": 2655.6638094840478,
+        "q": 714.7208386166324
+      }
+    }
+  },
+  "absolute_conformal": {
+    "score_type": "absolute",
+    "alpha": 0.1,
+    "n_cal": 347282,
+    "n_eval": 347283,
+    "coverage_before": 0.14066337828226547,
+    "coverage_after": 0.9011900956856512,
+    "mean_width_before": 2.2719071269998534,
+    "mean_width_after": 2433.462106242502,
+    "median_width_before": 2.1014328002929688,
+    "median_width_after": 44.43619966506958,
+    "q": 492.3910675048828
+  },
+  "normalized_per_var_horizon": {
+    "dissolved_oxygen@1d": {
+      "n_eval": 11108,
+      "coverage_before": 0.5582463089665106,
+      "coverage_after": 0.8950306085703997,
+      "q": 14.638206089112163
+    },
+    "dissolved_oxygen@7d": {
+      "n_eval": 11046,
+      "coverage_before": 0.29168929929386206,
+      "coverage_after": 0.898696360673547,
+      "q": 17.3589157546764
+    },
+    "dissolved_oxygen@14d": {
+      "n_eval": 11062,
+      "coverage_before": 0.24986440065087687,
+      "coverage_after": 0.8996564816488881,
+      "q": 18.08941872899513
+    },
+    "dissolved_oxygen@30d": {
+      "n_eval": 10801,
+      "coverage_before": 0.2548838070549023,
+      "coverage_after": 0.9074159800018516,
+      "q": 17.286889029580216
+    },
+    "dissolved_oxygen@90d": {
+      "n_eval": 10114,
+      "coverage_before": 0.28089776547360096,
+      "coverage_after": 0.9045877002175202,
+      "q": 13.184500144493347
+    },
+    "dissolved_oxygen@365d": {
+      "n_eval": 8992,
+      "coverage_before": 0.2586743772241993,
+      "coverage_after": 0.9019128113879004,
+      "q": 15.806971942478182
+    },
+    "temperature@1d": {
+      "n_eval": 24792,
+      "coverage_before": 0.2308809293320426,
+      "coverage_after": 0.9002097450790577,
+      "q": 57.673059859395266
+    },
+    "temperature@7d": {
+      "n_eval": 24484,
+      "coverage_before": 0.08258454500898546,
+      "coverage_after": 0.8987093612154876,
+      "q": 40.36360478957219
+    },
+    "temperature@14d": {
+      "n_eval": 24477,
+      "coverage_before": 0.056624586346365975,
+      "coverage_after": 0.9019487682314009,
+      "q": 44.41816241120776
+    },
+    "temperature@30d": {
+      "n_eval": 24285,
+      "coverage_before": 0.046283714226889025,
+      "coverage_after": 0.903397158739963,
+      "q": 42.33765652674871
+    },
+    "temperature@90d": {
+      "n_eval": 22836,
+      "coverage_before": 0.04418462077421615,
+      "coverage_after": 0.9021720091084253,
+      "q": 49.40312238254317
+    },
+    "temperature@365d": {
+      "n_eval": 20563,
+      "coverage_before": 0.05772504012060497,
+      "coverage_after": 0.9009385790011185,
+      "q": 36.02068255642314
+    },
+    "ph@1d": {
+      "n_eval": 3324,
+      "coverage_before": 0.7490974729241877,
+      "coverage_after": 0.8898916967509025,
+      "q": 10.624947324675635
+    },
+    "ph@7d": {
+      "n_eval": 3375,
+      "coverage_before": 0.7428148148148148,
+      "coverage_after": 0.8903703703703704,
+      "q": 12.965658894989419
+    },
+    "ph@14d": {
+      "n_eval": 3229,
+      "coverage_before": 0.742954475069681,
+      "coverage_after": 0.904304738309074,
+      "q": 11.481283897478232
+    },
+    "ph@30d": {
+      "n_eval": 3293,
+      "coverage_before": 0.7625265715153355,
+      "coverage_after": 0.9040388703310052,
+      "q": 13.079034059648428
+    },
+    "ph@90d": {
+      "n_eval": 3083,
+      "coverage_before": 0.785598443074927,
+      "coverage_after": 0.8971780733052221,
+      "q": 12.776982098393042
+    },
+    "ph@365d": {
+      "n_eval": 2425,
+      "coverage_before": 0.8098969072164949,
+      "coverage_after": 0.8977319587628866,
+      "q": 10.623673271164858
+    },
+    "turbidity@1d": {
+      "n_eval": 21686,
+      "coverage_before": 0.011389836761043992,
+      "coverage_after": 0.8970303421562298,
+      "q": 1221.0440739146059
+    },
+    "turbidity@7d": {
+      "n_eval": 21476,
+      "coverage_before": 0.018252933507170794,
+      "coverage_after": 0.9043117899050103,
+      "q": 4076.3974405569506
+    },
+    "turbidity@14d": {
+      "n_eval": 21402,
+      "coverage_before": 0.01569946733950098,
+      "coverage_after": 0.9006634893935146,
+      "q": 4329.551582921863
+    },
+    "turbidity@30d": {
+      "n_eval": 21176,
+      "coverage_before": 0.019503211182470722,
+      "coverage_after": 0.9050812240272006,
+      "q": 4001.2976595817763
+    },
+    "turbidity@90d": {
+      "n_eval": 20485,
+      "coverage_before": 0.01703685623627044,
+      "coverage_after": 0.9009030998291433,
+      "q": 4112.693026477351
+    },
+    "turbidity@365d": {
+      "n_eval": 17769,
+      "coverage_before": 0.014688502448083741,
+      "coverage_after": 0.9025268726433676,
+      "q": 4537.041445210418
+    }
+  },
+  "r2_positioning": {
+    "note": "Persistence (predict t=0) is the honest baseline. The twin only matches/edges persistence at the 1-day horizon and is beaten by persistence at 7d and beyond. No forecast-skill claim is made past 1 day.",
+    "twin_r2_overall": 0.06883388757705688,
+    "persistence_r2_overall": 0.9251371026039124,
+    "stated_baseline_persistence_r2": 0.92,
+    "per_horizon": {
+      "1d": {
+        "twin_r2": 0.6883079409599304,
+        "persistence_r2": 0.9863507151603699,
+        "twin_beats_persistence": false,
+        "n": 121699
+      },
+      "7d": {
+        "twin_r2": 0.0864676833152771,
+        "persistence_r2": 0.9524103999137878,
+        "twin_beats_persistence": false,
+        "n": 120782
+      },
+      "14d": {
+        "twin_r2": -0.08384978771209717,
+        "persistence_r2": 0.9368440508842468,
+        "twin_beats_persistence": false,
+        "n": 120202
+      },
+      "30d": {
+        "twin_r2": -0.10317742824554443,
+        "persistence_r2": 0.9124459028244019,
+        "twin_beats_persistence": false,
+        "n": 119506
+      },
+      "90d": {
+        "twin_r2": -0.10489726066589355,
+        "persistence_r2": 0.8658459782600403,
+        "twin_beats_persistence": false,
+        "n": 112871
+      },
+      "365d": {
+        "twin_r2": -0.10622990131378174,
+        "persistence_r2": 0.889004111289978,
+        "twin_beats_persistence": false,
+        "n": 99505
+      }
+    }
+  }
+}

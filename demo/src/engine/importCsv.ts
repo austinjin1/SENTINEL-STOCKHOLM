@@ -88,7 +88,7 @@ export function buildRecordFromCsv(p: ParsedCsv): CanonicalRecord {
     behavioral: { state: 'DEPLOYABLE', conf: 0, anomaly: 0.05, signature: 'normal', keyframes: [] },
     fusion: {
       anomaly: anomaly * 0.95,
-      auroc: 0.939,
+      auroc: 0.649, // real co-located NEON+S2 station holdout (n=362); fusion does NOT beat best single encoder
       alert:
         anomaly > 0.85 ? 'ALERT'
         : anomaly > 0.65 ? 'INVESTIGATE'

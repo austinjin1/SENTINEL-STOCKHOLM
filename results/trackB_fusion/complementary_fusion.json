@@ -1,0 +1,87 @@
+{
+  "task": "new_onset_forecast",
+  "tasks": {
+    "new_onset_do_h7": {
+      "n": 10172,
+      "pos": 104,
+      "n_sites": 361,
+      "persistence": {
+        "auroc": 0.929,
+        "ci95": [
+          0.895,
+          0.963
+        ],
+        "pr_auc": 0.205
+      },
+      "sensor": {
+        "auroc": 0.946,
+        "ci95": [
+          0.915,
+          0.976
+        ],
+        "pr_auc": 0.175
+      },
+      "satellite": {
+        "auroc": 0.681,
+        "ci95": [
+          0.624,
+          0.738
+        ],
+        "pr_auc": 0.031
+      },
+      "fusion": {
+        "auroc": 0.949,
+        "ci95": [
+          0.92,
+          0.979
+        ],
+        "pr_auc": 0.215
+      },
+      "best_single": 0.946,
+      "fusion_gain": 0.003,
+      "fusion_helps_CI": false,
+      "persistence_auroc": 0.929
+    },
+    "new_onset_do_h14": {
+      "n": 10172,
+      "pos": 136,
+      "n_sites": 361,
+      "persistence": {
+        "auroc": 0.902,
+        "ci95": [
+          0.868,
+          0.937
+        ],
+        "pr_auc": 0.187
+      },
+      "sensor": {
+        "auroc": 0.898,
+        "ci95": [
+          0.863,
+          0.933
+        ],
+        "pr_auc": 0.165
+      },
+      "satellite": {
+        "auroc": 0.682,
+        "ci95": [
+          0.631,
+          0.732
+        ],
+        "pr_auc": 0.024
+      },
+      "fusion": {
+        "auroc": 0.904,
+        "ci95": [
+          0.869,
+          0.938
+        ],
+        "pr_auc": 0.186
+      },
+      "best_single": 0.898,
+      "fusion_gain": 0.006,
+      "fusion_helps_CI": false,
+      "persistence_auroc": 0.902
+    }
+  }
+}

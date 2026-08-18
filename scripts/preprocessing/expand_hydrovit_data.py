@@ -2,6 +2,24 @@
 """
 Expand HydroViT training data from ~2861 to ~5700 pairs using augmentation.
 
+============================================================================
+INTEGRITY QUARANTINE (added 2026-06)
+----------------------------------------------------------------------------
+This script FABRICATES regression targets and must NOT be used to produce
+data for any reported metric. Specifically, seasonal_augmentation():
+  * adds U(0, 8) degrees C to the water_temp TARGET (lines below), and
+  * multiplies every other target by U(0.9, 1.1) (+-10%).
+These are invented labels, not measurements. The output file
+paired_wq_v5.npz produced here is the origin of the quarantined HydroViT
+headline (water_temp R2 = 0.893, mean R2 = 0.652), which is NOT a valid
+held-out number because the test targets were partly fabricated.
+
+main() now HARD-REFUSES to run unless the caller sets the explicit override
+environment variable HYDROVIT_ALLOW_FABRICATED_AUGMENTATION=1. A real result
+requires rebuilding the REAL paired_wq_v3.npz from NWIS x Sentinel-2 pairs
+(needs-new-data); it must NOT come from this augmentation.
+============================================================================
+
 Augmentation strategies applied to training subset only (70% of 2861 = ~2003 samples):
   1. Spectral noise (×0.5 of train) → ~1001 new samples
   2. Spatial augmentation (×0.5 of train) → ~1001 new samples
@@ -17,11 +35,24 @@ PARAM_NAMES order (from parameter_head.py):
 MIT License -- Bryan Cheng, 2026
 """
 
+import os
 import sys
 import time
 from pathlib import Path
 
 import numpy as np
+
+# Integrity override: this script fabricates targets (see module docstring).
+# It refuses to run unless the operator explicitly opts in.
+_ALLOW_FABRICATION = os.environ.get("HYDROVIT_ALLOW_FABRICATED_AUGMENTATION") == "1"
+_FABRICATION_MSG = (
+    "expand_hydrovit_data.py FABRICATES regression targets "
+    "(seasonal_augmentation adds U(0,8) to water_temp and perturbs other "
+    "targets by +-10%). Its output (paired_wq_v5.npz) is quarantined and must "
+    "NOT be used for any reported metric. A real number requires rebuilding the "
+    "REAL paired_wq_v3.npz (needs-new-data). To intentionally regenerate the "
+    "fabricated file anyway, set HYDROVIT_ALLOW_FABRICATED_AUGMENTATION=1."
+)
 
 PROJECT_ROOT = Path("/home/bcheng/SENTINEL")
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -122,7 +153,13 @@ def spatial_augmentation(images, targets, n_aug):
 
 # ─── Augmentation 3: Seasonal simulation ───────────────────────────────────
 def seasonal_augmentation(images, targets, n_aug):
-    """Simulate seasonal spectral shifts (summer/winter) with adjusted water_temp."""
+    """Simulate seasonal spectral shifts (summer/winter) with adjusted water_temp.
+
+    WARNING: This FABRICATES targets (adds U(0,8) to water_temp; perturbs other
+    targets by +-10%). Guarded by HYDROVIT_ALLOW_FABRICATED_AUGMENTATION.
+    """
+    if not _ALLOW_FABRICATION:
+        raise RuntimeError(_FABRICATION_MSG)
     print(f"  Seasonal simulation: augmenting {n_aug} samples ...")
     n_orig, C, H, W = images.shape
 
@@ -174,6 +211,9 @@ def main():
     print("=" * 60)
     print("HydroViT Data Expansion v5")
     print("=" * 60)
+
+    if not _ALLOW_FABRICATION:
+        raise RuntimeError(_FABRICATION_MSG)
 
     images, targets = load_data()
     n_total = len(images)

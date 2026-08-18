@@ -100,7 +100,7 @@ class SpeciesMetadata:
 
 
 # Representative subset of 200 species across major freshwater taxa.
-# In production, the full catalog is loaded from a database; here we
+# In production the full catalog loads from a database; this
 # define the mapping structure.
 _DEFAULT_FAMILY_MAP: List[int] = [i % NUM_FAMILIES for i in range(NUM_SPECIES)]
 _DEFAULT_ORDER_MAP: List[int] = [i % NUM_ORDERS for i in range(NUM_SPECIES)]

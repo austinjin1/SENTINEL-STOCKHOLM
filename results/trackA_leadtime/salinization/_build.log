@@ -1,0 +1,79 @@
+[1/77] 04087119 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[2/77] 05538010 -> CONTROL  thr=2168.2 peak=None onset=None runway=None
+[3/77] 05578100 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[4/77] 04087234 -> EPISODE  thr=1693.8 peak=1890.0 onset=2022-11-17T16:00:00+00:00 runway=534.5
+[5/77] 05578250 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[6/77] 05539670 -> DISCARD no valid sustained onset & not clean-control thr=2080.0 peak=None onset=None runway=None
+[7/77] 05288705 -> EPISODE  thr=3960.0 peak=5070.0 onset=2022-02-28T21:45:00+00:00 runway=272.7
+[8/77] 05289800 -> EPISODE  thr=1562.9 peak=1980.0 onset=2023-01-17T06:45:00+00:00 runway=595.1
+[9/77] 05538020 -> EPISODE  thr=2410.0 peak=2740.0 onset=2024-01-26T15:45:00+00:00 runway=969.4
+[10/77] 04118997 -> CONTROL  thr=834.8 peak=None onset=None runway=None
+[11/77] 04162010 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[12/77] 04166100 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[13/77] 05536137 -> DISCARD no valid sustained onset & not clean-control thr=2250.0 peak=None onset=None runway=None
+[14/77] 04167150 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[15/77] 04167625 -> CONTROL  thr=1474.8 peak=None onset=None runway=None
+[16/77] 04118564 -> DISCARD no valid sustained onset & not clean-control thr=912.9 peak=None onset=None runway=None
+[17/77] 04161820 -> EPISODE  thr=2330.0 peak=2680.0 onset=2022-02-02T21:15:00+00:00 runway=246.7
+[18/77] 04174500 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[19/77] 03259757 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[20/77] 04175120 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[21/77] 05537980 -> DISCARD no valid sustained onset & not clean-control thr=2540.0 peak=None onset=None runway=None
+[22/77] 04087170 -> DISCARD no valid sustained onset & not clean-control thr=1056.6 peak=None onset=None runway=None
+[23/77] 03259813 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[24/77] 04165500 -> EPISODE  thr=2990.0 peak=3440.0 onset=2022-02-03T01:30:00+00:00 runway=246.9
+[25/77] 413745083314900 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[26/77] 413849083315000 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[27/77] 05536995 -> EPISODE  thr=2450.0 peak=2890.0 onset=2024-01-26T01:15:00+00:00 runway=968.8
+[28/77] 413913083314200 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[29/77] 413922083310500 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[30/77] 414032083293600 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[31/77] 04166500 -> EPISODE  thr=4840.0 peak=6180.0 onset=2024-01-23T16:15:00+00:00 runway=966.5
+[32/77] 0423205010 -> EPISODE  thr=2730.0 peak=3070.0 onset=2022-12-16T22:30:00+00:00 runway=563.7
+[33/77] 04208000 -> EPISODE  thr=1830.0 peak=2560.0 onset=2022-02-03T03:30:00+00:00 runway=247.0
+[34/77] 01493112 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[35/77] 04168400 -> EPISODE  thr=3060.0 peak=3330.0 onset=2023-01-26T09:30:00+00:00 runway=604.2
+[36/77] 04218700 -> DISCARD no valid sustained onset & not clean-control thr=960.4 peak=None onset=None runway=None
+[37/77] 04199000 -> CONTROL  thr=1046.3 peak=None onset=None runway=None
+[38/77] 01589485 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[39/77] 01389005 -> EPISODE  thr=2570.0 peak=3070.0 onset=2025-02-08T09:00:00+00:00 runway=1348.2
+[40/77] 01302020 -> EPISODE  thr=5052.1 peak=5770.0 onset=2022-01-08T02:00:00+00:00 runway=193.4
+[41/77] 04231600 -> CONTROL  thr=1112.5 peak=None onset=None runway=None
+[42/77] 01651000 -> EPISODE  thr=3614.7 peak=4350.0 onset=2022-01-05T00:30:00+00:00 runway=217.9
+[43/77] 01653521 -> CONTROL  thr=470.5 peak=None onset=None runway=None
+[44/77] 01400500 -> EPISODE  thr=1460.0 peak=1970.0 onset=2025-02-06T21:45:00+00:00 runway=1346.7
+[45/77] 01642199 -> EPISODE  thr=1010.0 peak=1680.0 onset=2022-01-17T05:00:00+00:00 runway=230.0
+[46/77] 01653522 -> CONTROL  thr=349.9 peak=None onset=None runway=None
+[47/77] 01467086 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[48/77] 01465798 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[49/77] 01585219 -> EPISODE  thr=2120.0 peak=4300.0 onset=2022-01-03T12:30:00+00:00 runway=215.8
+[50/77] 01467042 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[51/77] 01651003 -> EPISODE  thr=5560.0 peak=7710.0 onset=2024-01-19T18:15:00+00:00 runway=233.1
+[52/77] 01653560 -> EPISODE  thr=1530.0 peak=2080.0 onset=2025-01-08T10:00:00+00:00 runway=116.6
+[53/77] 01467087 -> EPISODE  thr=3096.4 peak=3500.0 onset=2024-01-17T16:15:00+00:00 runway=960.5
+[54/77] 01474000 -> CONTROL  thr=1330.2 peak=None onset=None runway=None
+[55/77] 01474500 -> DISCARD no valid sustained onset & not clean-control thr=881.8 peak=None onset=None runway=None
+[56/77] 01473900 -> CONTROL  thr=1656.6 peak=None onset=None runway=None
+[57/77] 01475530 -> EPISODE  thr=822.2 peak=2460.0 onset=2022-03-12T21:15:00+00:00 runway=284.7
+[58/77] 01475548 -> EPISODE  thr=1208.2 peak=1380.0 onset=2022-03-14T15:00:00+00:00 runway=286.5
+[59/77] 01649500 -> EPISODE  thr=2830.0 peak=3340.0 onset=2024-01-16T15:30:00+00:00 runway=959.5
+[60/77] 01480870 -> EPISODE  thr=762.0 peak=956.0 onset=2025-02-06T17:45:00+00:00 runway=1346.6
+[61/77] 01480617 -> EPISODE  thr=663.8 peak=1690.0 onset=2022-01-17T04:45:00+00:00 runway=230.0
+[62/77] 01650800 -> EPISODE  thr=5840.0 peak=7520.0 onset=2022-01-05T05:15:00+00:00 runway=218.1
+[63/77] 01478220 -> DISCARD no valid sustained onset & not clean-control thr=365.0 peak=None onset=None runway=None
+[64/77] 01193463 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[65/77] 01477050 -> DISCARD no valid sustained onset & not clean-control thr=2370.0 peak=None onset=None runway=None
+[66/77] 01481000 -> EPISODE  thr=619.0 peak=677.0 onset=2022-02-26T00:15:00+00:00 runway=269.8
+[67/77] 0165389205 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[68/77] 06893619 -> DISCARD no valid sustained onset & not clean-control thr=1940.0 peak=None onset=None runway=None
+[69/77] 412240071574700 -> CONTROL  thr=79449.5 peak=None onset=None runway=None
+[70/77] 01669000 -> DISCARD no/too-little clean conductance thr=None peak=None onset=None runway=None
+[71/77] 01574000 -> EPISODE  thr=578.0 peak=651.0 onset=2022-01-10T15:45:00+00:00 runway=223.5
+[72/77] 03075070 -> DISCARD no valid sustained onset & not clean-control thr=734.0 peak=None onset=None runway=None
+[73/77] 01654670 -> DISCARD no valid sustained onset & not clean-control thr=5310.0 peak=None onset=None runway=None
+[74/77] 03524000 -> CONTROL  thr=444.5 peak=None onset=None runway=None
+[75/77] 06893620 -> EPISODE  thr=1900.0 peak=2210.0 onset=2024-01-11T01:00:00+00:00 runway=953.8
+[76/77] 04092750 -> EPISODE  thr=910.2 peak=1070.0 onset=2024-01-24T09:00:00+00:00 runway=967.2
+[77/77] 01654000 -> DISCARD no valid sustained onset & not clean-control thr=6160.0 peak=None onset=None runway=None
+
+DONE. EPISODE=30 CONTROL=11 DISCARD=36 ERROR=0 of 77

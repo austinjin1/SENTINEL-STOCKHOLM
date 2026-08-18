@@ -1,8 +1,10 @@
 {
+  "_PROVENANCE": "Real MicroBiomeNet macro-F1 is 0.831 on a strict spatial holdout (not the augmented 0.899/0.913). Per-case detection_rate values are surrogate-RF screening, not validated detection on real holdout data.",
   "model": "MicroBiomeNet (surrogate RF, CLR-OTU features)",
   "surrogate_rf_macro_f1": 0.850779678613183,
   "surrogate_rf_accuracy": 0.8813603322949117,
-  "published_microbiomenet_f1": 0.913,
+  "published_microbiomenet_f1": 0.831,
+  "_published_microbiomenet_f1_note": "REPLACED. Was 0.913. Real macro-F1 = 0.831 on strict spatial holdout.",
   "n_classes": 8,
   "class_names": [
     "freshwater_natural",

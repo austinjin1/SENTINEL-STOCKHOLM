@@ -31,8 +31,8 @@ export function DemoOverlay({ active, dispatch }: Props) {
     const steps: Step[] = [
       { at: 0, caption: 'SENTINEL · operational console · cached data', action: () => dispatch({ type: 'CLOSE_RAIL' }) },
       { at: 8000, caption: 'Lake Erie HAB · July 2023 · the failure', action: () => dispatch({ type: 'SELECT_SITE', record: lakeErie }) },
-      { at: 20000, caption: 'AquaSSM anomaly climbs to 0.997 — 59.3d before advisory' },
-      { at: 30000, caption: 'Five modalities fuse · AUROC 0.939' },
+      { at: 20000, caption: 'AquaSSM anomaly climbs (synthetic-injected-anomaly recovery; recon RMSE 0.83 on real NEON)' },
+      { at: 30000, caption: 'Modalities fuse · microcystin 3-way fusion AUROC 0.82 vs 0.68 best single (within region, station-grouped CV); collapses to ~0.49 across unseen regions' },
       { at: 38000, caption: 'Escalate to Tier 2 — query microbial source attribution', action: () => {
         dispatch({ type: 'ESCALATE' }); // 0→1
         setTimeout(() => dispatch({ type: 'ESCALATE' }), 1200); // 1→2
@@ -94,7 +94,7 @@ export function DemoOverlay({ active, dispatch }: Props) {
           inset: 0,
           background: 'rgba(13,17,23,0.18)',
           pointerEvents: 'none',
-          zIndex: 'var(--z-demo)' as any,
+          zIndex: 'var(--z-demo)',
           animation: 'fade-in var(--dur-base)',
         }}
       />
@@ -112,7 +112,7 @@ export function DemoOverlay({ active, dispatch }: Props) {
           fontSize: 15,
           minWidth: 520,
           textAlign: 'center',
-          zIndex: 'var(--z-demo)' as any,
+          zIndex: 'var(--z-demo)',
           animation: 'fade-in-up var(--dur-base) var(--ease-entrance)',
         }}
       >

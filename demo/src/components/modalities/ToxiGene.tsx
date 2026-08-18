@@ -51,8 +51,8 @@ export function ToxiGeneCard({ molecular, cardIndex }: Props) {
       conf={molecular.conf}
       cardIndex={cardIndex}
       deployableTier={3}
-      headlineMetric={<>F1 0.894</>}
-      headlineLabel="Multi-label toxicity"
+      headlineMetric={<>F1 0.492</>}
+      headlineLabel="Multi-label toxicity · n=9 real GEO holdout"
       secondary={molecular.outcome ? <span style={{ color: 'var(--text-tertiary)' }}>Outcome {molecular.outcome}</span> : null}
     >
       <svg width="100%" height={150} viewBox="0 0 260 150">

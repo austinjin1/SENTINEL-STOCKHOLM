@@ -123,10 +123,10 @@ function makeBookmarked(args: {
     },
     fusion: {
       anomaly: args.fusionAnomaly,
-      auroc: 0.939, // paper-canonical value
+      auroc: 0.649, // real co-located NEON+S2 station holdout (n=362); fusion≈sensor-only 0.642, does NOT beat best single encoder
       alert: args.fusionAnomaly > 0.85 ? 'ALERT' : args.fusionAnomaly > 0.65 ? 'INVESTIGATE' : 'WATCH',
       attention: [0.378, 0.361, 0.261, 0.0, 0.0],
-      coverage: 0.95,
+      coverage: 0.9367, // real sensor conformal coverage; 95% guarantee NOT met
     },
     cascadeTier: 0,
     n_modalities: 3,
@@ -180,7 +180,7 @@ function makeClean(args: {
     behavioral: { state: 'DEPLOYABLE', conf: 0, anomaly: 0.04, signature: 'normal', keyframes: [] },
     fusion: {
       anomaly: 0.09,
-      auroc: 0.939,
+      auroc: 0.649, // real co-located NEON+S2 station holdout (n=362); fusion does NOT beat best single encoder
       alert: 'MAINTAIN',
       attention: [0.45, 0.4, 0.15, 0.0, 0.0],
       coverage: 0.7,

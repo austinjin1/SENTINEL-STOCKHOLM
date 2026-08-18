@@ -1,0 +1,23 @@
+{
+  "audit": "causal_discovery_375_44_claim",
+  "date": "2026-07-19",
+  "claim_audited": "375 causal pathways (44 novel)",
+  "source_file": "results/causal/real_causal_results.json",
+  "producing_script": "scripts/evaluation/causal_real_eval.py + sentinel/evaluation/causal_chains.py",
+  "verdict": "NOT SOLID - multiple failure modes; a positive '375 pathways (44 novel)' framing is unsupported",
+  "findings": {
+    "375_is_real_data": "375 comes from source=real_grqa_data (real GRQA parquet), NOT synthetic. So the count is not from a synthetic run.",
+    "validation": "total_validated=0, validation_rate=0.0 for all 375. Zero chains matched the known-chain set.",
+    "novel_44_is_circular_label": "'novel_chains' is DEFINED as validated_count==0 AND appears in >20% of sites AND freq>=3. 'Novel' literally means 'did not match a known chain' = a residual/unmatched bucket, not a discovery.",
+    "method_not_pcmci": "Docstrings claim PCMCI. Actual method (_test_granger_causality/_partial_correlation) is bivariate lagged partial correlation controlling only for the effect's own lag-1 term. Not multivariate PCMCI+, no confounder conditioning set, no FDR control across the ~thousands of pairwise*lag tests.",
+    "validation_impossible_by_construction": "Real run loaded ONLY sensor-modality params (all mapped to modality='sensor'). Of 15 known validation chains, only 2 are sensor->sensor; the other 13 require satellite/microbial/molecular/behavioral variables that were never loaded, so 13/15 known chains are unvalidatable by construction.",
+    "reciprocal_directions": "All 44 'novel' chains are reciprocal: both A->B and B->A appear as 'significant'. True directional causality cannot hold in both directions for every pair; confirms symmetric correlational lead-lags, not causal direction.",
+    "no_fdr": "significance_level=0.05 applied per-pair with no multiple-testing correction across ~11 vars * ~10 others * ~40 lags per site * 17 sites; 375 'significant' hits are expected under mass testing."
+  },
+  "repo_docs_already_honest": {
+    "README.md": "lines 67,273,442 already state '0/375 validated', 'not PCMCI+', reported as proof-of-concept",
+    "results/SENTINEL_2.0_Results_Summary.md": "line 123 states '375 chains discovered, 0/375 validated'"
+  },
+  "honest_number": "375 lagged partial-correlation lead-lag screens on real GRQA sensor data, 0/375 validated against known environmental causal chains (validation_rate=0.0). NOT causal discovery, NOT PCMCI+, NOT 'novel causal pathways'. The '44 novel' are 44 unmatched (and reciprocally symmetric) correlational lead-lags.",
+  "failure_modes": ["CIRCULAR (novel=unmatched-by-definition)", "STRAW-MAN/METHOD-MISLABEL (screening sold as PCMCI causal discovery)", "leakage-adjacent: validation set unusable by construction (only sensor modality loaded)"]
+}

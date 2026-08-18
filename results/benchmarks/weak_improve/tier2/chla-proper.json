@@ -1,0 +1,125 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Strongest honest red-edge chl-a retrieval: full compact pigment index panel + light ensemble, tested vs the rededge HGB baseline (R2=0.3383).",
+    "data": "data/processed/biology/noaa_habs/mc_tiles (REAL S2 L2A 6-band) x mc_fusion_dataset.parquet (REAL WQP CHLA).",
+    "tile_bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B08",
+      "B11"
+    ],
+    "pigment_panel": [
+      "NDCI",
+      "MCI",
+      "FLH(green-baseline)",
+      "CIre",
+      "TBI(3-band)",
+      "SLOPElo",
+      "SLOPEhi",
+      "NDVI",
+      "NDWI",
+      "GR"
+    ],
+    "panel_stats_per_index": [
+      "mean",
+      "p50",
+      "p90"
+    ],
+    "ensemble": "HistGBM(0.5)+ExtraTrees(0.5), OOF-averaged inside each fold; equal weights, no test tuning. A Ridge arm was tested and DROPPED (collapsed held-out R2 on the collinear high-dim features).",
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site) GroupKFold \u2014 no site shared train/test.",
+    "ci": "site-clustered bootstrap (resamples SITES, not rows), 2000 reps; paired delta on same resampled sites.",
+    "target": "log10 chlorophyll-a (ug/L), REAL WQP CHLA, 0<x<5000.",
+    "verdict_rule": "improved = best-arm R2 > 0.3383 AND paired delta CI excludes 0."
+  },
+  "n_rows": 2256,
+  "n_sites": 169,
+  "n_folds": 5,
+  "feature_counts": {
+    "baseline": 91,
+    "panel": 48
+  },
+  "old_baseline_reference_R2": 0.3383,
+  "baseline_HGB_reproduced": {
+    "r2": 0.3383,
+    "r2_ci95": [
+      0.2307,
+      0.4138
+    ]
+  },
+  "arms": {
+    "baseline_HGB": {
+      "r2": 0.3383,
+      "r2_ci95": [
+        0.2307,
+        0.4138
+      ],
+      "delta_vs_baseline": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "prob_improvement": 0.0
+      },
+      "verdict": "NULL (CI includes 0; prob_improvement=0.0)"
+    },
+    "panel_HGB": {
+      "r2": 0.2822,
+      "r2_ci95": [
+        0.157,
+        0.3713
+      ],
+      "delta_vs_baseline": {
+        "mean": -0.0573,
+        "ci95": [
+          -0.0951,
+          -0.0219
+        ],
+        "prob_improvement": 0.0
+      },
+      "verdict": "REGRESSED (delta 95% CI below 0)"
+    },
+    "baseline_ensemble": {
+      "r2": 0.3554,
+      "r2_ci95": [
+        0.2539,
+        0.429
+      ],
+      "delta_vs_baseline": {
+        "mean": 0.0175,
+        "ci95": [
+          0.002,
+          0.0328
+        ],
+        "prob_improvement": 0.987
+      },
+      "verdict": "IMPROVED (delta 95% CI excludes 0)"
+    },
+    "panel_ensemble": {
+      "r2": 0.3014,
+      "r2_ci95": [
+        0.1839,
+        0.3881
+      ],
+      "delta_vs_baseline": {
+        "mean": -0.0374,
+        "ci95": [
+          -0.0778,
+          -0.0003
+        ],
+        "prob_improvement": 0.023
+      },
+      "verdict": "REGRESSED (delta 95% CI below 0)"
+    }
+  },
+  "best_arm": "baseline_ensemble",
+  "best_arm_r2": 0.3554,
+  "improved": true,
+  "overall_verdict": "IMPROVED (delta 95% CI excludes 0)",
+  "elapsed_seconds": 85.2
+}

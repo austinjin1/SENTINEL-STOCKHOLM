@@ -490,7 +490,7 @@ def main():
     assert len(train_val_overlap) == 0, f"Site leakage train↔val: {train_val_overlap}"
     assert len(train_test_overlap) == 0, f"Site leakage train↔test: {train_test_overlap}"
     assert len(val_test_overlap) == 0, f"Site leakage val↔test: {val_test_overlap}"
-    logger.info("  ✓ No site leakage between splits")
+    logger.info("  OK No site leakage between splits")
 
     train_ds = Subset(full_ds, indices["train"])
     val_ds = Subset(full_ds, indices["val"])

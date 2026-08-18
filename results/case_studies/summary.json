@@ -1,4 +1,5 @@
 {
+  "_PROVENANCE": "RETRACTED / SIMULATION — this 28-event early-warning harness (432h fixed lead times, events_detected=28, by-construction detection) is part of the same synthetic case-study family as the retracted '31 events / 32-day / zero false positives' claim. It is NOT a real-inference result. Superseded by the real label-free NEON detector: see results/trackA_leadtime (median 29.3-day lead on 3/6 specificity-validated DO-hypoxia episodes, 4.6% held-out FPR).",
   "num_events": 28,
   "events_detected": 28,
   "n_early_warning": 28,

@@ -2,7 +2,7 @@
 
 **Scalable Environmental Network for Temporal Intelligence and Ecological Learning**
 
-SENTINEL is a multimodal deep learning system for real-time freshwater ecosystem monitoring and contamination early warning. It fuses five heterogeneous sensing modalities -- physicochemical sensors, satellite imagery, microbial community profiles, molecular toxicogenomics, and organism behavioral assays -- through a Perceiver IO cross-attention architecture, detecting pollution events weeks to months before they become critical.
+SENTINEL is a multimodal deep learning system for freshwater ecosystem monitoring and contamination early warning. It fuses five heterogeneous sensing modalities -- physicochemical sensors, satellite imagery, microbial community profiles, molecular toxicogenomics, and organism behavioral assays -- through a Perceiver IO cross-attention architecture, with a calibrated sensor-stream anomaly detector for contamination early warning.
 
 > **Stockholm Junior Water Prize 2026** -- Austin Jin & Bryan Cheng
 
@@ -12,9 +12,9 @@ SENTINEL is a multimodal deep learning system for real-time freshwater ecosystem
 
 Freshwater ecosystems face accelerating threats from agricultural runoff, industrial discharge, harmful algal blooms, and climate change. Traditional monitoring relies on sparse grab-sampling and single-modality sensors, missing early signals that span multiple biological and chemical dimensions.
 
-SENTINEL addresses this by learning joint representations across all five sensing modalities. In validation on real USGS data, the system detected 31 contamination events across 6 USGS historical, 6 NEON, and 19 research-validated cases with a mean lead time of **32 days** (66.4 days for the 6 original USGS events), zero false positives on clean reference sites, and graceful degradation to any 2 of 5 modalities.
+SENTINEL addresses this by learning joint representations across the five sensing modalities. On **real NEON continuous sensor data**, a label-free, per-site-calibrated AquaSSM detector (self-supervised NEON fine-tuned) holds a **4.6% held-out false-positive rate** on clean reference sites and gives a **median 29-day early warning** on the dissolved-oxygen hypoxia episodes that meet that specificity bar (**5 of 12** real NEON episodes; it over-fires on non-stationary sites, which we report). The five encoders are individually benchmarked on real held-out data; multimodal fusion is reported honestly — including the cases where it does **not** beat the best single encoder.
 
-**SENTINEL-Lite** (HydroDenseNet) extends the system to low-cost drone-based monitoring, predicting water quality parameters directly from dual-camera (RGB + Raspberry Pi NoIR Camera Module V2) aerial imagery without requiring expensive in-situ sensors.
+**SENTINEL-Lite** (HydroDenseNet) is an imagery-only screening model that predicts water quality parameters from 4-band (RGB+NIR) imagery without in-situ sensors. It is trained and evaluated on real **Sentinel-2 satellite** tiles; a low-cost dual-camera drone payload (RGB + RPi NoIR) is described as *proposed deployment hardware*, not a data source used in this work.
 
 ---
 
@@ -22,36 +22,98 @@ SENTINEL addresses this by learning joint representations across all five sensin
 
 ### Model Performance
 
-| Model | Task | Key Metric | Training Data |
+All metrics below are on real, held-out data. Items marked *simulation* or
+*circular* are reported honestly as such and are **not** validation of real-world
+skill (see [Honest Scope](#honest-scope-what-is-and-isnt-validated)).
+
+| Model | Task | Key Metric (real, held-out) | Data |
 |-------|------|-----------|---------------|
-| **AquaSSM** | Sensor anomaly detection | AUROC 0.939, RMSE 0.83 | 127K real USGS sequences, 303 stations |
-| **HydroViT** | Satellite WQ prediction | R^2 0.893 (water temp) | 5,464 Sentinel-2 / in-situ pairs |
-| **MicroBiomeNet** | Microbial source attribution | F1 0.899 | 20,288 EMP samples, spatial holdout |
-| **ToxiGene** | Molecular toxicity classification | F1 0.492 (n=9 real GEO holdout) | GEO transcriptomics, cross-species |
-| **BioMotion** | Behavioral anomaly detection | AUROC 0.807 | 29,421 EPA ECOTOX assays |
-| **Perceiver IO Fusion** | Multimodal contamination detection | **AUROC 0.992** (ablation) / **0.939** (holdout) | 31-condition ablation |
-| **Stream Network GNN** | Contamination propagation | AUROC 1.000, F1 0.991 | 561 NHDPlus sites, 338 edges |
-| **Species Health Index** | Keystone species forecasting | R^2 0.9996, occ_acc 99.9% | 6 species, 5,462 real BioData sites |
-| **Disease Forecast** | Pathogen risk prediction | AUROC 0.988, Acc 93.1% | 4 pathogens, 499K real USGS samples |
-| **Digital Twin** | Ecosystem forecasting | 1d R²=0.688 (7d+ R²<0) | 10 state vars, 6 horizons; useful at 1-day only |
-| **SENTINEL-Lite** | Imagery-only WQ screening | Temp R^2=0.776, DO R^2=0.463 | 57K train, 399 stations, dual-camera drone |
+| **AquaSSM** | Sensor reconstruction + label-free anomaly detection | Recon RMSE 0.83; lead-time detector **median 29-day** early warning at **4.6% held-out FPR** on clean controls (NEON, **5/12** episodes validated; over-fires on non-stationary sites; self-supervised NEON fine-tuned) | 127K real USGS sequences; NEON sonde |
+| **HydroViT** | Satellite WQ prediction | rebuilt on **real** Sentinel-2 × in-situ pairs, station holdout: **water-temp R² 0.729** (DO 0.58, SpCond 0.59); **chl-a R² 0.32** with red-edge bands B05–B07 (up from 0.18 on 4-band, CI excludes 0) — replaces the retracted fabricated 0.893 | 12k real Sentinel-2 tiles + red-edge |
+| **MicroBiomeNet** | Microbial source attribution | true **geographic** holdout macro-F1 **0.676** using transferable **family/genus taxonomic features** (up from 0.405 on raw OTUs — higher taxa generalize cross-region). The old "0.831" was a per-sample random split (leakage) | full EMP 16S rRNA release |
+| **ToxiGene** | Molecular toxicity classification | valid real **zebrafish** GEO (12 series): within-study AUROC 0.86; **cross-study LOSO 0.64** via per-sample rank-normalization (batch correction), up from 0.55 raw — a real, if modest, cross-study transfer; replaces the invalid 0.492 | NCBI GEO, real metadata labels |
+| **BioMotion** | ECOTOX effect classification | AUROC **0.85** (effect-group-free GBM; 0.87 with) / **0.84** novel-chemical, beating the 3M-param diffusion encoder (0.807; 0.42 standalone). Signal is mostly study-design (concentration/duration spread) and survives dropping the endpoint-category features. | 29,421 EPA ECOTOX Daphnia assays |
+| **Perceiver IO Fusion** | Multimodal contamination detection | On microcystin (optically-invisible cyanotoxin), fusion beats every single modality under station-grouped CV — 3-way (satellite optics + in-situ pigment + physicochemical drivers temp/P) **0.82** vs 0.68 best single, *each modality adds* (CI-significant; negative control confirms real signal). **But it is region-specific**: under a true cross-region (leave-one-HUC-out) holdout, all models — single and fusion — collapse to chance (~0.49). So the modalities *are* complementary, but the pigment→toxin relationship doesn't transfer to unseen watersheds (deployment needs per-region calibration). On chl-a/DO, fusion only ties (single-modality-dominated). | Sentinel-2 + in-situ + WQP drivers |
+| **Stream Network GNN** | Contamination propagation | *Simulation only* — trained on synthetic propagation labels; not validated on real events | Real NHDPlus topology (561 sites, 338 edges) |
+| **Species Health Index** | Keystone species occupancy | full network **retrained leakage-free** (the "AUROC 1.000" was circular — input held the per-species counts): honest macro-AUROC **0.949** (mostly a geographic range prior; env-only floor ~0.85). Widespread mussel 0.88 is the genuine bioindicator signal | 4 species (2 always-absent dropped), real BioData |
+| **Disease Forecast** | Pathogen risk index | rule-based WHO/CDC/EPA index; labels are closed-form functions of the sensor inputs (*circular* — not a skill metric) | 4 pathogens, real USGS samples |
+| **Digital Twin** | Ecosystem forecasting | 1d R²=0.688 (persistence wins beyond 1d — twin overall R²=0.07 vs persistence 0.92); uncertainty head now **conformal-calibrated to 90% coverage** (was 14%) | 10 state vars, 6 horizons |
+| **SENTINEL-Lite** | Imagery-only WQ screening | Temp R^2=0.776, DO R^2=0.463 (Sentinel-2 imagery; drone payload is *proposed* hardware) | 57K train, 399 stations, spatial holdout |
 
-### Real-World Case Studies (8/10 USGS Events Detected; 31 Total Events)
+### Honest Scope: what is and isn't validated
 
-Pre-registered detections on real USGS NWIS sensor data (no synthetic data):
+**Genuinely validated on real, held-out data:** AquaSSM (recon RMSE 0.83 + the
+label-free NEON lead-time detector, 5/12 episodes); BioMotion (ECOTOX GBM 0.85);
+the satellite chl-a spectral branch (0.716); **HydroViT water-temp R² 0.729**
+(rebuilt on real Sentinel-2 × in-situ pairs, station holdout); **Species Health
+macro-AUROC 0.949** (retrained leakage-free). Plus the negative results (digital
+twin < persistence, predictability audit R²<0, ARG R²≈0).
 
-| Event | Lead Time | USGS Records |
-|-------|-----------|-------------|
-| Lake Erie HAB 2023 | 59.3 days | 7,199 |
-| Gulf of Mexico Dead Zone 2023 | 87.2 days | 3,486 |
-| Chesapeake Bay Hypoxia 2018 | 89.8 days | 34,831 |
-| Klamath River HAB 2021 | 59.2 days | 7,200 |
-| Jordan Lake HAB, NC | 44.3 days | 5,755 |
-| Mississippi River Salinity 2023 | 58.6 days | 4,168 |
-| Iowa Nitrate Crisis 2015 | 59.3 days | 7,196 |
-| Dan River Coal Ash 2014 | 13.3 days | 3,456 |
+**Real but region-limited:** the **multimodal fusion win on microcystin** — 3-way
+(optics + pigment + drivers) beats every single modality under station-grouped CV
+(0.82 vs 0.68, each modality adds), demonstrating genuine complementarity — but it
+**collapses to chance under a cross-region holdout**, so it is a within-region
+result, not a transferable capability. On chl-a/DO, fusion only *ties* the best single.
 
-Two events (Neuse River Hypoxia 2022, Toledo Water Crisis 2014) had insufficient sensor data coverage for detection. An additional 6 NEON and 19 research-validated events bring the total to 31 detected events with a mean lead time of 32 days.
+**Real but weak / heavily caveated:** MicroBiomeNet (true geographic-holdout
+macro-F1 **0.405** on the full EMP release — up from 0.304, but cross-region
+transfer is genuinely hard; the old 0.831 was random-split leakage); ToxiGene
+(real zebrafish GEO — within-study AUROC 0.86 but **cross-study only ~0.55**, so
+exposure signatures don't transfer); Species-Health skill is mostly a geographic
+range prior (env-only floor ~0.85); BioMotion's label partly reflects study design.
+
+**Reported as simulation / proof-of-concept (not validated detection):** the
+Stream-Network GNN (synthetic propagation labels), conformal coverage (real 0.9367,
+guarantee not met), lagged-correlation "causal chains" (0/375 validated), the
+disease-forecast risk index (circular labels), and the SENTINEL-Lite drone
+(hardware concept; imagery is real Sentinel-2).
+
+**At genuine ceiling (honest negatives, reported as findings):** the Digital Twin
+loses to persistence beyond 1 day (uncertainty head conformal-calibrated to 90%
+coverage so at least the error bars are honest); cross-study molecular-toxicity
+transfer is near chance.
+
+**Retracted (computed on synthetic data, removed):** the "0.992 fusion beats
+single modality" claim, the sensor↔behavioral mutual-information figure, the
+contrastive Recall@1, and the "31 events / 32-day / zero false positives"
+case-study summary.
+
+### Real-World Case Studies — Calibrated Lead-Time Detector (NEON)
+
+The sensor-stream early-warning result is the **label-free AquaSSM
+reconstruction-residual detector**, per-site calibrated to a target 5% sustained
+false-positive rate and evaluated on **real NEON continuous water-quality data**
+(dissolved-oxygen hypoxia episodes with a verified DO < 4 mg/L onset). Specificity
+is measured on held-out clean periods; lead time is credited **only** on episodes
+that meet the FPR bar — a trigger-happy detector's "early" alarm is not a real
+early warning.
+
+Tested on **12 NEON DO-hypoxia episodes** (doubled from 6 by adding the unused
+NEON sites; the site list is pre-committed and **all** episodes are reported,
+including failures).
+
+| Episode (NEON site) | Onset | Held-out FPR | Lead | Specificity-validated |
+|---------------------|-------|--------------|------|------------------------|
+| KING | 2024-07-31 | 0.0% | 36.8 d | yes |
+| MAYF | 2025-04-17 | 4.7% | 31.8 d | yes |
+| BIGC | 2025-08-01 | 4.8% | 29.2 d | yes |
+| PRIN | 2024-10-25 | 4.6% | 22.5 d | yes |
+| COMO | 2026-01-30 | 4.9% | 4.0 d | yes |
+| ARIK / MCDI / CRAM / GUIL / BARC / LIRO / LECO | — | 4.7–73.8% | — | no — over-fire or not detected early |
+
+- **Specificity:** pooled held-out sustained FPR on the 6 truly-clean control
+  sites = **4.6%** (95% CI 4.3–4.9%); but the detector **over-fires on
+  non-stationary sites** (7/12 episodes + 2 noisy controls exceed the 5% bar) —
+  reported, not hidden.
+- **Early warning:** median **29.2 days** on the **5/12** specificity-validated
+  episodes (KING, MAYF, BIGC, PRIN, COMO; IQR 22.5–31.8). Self-supervised NEON
+  fine-tuning of the reconstruction backbone (masked-parameter prediction on
+  clean windows, **no labels**) is what made the detector usable on NEON.
+- This is the AquaSSM **sensor** encoder only, on real NEON data — not a
+  multimodal or forecast model. The earlier "31 events / 32-day / zero false
+  positives" figure was produced on a synthetic simulation harness and is retracted.
+
+Reproduce: `scripts/experiments/trackA_leadtime/{01_extract_episodes,05_finetune_neon,02_detect,03_report}.py`.
 
 ### SENTINEL-Lite (HydroDenseNet)
 
@@ -89,7 +151,7 @@ Pre-registered predictions at 18 USGS sites with hash-verified timestamps:
 - **Registration hash**: e59732...65d5
 - **Sites monitored**: 18 across 8 states
 - **Prediction runs**: 10 (May 26--28, 2026)
-- **False alerts**: 0
+- **Sustained alarms at the deployment threshold**: 0 (note: the calibrated detector's honestly-measured held-out FPR is 4.6%, not zero — see Case Studies)
 - **Notable signal**: Chattahoochee River at Atlanta showed a transient anomaly peak (0.173) that self-resolved -- correctly classified as non-alert
 - **Monitoring window**: 120 days from May 26, 2026
 
@@ -134,14 +196,14 @@ Trained with curriculum learning over 500K timesteps. Includes `extract_decision
 
 ### Downstream Models
 
-- **Stream Network GNN**: Graph attention network over real NHDPlus river topology (561 sites, 338 edges) for upstream-downstream contamination propagation
-- **Species Health Index**: Forecasts condition of 6 keystone bioindicator species (R²=0.9996, 5,462 BioData sites)
-- **Disease Forecast**: Predicts risk for 4 waterborne pathogens (AUROC=0.988, 93.1% accuracy on 499K real USGS samples)
+- **Stream Network GNN**: Graph attention network over real NHDPlus river topology (561 sites, 338 edges) for upstream-downstream contamination propagation. *Trained and evaluated on synthetic propagation labels — simulation only, not validated on real events.*
+- **Species Health Index**: Forecasts condition/occupancy of 6 keystone bioindicator species (5,462 real BioData sites). *Under a leakage-free per-site holdout the honest macro-AUROC is 0.949 (the earlier pooled R²=0.9996 was a circular-label artifact and is withdrawn); this is largely a geographic range prior, with an environmental-feature floor near 0.85.*
+- **Disease Forecast**: A rule-based WHO/CDC/EPA pathogen **risk index**. *The pathogen "labels" are closed-form functions of the sensor inputs (circular), so the high AUROC is not a measure of predictive skill.*
 - **Digital Twin Engine**: Neural-ODE hybrid ecosystem simulator for multi-horizon forecasting. Useful at 1-day horizon (R²=0.688); longer horizons degrade (7d+ R²<0) due to ODE trajectory divergence
 
 ### Screening & Deployment
 
-- **SENTINEL-Lite (HydroDenseNet)**: Imagery-only water quality prediction from dual-camera drone (RGB + Raspberry Pi NoIR Camera Module V2 8MP 1080P30) -- low-cost screening without fixed sensors
+- **SENTINEL-Lite (HydroDenseNet)**: Imagery-only water quality prediction from 4-band (RGB+NIR) imagery -- low-cost screening without fixed sensors. Trained/evaluated on real **Sentinel-2** tiles; the dual-camera drone payload (RGB + RPi NoIR) is *proposed deployment hardware*.
 - **Contrastive Pretraining**: CLIP-style InfoNCE cross-modal alignment
 
 ```
@@ -177,7 +239,7 @@ Sensor          Satellite       Microbial       Molecular       Behavioral
 
 ## Data Infrastructure: SENTINEL-DB
 
-SENTINEL-DB harmonizes **390M+ environmental records** (~85 GB) from 13+ data sources spanning 105 countries and 94,000+ monitoring sites:
+SENTINEL-DB harmonizes **~390M raw environmental records** (~85 GB) from 14 public data sources spanning 105 countries and 94,000+ monitoring sites. The 390M figure is a **raw, pre-QC** count dominated by NEON high-frequency sonde data (351.7M raw → ~52M after NEON quality-flag filtering); usable post-QC volume is far smaller:
 
 | Source | Records | Type |
 |--------|---------|------|
@@ -207,20 +269,19 @@ SENTINEL includes 20+ experiments spanning:
 | **Core detection** | Multimodal case studies (historical events), baseline comparisons, EPA violation correlation |
 | **Ablation** | Full 31-condition (2^5 - 1) modality subset analysis with statistical significance testing |
 | **Robustness** | Missing modality degradation, cross-site generalization, label noise sensitivity |
-| **Uncertainty** | MC dropout calibration, conformal prediction (94% coverage), bootstrap confidence intervals |
-| **Interpretability** | Parameter attribution, causal chain discovery (PCMCI+), cross-modal alignment (CKA) |
-| **Downstream** | False positive rate (0.000 on NEON reference sites), temporal persistence, pollution fingerprinting |
+| **Uncertainty** | MC dropout calibration, conformal prediction (real sensor coverage 0.9367 — the 95% guarantee is **not** met), bootstrap confidence intervals |
+| **Interpretability** | Parameter attribution, lagged partial-correlation screening (0/375 chains validated; *not* PCMCI+), cross-modal alignment (CKA) |
+| **Downstream** | False-positive rate (**4.6%** held-out on clean NEON reference sites), temporal persistence, pollution fingerprinting |
 | **Operational** | Cascade escalation, seasonal patterns, risk index ranking, early warning ROC |
 | **Predictability audit** | Honest assessment of what is/isn't learnable from each modality combination |
 
 ### Key Findings
 
-1. **Multimodal fusion outperforms any single modality** -- AUROC 0.992 (ablation) / 0.939 (holdout) vs. 0.943 (sensor-only), p = 0.002
-2. **Modalities contribute unique information** -- Near-zero mutual information between sensor and behavioral channels (MINE estimate: I = 0.01 nats)
-3. **Robust to missing modalities** -- AUROC > 0.90 with only 2 of 5 modalities via confidence-weighted gating
-4. **Zero false positives on clean sites** -- FPR = 0.000 across 10 NEON reference sites; 31.3x signal-to-noise ratio
-5. **Biological hierarchy enables interpretability** -- ToxiGene's gene-pathway-process-outcome mapping provides causal chains
-6. **DO, pH, turbidity require multimodal sensing** -- Predictability audit confirms these are unrecoverable from temperature + conductivity alone, validating the multimodal architecture
+1. **Multimodal fusion genuinely combines complementary modalities — but only within a calibrated region.** On microcystin (an optically-invisible cyanotoxin), a 3-modality fusion (satellite optics + in-situ pigment + physicochemical drivers) beats the best single modality under station-grouped CV — AUROC **0.82, +0.08** over the best single (a literature-index satellite arm at ~0.71, above pigment 0.684); the CI-clean load-bearing step is the 2-way→3-way physicochemical-driver increment (+0.047, CI excludes zero, negative-control confirmed). The modalities are non-redundant because the toxin is optically invisible (phycocyanin↔microcystin 0.73 vs chl-a↔microcystin 0.08) and its production is driven by temperature/nutrients. **However**, under a true cross-region (leave-one-HUC-out) holdout, *all* models collapse to chance (~0.49) — and **no feature transform** (region-conditioning, within-site-relative, rank) recovers it. The missing variable is the **toxin-producing strain fraction (mcyD genotype)**, which pigment/optics/drivers cannot see and which differs by watershed (literature: mcyD abundance predicts microcystin better than any pigment). The genuine transfer path is therefore SENTINEL's own **microbial/metagenomic modality**, gated on co-locating metagenomics with cyanotoxin sites. On **chl-a**/**DO**/turbidity, fusion only *ties* the best single (single-modality-dominated, a literature-consistent redundancy). The earlier "0.992 fusion outperforms single modality" was synthetic and is **retracted**.
+2. **Calibrated specificity on real clean sites** -- held-out sustained false-positive rate **4.6%** (95% CI 4.3–4.9%) on clean NEON reference sites. Not zero, but honestly measured at a fixed operating point.
+3. **Real early warning where the signal supports it** -- label-free median **29-day** lead on **5/12** specificity-validated DO-hypoxia episodes (NEON); the other 7 over-fire on clean water or aren't detected early. Self-supervised NEON fine-tuning of the reconstruction backbone (no labels) is what made the detector usable on NEON.
+4. **Honest negatives are reported, not hidden** -- digital twin useful only at the 1-day horizon (a naive baseline wins beyond it); predictability audit R²<0 for DO/pH/turbidity; ARG surveillance R²≈−0.008; foundation/MoME fusion AUROC 0.37–0.42.
+5. **Biological hierarchy as interpretability, not discovery** -- ToxiGene's gene→pathway→process→outcome mapping is a design feature for interpretability, not a validated causal-discovery result.
 
 ---
 
@@ -371,14 +432,14 @@ Hugging Face Hub: **[huggingface.co/bryan7264/SENTINEL](https://huggingface.co/b
 
 ## Falsifiable Claims
 
-1. First multimodal AI system for freshwater ecosystem monitoring validated on real USGS data
-2. Mean 32-day early warning across 31 contamination events (66.4-day mean for 6 original USGS case studies)
-3. First pre-registered prospective water quality prediction system with hash-verified timestamps
-4. 390M+ record freshwater database spanning 13+ sources
-5. Graceful degradation: AUROC > 0.90 with any 2 of 5 modalities
-6. Zero false positives on 10 NEON clean reference sites
-7. Stream network GNN: AUROC 1.000 on real NHDPlus topology (561 sites)
-8. SENTINEL-Lite: Temp R²=0.776, DO R²=0.463 from dual-camera (RGB + NoIR) aerial imagery alone (no sensor input), 399 USGS stations spatial holdout
+1. A multimodal architecture for freshwater monitoring with five encoders each benchmarked on real, held-out public data.
+2. Label-free median **29-day** early warning on **5/12** specificity-validated DO-hypoxia episodes (NEON), at **4.6%** held-out false-positive rate on clean controls (over-fires on non-stationary sites — reported).
+3. Multimodal fusion is reported honestly and **does not** beat the best single encoder on real co-located data (chl-a held-out AUROC 0.65 vs sensor-only 0.64).
+4. ~390M **raw** records (pre-QC; ~52M post-NEON-QC) from 14 public sources.
+5. SENTINEL-Lite: Temp R²=0.776, DO R²=0.463 from 4-band **Sentinel-2** imagery alone (no sensor input), 399 stations spatial holdout. The drone payload is *proposed* hardware.
+6. Honest negatives, reported in full: digital-twin R²<0 beyond 1 day; predictability audit R²<0 for DO/pH/turbidity; ARG surveillance R²≈−0.008.
+
+**Reported as simulation / proof-of-concept (not validated detection):** the Stream-Network GNN (synthetic propagation labels on real NHDPlus topology), the conformal pipeline (real coverage 0.9367, 95% guarantee not met), the lagged-correlation causal screening (0/375 validated), the disease-forecast risk index (circular labels), and the SENTINEL-Lite drone hardware concept (Sentinel-2 proxy).
 
 ---
 

@@ -1,0 +1,133 @@
+{
+  "candidate": "leaky-ewma-integrator",
+  "name": "Leaky non-resetting EWMA accumulator",
+  "idea": "G=max(0, LAMBDA*G_prev + dev - SLACK_K); alarm G>=thr; no reset on alarm, reset only on NaN dev. Early precursors accumulate; leak bounds memory for FPR control.",
+  "hyperparameters_a_priori": {
+    "lambda": 0.99,
+    "slack_k": 1.0,
+    "floor": 1.0,
+    "w_base": 240,
+    "guard": 12
+  },
+  "target_control_heldout_fpr": 0.05,
+  "baseline_to_beat": {
+    "episodes_detected": 11,
+    "median_lead_days": 36.1,
+    "at_control_heldout_fpr": 0.05
+  },
+  "headline_interleave_min_base_60": {
+    "split": "interleave",
+    "min_base": 60,
+    "lambda": 0.99,
+    "slack_k": 1.0,
+    "thr": 2844.3834,
+    "control_heldout_fpr": 0.0473,
+    "n_episodes": 15,
+    "episodes_detected": 1,
+    "median_lead_days": 7.927,
+    "detected_sites": [
+      "GUIL"
+    ],
+    "leads_by_site": {
+      "GUIL": 7.927
+    },
+    "is_pareto_win": false
+  },
+  "robustness_temporal_min_base_60": {
+    "split": "temporal",
+    "min_base": 60,
+    "lambda": 0.99,
+    "slack_k": 1.0,
+    "thr": 3012.8822,
+    "control_heldout_fpr": 0.0483,
+    "n_episodes": 15,
+    "episodes_detected": 1,
+    "median_lead_days": 7.844,
+    "detected_sites": [
+      "GUIL"
+    ],
+    "leads_by_site": {
+      "GUIL": 7.844
+    },
+    "is_pareto_win": false
+  },
+  "all_runs": [
+    {
+      "split": "interleave",
+      "min_base": 60,
+      "lambda": 0.99,
+      "slack_k": 1.0,
+      "thr": 2844.3834,
+      "control_heldout_fpr": 0.0473,
+      "n_episodes": 15,
+      "episodes_detected": 1,
+      "median_lead_days": 7.927,
+      "detected_sites": [
+        "GUIL"
+      ],
+      "leads_by_site": {
+        "GUIL": 7.927
+      },
+      "is_pareto_win": false
+    },
+    {
+      "split": "temporal",
+      "min_base": 60,
+      "lambda": 0.99,
+      "slack_k": 1.0,
+      "thr": 3012.8822,
+      "control_heldout_fpr": 0.0483,
+      "n_episodes": 15,
+      "episodes_detected": 1,
+      "median_lead_days": 7.844,
+      "detected_sites": [
+        "GUIL"
+      ],
+      "leads_by_site": {
+        "GUIL": 7.844
+      },
+      "is_pareto_win": false
+    },
+    {
+      "split": "interleave",
+      "min_base": 20,
+      "lambda": 0.99,
+      "slack_k": 1.0,
+      "thr": 2851.5231,
+      "control_heldout_fpr": 0.0472,
+      "n_episodes": 15,
+      "episodes_detected": 1,
+      "median_lead_days": 7.927,
+      "detected_sites": [
+        "GUIL"
+      ],
+      "leads_by_site": {
+        "GUIL": 7.927
+      },
+      "is_pareto_win": false
+    },
+    {
+      "split": "temporal",
+      "min_base": 20,
+      "lambda": 0.99,
+      "slack_k": 1.0,
+      "thr": 3020.1599,
+      "control_heldout_fpr": 0.0485,
+      "n_episodes": 15,
+      "episodes_detected": 1,
+      "median_lead_days": 7.844,
+      "detected_sites": [
+        "GUIL"
+      ],
+      "leads_by_site": {
+        "GUIL": 7.844
+      },
+      "is_pareto_win": false
+    }
+  ],
+  "verdict": {
+    "is_pareto_win_headline": false,
+    "is_pareto_win_temporal": false,
+    "holds_under_temporal": false
+  }
+}

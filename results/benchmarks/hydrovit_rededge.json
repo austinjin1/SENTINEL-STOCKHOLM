@@ -1,0 +1,139 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Honest A/B: does the Sentinel-2 RED-EDGE band (B05) improve REAL chl-a and microcystin prediction over HydroViT's shipped 4-band (B02/B03/B04/B08) representation?",
+    "data": "data/processed/biology/noaa_habs/mc_tiles (REAL Sentinel-2 L2A 6-band tiles) x mc_fusion_dataset.parquet (REAL WQP/NOAA-HABS in-situ chl-a & microcystin).",
+    "tile_bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B08",
+      "B11"
+    ],
+    "baseline_bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B08"
+    ],
+    "rededge_adds": [
+      "B05_rededge_705nm",
+      "B11_swir",
+      "NDCI",
+      "CIre",
+      "MCIre",
+      "FAI"
+    ],
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site) GroupKFold \u2014 no site shared train/test.",
+    "ci": "site-clustered bootstrap (resamples sites, not rows), 2000 reps.",
+    "model": "HistGradientBoosting (CPU); identical for base4 and rededge.",
+    "note": "No new download: red-edge B05 was already on disk in the 6-band mc_tiles. This is the CLEAN marginal-red-edge test, matched model/CV/CI."
+  },
+  "n_tiles_usable": 3649,
+  "n_sites": 227,
+  "feature_counts": {
+    "base4": 49,
+    "rededge": 91
+  },
+  "targets": {
+    "chla_log10_R2": {
+      "target": "log10 chlorophyll-a (ug/L), REAL WQP CHLA, 0<x<5000",
+      "n": 2256,
+      "n_sites": 169,
+      "baseline_4band": {
+        "r2": 0.2085,
+        "r2_ci95": [
+          0.096,
+          0.2889
+        ]
+      },
+      "rededge": {
+        "r2": 0.3383,
+        "r2_ci95": [
+          0.2307,
+          0.4138
+        ]
+      },
+      "delta_rededge_minus_base": {
+        "mean": 0.1308,
+        "ci95": [
+          0.0878,
+          0.1751
+        ],
+        "prob_improvement": 1.0
+      }
+    },
+    "mc_gt0.3_detection": {
+      "target": "microcystin > 0.3 ug/L (REAL WQP mc)",
+      "n": 3649,
+      "n_pos": 1286,
+      "prevalence": 0.352,
+      "n_sites": 227,
+      "baseline_4band": {
+        "auroc": 0.6801,
+        "auroc_ci95": [
+          0.6317,
+          0.72
+        ]
+      },
+      "rededge": {
+        "auroc": 0.6944,
+        "auroc_ci95": [
+          0.6483,
+          0.7338
+        ]
+      },
+      "delta_rededge_minus_base": {
+        "mean": 0.0143,
+        "ci95": [
+          -0.004,
+          0.0319
+        ],
+        "prob_improvement": 0.946
+      }
+    },
+    "mc_gt1.6_WHO_drinking": {
+      "target": "microcystin > 1.6 ug/L (REAL WQP mc)",
+      "n": 3649,
+      "n_pos": 633,
+      "prevalence": 0.173,
+      "n_sites": 227,
+      "baseline_4band": {
+        "auroc": 0.6777,
+        "auroc_ci95": [
+          0.6188,
+          0.7286
+        ]
+      },
+      "rededge": {
+        "auroc": 0.7039,
+        "auroc_ci95": [
+          0.6444,
+          0.7555
+        ]
+      },
+      "delta_rededge_minus_base": {
+        "mean": 0.0262,
+        "ci95": [
+          0.0064,
+          0.0454
+        ],
+        "prob_improvement": 0.997
+      }
+    }
+  },
+  "verdict": {
+    "chla_log10_R2": "IMPROVED (red-edge lift, 95% CI excludes 0)",
+    "mc_gt0.3_detection": "NULL (CI includes 0; prob_improvement=0.946)",
+    "mc_gt1.6_WHO_drinking": "IMPROVED (red-edge lift, 95% CI excludes 0)"
+  },
+  "baseline_reference": {
+    "hydrovit_real_water_temp_r2": 0.7286,
+    "prior_mc_sat_full_auroc_gt1.6": 0.708,
+    "note": "water_temp is unaffected by red-edge (temperature has no chl signal); this study targets the chl-a/cyano gap where red-edge is physically relevant."
+  },
+  "elapsed_seconds": 70.9
+}

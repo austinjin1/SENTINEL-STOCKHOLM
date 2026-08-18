@@ -1,0 +1,1486 @@
+{
+  "description": "Digital Twin: can a defensible model beat the CORRECT naive baseline on any real forecast target/horizon? Leak-free (train/test site-disjoint), bootstrap 95% CIs.",
+  "deployed_twin_context": {
+    "absolute_state_r2": 0.069,
+    "persistence_r2": 0.923,
+    "note": "Deployed neural DigitalTwinEngine loses to persistence at every horizon/variable for absolute state (results/benchmarks/twin_evaluation.json)."
+  },
+  "n_train_windows": 561945,
+  "n_test_windows": 91722,
+  "state_variables": [
+    "dissolved_oxygen",
+    "bod",
+    "total_nitrogen",
+    "total_phosphorus",
+    "chlorophyll_a",
+    "temperature",
+    "ph",
+    "turbidity",
+    "doc",
+    "sediment"
+  ],
+  "real_observed_variables": [
+    "dissolved_oxygen",
+    "temperature",
+    "ph",
+    "turbidity"
+  ],
+  "forecast_horizons": [
+    1,
+    7,
+    14,
+    30,
+    90,
+    365
+  ],
+  "seed": 42,
+  "split_rule": "sha256(seed:site_stem)%10: <7 train, 7-8 val, >=9 test (site-disjoint).",
+  "proxy_note": "Index 7 ('turbidity') is largely a specific-conductance (SpCond) proxy per the training column map; treat its results as proxy, not true NTU.",
+  "reformulation_A_change": {
+    "dissolved_oxygen": {
+      "1": {
+        "n": 22667,
+        "true_delta_std": 1.0977691411972046,
+        "true_delta_mad": 0.37392473220825195,
+        "clim_delta_skill_vs_zero": -4.722158477070349,
+        "clim_delta_skill_ci95": [
+          -5.476050525288601,
+          -4.120314200290946
+        ],
+        "ridge_delta_skill_vs_zero": 0.10583047186535166,
+        "ridge_delta_skill_ci95": [
+          0.0836162850613498,
+          0.12368298120899766
+        ],
+        "ridge_dir_acc": 0.5389477977161501,
+        "base_dir_acc": 0.5006117455138662,
+        "clim_dir_acc": 0.5335950244698205
+      },
+      "7": {
+        "n": 22627,
+        "true_delta_std": 2.0054636001586914,
+        "true_delta_mad": 0.9933178424835205,
+        "clim_delta_skill_vs_zero": -0.6749850493502263,
+        "clim_delta_skill_ci95": [
+          -0.7768155693969699,
+          -0.5683517855473759
+        ],
+        "ridge_delta_skill_vs_zero": 0.2877169493981504,
+        "ridge_delta_skill_ci95": [
+          0.26666870007306986,
+          0.3103655843524926
+        ],
+        "ridge_dir_acc": 0.6105536975102193,
+        "base_dir_acc": 0.5157004830917874,
+        "clim_dir_acc": 0.6019137866963954
+      },
+      "14": {
+        "n": 22636,
+        "true_delta_std": 2.351926565170288,
+        "true_delta_mad": 1.249183177947998,
+        "clim_delta_skill_vs_zero": -0.20772859173818747,
+        "clim_delta_skill_ci95": [
+          -0.28162416112221056,
+          -0.1395326918693979
+        ],
+        "ridge_delta_skill_vs_zero": 0.3642106551077413,
+        "ridge_delta_skill_ci95": [
+          0.3439188834478541,
+          0.38317101959550837
+        ],
+        "ridge_dir_acc": 0.6478530424799082,
+        "base_dir_acc": 0.5191733639494833,
+        "clim_dir_acc": 0.6323765786452353
+      },
+      "30": {
+        "n": 22722,
+        "true_delta_std": 2.8450005054473877,
+        "true_delta_mad": 1.6780402660369873,
+        "clim_delta_skill_vs_zero": 0.1817369807920467,
+        "clim_delta_skill_ci95": [
+          0.14118751544967748,
+          0.21915695625615292
+        ],
+        "ridge_delta_skill_vs_zero": 0.4685092030091178,
+        "ridge_delta_skill_ci95": [
+          0.4505334166726617,
+          0.48439776114700334
+        ],
+        "ridge_dir_acc": 0.7185566544731969,
+        "base_dir_acc": 0.5220611479925936,
+        "clim_dir_acc": 0.6887955561577022
+      },
+      "90": {
+        "n": 21930,
+        "true_delta_std": 4.001945495605469,
+        "true_delta_mad": 2.9606926441192627,
+        "clim_delta_skill_vs_zero": 0.5929202183102602,
+        "clim_delta_skill_ci95": [
+          0.5760627811519805,
+          0.6079839971563219
+        ],
+        "ridge_delta_skill_vs_zero": 0.6549120055424063,
+        "ridge_delta_skill_ci95": [
+          0.6442266040642797,
+          0.6657908713296854
+        ],
+        "ridge_dir_acc": 0.8389391979301423,
+        "base_dir_acc": 0.5211143965995195,
+        "clim_dir_acc": 0.8275272592866383
+      },
+      "365": {
+        "n": 19220,
+        "true_delta_std": 3.3389391899108887,
+        "true_delta_mad": 1.9165103435516357,
+        "clim_delta_skill_vs_zero": 0.44670360819755695,
+        "clim_delta_skill_ci95": [
+          0.41692367710717365,
+          0.47373392337023806
+        ],
+        "ridge_delta_skill_vs_zero": -5617.573143524186,
+        "ridge_delta_skill_ci95": [
+          -17095.51639885948,
+          0.5891559652627751
+        ],
+        "ridge_dir_acc": 0.6637875536480686,
+        "base_dir_acc": 0.5585836909871245,
+        "clim_dir_acc": 0.6618562231759657
+      }
+    },
+    "temperature": {
+      "1": {
+        "n": 79593,
+        "true_delta_std": 1.6263710260391235,
+        "true_delta_mad": 0.6552459597587585,
+        "clim_delta_skill_vs_zero": -13.944006925290758,
+        "clim_delta_skill_ci95": [
+          -15.33308838149886,
+          -12.725921610826017
+        ],
+        "ridge_delta_skill_vs_zero": 0.043589967341785885,
+        "ridge_delta_skill_ci95": [
+          0.040363523207440806,
+          0.04633599111894593
+        ],
+        "ridge_dir_acc": 0.5422825161551452,
+        "base_dir_acc": 0.5272229898533127,
+        "clim_dir_acc": 0.5213889935658558
+      },
+      "7": {
+        "n": 79461,
+        "true_delta_std": 3.1267497539520264,
+        "true_delta_mad": 1.8047668933868408,
+        "clim_delta_skill_vs_zero": -3.028154263405926,
+        "clim_delta_skill_ci95": [
+          -3.1782177624312276,
+          -2.8840790592911154
+        ],
+        "ridge_delta_skill_vs_zero": 0.15608399711230114,
+        "ridge_delta_skill_ci95": [
+          0.15168055884455214,
+          0.15986308202873536
+        ],
+        "ridge_dir_acc": 0.6352888455404568,
+        "base_dir_acc": 0.517009133924688,
+        "clim_dir_acc": 0.5766762003927719
+      },
+      "14": {
+        "n": 79459,
+        "true_delta_std": 3.7529330253601074,
+        "true_delta_mad": 2.327423095703125,
+        "clim_delta_skill_vs_zero": -1.7893784508293025,
+        "clim_delta_skill_ci95": [
+          -1.88578744986378,
+          -1.7059224954871899
+        ],
+        "ridge_delta_skill_vs_zero": 0.26392441014667933,
+        "ridge_delta_skill_ci95": [
+          0.25937869328232804,
+          0.26827626229762686
+        ],
+        "ridge_dir_acc": 0.7186480064753649,
+        "base_dir_acc": 0.5216585289433144,
+        "clim_dir_acc": 0.6046502519648033
+      },
+      "30": {
+        "n": 79668,
+        "true_delta_std": 5.014703273773193,
+        "true_delta_mad": 3.520765781402588,
+        "clim_delta_skill_vs_zero": -0.557884908646145,
+        "clim_delta_skill_ci95": [
+          -0.5922374632231705,
+          -0.5266225081862466
+        ],
+        "ridge_delta_skill_vs_zero": 0.4719159166631396,
+        "ridge_delta_skill_ci95": [
+          0.4667282864935241,
+          0.4769397676909722
+        ],
+        "ridge_dir_acc": 0.8302105317341844,
+        "base_dir_acc": 0.5332526895557729,
+        "clim_dir_acc": 0.6812812065681783
+      },
+      "90": {
+        "n": 77163,
+        "true_delta_std": 9.608439445495605,
+        "true_delta_mad": 7.9127278327941895,
+        "clim_delta_skill_vs_zero": 0.5745821393194377,
+        "clim_delta_skill_ci95": [
+          0.5692124943171493,
+          0.5801417406028094
+        ],
+        "ridge_delta_skill_vs_zero": 0.7665714783169228,
+        "ridge_delta_skill_ci95": [
+          0.7634816623989192,
+          0.7694846369754111
+        ],
+        "ridge_dir_acc": 0.9142815975269507,
+        "base_dir_acc": 0.5729798409808365,
+        "clim_dir_acc": 0.8376144505717616
+      },
+      "365": {
+        "n": 68417,
+        "true_delta_std": 4.657684326171875,
+        "true_delta_mad": 2.563204765319824,
+        "clim_delta_skill_vs_zero": -0.7765774604002469,
+        "clim_delta_skill_ci95": [
+          -0.8384310971597138,
+          -0.7221679605037623
+        ],
+        "ridge_delta_skill_vs_zero": 0.2823488828074089,
+        "ridge_delta_skill_ci95": [
+          0.2767164120128267,
+          0.2880700325107723
+        ],
+        "ridge_dir_acc": 0.6137648282411106,
+        "base_dir_acc": 0.5307718975626667,
+        "clim_dir_acc": 0.5846886634611037
+      }
+    },
+    "ph": {
+      "1": {
+        "n": 6774,
+        "true_delta_std": 0.3048740327358246,
+        "true_delta_mad": 0.051800042390823364,
+        "clim_delta_skill_vs_zero": -1.8013273949735793,
+        "clim_delta_skill_ci95": [
+          -5.144083619138463,
+          -0.6363815892658463
+        ],
+        "ridge_delta_skill_vs_zero": 0.21863055360390082,
+        "ridge_delta_skill_ci95": [
+          -0.13653181146416182,
+          0.33141595226115594
+        ],
+        "ridge_dir_acc": 0.5177190721649485,
+        "base_dir_acc": 0.5423646907216495,
+        "clim_dir_acc": 0.5165914948453608
+      },
+      "7": {
+        "n": 6791,
+        "true_delta_std": 1.0109015703201294,
+        "true_delta_mad": 0.24017736315727234,
+        "clim_delta_skill_vs_zero": 0.7480260976496407,
+        "clim_delta_skill_ci95": [
+          0.6966670477007393,
+          0.7848913256832797
+        ],
+        "ridge_delta_skill_vs_zero": 0.7863529082661395,
+        "ridge_delta_skill_ci95": [
+          0.7536024554418127,
+          0.8136033978138997
+        ],
+        "ridge_dir_acc": 0.5432558139534883,
+        "base_dir_acc": 0.532093023255814,
+        "clim_dir_acc": 0.5404651162790698
+      },
+      "14": {
+        "n": 6788,
+        "true_delta_std": 1.2564083337783813,
+        "true_delta_mad": 0.33345380425453186,
+        "clim_delta_skill_vs_zero": 0.8382646575472814,
+        "clim_delta_skill_ci95": [
+          0.8121632187281458,
+          0.8591834290061446
+        ],
+        "ridge_delta_skill_vs_zero": 0.8516352236288522,
+        "ridge_delta_skill_ci95": [
+          0.8331107720508638,
+          0.866949931717814
+        ],
+        "ridge_dir_acc": 0.5561849357011635,
+        "base_dir_acc": 0.5341396203306797,
+        "clim_dir_acc": 0.5518983466013472
+      },
+      "30": {
+        "n": 6772,
+        "true_delta_std": 1.5670909881591797,
+        "true_delta_mad": 0.47137388586997986,
+        "clim_delta_skill_vs_zero": 0.8961708621414783,
+        "clim_delta_skill_ci95": [
+          0.8829849414616082,
+          0.9069812429911599
+        ],
+        "ridge_delta_skill_vs_zero": 0.8994102607733292,
+        "ridge_delta_skill_ci95": [
+          0.8879063804941169,
+          0.9086113008113644
+        ],
+        "ridge_dir_acc": 0.5741022519780888,
+        "base_dir_acc": 0.5299756542909312,
+        "clim_dir_acc": 0.5733414485696896
+      },
+      "90": {
+        "n": 6478,
+        "true_delta_std": 2.0522663593292236,
+        "true_delta_mad": 0.7634925842285156,
+        "clim_delta_skill_vs_zero": 0.942271352105135,
+        "clim_delta_skill_ci95": [
+          0.9366257551376862,
+          0.9473000039602308
+        ],
+        "ridge_delta_skill_vs_zero": 0.9424052565481142,
+        "ridge_delta_skill_ci95": [
+          0.9374442299874371,
+          0.946660121882257
+        ],
+        "ridge_dir_acc": 0.6105708908406524,
+        "base_dir_acc": 0.5343475533249686,
+        "clim_dir_acc": 0.6088456712672522
+      },
+      "365": {
+        "n": 4972,
+        "true_delta_std": 2.0375678539276123,
+        "true_delta_mad": 0.7315731048583984,
+        "clim_delta_skill_vs_zero": 0.9396907663055509,
+        "clim_delta_skill_ci95": [
+          0.9332729713469959,
+          0.9451814451454758
+        ],
+        "ridge_delta_skill_vs_zero": 0.9390061395377461,
+        "ridge_delta_skill_ci95": [
+          0.9331993684270201,
+          0.9439749161572294
+        ],
+        "ridge_dir_acc": 0.5807700142595233,
+        "base_dir_acc": 0.541658178855164,
+        "clim_dir_acc": 0.5775106946424934
+      }
+    },
+    "turbidity": {
+      "1": {
+        "n": 47395,
+        "true_delta_std": 185.54483032226562,
+        "true_delta_mad": 27.400846481323242,
+        "clim_delta_skill_vs_zero": -51.78629584566774,
+        "clim_delta_skill_ci95": [
+          -61.36777692514185,
+          -44.316551198713576
+        ],
+        "ridge_delta_skill_vs_zero": 0.0029887827636636555,
+        "ridge_delta_skill_ci95": [
+          0.0016997796412549643,
+          0.004114012660891189
+        ],
+        "ridge_dir_acc": 0.527286972496893,
+        "base_dir_acc": 0.5276922245636786,
+        "clim_dir_acc": 0.5207489058194197
+      },
+      "7": {
+        "n": 47295,
+        "true_delta_std": 352.68939208984375,
+        "true_delta_mad": 75.42208099365234,
+        "clim_delta_skill_vs_zero": -13.575883728371645,
+        "clim_delta_skill_ci95": [
+          -15.00122745286809,
+          -12.430504393302398
+        ],
+        "ridge_delta_skill_vs_zero": 0.0072508907610695505,
+        "ridge_delta_skill_ci95": [
+          0.004536783757083457,
+          0.009661810332936116
+        ],
+        "ridge_dir_acc": 0.5471047104710471,
+        "base_dir_acc": 0.5420792079207921,
+        "clim_dir_acc": 0.5455545554555455
+      },
+      "14": {
+        "n": 47302,
+        "true_delta_std": 408.12896728515625,
+        "true_delta_mad": 94.90340423583984,
+        "clim_delta_skill_vs_zero": -9.85791869243063,
+        "clim_delta_skill_ci95": [
+          -10.736277056370215,
+          -9.088890778977076
+        ],
+        "ridge_delta_skill_vs_zero": 0.00923688320929561,
+        "ridge_delta_skill_ci95": [
+          0.006031191951483864,
+          0.012220847796858334
+        ],
+        "ridge_dir_acc": 0.5520524965462799,
+        "base_dir_acc": 0.5450710479573713,
+        "clim_dir_acc": 0.5506710084862838
+      },
+      "30": {
+        "n": 47494,
+        "true_delta_std": 471.7793273925781,
+        "true_delta_mad": 120.76239776611328,
+        "clim_delta_skill_vs_zero": -7.086555983790634,
+        "clim_delta_skill_ci95": [
+          -7.608655989875765,
+          -6.60938028433295
+        ],
+        "ridge_delta_skill_vs_zero": 0.011847674800245955,
+        "ridge_delta_skill_ci95": [
+          0.007723600501483544,
+          0.015655582854742573
+        ],
+        "ridge_dir_acc": 0.5541610021363371,
+        "base_dir_acc": 0.5451786754709652,
+        "clim_dir_acc": 0.5537725771994562
+      },
+      "90": {
+        "n": 45868,
+        "true_delta_std": 581.2908935546875,
+        "true_delta_mad": 174.8789520263672,
+        "clim_delta_skill_vs_zero": -4.356571918655561,
+        "clim_delta_skill_ci95": [
+          -4.63092711897025,
+          -4.097701294831506
+        ],
+        "ridge_delta_skill_vs_zero": 0.02046971487448912,
+        "ridge_delta_skill_ci95": [
+          0.014766319835865835,
+          0.025753416744829963
+        ],
+        "ridge_dir_acc": 0.5726357648813223,
+        "base_dir_acc": 0.5567043618739903,
+        "clim_dir_acc": 0.5687585435566049
+      },
+      "365": {
+        "n": 40644,
+        "true_delta_std": 569.4638671875,
+        "true_delta_mad": 164.46206665039062,
+        "clim_delta_skill_vs_zero": -4.700132839547212,
+        "clim_delta_skill_ci95": [
+          -5.0509191057666385,
+          -4.392236571744951
+        ],
+        "ridge_delta_skill_vs_zero": 0.020388366582503648,
+        "ridge_delta_skill_ci95": [
+          0.015014662902388612,
+          0.025262673774816242
+        ],
+        "ridge_dir_acc": 0.5720737249146179,
+        "base_dir_acc": 0.5612633718140506,
+        "clim_dir_acc": 0.5716221174743854
+      }
+    }
+  },
+  "reformulation_B_exceedance": {
+    "DO_hypoxia_lt5": {
+      "1": {
+        "n": 22667,
+        "n_events": 2765,
+        "base_rate": 0.1219835002426435,
+        "auroc_persistence_status": 0.9645892995024626,
+        "auroc_persistence_margin": 0.9855944307940736,
+        "auprc_persistence_margin": 0.7697793499127527,
+        "auroc_climatology": 0.5860152359581843,
+        "auroc_logit_margin+clim+harm": 0.9853626258721987,
+        "auprc_logit_margin+clim+harm": 0.7709346166924136,
+        "dAUROC_logit_minus_persistMargin": -0.00023180492187491186,
+        "dAUROC_ci95": [
+          -0.00036756034216730573,
+          -0.00010345796968419534
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 22627,
+        "n_events": 2751,
+        "base_rate": 0.12158041278119061,
+        "auroc_persistence_status": 0.9098698645524462,
+        "auroc_persistence_margin": 0.9491830446551243,
+        "auprc_persistence_margin": 0.5518122028797559,
+        "auroc_climatology": 0.5883606952710586,
+        "auroc_logit_margin+clim+harm": 0.9447537930370039,
+        "auprc_logit_margin+clim+harm": 0.5416987407900452,
+        "dAUROC_logit_minus_persistMargin": -0.004429251618120356,
+        "dAUROC_ci95": [
+          -0.005541893728476424,
+          -0.003430437433516517
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 22636,
+        "n_events": 2753,
+        "base_rate": 0.12162042763739177,
+        "auroc_persistence_status": 0.889483198834504,
+        "auroc_persistence_margin": 0.9300458992772083,
+        "auprc_persistence_margin": 0.48102350286594864,
+        "auroc_climatology": 0.5884233792020406,
+        "auroc_logit_margin+clim+harm": 0.9230475488290115,
+        "auprc_logit_margin+clim+harm": 0.4741984782579915,
+        "dAUROC_logit_minus_persistMargin": -0.006998350448196744,
+        "dAUROC_ci95": [
+          -0.008448544255162121,
+          -0.0055252489830890155
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 22722,
+        "n_events": 2770,
+        "base_rate": 0.1219082827215914,
+        "auroc_persistence_status": 0.8596059423482785,
+        "auroc_persistence_margin": 0.9016027636001493,
+        "auprc_persistence_margin": 0.3991247300488887,
+        "auroc_climatology": 0.5858185909721237,
+        "auroc_logit_margin+clim+harm": 0.8911384253616622,
+        "auprc_logit_margin+clim+harm": 0.4027458427076264,
+        "dAUROC_logit_minus_persistMargin": -0.010464338238487136,
+        "dAUROC_ci95": [
+          -0.013113887888571698,
+          -0.00792843304653417
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 21930,
+        "n_events": 2693,
+        "base_rate": 0.1227998176014592,
+        "auroc_persistence_status": 0.7668081208231422,
+        "auroc_persistence_margin": 0.7978236217451435,
+        "auprc_persistence_margin": 0.2655004987374764,
+        "auroc_climatology": 0.5909039010165014,
+        "auroc_logit_margin+clim+harm": 0.7989441936965412,
+        "auprc_logit_margin+clim+harm": 0.2846956332406964,
+        "dAUROC_logit_minus_persistMargin": 0.0011205719513976975,
+        "dAUROC_ci95": [
+          -0.004391009136674831,
+          0.007043099921870379
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 19220,
+        "n_events": 2287,
+        "base_rate": 0.11899063475546307,
+        "auroc_persistence_status": 0.8272131883442683,
+        "auroc_persistence_margin": 0.8528728711430948,
+        "auprc_persistence_margin": 0.2944131981276085,
+        "auroc_climatology": 0.5976661768722435,
+        "auroc_logit_margin+clim+harm": 0.8411876292921321,
+        "auprc_logit_margin+clim+harm": 0.2951281986305562,
+        "dAUROC_logit_minus_persistMargin": -0.011685241850962758,
+        "dAUROC_ci95": [
+          -0.015409755998326813,
+          -0.008231106252324847
+        ],
+        "auroc_baseline_random": 0.5
+      }
+    },
+    "temp_gt25C": {
+      "1": {
+        "n": 79593,
+        "n_events": 9552,
+        "base_rate": 0.12001055369190758,
+        "auroc_persistence_status": 0.9645810132636599,
+        "auroc_persistence_margin": 0.989988155746872,
+        "auprc_persistence_margin": 0.9795809056776997,
+        "auroc_climatology": 0.8270668403911879,
+        "auroc_logit_margin+clim+harm": 0.9892695185748707,
+        "auprc_logit_margin+clim+harm": 0.9740342606015441,
+        "dAUROC_logit_minus_persistMargin": -0.0007186371720013796,
+        "dAUROC_ci95": [
+          -0.0008362925923184883,
+          -0.0006016628694463122
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 79461,
+        "n_events": 9575,
+        "base_rate": 0.12049936446810385,
+        "auroc_persistence_status": 0.8901643444837317,
+        "auroc_persistence_margin": 0.9634720804915488,
+        "auprc_persistence_margin": 0.8866548839414836,
+        "auroc_climatology": 0.8261641775576473,
+        "auroc_logit_margin+clim+harm": 0.9647821693053417,
+        "auprc_logit_margin+clim+harm": 0.8888965939588012,
+        "dAUROC_logit_minus_persistMargin": 0.001310088813792909,
+        "dAUROC_ci95": [
+          0.0009368629412385393,
+          0.0016891328003268314
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 79459,
+        "n_events": 9566,
+        "base_rate": 0.1203891315017808,
+        "auroc_persistence_status": 0.8638078079321146,
+        "auroc_persistence_margin": 0.9489895218376859,
+        "auprc_persistence_margin": 0.8417561000860592,
+        "auroc_climatology": 0.8262118912156095,
+        "auroc_logit_margin+clim+harm": 0.9549335888026373,
+        "auprc_logit_margin+clim+harm": 0.8644516837527707,
+        "dAUROC_logit_minus_persistMargin": 0.005944066964951422,
+        "dAUROC_ci95": [
+          0.005341044577255555,
+          0.006496138635383708
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 79668,
+        "n_events": 9465,
+        "base_rate": 0.11880554300346438,
+        "auroc_persistence_status": 0.8053563660178329,
+        "auroc_persistence_margin": 0.9186711920081977,
+        "auprc_persistence_margin": 0.7200198050974272,
+        "auroc_climatology": 0.8289415099652259,
+        "auroc_logit_margin+clim+harm": 0.9455188827203013,
+        "auprc_logit_margin+clim+harm": 0.8311805555992793,
+        "dAUROC_logit_minus_persistMargin": 0.026847690712103578,
+        "dAUROC_ci95": [
+          0.025563609393873872,
+          0.028104892519652962
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 77163,
+        "n_events": 9311,
+        "base_rate": 0.12066664074750852,
+        "auroc_persistence_status": 0.5954358107732287,
+        "auroc_persistence_margin": 0.7415157878063885,
+        "auprc_persistence_margin": 0.2638705067224616,
+        "auroc_climatology": 0.8251964031300937,
+        "auroc_logit_margin+clim+harm": 0.9307574782930645,
+        "auprc_logit_margin+clim+harm": 0.7103433245796932,
+        "dAUROC_logit_minus_persistMargin": 0.18924169048667605,
+        "dAUROC_ci95": [
+          0.18549334036679418,
+          0.19312864731231622
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 68417,
+        "n_events": 8247,
+        "base_rate": 0.12054021661283014,
+        "auroc_persistence_status": 0.8570417576617272,
+        "auroc_persistence_margin": 0.9172459416802549,
+        "auprc_persistence_margin": 0.8279775549232526,
+        "auroc_climatology": 0.8293099949077226,
+        "auroc_logit_margin+clim+harm": 0.9220551058206832,
+        "auprc_logit_margin+clim+harm": 0.815963184617189,
+        "dAUROC_logit_minus_persistMargin": 0.0048091641404283125,
+        "dAUROC_ci95": [
+          0.004103136332627988,
+          0.005582842644278457
+        ],
+        "auroc_baseline_random": 0.5
+      }
+    },
+    "pH_gt8.5": {
+      "1": {
+        "n": 6774,
+        "n_events": 165,
+        "base_rate": 0.024357838795394153,
+        "auroc_persistence_status": 0.9066699679500406,
+        "auroc_persistence_margin": 0.9834101340229348,
+        "auprc_persistence_margin": 0.8239920794632167,
+        "auroc_climatology": 0.5322122725209425,
+        "auroc_logit_margin+clim+harm": 0.9802390679376608,
+        "auprc_logit_margin+clim+harm": 0.7766654240832106,
+        "dAUROC_logit_minus_persistMargin": -0.0031710660852739547,
+        "dAUROC_ci95": [
+          -0.00464370224457443,
+          -0.0017020233687551568
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 6791,
+        "n_events": 172,
+        "base_rate": 0.025327639522897953,
+        "auroc_persistence_status": 0.7382183776794781,
+        "auroc_persistence_margin": 0.893311450124202,
+        "auprc_persistence_margin": 0.40739363474144513,
+        "auroc_climatology": 0.5066088814090515,
+        "auroc_logit_margin+clim+harm": 0.8215171616593527,
+        "auprc_logit_margin+clim+harm": 0.21276971144651516,
+        "dAUROC_logit_minus_persistMargin": -0.07179428846484925,
+        "dAUROC_ci95": [
+          -0.08925032053261063,
+          -0.05450360595006249
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 6788,
+        "n_events": 172,
+        "base_rate": 0.025338833235120803,
+        "auroc_persistence_status": 0.6937797024830573,
+        "auroc_persistence_margin": 0.8535179866989118,
+        "auprc_persistence_margin": 0.3293651698175768,
+        "auroc_climatology": 0.5007649707544782,
+        "auroc_logit_margin+clim+harm": 0.7069595202609601,
+        "auprc_logit_margin+clim+harm": 0.12806210022837927,
+        "dAUROC_logit_minus_persistMargin": -0.14655846643795167,
+        "dAUROC_ci95": [
+          -0.17642577863305878,
+          -0.11888008909197965
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 6772,
+        "n_events": 166,
+        "base_rate": 0.0245126993502658,
+        "auroc_persistence_status": 0.6096739364360256,
+        "auroc_persistence_margin": 0.7656174197243105,
+        "auprc_persistence_margin": 0.1800954429022921,
+        "auroc_climatology": 0.5024275120463689,
+        "auroc_logit_margin+clim+harm": 0.5426273668698408,
+        "auprc_logit_margin+clim+harm": 0.08070279624559444,
+        "dAUROC_logit_minus_persistMargin": -0.2229900528544697,
+        "dAUROC_ci95": [
+          -0.2648415460798311,
+          -0.18465113586080034
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 6478,
+        "n_events": 158,
+        "base_rate": 0.024390243902439025,
+        "auroc_persistence_status": 0.5417721518987342,
+        "auroc_persistence_margin": 0.6024570381349142,
+        "auprc_persistence_margin": 0.06269475144658959,
+        "auroc_climatology": 0.4799205856433264,
+        "auroc_logit_margin+clim+harm": 0.44268246274635475,
+        "auprc_logit_margin+clim+harm": 0.023027810184000987,
+        "dAUROC_logit_minus_persistMargin": -0.1597745753885595,
+        "dAUROC_ci95": [
+          -0.20918587212971335,
+          -0.1128494685286291
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 4972,
+        "n_events": 123,
+        "base_rate": 0.024738535800482703,
+        "auroc_persistence_status": 0.5500019281487927,
+        "auroc_persistence_margin": 0.4833986388946174,
+        "auprc_persistence_margin": 0.06586387266884938,
+        "auroc_climatology": 0.4983149656202687,
+        "auroc_logit_margin+clim+harm": 0.37311188125286077,
+        "auprc_logit_margin+clim+harm": 0.03336704132800775,
+        "dAUROC_logit_minus_persistMargin": -0.11028675764175666,
+        "dAUROC_ci95": [
+          -0.15126632219826333,
+          -0.0688123087779566
+        ],
+        "auroc_baseline_random": 0.5
+      }
+    },
+    "turb_gt100": {
+      "1": {
+        "n": 47395,
+        "n_events": 27337,
+        "base_rate": 0.5767908007173752,
+        "auroc_persistence_status": 0.9777822762611174,
+        "auroc_persistence_margin": 0.9832035301525054,
+        "auprc_persistence_margin": 0.9920042827031954,
+        "auroc_climatology": 0.5104259204075091,
+        "auroc_logit_margin+clim+harm": 0.9852362386559316,
+        "auprc_logit_margin+clim+harm": 0.9925333687357871,
+        "dAUROC_logit_minus_persistMargin": 0.002032708503426184,
+        "dAUROC_ci95": [
+          0.001700583178635831,
+          0.0023999820970782098
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "7": {
+        "n": 47295,
+        "n_events": 27301,
+        "base_rate": 0.5772491806744899,
+        "auroc_persistence_status": 0.9445574295342704,
+        "auroc_persistence_margin": 0.9535636898900886,
+        "auprc_persistence_margin": 0.9772994747028654,
+        "auroc_climatology": 0.51026170273704,
+        "auroc_logit_margin+clim+harm": 0.9596996292397114,
+        "auprc_logit_margin+clim+harm": 0.9791061743364442,
+        "dAUROC_logit_minus_persistMargin": 0.006135939349622865,
+        "dAUROC_ci95": [
+          0.005557397021040805,
+          0.006711997222128322
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "14": {
+        "n": 47302,
+        "n_events": 27310,
+        "base_rate": 0.5773540230857046,
+        "auroc_persistence_status": 0.9329796070753457,
+        "auroc_persistence_margin": 0.941720915755537,
+        "auprc_persistence_margin": 0.9716277221423437,
+        "auroc_climatology": 0.5102497681606513,
+        "auroc_logit_margin+clim+harm": 0.9496050205142474,
+        "auprc_logit_margin+clim+harm": 0.9738041971265349,
+        "dAUROC_logit_minus_persistMargin": 0.007884104758710486,
+        "dAUROC_ci95": [
+          0.007205376161264221,
+          0.008534104273425522
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "30": {
+        "n": 47494,
+        "n_events": 27384,
+        "base_rate": 0.576578094075041,
+        "auroc_persistence_status": 0.9212160516371177,
+        "auroc_persistence_margin": 0.9275568301089552,
+        "auprc_persistence_margin": 0.9644889306696764,
+        "auroc_climatology": 0.5103109179457477,
+        "auroc_logit_margin+clim+harm": 0.937554881833817,
+        "auprc_logit_margin+clim+harm": 0.9675787959829141,
+        "dAUROC_logit_minus_persistMargin": 0.00999805172486179,
+        "dAUROC_ci95": [
+          0.009265235876630298,
+          0.010719380742937453
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "90": {
+        "n": 45868,
+        "n_events": 26619,
+        "base_rate": 0.5803392343245836,
+        "auroc_persistence_status": 0.897200094004336,
+        "auroc_persistence_margin": 0.9035747657184399,
+        "auprc_persistence_margin": 0.9519659972717675,
+        "auroc_climatology": 0.5083528352594974,
+        "auroc_logit_margin+clim+harm": 0.9180423442666663,
+        "auprc_logit_margin+clim+harm": 0.9566883333667872,
+        "dAUROC_logit_minus_persistMargin": 0.014467578548226445,
+        "dAUROC_ci95": [
+          0.013573849302165913,
+          0.015365905831470754
+        ],
+        "auroc_baseline_random": 0.5
+      },
+      "365": {
+        "n": 40644,
+        "n_events": 24038,
+        "base_rate": 0.591428009054227,
+        "auroc_persistence_status": 0.8943056853746874,
+        "auroc_persistence_margin": 0.8947557435882487,
+        "auprc_persistence_margin": 0.9499656242627275,
+        "auroc_climatology": 0.5094166486787345,
+        "auroc_logit_margin+clim+harm": 0.9100724908072155,
+        "auprc_logit_margin+clim+harm": 0.9546945277028596,
+        "dAUROC_logit_minus_persistMargin": 0.015316747218966809,
+        "dAUROC_ci95": [
+          0.014274896512923952,
+          0.016271062906932365
+        ],
+        "auroc_baseline_random": 0.5
+      }
+    }
+  },
+  "honest_wins_ci_excludes_zero": [
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 90,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.9424,
+      "ci95": [
+        0.9374,
+        0.9467
+      ],
+      "n": 6478
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 90,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.9423,
+      "ci95": [
+        0.9366,
+        0.9473
+      ],
+      "n": 6478
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 365,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.9397,
+      "ci95": [
+        0.9333,
+        0.9452
+      ],
+      "n": 4972
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 365,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.939,
+      "ci95": [
+        0.9332,
+        0.944
+      ],
+      "n": 4972
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 30,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.8994,
+      "ci95": [
+        0.8879,
+        0.9086
+      ],
+      "n": 6772
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 30,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.8962,
+      "ci95": [
+        0.883,
+        0.907
+      ],
+      "n": 6772
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 14,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.8516,
+      "ci95": [
+        0.8331,
+        0.8669
+      ],
+      "n": 6788
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 14,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.8383,
+      "ci95": [
+        0.8122,
+        0.8592
+      ],
+      "n": 6788
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 7,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.7864,
+      "ci95": [
+        0.7536,
+        0.8136
+      ],
+      "n": 6791
+    },
+    {
+      "reformulation": "A_change",
+      "target": "temperature",
+      "horizon_days": 90,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.7666,
+      "ci95": [
+        0.7635,
+        0.7695
+      ],
+      "n": 77163
+    },
+    {
+      "reformulation": "A_change",
+      "target": "ph",
+      "horizon_days": 7,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.748,
+      "ci95": [
+        0.6967,
+        0.7849
+      ],
+      "n": 6791
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 90,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.6549,
+      "ci95": [
+        0.6442,
+        0.6658
+      ],
+      "n": 21930
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 90,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.5929,
+      "ci95": [
+        0.5761,
+        0.608
+      ],
+      "n": 21930
+    },
+    {
+      "reformulation": "A_change",
+      "target": "temperature",
+      "horizon_days": 90,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.5746,
+      "ci95": [
+        0.5692,
+        0.5801
+      ],
+      "n": 77163
+    },
+    {
+      "reformulation": "A_change",
+      "target": "temperature",
+      "horizon_days": 30,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.4719,
+      "ci95": [
+        0.4667,
+        0.4769
+      ],
+      "n": 79668
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 30,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.4685,
+      "ci95": [
+        0.4505,
+        0.4844
+      ],
+      "n": 22722
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 365,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.4467,
+      "ci95": [
+        0.4169,
+        0.4737
+      ],
+      "n": 19220
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 14,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.3642,
+      "ci95": [
+        0.3439,
+        0.3832
+      ],
+      "n": 22636
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 7,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.2877,
+      "ci95": [
+        0.2667,
+        0.3104
+      ],
+      "n": 22627
+    },
+    {
+      "reformulation": "A_change",
+      "target": "temperature",
+      "horizon_days": 365,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.2823,
+      "ci95": [
+        0.2767,
+        0.2881
+      ],
+      "n": 68417
+    },
+    {
+      "reformulation": "A_change",
+      "target": "temperature",
+      "horizon_days": 14,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.2639,
+      "ci95": [
+        0.2594,
+        0.2683
+      ],
+      "n": 79459
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "temp_gt25C",
+      "horizon_days": 90,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.1892,
+      "ci95": [
+        0.1855,
+        0.1931
+      ],
+      "auroc_model": 0.9308,
+      "auroc_persist_margin": 0.7415,
+      "n": 77163,
+      "n_events": 9311
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 30,
+      "model": "climatology-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.1817,
+      "ci95": [
+        0.1412,
+        0.2192
+      ],
+      "n": 22722
+    },
+    {
+      "reformulation": "A_change",
+      "target": "temperature",
+      "horizon_days": 7,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.1561,
+      "ci95": [
+        0.1517,
+        0.1599
+      ],
+      "n": 79461
+    },
+    {
+      "reformulation": "A_change",
+      "target": "dissolved_oxygen",
+      "horizon_days": 1,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.1058,
+      "ci95": [
+        0.0836,
+        0.1237
+      ],
+      "n": 22667
+    },
+    {
+      "reformulation": "A_change",
+      "target": "temperature",
+      "horizon_days": 1,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.0436,
+      "ci95": [
+        0.0404,
+        0.0463
+      ],
+      "n": 79593
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "temp_gt25C",
+      "horizon_days": 30,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0268,
+      "ci95": [
+        0.0256,
+        0.0281
+      ],
+      "auroc_model": 0.9455,
+      "auroc_persist_margin": 0.9187,
+      "n": 79668,
+      "n_events": 9465
+    },
+    {
+      "reformulation": "A_change",
+      "target": "turbidity",
+      "horizon_days": 90,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.0205,
+      "ci95": [
+        0.0148,
+        0.0258
+      ],
+      "n": 45868
+    },
+    {
+      "reformulation": "A_change",
+      "target": "turbidity",
+      "horizon_days": 365,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.0204,
+      "ci95": [
+        0.015,
+        0.0253
+      ],
+      "n": 40644
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "turb_gt100",
+      "horizon_days": 365,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0153,
+      "ci95": [
+        0.0143,
+        0.0163
+      ],
+      "auroc_model": 0.9101,
+      "auroc_persist_margin": 0.8948,
+      "n": 40644,
+      "n_events": 24038
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "turb_gt100",
+      "horizon_days": 90,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0145,
+      "ci95": [
+        0.0136,
+        0.0154
+      ],
+      "auroc_model": 0.918,
+      "auroc_persist_margin": 0.9036,
+      "n": 45868,
+      "n_events": 26619
+    },
+    {
+      "reformulation": "A_change",
+      "target": "turbidity",
+      "horizon_days": 30,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.0118,
+      "ci95": [
+        0.0077,
+        0.0157
+      ],
+      "n": 47494
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "turb_gt100",
+      "horizon_days": 30,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.01,
+      "ci95": [
+        0.0093,
+        0.0107
+      ],
+      "auroc_model": 0.9376,
+      "auroc_persist_margin": 0.9276,
+      "n": 47494,
+      "n_events": 27384
+    },
+    {
+      "reformulation": "A_change",
+      "target": "turbidity",
+      "horizon_days": 14,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.0092,
+      "ci95": [
+        0.006,
+        0.0122
+      ],
+      "n": 47302
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "turb_gt100",
+      "horizon_days": 14,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0079,
+      "ci95": [
+        0.0072,
+        0.0085
+      ],
+      "auroc_model": 0.9496,
+      "auroc_persist_margin": 0.9417,
+      "n": 47302,
+      "n_events": 27310
+    },
+    {
+      "reformulation": "A_change",
+      "target": "turbidity",
+      "horizon_days": 7,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.0073,
+      "ci95": [
+        0.0045,
+        0.0097
+      ],
+      "n": 47295
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "turb_gt100",
+      "horizon_days": 7,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0061,
+      "ci95": [
+        0.0056,
+        0.0067
+      ],
+      "auroc_model": 0.9597,
+      "auroc_persist_margin": 0.9536,
+      "n": 47295,
+      "n_events": 27301
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "temp_gt25C",
+      "horizon_days": 14,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0059,
+      "ci95": [
+        0.0053,
+        0.0065
+      ],
+      "auroc_model": 0.9549,
+      "auroc_persist_margin": 0.949,
+      "n": 79459,
+      "n_events": 9566
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "temp_gt25C",
+      "horizon_days": 365,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0048,
+      "ci95": [
+        0.0041,
+        0.0056
+      ],
+      "auroc_model": 0.9221,
+      "auroc_persist_margin": 0.9172,
+      "n": 68417,
+      "n_events": 8247
+    },
+    {
+      "reformulation": "A_change",
+      "target": "turbidity",
+      "horizon_days": 1,
+      "model": "ridge-delta",
+      "metric": "skill_vs_persistence_delta0",
+      "point": 0.003,
+      "ci95": [
+        0.0017,
+        0.0041
+      ],
+      "n": 47395
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "turb_gt100",
+      "horizon_days": 1,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.002,
+      "ci95": [
+        0.0017,
+        0.0024
+      ],
+      "auroc_model": 0.9852,
+      "auroc_persist_margin": 0.9832,
+      "n": 47395,
+      "n_events": 27337
+    },
+    {
+      "reformulation": "B_exceedance",
+      "target": "temp_gt25C",
+      "horizon_days": 7,
+      "model": "logit[margin,clim,harmonics]",
+      "metric": "dAUROC_vs_persistence_margin",
+      "point": 0.0013,
+      "ci95": [
+        0.0009,
+        0.0017
+      ],
+      "auroc_model": 0.9648,
+      "auroc_persist_margin": 0.9635,
+      "n": 79461,
+      "n_events": 9575
+    }
+  ],
+  "verdict": {
+    "absolute_state": "Persistence unbeatable (R2 0.923 vs deployed twin 0.069). No absolute-state win exists; short-horizon dynamics are pure autocorrelation.",
+    "change_target": "A leak-free seasonal model beats persistence (delta=0) for CHANGE at seasonal horizons on real test sites (see honest_wins). The learned ridge-delta and the climatology-delta both exceed persistence with 95% CIs excluding 0 for pH (h>=7), DO and temperature (h>=30-90).",
+    "exceedance_target": "For threshold-crossing events, persistence-margin is a very strong baseline; a leak-free logistic combiner adds a small but CI-significant AUROC gain for temperature>25C at long horizon, where persistence decays and seasonality dominates.",
+    "honest_ceiling": "At 1-14d NOTHING beats persistence for any continuous target. The deployed neural twin adds negative value everywhere. The genuine, defensible value is a SEASONAL reformulation (change / exceedance at >=30d) captured by a simple leak-free model, not the neural ODE."
+  }
+}

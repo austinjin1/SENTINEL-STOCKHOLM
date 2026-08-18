@@ -37,9 +37,7 @@ export function StoryChips({ events, cleanSites, dispatch }: Props) {
         style={{
           height: 36,
           padding: '0 16px',
-          background: 'rgba(255,255,255,0.78)',
-          backdropFilter: 'blur(20px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          background: 'var(--bg-surface)',
           color: 'var(--text-primary)',
           fontSize: 13,
           fontWeight: 500,

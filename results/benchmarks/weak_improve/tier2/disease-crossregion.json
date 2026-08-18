@@ -1,0 +1,338 @@
+{
+  "task": "disease_beach_nowcast_ecoli_CROSS_REGION_improve_tier2",
+  "target": "E. coli exceedance of EPA BAV (235 CFU/100mL)",
+  "regions": {
+    "OH": {
+      "n": 23982,
+      "n_sites": 90,
+      "n_pos": 4831,
+      "base_rate": 0.2014
+    },
+    "MI": {
+      "n": 21919,
+      "n_sites": 274,
+      "n_pos": 1589,
+      "base_rate": 0.0725
+    },
+    "WI": {
+      "n": 49166,
+      "n_sites": 443,
+      "n_pos": 6855,
+      "base_rate": 0.1394
+    }
+  },
+  "holdout": "leave-one-region-out (LORO); region is the grouping unit; no lat/lon/same-day/label features",
+  "ci_method": "cluster (region+site) bootstrap on the DELTA of mean-per-region AUROC vs BASE, 2000 reps",
+  "predictor_policy": "strictly antecedent & deployable; region-invariant; no geographic coordinates",
+  "methods": {
+    "BASE": {
+      "loro": {
+        "OH": {
+          "auroc": 0.53,
+          "auroc_ci95": [
+            0.5207,
+            0.5395
+          ],
+          "pr_auc": 0.2427,
+          "n": 23982,
+          "base_rate": 0.2014
+        },
+        "MI": {
+          "auroc": 0.5673,
+          "auroc_ci95": [
+            0.5496,
+            0.584
+          ],
+          "pr_auc": 0.1022,
+          "n": 21919,
+          "base_rate": 0.0725
+        },
+        "WI": {
+          "auroc": 0.5395,
+          "auroc_ci95": [
+            0.531,
+            0.5475
+          ],
+          "pr_auc": 0.1873,
+          "n": 49166,
+          "base_rate": 0.1394
+        },
+        "_mean_auroc": 0.5456
+      },
+      "delta_vs_base": null
+    },
+    "FEAT": {
+      "loro": {
+        "OH": {
+          "auroc": 0.5417,
+          "auroc_ci95": [
+            0.5319,
+            0.5513
+          ],
+          "pr_auc": 0.2441,
+          "n": 23982,
+          "base_rate": 0.2014
+        },
+        "MI": {
+          "auroc": 0.5591,
+          "auroc_ci95": [
+            0.5442,
+            0.5747
+          ],
+          "pr_auc": 0.1,
+          "n": 21919,
+          "base_rate": 0.0725
+        },
+        "WI": {
+          "auroc": 0.5401,
+          "auroc_ci95": [
+            0.5322,
+            0.5481
+          ],
+          "pr_auc": 0.1814,
+          "n": 49166,
+          "base_rate": 0.1394
+        },
+        "_mean_auroc": 0.547
+      },
+      "delta_vs_base": {
+        "delta_mean": 0.0014,
+        "delta_ci95": [
+          -0.0019,
+          0.0046
+        ],
+        "excludes_zero": false,
+        "a_mean_auroc_boot": 0.5457,
+        "b_mean_auroc_boot": 0.5471,
+        "n_boot": 2000
+      }
+    },
+    "FEAT+ST": {
+      "loro": {
+        "OH": {
+          "auroc": 0.5488,
+          "auroc_ci95": [
+            0.5397,
+            0.5583
+          ],
+          "pr_auc": 0.2644,
+          "n": 23982,
+          "base_rate": 0.2014
+        },
+        "MI": {
+          "auroc": 0.6139,
+          "auroc_ci95": [
+            0.5978,
+            0.6307
+          ],
+          "pr_auc": 0.146,
+          "n": 21919,
+          "base_rate": 0.0725
+        },
+        "WI": {
+          "auroc": 0.6646,
+          "auroc_ci95": [
+            0.6571,
+            0.6717
+          ],
+          "pr_auc": 0.2673,
+          "n": 49166,
+          "base_rate": 0.1394
+        },
+        "_mean_auroc": 0.6091
+      },
+      "delta_vs_base": {
+        "delta_mean": 0.0635,
+        "delta_ci95": [
+          0.0491,
+          0.0778
+        ],
+        "excludes_zero": true,
+        "a_mean_auroc_boot": 0.5456,
+        "b_mean_auroc_boot": 0.609,
+        "n_boot": 2000
+      }
+    },
+    "RANK": {
+      "loro": {
+        "OH": {
+          "auroc": 0.551,
+          "auroc_ci95": [
+            0.5419,
+            0.5601
+          ],
+          "pr_auc": 0.2345,
+          "n": 23982,
+          "base_rate": 0.2014
+        },
+        "MI": {
+          "auroc": 0.5602,
+          "auroc_ci95": [
+            0.5452,
+            0.5751
+          ],
+          "pr_auc": 0.0979,
+          "n": 21919,
+          "base_rate": 0.0725
+        },
+        "WI": {
+          "auroc": 0.5999,
+          "auroc_ci95": [
+            0.5925,
+            0.6072
+          ],
+          "pr_auc": 0.2052,
+          "n": 49166,
+          "base_rate": 0.1394
+        },
+        "_mean_auroc": 0.5704
+      },
+      "delta_vs_base": {
+        "delta_mean": 0.0244,
+        "delta_ci95": [
+          0.0119,
+          0.0364
+        ],
+        "excludes_zero": true,
+        "a_mean_auroc_boot": 0.5456,
+        "b_mean_auroc_boot": 0.57,
+        "n_boot": 2000
+      }
+    },
+    "RANK+ST": {
+      "loro": {
+        "OH": {
+          "auroc": 0.5573,
+          "auroc_ci95": [
+            0.5482,
+            0.5667
+          ],
+          "pr_auc": 0.2661,
+          "n": 23982,
+          "base_rate": 0.2014
+        },
+        "MI": {
+          "auroc": 0.6257,
+          "auroc_ci95": [
+            0.6102,
+            0.642
+          ],
+          "pr_auc": 0.1468,
+          "n": 21919,
+          "base_rate": 0.0725
+        },
+        "WI": {
+          "auroc": 0.6827,
+          "auroc_ci95": [
+            0.6754,
+            0.6903
+          ],
+          "pr_auc": 0.2969,
+          "n": 49166,
+          "base_rate": 0.1394
+        },
+        "_mean_auroc": 0.6219
+      },
+      "delta_vs_base": {
+        "delta_mean": 0.0761,
+        "delta_ci95": [
+          0.0604,
+          0.092
+        ],
+        "excludes_zero": true,
+        "a_mean_auroc_boot": 0.5455,
+        "b_mean_auroc_boot": 0.6217,
+        "n_boot": 2000
+      }
+    }
+  },
+  "within_region_ceiling": {
+    "OH": {
+      "auroc": 0.6802,
+      "auroc_ci95": [
+        0.6719,
+        0.6897
+      ],
+      "pr_auc": 0.3846,
+      "n": 23982,
+      "base_rate": 0.2014
+    },
+    "MI": {
+      "auroc": 0.686,
+      "auroc_ci95": [
+        0.6711,
+        0.6997
+      ],
+      "pr_auc": 0.2331,
+      "n": 21919,
+      "base_rate": 0.0725
+    },
+    "WI": {
+      "auroc": 0.7527,
+      "auroc_ci95": [
+        0.7462,
+        0.7592
+      ],
+      "pr_auc": 0.4109,
+      "n": 49166,
+      "base_rate": 0.1394
+    },
+    "_mean_auroc": 0.7063
+  },
+  "persistence_baseline": {
+    "OH": {
+      "auroc": 0.5914,
+      "auroc_ci95": [
+        0.5843,
+        0.5986
+      ],
+      "pr_auc": 0.252,
+      "n": 23892,
+      "base_rate": 0.2014
+    },
+    "MI": {
+      "auroc": 0.6002,
+      "auroc_ci95": [
+        0.5901,
+        0.612
+      ],
+      "pr_auc": 0.1204,
+      "n": 21645,
+      "base_rate": 0.0724
+    },
+    "WI": {
+      "auroc": 0.6777,
+      "auroc_ci95": [
+        0.6714,
+        0.6838
+      ],
+      "pr_auc": 0.2758,
+      "n": 48723,
+      "base_rate": 0.1395
+    },
+    "_mean_auroc": 0.6231
+  },
+  "verdict": {
+    "primary_holdout": "leave-one-region-out (region = group), mean of per-region AUROC",
+    "old_baseline_method": "BASE (STRICT prior-rainfall + season)",
+    "old_loro_mean_auroc": 0.5456,
+    "best_new_method": "RANK+ST",
+    "new_loro_mean_auroc": 0.6219,
+    "delta_vs_base": {
+      "delta_mean": 0.0761,
+      "delta_ci95": [
+        0.0604,
+        0.092
+      ],
+      "excludes_zero": true,
+      "a_mean_auroc_boot": 0.5455,
+      "b_mean_auroc_boot": 0.6217,
+      "n_boot": 2000
+    },
+    "improved": true,
+    "within_region_ceiling_mean_auroc": 0.7063,
+    "persistence_mean_auroc": 0.6231,
+    "interpretation": "IMPROVED cross-region: the delta CI excludes 0 on region-grouped LORO."
+  },
+  "eval_seconds": 235.6
+}

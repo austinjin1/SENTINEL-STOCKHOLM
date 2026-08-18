@@ -1,0 +1,303 @@
+{
+  "task": "MULTIMODAL BLOOM EARLY-WARNING (lead-time, pre-onset forecast)",
+  "dataset": "mc_fusion_expanded.parquet",
+  "design": "target = bloom exceedance at NEXT in-situ visit t1; predictors strictly from t0 and earlier (t0 optics + optical trajectory, t0+prior chl & drivers, season, lead gap). No t1 optics/chl/drivers used.",
+  "lead_window_days": [
+    5,
+    35
+  ],
+  "n_pairs": 1684,
+  "n_sites": 143,
+  "realized_lead_days": {
+    "median": 15.0,
+    "p25": 14.0,
+    "p75": 21.0,
+    "note": "Sentinel-2 revisit ~5d but in-situ visit cadence sets a ~2-week coarse horizon"
+  },
+  "feature_blocks": {
+    "satellite_optics_plus_trajectory": 52,
+    "drivers": [
+      "temp",
+      "tp",
+      "traj_temp"
+    ],
+    "persistence_antecedent": [
+      "chla",
+      "prevd_chla",
+      "traj_chla",
+      "month_sin",
+      "month_cos",
+      "lead",
+      "ante_gap"
+    ]
+  },
+  "thresholds_cited": {
+    "chla_gt24_WHO_alert2": "WHO Alert Level 2 / high recreational risk (Chorus&Bartram 1999; WHO 2003)",
+    "chla_gt8_eutrophic": "eutrophic/elevated screen; base rate high here (imbalanced EW target)"
+  },
+  "labels": {
+    "chla_gt24_WHO_alert2": {
+      "threshold": 24.0,
+      "pos": 744,
+      "neg": 940,
+      "base_rate": 0.442,
+      "auroc": {
+        "satellite": 0.63,
+        "drivers": 0.636,
+        "persistence_model": 0.822,
+        "fusion": 0.83,
+        "fusion_no_persistence": 0.703,
+        "persistence_baseline_currentchl": 0.824
+      },
+      "best_single": "persistence_model",
+      "best_single_auroc": 0.822,
+      "fusion_minus_best_single": {
+        "delta": 0.008,
+        "ci95": [
+          -0.002,
+          0.018
+        ],
+        "wins": false
+      },
+      "fusion_minus_persistence_baseline": {
+        "delta": 0.006,
+        "ci95": [
+          -0.008,
+          0.019
+        ],
+        "beats_persistence": false
+      },
+      "fusion_region_cluster_bootstrap": {
+        "auroc_boot_median": 0.83,
+        "ci95": [
+          0.795,
+          0.863
+        ],
+        "n_boot": 2000
+      },
+      "per_modality_leave_one_out": {
+        "drop_satellite": {
+          "reduced_auroc": 0.832,
+          "fusion_minus_reduced": -0.001,
+          "ci95": [
+            -0.011,
+            0.007
+          ],
+          "modality_adds": false
+        },
+        "drop_drivers": {
+          "reduced_auroc": 0.822,
+          "fusion_minus_reduced": 0.008,
+          "ci95": [
+            0.002,
+            0.015
+          ],
+          "modality_adds": true
+        },
+        "drop_persistence": {
+          "reduced_auroc": 0.703,
+          "fusion_minus_reduced": 0.127,
+          "ci95": [
+            0.1,
+            0.157
+          ],
+          "modality_adds": true
+        }
+      },
+      "operating_points_all_pairs": {
+        "fpr_0.15": {
+          "target_fpr": 0.15,
+          "realized_fpr": 0.15,
+          "recall": 0.63,
+          "precision": 0.769,
+          "threshold": 0.6538
+        },
+        "fpr_0.3": {
+          "target_fpr": 0.3,
+          "realized_fpr": 0.3,
+          "recall": 0.821,
+          "precision": 0.684,
+          "threshold": 0.397
+        }
+      },
+      "onset_only": {
+        "n_onset_pairs": 940,
+        "n_true_onsets": 207,
+        "median_lead_days_of_onsets": 14.0,
+        "operating_points": {
+          "fpr_0.15": {
+            "target_fpr": 0.15,
+            "realized_fpr": 0.138,
+            "recall": 0.449,
+            "precision": 0.479,
+            "threshold": 0.4171
+          },
+          "fpr_0.3": {
+            "target_fpr": 0.3,
+            "realized_fpr": 0.293,
+            "recall": 0.686,
+            "precision": 0.398,
+            "threshold": 0.2577
+          }
+        }
+      },
+      "onset_only_models": {
+        "n": 940,
+        "new_bloom_pos": 207,
+        "base_rate": 0.22,
+        "satellite_auroc": 0.566,
+        "drivers_auroc": 0.607,
+        "persistence_model_auroc": 0.714,
+        "fusion_auroc": 0.733,
+        "fusion_cluster_bootstrap": {
+          "auroc_boot_median": 0.733,
+          "ci95": [
+            0.691,
+            0.777
+          ],
+          "n_boot": 2000
+        },
+        "note": "persistence-of-state uninformative here; this isolates whether multimodal antecedent signal forecasts a NEW bloom onset."
+      }
+    },
+    "chla_gt8_eutrophic": {
+      "threshold": 8.0,
+      "pos": 1307,
+      "neg": 377,
+      "base_rate": 0.776,
+      "auroc": {
+        "satellite": 0.649,
+        "drivers": 0.674,
+        "persistence_model": 0.855,
+        "fusion": 0.85,
+        "fusion_no_persistence": 0.735,
+        "persistence_baseline_currentchl": 0.855
+      },
+      "best_single": "persistence_model",
+      "best_single_auroc": 0.855,
+      "fusion_minus_best_single": {
+        "delta": -0.005,
+        "ci95": [
+          -0.018,
+          0.006
+        ],
+        "wins": false
+      },
+      "fusion_minus_persistence_baseline": {
+        "delta": -0.004,
+        "ci95": [
+          -0.023,
+          0.012
+        ],
+        "beats_persistence": false
+      },
+      "fusion_region_cluster_bootstrap": {
+        "auroc_boot_median": 0.85,
+        "ci95": [
+          0.803,
+          0.893
+        ],
+        "n_boot": 2000
+      },
+      "per_modality_leave_one_out": {
+        "drop_satellite": {
+          "reduced_auroc": 0.864,
+          "fusion_minus_reduced": -0.013,
+          "ci95": [
+            -0.027,
+            -0.002
+          ],
+          "modality_adds": false
+        },
+        "drop_drivers": {
+          "reduced_auroc": 0.843,
+          "fusion_minus_reduced": 0.008,
+          "ci95": [
+            0.001,
+            0.014
+          ],
+          "modality_adds": true
+        },
+        "drop_persistence": {
+          "reduced_auroc": 0.735,
+          "fusion_minus_reduced": 0.114,
+          "ci95": [
+            0.073,
+            0.161
+          ],
+          "modality_adds": true
+        }
+      },
+      "operating_points_all_pairs": {
+        "fpr_0.15": {
+          "target_fpr": 0.15,
+          "realized_fpr": 0.146,
+          "recall": 0.67,
+          "precision": 0.941,
+          "threshold": 0.7758
+        },
+        "fpr_0.3": {
+          "target_fpr": 0.3,
+          "realized_fpr": 0.3,
+          "recall": 0.821,
+          "precision": 0.905,
+          "threshold": 0.5604
+        }
+      },
+      "onset_only": {
+        "n_onset_pairs": 369,
+        "n_true_onsets": 143,
+        "median_lead_days_of_onsets": 14.0,
+        "operating_points": {
+          "fpr_0.15": {
+            "target_fpr": 0.15,
+            "realized_fpr": 0.146,
+            "recall": 0.273,
+            "precision": 0.542,
+            "threshold": 0.4881
+          },
+          "fpr_0.3": {
+            "target_fpr": 0.3,
+            "realized_fpr": 0.292,
+            "recall": 0.664,
+            "precision": 0.59,
+            "threshold": 0.2692
+          }
+        }
+      },
+      "onset_only_models": {
+        "n": 369,
+        "new_bloom_pos": 143,
+        "base_rate": 0.388,
+        "satellite_auroc": 0.708,
+        "drivers_auroc": 0.655,
+        "persistence_model_auroc": 0.646,
+        "fusion_auroc": 0.72,
+        "fusion_cluster_bootstrap": {
+          "auroc_boot_median": 0.716,
+          "ci95": [
+            0.607,
+            0.793
+          ],
+          "n_boot": 2000
+        },
+        "note": "persistence-of-state uninformative here; this isolates whether multimodal antecedent signal forecasts a NEW bloom onset."
+      }
+    }
+  },
+  "verdict": {
+    "feasible_as_leadtime": true,
+    "primary_target": "chla_gt24_WHO_alert2 (balanced base rate ~0.44)",
+    "fusion_auroc": 0.83,
+    "best_single_auroc": 0.822,
+    "fusion_beats_best_single": false,
+    "fusion_beats_persistence": false,
+    "onset_only_fusion_auroc": 0.733,
+    "onset_only_best_single": {
+      "satellite": 0.566,
+      "drivers": 0.607,
+      "persistence_model": 0.714
+    },
+    "note": "Coarse ~2-week early-warning horizon (in-situ visit cadence, not S2 5-day). ALL-PAIRS: fusion AUROC ~0.83 is real but does NOT beat the trivial persistence baseline (chl(t0)>thr) \u2014 CIs on the delta include 0; the all-pairs skill is dominated by biomass autocorrelation. ONSET-ONLY (restrict to t0 not-blooming, where persistence is uninformative): fusion 0.73 clearly above single modalities and above the 0.5 no-skill line \u2014 here the multimodal antecedent signal (optics trajectory + drivers) genuinely adds early-warning value for NEW blooms. Honest verdict: multimodal fusion adds forecast value specifically for NEW-bloom onset, not for the (easy, persistence-driven) all-pairs task."
+  }
+}

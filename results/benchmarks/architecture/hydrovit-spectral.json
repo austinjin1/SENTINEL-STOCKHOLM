@@ -1,0 +1,66 @@
+{
+  "_PROVENANCE": {
+    "purpose": "Does a LEARNABLE differentiable spectral-index stem let the neural HydroViT learn the red-edge/band-ratio features the GBM uses, end-to-end, and match/beat the GBM on a grouped (station) holdout?",
+    "architecture": "LearnableSpectralIndexStem (softplus-mixed generalized normalized-difference indices, half literature-init half free) + small CNN + spatial-stats pool + MLP; LOG targets.",
+    "chla_data": "REAL Sentinel-2 L2A 6-band mc_tiles x REAL WQP in-situ chl-a.",
+    "temp_data": "REAL drone_wq_pairs.npz (4-band S2 x USGS in-situ Temp).",
+    "real_data_only": true,
+    "augmentation_to_target": false,
+    "label_leakage": false,
+    "split": "STATION (site) GroupKFold OOF; inner grouped val early-stop.",
+    "ci": "site-clustered bootstrap (resamples sites, not rows), 2000 reps; paired delta-CI vs GBM. WIN requires delta CI to exclude 0.",
+    "baselines": {
+      "gbm_chla_log10_r2": 0.338,
+      "shipped_vit_chla_r2": 0.34,
+      "shipped_vit_temp_r2": 0.729
+    },
+    "device": "cuda:0"
+  },
+  "targets": {
+    "chla_log10_R2": {
+      "target": "log10 chlorophyll-a (ug/L), REAL WQP CHLA, 0<x<5000",
+      "n": 2256,
+      "n_sites": 169,
+      "split": "STATION (site) GroupKFold OOF, inner grouped val early-stop",
+      "gbm_r2": 0.3383,
+      "gbm_r2_ci95": [
+        0.2306,
+        0.4138
+      ],
+      "spectral_stem_r2": 0.1397,
+      "spectral_stem_r2_ci95": [
+        0.0086,
+        0.2352
+      ],
+      "delta_net_minus_gbm": {
+        "mean": -0.2004,
+        "ci95": [
+          -0.256,
+          -0.1534
+        ],
+        "prob_improvement": 0.0
+      },
+      "shipped_vit_r2_reference": 0.34,
+      "beats_gbm": false,
+      "beats_shipped_vit_pointwise": false
+    },
+    "water_temp_R2": {
+      "target": "water Temp (deg C), REAL USGS/NWIS in-situ",
+      "n": 5000,
+      "n_sites": 369,
+      "note": "4-band drone_wq_pairs downsampled 224->64 for matched small CNN; shipped ViT used full 224 ViT-S/16 on this dataset.",
+      "split": "STATION (site) GroupKFold OOF, inner grouped val early-stop",
+      "spectral_stem_r2": 0.6365,
+      "spectral_stem_r2_ci95": [
+        0.5841,
+        0.6776
+      ],
+      "shipped_vit_r2_reference": 0.729,
+      "beats_shipped_vit_pointwise": false
+    }
+  },
+  "verdict": {
+    "chla_vs_gbm": "GBM STILL WINS (net worse, delta 95% CI below 0)"
+  },
+  "elapsed_seconds": 361.0
+}

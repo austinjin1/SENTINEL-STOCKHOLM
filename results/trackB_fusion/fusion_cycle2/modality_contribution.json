@@ -1,0 +1,313 @@
+{
+  "n": 3649,
+  "n_sites": 227,
+  "modalities": {
+    "satellite": {
+      "features": [
+        "sf0",
+        "sf1",
+        "sf2",
+        "sf3",
+        "sf4",
+        "sf5",
+        "sf6",
+        "sf7",
+        "sf8",
+        "sf9",
+        "sf10",
+        "sf11",
+        "sf12",
+        "sf13",
+        "sf14",
+        "sf15",
+        "sf16",
+        "sf17",
+        "sf18",
+        "sf19",
+        "sf20",
+        "sf21",
+        "sf22",
+        "sf23",
+        "sf24",
+        "sf25"
+      ],
+      "k": 26
+    },
+    "pigment": {
+      "features": [
+        "CHLA",
+        "PC"
+      ],
+      "k": 2
+    },
+    "drivers": {
+      "features": [
+        "drv_temp",
+        "drv_phosphorus",
+        "drv_nitrogen"
+      ],
+      "k": 3
+    }
+  },
+  "driver_coverage": {
+    "temp": 0.801,
+    "phosphorus": 0.542,
+    "nitrogen": 0.056
+  },
+  "protocol": {
+    "split": "GroupKFold by site",
+    "n_splits": 5,
+    "bootstrap": "site-clustered (resample sites w/ replacement)",
+    "B": 2000,
+    "label": "real microcystin lab threshold (non-circular)"
+  },
+  "method": "single AUROC, leave-one-modality-out (LOMO) delta, and exact Shapley add-last marginal over all 3! coalition orders; site-clustered 95% CIs on all deltas.",
+  "labels": {
+    "mc_gt1.6": {
+      "pos": 633,
+      "prevalence": 0.1735,
+      "single_auroc": {
+        "satellite": 0.6496,
+        "pigment": 0.6836,
+        "drivers": 0.6262
+      },
+      "full_3way_auroc": 0.8226,
+      "single_auroc_ci": {
+        "satellite": {
+          "median": 0.6512,
+          "ci95": [
+            0.5811,
+            0.712
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000
+        },
+        "pigment": {
+          "median": 0.684,
+          "ci95": [
+            0.6241,
+            0.7369
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000
+        },
+        "drivers": {
+          "median": 0.6268,
+          "ci95": [
+            0.5678,
+            0.6807
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000
+        }
+      },
+      "lomo_delta": {
+        "satellite": {
+          "median": 0.0734,
+          "ci95": [
+            0.0439,
+            0.1077
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.0741,
+          "auroc_without": 0.7485
+        },
+        "pigment": {
+          "median": 0.0951,
+          "ci95": [
+            0.0619,
+            0.1331
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.0957,
+          "auroc_without": 0.7269
+        },
+        "drivers": {
+          "median": 0.0455,
+          "ci95": [
+            0.0279,
+            0.0677
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.0462,
+          "auroc_without": 0.7764
+        }
+      },
+      "shapley": {
+        "satellite": {
+          "median": 0.1074,
+          "ci95": [
+            0.0676,
+            0.1439
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.1068
+        },
+        "pigment": {
+          "median": 0.1337,
+          "ci95": [
+            0.1022,
+            0.1687
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.1346
+        },
+        "drivers": {
+          "median": 0.0813,
+          "ci95": [
+            0.0595,
+            0.1045
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.0812
+        }
+      },
+      "verdict": {
+        "satellite": {
+          "shapley_ci_excludes_0": true,
+          "lomo_ci_excludes_0": true,
+          "genuine_contributor": true
+        },
+        "pigment": {
+          "shapley_ci_excludes_0": true,
+          "lomo_ci_excludes_0": true,
+          "genuine_contributor": true
+        },
+        "drivers": {
+          "shapley_ci_excludes_0": true,
+          "lomo_ci_excludes_0": true,
+          "genuine_contributor": true
+        }
+      }
+    },
+    "mc_gt0.3": {
+      "pos": 1286,
+      "prevalence": 0.3524,
+      "single_auroc": {
+        "satellite": 0.6639,
+        "pigment": 0.7177,
+        "drivers": 0.5687
+      },
+      "full_3way_auroc": 0.7998,
+      "single_auroc_ci": {
+        "satellite": {
+          "median": 0.6648,
+          "ci95": [
+            0.6164,
+            0.7074
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000
+        },
+        "pigment": {
+          "median": 0.7183,
+          "ci95": [
+            0.6686,
+            0.761
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000
+        },
+        "drivers": {
+          "median": 0.5685,
+          "ci95": [
+            0.515,
+            0.6174
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000
+        }
+      },
+      "lomo_delta": {
+        "satellite": {
+          "median": 0.0633,
+          "ci95": [
+            0.0365,
+            0.094
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.0634,
+          "auroc_without": 0.7364
+        },
+        "pigment": {
+          "median": 0.1006,
+          "ci95": [
+            0.0679,
+            0.1409
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.1016,
+          "auroc_without": 0.6982
+        },
+        "drivers": {
+          "median": 0.0134,
+          "ci95": [
+            0.0052,
+            0.0229
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.0138,
+          "auroc_without": 0.786
+        }
+      },
+      "shapley": {
+        "satellite": {
+          "median": 0.1092,
+          "ci95": [
+            0.0787,
+            0.1377
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.1087
+        },
+        "pigment": {
+          "median": 0.1546,
+          "ci95": [
+            0.1223,
+            0.1899
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.1547
+        },
+        "drivers": {
+          "median": 0.0366,
+          "ci95": [
+            0.0148,
+            0.0563
+          ],
+          "P_gt0": 1.0,
+          "n_boot": 2000,
+          "point": 0.0363
+        }
+      },
+      "verdict": {
+        "satellite": {
+          "shapley_ci_excludes_0": true,
+          "lomo_ci_excludes_0": true,
+          "genuine_contributor": true
+        },
+        "pigment": {
+          "shapley_ci_excludes_0": true,
+          "lomo_ci_excludes_0": true,
+          "genuine_contributor": true
+        },
+        "drivers": {
+          "shapley_ci_excludes_0": true,
+          "lomo_ci_excludes_0": true,
+          "genuine_contributor": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,978 @@
+{
+  "title": "BioMotion out-of-distribution transfer battery",
+  "data_source": "REAL EPA ECOTOX (ecotox_ascii_03_12_2026), no synthetic.",
+  "label_definition": "BioMotion v2: is_anomaly = (max endpoint-derived effect_pct > 20) OR (endpoint in {LOEC,LOEL,EC50,EC75,EC90,EC100,LC50,LC90,LC100}). Label from `endpoint` only.",
+  "guardrail": "endpoint / effect_pct / significance_code are NEVER features. Features = concentration summary, exposure/obs duration, measurement-channel & effect-group one-hots, species id.",
+  "baselines": {
+    "diffusion_random_split_auroc": 0.8067,
+    "gbm_random_split_auroc": 0.8717,
+    "gbm_random_CAS_grouped_auroc": 0.8528,
+    "note": "The 0.85 baseline holds out RANDOM chemicals. The tests below hold out whole chemical CLASSES and whole TAXA."
+  },
+  "dataset": {
+    "n_tests_total": 59466,
+    "overall_anomaly_rate": 0.665018666128544,
+    "n_features_full": 40,
+    "n_features_biology_only": 29,
+    "design_only_features": [
+      "exposure_hours_log",
+      "exposure_missing",
+      "logconc_max",
+      "logconc_mean",
+      "logconc_median",
+      "logconc_min",
+      "logconc_range",
+      "logconc_std",
+      "n_levels",
+      "n_rows",
+      "obs_duration_log"
+    ],
+    "genus_test_counts": {
+      "Daphnia": 23152,
+      "Aedes": 5288,
+      "Culex": 4840,
+      "Ceriodaphnia": 4517,
+      "Chironomus": 4364,
+      "Gammarus": 3270,
+      "Caenorhabditis": 2745,
+      "Hyalella": 2383,
+      "Americamysis": 1951,
+      "Artemia": 1749,
+      "Lymnaea": 1431,
+      "Tubifex": 1113,
+      "Moina": 604,
+      "Lumbriculus": 485,
+      "Physa": 426,
+      "Simocephalus": 381,
+      "Pseudosida": 124,
+      "Chydorus": 90,
+      "Bosmina": 70,
+      "Scapholeberis": 53,
+      "Alona": 44,
+      "Moinodaphnia": 43,
+      "Diaphanosoma": 33,
+      "Alonella": 20,
+      "Sida": 16,
+      "Acroperus": 16,
+      "Leptodora": 14,
+      "Pleuroxus": 8,
+      "Macrothrix": 5,
+      "Peracantha": 4,
+      "Eurycercus": 4,
+      "Disparalona": 4,
+      "Holopedium": 3,
+      "Polyphemus": 2,
+      "Podon": 2,
+      "Camptocercus": 2,
+      "Acantholeberis": 2,
+      "Ilyocryptus": 2,
+      "Leydigia": 1,
+      "Latonopsis": 1,
+      "Bythotrephes": 1,
+      "Dadaya": 1,
+      "Graptoleberis": 1
+    },
+    "chemical_class_test_counts": {
+      "Metals": 14454,
+      "Endocrine Disrupting Chemicals (EDCs)": 11697,
+      "Pharmaceutical Personal Care Products (PPCPs)": 1264,
+      "Polyaromatic Hydrocarbons (PAHs)": 956,
+      "Per- and Polyfluoroalkyl Substances (PFAS)": 751,
+      "DDT and metabolites": 573,
+      "Organotin": 572,
+      "Phthalate Esters": 347,
+      "Polychlorinated Biphenyls (PCBs)": 328,
+      "Cyanotoxins": 326,
+      "Conazoles": 275,
+      "Neonicotinoids": 191,
+      "Cyanide": 142,
+      "Glycol Ethers": 108,
+      "Strobins": 99,
+      "Explosives": 82,
+      "Polybrominated Diphenyl Ethers (PBDEs)": 58,
+      "Perchlorates": 20,
+      "Nitrosamines": 4,
+      "Dibenzofurans": 4
+    }
+  },
+  "test_1_leave_one_chemical_class_out": {
+    "full_features": {
+      "min_test_per_class": 60,
+      "n_classes_evaluated": 16,
+      "classes": [
+        "Metals",
+        "Endocrine Disrupting Chemicals (EDCs)",
+        "Pharmaceutical Personal Care Products (PPCPs)",
+        "Polyaromatic Hydrocarbons (PAHs)",
+        "Per- and Polyfluoroalkyl Substances (PFAS)",
+        "DDT and metabolites",
+        "Organotin",
+        "Phthalate Esters",
+        "Polychlorinated Biphenyls (PCBs)",
+        "Cyanotoxins",
+        "Conazoles",
+        "Neonicotinoids",
+        "Cyanide",
+        "Glycol Ethers",
+        "Strobins",
+        "Explosives"
+      ],
+      "per_class": {
+        "Metals": {
+          "auroc": 0.8181541855195721,
+          "auprc": 0.8997414041947656,
+          "f1": 0.8407649672941528,
+          "n_train": 45012,
+          "n_test": 14454,
+          "test_pos_rate": 0.6845855818458558,
+          "train_pos_rate": 0.6587354483248912,
+          "n_class_tests": 14454
+        },
+        "Endocrine Disrupting Chemicals (EDCs)": {
+          "auroc": 0.8492437205069144,
+          "auprc": 0.8976396057642357,
+          "f1": 0.8407381212627789,
+          "n_train": 47769,
+          "n_test": 11697,
+          "test_pos_rate": 0.6311874839702488,
+          "train_pos_rate": 0.673302769578597,
+          "n_class_tests": 11697
+        },
+        "Pharmaceutical Personal Care Products (PPCPs)": {
+          "auroc": 0.9100464813468992,
+          "auprc": 0.9289436734643798,
+          "f1": 0.8590116279069767,
+          "n_train": 58202,
+          "n_test": 1264,
+          "test_pos_rate": 0.5443037974683544,
+          "train_pos_rate": 0.6676402872753514,
+          "n_class_tests": 1264
+        },
+        "Polyaromatic Hydrocarbons (PAHs)": {
+          "auroc": 0.8971353995306091,
+          "auprc": 0.8767990670783414,
+          "f1": 0.8018223234624146,
+          "n_train": 58510,
+          "n_test": 956,
+          "test_pos_rate": 0.47594142259414224,
+          "train_pos_rate": 0.6681080157238078,
+          "n_class_tests": 956
+        },
+        "Per- and Polyfluoroalkyl Substances (PFAS)": {
+          "auroc": 0.8532487116178102,
+          "auprc": 0.9233364494765892,
+          "f1": 0.8552507095553453,
+          "n_train": 58715,
+          "n_test": 751,
+          "test_pos_rate": 0.6897470039946738,
+          "train_pos_rate": 0.6647023758835051,
+          "n_class_tests": 751
+        },
+        "DDT and metabolites": {
+          "auroc": 0.8718551336491495,
+          "auprc": 0.8289678056529386,
+          "f1": 0.8387096774193549,
+          "n_train": 58893,
+          "n_test": 573,
+          "test_pos_rate": 0.5427574171029669,
+          "train_pos_rate": 0.6662082081062265,
+          "n_class_tests": 573
+        },
+        "Organotin": {
+          "auroc": 0.9128602756892231,
+          "auprc": 0.9620836818383501,
+          "f1": 0.9014778325123153,
+          "n_train": 58894,
+          "n_test": 572,
+          "test_pos_rate": 0.7342657342657343,
+          "train_pos_rate": 0.6643461133561993,
+          "n_class_tests": 572
+        },
+        "Phthalate Esters": {
+          "auroc": 0.9184684684684685,
+          "auprc": 0.9554259864552989,
+          "f1": 0.8768898488120951,
+          "n_train": 59119,
+          "n_test": 347,
+          "test_pos_rate": 0.6397694524495677,
+          "train_pos_rate": 0.6651668668279234,
+          "n_class_tests": 347
+        },
+        "Polychlorinated Biphenyls (PCBs)": {
+          "auroc": 0.9219710489787825,
+          "auprc": 0.7824717608084648,
+          "f1": 0.6419753086419753,
+          "n_train": 59138,
+          "n_test": 328,
+          "test_pos_rate": 0.25,
+          "train_pos_rate": 0.6673205045825019,
+          "n_class_tests": 328
+        },
+        "Cyanotoxins": {
+          "auroc": 0.7909319196428573,
+          "auprc": 0.9353267255366416,
+          "f1": 0.8299595141700404,
+          "n_train": 59140,
+          "n_test": 326,
+          "test_pos_rate": 0.7852760736196319,
+          "train_pos_rate": 0.6643557659790328,
+          "n_class_tests": 326
+        },
+        "Conazoles": {
+          "auroc": 0.8932178932178931,
+          "auprc": 0.9579380030966036,
+          "f1": 0.8733850129198967,
+          "n_train": 59191,
+          "n_test": 275,
+          "test_pos_rate": 0.72,
+          "train_pos_rate": 0.6647632241388048,
+          "n_class_tests": 275
+        },
+        "Neonicotinoids": {
+          "auroc": 0.7832167832167832,
+          "auprc": 0.9670959570780953,
+          "f1": 0.9364161849710982,
+          "n_train": 59275,
+          "n_test": 191,
+          "test_pos_rate": 0.8848167539267016,
+          "train_pos_rate": 0.6643104175453395,
+          "n_class_tests": 191
+        },
+        "Cyanide": {
+          "auroc": 0.8193469636862984,
+          "auprc": 0.9376865148477875,
+          "f1": 0.9012875536480687,
+          "n_train": 59324,
+          "n_test": 142,
+          "test_pos_rate": 0.795774647887324,
+          "train_pos_rate": 0.6647056840401862,
+          "n_class_tests": 142
+        },
+        "Glycol Ethers": {
+          "auroc": 0.8574862637362638,
+          "auprc": 0.8796046304912418,
+          "f1": 0.796875,
+          "n_train": 59358,
+          "n_test": 108,
+          "test_pos_rate": 0.5185185185185185,
+          "train_pos_rate": 0.6652852185046666,
+          "n_class_tests": 108
+        },
+        "Strobins": {
+          "auroc": 0.9470588235294117,
+          "auprc": 0.9914664664046529,
+          "f1": 0.9454545454545454,
+          "n_train": 59367,
+          "n_test": 99,
+          "test_pos_rate": 0.8585858585858586,
+          "train_pos_rate": 0.6646958748126063,
+          "n_class_tests": 99
+        },
+        "Explosives": {
+          "auroc": 0.9165085388994307,
+          "auprc": 0.9212400103692122,
+          "f1": 0.9245283018867925,
+          "n_train": 59384,
+          "n_test": 82,
+          "test_pos_rate": 0.6219512195121951,
+          "train_pos_rate": 0.6650781355247205,
+          "n_class_tests": 82
+        }
+      },
+      "macro_auroc_mean": 0.872546913202273,
+      "macro_auroc_std": 0.04852312301643843,
+      "auroc_min": 0.7832167832167832,
+      "auroc_max": 0.9470588235294117
+    },
+    "biology_only_features": {
+      "min_test_per_class": 60,
+      "n_classes_evaluated": 16,
+      "classes": [
+        "Metals",
+        "Endocrine Disrupting Chemicals (EDCs)",
+        "Pharmaceutical Personal Care Products (PPCPs)",
+        "Polyaromatic Hydrocarbons (PAHs)",
+        "Per- and Polyfluoroalkyl Substances (PFAS)",
+        "DDT and metabolites",
+        "Organotin",
+        "Phthalate Esters",
+        "Polychlorinated Biphenyls (PCBs)",
+        "Cyanotoxins",
+        "Conazoles",
+        "Neonicotinoids",
+        "Cyanide",
+        "Glycol Ethers",
+        "Strobins",
+        "Explosives"
+      ],
+      "per_class": {
+        "Metals": {
+          "auroc": 0.6964458243892523,
+          "auprc": 0.8065249866261173,
+          "f1": 0.8194972637046656,
+          "n_train": 45012,
+          "n_test": 14454,
+          "test_pos_rate": 0.6845855818458558,
+          "train_pos_rate": 0.6587354483248912,
+          "n_class_tests": 14454
+        },
+        "Endocrine Disrupting Chemicals (EDCs)": {
+          "auroc": 0.7212561705143902,
+          "auprc": 0.7871053523334656,
+          "f1": 0.7898057955032776,
+          "n_train": 47769,
+          "n_test": 11697,
+          "test_pos_rate": 0.6311874839702488,
+          "train_pos_rate": 0.673302769578597,
+          "n_class_tests": 11697
+        },
+        "Pharmaceutical Personal Care Products (PPCPs)": {
+          "auroc": 0.8121240108204134,
+          "auprc": 0.8095021949380405,
+          "f1": 0.7805536799459825,
+          "n_train": 58202,
+          "n_test": 1264,
+          "test_pos_rate": 0.5443037974683544,
+          "train_pos_rate": 0.6676402872753514,
+          "n_class_tests": 1264
+        },
+        "Polyaromatic Hydrocarbons (PAHs)": {
+          "auroc": 0.8383211598780461,
+          "auprc": 0.7824553731808643,
+          "f1": 0.8011472275334608,
+          "n_train": 58510,
+          "n_test": 956,
+          "test_pos_rate": 0.47594142259414224,
+          "train_pos_rate": 0.6681080157238078,
+          "n_class_tests": 956
+        },
+        "Per- and Polyfluoroalkyl Substances (PFAS)": {
+          "auroc": 0.7323976336851873,
+          "auprc": 0.878829333418341,
+          "f1": 0.7772126144455748,
+          "n_train": 58715,
+          "n_test": 751,
+          "test_pos_rate": 0.6897470039946738,
+          "train_pos_rate": 0.6647023758835051,
+          "n_class_tests": 751
+        },
+        "DDT and metabolites": {
+          "auroc": 0.8379028497091382,
+          "auprc": 0.7941262211380778,
+          "f1": 0.8224043715846995,
+          "n_train": 58893,
+          "n_test": 573,
+          "test_pos_rate": 0.5427574171029669,
+          "train_pos_rate": 0.6662082081062265,
+          "n_class_tests": 573
+        },
+        "Organotin": {
+          "auroc": 0.8429667919799501,
+          "auprc": 0.935325239572395,
+          "f1": 0.8700564971751412,
+          "n_train": 58894,
+          "n_test": 572,
+          "test_pos_rate": 0.7342657342657343,
+          "train_pos_rate": 0.6643461133561993,
+          "n_class_tests": 572
+        },
+        "Phthalate Esters": {
+          "auroc": 0.8045585585585586,
+          "auprc": 0.8641174663986975,
+          "f1": 0.8530612244897959,
+          "n_train": 59119,
+          "n_test": 347,
+          "test_pos_rate": 0.6397694524495677,
+          "train_pos_rate": 0.6651668668279234,
+          "n_class_tests": 347
+        },
+        "Polychlorinated Biphenyls (PCBs)": {
+          "auroc": 0.9436347412254611,
+          "auprc": 0.8467732361380165,
+          "f1": 0.6666666666666666,
+          "n_train": 59138,
+          "n_test": 328,
+          "test_pos_rate": 0.25,
+          "train_pos_rate": 0.6673205045825019,
+          "n_class_tests": 328
+        },
+        "Cyanotoxins": {
+          "auroc": 0.6923270089285714,
+          "auprc": 0.8843741256621739,
+          "f1": 0.8644688644688645,
+          "n_train": 59140,
+          "n_test": 326,
+          "test_pos_rate": 0.7852760736196319,
+          "train_pos_rate": 0.6643557659790328,
+          "n_class_tests": 326
+        },
+        "Conazoles": {
+          "auroc": 0.852190738554375,
+          "auprc": 0.940813183562029,
+          "f1": 0.8633093525179856,
+          "n_train": 59191,
+          "n_test": 275,
+          "test_pos_rate": 0.72,
+          "train_pos_rate": 0.6647632241388048,
+          "n_class_tests": 275
+        },
+        "Neonicotinoids": {
+          "auroc": 0.7638515330823022,
+          "auprc": 0.9595209092597525,
+          "f1": 0.9262536873156342,
+          "n_train": 59275,
+          "n_test": 191,
+          "test_pos_rate": 0.8848167539267016,
+          "train_pos_rate": 0.6643104175453395,
+          "n_class_tests": 191
+        },
+        "Cyanide": {
+          "auroc": 0.7444308819041806,
+          "auprc": 0.9012607900955907,
+          "f1": 0.9045643153526971,
+          "n_train": 59324,
+          "n_test": 142,
+          "test_pos_rate": 0.795774647887324,
+          "train_pos_rate": 0.6647056840401862,
+          "n_class_tests": 142
+        },
+        "Glycol Ethers": {
+          "auroc": 0.8152472527472527,
+          "auprc": 0.7775679065080173,
+          "f1": 0.782608695652174,
+          "n_train": 59358,
+          "n_test": 108,
+          "test_pos_rate": 0.5185185185185185,
+          "train_pos_rate": 0.6652852185046666,
+          "n_class_tests": 108
+        },
+        "Strobins": {
+          "auroc": 0.8722689075630252,
+          "auprc": 0.9738719940642321,
+          "f1": 0.9135802469135802,
+          "n_train": 59367,
+          "n_test": 99,
+          "test_pos_rate": 0.8585858585858586,
+          "train_pos_rate": 0.6646958748126063,
+          "n_class_tests": 99
+        },
+        "Explosives": {
+          "auroc": 0.8899430740037951,
+          "auprc": 0.9151596834088873,
+          "f1": 0.8648648648648649,
+          "n_train": 59384,
+          "n_test": 82,
+          "test_pos_rate": 0.6219512195121951,
+          "train_pos_rate": 0.6650781355247205,
+          "n_class_tests": 82
+        }
+      },
+      "macro_auroc_mean": 0.8037416960964937,
+      "macro_auroc_std": 0.07030164551391527,
+      "auroc_min": 0.6923270089285714,
+      "auroc_max": 0.9436347412254611
+    }
+  },
+  "test_2_cross_species_transfer": {
+    "full_features": {
+      "train_genus": "Daphnia",
+      "train_n": 23152,
+      "train_pos_rate": 0.6750172771250864,
+      "min_test_per_genus": 80,
+      "per_genus": {
+        "Ceriodaphnia": {
+          "auroc": 0.837296815357376,
+          "auprc": 0.895789474189719,
+          "f1": 0.8360049321824907,
+          "n_train": 23152,
+          "n_test": 4517,
+          "test_pos_rate": 0.6305069736550808,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Branchiopoda",
+          "desc": "sister cladoceran",
+          "same_class_as_daphnia": true
+        },
+        "Moina": {
+          "auroc": 0.9009234682592346,
+          "auprc": 0.9181084751364079,
+          "f1": 0.8682634730538922,
+          "n_train": 23152,
+          "n_test": 604,
+          "test_pos_rate": 0.5463576158940397,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Branchiopoda",
+          "desc": "cladoceran",
+          "same_class_as_daphnia": true
+        },
+        "Chironomus": {
+          "auroc": 0.842464434160872,
+          "auprc": 0.898599525192175,
+          "f1": 0.8727990784926773,
+          "n_train": 23152,
+          "n_test": 4364,
+          "test_pos_rate": 0.6897341888175985,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Insecta",
+          "desc": "insect (midge)",
+          "same_class_as_daphnia": false
+        },
+        "Aedes": {
+          "auroc": 0.6848753217354752,
+          "auprc": 0.7368569123296866,
+          "f1": 0.7607734806629834,
+          "n_train": 23152,
+          "n_test": 5288,
+          "test_pos_rate": 0.598714069591528,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Insecta",
+          "desc": "insect (mosquito)",
+          "same_class_as_daphnia": false
+        },
+        "Culex": {
+          "auroc": 0.7049621567878572,
+          "auprc": 0.835562469333694,
+          "f1": 0.8497395119276118,
+          "n_train": 23152,
+          "n_test": 4840,
+          "test_pos_rate": 0.721694214876033,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Insecta",
+          "desc": "insect (mosquito)",
+          "same_class_as_daphnia": false
+        },
+        "Gammarus": {
+          "auroc": 0.8340888039384262,
+          "auprc": 0.8886926917656953,
+          "f1": 0.8653043287189629,
+          "n_train": 23152,
+          "n_test": 3270,
+          "test_pos_rate": 0.6752293577981652,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Malacostraca",
+          "desc": "amphipod crustacean",
+          "same_class_as_daphnia": false
+        },
+        "Hyalella": {
+          "auroc": 0.7304671241418413,
+          "auprc": 0.8537140058918938,
+          "f1": 0.7064352856109906,
+          "n_train": 23152,
+          "n_test": 2383,
+          "test_pos_rate": 0.6605119597146454,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Malacostraca",
+          "desc": "amphipod crustacean",
+          "same_class_as_daphnia": false
+        },
+        "Americamysis": {
+          "auroc": 0.8950253501787727,
+          "auprc": 0.9651431543486463,
+          "f1": 0.9261744966442953,
+          "n_train": 23152,
+          "n_test": 1951,
+          "test_pos_rate": 0.7775499743721168,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Malacostraca",
+          "desc": "mysid crustacean",
+          "same_class_as_daphnia": false
+        },
+        "Artemia": {
+          "auroc": 0.8351174254055991,
+          "auprc": 0.9144364249670756,
+          "f1": 0.8763358778625954,
+          "n_train": 23152,
+          "n_test": 1749,
+          "test_pos_rate": 0.7135506003430532,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Branchiopoda",
+          "desc": "brine shrimp",
+          "same_class_as_daphnia": true
+        },
+        "Caenorhabditis": {
+          "auroc": 0.7670164123192852,
+          "auprc": 0.832279431504925,
+          "f1": 0.7304084720121029,
+          "n_train": 23152,
+          "n_test": 2745,
+          "test_pos_rate": 0.5653916211293261,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Nematoda",
+          "taxon_class": "Secernentea",
+          "desc": "nematode",
+          "same_class_as_daphnia": false
+        },
+        "Lymnaea": {
+          "auroc": 0.877655541771064,
+          "auprc": 0.9165928806001566,
+          "f1": 0.816969696969697,
+          "n_train": 23152,
+          "n_test": 1431,
+          "test_pos_rate": 0.5953878406708596,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Mollusca",
+          "taxon_class": "Gastropoda",
+          "desc": "gastropod mollusc",
+          "same_class_as_daphnia": false
+        },
+        "Physa": {
+          "auroc": 0.8723468627816049,
+          "auprc": 0.8510333722906007,
+          "f1": 0.7486033519553073,
+          "n_train": 23152,
+          "n_test": 426,
+          "test_pos_rate": 0.38497652582159625,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Mollusca",
+          "taxon_class": "Gastropoda",
+          "desc": "gastropod mollusc",
+          "same_class_as_daphnia": false
+        },
+        "Tubifex": {
+          "auroc": 0.6597944097944098,
+          "auprc": 0.8302234228626229,
+          "f1": 0.8213483146067416,
+          "n_train": 23152,
+          "n_test": 1113,
+          "test_pos_rate": 0.7008086253369272,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Annelida",
+          "taxon_class": "Oligochaeta",
+          "desc": "annelid worm",
+          "same_class_as_daphnia": false
+        },
+        "Lumbriculus": {
+          "auroc": 0.8673163133500493,
+          "auprc": 0.9180980197912063,
+          "f1": 0.8178913738019169,
+          "n_train": 23152,
+          "n_test": 485,
+          "test_pos_rate": 0.6618556701030928,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Annelida",
+          "taxon_class": "Clitellata",
+          "desc": "annelid worm",
+          "same_class_as_daphnia": false
+        }
+      },
+      "n_genera_evaluated": 14,
+      "macro_auroc_mean": 0.8078107457129905,
+      "macro_auroc_std": 0.07910796520606057,
+      "auroc_min": 0.6597944097944098,
+      "auroc_max": 0.9009234682592346,
+      "pooled_cross_taxon": {
+        "auroc": 0.7817588236628321,
+        "auprc": 0.8606707961712242,
+        "f1": 0.8201980606560759,
+        "n_train": 23152,
+        "n_test": 28296,
+        "test_pos_rate": 0.658644331354255,
+        "train_pos_rate": 0.6750172771250864
+      },
+      "pooled_cross_taxon_genera": [
+        "Chironomus",
+        "Aedes",
+        "Culex",
+        "Gammarus",
+        "Hyalella",
+        "Americamysis",
+        "Caenorhabditis",
+        "Lymnaea",
+        "Physa",
+        "Tubifex",
+        "Lumbriculus"
+      ]
+    },
+    "biology_only_features": {
+      "train_genus": "Daphnia",
+      "train_n": 23152,
+      "train_pos_rate": 0.6750172771250864,
+      "min_test_per_genus": 80,
+      "per_genus": {
+        "Ceriodaphnia": {
+          "auroc": 0.6929600876189066,
+          "auprc": 0.7723160098108256,
+          "f1": 0.7627262443438914,
+          "n_train": 23152,
+          "n_test": 4517,
+          "test_pos_rate": 0.6305069736550808,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Branchiopoda",
+          "desc": "sister cladoceran",
+          "same_class_as_daphnia": true
+        },
+        "Moina": {
+          "auroc": 0.4338365405883655,
+          "auprc": 0.5776635511322283,
+          "f1": 0.6931818181818182,
+          "n_train": 23152,
+          "n_test": 604,
+          "test_pos_rate": 0.5463576158940397,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Branchiopoda",
+          "desc": "cladoceran",
+          "same_class_as_daphnia": true
+        },
+        "Chironomus": {
+          "auroc": 0.7209746438508764,
+          "auprc": 0.8134963957319342,
+          "f1": 0.8505529225908373,
+          "n_train": 23152,
+          "n_test": 4364,
+          "test_pos_rate": 0.6897341888175985,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Insecta",
+          "desc": "insect (midge)",
+          "same_class_as_daphnia": false
+        },
+        "Aedes": {
+          "auroc": 0.5458390069321601,
+          "auprc": 0.6282202795586895,
+          "f1": 0.719760945823048,
+          "n_train": 23152,
+          "n_test": 5288,
+          "test_pos_rate": 0.598714069591528,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Insecta",
+          "desc": "insect (mosquito)",
+          "same_class_as_daphnia": false
+        },
+        "Culex": {
+          "auroc": 0.5716123093572871,
+          "auprc": 0.7481923103300906,
+          "f1": 0.8336324019482184,
+          "n_train": 23152,
+          "n_test": 4840,
+          "test_pos_rate": 0.721694214876033,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Insecta",
+          "desc": "insect (mosquito)",
+          "same_class_as_daphnia": false
+        },
+        "Gammarus": {
+          "auroc": 0.7286841292748165,
+          "auprc": 0.7996432100912436,
+          "f1": 0.8637307852098047,
+          "n_train": 23152,
+          "n_test": 3270,
+          "test_pos_rate": 0.6752293577981652,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Malacostraca",
+          "desc": "amphipod crustacean",
+          "same_class_as_daphnia": false
+        },
+        "Hyalella": {
+          "auroc": 0.7444171589315248,
+          "auprc": 0.813865449435969,
+          "f1": 0.8128435059299971,
+          "n_train": 23152,
+          "n_test": 2383,
+          "test_pos_rate": 0.6605119597146454,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Malacostraca",
+          "desc": "amphipod crustacean",
+          "same_class_as_daphnia": false
+        },
+        "Americamysis": {
+          "auroc": 0.7356100902521043,
+          "auprc": 0.8712469037524255,
+          "f1": 0.8809523809523809,
+          "n_train": 23152,
+          "n_test": 1951,
+          "test_pos_rate": 0.7775499743721168,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Malacostraca",
+          "desc": "mysid crustacean",
+          "same_class_as_daphnia": false
+        },
+        "Artemia": {
+          "auroc": 0.7417976546906188,
+          "auprc": 0.8390004198735833,
+          "f1": 0.8636200071968334,
+          "n_train": 23152,
+          "n_test": 1749,
+          "test_pos_rate": 0.7135506003430532,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Arthropoda",
+          "taxon_class": "Branchiopoda",
+          "desc": "brine shrimp",
+          "same_class_as_daphnia": true
+        },
+        "Caenorhabditis": {
+          "auroc": 0.6255622358949543,
+          "auprc": 0.6479922418051903,
+          "f1": 0.6047988708539167,
+          "n_train": 23152,
+          "n_test": 2745,
+          "test_pos_rate": 0.5653916211293261,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Nematoda",
+          "taxon_class": "Secernentea",
+          "desc": "nematode",
+          "same_class_as_daphnia": false
+        },
+        "Lymnaea": {
+          "auroc": 0.7770399020490241,
+          "auprc": 0.7830024737714809,
+          "f1": 0.828328611898017,
+          "n_train": 23152,
+          "n_test": 1431,
+          "test_pos_rate": 0.5953878406708596,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Mollusca",
+          "taxon_class": "Gastropoda",
+          "desc": "gastropod mollusc",
+          "same_class_as_daphnia": false
+        },
+        "Physa": {
+          "auroc": 0.784083504002979,
+          "auprc": 0.6049306237382002,
+          "f1": 0.7407407407407407,
+          "n_train": 23152,
+          "n_test": 426,
+          "test_pos_rate": 0.38497652582159625,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Mollusca",
+          "taxon_class": "Gastropoda",
+          "desc": "gastropod mollusc",
+          "same_class_as_daphnia": false
+        },
+        "Tubifex": {
+          "auroc": 0.6045795795795796,
+          "auprc": 0.7583317152122788,
+          "f1": 0.8126737076153419,
+          "n_train": 23152,
+          "n_test": 1113,
+          "test_pos_rate": 0.7008086253369272,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Annelida",
+          "taxon_class": "Oligochaeta",
+          "desc": "annelid worm",
+          "same_class_as_daphnia": false
+        },
+        "Lumbriculus": {
+          "auroc": 0.7698978041182282,
+          "auprc": 0.8362678075081501,
+          "f1": 0.8373493975903614,
+          "n_train": 23152,
+          "n_test": 485,
+          "test_pos_rate": 0.6618556701030928,
+          "train_pos_rate": 0.6750172771250864,
+          "phylum": "Annelida",
+          "taxon_class": "Clitellata",
+          "desc": "annelid worm",
+          "same_class_as_daphnia": false
+        }
+      },
+      "n_genera_evaluated": 14,
+      "macro_auroc_mean": 0.6769210462243876,
+      "macro_auroc_std": 0.10087908916937267,
+      "auroc_min": 0.4338365405883655,
+      "auroc_max": 0.784083504002979,
+      "pooled_cross_taxon": {
+        "auroc": 0.6738384535896699,
+        "auprc": 0.7594865389256826,
+        "f1": 0.8028498926410307,
+        "n_train": 23152,
+        "n_test": 28296,
+        "test_pos_rate": 0.658644331354255,
+        "train_pos_rate": 0.6750172771250864
+      },
+      "pooled_cross_taxon_genera": [
+        "Chironomus",
+        "Aedes",
+        "Culex",
+        "Gammarus",
+        "Hyalella",
+        "Americamysis",
+        "Caenorhabditis",
+        "Lymnaea",
+        "Physa",
+        "Tubifex",
+        "Lumbriculus"
+      ]
+    }
+  },
+  "test_3_feature_attribution": {
+    "within_daphnia_grouped_full_auroc": {
+      "auroc_mean": 0.8567926131718592,
+      "auroc_std": 0.005406600128867998,
+      "n_seeds": 5
+    },
+    "within_daphnia_grouped_biology_only_auroc": {
+      "auroc_mean": 0.7451151180371557,
+      "auroc_std": 0.013320712304594848,
+      "n_seeds": 5
+    },
+    "design_feature_total_importance": 0.6444604922732768,
+    "biology_feature_total_importance": 0.3555395077267233,
+    "top_feature_importances": [
+      {
+        "feature": "obs_duration_log",
+        "importance": 0.3097096442041213
+      },
+      {
+        "feature": "logconc_std",
+        "importance": 0.1415539473521568
+      },
+      {
+        "feature": "effgrp_ACC",
+        "importance": 0.10605485097056402
+      },
+      {
+        "feature": "effgrp_ITX",
+        "importance": 0.07741464804237559
+      },
+      {
+        "feature": "exposure_hours_log",
+        "importance": 0.05585246330784941
+      },
+      {
+        "feature": "chan_5",
+        "importance": 0.04675710199771016
+      },
+      {
+        "feature": "n_levels",
+        "importance": 0.04610783827241102
+      },
+      {
+        "feature": "chan_7",
+        "importance": 0.03772403356198399
+      },
+      {
+        "feature": "effgrp_MOR",
+        "importance": 0.032366176231021435
+      },
+      {
+        "feature": "logconc_max",
+        "importance": 0.027184570186731545
+      },
+      {
+        "feature": "logconc_range",
+        "importance": 0.0208231431834886
+      },
+      {
+        "feature": "logconc_min",
+        "importance": 0.016130582862427294
+      }
+    ],
+    "obs_duration_log_alone_auroc": 0.7434372097274388
+  },
+  "elapsed_sec": 738.8
+}

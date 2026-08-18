@@ -1,6 +1,8 @@
 {
+  "_PROVENANCE": "Per-case toxicity_positive_rate / mean_toxicity_score values (≈1.0) are NOT validated detection on real holdout data. The real ToxiGene F1 is 0.492 on n=9 real GEO holdout samples. Earlier F1>=0.877 / 2,500-sample claims used Gaussian-fabricated samples and are retracted.",
   "model": "ToxiGene v7 (toxigene_v7_best.pt)",
-  "published_test_f1_macro": 0.886,
+  "published_test_f1_macro": 0.492,
+  "_published_test_f1_macro_note": "REPLACED. Was 0.886 (fabricated/augmented). Real F1 = 0.492 on n=9 real GEO holdout.",
   "outcome_names": [
     "reproductive_impairment",
     "growth_inhibition",

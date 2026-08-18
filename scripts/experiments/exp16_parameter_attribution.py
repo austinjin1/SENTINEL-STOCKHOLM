@@ -138,11 +138,18 @@ def score_window(sensor, fusion, head, w_vals_norm: np.ndarray) -> float:
                 if prob.dim() > 1: prob = prob[:, 1]
                 prob = torch.sigmoid(prob) if prob.max() > 1 else prob
                 return float(prob.squeeze().item())
-    except Exception:
-        pass
+    except Exception as e:
+        # Do NOT fabricate a probability from the embedding norm — that would
+        # silently present an uncalibrated proxy as a real anomaly probability.
+        raise RuntimeError(
+            "Anomaly head produced no probability and forward failed; refusing "
+            "to fabricate a probability from emb.norm()."
+        ) from e
 
-    # Fallback: use raw embedding norm as proxy
-    return float(emb.norm().item())
+    raise RuntimeError(
+        "Anomaly head produced no probability (anomaly_probability/severity_score/"
+        "logits all None); refusing to fabricate a probability from emb.norm()."
+    )
 
 
 def build_site_windows(df_site):

@@ -1,0 +1,49 @@
+{
+  "task": "chl_a_gt8",
+  "n": 362,
+  "pos": 51,
+  "n_sites": 33,
+  "baselines": {
+    "satellite_spectral_gbm": 0.716,
+    "sensor_gbm": 0.681,
+    "fusion_gbm": 0.708
+  },
+  "experiments": {
+    "C1_cnn_raw_tile": {
+      "name": "C1_cnn_raw_tile",
+      "auroc": 0.651,
+      "ci95": [
+        0.564,
+        0.737
+      ],
+      "pr_auc": 0.292,
+      "beats_satellite_ceiling": false,
+      "vs_ceiling_point": -0.065
+    },
+    "C2_e2e_fusion": {
+      "name": "C2_e2e_fusion",
+      "auroc": 0.765,
+      "ci95": [
+        0.685,
+        0.844
+      ],
+      "pr_auc": 0.313,
+      "beats_satellite_ceiling": false,
+      "vs_ceiling_point": 0.049
+    },
+    "C3_gated_fusion": {
+      "name": "C3_gated_fusion",
+      "auroc": 0.694,
+      "ci95": [
+        0.609,
+        0.779
+      ],
+      "pr_auc": 0.254,
+      "mean_sat_gate_pos": 0.021,
+      "mean_sat_gate_neg": 0.035,
+      "beats_satellite_ceiling": false,
+      "vs_ceiling_point": -0.022
+    }
+  },
+  "runtime_sec": 175.5
+}

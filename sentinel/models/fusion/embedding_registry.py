@@ -40,6 +40,10 @@ class ModalityEntry:
     dimension: int = SHARED_EMBEDDING_DIM
     confidence: float = 1.0
     staleness: float = 0.0
+    # NOTE: `embedding` may be either a single-observation vector ``[d]``
+    # or a full batch ``[B, d]``.  Batched storage is required so that a
+    # stale modality reused on a later step preserves each sample's own
+    # content (audit item d) instead of broadcasting sample-0.
 
 
 class EmbeddingRegistry:

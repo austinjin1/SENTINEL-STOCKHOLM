@@ -1,0 +1,205 @@
+{
+  "dataset": "mc_fusion_dataset.parquet",
+  "n": 3649,
+  "n_sites": 227,
+  "n_improved_sat_feats": 68,
+  "improved_feat_names": [
+    "B02_ctr",
+    "B03_ctr",
+    "B04_ctr",
+    "B05_ctr",
+    "B08_ctr",
+    "B11_ctr",
+    "NDCI_mean",
+    "NDCI_std",
+    "NDCI_p10",
+    "NDCI_p50",
+    "NDCI_p90",
+    "NDCI_max",
+    "REratio_mean",
+    "REratio_std",
+    "REratio_p10",
+    "REratio_p50",
+    "REratio_p90",
+    "REratio_max",
+    "PCpotes_mean",
+    "PCpotes_std",
+    "PCpotes_p10",
+    "PCpotes_p50",
+    "PCpotes_p90",
+    "PCpotes_max",
+    "MCIre_mean",
+    "MCIre_std",
+    "MCIre_p10",
+    "MCIre_p50",
+    "MCIre_p90",
+    "MCIre_max",
+    "FAI_mean",
+    "FAI_std",
+    "FAI_p10",
+    "FAI_p50",
+    "FAI_p90",
+    "FAI_max",
+    "NDVI_mean",
+    "NDVI_std",
+    "NDVI_p10",
+    "NDVI_p50",
+    "NDVI_p90",
+    "NDVI_max",
+    "NDWI_mean",
+    "NDWI_std",
+    "NDWI_p10",
+    "NDWI_p50",
+    "NDWI_p90",
+    "NDWI_max",
+    "GR_mean",
+    "GR_std",
+    "GR_p10",
+    "GR_p50",
+    "GR_p90",
+    "GR_max",
+    "GB_mean",
+    "GB_std",
+    "GB_p10",
+    "GB_p50",
+    "GB_p90",
+    "GB_max",
+    "B5B3_mean",
+    "B5B3_std",
+    "B5B3_p10",
+    "B5B3_p50",
+    "B5B3_p90",
+    "B5B3_max",
+    "frac_NDCI_pos",
+    "frac_FAI_pos"
+  ],
+  "note": "Baseline sat arm = sf0-25 (band mean/ctr/std + NDVI/NDCI/NDWI/GR mean). Improved sat arm = literature cyano indices (NDCI, RE-ratio, Potes-PC, MCI-red-edge, FAI, NDVI/NDWI/GR/GB/B5B3) with p10/p50/p90/max spatial stats. In-situ = CHLA+PC pigment. Same 07-style GroupKFold + site-bootstrap CI. NOT computable from S2: 620nm phycocyanin abs, true MCI at 740nm (no B06).",
+  "labels": {
+    "mc_gt1.6_WHO_drinking": {
+      "pos": 633,
+      "satellite_baseline_auroc": 0.65,
+      "satellite_improved_auroc": 0.708,
+      "insitu_auroc": 0.684,
+      "fusion_baseline_auroc": 0.776,
+      "fusion_improved_auroc": 0.789,
+      "fusion_improved_ci95": [
+        0.767,
+        0.811
+      ],
+      "best_single_improved": "satellite_improved",
+      "fusion_improved_minus_best": 0.081,
+      "sat_improved_minus_baseline": 0.059,
+      "fusion_improved_minus_baseline": 0.013,
+      "boot_fusion_vs_best_single": {
+        "delta_median": 0.08,
+        "ci95": [
+          0.047,
+          0.121
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "boot_satarm_improved_vs_baseline": {
+        "delta_median": 0.058,
+        "ci95": [
+          0.029,
+          0.089
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "boot_fusion_improved_vs_baseline": {
+        "delta_median": 0.012,
+        "ci95": [
+          -0.003,
+          0.028
+        ],
+        "P_delta_gt0": 0.932
+      },
+      "fusion_helps_over_best_single": true,
+      "sat_arm_improved_signif": true
+    },
+    "mc_gt0.3_detection": {
+      "pos": 1286,
+      "satellite_baseline_auroc": 0.664,
+      "satellite_improved_auroc": 0.713,
+      "insitu_auroc": 0.718,
+      "fusion_baseline_auroc": 0.786,
+      "fusion_improved_auroc": 0.798,
+      "fusion_improved_ci95": [
+        0.782,
+        0.814
+      ],
+      "best_single_improved": "insitu",
+      "fusion_improved_minus_best": 0.081,
+      "sat_improved_minus_baseline": 0.049,
+      "fusion_improved_minus_baseline": 0.012,
+      "boot_fusion_vs_best_single": {
+        "delta_median": 0.081,
+        "ci95": [
+          0.05,
+          0.116
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "boot_satarm_improved_vs_baseline": {
+        "delta_median": 0.048,
+        "ci95": [
+          0.027,
+          0.074
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "boot_fusion_improved_vs_baseline": {
+        "delta_median": 0.013,
+        "ci95": [
+          -0.0,
+          0.025
+        ],
+        "P_delta_gt0": 0.971
+      },
+      "fusion_helps_over_best_single": true,
+      "sat_arm_improved_signif": true
+    },
+    "mc_gt8_WHO_recreational": {
+      "pos": 286,
+      "satellite_baseline_auroc": 0.669,
+      "satellite_improved_auroc": 0.728,
+      "insitu_auroc": 0.748,
+      "fusion_baseline_auroc": 0.792,
+      "fusion_improved_auroc": 0.794,
+      "fusion_improved_ci95": [
+        0.762,
+        0.825
+      ],
+      "best_single_improved": "insitu",
+      "fusion_improved_minus_best": 0.046,
+      "sat_improved_minus_baseline": 0.059,
+      "fusion_improved_minus_baseline": 0.002,
+      "boot_fusion_vs_best_single": {
+        "delta_median": 0.047,
+        "ci95": [
+          -0.014,
+          0.109
+        ],
+        "P_delta_gt0": 0.933
+      },
+      "boot_satarm_improved_vs_baseline": {
+        "delta_median": 0.059,
+        "ci95": [
+          0.025,
+          0.092
+        ],
+        "P_delta_gt0": 1.0
+      },
+      "boot_fusion_improved_vs_baseline": {
+        "delta_median": 0.002,
+        "ci95": [
+          -0.024,
+          0.023
+        ],
+        "P_delta_gt0": 0.569
+      },
+      "fusion_helps_over_best_single": false,
+      "sat_arm_improved_signif": true
+    }
+  }
+}
