@@ -396,3 +396,21 @@ def test_v4_models_run(monkeypatch):
     for name in ("ridge_v4clr", "xgb_v4clr", "xgb_v4clr_context", "xgb_clr_context"):
         p = B.fit_predict(name, d, f.train, f.test, targets=TARGET_NAMES, n_jobs=1)
         assert p.shape[0] == len(f.test)
+
+
+def test_event_derived_probability_is_cross_fitted_by_domain():
+    """SYNTHETIC: a domain's own residuals never set its sigma; probabilities in [0, 1]."""
+    from sentinel.events import microbe as ME
+
+    d, _, _ = _synthetic_design()
+    S = d.samples.copy()
+    oof = S[["log_tp"]].copy() + 0.1
+    big = S.index[S["domain_id"] == "D00"]
+    oof.loc[big, "log_tp"] += 5.0                        # huge errors in D00 only
+    r = ME.derived_probability(S, oof, "E5b")
+    res = (S["log_tp"] - oof["log_tp"]).to_numpy()
+    dom = S["domain_id"].to_numpy()
+    assert np.isclose(r["sigma_by_domain"]["D00"], np.std(res[dom != "D00"], ddof=1))
+    p = r["p"][np.isfinite(r["p"])]
+    assert ((p >= 0) & (p <= 1)).all()
+    assert set(np.unique(r["y"][np.isfinite(r["y"])])) <= {0.0, 1.0}

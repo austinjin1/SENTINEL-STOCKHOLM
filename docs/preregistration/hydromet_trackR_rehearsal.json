@@ -1,0 +1,182 @@
+{
+ "NOT_A_FREEZE": "track-R candidate; FREEZE_hydromet_trackR.json is written by the lead only",
+ "partial_rehearsal_only": true,
+ "missing": [
+  "trackr_R1_northeast/forcing_gbm_bag_s1",
+  "trackr_R1_northeast/forcing_gbm_bag_s2",
+  "trackr_R2_southeast/forcing_gbm_bag_s0",
+  "trackr_R2_southeast/forcing_gbm_bag_s1",
+  "trackr_R2_southeast/forcing_gbm_bag_s2",
+  "trackr_R2_southeast/forcing_gbm",
+  "trackr_R2_southeast/air2stream_regional",
+  "trackr_R2_southeast/dosat_ratio[air2stream_regional]",
+  "trackr_R3_midwest_greatlakes/ealstm_s1",
+  "trackr_R3_midwest_greatlakes/ealstm_s2",
+  "trackr_R3_midwest_greatlakes/forcing_gbm_bag_s0",
+  "trackr_R3_midwest_greatlakes/forcing_gbm_bag_s1",
+  "trackr_R3_midwest_greatlakes/forcing_gbm_bag_s2",
+  "trackr_R3_midwest_greatlakes/forcing_gbm",
+  "trackr_R3_midwest_greatlakes/air2stream_regional",
+  "trackr_R3_midwest_greatlakes/dosat_ratio[air2stream_regional]",
+  "trackr_R4_plains_texas/ealstm_s0",
+  "trackr_R4_plains_texas/ealstm_s1",
+  "trackr_R4_plains_texas/ealstm_s2",
+  "trackr_R4_plains_texas/forcing_gbm_bag_s0",
+  "trackr_R4_plains_texas/forcing_gbm_bag_s1",
+  "trackr_R4_plains_texas/forcing_gbm_bag_s2",
+  "trackr_R4_plains_texas/forcing_gbm",
+  "trackr_R4_plains_texas/air2stream_regional",
+  "trackr_R4_plains_texas/dosat_ratio[air2stream_regional]",
+  "trackr_R5_southwest_basin/ealstm_s0",
+  "trackr_R5_southwest_basin/ealstm_s1",
+  "trackr_R5_southwest_basin/ealstm_s2",
+  "trackr_R5_southwest_basin/forcing_gbm_bag_s0",
+  "trackr_R5_southwest_basin/forcing_gbm_bag_s1",
+  "trackr_R5_southwest_basin/forcing_gbm_bag_s2",
+  "trackr_R5_southwest_basin/forcing_gbm",
+  "trackr_R5_southwest_basin/air2stream_regional",
+  "trackr_R5_southwest_basin/dosat_ratio[air2stream_regional]",
+  "trackr_R6_pacific/ealstm_s0",
+  "trackr_R6_pacific/ealstm_s1",
+  "trackr_R6_pacific/ealstm_s2",
+  "trackr_R6_pacific/forcing_gbm_bag_s0",
+  "trackr_R6_pacific/forcing_gbm_bag_s1",
+  "trackr_R6_pacific/forcing_gbm_bag_s2",
+  "trackr_R6_pacific/forcing_gbm",
+  "trackr_R6_pacific/air2stream_regional",
+  "trackr_R6_pacific/dosat_ratio[air2stream_regional]"
+ ],
+ "created": "2026-11-09T16:22:02+00:00",
+ "split_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+ "scoring_code_sha256": "d676d8085ab314389715e2572f1b89f72dc8503db17443ce3c0af788ab386128",
+ "fold_file_sha256": "142341a9d0379f2b50c90bdc72508cce8aa24d78d79db855aba9f1065f92a6c8",
+ "weights_sha256": {
+  "trackr_R1_northeast/ealstm_s0": "5d3ebae4f4f00a38d152939999fb46ade584d8954e24814fa68f45f0871daa95",
+  "trackr_R1_northeast/ealstm_s1": "517a21807ede2199281db18e402df8dd0422608131fb036fca3d0a6f7374e16f",
+  "trackr_R1_northeast/ealstm_s2": "912bfb4beb4564a69e772d76110bed3c3e366cbf5e5bdb7733e928513f58a7c2",
+  "trackr_R1_northeast/forcing_gbm_bag_s0": "96abb11b8af462f1ff3e1422eba2b4d29e935679211c8f8cbc7ea173d0b70927",
+  "trackr_R1_northeast/forcing_gbm": "6201baf69c7ffd2315ccb3959e8c858bc0fc8d90ed763fdb4139426a6c0e055b",
+  "trackr_R1_northeast/air2stream_regional": "9d8b2df0395e97b01da475746d8a452ae4339d0ddf14e9678859b07bf89d996b",
+  "trackr_R1_northeast/dosat_ratio[air2stream_regional]": "ab6394f8e0a3e53edc9c00484792d6703858ebf6efb65785d0cc0219cc3e8a22",
+  "trackr_R2_southeast/ealstm_s0": "e4500f9642bc5c9c013c8f2007a802ea7a7078949c1113441e6d7dd690257d59",
+  "trackr_R2_southeast/ealstm_s1": "2fa8557455614ed8ac996048b2490942ebefb66f89238b1bc935580549c748e2",
+  "trackr_R2_southeast/ealstm_s2": "45b885d69779684095abf11ef10dc1413f8609c4b7ea4e06a6400d0566b26a0b",
+  "trackr_R3_midwest_greatlakes/ealstm_s0": "d692d16fe3e8907c8b7ce1dee58c70c3e4283f245db90b9f05fa3e70b4a05118"
+ },
+ "data_snapshots": {
+  "sonde_daily": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sonde_daily",
+   "loader_dir_rel": "sonde_daily",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sonde_daily_refresh_20261108",
+   "patterns": [
+    "index.parquet",
+    "sites/*.parquet"
+   ],
+   "n_content_files": 5501,
+   "content_sha256": "65d86584bc801f3c0847ff2bfeb61003fd8d5a2c59f22cfed86315327c01efa0",
+   "manifest": "sonde_daily",
+   "manifest_sha256": "dcd359ead043b8959a245f6cc92c6bbd7a66c1405ca49f012ba401563b696d89"
+  },
+  "forcings_daily": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/forcings_daily",
+   "loader_dir_rel": "forcings_daily",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/forcings_daily",
+   "patterns": [
+    "forcings_daily.parquet",
+    "coverage.parquet"
+   ],
+   "n_content_files": 2,
+   "content_sha256": "eac6d18929eb28c9f5c64952143ccce0328d34edcee7340e1ef6914e2027997d",
+   "manifest": "forcings_daily",
+   "manifest_sha256": "1c8e853fa8cb4b61a51c4746ac76ab5e4781b8fe17b2719979d09d7da349e987"
+  },
+  "hydromet_upstream_forcing": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_upstream_forcing",
+   "loader_dir_rel": "hydromet_upstream_forcing",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_upstream_forcing",
+   "patterns": [
+    "upstream_forcing.parquet"
+   ],
+   "n_content_files": 1,
+   "content_sha256": "7c125f1edf528be705c4c5b4c5f9aa0fc8d0499b314a64bd737bfe12fe324af9",
+   "manifest": "hydromet_upstream_forcing",
+   "manifest_sha256": "7913ed7f1f6040a62984bb007adbf1aecc387240bdd71d4a49733e47cb337c27"
+  },
+  "streamcat": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/catchment",
+   "loader_dir_rel": "catchment",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/catchment",
+   "patterns": [
+    "streamcat_sites.parquet"
+   ],
+   "n_content_files": 1,
+   "content_sha256": "76ea50c743a3012b3865e84e82740159216f4b1f6c494269612257fd8cbe8d03",
+   "manifest": "streamcat",
+   "manifest_sha256": "632059587e3ccdfbe787a1eabc2cc2322481134e526c3d3cf45ba2951454bda6"
+  },
+  "sites": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sites",
+   "loader_dir_rel": "sites",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sites",
+   "patterns": [
+    "sites.parquet"
+   ],
+   "n_content_files": 1,
+   "content_sha256": "89ea7e55e487eb0a0f84af480e7a248e99a789d67f7d3d98b688618f2fa3d5b2",
+   "manifest": "sites",
+   "manifest_sha256": "c9f245ca102201c9c395d439bfe70f0eb8c8421cc13c5176339bf6f2b12233e3"
+  }
+ },
+ "looks": {
+  "M6R/test": {
+   "block": "test",
+   "roles": [
+    "test"
+   ],
+   "label_model": null,
+   "primary_models": [
+    "ealstm",
+    "ealstm_gbmblend"
+   ],
+   "n_hypotheses": 8,
+   "comparators": {
+    "temp_c_mean": {
+     "gbm": "forcing_gbm_bag",
+     "physics": "air2stream_regional"
+    },
+    "temp_c_7dadm": {
+     "gbm": "forcing_gbm",
+     "physics": "air2stream_regional"
+    },
+    "do_mgl_mean": {
+     "gbm": "forcing_gbm",
+     "physics": "dosat_ratio[air2stream_regional]"
+    },
+    "do_mgl_min": {
+     "gbm": "forcing_gbm_bag",
+     "physics": "dosat_ratio[air2stream_regional]"
+    }
+   },
+   "artifacts": {
+    "trackr_R1_northeast/ealstm_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R1_northeast_ealstm_s0/g0_s0/ealstm_best.pt",
+    "trackr_R1_northeast/ealstm_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R1_northeast_ealstm_s1/g0_s1/ealstm_best.pt",
+    "trackr_R1_northeast/ealstm_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R1_northeast_ealstm_s2/g0_s2/ealstm_best.pt",
+    "trackr_R1_northeast/forcing_gbm_bag_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R1_northeast_gbmbag_s0/models/forcing_gbm_bag_s0.pkl",
+    "trackr_R1_northeast/forcing_gbm": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R1_northeast_base/models/forcing_gbm.pkl",
+    "trackr_R1_northeast/air2stream_regional": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R1_northeast_base/models/air2stream_regional.pkl",
+    "trackr_R1_northeast/dosat_ratio[air2stream_regional]": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R1_northeast_base/models/dosat_ratio[air2stream_regional].pkl",
+    "trackr_R2_southeast/ealstm_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R2_southeast_ealstm_s0/g0_s0/ealstm_best.pt",
+    "trackr_R2_southeast/ealstm_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R2_southeast_ealstm_s1/g0_s1/ealstm_best.pt",
+    "trackr_R2_southeast/ealstm_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R2_southeast_ealstm_s2/g0_s2/ealstm_best.pt",
+    "trackr_R3_midwest_greatlakes/ealstm_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R3_midwest_greatlakes_ealstm_s0/g0_s0/ealstm_best.pt"
+   },
+   "data_snapshots": [
+    "sonde_daily",
+    "forcings_daily",
+    "hydromet_upstream_forcing",
+    "streamcat",
+    "sites"
+   ]
+  }
+ }
+}

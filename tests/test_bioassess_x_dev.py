@@ -127,28 +127,120 @@ def test_x_final_holm_matches_definition():
     assert adj == {"a": 0.03, "c": 0.06, "b": 0.06}
 
 
-def test_x_final_refuses_without_freeze_marker_or_with_test_rows(tmp_path, monkeypatch):
-    F = _final()
-    monkeypatch.setattr(F, "FREEZE", tmp_path / "freeze.json")
-    monkeypatch.setattr(F, "CANDIDATE", tmp_path / "cand.json")
-    monkeypatch.setattr(F, "MARKER", tmp_path / "marker.json")
-    (tmp_path / "cand.json").write_text("{}")
-    with pytest.raises(SystemExit, match="no bioassess_x_freeze"):
-        F.verify_freeze()
-    from sentinel.core.registry import file_sha256
+def _guard(tmp_path, monkeypatch):
+    from sentinel.core import paths
+    from sentinel.models.bioassess import xtestlook as XL
 
-    (tmp_path / "freeze.json").write_text(json.dumps({"status": "frozen",
-                                                      "candidate_sha256": file_sha256(tmp_path / "cand.json")}))
-    (tmp_path / "marker.json").write_text("{}")
-    with pytest.raises(SystemExit, match="one-time marker"):
-        F.verify_freeze()
-    (tmp_path / "marker.json").unlink()
-    monkeypatch.setattr(F, "registry_has", lambda e, registry_path=None: e == F.EXPERIMENT)
-    with pytest.raises(SystemExit, match="already holds"):
-        F.verify_freeze()
-    (tmp_path / "freeze.json").write_text(json.dumps({"status": "frozen", "candidate_sha256": "0" * 64}))
-    with pytest.raises(SystemExit, match="does not match"):
-        F.verify_freeze()
+    monkeypatch.setattr(XL, "FREEZE_FILE", tmp_path / "bioassess_x_freeze.json")
+    monkeypatch.setattr(XL, "CANDIDATE_FILE", tmp_path / "bioassess_x_freeze_candidate.json")
+    monkeypatch.setattr(paths, "REGISTRY_PATH", tmp_path / "registry.jsonl")
+    monkeypatch.setattr(XL, "scoring_code_sha256", lambda: "c0de")
+    return XL
+
+
+def _freeze_rec(XL, **kw):
+    rec = {"status": "frozen", "candidate_sha256": XL.sha_file(XL.CANDIDATE_FILE), "scoring_code_sha256": "c0de",
+           "data_snapshots": {"x": 1}, "candidates": {"a": 1}, "comparators": {"a": 1}, "seeds": [0, 1, 2],
+           "n_boot": 2000, "n_boot_confirmatory": 10000, "alpha": 0.05}
+    rec.update(kw)
+    return rec
+
+
+def test_x_testlook_accepts_only_the_lead_freeze_file(tmp_path, monkeypatch):
+    XL = _guard(tmp_path, monkeypatch)
+    XL.CANDIDATE_FILE.write_text(json.dumps({"status": "candidate"}))
+    with pytest.raises(XL.SingleLookError, match="does not exist"):
+        XL.load_freeze()
+    with pytest.raises(XL.SingleLookError, match="candidate record is never accepted"):
+        XL.load_freeze(XL.CANDIDATE_FILE)
+    XL.FREEZE_FILE.write_text(json.dumps(_freeze_rec(XL, status="candidate")))
+    with pytest.raises(XL.SingleLookError, match="not 'frozen'"):
+        XL.load_freeze()
+    XL.FREEZE_FILE.write_text(json.dumps(_freeze_rec(XL, candidate_sha256="0" * 64)))
+    with pytest.raises(XL.SingleLookError, match="does not match the candidate"):
+        XL.load_freeze()
+    XL.FREEZE_FILE.write_text(json.dumps(_freeze_rec(XL, scoring_code_sha256="other")))
+    with pytest.raises(XL.SingleLookError, match="scoring code changed"):
+        XL.load_freeze()
+    XL.FREEZE_FILE.write_text(json.dumps(_freeze_rec(XL)))
+    assert XL.load_freeze()["_sha256"] == XL.sha_file(XL.FREEZE_FILE)
+
+
+def test_x_testlook_claim_seal_score_single_look(tmp_path, monkeypatch):
+    XL = _guard(tmp_path, monkeypatch)
+    XL.CANDIDATE_FILE.write_text("{}")
+    XL.FREEZE_FILE.write_text(json.dumps(_freeze_rec(XL)))
+    fr = XL.load_freeze()
+    root = tmp_path / "look"
+    with pytest.raises(XL.SingleLookError, match="open, unscored"):
+        XL.require_open_claim(root)
+    XL.claim(fr, "lead", tmp_path / "run", root=root)
+    assert XL.registry_rows()[0]["metric"] == "look_claimed"
+    assert not (root / "TEST_LOOK.json").stat().st_mode & stat.S_IWUSR
+    XL.require_open_claim(root)
+    with pytest.raises(XL.SingleLookError, match="registry already holds"):
+        XL.claim(fr, "lead", tmp_path / "run", root=root)
+    (tmp_path / "reg2.jsonl").write_text("")
+    with pytest.raises(XL.SingleLookError, match="already claimed"):     # O_EXCL marker even with a clean registry
+        XL.claim(fr, "lead", tmp_path / "run", root=root, registry_path=tmp_path / "reg2.jsonl")
+    XL.claim_resume("lead", tmp_path / "run", root=root)                 # the single resume
+    with pytest.raises(XL.SingleLookError, match="already used"):
+        XL.claim_resume("lead", tmp_path / "run", root=root)
+    pdir = tmp_path / "run" / "predictions"
+    pdir.mkdir(parents=True)
+    pd.DataFrame({"a": [1.0]}).to_parquet(pdir / "m__s0.parquet")
+    XL.seal_predictions(pdir, root=root)
+    with pytest.raises(XL.SingleLookError, match="already sealed"):
+        XL.seal_predictions(pdir, root=root)
+    assert XL.check_sealed(root=root) == pdir
+    XL.mark_scored({"x": 1}, root=root)
+    with pytest.raises(XL.SingleLookError, match="already scored"):
+        XL.check_sealed(root=root)
+    with pytest.raises(XL.SingleLookError, match="open, unscored"):
+        XL.require_open_claim(root)
+    with pytest.raises(FileExistsError):
+        XL.mark_scored({"x": 2}, root=root)
+
+
+def test_x_testlook_sealed_prediction_tamper_detected(tmp_path, monkeypatch):
+    XL = _guard(tmp_path, monkeypatch)
+    root, pdir = tmp_path / "look", tmp_path / "p"
+    pdir.mkdir()
+    pd.DataFrame({"a": [1.0]}).to_parquet(pdir / "m.parquet")
+    XL.seal_predictions(pdir, root=root)
+    f = pdir / "m.parquet"
+    f.chmod(0o644)
+    pd.DataFrame({"a": [2.0]}).to_parquet(f)
+    with pytest.raises(XL.SingleLookError, match="modified"):
+        XL.check_sealed(root=root)
+
+
+def test_x_testlook_data_pins_detect_content_change(tmp_path, monkeypatch):
+    from sentinel.core import paths
+
+    XL = _guard(tmp_path, monkeypatch)
+    proc, man = tmp_path / "processed", tmp_path / "manifests"
+    (proc / "d").mkdir(parents=True)
+    man.mkdir()
+    (proc / "d" / "a.parquet").write_bytes(b"1")
+    (man / "m.json").write_text("{}")
+    monkeypatch.setattr(paths, "PROCESSED", proc)
+    monkeypatch.setattr(paths, "MANIFESTS", man)
+    monkeypatch.setattr(XL, "DATA_PINS", {"r": ("m", "d", ("a.parquet",))})
+    rec = {"data_snapshots": XL.make_data_pins()}
+    XL.verify_data_pins(rec)
+    (proc / "d" / "a.parquet").write_bytes(b"2")
+    with pytest.raises(XL.SingleLookError, match="content changed"):
+        XL.verify_data_pins(rec)
+
+
+def test_x_test_rows_need_an_open_claim(monkeypatch, tmp_path):
+    from sentinel.models.bioassess import xdev as XD
+    from sentinel.models.bioassess import xtestlook as XL
+
+    monkeypatch.setattr(XL, "look_dir", lambda root=None: tmp_path / "nolook")
+    with pytest.raises(XL.SingleLookError):
+        XD.load_test_rows(pd.DataFrame(), "X-L")
 
 
 def test_x_final_record_verification_detects_changed_hash(tmp_path, monkeypatch):
@@ -205,3 +297,40 @@ def test_chunked_nograd_forward_equals_full_batch():
         assert BS.build_model is not XB._ChunkedBuild
     from sentinel.models.bioassess import bioset as BS2
     assert BS2.build_model.__name__ == "build_model"
+
+
+def test_x_event_track_units_climatology_and_power_sets():
+    from sentinel.events import bioassess_x as XE
+
+    assert np.isclose(XE.to_event_units([np.log10(230.0)], "X-L", "E2a")[0], 230.0)
+    assert np.isclose(XE.to_event_units([2.0], "X-L", "E5b")[0], 0.1)          # 100 µg/L = 0.1 mg/L
+    assert XE.to_event_units([7.1], "X-U", "E6")[0] == 7.1
+    assert XE.POWERED.isdisjoint(XE.DESCRIPTIVE_ONLY)
+    assert ("X-U", "E6") in XE.POWERED and ("X-U", "E2a") in XE.DESCRIPTIVE_ONLY   # v8a: the power rule governs
+    assert set(XE.TRACK) == XE.POWERED | XE.DESCRIPTIVE_ONLY
+    doy = np.array([15.0, 196.0])
+    m = XE.month_of(np.sin(2 * np.pi * doy / 365.25), np.cos(2 * np.pi * doy / 365.25))
+    assert m.tolist() == [1, 7]
+    prev, clim = XE.prevalence_and_climatology(np.array([1, 0, 0, 1, np.nan]), np.array([1, 1, 7, 7, 7]),
+                                               np.array([1, 7, 12]))
+    assert np.allclose(prev, 0.5) and np.isclose(clim[0], (1 + 0.5) / 3) and np.isclose(clim[2], 0.5)
+    pw = XE.power_flag(np.array([1] * 30 + [0] * 5), np.array([f"c{i % 12}" for i in range(35)]))
+    assert pw["n_pos"] == 30 and pw["n_clusters_pos"] == 12 and pw["flag"] == "F"
+
+
+def test_x_scoring_code_hash_tolerates_missing_shared_events_module():
+    from sentinel.models.bioassess import xtestlook as XL
+
+    assert "sentinel/eval/events.py" in XL.SCORING_CODE and len(XL.scoring_code_sha256()) == 64
+
+
+def test_x_event_derived_probability_monotone_with_shared_module():
+    pytest.importorskip("sentinel.eval.events")
+    from sentinel.events import bioassess_x as XE
+
+    mu = np.log10(np.array([50.0, 230.0, 1000.0]))
+    p = XE.derived_probability(mu, 0.2, "X-L", "E2a")
+    assert np.all(np.diff(p) > 0) and abs(p[1] - 0.5) < 0.05
+    assert XE.labels(np.log10([100.0, 300.0]), "X-L", "E2a").tolist() == [0.0, 1.0]
+    assert XE.labels(np.log10([230.0, 20.0]), "X-L", "E2a").tolist() == [0.0, 0.0]     # boundary: not > 230
+    assert XE.labels([2.0], "X-L", "E5b").tolist() == [0.0]                              # 100 µg/L = 0.1, not > 0.1

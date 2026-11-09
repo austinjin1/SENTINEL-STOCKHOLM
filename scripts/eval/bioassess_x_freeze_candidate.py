@@ -28,7 +28,8 @@ OUT = REPO / "docs/preregistration/bioassess_x_freeze_candidate.json"
 SEL = XD.DEV_DIR / "selection_x_v1.json"
 CODE = ["docs/preregistration/bioassess_x_protocol.md", "configs/bioassess/bioset.yaml", "configs/bioassess/baselines.yaml",
         "sentinel/models/bioassess/xtrack.py", "sentinel/models/bioassess/xdata.py", "sentinel/models/bioassess/xdev.py",
-        "sentinel/models/bioassess/xbioset.py", "sentinel/models/bioassess/data.py", "sentinel/models/bioassess/uk.py",
+        "sentinel/models/bioassess/xbioset.py", "sentinel/models/bioassess/xtestlook.py",
+        "sentinel/models/bioassess/data.py", "sentinel/models/bioassess/uk.py",
         "sentinel/models/bioassess/features.py", "sentinel/models/bioassess/baselines.py",
         "sentinel/models/bioassess/bioset.py", "sentinel/models/bioassess/cv.py", "sentinel/models/bioassess/splits.py",
         "sentinel/models/bioassess/pretrain.py", "sentinel/models/bioassess/evaluate.py",
@@ -38,7 +39,8 @@ CODE = ["docs/preregistration/bioassess_x_protocol.md", "configs/bioassess/biose
         "sentinel/models/chemtox/tabpfn_model.py", "scripts/eval/bioassess_x_final.py", "scripts/eval/bioassess_x_dev.py",
         "scripts/eval/bioassess_x_bioinfer.R", "scripts/eval/bioassess_x_gjam.R", "scripts/train/bioassess_x_bioset.py",
         "scripts/eval/bioassess_x_select.py", "scripts/eval/bioassess_x_freeze_candidate.py",
-        "tests/test_bioassess_models.py", *X.FROZEN_SPLIT_FILES.values()]
+        "tests/test_bioassess_models.py", "tests/test_bioassess_x_dev.py", "sentinel/events/bioassess_x.py",
+        "scripts/eval/bioassess_x_events.py", *X.FROZEN_SPLIT_FILES.values()]
 RUN_FILES = [XD.XDIR / "splits_x_v1.parquet", XD.XDIR / "splits_x_v1.json", XD.XDIR / "pools_x_v1.json",
              XD.XDIR / "power_x_v1.json", XD.DEV_DIR / "folds_dev_v1.json", SEL]
 DATA = ["processed/nars_streams/visits.parquet", "processed/nars_streams/benthic_counts.parquet",
@@ -86,6 +88,46 @@ def _versions():
     return mod.package_versions(PACKAGES), mod.r_package_versions()
 
 
+def event_track(sel: dict) -> dict:
+    """Secondary event track (amendment v8): specs, dev power, test-block capacity, frozen calibration data."""
+    from sentinel.events import bioassess_x as XE
+
+    evm = REPO / "sentinel/eval/events.py"
+    devf, calf = XD.DEV_DIR / "events" / "events_dev_v1.json", XD.DEV_DIR / "events" / "events_calibration_v1.parquet"
+    et = {"amendment": "v8", "role": "SECONDARY (never in the 12-test confirmatory family); scored in the same single "
+                                    "M5-X look; original M5 test blocks are spent and unused",
+          "events": {f"{b}|{c}": {"target": t, "shared_event_code": XE.EVENT_CODE[c],
+                                  "direct_head": (b, c) in XE.POWERED,
+                                  "status": "descriptive only" if (b, c) in XE.DESCRIPTIVE_ONLY else "secondary"}
+                     for (b, c), (t, _, _) in XE.TRACK.items()},
+          "descriptive_only_note": "Power rule (>= 30 positives and >= 10 clusters on the development pseudo-test) "
+                                   "governs (amendment v8a: the lead corrected an earlier instruction that conflicted "
+                                   "with it, before any event output existed). Powered: X-L E5b, X-L E6, X-U E6 (35/25). "
+                                   "Descriptive only: X-U E2a (19/7), X-L E2a (11/11), X-L E3 (11/11).",
+          "threshold_baselines": {b: {m: comparator_spec(m, sel["blocks"][b]["variant_choice"]) for m in XE.COMPARATORS}
+                                  for b in XD.BLOCKS}}
+    if not evm.is_file() or not devf.is_file() or not calf.is_file():
+        et["status"] = ("BLOCKED: " + ("shared sentinel/eval/events.py not built yet; " if not evm.is_file() else "")
+                        + ("development event run not done (waits for the lead's events.py v1 release notice)"
+                           if not devf.is_file() else ""))
+        return et
+    dev = json.loads(devf.read_text())
+    et.update({"status": "active", "events_module_sha256": file_sha256(evm), "calibration_file": str(calf),
+               "calibration_sha256": file_sha256(calf), "dev_results_file": str(devf),
+               "dev_results_sha256": file_sha256(devf)})
+    cap = []
+    for k, v in dev["events"].items():
+        et["events"][k].update({"power_dev": v["power_dev"], "projection": v["projection"]})
+        pr = v["projection"]["projected_test_positives"]
+        cap.append(f"{k}: dev {v['power_dev']['n_pos']} positives / {v['power_dev']['n_clusters_pos']} clusters "
+                   f"({v['power_dev']['flag']}); projected test positives ≈ {pr:.0f} of {v['projection']['n_test_split']} "
+                   f"rows -> {'can carry it (secondary)' if (pr >= 30 and et['events'][k]['status'] == 'secondary') else 'descriptive only'}")
+    et["test_block_capacity"] = ("Test labels unread; projection = development prevalence x development label "
+                                 "availability x test rows. The plan's power rule is re-applied on the test rows inside "
+                                 "the look. " + " | ".join(cap))
+    return et
+
+
 def build() -> dict:
     S, frozen, _ = XD.load_context()
     for b, fl in XD.read_folds(XD.DEV_DIR / "folds_dev_v1.json", S, frozen).items():
@@ -93,7 +135,19 @@ def build() -> dict:
             X.assert_fit_ids(XD.keys_of(fo.train), S, frozen)
     sel = json.loads(SEL.read_text())
     power = json.loads((XD.XDIR / "power_x_v1.json").read_text())
+    gj = {}
+    for b in XD.BLOCKS:
+        f = XD.DEV_DIR / "r_out" / "gjam" / b / "fold00_info.txt"
+        gj[b] = f.read_text() if f.exists() else "missing"
     rec = {"status": "candidate", "prepared": dt.datetime.now().isoformat(timespec="seconds"),
+           "DISCLOSURE_GJAM_FIDELITY_AMENDMENT_V6": (
+               "PROMINENT DISCLOSURE: the GJAM fidelity check pre-declared in amendment v4.8 was run first and FAILED "
+               "(X-L fold 0: r = 0.43 TP, 0.52 TN, 0.54 chloride; NA for conductivity, turbidity, pH; "
+               "x_track/dev/r_out/gjam/X-L/fold00_v4check_info.txt). Amendment v6, which replaces the comparison by "
+               "our routine run in gjam's in-sample scheme, was written AFTER that failure was seen (but before any "
+               "GJAM development prediction was scored). It can only add a comparator. Full-size v6 outcome per "
+               "block is attached below; GJAM is a comparator only if v6 passed in both blocks."),
+           "gjam_v6_fidelity_info": gj,
            "protocol": "docs/preregistration/bioassess_x_protocol.md", "seeds": [0, 1, 2], "n_boot": 2000,
            "n_boot_confirmatory": 10000, "alpha": 0.05,
            "family": "C-X vs per-target comparator on r2_anomaly, 2 blocks x 6 targets = 12 tests, Holm (alpha 0.05); "
@@ -115,6 +169,7 @@ def build() -> dict:
         rec["dev_evidence"][b] = {k: blk[k] for k in ("sentinel_mean_r2_anomaly", "comparator_mean_r2_anomaly",
                                                        "paired_dev_vs_comparator", "n_pseudo_test")}
         n_conf[b] = blk["n_sentinel_configurations"]
+    rec["event_track"] = event_track(sel)
     rec["n_configurations_tried"] = {**n_conf, "total": sum(n_conf.values()), "cap": 12,
                                      "rule": "counted per (configuration, block); amendment v4.9"}
     rec["selection_note"] = ("Selected by the pre-registered rule (highest mean development r2_anomaly over the block's 6 "
@@ -129,6 +184,15 @@ def build() -> dict:
     rec["tabpfn_checkpoint"] = {"path": str(TABPFN_CKPT), "sha256": file_sha256(TABPFN_CKPT)}
     rec["sha256"][str(TABPFN_CKPT)] = rec["tabpfn_checkpoint"]["sha256"]
     rec["package_versions"], rec["r_package_versions"] = _versions()
+    from sentinel.models.bioassess import xtestlook as XL
+
+    rec["scoring_code_sha256"] = XL.scoring_code_sha256()
+    rec["scoring_code_files"] = list(XL.SCORING_CODE)
+    rec["data_snapshots"] = XL.make_data_pins()          # content-hash pins (manifest sha + exact loader files)
+    rec["freeze_procedure"] = ("After the independent pre-test review, the LEAD writes "
+                               "docs/preregistration/bioassess_x_freeze.json = this record with status 'frozen', "
+                               "frozen_at and candidate_sha256 = sha256 of this file. The scorer accepts only that "
+                               "file (xtestlook.load_freeze) and never this candidate.")
     rec["resume_rule"] = ("one resume after an infrastructure failure before the first bioassess_x_test registry row: "
                           "same record, same authorisation, same run directory; sha256-verified cached units are never "
                           "refitted (protocol §9)")

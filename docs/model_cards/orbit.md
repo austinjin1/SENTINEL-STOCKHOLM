@@ -64,6 +64,18 @@ registry entry (`results/registry.jsonl`, workstream `M2-orbit`).
 - **Inputs used.** Reflectance (harmonised DN × 1e-4), SCL, sun/view angles, AOT, JRC distance to land, and
   the chip-index lat/lon/sensing time. In-situ labels are never used.
 
+## (B) Event output: algal-bloom state (orbit_protocol.md §12, v0.4, 2026-11-09)
+- **E4a algal bloom** (chl-a > 20 µg/L; tiers > 12 and ≥ 50 µg/L), in-lake rows, state only (no onset: S2 revisit
+  ≥ 5 d and cloud gaps). Primary output: P(E4a) = exceedance of the SatWQ-Net seed-ensemble mixture, Platt-recalibrated
+  on the val cell (frozen). Challenger: a logistic head on the frozen fused embedding.
+- **E3 sediment plume** (TSS > 80 mg/L, turbidity > 50 NTU): exceedance probability reported for display only;
+  0 validation positives, so no skill claim is possible.
+- Code: `sentinel/events/orbit.py` (adapter), `sentinel/eval/events.py` (shared, v1.0); artifact
+  `events_orbit_<version>.pkl` (calibrators, direct heads, comparator classifiers), sha-pinned in the freeze.
+- Not for: cyanobacteria-specific detection (S2 has no 620 nm band; no phycocyanin), toxin presence, onset timing.
+  CyAN CI-cyano was not compared (needs an Earthdata login the user has not provided).
+- Validation results: registry experiment `orbit_events_val_<version>` (development, not claims).
+
 ## Evaluation
 - Headline cell: unseen lakes × 2024–2025. Not yet scored: `[PENDING]`.
 - Validation (development) results are in the registry under experiments `orbit_val_dev_v3` (fit = train role × ≤ 2021)

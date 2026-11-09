@@ -30,7 +30,7 @@ Protocol `docs/preregistration/downstream_musselguard.md`; split file and sha256
 
 ## Evaluation
 Single pre-registered test look (registry experiment `musselguard/test_look`); baselines and incumbents scored on identical rows;
-the §15.1 label is stated in the protocol's test-result section and in RESULTS.md. No numbers here.
+the §15.1 label is stated in `docs/preregistration/downstream_musselguard_test_results.md` (the frozen protocol itself is read-only) and in RESULTS.md. No numbers here.
 
 **Evaluation summary:** Competitive (beats all baselines at origin 2018, not at 2021; both origins were required). Primary registry rows: fc866dd478fc, bf1446da18cc, d22f0087f0b3, 39a3640ae5f1.
 

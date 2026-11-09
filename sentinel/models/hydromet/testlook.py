@@ -18,7 +18,9 @@ Order (``scripts/eval/hydromet_test_look.py``):
    :func:`require_open_claim`);
 4. predictions are written once, sealed 0444, with ``SHA256SUMS`` and an O_EXCL ``PREDICTIONS_SAVED.json``;
 5. scoring + registry rows, then the O_EXCL ``SCORED.json`` marker. After it, nothing can be re-scored.
-Crash recovery between 4 and 5: ``--rescore-from-saved`` scores the sealed, sha-checked predictions.
+Crash recovery between 4 and 5: ``--rescore-from-saved`` scores the sealed, sha-checked predictions. A crash before
+4 writes ``ABORTED.json`` (claim closed, registry row); ``--resume-aborted`` (:func:`resume_aborted`, logged, at most
+:data:`MAX_RESUMES` times) re-opens it under the same claim and predicts afresh.
 """
 
 from __future__ import annotations
@@ -34,7 +36,10 @@ from ...core import paths
 from ..sonde.guard import ProtectedDataError
 
 LOOKS = ("M6/test", "M6/test_b", "M6N/test", "M6R/test")
-LOOK_KEYS = ("block", "roles", "primary_models", "n_hypotheses", "comparators", "artifacts", "data_snapshots")
+LOOK_KEYS = ("block", "roles", "dataset", "primary_models", "n_hypotheses", "comparators", "artifacts",
+             "data_snapshots")
+DATASETS = {"M6/test": "sonde", "M6/test_b": "sonde", "M6R/test": "sonde", "M6N/test": "trackn"}
+MAX_RESUMES = 2
 
 
 def look_dir(look: str) -> Path:
@@ -71,6 +76,8 @@ def look_block(freeze: dict, look: str) -> dict:
         raise ProtectedDataError(f"freeze block {look} lacks {missing}")
     if int(blk["n_hypotheses"]) != len(blk["primary_models"]) * len(blk["comparators"]):
         raise ProtectedDataError(f"freeze block {look}: n_hypotheses != models × endpoints")
+    if blk["dataset"] != DATASETS[look]:
+        raise ProtectedDataError(f"freeze block {look}: dataset {blk['dataset']!r} != {DATASETS[look]!r}")
     return blk
 
 
@@ -137,23 +144,72 @@ def claim(look: str, freeze: dict) -> dict:
     return rec
 
 
+def _closed(look_path: Path) -> bool:
+    return (look_path / "SCORED.json").exists() or (look_path / "ABORTED.json").exists()
+
+
 def open_claims(freeze_sha: str) -> list[str]:
-    """Looks claimed under this freeze and not yet scored."""
+    """Looks claimed under this freeze that are neither scored nor aborted."""
     out = []
     root = paths.RUNS_ROOT / "hydromet" / "test_looks"
     for m in sorted(root.glob("*/TEST_LOOK.json")) if root.is_dir() else []:
         rec = json.loads(m.read_text())
-        if rec.get("freeze_sha256") == freeze_sha and not (m.parent / "SCORED.json").exists():
+        if rec.get("freeze_sha256") == freeze_sha and not _closed(m.parent):
             out.append(rec["look"])
     return out
 
 
-def require_open_claim(freeze: dict) -> str:
+def require_open_claim(freeze: dict, *, blocks=(), roles=(), dataset: str = "sonde") -> str:
+    """Protected data are authorised only for the cell of an open claim of THIS freeze (delta re-review D2): the
+    protected blocks requested must be the claimed look's block, the protected roles its roles, and the dataset
+    (sonde sites vs track-N stations) its dataset."""
+    from ..sonde.guard import PROTECTED_BLOCKS, PROTECTED_ROLES
+
+    want_blocks = set(blocks) & set(PROTECTED_BLOCKS)
+    want_roles = set(roles) & set(PROTECTED_ROLES)
     claims = open_claims(freeze["_sha256"])
-    if not claims:
-        raise ProtectedDataError("protected data need an open test-look claim of this freeze "
-                                 "(scripts/eval/hydromet_test_look.py); none exists or the look was scored")
-    return claims[0]
+    for look in claims:
+        blk = look_block(freeze, look)
+        if blk["dataset"] == dataset and want_blocks <= {blk["block"]} and want_roles <= set(blk["roles"]):
+            return look
+    raise ProtectedDataError(f"protected data {sorted(want_blocks | want_roles)} ({dataset}) need an open test-look claim "
+                             f"of this freeze covering that cell (open claims: {claims}); see hydromet_test_look.py")
+
+
+def abort(look: str, reason: str) -> None:
+    """Close a claim that failed before its predictions were sealed (logged marker + registry row)."""
+    if (look_dir(look) / "PREDICTIONS_SAVED.json").exists():
+        raise ProtectedDataError(f"{look}: predictions are sealed — use --rescore-from-saved, not abort")
+    _excl_write(look_dir(look) / "ABORTED.json", {"aborted": time.strftime("%Y-%m-%dT%H:%M:%S"), "reason": reason[-4000:]})
+    from ...core.registry import log_result
+
+    log_result(workstream="M6-hydromet", experiment=look, model="hydromet_test_look", metric="look_aborted", value=1.0,
+               split=f"{look} claim (single pass)", config={"look": look}, notes="aborted before sealing",
+               extra={"reason": reason[-500:]})
+
+
+def resume_aborted(look: str, freeze: dict) -> int:
+    """Documented recovery of an aborted claim (same freeze, nothing sealed, nothing scored): the ABORTED marker is
+    archived, the partial predictions are moved aside, a ``look_resumed`` registry row is written. At most
+    :data:`MAX_RESUMES` times; the look is then predicted afresh under the SAME claim."""
+    d = look_dir(look)
+    rec = json.loads(marker(look).read_text()) if marker(look).exists() else {}
+    if rec.get("freeze_sha256") != freeze["_sha256"]:
+        raise ProtectedDataError(f"{look}: the claim belongs to a different freeze")
+    if not (d / "ABORTED.json").exists() or (d / "PREDICTIONS_SAVED.json").exists() or (d / "SCORED.json").exists():
+        raise ProtectedDataError(f"{look}: only an aborted, unsealed, unscored look can be resumed")
+    n = len(list(d.glob("ABORTED_*.json"))) + 1
+    if n > MAX_RESUMES:
+        raise ProtectedDataError(f"{look}: resumed {MAX_RESUMES} times already — report to the lead")
+    (d / "ABORTED.json").rename(d / f"ABORTED_{n}.json")
+    if (d / "predictions").exists():
+        (d / "predictions").rename(d / f"predictions_aborted_{n}")
+    from ...core.registry import log_result
+
+    log_result(workstream="M6-hydromet", experiment=look, model="hydromet_test_look", metric="look_resumed", value=float(n),
+               split=f"{look} claim (single pass)", config={"look": look}, notes="resumed after an abort before sealing",
+               extra={"freeze_sha256": freeze["_sha256"]})
+    return n
 
 
 # --------------------------------------------------------------------------- sealed predictions
@@ -186,10 +242,17 @@ def check_sealed(look: str) -> Path:
     d = Path(rec["dir"])
     if _sha_file(d / "SHA256SUMS") != rec["sha256sums"]:
         raise ProtectedDataError(f"{look}: SHA256SUMS modified")
+    listed = {}
     for line in (d / "SHA256SUMS").read_text().splitlines():
         s, n = line.split("  ", 1)
-        if _sha_file(d / n) != s:
-            raise ProtectedDataError(f"{look}: sealed prediction {n} modified")
+        listed[n] = s
+    present = {f.relative_to(d).as_posix() for f in d.rglob("*") if f.is_file() and f.name != "SHA256SUMS"}
+    extra = sorted(present - set(listed))
+    if extra:   # delta re-review D3: nothing may be added to a sealed folder
+        raise ProtectedDataError(f"{look}: files not in SHA256SUMS inside the sealed folder: {extra[:5]}")
+    for n, s in listed.items():
+        if not (d / n).is_file() or _sha_file(d / n) != s:
+            raise ProtectedDataError(f"{look}: sealed prediction {n} modified or missing")
     return d
 
 

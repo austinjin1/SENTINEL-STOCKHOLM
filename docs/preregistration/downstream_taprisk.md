@@ -114,3 +114,37 @@ No git (user instruction): ordering evidence = registry timestamps + `prereg_sna
   design; variable selection is not applied in the reproduction (all curated StreamCat columns; the top-k
   selection is part of the phase-1 incumbent tuning). Simple-baseline list fixed as: location kNN (25 nearest
   training systems), state rate (shrunk), persistence, ambient rule, size/source logistic.
+
+## 10. Incumbent reproduction and iteration log (validation only)
+- **Reproduction (run `taprisk/reproduction`, 2026-11-09):** Pennino design on our units (GW catchments with ≥ 1 GW
+  CWS in train + val states, any nitrate MCL violation overlapping 2013–2017; 20,041 catchments, 253 violating;
+  balanced RF ×10, 10-fold CV on pre-balanced data): **sensitivity 0.813, specificity 0.815**, PCC 0.814, AUROC
+  0.883 vs published 0.758 / 0.815. Specificity reproduces exactly; sensitivity is **+0.055, outside the ±0.05
+  tolerance by 0.005, in the incumbent's favour**. Diagnosis: (i) sampling — 253 positives give a per-rep
+  sensitivity SE ≈ 0.025, so +0.055 ≈ 2 SE; (ii) design — fewer catchments (train + val states only, 20k vs 57k;
+  253 vs 748 violators) and the service-area-point proxy for facility locations; (iii) no variable selection in
+  the reproduction. The re-implementation is therefore not weaker than the published model on its own design;
+  phase 1 proceeds with this disclosure (no change to the incumbent).
+- **Phase 1 (runs `taprisk/phase1_<task>`, 2026-11-09; 4 configurations per learned model, 16 per task).** AUROC
+  (HUC8 paired CIs):
+  | task / set (n / pos) | pennino_rf | pennino_rf_hist | logistic | GBM | strongest simple | GBM − rf | GBM − rf_hist |
+  |---|---|---|---|---|---|---|---|
+  | D4a known (20,055 / 177) | 0.939 | 0.952 | 0.948 | **0.961** | kNN 0.865 | +0.022 [0.014, 0.033] | +0.009 [0.003, 0.016] |
+  | D4a new (4,520 / 41) | 0.803 | **0.891** | 0.874 | 0.865 | persistence 0.762 | +0.062 [0.014, 0.114] | −0.026 [−0.058, 0.006] |
+  | D4b known (2,915 / 434) | 0.831 | **0.843** | 0.822 | 0.838 | persistence 0.791 | +0.007 [−0.005, 0.020] | −0.005 [−0.014, 0.004] |
+  | D4b new (779 / 108) | 0.628 | 0.773 | **0.785** | 0.783 | persistence 0.746 | +0.155 [0.086, 0.219] | +0.010 [−0.016, 0.043] |
+  Pennino-form RF selected top-50 features (D4a) / all (D4b). The plain Pennino-form RF is beaten clearly in new
+  states (both tasks) and in known states (D4a); the history-augmented RF is not beaten on all sets → §7 rule
+  not met on validation (competitive).
+- **it1_ens (pre-registered 2026-11-09, before computing):** one change — challenger = equal-weight **rank**
+  average of the phase-1 GBM and `pennino_rf_hist` validation scores (balanced-RF probabilities are on a different
+  scale), from the saved validation predictions (no refit, no weight tuning). Same comparators and claim rule; the
+  ensemble must beat `pennino_rf`, `pennino_rf_hist` (its own component) and the strongest simple baseline on both
+  sets. Keep if it does; otherwise D4 stays competitive and the GBM is the freeze candidate for a "competitive" look.
+- **it1_ens result (run `taprisk/it1_ens`, 2026-11-09): rejected.** Ensemble − pennino_rf_hist: D4a known +0.006
+  [0.004, 0.010], D4a new −0.010 [−0.026, 0.006]; D4b known +0.001 [−0.003, 0.006], D4b new +0.014 [0.000, 0.031]
+  (p 0.044). It beats the plain Pennino-form RF on all four sets (+0.014 … +0.159) but not its own history-RF
+  component on all sets. **Status after 2 iterations (34 configurations): competitive** — the pre-registered
+  family includes `pennino_rf_hist`, so beating only the published-form RF does not meet §7 (as for D5, the
+  stricter pre-registered rule governs). Freeze candidate if a look is wanted: phase-1 GBM (D4a), expected
+  label "competitive" unless the test differs.

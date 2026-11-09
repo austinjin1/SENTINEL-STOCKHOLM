@@ -58,3 +58,9 @@ Nothing running. No `FREEZE_ew.json`, no real `.ew_scored_*` marker, no test blo
 - `docs/preregistration/FREEZE_ew.json` written (read-only) from the candidate's `freeze_record_draft` + `static_inputs` (sites.parquet `0e280071…`, streamcat_sites.parquet `b6886581…`), `osf_package` (`02ad146b…`, 126 files), `score_command`. Verified: load_freeze (code hash `c110bcff…`), all four strict data pins, OSF tarball sha, no pass claimed.
 - Archive `sentinel_runs/freeze_archives/ew_v2_freeze_*.tar.gz` + `.sha256`; registry row `ew_v2/prereg_snapshot`.
 - **Test-A is NOT to be scored until the OSF registration exists** (protocol header). Before the pass the lead re-verifies static_inputs and runs the registered `score_command` exactly (incl. `--allow-test`).
+
+## 2026-11-09 (lead): OSF dropped; EW-v2 Test-A pass started
+- The user decided not to use OSF. The public record is GitHub commit `cef72b6` (branch `v2-rebuild`); see `docs/preregistration/ew_v2_post_freeze_addendum.md` A1. Never write "pre-registered on OSF".
+- Before the pass the lead re-verified: `load_freeze` code hash ok, all 4 snapshot pins match, both static_inputs shas match, and no `.ew_scored_*` marker existed.
+- The registered `score_command` was started exactly as frozen, CPU only (6 threads). Log: `sentinel_runs/sonde/logs/ew_v2_testA_score_20261109.log`.
+- Do NOT re-run. Post-results review next.

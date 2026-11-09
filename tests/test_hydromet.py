@@ -338,9 +338,17 @@ def _claim_sandbox(monkeypatch, tmp_path, ff):
     import sentinel.core.registry as R
 
     monkeypatch.setattr(_paths, "RUNS_ROOT", tmp_path / "runs_sandbox")
+    monkeypatch.setattr(guard, "FREEZE_DIR", tmp_path)
     monkeypatch.setattr(TL, "registry_rows", lambda exp: 0)
     monkeypatch.setattr(R, "log_result", lambda **k: None)
     TL.claim("M6/test", guard.load_freeze(ff, check_code=False))
+
+
+def _look_blocks(models=("ealstm",)):
+    comps = {v: {"gbm": "forcing_gbm", "physics": "air2stream_regional"} for v in
+             ("temp_c_mean", "temp_c_7dadm", "do_mgl_mean", "do_mgl_min")}
+    return {"M6/test": {"block": "test", "roles": ["test"], "dataset": "sonde", "primary_models": list(models),
+                        "n_hypotheses": 4 * len(models), "comparators": comps, "artifacts": {}, "data_snapshots": []}}
 
 
 def test_guard_refuses_test_without_flag_and_freeze(tmp_path, data, monkeypatch):
@@ -350,7 +358,9 @@ def test_guard_refuses_test_without_flag_and_freeze(tmp_path, data, monkeypatch)
         guard.check_access(("train", "val"), ("test",))
     with pytest.raises(guard.ProtectedDataError):
         guard.check_access(("train", "test"), ("train",), allow_test=True, freeze_file=tmp_path / "missing.json")
-    good = {"created": "2026-10-22", "split_sha256": data.split.sha256(),
+    monkeypatch.setattr(guard, "FREEZE_DIR", tmp_path)
+    good = {"created": "2026-10-22", "status": "FROZEN", "authorised_by": "lead (test)", "looks": _look_blocks(),
+            "split_sha256": data.split.sha256(),
             "scoring_code_sha256": guard.scoring_code_sha256(), "weights_sha256": {"x": "0" * 64}}
     ff = tmp_path / "FREEZE_hydromet.json"
     ff.write_text(json.dumps(good))
@@ -600,7 +610,10 @@ def test_predict_score_end_to_end_with_freeze(tmp_path, monkeypatch):
     assert str(arts["ealstm_s0"]).endswith("g0_s0/ealstm_best.pt")
     comps = {v: {"gbm": "forcing_gbm", "physics": "air2stream_regional" if v.startswith("temp")
                  else "dosat_ratio[air2stream_regional]"} for v in E.PRIMARY_TARGETS}
-    freeze = {"created": "2026-10-22", "split_sha256": d.split.sha256(), "scoring_code_sha256": guard.scoring_code_sha256(),
+    monkeypatch.setattr(guard, "FREEZE_DIR", tmp_path)
+    freeze = {"created": "2026-10-22", "status": "FROZEN", "authorised_by": "lead (test)",
+              "looks": _look_blocks(E.SENTINEL_MODELS),
+              "split_sha256": d.split.sha256(), "scoring_code_sha256": guard.scoring_code_sha256(),
               "weights_sha256": {k: guard.artifact_sha256(p) for k, p in arts.items()}, "comparators": comps}
     ff = tmp_path / "FREEZE_hydromet.json"
     ff.write_text(_json.dumps(freeze))

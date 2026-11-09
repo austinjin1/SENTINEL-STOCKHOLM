@@ -496,3 +496,18 @@ Approved by the lead 2026-11-08. Pre-registered before any 2025 community or che
 - **Cycle 6 (planned, design to be declared before running):** label-free pretraining of the SeqSet encoder on EMP
   freshwater + NEON development communities (V4-window tokens), then fine-tuning under LODO. The pretraining data
   never include holdout events.
+
+### 10.7 Secondary event track (B output) — pre-registered 2026-11-09, before any event analysis
+User requirement (lead, 2026-11-09): every model outputs (A) water quality and (B) harmful-event detection. M3's
+B output is pre-registered in `docs/preregistration/events_microbe_protocol.md` (+ `configs/events/microbe.yaml`).
+- Framing: chronic state classification at the sample date, not onset.
+- Inferential: E5b TP > 0.1 mg/L (226 positives / 19 domains) and E4a chl-a > 20 µg/L (35 / 14).
+- Borderline: E2c SC > 300 µS/cm (268 / 10), with a fixed power rule.
+- Descriptive: E1 DO < 3 and DO < 5 (20 / 5 and 48 / 7), E3 turbidity > 50 FNU (25 / 8).
+- Routes: derived is primary (Gaussian on the target scale, leave-one-domain-out σ, cross-fitted Platt); a
+  direct head is the challenger, where powered.
+- Comparators: threshold-on-baseline (tier0_best, RF[genus-CLR], the strongest community baseline) and the event
+  climatology.
+- Metrics: paired ΔBrier / ΔAUPRC with domain- and site-cluster CIs.
+- It runs after the permutation nulls, once `sentinel/eval/events.py` exists, and before the freeze candidate.
+  It changes nothing in §1–§9.

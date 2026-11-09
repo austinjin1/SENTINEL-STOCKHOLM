@@ -1,8 +1,9 @@
 {
- "NOT_A_FREEZE": "candidate record for review; FREEZE_hydromet.json is written by the lead only",
- "created": "2026-11-09T14:18:49+00:00",
+ "NOT_A_FREEZE": "candidate record for review; FREEZE_hydromet.json is written by the lead only (drop this key and the audit fields, set status FROZEN and authorised_by)",
+ "status": "CANDIDATE",
+ "created": "2026-11-09T18:51:40+00:00",
  "protocol": "docs/preregistration/hydromet_protocol.md (DRAFT v0.11, \u00a78)",
- "protocol_sha256": "7f7df3f350111d2788be44dd8d5a1a360673701b26bcbef8a75339c8394c666c",
+ "protocol_sha256": "55ab718280401f5445a737419e224b3449d9e05ecfe9a98795558c10d4344401",
  "candidate": {
   "model": "ealstm_ws_full",
   "seeds": [
@@ -15,7 +16,55 @@
   "reported_separately": "ealstm_gbmblend"
  },
  "split_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
- "scoring_code_sha256": "bbbd3cbea9619169417fab97621f18fad6d6bc47841364fcaeb1b96879ea3849",
+ "scoring_code_sha256": "5bd7d3292a29aa9beb46cd1da5e480ca58b3856eeb909dd7fd43b0e3561fd60b",
+ "frozen_files": {
+  "configs/hydromet/baselines.yaml": "3400f80b4d15b9c61bba500d09d58d8cfaaddd6d59de5936eef3f594b9d8b30b",
+  "configs/hydromet/baselines_compact.yaml": "a5a24aa503a3c03234e9cfea9c73ba5c430946c2a2eced0f450ae2f3b861015f",
+  "configs/hydromet/baselines_gbmbag.yaml": "c2dfdef5f4b8b0fc696c3348b241060225cc9927de5df1e8bcea22c1fce50642",
+  "configs/hydromet/baselines_nogauge.yaml": "5946c533b13e0821cf51f622ba66cebb02d6b47509c3100e40b33fb300535121",
+  "configs/hydromet/baselines_ws_gbmbag.yaml": "2d2f4b527dbcfd8d2614a0d4ec550a490678335c3100bf4692ab335941e32143",
+  "configs/hydromet/baselines_ws_physics.yaml": "05c3b4d6d907d607b505b93865cddedff9d819dce9f443d26c168eb70e1271d4",
+  "configs/hydromet/common.yaml": "b3ed8a77400c1d2b6f4401107e77bae6394c6fe4948e7d2650826e2f17e8d4ae",
+  "configs/hydromet/lstm.yaml": "ab1fa59a09e1c0a67be422f5181b066fd770bcbe275dd80c02f7b34fa5da525b",
+  "configs/hydromet/lstm_compact.yaml": "7afec37b52f0efe8a2ed139e361118b7eabae3ee3ba2b0b91b294f3f777a07ea",
+  "configs/hydromet/lstm_full.yaml": "d08bfed2de0b26a480a4d95b1e8c7fb6186619b7b33db1f406e50e3b22ed08ae",
+  "configs/hydromet/lstm_nogauge.yaml": "32e4d0a0a948420f49899159d92dba500a5b8662f672e86086f464fec682bd4b",
+  "configs/hydromet/lstm_physics_do.yaml": "f71abc26afe5791babacfd9c6ec6ddb48a13c188658302d22c6d1e4a6535ce02",
+  "configs/hydromet/lstm_ws.yaml": "3aaf7c69d11bea9ac2478b3b0f8c52c5581c0b2cc9b4efc8f080b2c6bc078d24",
+  "configs/hydromet/lstm_ws_full.yaml": "6d4f843f76fe540f2a9d0ce7c04d221e975f623f246e61fdb4b53e12ec4def3f",
+  "docs/preregistration/hydromet_protocol.md": "55ab718280401f5445a737419e224b3449d9e05ecfe9a98795558c10d4344401",
+  "scripts/eval/hydromet_freeze_candidate.py": "1bd20d99c695ad41dc5cf359ae0987de7d738840a62d566fb364aea7b84b8039",
+  "scripts/eval/hydromet_make_tracks.py": "54e900dfefef535715dcf7cfebc2065ac91b066de0be53c8cba51fd276a0438c",
+  "scripts/eval/hydromet_predict.py": "a1d11f25ae8916a2efe9379b902ed944710047ef307197daded2daf1caf1af71",
+  "scripts/eval/hydromet_score.py": "8949c9b3a47352487568a87b9b3852a1f594e9a6c85ca516f022d9b2ba7c0fb8",
+  "scripts/eval/hydromet_strata.py": "921cd17cb185d8c2afa969f67ed8648de358fde1b28a9f9ee13d044e1f161a42",
+  "scripts/eval/hydromet_test_look.py": "728e9a0de63163f73607b8243589c56f814f52a2505203422175c63a13e7e0dc",
+  "scripts/eval/hydromet_track_n.py": "676e9c66b3a577b6b059733712d798f2c096e7bd4d9166f18e9fa01dfbe67658",
+  "scripts/train/hydromet_baselines.py": "5249fe1d4c6c232ef5cc53e273d678fd77f61d538dc6597895d203c2c7de800d",
+  "scripts/train/hydromet_lstm.py": "d6793cc6a6f4cabad358e770cbbb87e0e3bb915293748e75cefc40f7925ee03f",
+  "sentinel/core/registry.py": "8e1f1733a546b30189335403e3acfc61c9637301195c94f06dd17582a73605f7",
+  "sentinel/data/hydromet_upstream.py": "da844421bc97a45ef58ebf3966e0cfe0ab6baba405aa8beb7a2b01df7de65cf6",
+  "sentinel/data/sonde_splits.py": "73634db89768b6f75f07eac01d885714986d24809c61b41bc7bfdfb8df5c83a9",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/hydromet/__init__.py": "382946932fc8af7d9bef62bf91276b03e01f5629d6958d86b9a28cc24c0915cd",
+  "sentinel/models/hydromet/baselines.py": "9a3daae19a9b7fa66b5bc357f1dd475bb718fdcf208042a08f7c078d8e1eae0e",
+  "sentinel/models/hydromet/data.py": "31cfd6d977494b625cd3799acbf955677788172c30d1feac30339d6104d5c524",
+  "sentinel/models/hydromet/evaluate.py": "9abff510eff1e802384cd96bef9e35480a35c510c062d8bf52a19ae62c0512a8",
+  "sentinel/models/hydromet/features.py": "74dfd86eecab405bf5cbea79b0908b4f1690f982ac9d96ce7b372a1899d19903",
+  "sentinel/models/hydromet/guard.py": "64492f8b1620e0ebf27d6991f3fe8f7a9af02d4dc1653659c407e9ea8604d193",
+  "sentinel/models/hydromet/lstm.py": "cf602328822b73060d542c83e304b28d8a5ee779227cf8fe32a590ba9c42035c",
+  "sentinel/models/hydromet/physics.py": "6eab5a085fa7a9bedbf0b596df9398c80153ce9d8eac4cd2d9cbc741b4892333",
+  "sentinel/models/hydromet/pipeline.py": "3ff77abf2b3b4d7136ca5c383aeb928238c7e87f4023a48b53602ae7cd2066dd",
+  "sentinel/models/hydromet/runner.py": "1433c26b04fbea70622fc43b44c5b559743aeaf651e4385f33b178d69f1a1bcd",
+  "sentinel/models/hydromet/testlook.py": "98f6c9c64f43303a265e6e1a8ed6d430c51d162e049bb860012ee349b155a5d6",
+  "sentinel/models/hydromet/track_n.py": "a8fbc86dd3048cd2cdc46bd48d9a7d14c0daa31d6080b570322539f1558f3ada",
+  "sentinel/models/hydromet/tracks.py": "cce6b5824f49f8503d268e219a29da7c286c822e340e9bce30b07c874de0434c",
+  "sentinel/models/sonde/data.py": "40f0226c35aef908af08a6d9978069e18ca3abb491d405a47e14e28b6d31fecd",
+  "sentinel/models/sonde/guard.py": "d6d794f648bb56fd7692d397b155673d7885086452fec982ca9c913b8023bc02",
+  "sentinel/models/sonde/runner.py": "28a1ba006b88c114a05145406251276ddcd85dfe13cbf85f8c62328036bf5ea4"
+ },
  "weights_sha256": {
   "ealstm_s0": "6d3b8ac61048085b741ec95656a6491f5382c3948be044114a2e0722a7afd684",
   "ealstm_s1": "17329fbb44c417f7cb2d48d7d4038d6b140f4e17d158f648363926df90d52c53",
@@ -94,6 +143,7 @@
    "roles": [
     "test"
    ],
+   "dataset": "sonde",
    "label_model": "ealstm_ws_full",
    "primary_models": [
     "ealstm",
@@ -163,7 +213,14 @@
    "roles": [
     "test"
    ],
+   "dataset": "trackn",
    "label_model": null,
+   "sensitivity": {
+    "exclude_basin_method": "local (NLDI basin unavailable)",
+    "basins_file": "processed/hydromet_upstream_forcing/basins_trackn.parquet",
+    "experiment": "M6N/test_sens427",
+    "descriptive": true
+   },
    "primary_models": [
     "ealstm_ws_full",
     "ealstm_gbmblend"

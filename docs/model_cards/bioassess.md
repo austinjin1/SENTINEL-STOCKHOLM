@@ -28,7 +28,7 @@ limitations: >
 **Status: externally tested once (2026-11-09).** Development results are registry entries
 (`bioassess_phase1_cv`, `bioassess_phase1_selection`); the single test pass is registry experiment
 `bioassess_test` (2,180 rows), the post-hoc bio.infer comparison `bioassess_test_posthoc`. The headline
-test numbers below are copied from those rows (RESULTS.md, 2026-11-09; protocol §11).
+test numbers below are copied from those rows (RESULTS.md, 2026-11-09; docs/preregistration/bioassess_test_results.md, formerly protocol §11).
 
 ## Model details
 

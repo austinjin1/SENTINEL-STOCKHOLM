@@ -14,7 +14,7 @@
   - H-M5 met 6/6 (Holm, seed-averaged); 4/6 all seeds +; Test C 5/6 (chloride all seeds negative).
   - T1/T2 transfer negative.
   - Post hoc (A3/A4): our bio.infer-style re-implementation performed poorly; it may not reflect the EPA software; the SOTA label rests on the pre-registered comparators (WA-PLS2, kNN-MAT, RF, TabPFN, ensembles); dev LOEO −0.29 to −1.60 vs WA-PLS2 0.18–0.30 → not evidence; bio.infer = not compared.
-- Write-up done: RESULTS.md (2026-11-09 entry), model card (v0.2.0), protocol §11 (appended; changes the
+- Write-up done: RESULTS.md (2026-11-09 entry), model card (v0.2.0), test-results file docs/preregistration/bioassess_test_results.md (formerly appended as protocol §11, moved by the lead 2026-11-09; changes the
   protocol's hash vs the frozen record — frozen version is in the freeze archive), addendum A2 (1,749 stale
   "Test C not scored" notes; 426 Test C rows without a note; rows not rewritten) and A3 (bio.infer),
   `docs/novelty_checks/bioassess_2026-11-09.md`, TRAINING_LOG manual entry. Tables:
@@ -201,7 +201,7 @@ rows. X-U: 19 area folds, 4,788 UK 2016–20 pseudo-test samples, training 173,8
 3. Open: GJAM v6 full-size fidelity outcome; TRPI excluded (not obtained); human Scopus/Scholar check before any
    SOTA wording; record snapshot again after v6 disclosure edit (freeze candidate hashes the final protocol).
 
-### Interim development results (09:40; unlogged progress scoring, seed 0, r2_anomaly with 95 % location-cluster CI, B = 2,000; `x_track/dev/dev_scores.csv`)
+### Interim development results (09:40; seed 0; the 135 finished (model, variant, target) rows were logged to registry `bioassess_x_dev` at 09:56, r2_anomaly with 95 % location-cluster CI, B = 2,000; `x_track/dev/dev_scores.csv`)
 - **X-L (415 NLA-2017 pseudo-test visits, 9 folds), mean over 6 targets:** TabPFNv2[community] (same-continent)
   **0.367** (per target 0.30–0.47; e.g. TP 0.402 [0.294, 0.494], cond 0.472 [0.372, 0.563]) > LightGBM 0.310 >
   RF[community] 0.277 > **BioSet `bsx_flat_geo` 0.262** (TP 0.270 [0.154, 0.366], TN 0.175 [0.017, 0.307], cond 0.427
@@ -217,3 +217,63 @@ rows. X-U: 19 area folds, 4,788 UK 2016–20 pseudo-test samples, training 173,8
 - **ETA:** CPU chain ≈ 15 h (X-U RF ≈ 8 min/fold), GPU chain ≈ 12–14 h, GJAM ≈ 27 folds × ~1.5 h (1 worker during the
   CPU chain, 6 after) → development complete ≈ 2026-11-10 morning; `finish.sh` then selects, writes the freeze
   candidate and runs the dry run (~1–2 h). Freeze candidate ready for the pre-test review ≈ 2026-11-10 midday.
+
+### 2026-11-09 ~10:30 — lead follow-up: single-look guard (M7 lesson) implemented
+- `sentinel/models/bioassess/xtestlook.py` (new; hydromet testlook pattern): `load_freeze` accepts ONLY
+  `docs/preregistration/bioassess_x_freeze.json` (refuses the candidate path, status ≠ frozen, candidate-sha or
+  `scoring_code_sha256` mismatch); `make_data_pins`/`verify_data_pins` (content hash over the exact loader files of 6
+  datasets + manifest sha); `claim` (registry refusal + O_EXCL `TEST_LOOK.json` + claim row); `require_open_claim`
+  (called by `xdev.load_test_rows`); `claim_resume` (single, before sealing); `seal_predictions`/`check_sealed`;
+  `mark_scored` (O_EXCL `SCORED.json`).
+- `scripts/eval/bioassess_x_final.py` rewired (`verify_freeze`, `setup`, `design_and_folds`, `predict_all`,
+  `score_saved`, `run_pass`, `main`; adds `--rescore-from-saved`). Dry run uses the candidate with its own look dir +
+  scratch registry. CPU smoke of the new path passed (`x_track/dev/smoke_x_final_v2/look/{TEST_LOOK,PREDICTIONS_SAVED,
+  SCORED}.json`); real look dir absent; main registry 0 `bioassess_x_test` rows.
+- Freeze-candidate builder now writes `scoring_code_sha256`, `data_snapshots` (pins), `freeze_procedure`, and a
+  top-level `DISCLOSURE_GJAM_FIDELITY_AMENDMENT_V6` with the per-block v6 outcome attached.
+- Tests: `tests/test_bioassess_x_dev.py` 14 pass (5 new guard tests); M5-X static test green. Protocol v7 note added.
+
+### 2026-11-09 ~13:00 — lead follow-up: secondary EVENT TRACK folded into M5-X (amendment v8; no event result computed)
+- Pre-registered as protocol amendment v8 before any event prediction/metric (only dev label counts looked at).
+  Events: E2a Cl > 230 mg/L, E5b TP > 0.1 mg/L, E6 pH ∉ [6.5, 9], E3 turbidity > 50 NTU (X-L); E2a, E6 (X-U).
+- M5-X dev power (≥ 30 pos & ≥ 10 clusters): X-L E5b 105/105 F, E6 46/46 F, E2a 11/11 U, E3 11/11 U; X-U E2a 19/7 U,
+  E6 35/25 (passes on M5-X dev, **descriptive only by lead ruling** — plan counts 4 and 10). Direct head only for
+  X-L E5b and E6.
+- Routes: derived = Gaussian on the target (dev OOF residual SD) → `events.exceedance_probability` → Platt via
+  `events.recalibrate` (dev only; cross-fitted for dev numbers, frozen for test); direct = LightGBM classifier.
+  Comparators: threshold-on-baseline RF[geography] and TabPFNv2, prevalence, month climatology. Metrics:
+  `events.state_metrics`, `events.compare_routes` (location-cluster B = 2,000).
+- Code: `sentinel/events/bioassess_x.py` (adapter; imports `sentinel.eval.events`, copies nothing),
+  `scripts/eval/bioassess_x_events.py` (dev run → `x_track/dev/events/{events_dev_v1.json,
+  events_calibration_v1.parquet}`), scorer `predict_events` / `score_events` (direct + climatology units sealed with
+  the other predictions; events scored in the same single look, registry metrics `event_*`, labelled SECONDARY),
+  candidate `event_track` block with the **test-block capacity** statement (projection from dev prevalence; test
+  labels unread). Scoring-code hash now covers the adapter and `sentinel/eval/events.py`.
+- **BLOCKER:** `sentinel/eval/events.py` does not exist yet (being built). The adapter is written against the plan
+  §1.3 API (`EVENTS`, `event_state`, `exceedance_probability(pred, ev)` with a Gaussian/log10 spec dict,
+  `recalibrate`, `state_metrics`, `compare_routes`, `power_flag`); check the call shapes when it lands
+  (`test_x_event_derived_probability_monotone_with_shared_module` is skipped until then). `finish.sh` (PID 1421199)
+  runs the event dev step only if the module exists; otherwise the candidate's `event_track.status` = BLOCKED and
+  `bioassess_x_events.py --log` + `bioassess_x_freeze_candidate.py` must be re-run before the review.
+- Tests: `tests/test_bioassess_x_dev.py` 16 pass + 1 skipped; M5-X static test green.
+
+### 2026-11-09 12:36 — amendment v8a (lead correction): X-U E6 powered
+- The pre-registered power rule governs; the lead's earlier "UK pH descriptive only" conflicted with it and was
+  corrected before any event output existed (no `x_track/dev/events/`, 0 `bioassess_x_events_dev` rows).
+  Powered (direct head + derived-vs-direct Holm): X-L E5b, X-L E6, **X-U E6** (35/25). Descriptive only: X-U E2a,
+  X-L E2a, X-L E3. Code: `sentinel/events/bioassess_x.py` `POWERED`/`DESCRIPTIVE_ONLY`; candidate note updated.
+- Adapter aligned with the draft `sentinel/eval/events.py` v1 (snapshot codes `E2a_lab`, `E5b`, `E6_snap`,
+  `E3a_turb`; `Gaussian(mu, sigma, space)`; metrics as {point, ci_low, ci_high}; flags "feasible"/"underpowered").
+  The event tests now run against the draft: 17 pass. Re-verify when the lead announces the v1 release.
+- `finish.sh` (PID 1422173) runs the event dev step only if `x_track/dev/events_v1_release_ack.txt` exists. Write
+  it on the lead's release notice; if it comes after `finish.sh`, run `bioassess_x_events.py --log`, then
+  `bioassess_x_freeze_candidate.py`, then the dry run.
+
+### 2026-11-09 13:37 — events.py v1.0 released
+- Verified `sentinel/eval/events.py` sha256 `4279d242…54ae`, mode 0444 (= the draft the adapter was aligned to);
+  the adapter now refuses any other version (`EVENTS_V1_SHA256`). Wrote `x_track/dev/events_v1_release_ack.txt`,
+  so `finish.sh` (PID 1422173) runs the event dev step.
+- Lead caveat: log10 back-transform in `to_event_units` is rounded to 6 decimals (boundary 230 mg/L / 0.1 mg/L
+  now label 0, unit-tested). The derived route already passes `space="log10"` (threshold transformed).
+- Rule check: all 31 M5-freeze-hashed files match `bioassess_freeze.json` (none edited by M5-X work). M5-X
+  amendments go only in `bioassess_x_protocol.md`. Tests: 17/17 pass.

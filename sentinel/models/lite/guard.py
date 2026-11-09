@@ -26,7 +26,22 @@ FROZEN_GLOBS = ("sentinel/models/lite/*.py", "configs/lite/*.yaml", "scripts/tra
                 "scripts/eval/lite_*.py", "docs/preregistration/lite_protocol.md")
 SHARED_CODE = ("sentinel/eval/metrics.py", "sentinel/eval/bootstrap.py", "sentinel/eval/splits.py",
                "sentinel/data/wqp_harmonize.py", "sentinel/data/chips.py", "sentinel/models/bioassess/data.py",
-               "sentinel/models/sonde/guard.py")
+               "sentinel/models/sonde/guard.py",
+               # review W5: the scorer's full import closure (tests/test_lite.py checks closure ⊆ hashed files)
+               "sentinel/__init__.py", "sentinel/core/__init__.py", "sentinel/core/paths.py", "sentinel/core/registry.py",
+               "sentinel/core/gpu.py", "sentinel/data/__init__.py", "sentinel/data/sonde_splits.py",
+               "sentinel/data/sources/__init__.py", "sentinel/data/sources/stac.py", "sentinel/eval/__init__.py",
+               "sentinel/models/__init__.py", "sentinel/models/sonde/__init__.py", "sentinel/models/orbit/__init__.py",
+               "sentinel/models/orbit/data.py", "sentinel/models/orbit/features.py", "sentinel/models/orbit/guard.py",
+               "sentinel/models/orbit/pipeline.py", "sentinel/models/orbit/split.py", "sentinel/models/orbit/teacher.py",
+               "sentinel/models/orbit/satwq.py",
+               # event track (protocol §13; event_layer_plan §4.1): added to the Lite hash deliberately, because the
+               # event layer is scored inside the Lite single look. events.py = the released immutable v1.
+               "sentinel/eval/events.py", "sentinel/events/__init__.py", "sentinel/events/lite.py")
+# National-track files (protocol §12) change on their own schedule and have their own freeze; they are not part of
+# the original-track scoring code (review W5).
+NATIONAL_EXCLUDE = ("national", "_nat.", "_nat_")
+PACKAGES = ("torch", "timm", "numpy", "pandas", "lightgbm", "onnx", "onnxruntime", "scikit-learn", "scipy", "pyarrow")
 # The split hash fixed in the protocol before any model selection (protocol §3).
 # National track (protocol §12): set when lite_split_national.json is frozen, before any model selection on it.
 FROZEN_NATIONAL_SPLIT_SHA256 = "8e3b1ee00c8a5d2b6c9f9b291c15ae0b3d329abaa98c1d22887f2ec874cf7d19"
@@ -37,8 +52,21 @@ def frozen_files(root: Path | None = None) -> list[str]:
     root = Path(root) if root else paths.REPO_ROOT
     files = set(SHARED_CODE)
     for g in FROZEN_GLOBS:
-        files |= {str(f.relative_to(root)) for f in root.glob(g) if f.is_file()}
+        files |= {str(f.relative_to(root)) for f in root.glob(g) if f.is_file()
+                  and not any(x in f.name for x in NATIONAL_EXCLUDE)}
     return sorted(files)
+
+
+def package_versions() -> dict:
+    from importlib.metadata import PackageNotFoundError, version
+
+    out = {}
+    for p in PACKAGES:
+        try:
+            out[p] = version(p)
+        except PackageNotFoundError:
+            out[p] = None
+    return out
 
 
 def scoring_code_sha256(root: Path | None = None) -> str:
@@ -99,7 +127,14 @@ def check_access(roles, *, allow_test: bool = False, training: bool = False, spl
         raise ProtectedDataError(f"training code never loads protected roles {prot}")
     if not allow_test:
         raise ProtectedDataError(f"refusing protected roles {prot}: pass --allow-test after the freeze")
-    freeze = load_freeze(freeze_file, split=split)
+    # review C2: only the frozen, authorised FREEZE_FILE unlocks test, and only while an unscored claim of it exists
+    if freeze_file is not None and Path(freeze_file).resolve() != FREEZE_FILE.resolve():
+        raise ProtectedDataError(f"test access accepts only {FREEZE_FILE}, not {freeze_file}")
+    from . import testlook
+
+    freeze = load_freeze(FREEZE_FILE, split=split)
+    testlook.validate_frozen(freeze)
+    testlook.require_open_claim(freeze)
     rec["freeze_sha256"] = freeze["_sha256"]
     rec["freeze"] = freeze
     return rec

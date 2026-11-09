@@ -114,7 +114,7 @@ def build_data(block: str, roles_wanted, *, allow_test=False, freeze_file=None, 
     keys = sorted(k for k, r in body["role_of"].items() if r in roles_wanted)
     blocks = tuple(dict.fromkeys(["train", block]))
     access = guard.check_access(blocks, set(roles_wanted), allow_test=allow_test, freeze_file=freeze_file, split=sp,
-                                training=False)
+                                training=False, dataset="trackn")
     end = guard.data_end_date(blocks)
     dates = pd.date_range(D.DATA_START, end, freq="D")
     S, T = len(keys), len(dates)
@@ -251,7 +251,7 @@ def score_track_n(data, preds: dict, sources: dict, roles, block: str, comps: di
                 B = site_df[(site_df["model"] == c) & (site_df["var"] == v)].set_index("site_no")["rmse"]
                 j = A[["rmse", "basin_group"]].join(B.rename("b"), how="inner").dropna() if len(A) else pd.DataFrame()
                 rec[f"{fam}_comparator"] = c
-                if c is None or len(j) < 3:
+                if c is None or len(j) < 3 or j["basin_group"].nunique() < E.MIN_TEST_GROUPS:
                     rec["status"] = "not available"
                     continue
                 r = paired_bootstrap(lambda _y, p: np.nanmedian(p), np.zeros(len(j)), j["rmse"].to_numpy(), j["b"].to_numpy(),

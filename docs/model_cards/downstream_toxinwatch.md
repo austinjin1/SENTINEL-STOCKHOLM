@@ -30,7 +30,7 @@ Protocol `docs/preregistration/downstream_toxinwatch.md`; split file and sha256 
 
 ## Evaluation
 Single pre-registered test look (registry experiment `toxinwatch/mc_exceed8@it3/test_look`); baselines and incumbents scored on identical rows;
-the §15.1 label is stated in the protocol's test-result section and in RESULTS.md. No numbers here.
+the §15.1 label is stated in `docs/preregistration/downstream_toxinwatch_test_results.md` (the frozen protocol itself is read-only) and in RESULTS.md. No numbers here.
 
 **Evaluation summary:** Competitive (does not beat the strongest INLA-style incumbent after Holm). Primary registry rows: 1d857c230b72, 25348c4309b1, 2b069af464a5, 19784d2940ed.
 

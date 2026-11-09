@@ -24,7 +24,11 @@ from ...core import paths
 from ..sonde.guard import (PROTECTED_BLOCKS, PROTECTED_ROLES, ProtectedDataError, artifact_sha256,  # noqa: F401
                            assert_cube_within, data_end_date, protected_items)
 
-FREEZE_FILE = paths.REPO_ROOT / "docs" / "preregistration" / "FREEZE_hydromet.json"
+FREEZE_DIR = paths.REPO_ROOT / "docs" / "preregistration"
+FREEZE_FILE = FREEZE_DIR / "FREEZE_hydromet.json"
+# Only these lead-written files are freezes (delta re-review D1); candidate / rehearsal records never are.
+FREEZE_NAMES = ("FREEZE_hydromet.json", "FREEZE_hydromet_trackR.json", "FREEZE_hydromet_test_b.json")
+NOT_FREEZE_MARKERS = ("NOT_A_FREEZE", "partial_rehearsal_only")
 FREEZE_KEYS = ("created", "split_sha256", "scoring_code_sha256", "weights_sha256")
 # Everything whose behaviour determines a frozen test prediction or score (review C3b): ALL HydroMet model
 # code (pickled baselines execute the current class code), configs, drivers, the protocol, and the shared
@@ -59,6 +63,8 @@ def scoring_code_sha256(root: Path | None = None) -> str:
 
 def load_freeze(freeze_file: str | Path | None = None, *, split=None, check_code: bool = True) -> dict:
     ff = Path(freeze_file) if freeze_file is not None else FREEZE_FILE
+    if ff.name not in FREEZE_NAMES or ff.resolve().parent != Path(FREEZE_DIR).resolve():
+        raise ProtectedDataError(f"{ff} is not a freeze: only {FREEZE_NAMES} in {FREEZE_DIR} are accepted")
     if not ff.is_file():
         raise ProtectedDataError(f"freeze file {ff} does not exist")
     try:
@@ -67,6 +73,11 @@ def load_freeze(freeze_file: str | Path | None = None, *, split=None, check_code
         raise ProtectedDataError(f"freeze file {ff} is not valid JSON: {e}") from e
     if not isinstance(freeze, dict):
         raise ProtectedDataError(f"freeze file {ff} must be a JSON object")
+    marked = [k for k in NOT_FREEZE_MARKERS if k in freeze]
+    if marked:
+        raise ProtectedDataError(f"{ff} carries {marked}: a candidate/rehearsal record is never a freeze")
+    if freeze.get("status") != "FROZEN" or not freeze.get("authorised_by"):
+        raise ProtectedDataError(f"{ff}: needs status 'FROZEN' and a lead authorisation field 'authorised_by'")
     missing = [k for k in FREEZE_KEYS if not freeze.get(k)]
     if missing:
         raise ProtectedDataError(f"freeze file {ff} lacks required keys {missing}")
@@ -90,7 +101,7 @@ def verify_weights(freeze: dict, model: str, artifact: str | Path) -> str:
 
 
 def check_access(blocks=(), roles=(), *, allow_test: bool = False, freeze_file=None, split=None,
-                 training: bool = False) -> dict:
+                 training: bool = False, dataset: str = "sonde") -> dict:
     """Authorise blocks/roles; raise :class:`ProtectedDataError` for protected data unless
     ``allow_test`` AND a valid freeze file — and always when ``training`` is True."""
     prot = protected_items(blocks, roles)
@@ -110,6 +121,6 @@ def check_access(blocks=(), roles=(), *, allow_test: bool = False, freeze_file=N
         raise ProtectedDataError(f"refusing protected data {prot}: {e}") from e
     from .testlook import require_open_claim   # single-pass guard (pre-test review C1)
 
-    look = require_open_claim(freeze)
+    look = require_open_claim(freeze, blocks=blocks, roles=roles, dataset=dataset)   # claim scope (D2)
     rec.update({"freeze_file": freeze["_path"], "freeze_sha256": freeze["_sha256"], "freeze": freeze, "look": look})
     return rec

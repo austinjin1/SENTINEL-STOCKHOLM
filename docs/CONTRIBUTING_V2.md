@@ -48,3 +48,47 @@
 - **Overflow rule (2026-11-08, GPU 4 blocked by another user):** shared-queue workstreams (M3, M4, M5, Downstream, Fuse, Sim) may take any of GPUs 0–3 whose SENTINEL lock is free and that has the free memory they need (`--prefer 4` already falls through), but each such overflow job must finish within **4 hours** (split longer work into chunks), so home workstreams are never starved.
 - **Overflow amendment (2026-11-08 15:00, after a Sim queue starved M2 on GPU 1):** overflow onto another workstream's home GPU is for **single one-off jobs only** (e.g. a dry run, a retry, one seed) — never from a queue/chain that re-acquires repeatedly. Queued or chained small jobs stay on GPU 4 and should request only the memory they really need (`--min-free-mb`).
 - **GPU budget reduced to GPUs 0 and 1 (user instruction, 2026-11-08 16:00).** Enforced by the hard cap file `$SENTINEL_RUNS/.gpu_locks/ALLOWED` (= `0,1`); `SENTINEL_GPUS` can only narrow it. Never set `CUDA_VISIBLE_DEVICES` yourself or bypass the lock helper. Both GPUs are now shared by all workstreams: one job per GPU (lock), each job ≤ 2 h (chunk longer work), and pending test/freeze-critical jobs (M4 prospective scoring pass, M5 dry run, M1 EW freeze runs) go first — others don't queue new GPU jobs while those are waiting. Prefer CPU where a job fits the CPU rule.
+
+## Event layer (added 2026-11-09; plan: `docs/plans/event_layer_plan.md`)
+Every model (A) predicts water quality and (B) says which harmful event is happening. (B) is added as a
+pre-registered **event track**. Steps for a workstream adding one:
+1. **Use the shared module, never a copy.**
+   - Labels, the derived route and metrics come from `sentinel.eval.events` (E-codes, plan §1). Import it
+     directly; never export it from `sentinel/eval/__init__.py`.
+   - `events.py` v1 is immutable: fixes go into `events_v2.py`. Do not edit `hazards.py`, `chloride.py` or
+     any file hashed by a freeze.
+   - Workstream code goes in `sentinel/events/<ws>.py`, `scripts/eval/events_<ws>.py` and
+     `configs/events/*.yaml`. Never use a path matched by another workstream's freeze globs
+     (`sentinel/models/{orbit,lite,hydromet}/*.py`, `scripts/*/{orbit,lite,hydromet}_*.py`, …).
+2. **Write a protocol section first** (`docs/preregistration/events_<ws>_protocol.md` or a dated section of
+   your protocol), before any event-track model selection. It states:
+   - the E-codes claimed;
+   - the cells and cluster unit;
+   - the label counts, registered with `scripts/eval/events_feasibility_*.py --register` or your own
+     train/val-only counter;
+   - the metrics (plan §1.2): AUPRC + Brier/BSS for state, and hit rate, lead time and false alarms per
+     site-year for onset.
+3. **Pre-register both routes and compare them.**
+   - (i) **Derived** (primary where the model has a predictive distribution):
+     `events.exceedance_probability`, then one `events.recalibrate` fit on validation only, with
+     reliability/ECE reported.
+   - (ii) **Direct** classifier head (challenger): same inputs, training cell and tuning budget.
+   - The comparison is `events.compare_routes`: paired ΔBrier/ΔAUPRC, cluster bootstrap, Holm across the
+     workstream's events.
+4. **Required comparators:**
+   - threshold-on-baseline (the event threshold applied to the strongest simple baseline);
+   - persistence and site × DOY climatology;
+   - the strongest published event detector for the modality (e.g. CyAN/CI-cyano for blooms; plan §2.3).
+5. **Underpowered rule.** Any (model, event) pair with < 30 validation positives or < 10 validation clusters
+   carrying positives (`events.power_flag`) is reported as descriptive only. It gets no direct head and no
+   claim.
+6. **Test block and freeze.**
+   - The event track has its own freeze (`FREEZE_events_<ws>.json`, which pins the parent model's freeze by
+     sha) and a single look.
+   - If your primary test block is still unscored, freeze the event track **before** your first test look
+     and reuse that block.
+   - If it is spent (M1 Test-A, all M5 blocks, M4 ADORE / prospective, and the ToxinWatch, MusselGuard,
+     D1n, SafeSwim and BioIntegrity looks), use the new block named in plan §4.2: M1 Test-B / live Test-C,
+     prospective NRC, M5-X or prospective UK EA.
+   - Rows of any frozen or spent test block (e.g. KillAlert fish kills 2018–2026, ToxinWatch test lakes or
+     ≥ 2022) never enter an event-track training set (RESEARCH_PLAN §15.5 item 7).

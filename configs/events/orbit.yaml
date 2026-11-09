@@ -1,0 +1,16 @@
+# SENTINEL-Orbit (M2) event track — orbit_protocol.md §12 (v0.4, 2026-11-09). Documentation of the frozen
+# specification; the values used in code live in sentinel/events/orbit.py and are hashed with it.
+workstream: M2-orbit
+events:
+  primary: E4a          # chl-a > 20 ug/L (sentinel.eval.events.EVENTS["E4a"], = EW-v2 H5b)
+  tiers: [E4a_t12, E4a_t50]
+  descriptive: [E3a_tss, E3a_turb]   # underpowered on val (0 positives): derived route only
+population: in-lake rows (valxval_lake for selection/calibration; headline / Test-B / pooled / track U at test)
+routes:
+  derived: SatWQ-Net equal-weight seed-ensemble mixture exceedance (primary)
+  direct: L2 logistic on standardised fused embedding per seed, C in [0.01, 0.1, 1, 10] by inner log-loss (challenger)
+comparators: [index_opt_P, mdn_b_P, gbm_P, gbm_direct, CI_S2, MCI, NDCI, climatology]
+not_compared:
+  CyAN_CI_cyano: needs an Earthdata login the user has not provided (docs/datasheets/labels_cyan_availability.md)
+recalibration: one Platt map per score, fitted on the full valxval_lake cell (val reported cross-fitted, 5 water-body folds)
+bootstrap: {primary: waterbody, sensitivity: role_block, n_boot: 2000}

@@ -30,7 +30,7 @@ Protocol `docs/preregistration/downstream_safeswim.md`; split file and sha256 in
 
 ## Evaluation
 Single pre-registered test look (registry experiment `safeswim/d1b_nowcast/test_look`); baselines and incumbents scored on identical rows;
-the §15.1 label is stated in the protocol's test-result section and in RESULTS.md. No numbers here.
+the §15.1 label is stated in `docs/preregistration/downstream_safeswim_test_results.md` (the frozen protocol itself is read-only) and in RESULTS.md. No numbers here.
 
 **Evaluation summary:** Competitive (single test look; does not beat the official City model or the feature-beach GM after Holm). Primary registry rows: 351537383783, e5e785365380, db7cef7c21a2, 306e86856d31.
 

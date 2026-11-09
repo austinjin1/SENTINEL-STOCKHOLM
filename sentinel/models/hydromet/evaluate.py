@@ -258,6 +258,9 @@ def _paired(site_df, a_name, b_name, v, metric, n_boot, seed, groups: bool):
     return res, j
 
 
+MIN_TEST_GROUPS = 3   # protocol §7 (2026-11-09): fewer basin groups -> hypothesis not testable, p = 1
+
+
 def primary_comparison(site_df: pd.DataFrame, comparators: dict, *, models=SENTINEL_MODELS, seed_models=None,
                        endpoints=PRIMARY_TARGETS, metric: str = PRIMARY_METRIC, n_boot: int = 2000, seed: int = 0,
                        alpha: float = 0.05) -> pd.DataFrame:
@@ -281,7 +284,7 @@ def primary_comparison(site_df: pd.DataFrame, comparators: dict, *, models=SENTI
             for fam in ("gbm", "physics"):
                 ref = comps[fam]
                 res, j = _paired(site_df, m, ref, v, metric, n_boot, seed, groups=True)
-                if res is None:
+                if res is None or j["basin_group"].nunique() < MIN_TEST_GROUPS:   # bootstrap needs >= 3 groups
                     ok = False
                     break
                 sens, _ = _paired(site_df, m, ref, v, metric, n_boot, seed, groups=False)

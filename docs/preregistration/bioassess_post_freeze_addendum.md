@@ -53,3 +53,12 @@ re-implementation is not a faithful stand-in for the published method. A3's resu
 labels unchanged") is **withdrawn as support**: our bio.infer-style re-implementation performed poorly; it may not reflect the EPA software; the SOTA label rests on the pre-registered comparators (WA-PLS2, kNN-MAT, RF, TabPFN, ensembles). The 18 `bioassess_test_posthoc` rows stay in the
 registry (append-only) and are to be read with this entry. Published-method coverage: bio.infer is listed
 as *not compared* (W-M5P-4).
+
+## A5 (2026-11-09, lead): frozen protocol restored; results moved to their own file
+On 2026-11-09 05:33 EST, after the single test pass ended at 04:45, a results section "§11" was appended to `bioassess_protocol.md`. That broke its sha256 in `bioassess_freeze.json`: it was 745bccab… where the freeze records 710a5956….
+
+The diff against the copy in the freeze archive shows the change was append-only. §1–§10 were unchanged (0 lines removed or altered). During the pass itself the file still matched the frozen hash.
+
+The lead moved the appended text verbatim to `bioassess_test_results.md` and restored `bioassess_protocol.md` byte-for-byte from the freeze archive (sha256 710a5956… again). The protocol is now read-only (0444).
+
+No rule, result or label changes. References in the model card and the handoff now point to the new file.

@@ -30,7 +30,7 @@ Protocol `docs/preregistration/downstream_biointegrity.md`; split file and sha25
 
 ## Evaluation
 Single pre-registered test look (registry experiment `biointegrity/test_look`); baselines and incumbents scored on identical rows;
-the §15.1 label is stated in the protocol's test-result section and in RESULTS.md. No numbers here.
+the §15.1 label is stated in `docs/preregistration/downstream_biointegrity_test_results.md` (the frozen protocol itself is read-only) and in RESULTS.md. No numbers here.
 
 **Evaluation summary:** Competitive (beats the Hill-2017 RF incumbent but not the feature-matched RFs; pre-registered rule not met). Primary registry rows: 4f672ea74c88, 2a9c4c56315c, 391f046a404e, 59b50f578b64.
 

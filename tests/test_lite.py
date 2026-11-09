@@ -315,3 +315,135 @@ def test_glint_aug_adds_bright_blobs_only_to_selected():
     changed = (y != x).flatten(1).any(1)
     assert 0 < int(changed.sum()) < 8
     assert float(y.min()) >= 20.0 and float(y.max()) <= 255.0
+
+
+# ------------------------------------------------------------------ pre-test review fixes (2026-11-09)
+def test_candidate_never_unlocks_test(tmp_path, monkeypatch):
+    """C2: the candidate file (and any non-FREEZE_FILE path) is refused; an unauthorised or CANDIDATE status is
+    refused; FROZEN + authorisation still needs an open claim."""
+    import json as _json
+
+    from sentinel.models.lite import testlook as T
+
+    cand = G.paths.REPO_ROOT / "docs" / "preregistration" / "FREEZE_lite_candidate.json"
+    with pytest.raises(G.ProtectedDataError):
+        G.check_access(["test"], allow_test=True, freeze_file=cand)
+    with pytest.raises(G.ProtectedDataError):
+        T.validate_frozen({"status": "CANDIDATE for review", "authorised_by": "x", "authorised_at": "y",
+                           "scoring_code_sha256": "abc"})
+    with pytest.raises(G.ProtectedDataError):
+        T.validate_frozen({"status": "FROZEN", "scoring_code_sha256": "abc"})
+    with pytest.raises(G.ProtectedDataError):
+        T.validate_frozen({"status": "FROZEN", "authorised_by": "x", "authorised_at": "y", "scoring_code_sha256": "PENDING"})
+    T.validate_frozen({"status": "FROZEN", "authorised_by": "x", "authorised_at": "y", "scoring_code_sha256": "abc"})
+    # a valid-looking FROZEN file at FREEZE_FILE still needs an open claim of exactly that freeze
+    ff = tmp_path / "FREEZE_lite.json"
+    split = G.load_split()
+    ff.write_text(_json.dumps({"created": "x", "split_sha256": split["_sha256"], "scoring_code_sha256": G.scoring_code_sha256(),
+                               "weights_sha256": {"m": "0"}, "status": "FROZEN", "authorised_by": "x", "authorised_at": "y"}))
+    monkeypatch.setattr(G, "FREEZE_FILE", ff)
+    monkeypatch.setattr(T, "look_dir", lambda: tmp_path / "look")
+    with pytest.raises(G.ProtectedDataError, match="open test-look claim"):
+        G.check_access(["test"], allow_test=True, split=split)
+
+
+def test_single_look_claim_and_seal(tmp_path, monkeypatch):
+    """C1: the claim is O_EXCL and refused when lite_test* registry rows exist; predictions are sealed once and
+    tampering is detected; SCORED blocks re-scoring."""
+    import os as _os
+
+    from sentinel.models.lite import testlook as T
+
+    monkeypatch.setattr(T, "look_dir", lambda: tmp_path / "look")
+    reg = tmp_path / "results" / "registry.jsonl"
+    reg.parent.mkdir(parents=True)
+    reg.write_text("")
+    monkeypatch.setattr(T.paths, "REPO_ROOT", tmp_path)
+    import sentinel.core.registry as REG
+
+    logged = []
+    monkeypatch.setattr(REG, "log_result", lambda **kw: logged.append(kw))
+    fz = {"_path": "F", "_sha256": "abc", "scoring_code_sha256": "c"}
+    T.claim(fz)
+    assert logged and logged[0]["metric"] == "look_claimed"
+    assert (_os.stat(T.marker()).st_mode & 0o777) == 0o444
+    with pytest.raises(G.ProtectedDataError):
+        T.claim(fz)                                   # marker exists
+    T.require_open_claim(fz)
+    with pytest.raises(G.ProtectedDataError):
+        T.require_open_claim({"_sha256": "other"})
+    T.pred_dir().mkdir(parents=True)
+    (T.pred_dir() / "pred_test.parquet").write_bytes(b"x")
+    T.seal_predictions()
+    with pytest.raises(G.ProtectedDataError):
+        T.seal_predictions()
+    assert T.check_sealed() == T.pred_dir()
+    T.mark_scored({"ok": 1})
+    with pytest.raises(G.ProtectedDataError):
+        T.check_sealed()
+    with pytest.raises(G.ProtectedDataError):
+        T.require_open_claim(fz)                      # scored -> protected data closed
+    reg.write_text('{"experiment": "lite_test", "value": 1}\n')
+    monkeypatch.setattr(T, "look_dir", lambda: tmp_path / "look2")
+    with pytest.raises(G.ProtectedDataError, match="registry already holds"):
+        T.claim(fz)
+
+
+def test_one_sided_tail_and_ci_rule():
+    """W2/C4: same CI as the shared paired bootstrap; p from the correct tail; reject needs Holm AND CI."""
+    from sentinel.eval.bootstrap import paired_bootstrap
+
+    rs = np.random.default_rng(0)
+    y = rs.normal(0, 0.3, 300)
+    g = np.repeat(np.arange(60), 5)
+    a = y + rs.normal(0, 0.05, 300)
+    b = y + rs.normal(0, 0.3, 300)
+    r = E.compare_one_sided("secchi", y, a, b, g, n_boot=300)
+    ref = paired_bootstrap(E.primary_metric("secchi")[0], y, a, b, groups=g, n_boot=300, higher_is_better=False)
+    assert np.isclose(r["ci_low"], ref["ci_low"]) and np.isclose(r["ci_high"], ref["ci_high"])
+    assert r["diff"] < 0 and r["p_one_sided"] < 0.01 and r["ci_excludes_0_better"]
+    r2 = E.compare_one_sided("secchi", y, b, a, g, n_boot=300)
+    assert r2["p_one_sided"] > 0.99 and not r2["ci_excludes_0_better"]
+    fam = {"x": dict(r), "y": {"p_one_sided": 0.03, "ci_excludes_0_better": False}}
+    E.holm_with_ci(fam)
+    assert fam["x"]["reject"] and not fam["y"]["reject"]
+
+
+def test_scoring_hash_covers_scorer_import_closure():
+    """W5: every repo module the test scorer imports is in the scoring-code hash; national files are not."""
+    import subprocess
+    import sys as _sys
+
+    code = ("import importlib.util,sys;s=importlib.util.spec_from_file_location('s','scripts/eval/lite_score_test.py');"
+            "m=importlib.util.module_from_spec(s);s.loader.exec_module(m);"
+            "import sentinel.models.orbit.teacher, sentinel.models.orbit.satwq;"
+            "r=sys.argv[1];print('\\n'.join(sorted({v.__file__[len(r):] for v in list(sys.modules.values()) "
+            "if getattr(v,'__file__',None) and v.__file__.startswith(r)})))")
+    root = str(G.paths.REPO_ROOT) + "/"
+    out = subprocess.run([_sys.executable, "-c", code, root], capture_output=True, text=True, cwd=root, check=True,
+                         env={**__import__("os").environ, "OMP_NUM_THREADS": "1"}).stdout.split()
+    frozen = set(G.frozen_files())
+    assert out and not [f for f in out if f not in frozen]
+    assert not [f for f in frozen if "national" in f or "_nat." in f]
+
+
+def test_event_adapter_e4a_labels_p_and_calibrator_roundtrip():
+    """Protocol §13: labels at exactly the threshold are not events (rounding), exceedance via events v1.0 is
+    monotone in μ and 0.5 at the threshold, and the frozen Platt calibrator survives JSON round-trip."""
+    import json as _json
+
+    from sentinel.events import lite as EL
+
+    y = np.log10(np.array([20.0, 20.0001, 19.0, np.nan]))
+    lab = EL.labels(y, "E4a")
+    assert lab[0] == 0 and lab[1] == 1 and lab[2] == 0 and np.isnan(lab[3])
+    p = EL.derived_p(np.log10([10.0, 20.0, 40.0]), np.array([0.2, 0.2, 0.2]), "E4a")
+    assert p[0] < p[1] < p[2] and abs(p[1] - 0.5) < 1e-6
+    rs = np.random.default_rng(0)
+    pv = rs.uniform(0.01, 0.99, 400)
+    yv = (rs.uniform(size=400) < pv ** 2).astype(float)
+    cal = EL.fit_calibrator(pv, yv)
+    cal2 = EL.calibrator_from_dict(_json.loads(_json.dumps(EL.calibrator_to_dict(cal))))
+    assert np.allclose(cal.transform(pv), cal2.transform(pv))
+    h = EL.fit_head(rs.normal(size=(200, 5)), (rs.uniform(size=200) < 0.3).astype(float))
+    assert 0 <= EL.head_p(rs.normal(size=(3, 5)), h).min() <= 1

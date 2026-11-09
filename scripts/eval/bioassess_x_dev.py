@@ -181,6 +181,9 @@ def write_r_fold(d: Path, block, fo, D, TM, seed=0, test_labels=False):
 def cmd_ingest_r(a) -> int:
     S, frozen, D, folds = context()
     for b in XD.BLOCKS:
+        if pred_path(b, a.method, "same", 0).exists():
+            log("already ingested", a.method, b)
+            continue
         parts = []
         for k, fo in enumerate(folds[b]):
             f = XD.DEV_DIR / "r_out" / a.method / b / f"fold{k:02d}.csv"

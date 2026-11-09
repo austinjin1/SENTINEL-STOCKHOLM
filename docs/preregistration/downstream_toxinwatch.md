@@ -195,14 +195,3 @@ All entries below: **2026-10-24, pre-training review, before any fit.**
     rows, so these clusters dominate the lake-bootstrap CIs. Pooled-incumbent parity: learners see
     `src_national`; the pooled StGlmm has no source offset and the pooled v2 spline spans CONUS (as
     pre-registered; WA-only variants remain in the family).
-- **Single test look — result (2026-11-08 20:22–20:25; FREEZE_downstream_toxinwatch.json; registry
-  `toxinwatch/mc_exceed8@it3/test_look`).** Known lakes 2022–2026 (n = 3,190, 231 exceedances): GBM 0.933
-  [0.739, 0.974], strongest incumbent (v2 pooled) 0.928, location kNN 0.893; test lakes (n = 568, 53): GBM 0.858
-  [0.640, 0.943], v2 pooled 0.835, lake history 0.831. Paired (lake clusters): GBM − v2_pooled **+0.004
-  [−0.004, 0.031]** (p 0.211) known, **+0.022 [−0.000, 0.059]** (p 0.053) new — incumbent family not rejected;
-  GBM − location_knn +0.040 [0.013, 0.182] (known, rejected); − lake history +0.026 [−0.019, 0.115] (new, not).
-  Seed rule holds. **§5 rule not met → label: competitive** (the "not robust" label does not arise: the
-  governing rule already fails). Lake Washington dominates the known-lake bootstrap (wide CIs). Caveat (post-results review): Lake Washington ≈ 60 % of known-lake rows,
-    one lake ≈ 39 % of new-lake rows; the incumbent is an INLA-style re-implementation (regularised GLMM-style
-    logistic with splines), not INLA. **Future D2 track (pre-declared):** Brooks-style RF and GBM comparators,
-    2026-season test block.

@@ -1,6 +1,6 @@
 # Registry tables (auto-generated)
 
-_Rendered from `results/registry.jsonl` (65524 current entries). Values: point [95% CI]; CI unit/method per entry in the registry._
+_Rendered from `results/registry.jsonl` (65786 current entries). Values: point [95% CI]; CI unit/method per entry in the registry._
 
 
 ### M1-sonde / ew_v2_onset_counts
@@ -54254,6 +54254,128 @@ _Rendered from `results/registry.jsonl` (65524 current entries). Values: point [
 | track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_forcing_gbm_compact              | baseline | 1.831 [1.679, 2.077]         | 1000 | 12a54693b90b |
 
 
+### M6-hydromet / M6N/val_v2
+
+| split                                                                           | target      | metric                                | model                                        | role     | value_ci                     |    n | id           |
+|:--------------------------------------------------------------------------------|:------------|:--------------------------------------|:---------------------------------------------|:---------|:-----------------------------|-----:|:-------------|
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | diff_median_site_rmse_vs_best_gbm     | hydromet_ealstm_gbmblend                     | SENTINEL | -0.04357 [-0.1221, 0.03396]  |  938 | 6dd430b8b43b |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | diff_median_site_rmse_vs_best_gbm     | hydromet_ealstm_ws_full                      | SENTINEL | 0.01907 [-0.1343, 0.1487]    |  938 | fd1097a0b7a8 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | diff_median_site_rmse_vs_best_physics | hydromet_ealstm_gbmblend                     | SENTINEL | -0.2724 [-0.3795, -0.05985]  |  938 | 075083057e22 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | diff_median_site_rmse_vs_best_physics | hydromet_ealstm_ws_full                      | SENTINEL | -0.2097 [-0.2988, 0.0009544] |  938 | 496007c25fa1 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm                              | SENTINEL | -0.339 [-0.4906, 0.0215]     |  938 | 200f92741f76 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_gbmblend                     | SENTINEL | -0.3027 [-0.4084, 0.02459]   |  938 | 49d99b93dd78 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_gbmblend_s0                  | SENTINEL | -0.2632 [-0.4049, 0.05741]   |  938 | 029cae5ee5b4 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_gbmblend_s1                  | SENTINEL | -0.3076 [-0.4157, 0.04142]   |  938 | d5043118169a |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_gbmblend_s2                  | SENTINEL | -0.3346 [-0.4371, 0.01829]   |  938 | 00ab7b2f7bcc |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_s0                           | SENTINEL | -0.2982 [-0.3952, 0.03041]   |  938 | ea648cd840f8 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_s1                           | SENTINEL | -0.316 [-0.5211, 0.0946]     |  938 | 9498128edff4 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_s2                           | SENTINEL | -0.4125 [-0.5315, 0.03586]   |  938 | 26f45bcbffc0 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_ws_full                      | SENTINEL | -0.3738 [-0.5051, 0.07314]   |  938 | 34082d0699c2 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_ws_full_s0                   | SENTINEL | -0.2205 [-0.4241, 0.1268]    |  938 | 7adc945bc27a |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_ws_full_s1                   | SENTINEL | -0.4233 [-0.6472, 0.0617]    |  938 | 142fe2023378 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_ealstm_ws_full_s2                   | SENTINEL | -0.4825 [-0.6035, -0.04623]  |  938 | bbf106c6c2f6 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_dosat_ratio[air2stream_regional]_ws | baseline | -0.6515 [-0.9617, 0.3716]    |  938 | f5d0b0edec89 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_forcing_gbm                         | baseline | -0.2736 [-0.3972, 0.1491]    |  938 | d37d59d12b3f |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_forcing_gbm_bag                     | baseline | -0.2374 [-0.4125, 0.0691]    |  938 | 10088b9a188e |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_forcing_gbm_bag_s0                  | baseline | -0.2736 [-0.3972, 0.1491]    |  938 | a531b19f059f |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_forcing_gbm_bag_s1                  | baseline | -0.2299 [-0.3942, 0.04571]   |  938 | 7e48d9285f73 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_bias                      | hydromet_forcing_gbm_bag_s2                  | baseline | -0.2347 [-0.3778, 0.03607]   |  938 | b3f20a58c175 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm                              | SENTINEL | 0.692 [0.508, 0.7798]        |  938 | c8ae98d7a650 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_gbmblend                     | SENTINEL | 0.7009 [0.5171, 0.7879]      |  938 | ef9710a05258 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_gbmblend_s0                  | SENTINEL | 0.6934 [0.5226, 0.7875]      |  938 | d79e4cefdfd7 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_gbmblend_s1                  | SENTINEL | 0.7006 [0.5155, 0.78]        |  938 | d6991d8b2a6d |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_gbmblend_s2                  | SENTINEL | 0.6797 [0.522, 0.7771]       |  938 | 8cb292c466d8 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_s0                           | SENTINEL | 0.6828 [0.5127, 0.7618]      |  938 | 03be72b789ab |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_s1                           | SENTINEL | 0.6801 [0.496, 0.7682]       |  938 | 5c6f4fbf3d66 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_s2                           | SENTINEL | 0.6507 [0.4842, 0.7601]      |  938 | 80f20e9b658c |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_ws_full                      | SENTINEL | 0.7039 [0.515, 0.7794]       |  938 | c2524191b47a |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_ws_full_s0                   | SENTINEL | 0.6954 [0.4867, 0.7695]      |  938 | 04842430b2a1 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_ws_full_s1                   | SENTINEL | 0.6665 [0.5028, 0.7564]      |  938 | 729bef1f83ff |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_ealstm_ws_full_s2                   | SENTINEL | 0.6942 [0.5179, 0.7596]      |  938 | ad5e59a74d81 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_dosat_ratio[air2stream_regional]_ws | baseline | 0.647 [0.4402, 0.7248]       |  938 | 406b7bf5f018 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_forcing_gbm                         | baseline | 0.6749 [0.5139, 0.778]       |  938 | 93171f50b09e |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_forcing_gbm_bag                     | baseline | 0.6807 [0.5235, 0.7747]      |  938 | 858c12beb41d |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_forcing_gbm_bag_s0                  | baseline | 0.6749 [0.5139, 0.778]       |  938 | 15c50884d43c |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_forcing_gbm_bag_s1                  | baseline | 0.6812 [0.5234, 0.7705]      |  938 | 9ce18e330d6d |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_kge                       | hydromet_forcing_gbm_bag_s2                  | baseline | 0.6674 [0.5207, 0.7564]      |  938 | 3384dc9ddfc6 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm                              | SENTINEL | 1.277 [1.052, 1.933]         |  938 | b1e7078b5779 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_gbmblend                     | SENTINEL | 1.24 [1.018, 1.859]          |  938 | 8b9bfd1c92ed |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_gbmblend_s0                  | SENTINEL | 1.256 [1.027, 1.906]         |  938 | 4ff81ba10cc3 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_gbmblend_s1                  | SENTINEL | 1.263 [1.024, 1.848]         |  938 | a2283f8b9d92 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_gbmblend_s2                  | SENTINEL | 1.257 [1.034, 1.878]         |  938 | aca3152ff5ea |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_s0                           | SENTINEL | 1.285 [1.072, 2.043]         |  938 | 0a25dd2fa517 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_s1                           | SENTINEL | 1.338 [1.09, 1.981]          |  938 | c6393b0df54f |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_s2                           | SENTINEL | 1.329 [1.089, 1.931]         |  938 | 685d16bdcf1b |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_ws_full                      | SENTINEL | 1.303 [1.061, 1.926]         |  938 | 3b0db09921ad |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_ws_full_s0                   | SENTINEL | 1.279 [1.057, 1.982]         |  938 | 6d962848c93b |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_ws_full_s1                   | SENTINEL | 1.421 [1.113, 1.934]         |  938 | 9b47795fb889 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_ealstm_ws_full_s2                   | SENTINEL | 1.37 [1.17, 1.935]           |  938 | bcf4e302425a |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_dosat_ratio[air2stream_regional]_ws | baseline | 1.512 [1.341, 1.974]         |  938 | 3724732b1fbe |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_forcing_gbm                         | baseline | 1.284 [1.036, 1.818]         |  938 | a4ca8025683e |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_forcing_gbm_bag                     | baseline | 1.271 [1.012, 1.798]         |  938 | efdf5aedcc85 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_forcing_gbm_bag_s0                  | baseline | 1.283 [1.036, 1.818]         |  938 | b359b709174b |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_forcing_gbm_bag_s1                  | baseline | 1.303 [1.026, 1.792]         |  938 | 237f8597efdc |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | do_mgl_mean | median_site_rmse                      | hydromet_forcing_gbm_bag_s2                  | baseline | 1.286 [1.015, 1.883]         |  938 | 94f7e8056ac4 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | diff_median_site_rmse_vs_best_gbm     | hydromet_ealstm_gbmblend                     | SENTINEL | -0.04916 [-0.1214, 0.06276]  | 1000 | ddd060ccfbc4 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | diff_median_site_rmse_vs_best_gbm     | hydromet_ealstm_ws_full                      | SENTINEL | -0.006807 [-0.1006, 0.159]   | 1000 | 5ba1f25f6993 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | diff_median_site_rmse_vs_best_physics | hydromet_ealstm_gbmblend                     | SENTINEL | -0.3598 [-0.4291, -0.2268]   | 1000 | f7128c8b4f25 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | diff_median_site_rmse_vs_best_physics | hydromet_ealstm_ws_full                      | SENTINEL | -0.3175 [-0.4076, -0.1592]   | 1000 | 562d7e1bb9d9 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm                              | SENTINEL | -0.08999 [-0.3166, 0.3911]   | 1000 | 07d248f44dfb |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_gbmblend                     | SENTINEL | 0.01569 [-0.1688, 0.3267]    | 1000 | d7d29b575021 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_gbmblend_s0                  | SENTINEL | 0.05066 [-0.166, 0.3613]     | 1000 | 020e0c113419 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_gbmblend_s1                  | SENTINEL | 0.02444 [-0.2225, 0.3267]    | 1000 | fa3d2e6593e5 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_gbmblend_s2                  | SENTINEL | 0.02216 [-0.2101, 0.2706]    | 1000 | 31567454f7ed |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_s0                           | SENTINEL | 0.01229 [-0.2668, 0.5622]    | 1000 | 37eb9016df47 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_s1                           | SENTINEL | -0.06325 [-0.3209, 0.3946]   | 1000 | bd4676713d1e |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_s2                           | SENTINEL | -0.1059 [-0.3556, 0.3693]    | 1000 | 6a4abc8de277 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_ws_full                      | SENTINEL | -0.0119 [-0.2118, 0.3303]    | 1000 | 698b14f0d00e |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_ws_full_s0                   | SENTINEL | 0.07783 [-0.2401, 0.3123]    | 1000 | f2cb6ee87b19 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_ws_full_s1                   | SENTINEL | 0.04235 [-0.1704, 0.3924]    | 1000 | c97bca629cfd |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_ealstm_ws_full_s2                   | SENTINEL | -0.06913 [-0.2381, 0.4129]   | 1000 | 9d10b0632d1b |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_air2stream_regional_ws              | baseline | 0.0589 [-0.4718, 0.274]      | 1000 | 82bb69e20b68 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_forcing_gbm                         | baseline | 0.09242 [-0.1237, 0.2663]    | 1000 | d27532c39b33 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_forcing_gbm_bag                     | baseline | 0.1262 [-0.1209, 0.2807]     | 1000 | 685675f3cedb |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_forcing_gbm_bag_s0                  | baseline | 0.09242 [-0.127, 0.268]      | 1000 | 04b046d1f935 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_forcing_gbm_bag_s1                  | baseline | 0.08548 [-0.1491, 0.2747]    | 1000 | 20900a17cec4 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_bias                      | hydromet_forcing_gbm_bag_s2                  | baseline | 0.1488 [-0.1576, 0.301]      | 1000 | 1ed2631d2a0c |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm                              | SENTINEL | 0.8461 [0.7989, 0.8686]      | 1000 | 78cc665431a3 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_gbmblend                     | SENTINEL | 0.855 [0.8231, 0.8764]       | 1000 | cac994a04f79 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_gbmblend_s0                  | SENTINEL | 0.856 [0.8176, 0.8735]       | 1000 | 62f8a10705d1 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_gbmblend_s1                  | SENTINEL | 0.8503 [0.8132, 0.8721]      | 1000 | 624b4dce6987 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_gbmblend_s2                  | SENTINEL | 0.8526 [0.8111, 0.877]       | 1000 | 68be030fd651 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_s0                           | SENTINEL | 0.8452 [0.7935, 0.8711]      | 1000 | 9ca5f8be9083 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_s1                           | SENTINEL | 0.8339 [0.7861, 0.8669]      | 1000 | 96aec0e11c51 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_s2                           | SENTINEL | 0.8415 [0.78, 0.8749]        | 1000 | c886fd49e98f |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_ws_full                      | SENTINEL | 0.8537 [0.8072, 0.8806]      | 1000 | 80ebf62f33a1 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_ws_full_s0                   | SENTINEL | 0.8534 [0.8118, 0.8777]      | 1000 | ab75e9936b08 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_ws_full_s1                   | SENTINEL | 0.8528 [0.8098, 0.8784]      | 1000 | 50c12a357ab3 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_ealstm_ws_full_s2                   | SENTINEL | 0.842 [0.7921, 0.8695]       | 1000 | 09ec85f312d9 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_air2stream_regional_ws              | baseline | 0.8223 [0.7718, 0.8582]      | 1000 | 4d085d7c4f1e |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_forcing_gbm                         | baseline | 0.8439 [0.8248, 0.873]       | 1000 | 95c7c91ff2ea |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_forcing_gbm_bag                     | baseline | 0.8499 [0.8287, 0.8747]      | 1000 | 93a12eb98efb |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_forcing_gbm_bag_s0                  | baseline | 0.8439 [0.8249, 0.874]       | 1000 | 8d69b046bf0a |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_forcing_gbm_bag_s1                  | baseline | 0.8516 [0.831, 0.8723]       | 1000 | 6148381ab94c |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_kge                       | hydromet_forcing_gbm_bag_s2                  | baseline | 0.847 [0.8283, 0.8765]       | 1000 | aeea3e8852ec |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm                              | SENTINEL | 1.89 [1.72, 2.259]           | 1000 | ed3610ac8789 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_gbmblend                     | SENTINEL | 1.765 [1.635, 2.134]         | 1000 | 3af2aca3dc4a |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_gbmblend_s0                  | SENTINEL | 1.767 [1.643, 2.126]         | 1000 | a7b0bfd8ef9c |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_gbmblend_s1                  | SENTINEL | 1.777 [1.649, 2.146]         | 1000 | f309a773f2ef |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_gbmblend_s2                  | SENTINEL | 1.783 [1.66, 2.187]          | 1000 | a029b7cd7db3 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_s0                           | SENTINEL | 1.88 [1.738, 2.336]          | 1000 | 8129bb8d4dfd |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_s1                           | SENTINEL | 1.973 [1.78, 2.324]          | 1000 | 66ba2a9bc3e0 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_s2                           | SENTINEL | 1.957 [1.795, 2.352]         | 1000 | 337d4a90c732 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_ws_full                      | SENTINEL | 1.807 [1.677, 2.199]         | 1000 | 9395b1cd35e4 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_ws_full_s0                   | SENTINEL | 1.849 [1.682, 2.249]         | 1000 | ff87f57fad00 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_ws_full_s1                   | SENTINEL | 1.886 [1.732, 2.243]         | 1000 | 655a4781bea4 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_ealstm_ws_full_s2                   | SENTINEL | 1.938 [1.803, 2.311]         | 1000 | 29996ea9b6d5 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_air2stream_regional_ws              | baseline | 2.124 [1.922, 2.475]         | 1000 | cada31bc5852 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_forcing_gbm                         | baseline | 1.831 [1.695, 2.096]         | 1000 | b387e9e4a7c7 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_forcing_gbm_bag                     | baseline | 1.814 [1.686, 2.098]         | 1000 | b99b061e340a |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_forcing_gbm_bag_s0                  | baseline | 1.827 [1.693, 2.097]         | 1000 | 6c15cc42f099 |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_forcing_gbm_bag_s1                  | baseline | 1.823 [1.648, 2.089]         | 1000 | fb67b47e9cfb |
+| track N (national unsensed reaches, WQP discrete) val-role stations x val block | temp_c_mean | median_site_rmse                      | hydromet_forcing_gbm_bag_s2                  | baseline | 1.832 [1.676, 2.094]         | 1000 | 2aae5bd345bb |
+
+
 ### M6-hydromet / M6S/val_v2
 
 | split                                      | target       | metric                                              | model                                     | role     | value_ci                    |   n | id           |
@@ -54607,9 +54729,11 @@ _Rendered from `results/registry.jsonl` (65524 current entries). Values: point [
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_kd03         | SENTINEL | 0.3119 [0.274, 0.3513]  |  329 | 92beab1272a9 |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_kd03_glint   | SENTINEL | 0.3147 [0.2811, 0.348]  |  329 | f021dc389973 |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_kd03_medpool | SENTINEL | 0.314 [0.2764, 0.352]   |  329 | 65ee999606c2 |
+| val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_kd03_rgb     | SENTINEL | 0.3207 [0.2843, 0.3569] |  329 | e738696046fd |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_kd03_secchi  | SENTINEL | 0.2966 [0.264, 0.3268]  |  329 | e442de2c7913 |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_kd1          | SENTINEL | 0.3207 [0.2894, 0.3522] |  329 | c09c587ab2f8 |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_lrbb2e4      | SENTINEL | 0.3095 [0.2704, 0.3486] |  329 | f3894129e4c6 |
+| val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_rerun        | SENTINEL | 0.3073 [0.2675, 0.3453] |  329 | 402aafcb07e9 |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_crop128_secchi       | SENTINEL | 0.25 [0.25, 0.25]       |  329 | b6763a071bdd |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_film                 | SENTINEL | 0.2992 [0.2631, 0.3287] |  329 | 3bbcbb6e7e93 |
 | val     | chla      | bal_acc  | lite_student_mnv4s_raw_gloria               | SENTINEL | 0.3077 [0.2674, 0.3416] |  329 | c3b34d61c816 |
@@ -54629,9 +54753,11 @@ _Rendered from `results/registry.jsonl` (65524 current entries). Values: point [
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_kd03         | SENTINEL | 46.56 [39.78, 52.81]    | 1083 | b9fdc5af7e11 |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_kd03_glint   | SENTINEL | 47.08 [42.06, 52.51]    | 1083 | 004551f30f82 |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_kd03_medpool | SENTINEL | 47.05 [40.68, 54.23]    | 1083 | 8eac5774bf0d |
+| val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_kd03_rgb     | SENTINEL | 45.42 [38.51, 52.25]    | 1083 | 2c1c22482810 |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_kd03_secchi  | SENTINEL | 46.32 [41.76, 52.76]    | 1083 | 9eba5348c640 |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_kd1          | SENTINEL | 47.06 [40.4, 54.41]     | 1083 | 2c6e7a63f843 |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_lrbb2e4      | SENTINEL | 46.35 [42.27, 53.2]     | 1083 | 43097ccf2de7 |
+| val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_rerun        | SENTINEL | 49.13 [43.27, 54.88]    | 1083 | 6b830418c4ff |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_crop128_secchi       | SENTINEL | 45.46 [40.59, 52.9]     | 1083 | 5a87ffa58215 |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_film                 | SENTINEL | 47.13 [41.63, 52.7]     | 1083 | cd3f6a1178d2 |
 | val     | secchi    | mdsa     | lite_student_mnv4s_raw_gloria               | SENTINEL | 48.59 [43.13, 53.64]    | 1083 | b92cde42816f |
@@ -54651,9 +54777,11 @@ _Rendered from `results/registry.jsonl` (65524 current entries). Values: point [
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_kd03         | SENTINEL | 107.1 [81.25, 156]      |  161 | dced73438659 |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_kd03_glint   | SENTINEL | 106.3 [74.42, 160.2]    |  161 | a0955582aa27 |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_kd03_medpool | SENTINEL | 105.1 [77.27, 154.5]    |  161 | d524ef62e237 |
+| val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_kd03_rgb     | SENTINEL | 100.1 [89.54, 142.1]    |  161 | 00ca03f95f6a |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_kd03_secchi  | SENTINEL | 136.3 [115.7, 155.9]    |  161 | 727d3560aad9 |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_kd1          | SENTINEL | 109.7 [73.59, 141.9]    |  161 | 4b59d8e50a1f |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_lrbb2e4      | SENTINEL | 103.5 [89.87, 134.9]    |  161 | c1cca4f0abc3 |
+| val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_rerun        | SENTINEL | 115.1 [84.11, 168.6]    |  161 | 2102cd76e717 |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_crop128_secchi       | SENTINEL | 82.57 [58.65, 212.5]    |  161 | 9ac172692be4 |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_film                 | SENTINEL | 116.8 [80.19, 172.2]    |  161 | 2dc2d96cbada |
 | val     | tss       | mdsa     | lite_student_mnv4s_raw_gloria               | SENTINEL | 119.1 [92.13, 144.6]    |  161 | 1efbbfddb9b9 |
@@ -54673,9 +54801,11 @@ _Rendered from `results/registry.jsonl` (65524 current entries). Values: point [
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_kd03         | SENTINEL | 72.59 [55.56, 123.3]    |  132 | 11eb8d28a51c |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_kd03_glint   | SENTINEL | 81.94 [55.55, 106]      |  132 | e48a09b1cbc3 |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_kd03_medpool | SENTINEL | 73.47 [55.54, 126.7]    |  132 | cd3dac108785 |
+| val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_kd03_rgb     | SENTINEL | 73.64 [51.53, 126.1]    |  132 | e7f472f3feaf |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_kd03_secchi  | SENTINEL | 96.04 [73.05, 178.9]    |  132 | 0727214441a4 |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_kd1          | SENTINEL | 77.83 [59.42, 133.3]    |  132 | 6841b2be96e0 |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_lrbb2e4      | SENTINEL | 103.3 [79.27, 156]      |  132 | 51e254d3351a |
+| val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_rerun        | SENTINEL | 77.41 [48.54, 152.6]    |  132 | 43724e5e13b7 |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_crop128_secchi       | SENTINEL | 117.2 [69.22, 183.9]    |  132 | 4f1e4f28b76f |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_film                 | SENTINEL | 110.8 [67.99, 152.2]    |  132 | 23c400524415 |
 | val     | turbidity | mdsa     | lite_student_mnv4s_raw_gloria               | SENTINEL | 96.39 [73.68, 135.3]    |  132 | 3ce6c5c92b0b |
@@ -58673,6 +58803,162 @@ _Rendered from `results/registry.jsonl` (65524 current entries). Values: point [
 | nrsa1819/loeo_x_cycle_test | ph_lab              | delta_r2_vs_bioinfer | BioSet[bioset_st_flat]                                                                           | SENTINEL | 1.463 [1.155, 1.831]        |      | e76cf18bbca4 |
 | nrsa1819/loeo_x_cycle_test | ph_lab              | delta_r2_vs_bioinfer | Ensemble[BioSet[bioset_st_flat]+geography+RandomForest[community+geography]+TabPFNv2[community]] | SENTINEL | 1.523 [1.202, 1.904]        |      | e0679fa2bf2b |
 | nrsa1819/loeo_x_cycle_test | ph_lab              | r2                   | bio.infer-ML[community]                                                                          | baseline | -1.061 [-1.433, -0.7471]    | 1916 | 3ff4d93670be |
+
+
+### bioassess / bioassess_x/prereg_snapshot
+
+| split   | target   | metric   | model              | role     |   value_ci |   n | id           |
+|:--------|:---------|:---------|:-------------------|:---------|-----------:|----:|:-------------|
+| prereg  |          | n_files  | amendment_snapshot | SENTINEL |         13 |  13 | 99e2181f8bff |
+| prereg  |          | n_files  | prereg_snapshot    | SENTINEL |         11 |  11 | 1a0c7f4b8331 |
+
+
+### bioassess / bioassess_x_dev
+
+| split   | target                 | metric     | model                              | role     | value_ci                       |    n | id           |
+|:--------|:-----------------------|:-----------|:-----------------------------------|:---------|:-------------------------------|-----:|:-------------|
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | bsx_flat_geo (multi-source)        | SENTINEL | 0.3042 [0.1934, 0.3996]        |  414 | e0419468a1de |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | LightGBM[community]                | baseline | 0.2824 [0.1929, 0.3587]        |  414 | c00c88c422b7 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | NearestReferenceSite               | baseline | -0.1815 [-0.3028, -0.07004]    |  414 | 87b158b46856 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | RandomForest[community+context]    | baseline | 0.263 [0.2112, 0.3179]         |  414 | a3048d5f009a |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | RandomForest[community+geography]  | baseline | 0.2635 [0.211, 0.3173]         |  414 | c889cf15c22e |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | RandomForest[community]            | baseline | 0.2054 [0.1346, 0.2709]        |  414 | bd355c10010d |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | RandomForest[geography]            | baseline | 0.1934 [0.1258, 0.2616]        |  414 | 26120d51a250 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 2.22e-16]        |  414 | a0359bb86087 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | TabPFNv2[community]                | baseline | 0.3525 [0.2662, 0.4261]        |  414 | 31a26ed04ecf |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | TabPFNv2[community] (multi-source) | baseline | 0.1913 [0.1135, 0.2617]        |  414 | da149fd40759 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | WA-PLS2[community]                 | baseline | 0.1193 [-0.01877, 0.2219]      |  414 | e6c8e3bc03c1 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | WA-PLS2[community] (multi-source)  | baseline | 0.1344 [0.0388, 0.2099]        |  414 | d5314915ca90 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | bio.infer[EPA 1.3.6]               | baseline | -0.5163 [-0.8952, -0.2232]     |  414 | 0fe97cb295f3 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | kNN-MAT[community]                 | baseline | 0.04484 [-0.08372, 0.1515]     |  414 | 50552ef12fe2 |
+| X-L_dev | log10_chloride_mg_l    | r2_anomaly | kNN-MAT[community] (multi-source)  | baseline | 0.02175 [-0.1156, 0.1377]      |  414 | d7650074adcc |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | bsx_flat_geo (multi-source)        | SENTINEL | 0.4267 [0.3159, 0.5235]        |  394 | bb680341d2b0 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | LightGBM[community]                | baseline | 0.4212 [0.3264, 0.5063]        |  394 | 48f45a494b70 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | NearestReferenceSite               | baseline | -0.2374 [-0.4, -0.09078]       |  394 | d41c383f718e |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | RandomForest[community+context]    | baseline | 0.2495 [0.1776, 0.3343]        |  394 | f26d3b1e5388 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | RandomForest[community+geography]  | baseline | 0.2576 [0.1863, 0.3367]        |  394 | 193263b45cc6 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | RandomForest[community]            | baseline | 0.3471 [0.264, 0.4204]         |  394 | 54143e227935 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | RandomForest[geography]            | baseline | 0.09992 [0.03115, 0.1686]      |  394 | ef1c7a657918 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 1.11e-16]        |  394 | 051dde1f080c |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | TabPFNv2[community]                | baseline | 0.4715 [0.3724, 0.563]         |  394 | d6b88dda458e |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | TabPFNv2[community] (multi-source) | baseline | 0.2464 [0.1447, 0.3381]        |  394 | d668316c4abb |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | WA-PLS2[community]                 | baseline | 0.09386 [-0.02937, 0.1973]     |  394 | 6f0589399e15 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | WA-PLS2[community] (multi-source)  | baseline | 0.1949 [0.1125, 0.2658]        |  394 | 6acdc067d737 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | bio.infer[EPA 1.3.6]               | baseline | -0.3019 [-0.6018, -0.02731]    |  394 | 22bea8eec4a5 |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | kNN-MAT[community]                 | baseline | 0.08335 [-0.09263, 0.2316]     |  394 | 6c5ec4208d9d |
+| X-L_dev | log10_cond_us_cm       | r2_anomaly | kNN-MAT[community] (multi-source)  | baseline | 0.08417 [-0.0828, 0.2227]      |  394 | bdcd687550b3 |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | bsx_flat_geo (multi-source)        | SENTINEL | 0.1751 [0.01704, 0.3069]       |  415 | 0572e47f9212 |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | LightGBM[community]                | baseline | 0.2449 [0.1107, 0.3582]        |  415 | 30926e44b5eb |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | NearestReferenceSite               | baseline | -0.3977 [-0.6717, -0.1605]     |  415 | c36a4feb3ac7 |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | RandomForest[community+context]    | baseline | 0.3204 [0.2426, 0.3968]        |  415 | d17bd342581e |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | RandomForest[community+geography]  | baseline | 0.3231 [0.2415, 0.4023]        |  415 | b465cc1d8f1c |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | RandomForest[community]            | baseline | 0.3036 [0.1906, 0.3984]        |  415 | 22c271aa736d |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | RandomForest[geography]            | baseline | 0.01264 [-0.09991, 0.1151]     |  415 | 39f982e69ac1 |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 2.22e-16]        |  415 | ef35f9472fd5 |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | TabPFNv2[community]                | baseline | 0.3464 [0.2113, 0.4573]        |  415 | f8fc253ed3d9 |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | WA-PLS2[community]                 | baseline | 0.1796 [0.04051, 0.297]        |  415 | 91073efa83b4 |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | bio.infer[EPA 1.3.6]               | baseline | -0.7266 [-1.222, -0.3114]      |  415 | b7d53c4fc62a |
+| X-L_dev | log10_tn_mg_l          | r2_anomaly | kNN-MAT[community]                 | baseline | 0.1244 [-0.03798, 0.2535]      |  415 | 4b2f6833e26d |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | bsx_flat_geo (multi-source)        | SENTINEL | 0.2696 [0.154, 0.3658]         |  414 | f9e453212bde |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | LightGBM[community]                | baseline | 0.3411 [0.2368, 0.4353]        |  414 | 9b3fa5712a1e |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | NearestReferenceSite               | baseline | -0.1981 [-0.342, -0.06579]     |  414 | 5c6d5133f136 |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | RandomForest[community+context]    | baseline | 0.3039 [0.2232, 0.3798]        |  414 | 10d188bd2460 |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | RandomForest[community+geography]  | baseline | 0.3046 [0.2254, 0.378]         |  414 | be9572da7070 |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | RandomForest[community]            | baseline | 0.3264 [0.2372, 0.4087]        |  414 | 9b4501213307 |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | RandomForest[geography]            | baseline | -0.0258 [-0.1215, 0.05395]     |  414 | fcb93f9af71f |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 2.22e-16]        |  414 | 74114af7da68 |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | TabPFNv2[community]                | baseline | 0.4021 [0.2943, 0.494]         |  414 | 061924e31c05 |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | WA-PLS2[community]                 | baseline | 0.09136 [-0.03244, 0.2017]     |  414 | 79186f1b8f29 |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | bio.infer[EPA 1.3.6]               | baseline | -1.834 [-2.637, -1.246]        |  414 | 24ce327014ff |
+| X-L_dev | log10_tp_ug_l          | r2_anomaly | kNN-MAT[community]                 | baseline | 0.1546 [0.01708, 0.2694]       |  414 | f93dd88ccd1d |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | bsx_flat_geo (multi-source)        | SENTINEL | 0.08879 [-0.06134, 0.2029]     |  389 | 8441c4e7821d |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | LightGBM[community]                | baseline | 0.2334 [0.113, 0.3338]         |  389 | c9e63a9de894 |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | NearestReferenceSite               | baseline | -0.6605 [-1.066, -0.3678]      |  389 | 90da7124d612 |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | RandomForest[community+context]    | baseline | 0.2315 [0.1518, 0.301]         |  389 | ebc0634bea58 |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | RandomForest[community+geography]  | baseline | 0.2491 [0.1678, 0.3204]        |  389 | 714bf9e2c5ef |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | RandomForest[community]            | baseline | 0.2313 [0.1417, 0.3094]        |  389 | 22e3b0d788fa |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | RandomForest[geography]            | baseline | -0.002347 [-0.09957, 0.0845]   |  389 | 521032a53b72 |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | RegionMean                         | baseline | 1.11e-16 [-2.22e-16, 2.22e-16] |  389 | 18f90e9075dd |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | TabPFNv2[community]                | baseline | 0.3011 [0.1825, 0.4053]        |  389 | 3ec758740180 |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | WA-PLS2[community]                 | baseline | 0.1183 [-0.02727, 0.228]       |  389 | 96aa29f0c0ea |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | bio.infer[EPA 1.3.6]               | baseline | -1.141 [-1.863, -0.5945]       |  389 | 35bc866303ee |
+| X-L_dev | log10_turbidity_ntu    | r2_anomaly | kNN-MAT[community]                 | baseline | 0.08302 [-0.04986, 0.2027]     |  389 | b5edf0d2091d |
+| X-L_dev | ph_lab                 | r2_anomaly | bsx_flat_geo (multi-source)        | SENTINEL | 0.3093 [0.2006, 0.4194]        |  394 | eac6d5980c7f |
+| X-L_dev | ph_lab                 | r2_anomaly | LightGBM[community]                | baseline | 0.3384 [0.2332, 0.4245]        |  394 | 74c02fbb8cfb |
+| X-L_dev | ph_lab                 | r2_anomaly | NearestReferenceSite               | baseline | -0.7845 [-1.129, -0.4807]      |  394 | 27ab5d243a78 |
+| X-L_dev | ph_lab                 | r2_anomaly | RandomForest[community+context]    | baseline | 0.1665 [0.087, 0.2418]         |  394 | f19253610560 |
+| X-L_dev | ph_lab                 | r2_anomaly | RandomForest[community+geography]  | baseline | 0.1752 [0.1014, 0.2471]        |  394 | e311d42ba449 |
+| X-L_dev | ph_lab                 | r2_anomaly | RandomForest[community]            | baseline | 0.2483 [0.1663, 0.3275]        |  394 | a176c86714e9 |
+| X-L_dev | ph_lab                 | r2_anomaly | RandomForest[geography]            | baseline | -0.01449 [-0.07601, 0.04436]   |  394 | 990b022a9d05 |
+| X-L_dev | ph_lab                 | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 2.22e-16]        |  394 | fa8731eccfab |
+| X-L_dev | ph_lab                 | r2_anomaly | TabPFNv2[community]                | baseline | 0.33 [0.1963, 0.4414]          |  394 | 8df62d2abebe |
+| X-L_dev | ph_lab                 | r2_anomaly | TabPFNv2[community] (multi-source) | baseline | 0.05262 [-0.06185, 0.1725]     |  394 | d47cc8637ae4 |
+| X-L_dev | ph_lab                 | r2_anomaly | WA-PLS2[community]                 | baseline | 0.05386 [-0.068, 0.1627]       |  394 | 8fb53c723ca2 |
+| X-L_dev | ph_lab                 | r2_anomaly | WA-PLS2[community] (multi-source)  | baseline | 0.07619 [-0.0327, 0.1698]      |  394 | 235491fa73cf |
+| X-L_dev | ph_lab                 | r2_anomaly | bio.infer[EPA 1.3.6]               | baseline | -2.335 [-3.497, -1.5]          |  394 | a0cf869fefcb |
+| X-L_dev | ph_lab                 | r2_anomaly | kNN-MAT[community]                 | baseline | 0.0701 [-0.05729, 0.1814]      |  394 | f4751aee7cce |
+| X-L_dev | ph_lab                 | r2_anomaly | kNN-MAT[community] (multi-source)  | baseline | 0.08082 [-0.04651, 0.1891]     |  394 | fe0da6dd5e1b |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | LightGBM[community]                | baseline | 0.2191 [0.05013, 0.3257]       |  840 | b228f77b3b43 |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | RandomForest[geography]            | baseline | 0.143 [-0.02197, 0.2756]       |  840 | 20f61c68bf99 |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 2.22e-16]        |  840 | a4fcd1ef297a |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | UKIndices-Linear                   | baseline | 0.3087 [0.156, 0.3997]         |  840 | 8f8c1549c5db |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | UKIndices-Linear+geography         | baseline | 0.3532 [0.2015, 0.458]         |  840 | bd0c71eaddfa |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | UKIndices-RF                       | baseline | 0.3233 [0.1794, 0.4196]        |  840 | 44b918a10ae8 |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | UKIndices-RF+geography             | baseline | 0.3451 [0.2024, 0.4494]        |  840 | 8c9ce99d2022 |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | WA-PLS2[community]                 | baseline | 0.1618 [-0.0601, 0.2915]       |  840 | 170a3afe162d |
+| X-U_dev | uk_log10_chloride_mg_l | r2_anomaly | kNN-MAT[community]                 | baseline | 0.1307 [-0.05345, 0.2334]      |  840 | bcbc4c514325 |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | LightGBM[community]                | baseline | 0.4569 [0.3944, 0.5107]        | 4297 | 4ce6ef071350 |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | RandomForest[geography]            | baseline | 0.3527 [0.2862, 0.4099]        | 4297 | 382e166a9126 |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | RegionMean                         | baseline | 2.22e-16 [-2.22e-16, 2.22e-16] | 4297 | d25ec257a332 |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | UKIndices-Linear                   | baseline | 0.3618 [0.3019, 0.4125]        | 4297 | d5eace96e3e4 |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | UKIndices-Linear+geography         | baseline | 0.4485 [0.3944, 0.495]         | 4297 | a6e4944ffaa6 |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | UKIndices-RF                       | baseline | 0.4239 [0.3655, 0.4768]        | 4297 | a0cbe54fb88f |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | UKIndices-RF+geography             | baseline | 0.4623 [0.4084, 0.5116]        | 4297 | 7f8a7ae3e3fe |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | WA-PLS2[community]                 | baseline | 0.2826 [0.1995, 0.3506]        | 4297 | c9514ee1567f |
+| X-U_dev | uk_log10_cond25_us_cm  | r2_anomaly | kNN-MAT[community]                 | baseline | 0.2765 [0.2054, 0.3377]        | 4297 | 1ce4444ac403 |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | LightGBM[community]                | baseline | 0.2346 [0.195, 0.2688]         | 4292 | a744d0c4ee69 |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | RandomForest[geography]            | baseline | 0.07129 [0.03213, 0.1081]      | 4292 | cb2177e46bcd |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 1.11e-16]        | 4292 | 59f86131e5f3 |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | UKIndices-Linear                   | baseline | 0.2275 [0.1909, 0.2568]        | 4292 | 3abb869de2dd |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | UKIndices-Linear+geography         | baseline | 0.244 [0.2044, 0.2771]         | 4292 | 9331ed423174 |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | UKIndices-RF                       | baseline | 0.2055 [0.1619, 0.2405]        | 4292 | 8cdd5e1e06bf |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | UKIndices-RF+geography             | baseline | 0.2346 [0.1916, 0.2721]        | 4292 | e024d50b188f |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | WA-PLS2[community]                 | baseline | 0.1474 [0.1084, 0.1798]        | 4292 | 16c01549a2eb |
+| X-U_dev | uk_log10_nh4n_mg_l     | r2_anomaly | kNN-MAT[community]                 | baseline | 0.08382 [0.03211, 0.1259]      | 4292 | 633862ebfa27 |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | LightGBM[community]                | baseline | 0.3268 [0.2756, 0.3692]        | 4219 | d2382de12ac8 |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | RandomForest[geography]            | baseline | 0.2565 [0.2055, 0.3002]        | 4219 | fc3ba0f78e8f |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 1.11e-16]        | 4219 | f1b8fe6cc5fa |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | UKIndices-Linear                   | baseline | 0.2006 [0.1509, 0.2474]        | 4219 | 02bc06640247 |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | UKIndices-Linear+geography         | baseline | 0.3018 [0.2492, 0.3504]        | 4219 | 205a5ca489ca |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | UKIndices-RF                       | baseline | 0.2775 [0.2233, 0.3233]        | 4219 | bcfd6247305b |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | UKIndices-RF+geography             | baseline | 0.3282 [0.2791, 0.3708]        | 4219 | 1e4d4b677d58 |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | WA-PLS2[community]                 | baseline | 0.1674 [0.1039, 0.2225]        | 4219 | 95b457a740dc |
+| X-U_dev | uk_log10_nitrate_mg_l  | r2_anomaly | kNN-MAT[community]                 | baseline | 0.15 [0.09165, 0.2006]         | 4219 | 34eb8f605959 |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | LightGBM[community]                | baseline | 0.3154 [0.2754, 0.3527]        | 4275 | 37cbabe253ae |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | RandomForest[geography]            | baseline | 0.1356 [0.09526, 0.1754]       | 4275 | cedf64ead5ab |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | RegionMean                         | baseline | 1.11e-16 [-2.22e-16, 1.11e-16] | 4275 | bc358985f244 |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | UKIndices-Linear                   | baseline | 0.2283 [0.1818, 0.2734]        | 4275 | 08d00bb71b2d |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | UKIndices-Linear+geography         | baseline | 0.2417 [0.1967, 0.2846]        | 4275 | 5f1bd5f8e7b5 |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | UKIndices-RF                       | baseline | 0.2467 [0.2035, 0.2854]        | 4275 | eb2b41d211cf |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | UKIndices-RF+geography             | baseline | 0.2753 [0.2376, 0.3134]        | 4275 | 21db63b56b9d |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | WA-PLS2[community]                 | baseline | 0.2177 [0.1724, 0.2586]        | 4275 | dae3754ad051 |
+| X-U_dev | uk_log10_orthop_mg_l   | r2_anomaly | kNN-MAT[community]                 | baseline | 0.1549 [0.1055, 0.197]         | 4275 | 5fd3bcd99f54 |
+| X-U_dev | uk_ph                  | r2_anomaly | LightGBM[community]                | baseline | 0.1655 [0.1164, 0.2032]        | 4596 | be9f61166b2a |
+| X-U_dev | uk_ph                  | r2_anomaly | RandomForest[geography]            | baseline | 0.06937 [0.01681, 0.1178]      | 4596 | 69d8cee9dd22 |
+| X-U_dev | uk_ph                  | r2_anomaly | RegionMean                         | baseline | 0 [-2.22e-16, 2.22e-16]        | 4596 | b320cfc25e01 |
+| X-U_dev | uk_ph                  | r2_anomaly | UKIndices-Linear                   | baseline | 0.05074 [0.01806, 0.07424]     | 4596 | e81d5bf481d6 |
+| X-U_dev | uk_ph                  | r2_anomaly | UKIndices-Linear+geography         | baseline | 0.05854 [0.02541, 0.08262]     | 4596 | 204665ca5bab |
+| X-U_dev | uk_ph                  | r2_anomaly | UKIndices-RF                       | baseline | 0.02503 [-0.02647, 0.06524]    | 4596 | d0d460db8af6 |
+| X-U_dev | uk_ph                  | r2_anomaly | UKIndices-RF+geography             | baseline | 0.1228 [0.08017, 0.1571]       | 4596 | 7f8751298c28 |
+| X-U_dev | uk_ph                  | r2_anomaly | WA-PLS2[community]                 | baseline | 0.04345 [-0.03925, 0.1185]     | 4596 | 25cfa37a4b1c |
+| X-U_dev | uk_ph                  | r2_anomaly | kNN-MAT[community]                 | baseline | 0.005292 [-0.05287, 0.0565]    | 4596 | f8f1213d4e02 |
+
+
+### bioassess / bioassess_x_dev/folds
+
+| split   | target   | metric   | model     | role     |   value_ci |      n | id           |
+|:--------|:---------|:---------|:----------|:---------|-----------:|-------:|:-------------|
+| dev     |          | n_folds  | dev_folds | SENTINEL |         28 | 204026 | 9be524896dd5 |
 
 
 ### bioassess / rf_blocked_baseline

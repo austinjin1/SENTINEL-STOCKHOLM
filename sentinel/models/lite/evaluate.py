@@ -135,3 +135,47 @@ def score_primary(target: str, y_log, p_log, groups, site_class, *, sigma_log=No
                            "n": int(((np.asarray(site_class) == c) & ok).sum())}
                        for c in np.unique(np.asarray(site_class).astype(str)) if ((np.asarray(site_class) == c) & ok).sum() >= 10}
     return rep
+
+
+# ---------------------------------------------------------------- one-sided tests (pre-test review W2, C4)
+def compare_one_sided(target: str, y_log, p_a, p_b, groups, *, n_boot: int = N_BOOT, seed: int = 0) -> dict:
+    """Paired water-body bootstrap of primary(a) - primary(b) on identical rows. It uses the same resampling as
+    ``sentinel.eval.bootstrap.paired_bootstrap`` (same rng and order, so the CI is identical), plus:
+
+    - ``p_one_sided``: the bootstrap probability that a is **not** better, read directly from the correct tail. For
+      MdSA (lower is better) this is P(d ≥ 0); for balanced accuracy it is P(d ≤ 0).
+    - ``ci_excludes_0_better``: the 95% percentile CI lies entirely on the "a better" side.
+    """
+    from sentinel.eval.bootstrap import _group_index
+
+    y_log, p_a, p_b = (np.asarray(x, float) for x in (y_log, p_a, p_b))
+    ok = np.isfinite(y_log) & np.isfinite(p_a) & np.isfinite(p_b)
+    fn, name, hib = primary_metric(target)
+    y, pa, pb, g = y_log[ok], p_a[ok], p_b[ok], np.asarray(groups)[ok]
+    idx_groups = _group_index(g, len(y))
+    rs = np.random.default_rng(seed)
+    point = float(fn(y, pa) - fn(y, pb))
+    diffs = np.empty(n_boot)
+    for b in range(n_boot):
+        pick = rs.integers(0, len(idx_groups), len(idx_groups))
+        idx = np.concatenate([idx_groups[k] for k in pick])
+        diffs[b] = fn(y[idx], pa[idx]) - fn(y[idx], pb[idx])
+    d = diffs[np.isfinite(diffs)]
+    lo, hi = (float(np.quantile(d, 0.025)), float(np.quantile(d, 0.975))) if d.size else (np.nan, np.nan)
+    p1 = float(np.mean(d <= 0)) if hib else float(np.mean(d >= 0))
+    excl = (lo > 0) if hib else (hi < 0)
+    return {"diff": point, "ci_low": lo, "ci_high": hi, "p_one_sided": p1, "ci_excludes_0_better": bool(excl),
+            "a_better_point": bool(point > 0 if hib else point < 0), "metric": name, "n": int(ok.sum()),
+            "n_groups": len(idx_groups), "n_boot_valid": int(d.size)}
+
+
+def holm_with_ci(results: dict, alpha: float = 0.05) -> dict:
+    """Protocol §1 / RESEARCH_PLAN §15.1(ii): a comparison is rejected only if Holm (on the one-sided p) rejects AND
+    the paired 95% CI excludes 0 in the student-better direction. Adds ``holm`` and ``reject`` in place."""
+    from sentinel.eval.bootstrap import holm_bonferroni
+
+    holm = holm_bonferroni({k: r["p_one_sided"] for k, r in results.items()}, alpha=alpha)
+    for k, r in results.items():
+        r["holm"] = bool(holm[k])
+        r["reject"] = bool(holm[k]) and bool(r["ci_excludes_0_better"])
+    return results

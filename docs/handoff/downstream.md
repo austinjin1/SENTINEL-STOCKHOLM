@@ -3,8 +3,10 @@
 ## CURRENT STATE (read first; supersedes the dated sections below)
 - **Test blocks SPENT (single looks 2026-11-08 20:22–22:12; never re-use them for a claim, §15.5 item 1):**
   D1 Chicago D1b 2024–25, D1n national beaches 2021–25, D5 NRSA 2023-24, D6 origins 2018 + 2021, D2 WA 2022–26.
-  FREEZE files + prereg archives + `test_look/` markers exist; protocol result sections and RESULTS.md hold the
-  outcomes. Labels (post-results review): D1n beats its re-implemented VB incumbent and the strongest simple
+  FREEZE files + prereg archives + `test_look/` markers exist; outcomes are in
+  `docs/preregistration/downstream_<app>_test_results.md` and RESULTS.md. **Frozen protocols are read-only (0444) and
+  must never be edited** (2026-11-09: post-freeze appends were moved out and the protocols restored byte-for-byte
+  from the prereg archives; all FREEZE hashes verify). Labels (post-results review): D1n beats its re-implemented VB incumbent and the strongest simple
   baseline on its track, **NOT SOTA** (no Brooks-style RF compared); D1, D5, D6, D2 competitive.
   **H-G4 "beats incumbent": 1 of 4 (D1 via D1n, caveated) → not met.**
 - **Not yet tested (validation only):** D2n national microcystin, D3 (underpowered), D8 (negative), D4 TapRisk
@@ -88,12 +90,20 @@ FREEZE files `docs/preregistration/FREEZE_downstream_{safeswim,d1n_beaches,bioin
 rows), outputs `$SENTINEL_RUNS/downstream/<app>/test_look/` (TEST_LOOK / PREDICTIONS_SAVED / SCORED markers).
 Labels: **D1n SOTA (national-beach track, vs re-implemented VB-MLR)**; D1 Chicago competitive; D5 competitive
 (beats Hill-2017 RF both variants, Holm; not the feature-matched RFs); D6 competitive (2018 yes, 2021 no); D2
-competitive. Protocol result sections + RESULTS.md 2026-11-08 entry + model cards `docs/model_cards/downstream_*.md`.
+competitive. `downstream_<app>_test_results.md` + RESULTS.md 2026-11-08 entry + model cards `docs/model_cards/downstream_*.md`.
 **H-G4 "beats incumbent": 1 app (D1 via D1n) — not met; D5 counting to be ruled by the lead.** Post-results
 review (R10) pending. These apps' test blocks are spent (§15.5 item 1): any improved model needs a new unseen
 test period (D1: 2026 qPCR reserve vs GM only; D1n/D2: 2026 season; D6: T = 2022 origin later).
-Pending lead-approved change (deferred until the post-results review): add taprisk to common.APPS and
-taprisk_models.py to APP_SCORING_FILES["taprisk"] before any D4 freeze.
+**Superseded (2026-11-09 lead rule: never edit a file hashed by a FREEZE record):** common.py, wqp_track.py, testlook.py
+and the five apps' modules/scripts/pins are FREEZE-hashed, so D4 registration stays in `taprisk_registry.py`
+(import-only use of shared code); a D4 freeze hashes `taprisk_registry.scoring_files()`.
 
 ## 2026-11-08 23:30 — lead notice: sonde snapshot promotion (EW-v2 final chain)
 `processed/sonde_daily` and `processed/sonde_hourly` are symlinks that now point to `sonde_daily_refresh_20261108` / `sonde_hourly_refresh_20261108` (USGS IV refresh adding WY2024–25 approvals). Identity check: all 5,500 daily and 749 hourly sites identical through 2023-09-30, so train/val are unchanged (`compare_vs_sonde_{daily,hourly}.json` in the new dirs). New manifest shas: daily `dcd359ea…`, hourly `74bdc126…` (superseded `f7ee51ee…`, `0893f730…`). If your manifests/records pin the old sha, re-pin with a dated note; WY2024–25 rows are test-role for EW-v2 — do not use them for selection.
+
+## D4 TapRisk status (2026-11-09 evening)
+Links + StreamCat done (`taprisk_catchment` manifest + datasheet). Reproduction: sens 0.813 / spec 0.815 vs published
+0.758 / 0.815 (sens +0.005 outside tolerance, favourable; diagnosed in protocol §10). Phase 1 + it1_ens (validation):
+the GBM beats the plain Pennino-form RF clearly (D4a both sets; D4b new states) but not the pre-registered
+history-augmented RF on all sets → **competitive**; 34 configurations. Decision pending with the lead: (a) spend
+the D4 test block on the phase-1 GBM (expected "competitive"), or (b) further pre-registered iterations, or (c) D7.

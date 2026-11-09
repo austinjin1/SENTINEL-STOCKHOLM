@@ -1,6 +1,6 @@
 # SENTINEL-Lite (M7) — Pre-registration protocol
 
-**Status:** v1.3, 2026-11-08 (v1.2 2026-10-24). The split (§3) was frozen and hashed **before any model was fitted or selected**
+**Status:** v1.5, 2026-11-09 (v1.4 and v1.3 earlier the same week; v1.2 2026-10-24). The split (§3) was frozen and hashed **before any model was fitted or selected**
 (splits v1 and v2 were superseded before any non-smoke fit, after the pre-training review; §11).
 The test roles are scored once, after `docs/preregistration/FREEZE_lite.json` is written (§8); that file does
 not exist yet. This file is part of the hashed scoring code (`sentinel/models/lite/guard.py::frozen_files`), so
@@ -158,6 +158,76 @@ moderate glint (25%), haze (10 DN) and ±5% gain.
 `scripts/eval/lite_score_test.py --allow-test` with a valid freeze; training code refuses them
 (`guard.assert_no_protected`).
 
+### 8a. Single look and decision rules (v1.4, 2026-11-09, after the pre-test review; before any test access)
+**Single look** (`sentinel/models/lite/testlook.py`; review C1–C3).
+- Only `docs/preregistration/FREEZE_lite.json` unlocks test. It must have `status = "FROZEN"`, the lead's
+  `authorised_by` / `authorised_at`, the frozen split and the current scoring-code hash. Candidate files are refused.
+- The data pins (`data_snapshots`) are verified before the claim. They cover: the NAIP chip-store index and the
+  shards holding train/test/test_time chips; the DOQQ scene stats; the train chip cache; the S2 teacher-store index
+  and shards; `labels.parquet`; and the `naip_matchups` and `lite_labels` manifests.
+- The claim:
+  - refuses if any `lite_test*` registry row exists;
+  - writes an O_EXCL 0444 `TEST_LOOK.json`;
+  - writes a `lite_test_claim` registry row.
+- Protected roles load only while an unscored claim of this freeze exists.
+- One pass writes every prediction: all models, all baselines, the ONNX INT8/FP32 deployable, the robustness grid
+  and the teacher. Predictions are then sealed (0444 + `SHA256SUMS`).
+- Scoring reads the sealed predictions only. Registry rows are written after every block is scored, then
+  `SCORED.json`. Crash recovery: `--rescore-from-saved`.
+- B (2000), seeds and device (CPU) come from the freeze, not the command line.
+
+**Paired tests.**
+- Water-body cluster bootstrap, B = 2000, the same resampling as `sentinel.eval.bootstrap`.
+- One-sided p = the bootstrap probability that the student is **not** better, read from the correct tail
+  (`evaluate.compare_one_sided`).
+- A comparison is **rejected** only if Holm (one-sided p, α = 0.05) rejects **and** the paired 95% CI excludes 0 in
+  the student-better direction (`evaluate.holm_with_ci`).
+
+**Confirmatory families (Test-A, `test`, only; Test-B is descriptive, with no Holm flag).**
+- **H1** (§1). The student = the 3-seed ensemble (§4). Six comparisons, {Secchi, turbidity, TSS} × {band-ratio,
+  GBM-RGBN}, with Holm over 6.
+  - H1 holds iff Secchi is rejected against both baselines AND (turbidity is rejected against both OR TSS is
+    rejected against both).
+  - Seed rule (§15.1 iii): every rejected comparison must also have diff < 0 for each of the 3 seeds individually.
+- **H-G6 carrier.** The deployable unit is the INT8 ONNX of seed 0 (§9, budget-compliant). It forms its own Holm-6
+  family with the same composite rule (H1-deployable).
+- **H2** (§1). The ensemble with KD vs the no-KD ensemble, both 3 seeds; Holm over 3.
+  - The no-KD comparator is the same configuration retrained under the current code (review W1, run `…_rerun`), if
+    that run exists at the freeze; otherwise it is the 2026-10-24 run, recorded as a deviation.
+  - H2 holds iff Secchi is rejected AND (turbidity OR TSS is rejected).
+  - Every-seed rule: for each rejected target, kd seed i − no-KD seed i < 0 for i = 0, 1, 2.
+- **H-G6 verdict** = budgets met (export report of seed 0: params ≤ 3 M, ≤ 2 GMACs/512², INT8 ≤ 4 MB, proxy
+  latency ≤ 100 ms) ∧ H1-deployable ∧ H2 (with the every-seed rule) ∧ red-edge gap reported (finite for at least
+  one target).
+
+**Claim label (RESEARCH_PLAN §15.1), carrier = INT8 seed 0, decided in code.**
+- "State of the art" does not apply: no published method for this task has been re-run.
+- **"First-in-class"** iff all of the following hold:
+  - the dated novelty search `docs/novelty_checks/lite.md` exists (it must be re-checked before writing);
+  - for Secchi AND for turbidity-or-TSS, the carrier beats **every** applicable baseline with the CI excluding 0:
+    band-ratio, GBM-RGBN, GBM-RGBN + context, location-kNN, location/season GBM and train median;
+  - the comparisons against the other four baselines are secondary paired tests (no Holm);
+  - the seed rule holds for the corresponding ensemble comparisons.
+- **"Negative"** if the strongest baseline is significantly better than the carrier on Secchi (CI excludes 0 on the
+  wrong side).
+- **"Competitive"** otherwise.
+
+**Secondary results in the same pass (descriptive; no Holm flag).**
+- All per-model scores, including each seed, FP32 vs INT8 seed 0 (the INT8 Δ), and lake-only CIs for turbidity/TSS.
+- Paired comparisons of the ensemble and the carrier against every baseline.
+- RGB-only ablation: `…_kd03_rgb` vs `…_kd03`, paired, ensembles.
+- GLORIA ablation: `mnv4s_raw_gloria` vs `mnv4s_raw` (2026-10-24, same code version), paired.
+- Robust variant (§9) vs primary, paired, clean and at 25% glint.
+- Slices: >10 km, future years (Test-A only), by site class.
+- Teacher-distance sensitivity (review W8): scores and H2 restricted to water bodies whose nearest Lite-safe teacher
+  row is more than 5 km away (`teacher_gt5km_wb`).
+  - Measured on geometry only (`scripts/eval/lite_teacher_overlap_wb.py`): 0 Test-A water bodies have a teacher row
+    within 2 km; 85/420 have one 2–5 km away; 7/31 flowing-class water bodies have one within 5 km.
+  - Test-B: 0, 77/327 and 6/24 respectively.
+- The §7 robustness grid for seed 0, the ensemble and the robust variant.
+- The red-edge gap.
+- If a secondary cannot be run (e.g. a missing run), the scorer records it as "not run" with the reason.
+
 ## 9. Export and latency
 ONNX opset 17 → `onnxruntime.quantization.shape_inference.quant_pre_process` → static QDQ INT8 (per-channel weights)
 calibrated on train chips. Latency: ORT CPU EP, 1 intra-op thread, batch 1, 512 × 512 × 4, 5 warm-ups, median/p90 of
@@ -212,6 +282,14 @@ NAIP acquisition time-of-day unknown (±1 d window).
   counts before any model was fitted (v1.1, review W12); the lead will amend the plan. The earlier text quoted
   lake-only counts 59 / 68 (from an intermediate split build); the frozen split's counts are 58 / 62.
 
+- 2026-11-09 v1.5 (before any test access): event track §13 (E4a derived primary / direct challenger; E3
+  descriptive), lead decision; event code added to the scoring-code hash deliberately.
+- 2026-11-09 v1.4 (before any test access; pre-test review FAIL → fixes): single-look guard; decision rules and
+  composite verdicts (§8a); H-G6 carrier = INT8 seed 0; label rule; secondaries in one pass; W9 (Test-A ∪ Test-N
+  dropped). Scoring-code hash now covers the scorer's import closure, and national-track files are excluded from
+  it. **Configurations tried, original track: 16** (8 on 2026-10-24 + 8 on 2026-11-08/09). The no-KD re-run (W1) and
+  the RGB-only ablation are counted separately as a re-run and a pre-registered ablation, not as selection candidates.
+
 ## 12. National track (added 2026-11-08, v1.3; RESEARCH_PLAN §15.5 amendment items 5–7)
 **Why.** M7 is not saturated in the §15.5 sense on Secchi (all models far from the ceiling, val log-R² ≤ 0.4), but
 turbidity and TSS are: every method ties within CIs because Test-A has 44 water bodies per target. The national track
@@ -243,12 +321,47 @@ unchanged and always reported. Claims name their track.
 | test_time_n | 426 | 205 | 258 | 146 | 223 |
 | excluded | 564 | 413 | 146 | 54 | 114 |
 
-- **Headline (national track):** Test-N = unseen water bodies in 42 states, all years. Secondary: Test-A ∪ Test-N;
+- **Headline (national track):** Test-N = unseen water bodies in 42 states, all years. Secondary:
   test_time_n; by state and site class. Primary populations, metrics, statistics, baselines (refitted on the national
   train role with the same fixed hyper-parameters; band-ratio form chosen on national val) and the selection score S
   (§5, on val ∪ val_n) as in §3–§6. H1/H2 are re-tested on this track with their own Holm family.
 - **Power check (counts only, before selection).** Scaling the val paired-CI widths of the 4-state student-vs-GBM
   comparison by √(water bodies_val / water bodies_test): expected 95% CI half-width on Test-N ≈ 13 MdSA points
   (turbidity), 17 (TSS), 9 (Secchi), vs ≈ 22 / 26 on Test-A. Differences smaller than this stay undetectable.
+- **2026-11-09 (v1.4, review W9):** "Test-A ∪ Test-N" is **dropped** from the national secondaries, because Test-A
+  is scored (original track) before the national track is frozen. National claims use Test-N / test_time_n only.
 - **KD on this track** needs a teacher disjoint from the national val/test roles (a second Lite-safe retrain with the
   national evaluation sites excluded).
+
+## 13. Event track (v1.5, 2026-11-09; before any test access; event_layer_plan.md)
+**Added after val model selection.** The 16-configuration selection score S used Secchi, turbidity and TSS only.
+Chl-a was a training target of every configuration, but never entered S. The event track changes no
+selection, and H1/H2/H-G6 are unchanged. Everything here is **secondary**, scored inside the same single look
+(§8a), with event code hashed deliberately (`sentinel/eval/events.py` released v1, `sentinel/events/lite.py`).
+
+- **(B) output:** "is this water body in a bloom / plume in this image" (state, not onset; NAIP revisit is
+  multi-year).
+- **E4a algal bloom** (chl-a > 20 µg/L; lakes/reservoirs; val 104 positives / 43 water bodies → feasible):
+  - Route (i), derived, **primary**: P(chl > 20) from each seed's Gaussian(μ, σ) in log10 via
+    `events.exceedance_probability`, equal-weight average over seeds 0–2.
+  - Route (ii), direct, challenger, 1 event configuration: an L2 logistic head (C = 1, fixed, not tuned) on the
+    frozen student's water-pooled 48-channel decoder features. It is fitted per seed on train chips with chl-a
+    labels (994; 173 positive), then averaged.
+  - Comparators: the band-ratio chl-a regression (val-selected form) and the GBM-RGBN chl-a regression, each turned
+    into P with its own train 5-fold water-body cross-validated residual SD; location climatology (positive rate of
+    the 10 nearest train sites, smoothed towards the train prevalence).
+  - Calibration: every route gets one Platt recalibration (`events.recalibrate`), fitted on val lake chips and
+    frozen. Val metrics use water-body cross-fitted calibration.
+  - Metrics: `events.state_metrics` (AUPRC, Brier, BSS, ECE, water-body CIs) and `events.compare_routes` (paired
+    ΔBrier/ΔAUPRC, derived − X).
+  - **Pre-registered test (Test-A):** derived vs direct, ΔBrier and ΔAUPRC. Holm runs across the workstream's
+    inferential events, and E4a is the only one. Comparisons against comparators are secondary; Test-B is
+    descriptive.
+  - Sensitivity tiers 12 µg/L and ≥ 50 µg/L: derived route, descriptive.
+- **E3 sediment plume** (snapshot: TSS > 80 mg/L, turbidity > 50 NTU): **descriptive only** on the original track
+  (val 11 / 3 and 4 / 2 → underpowered), derived route only. Inferential E3 is **national-track only** (turbidity on
+  `val_n` 48 / 18), in the later national freeze.
+- **Val-stage artifacts** (hashed in the freeze): `$SENTINEL_RUNS/lite/events_e4a/{heads,comparators,calibrators}.json`,
+  from `scripts/eval/events_lite.py` (train/val only).
+- **Not run / not applicable:** E1, E2, E5–E7 (not optically observable from a 4-band snapshot); onset metrics
+  (no revisit).

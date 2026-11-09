@@ -1,6 +1,6 @@
 # SENTINEL-Orbit (M2) — Pre-registration protocol
 
-**Status:** v0.3, 2026-11-08 (v0.2 of 2026-10-24 was written before any SENTINEL-Orbit model was trained
+**Status:** v0.4, 2026-11-09 (v0.4 adds the event track E4a/E3, §12, and the code-level single-look test procedure, §9b; both written before any E4a > 20 µg/L validation metric was computed and before any test look). v0.3, 2026-11-08 (v0.2 of 2026-10-24 was written before any SENTINEL-Orbit model was trained
 or selected; only smoke tests had run). v0.3 changes, all made before any test scoring and before any model
 result on the new tracks: the turbidity unit rule (§2.1), data versions dev_v4/dev_v5 (§2.3), the power
 analysis (§5a), the Test-B cell + pooled analysis (§9a) and the harder tracks U and E (§11, RESEARCH_PLAN §15.5 amendment of 2026-11-08). The
@@ -308,6 +308,28 @@ These follow RESEARCH_PLAN §15.1.
   - `comparators`.
 - The headline cell is scored **once**.
 
+## 9b. Single-look enforcement in code (v0.4, 2026-11-09)
+`scripts/eval/orbit_test.py` with `sentinel/models/orbit/testlook.py` (pattern of `sentinel/models/hydromet/testlook.py`).
+Looks: `M2/test` (headline + Test-B + pooled + track E strata + event track §12) and `M2U/test` (track U).
+1. **Only `docs/preregistration/FREEZE_orbit.json` unlocks protected rows.** `guard.load_freeze` refuses any other
+   path (including `orbit_freeze_candidate.json`), refuses `status` other than `FROZEN`, requires `authorised_by`
+   and `authorised`, and requires `candidate_sha256` = sha256 of the reviewed candidate file, whose keys (except
+   `status`) must equal the freeze's. Only the lead writes FREEZE_orbit.json.
+2. **Registry refusal.** A look refuses to start if `results/registry.jsonl` already holds any row of its
+   experiment (`orbit_TEST_<version>` / `orbit_TEST_<version>_trackU`).
+3. **Content-hash data pins** (`data_pins` in the freeze): sha256 over (relative path, file sha256) of every
+   source file the protected loader reads (WQP matchup tables, AquaCorr request/plan tables, chip-store indexes and
+   shards, HydroLAKES, WBD HUC12). Verified **before** the claim, so a data mismatch never burns the look.
+4. **Claim.** An O_CREAT|O_EXCL, 0444 marker `$SENTINEL_RUNS/orbit/test_looks/<look>/TEST_LOOK.json` plus a
+   `look_claimed` registry row. Protected rows are loadable only while an unscored claim of this freeze exists.
+5. **Sealed predictions.** All per-row predictions (all models, all cells, event probabilities) are written once,
+   chmod 0444, with `SHA256SUMS` and an O_EXCL `PREDICTIONS_SAVED.json`. Scoring reads only the sealed,
+   sha-checked files.
+6. **SCORED marker.** After the registry rows, an O_EXCL `SCORED.json`; afterwards nothing can be re-scored.
+   Crash recovery between 5 and 6: `--rescore-from-saved` scores the sealed predictions (never re-predicts).
+7. The development dry run (`--dry-run-dev`) runs steps 4–6 on the val cell under a separate namespace
+   (`test_looks_dryrun/`), without a freeze and without protected rows.
+
 ## 9a. Test-B cell and pooled analysis (v0.3, declared 2026-11-08, before any test look)
 **Why.** The power analysis (§5a) shows that the headline chl-a cell is under-powered: 669 rows in 87 blocks,
 MDE about 10–14 MdSA points. A second test cell is therefore declared now, at the lead's direction and
@@ -395,3 +417,75 @@ saturated by a small, easy cell.
   1–3 GB for 30–80k matchups. It needs its own protocol section, frozen split reference and power check
   before any model selection.
 
+
+## 12. Event track (v0.4, 2026-11-09): (B) harmful-event detection from the same model
+**Why.** User requirement (2026-11-09): every model outputs (A) water quality and (B) which harmful event is
+happening. Shared definitions: `docs/plans/event_layer_plan.md` §1 and `sentinel/eval/events.py` (imported,
+never copied). The track extends §7 B / §11.1 (bloom classes) rather than duplicating it. **State only, no onset**
+(S2 revisit ≥ 5 d, cloud gaps).
+
+**Pre-specification status.** Written before any E4a (> 20 µg/L) Brier/AUPRC/ECE was computed on any val cell.
+Already seen before this section (disclosed): AUROC/AUPRC of median scores at 10 and 50 µg/L on dev_v3/dev_v4
+val (`compare_*/bloom.csv`), and the label counts in the event plan §3.2.
+
+### 12.1 Events
+| Event | Definition | Population | Status (dev_v4 val) |
+|---|---|---|---|
+| **E4a** (primary event) | chl-a > 20 µg/L (`events.EVENTS["E4a"]`) | in-lake rows | F: 309 positives / 90 lakes / 36 blocks in `valxval_lake` |
+| E4a tiers (sensitivity) | > 12 µg/L (WHO 2021 AL1), ≥ 50 µg/L | in-lake | F |
+| **E3** sediment plume (descriptive) | TSS > 80 mg/L; turbidity > 50 NTU (NTU family only, §2.1) | in-lake, then all rows | **U**: 0 val positives. Derived route only, counts + metrics if any positives; never a claim |
+
+### 12.2 Routes (both pre-registered; fixed before val results)
+- **Primary: derived.** P(chl-a > 20) = exceedance of the frozen SatWQ-Net equal-weight seed-ensemble mixture
+  (the same mixture that gives the (A) median; context on), `events.exceedance_probability` on the mixture.
+- **Challenger: direct head.** L2 logistic regression on the standardised 64-d fused embedding (`model.fuse`
+  output, read by a forward hook; the network is not modified) of each frozen seed, fitted on fit-cell E4a labels;
+  C ∈ {0.01, 0.1, 1, 10} chosen by inner-cell log-loss; P averaged over seeds.
+- **Recalibration.** Every route and every comparator gets one Platt recalibration (`events.recalibrate`) fitted
+  on the full `valxval_lake` cell and frozen into the event artifact. Val metrics are reported **uncalibrated** and
+  **cross-fitted** (5 folds grouped by water body; each fold's calibrator fitted on the other folds). Test uses the
+  frozen full-val calibrators.
+
+### 12.3 Comparators (all fitted on the fit cell; tuning on inner; same recalibration)
+1. **Band-ratio / OC chl**: `index_opt` (best calibrated OC3/NDCI/B5:B4/MCI polynomial on inner) → P via a
+   Gaussian in log10 with the inner-cell residual SD.
+2. **Strongest ML regression baselines' P**: MDN_B (val-selected chl member) mixture exceedance; GBM imagery +
+   context (val-selected member) → P via a Gaussian with its inner residual SD.
+3. **GBM direct classifier** (LightGBM binary, imagery + context features; 8-configuration grid chosen by inner
+   log-loss): the strongest direct ML comparator.
+4. **Spectral cyanobacteria-index analogue** (labelled analogue): CI_S2 = −SS(665) = −[ρB4 − ρB3 − (ρB5 − ρB3) ·
+   (665 − 560)/(705 − 560)], the Wynne et al. (2008) line-height form moved to S2 bands (S2 has no 681/620 nm
+   band, so the Lunetta et al. (2015) SS(665;620,681) cyanobacteria discriminator cannot be computed). Also
+   MCI (Gower et al. 2005; SS at B5 between B4/B6) and NDCI (Mishra & Mishra 2012). Each raw index (water median
+   3 × 3) → univariate logistic fitted on the fit cell → P.
+5. **Climatology**: LightGBM binary on DOY sin/cos + location unit vector (fit cell; the event analogue of
+   `gbm_season_location`), plus the constant fit-cell prevalence.
+6. **CyAN CI-cyano** (NOAA/EPA): **not compared** — needs an Earthdata login the user has not provided
+   (`docs/datasheets/labels_cyan_availability.md`).
+
+### 12.4 Metrics, CIs, endpoints
+- `events.state_metrics`: AUPRC (prevalence = chance), Brier, BSS vs climatology (5) and vs constant prevalence,
+  ECE (10 bins), reliability table; plus AUROC and recall at FPR = 10% (cut frozen on val) for continuity with §7 B.
+- CIs: **water-body cluster bootstrap** (B = 2,000) primary for the event track (user direction 2026-11-09);
+  role-block bootstrap as a sensitivity.
+- **E-H1 (event skill, the H-G1 "disaster-relevant target" check):** on the headline cell, recalibrated derived
+  P has BSS vs climatology > 0 with the CI excluding 0.
+- **E-H2 (event comparison, secondary):** paired ΔBrier and ΔAUPRC (derived − comparator) vs comparators 1–4,
+  each CI must exclude 0 in SatWQ's favour for an event "SOTA" label (intersection–union, no multiplicity
+  correction); derived vs direct is reported (Holm across E4a tiers for the route comparison).
+- Cells: headline (primary), Test-B and pooled (secondary, as §9a), track U (secondary; event artifacts refitted on
+  U-fit with the same specification, calibrators from the main val cell).
+- Power rule (`events.power_flag`): < 30 positives or < 10 clusters with positives → descriptive only.
+
+### 12.5 Code and freeze
+- Adapter `sentinel/events/orbit.py`, development script `scripts/eval/events_orbit.py`, config
+  `configs/events/orbit.yaml`. They are outside the orbit freeze globs (event plan §4.1) and are **added
+  deliberately** to the orbit scoring-code hash (`guard.EVENT_CODE`, together with `sentinel/eval/events.py`).
+- The fitted event objects (direct heads, comparator classifiers, residual SDs, calibrators, frozen FPR cuts) are
+  one artifact `events_orbit_<version>.pkl`, sha-pinned in `weights_sha256["events_orbit"]`. The event metrics
+  are scored in the same `M2/test` look as the headline.
+- **Shared module pin (2026-11-09).** `sentinel/eval/events.py` v1.0 (released, immutable), sha256
+  `4279d2427d777405ce1cb140cab995567a8086fee5fd4776950e4de1065954ae`; the adapter refuses any other file, and the
+  event artifact records the hash. Event labels are computed from the **linear** in-situ values (never from
+  back-transformed log10, since 10^log10(20) > 20); predictive distributions are passed with `space="log10"`.
+  Runs made earlier on 2026-11-09 against a pre-release draft were discarded unregistered.

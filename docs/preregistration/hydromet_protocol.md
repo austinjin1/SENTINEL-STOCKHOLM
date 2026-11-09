@@ -166,6 +166,9 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
   - The paired bootstrap resamples **basin groups** (`sentinel.eval.bootstrap.paired_bootstrap` with
     groups; B = 2,000; seed 0). It gives a 95% CI and a two-sided p_f.
   - Intersection–union: p_IUT = max(p_gbm, p_physics).
+  - A hypothesis whose paired cell has fewer than 3 basin groups (or no predictions) is not testable: it stays in the
+    Holm family with p = 1 (added 2026-11-09 after the track-R rehearsal showed a degenerate one-group bootstrap
+    with p = 0; applies to every look).
   - Holm–Bonferroni at family-wise α = 0.05 across the 28 p_IUT values (24 in v0.10, 20 in v0.9, 16 in v0.8, 12 in v0.7, 8 before).
 - **Decision rule (implemented in `evaluate.primary_comparison`, column `won`).** An endpoint is **won**
   only if all of the following hold:
@@ -176,7 +179,8 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
 - **Secondary analyses** (descriptive, no multiplicity control):
   - site-resampling sensitivity of all of the above;
   - secondary metrics, pooled skill and secondary targets;
-  - train-role sites × val/test block (temporal-only extrapolation);
+  - train-role sites × val block (temporal-only extrapolation; the test looks cover test-role sites only, so a
+    train-role × test-block analysis is not part of this protocol);
   - the `lagged` forcing mode;
   - skill against distance to the nearest train site;
   - physics-DO head vs plain EA-LSTM on DO.
@@ -223,7 +227,7 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
     on test: "competitive" (no val endpoint won). The lead authorises the freeze and the single test look.
   - **Candidate record** `docs/preregistration/hydromet_freeze_candidate.json` (`scripts/eval/hydromet_freeze_candidate.py
     write|verify`; NOT a freeze): split sha256, `scoring_code_sha256`, weights sha256 of the candidate, blend members and
-    selected comparators (14 artifacts), and **data snapshot pins** (manifest sha256 + content sha256 over every file the
+    selected comparators, and since 2026-11-09 all seven models of the Holm-28 family (25 artifacts), and **data snapshot pins** (manifest sha256 + content sha256 over every file the
     loaders read): `sonde_daily` → the promoted `sonde_daily_refresh_20261108` (manifest `dcd359ea…`, content
     `65d86584…`, 5,501 files), `forcings_daily`, `hydromet_upstream_forcing`, `streamcat`, `sites`. The 2026-11-08
     promotion left every value ≤ 2023-09-30 identical (`compare_vs_sonde_daily.json`), so artifacts trained before or
@@ -257,7 +261,12 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
     0444 with `SHA256SUMS`, and a SCORED marker; `guard.check_access` refuses protected data without an open claim of
     the current freeze. `hydromet_score.py`, `hydromet_predict.py` and `hydromet_track_n.py` refuse protected data.
     Models, Holm family size and comparators come only from `freeze["looks"][<look>]`. A val rehearsal of the
-    whole path (`--rehearse-on-val`) must reproduce `M6/val_v4` before the freeze.
+    whole path (`--rehearse-on-val`) must reproduce `M6/val_v4` before the freeze. Delta re-review (2026-11-09):
+    only `FREEZE_hydromet.json` / `_trackR` / `_test_b` in this directory with `status: FROZEN` and `authorised_by`
+    are freezes (a record with `NOT_A_FREEZE` or `partial_rehearsal_only` is refused); a claim authorises only its
+    own look's cell (block, roles and dataset: sonde sites vs track-N stations); a crash before sealing writes an
+    `ABORTED` marker and registry row (claim closed), recoverable only by the logged `--resume-aborted` (≤ 2 times);
+    a sealed folder must contain exactly the files in `SHA256SUMS`.
   - **test_b** (WY2026) is 47 % provisional in the 2026-11-08 snapshot: it gets its own later freeze
     (`FREEZE_hydromet_test_b.json`) with a later `sonde_daily` pin, same models and family.
 - **Freeze contents.** Before test scoring, `FREEZE_hydromet.json` records:
@@ -294,6 +303,7 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
 | 2026-11-08 | §10 amendment (GPU budget): track-R `ealstm_full` refits are optional and scored only if all 18 finish; otherwise Holm over 8 | User instruction: SENTINEL GPUs reduced to 0/1, shared, ≤ 2 h per job |
 | 2026-11-09 | v0.11 (cycle 6; written after `M6/val_v3` was registered, before any `ealstm_ws_full` run): seventh SENTINEL model `ealstm_ws_full` = the v0.8 refit rule (fit + inner sites, E_k epochs from the early-stopped run, last epoch kept) applied to `ealstm_ws_s<k>` (`configs/hydromet/lstm_ws_full.yaml`). No new comparator is needed (all GBMs are already refitted on fit + inner; `forcing_gbm_ws_bag` and the `_ws` physics members exist). Holm family: 28 hypotheses (7 models × 4 endpoints). Re-scored as `M6/val_v4` | Combination of the two levers that each helped the EA-LSTM in `M6/val_v3` (refit: cycle 3; upstream forcings: cycle 5) |
 | 2026-11-09 | Pre-declarations requested by the lead (before any further track selection): §8 candidate record with data snapshot pins and no-test audit; §10 track-R comparators fixed and own test look; §12 track-N candidates (`ealstm_ws_full`, `ealstm_gbmblend`), fixed comparators and own test look | Lead instruction 2026-11-09; promoted sonde snapshot (2026-11-08) |
+| 2026-11-09 | Delta re-review D1–D5 (before any freeze): freeze authenticity, claim scope + abort/resume, sealed-folder completeness, fixed track-R family (`ealstm`, `ealstm_gbmblend`; Holm 8), track-R pins copied from the primary freeze, track-N sensitivity excluding the 427 local-basin stations, text fixes | Lead/reviewer, `REVIEW_REPORT_PRE_TRAINING.md` "M6 HydroMet — delta re-review" |
 
 ## 10. Harder track R — leave-region-out (added 2026-11-08, before any fit or score on it)
 - **Why.** The original benchmark is saturated (§9, 2026-11-08 row). Track R is stricter extrapolation (unseen
@@ -318,12 +328,15 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
   The early-stopped `ealstm` seeds of all six folds run first and the `ealstm_full` refits after them. If the refits
   are not all finished when track R is scored, `ealstm_full` is dropped from the track-R family (Holm over 8:
   `ealstm`, `ealstm_gbmblend`) and the omission is reported; no partial-fold `ealstm_full` is ever scored.
+  **Superseded 2026-11-09 (delta re-review D4, before any freeze or test look):** the track-R family is FIXED to
+  `ealstm` and `ealstm_gbmblend` (Holm over 8), independent of which artifacts exist later; `ealstm_full` is never in
+  the track-R family (its refits are not run; any that exist are not scored on test).
 - **Pre-declared 2026-11-09 (before any track-R score):** comparators are FIXED to the original-track selection among
   the members track R refits (`M6/val_v2` `comparators.json`, copied to `docs/preregistration/hydromet_track_r_comparators.json`): temp mean `forcing_gbm_bag` / `air2stream_regional`;
   7-DADMax `forcing_gbm` / `air2stream_regional`; DO mean `forcing_gbm` / `dosat_ratio[air2stream_regional]`; DO min
   `forcing_gbm_bag` / `dosat_ratio[air2stream_regional]` (each refitted per fold). No comparator is selected on the
   track-R CV cell (this replaces the "best of family on the CV cell" sentence below). Track-R candidates:
-  `ealstm_gbmblend` and `ealstm` (+ `ealstm_full` under the GPU amendment). **Own single test look:** after all folds
+  `ealstm_gbmblend` and `ealstm` (fixed; see the D4 note above). **Own single test look:** after all folds
   finish, the fold artifacts' sha256 are added to a track-R freeze entry (lead); each FINAL test-role site is then
   predicted once on the test block by its region's fold models and scored once (`M6R/test`). Track R never replaces
   the primary (§1–§8) claim.
@@ -333,8 +346,11 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
   is omitted: it never was the selected GBM in `M6/val_v2`, and the cost is one more suite per fold.) Comparators
   are the fixed ones of the pre-declaration above; nothing is selected on the track-R CV cell.
 - **Statistics.** As in §5–§7: median per-site KGE, basin-group paired bootstrap (B = 2,000), IUT, every-seed rule,
-  Holm over 12 hypotheses (3 models × 4 primary endpoints) if all `ealstm_full` refits finish, else over 8 (GPU
-  amendment). Fold-level results are secondary.
+  Holm over 8 hypotheses (2 models × 4 primary endpoints; fixed 2026-11-09, D4). Fold-level results are secondary.
+- **Track-R freeze (2026-11-09, delta re-review 8a/8b):** `FREEZE_hydromet_trackR.json` copies the primary freeze's
+  data pins byte-identically (`hydromet_freeze_candidate.py trackr` refuses otherwise), carries the same
+  `scoring_code_sha256` and per-file hashes of all frozen files, and the builder refuses if any frozen file changed
+  since the primary freeze. No frozen file is edited between the two looks.
 - **Clarifications 2026-11-09 (pre-test review W4).** (i) Fixing the comparators to the original val selection
   instead of best-of-family on the CV cell is a deliberate departure from §6: the CV cell contains the val-role ×
   val cell already used for six cycles of selection, so selecting there again would add a selection step on
@@ -416,7 +432,10 @@ least one of its primary endpoints is **won** (§7). The M6 claim therefore requ
     the §8 candidate **`ealstm_ws_full`** (seed ensemble; station upstream forcings from
     `processed/hydromet_upstream_forcing/*_trackn`, same builder, but the "NLDI polygon if the area ratio vs StreamCat
     is outside [0.5, 2]" rule uses cached NLDI polygons only — no new requests on the shared quota — so flagged
-    stations without a cached polygon keep the local basin; count disclosed in the manifest) and **`ealstm_gbmblend`** (= `ealstm` + `forcing_gbm_bag`, chosen for track N because the
+    stations without a cached polygon keep the local basin: **427 of 12,771 stations**, all with a local/StreamCat
+    area ratio outside [0.5, 2] (median 0.23; 5th–95th percentile 0.001 to ≈ 1e6, the upper tail where StreamCat's
+    watershed area is near zero at the matched COMID), so some of their `ws_*` inputs come from a wrong basin; a pre-declared descriptive sensitivity re-score excludes these 427 stations
+    (`looks["M6N/test"]["sensitivity"]`, experiment `M6N/test_sens427`)) and **`ealstm_gbmblend`** (= `ealstm` + `forcing_gbm_bag`, chosen for track N because the
     blend was the only model better than the GBM in the powered in-region look; disclosed as selected after
     `M6N/inregion_val_v1`).
   - Comparators FIXED from the original-track selection `M6/val_v4`: temp mean `forcing_gbm_bag` /

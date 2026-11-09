@@ -6,7 +6,8 @@
     python -B scripts/eval/hydromet_test_look.py --look M6/test  [--gpu]                 # primary (FREEZE_hydromet.json)
     python -B scripts/eval/hydromet_test_look.py --look M6N/test [--gpu]                 # track N (same freeze)
     python -B scripts/eval/hydromet_test_look.py --look M6R/test --freeze-file docs/preregistration/FREEZE_hydromet_trackR.json
-    python -B scripts/eval/hydromet_test_look.py --look <look> --rescore-from-saved       # crash recovery only
+    python -B scripts/eval/hydromet_test_look.py --look <look> --rescore-from-saved       # crash after sealing
+    python -B scripts/eval/hydromet_test_look.py --look <look> --resume-aborted           # crash before sealing (logged)
 
 Models, Holm family size, comparators, artifacts and data pins come from ``freeze["looks"][<look>]``; nothing
 about the look is selectable on the command line. Order: load freeze (split + scoring-code hash) → verify data
@@ -94,6 +95,18 @@ def score(look: str, blk: dict, ff: str | None, pred_dir: Path, out: Path, log, 
         preds, sources = pipeline.load_prediction_set([pred_dir], data, si, ti, block, smoke=False, access=data.access)
         prim = tn.score_track_n(data, preds, sources, roles, block, blk["comparators"], blk["primary_models"], out,
                                 log=log, experiment=None if rehearsal else look, n_hypotheses=int(blk["n_hypotheses"]))
+        sens = blk.get("sensitivity")
+        if sens:   # protocol §12 (2026-11-09): descriptive re-score without the stations whose basin fell back to local
+            import pandas as pd
+
+            b = pd.read_parquet(paths.DATA_ROOT / sens["basins_file"], columns=["site_key", "method"])
+            drop = set(b.loc[b["method"] == sens["exclude_basin_method"], "site_key"])
+            keep = ~np.isin(np.asarray(data.sites), list(drop))   # preds are aligned to all stations (si = arange)
+            d2 = data.subset(np.flatnonzero(keep))
+            p2 = {m: {v: a[keep] for v, a in pv.items()} for m, pv in preds.items()}
+            log(f"[{look}] sensitivity: excluding {int((~keep).sum())} stations ({sens['exclude_basin_method']})")
+            tn.score_track_n(d2, p2, sources, roles, block, blk["comparators"], blk["primary_models"], out / "sensitivity",
+                             log=log, experiment=None if rehearsal else sens["experiment"])
         return {"n_hypotheses": int(len(prim)), "won": int(prim["won"].sum()) if "won" in prim else 0}
     cfg = dict(runner.load_config("configs/hydromet/common.yaml", smoke=False), track_r="test" if look == "M6R/test" else None)
     args = Namespace(eval_blocks=block, split=None, allow_test=bool(ff), freeze_file=ff)
@@ -146,6 +159,8 @@ def main() -> int:
     ap.add_argument("--freeze-file", default=None)
     ap.add_argument("--gpu", action="store_true")
     ap.add_argument("--rescore-from-saved", action="store_true")
+    ap.add_argument("--resume-aborted", action="store_true",
+                    help="documented recovery of a claim aborted before sealing (logged; testlook.MAX_RESUMES)")
     ap.add_argument("--rehearse-on-val", default=None, metavar="CANDIDATE_JSON",
                     help="dry run of the whole look on val-role sites x val block from the candidate record: no claim, "
                          "no protected data, no registry; outputs under $SENTINEL_RUNS/hydromet/test_look_rehearsal/")
@@ -158,6 +173,8 @@ def main() -> int:
     from sentinel.models.hydromet import testlook as TL
 
     ff = a.freeze_file or str(paths.REPO_ROOT / "docs" / "preregistration" / DEFAULT_FREEZE[a.look])
+    if Path(ff).name != DEFAULT_FREEZE[a.look]:   # delta re-review D1: each look has exactly one freeze file
+        raise SystemExit(f"{a.look} is scored only under {DEFAULT_FREEZE[a.look]}, not {Path(ff).name}")
     split, _ = D.load_split()
     freeze = guard.load_freeze(ff, split=split)           # split + scoring-code hash
     blk = TL.look_block(freeze, a.look)
@@ -168,12 +185,22 @@ def main() -> int:
         TL.check_sealed(a.look)
         log = runner.make_logger(out / "log_rescore.txt")
     else:
-        TL.claim(a.look, freeze)
-        log = runner.make_logger(out / "log.txt")
-        if a.gpu:
-            runner.setup_gpu("hydromet_test_look")
-        predict(a.look, blk, ff, pred_dir, "cuda" if a.gpu else "cpu", log)
-        TL.seal_predictions(a.look, pred_dir)
+        if a.resume_aborted:
+            n = TL.resume_aborted(a.look, freeze)
+            log = runner.make_logger(out / f"log_resume_{n}.txt")
+        else:
+            TL.claim(a.look, freeze)
+            log = runner.make_logger(out / "log.txt")
+        try:   # delta re-review D2: a crash before sealing closes the claim (ABORTED marker + registry row)
+            if a.gpu:
+                runner.setup_gpu("hydromet_test_look")
+            predict(a.look, blk, ff, pred_dir, "cuda" if a.gpu else "cpu", log)
+            TL.seal_predictions(a.look, pred_dir)
+        except BaseException:
+            import traceback
+
+            TL.abort(a.look, traceback.format_exc())
+            raise
     summary = score(a.look, blk, ff, pred_dir, out / "score", log)
     TL.mark_scored(a.look, summary)
     log(f"[{a.look}] scored once: {summary}")

@@ -1,0 +1,22 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# M3 Microbe secondary event track (docs/preregistration/events_microbe_protocol.md). State classification at
+# the sample date (chronic diagnosis), not onset. Thresholds on raw values; applied in log10 space where the
+# M3 target is log-transformed (design.TARGETS floors).
+events:
+  E5b:     {target: log_tp,   raw: raw_tp_mgl,   direction: above, threshold: 0.1,  unit: mg/L,  status: inferential}
+  E4a:     {target: log_chla, raw: raw_chla_ugl, direction: above, threshold: 20.0, unit: ug/L,  status: inferential}
+  E2c:     {target: log_sc,   raw: raw_sc_uscm,  direction: above, threshold: 300.0, unit: uS/cm, status: borderline,
+            power_rule: {min_pos: 30, min_clusters: 10, cluster: domain_id}}
+  E4a_t12: {target: log_chla, raw: raw_chla_ugl, direction: above, threshold: 12.0, unit: ug/L,  status: descriptive}
+  E1_3:    {target: do,       raw: raw_do_mgl,   direction: below, threshold: 3.0,  unit: mg/L,  status: descriptive}
+  E1_5:    {target: do,       raw: raw_do_mgl,   direction: below, threshold: 5.0,  unit: mg/L,  status: descriptive}
+  E3:      {target: log_turb, raw: raw_turb_fnu, direction: above, threshold: 50.0, unit: FNU,   status: descriptive}
+routes:
+  primary: derived            # Gaussian(mu = OOF prediction, sigma = leave-one-domain-out residual SD) -> Platt (cross-fitted)
+  challenger: direct          # binary head on M* inputs; powered events only (E5b, E4a, E2c if powered)
+direct_head_min_train_pos: 5
+comparators: [tier0_best, rf_clr, strongest_community_baseline, event_climatology, train_prevalence]
+n_boot: 2000
+cluster_units: [domain_id, site_id]
+holm_family: inferential_events

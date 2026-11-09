@@ -20,5 +20,10 @@
 - Purchased-water systems are excluded.
 
 ## Files and counts
-(filled after the build: `system_points.parquet`, `system_links.parquet` with snap status counts,
-`streamcat_comid.parquet`, `streamcat_dictionary.csv`; see `manifests/taprisk_catchment.json`)
+| File | Rows | Content |
+|---|---|---|
+| `system_points.parquet` | 35,803 | pwsid, source code, state, representative point (lat/lon), `is_modeled`, polygon area |
+| `system_links.parquet` | 35,803 | NLDI snap: 35,151 `ok` (GW 31,017, SW 3,674, GU 460), 652 `http_404` (no NHDPlus catchment at the point; mostly coastal) → 29,856 unique COMIDs (NLDI run 2026-11-08 18:33 → 2026-11-09 07:01, 0 errors, 0 HTTP 429) |
+| `streamcat_comid.parquet` | 29,856 | 179 curated StreamCat columns (10 metric groups); 29,696 COMIDs with ≥ 1 value |
+| `streamcat_dictionary.csv` | 179 | column → StreamCat metric, AOI, description |
+Manifest: `manifests/taprisk_catchment.json` (2026-11-09T19:29Z, 26.9 MB).

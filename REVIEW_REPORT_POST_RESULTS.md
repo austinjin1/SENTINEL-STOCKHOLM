@@ -743,3 +743,207 @@ All labels are for leave-one-ecoregion-out only. Under cycle-out (Test B), no ca
 | Reproducibility (exact re-score, independent recompute, T1 recompute) | 5 | 4 | 0 | 1 (T2 not re-scorable) |
 | Result authenticity / traceability | 6 | 6 | 0 | 0 |
 | Statistical validity / labels (Holm, seeds, CIs, sensitivity, scope, effect size) | 8 | 5 | 1 (C-M5P-1 scope) | 2 (TN, H-M5 seeds as warnings) |
+
+## EW-v2 Test-A — post-results review (2026-11-09)
+
+**Review mode:** post-results · **Date:** 2026-11-09 · **Reviewer:** independent reviewer, Autonomous Review Skill (fresh context; did not do the work)
+**Scope:** the single EW-v2 (M1 early-warning) Test-A scoring pass. This covers:
+- the run dir `sentinel_runs/sonde/ew_v2_testA_score/`: `primary_endpoint.json`, `controls.csv`, `event_scores.csv`, `score_manifest.json`, `event_probs/` (18 parquet files), `reliability/`, `log.txt`, `data_info.json`;
+- the wrapper log `sentinel_runs/sonde/logs/ew_v2_testA_score_20261109.log`;
+- the marker `sentinel_runs/sonde/.ew_scored_test.json`;
+- the 295 registry rows `ew_v2_test_score`;
+- the RESULTS.md entry "2026-11-09 — EW-v2 Test-A single pass".
+
+I also read `FREEZE_ew.json`, `ew_v2_protocol.md` (v0.3, all of §1–§12), addendum A1 (`ew_v2_post_freeze_addendum.md`), `ew_v2_osf_preregistration.md`, `docs/handoff/M1-sonde.md`, RESEARCH_PLAN §15.2, and the score-phase code (`scripts/train/sonde_events.py` `score`, `check_frozen_invocation`, `claim_single_pass`, `verify_snapshots`, `check_chloride_consistency`; `sentinel/models/sonde/guard.py` `load_freeze`).
+
+**What I did**
+- **Hashes.** `git show cef72b6:<path> | sha256sum` for `FREEZE_ew.json` (`24716009…`) and `ew_v2_protocol.md` (`0d5c8f2e…`): both byte-identical to the local files.
+  - Recomputed `scoring_code_sha256` over the 22 frozen files with `guard.scoring_code_sha256`: `c110bcff…`, matches.
+  - `git diff cef72b6 --` those 22 files is empty.
+  - Calibration file sha `3c243c1b…` matches `thresholds_sha256`. Both `static_inputs` shas match, and their mtimes are 2026-10-22.
+  - `origin/v2-rebuild` reflog: cef72b6 was pushed at 2026-11-09 10:03:19 −0500, before the marker (12:05:28).
+- **Single pass / timing.** Compared wrapper start/end, marker `claimed`, registry timestamps, file mtimes in the run dir, and `log.txt` vs the wrapper log.
+- **Earlier test access.** Parsed every registry row (66,704):
+  - experiment prefix `ew_v2_test*`;
+  - any `M1-sonde` row with "test" in split or experiment;
+  - every row whose argv contains `--allow-test` or `--eval-blocks test`.
+  - I also read the `access` block of all 73 other `data_info.json` under `sentinel_runs/sonde/`, listed every `.ew_scored*` marker, and searched for `*test*` artifacts.
+- **Independent recomputation (CPU, nice, ≤ 4 threads).** From `event_probs/*_L3_test.parquet` (role = test) I recomputed the pooled BSS of stack vs climatology (H1, H2, H4, H1-t4). I also ran my own two-stage basin-group > site-month bootstrap (own RNG, B = 2000) for H1, H2 and H4.
+  - Script: `/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/ewrev/boot.py`.
+- **Traceability.** Matched every number in the RESULTS entry against `primary_endpoint.json`, `controls.csv`, `event_scores.csv` (test-role, lead 3) and the registry.
+- **Not done:** I did not re-run the scorer or create any marker, made no git operation, and did not open `keys.env`. I edited nothing except this report.
+
+### Summary
+
+**Overall status: 🟡 PASS WITH CONCERNS.** The pass itself is clean, the verdict is correct and every number traces. The RESULTS entry needs correcting before any number leaves the repository: it overstates the controls (C-EWP-1), omits outcomes the protocol requires (C-EWP-2), and frames the next steps in a way the protocol does not allow (W-EWP-1).
+
+**Integrity of the pass: clean.**
+- **Order of events.** The commit was pushed (10:03:19) before addendum A1 was written (12:04:33 local mtime). The wrapper started at 12:05:10. The marker was claimed and the `pass_claimed` row written at 12:05:28 (17:05:28Z). Scoring ended with 294 rows at 14:01:47, and the wrapper exited 0 at 14:01:52.
+- **Row count.** 1 + 294 = 295 rows, which is exactly 1 claim + 43 control metrics × 6 cells + 9 primary metrics × 3 + 3 negative-control metrics × 3.
+- **Exactly one pass.**
+  - One `.ew_scored_*` marker exists (r--r--r--). There is no legacy `…_<sha12>` name.
+  - There is one `pass_claimed` row, and no registry row follows the last `ew_v2_test_score` row.
+  - The log has a single start/end and no restart or traceback.
+  - `log.txt` equals the wrapper log minus the 3 wrapper lines.
+  - Every output file's mtime is between 12:07 and 14:01.
+- **Checks before the marker.**
+  - The log line at 12:05:28 records the calibration sha and the four content-hash data pins (`match: True`).
+  - Code-hash verification is not printed. It is enforced: `guard.load_freeze(check_code=True)` raises on a mismatch, and it runs before `claim_single_pass`. My recomputation confirms the hash.
+  - Frozen artifacts are re-verified against the calibration file at load (`artifact … changed since calibration`).
+  - The handoff records the lead's pre-pass check of `static_inputs`, and I confirm both shas now.
+- **No test data was touched beforehand.**
+  - There are 0 `ew_v2_test*` rows before 17:05:28Z, and no other M1-sonde row with test access.
+  - All 73 other sonde runs have `blocks/roles ⊆ {train, val}` and `protected = []`.
+  - The `--allow-test` rows from 2026-11-09 01:23–03:12Z belong to the downstream workstreams (toxinwatch, biointegrity, safeswim, d1n_beaches, musselguard), which do not load sonde data.
+  - `sentinel_runs/events/feasibility_sonde` (13:11) is train/val-role, train/val-block only, and ran after the marker.
+  - The disclosed prior-knowledge items still stand: W10 split eligibility conditioned on test-period availability, and W11 chloride datasheet counts.
+- **Independent recompute.**
+
+  | Hazard | BSS (mine = registered) | My two-stage CI | Registered CI | My p | Registered p |
+  |---|---|---|---|---|---|
+  | H1 | 0.01271 | [−0.0047, 0.0406] | [−0.0041, 0.0383] | 0.070 | 0.069 |
+  | H4 | 0.01892 | [0.0001, 0.961] | [0.0001, 0.973] | 0.020 | 0.020 |
+  | H2 | −0.01492 | [−29.4, 0.098] | [−27.5, 0.093] | 0.62 | 0.64 |
+
+  Differences are within Monte Carlo error. The positive-row counts are consistent with 3 issue rows per evaluable onset (127/43, 27/9, 27/9).
+
+**Decision rule: applied as frozen; the verdict is correct.**
+- **Power rule.** H1 has 43 evaluable onsets in 11 basin groups, H2 has 9 in 3, and H4 has 9 in 2. All three are under 50 onsets, so all are underpowered (H4 passes only the ≥ 2-group half of the rule). `p_holm_input = 1`, `p_holm = 1` and `reject_holm = false` for each, and m = 3 is kept. `gate_equals_pod_set = true` for all three, so the C2 single onset definition holds.
+- **Robustness.** Even with the descriptive bootstrap p (0.020, 0.069, 0.64), Holm at α = 0.05 would reject nothing: 0.020 > 0.05/3 = 0.0167. The negative verdict therefore does not depend on the power rule.
+- **What the protocol declares for an underpowered primary.** Nothing that could replace it:
+  - §9 pre-declares only a **secondary** pooled Test-A ∪ Test-B **H1** analysis (pass `test_ab`, not before 2027-06-30). It is "never replaced by the pooled analysis; the pooled result is labelled secondary in every report".
+  - H2's confirmatory use moves to the live winter trial, which needs a separate amendment.
+  - Tiers (H1 < 4, < 2) and H2-acute are **descriptive secondaries** (§7). There is no fallback population and no tier substitution.
+  - The observed H1 count (43) matches the pre-stated projection (≈ 44, §1/§9).
+- **Plan threshold.** RESEARCH_PLAN §15.2 "EW-v2: primary BSS endpoint passes for ≥ 2 hazards on Test-A …" is **failed**, not pending. Neither the pooled secondary nor the live trial is a Test-A primary, so neither can satisfy it as written.
+
+### Critical issues (must fix in RESULTS.md before any number is quoted)
+
+**C-EWP-1 — The control reading is overclaimed for H2 and leans on the weakest null.**
+"The warnings carry real, above-chance timing signal" is stated for all hazards and supported mainly by the circular-shift surrogate.
+- **Circular shift is a weak null.** A ≥ 30-day circular shift destroys seasonal alignment, so a pure site × season climatology also beats it.
+- **H1.**
+  - The signal is real at the alarm level, but the correct evidence is the **season-matched placebo**: POD_real 0.86 vs POD_placebo 0.33. The cluster bootstrap gives POD_real − POD_placebo = +0.53 [0.38, 0.68], p = 0.0005, over 11 basin groups.
+  - It also beats **climatology at a similar alarm rate**: climatology POD 0.49 (21/43) at 1.92 alarm-days per 30 d, vs stack 0.86 (37/43) at 1.99.
+- **The frozen alarm budget was not held out of sample.**
+  - H1 stack realised **1.99 alarm-days per 30 d** against a budget of 1. `b1_meets_budget = False`, 39 % of sites were over budget, and 6.7 % of issue days were in alarm.
+  - The ≥ 24 h POD is **0.70**, not 0.86.
+  - The protocol (§7) requires that realised rates be reported "as they are". The entry omits them.
+- **H2.**
+  - "POD 1.0 vs 0.12" was achieved at **4.54 alarm-days per 30 d** (4.5× budget; 80 % of sites over budget; 16 % of days in alarm).
+  - **Climatology alone detects 8/9 onsets** (POD 0.89 at 5.41 alarm-days per 30 d).
+  - BSS is −0.015, and Diebold–Mariano vs climatology gives p = 0.22.
+  - H2 shows no timing information beyond seasonality. Citing it as timing signal is misleading.
+- **H4.** POD 0.89 (8/9) at 0.59 alarm-days per 30 d (within budget) vs climatology 0.33 (3/9). This is suggestive but rests on 9 onsets at 6 sites in 2 basin groups, where the cluster bootstrap is degenerate.
+- **Unlabelled comparators.** "vs 0.12" and "vs 0.06" are circular-shift surrogate means but are not labelled as such.
+- **The rest of the controls are read correctly:**
+  - circular-shift mean 0.17, p 0.001 (the floor for 1,000 surrogates);
+  - label permutation p 0.001;
+  - Molchan skill 0.83;
+  - DM vs climatology p 0.022, vs persistence p 0.17;
+  - 0.0 alarm-days per 30 d at 11 negative-control sites with 0 onset rows.
+- **Weaker tests than they look.**
+  - Label permutation tests association, not skill over climatology. Its null mean BSS is −0.010.
+  - DM uses a daily site-mean differential with Newey–West and does not account for basin clustering. That is why it gives 0.022 while the cluster-robust primary bootstrap gives 0.069.
+  - The negative control (sites whose training DO min never fell below 6 mg/L) is an easy control.
+- **Fix:** use the text below.
+
+**C-EWP-2 — Required or material secondary outcomes are omitted.**
+- **Approximate CIs not flagged.** Protocol §7 (W4) says that with fewer than 10 basin groups the CI "is stated to be approximate". The H2 (3 groups) and H4 (2 groups) CIs are not flagged. The H4 interval [+0.0001, +0.97] and p = 0.020 look like evidence at first glance: they are degenerate two-group bootstrap artefacts.
+- **The H1 < 4 mg/L tier is not reported.** It is the only H1 cell with ≥ 50 evaluable onsets (56, 12 basin groups). Its pre-selected method (`event_gbm_mono`) has **BSS −0.002 [−0.020, +0.020]**, and DM vs climatology gives p = 0.70. The stack gives −0.005.
+  - It is a descriptive secondary and cannot be a fallback claim.
+  - Leaving out the one adequately sized cell, which is null, while reporting the favourable alarm controls, is selective reporting. It also directly supports "probabilistic skill … not established".
+- **H2-acute must not be quoted as skill.** Its BSS of +0.25 has label-permutation p = 0.999: the observed BSS is below the null mean of +0.37, so the apparent skill is site-level label structure. It is not in the entry, but it should be marked "not skill" wherever it appears.
+- **Relative economic value is not reported.** For H1 stack it is > 0 only at C/L 0.01 (0.24) and ≤ 0 for C/L ≥ 0.02.
+
+### Warnings
+
+- **W-EWP-1 — The "Next" line implies the pooled secondary and the live trial can rescue the claim.**
+  - Per §9 the pooled Test-A ∪ Test-B H1 result is secondary and never replaces the primary.
+  - About two-thirds of its onsets (Test-A) are now unblinded: 43 onsets, BSS +0.013.
+  - Its Test-A rows will be re-derived from the 2027 snapshot.
+  - It covers H1 only; H4 has no pre-declared route.
+  - The live-trial amendment (`ew_v2_live_amendment.md`) **does not exist yet**. It is due before 2026-12-01, and RESEARCH_PLAN §15.2 also requires the live trial to be "registered and running".
+  - The live trial scores a different, provisional-input variant (`ew_live_variant_cal_nosubdaily`), so it does not test the frozen Test-A stack.
+  - The amendment is being written after Test-A unblinding. It must state that Test-A results were known, and it must not use them to choose sites, hazards or thresholds.
+  - Thresholds are never re-tuned (§7). Re-calibrating the alarm threshold to fix the 2× budget overshoot seen on Test-A would be a post-hoc change and must be labelled as such.
+- **W-EWP-2 — Wording.**
+  - The entry says "pre-registered power rule" and "pre-registered pooled secondary". It never says OSF, and "GitHub commit `cef72b6`, not OSF (addendum A1)" is correct.
+  - Addendum A1 prescribes the wording "pre-specified and frozen in a public GitHub commit before testing (not registered on OSF)". Use "pre-specified" in the EW entry.
+  - "H-EW" is not defined anywhere. The plan calls the threshold "EW-v2" in RESEARCH_PLAN §15.2.
+- **W-EWP-3 — Addendum A1 is local only.**
+  - `ew_v2_post_freeze_addendum.md` is untracked, so it is in no public commit. The public cef72b6 protocol still says scoring happens only after OSF registration.
+  - The only evidence that A1 predates the pass is a local mtime (12:04:33, 55 s before the wrapper start).
+  - It should be committed and pushed with an honest note that it was written at 12:04 on 2026-11-09 and committed after the pass. That is the user's decision; I made no commit.
+- **W-EWP-4 — `ew_v2_osf_preregistration.md` is a dead draft.** It is titled "pre-registered test" and cites protocol "v0.2". Mark it as unused or superseded so it is never quoted.
+
+### Observations
+
+- The frozen record still has the placeholders `"created": "[PENDING …]"` and `"git_commit": "[PENDING …]"`. The protocol header still reads "DRAFT v0.3". `frozen_at` and A1 cover these; they are cosmetic and must not be edited, because the files are hashed.
+- The chloride consistency check uses a float tolerance (atol 1e-3 + rtol 1e-5). The observed maximum difference is 0.0026 mg/L at ~230 mg/L, which is within tolerance and consistent with float32 storage. The log reports 49 sites checked against 47 with an eligible regression, which is immaterial. Protocol wording ("differs … on any day") is stricter than the code; it is harmless.
+- H2 had 9 evaluable onsets, above the a-priori upper scenario of about 7 (§9). This is reported as is, with no consequence.
+- The test-role H1 population has 22 basin groups with rows and 150 sites. The protocol's metadata-based projection was 28 groups.
+- `git_dirty: true` in the registry `code` block reflects untracked or other-workstream edits. None of the 22 EW scoring files differ from cef72b6.
+
+### Integrity verdict
+- Fabrication detected: **No.** Every RESULTS number traces exactly to `primary_endpoint.json`, `controls.csv` or `event_scores.csv`, and the BSS and CIs were recomputed independently.
+- Data leakage detected: **No.** There was no test access before the single pass. The disclosed availability conditioning (W10) and chloride-datasheet counts (W11) remain.
+- All results traceable to code: **Yes.**
+- Statistical claims valid: **Yes for the primary decision** (power rule, Holm with p = 1, verdict). **No for the controls paragraph as written:** the H2 timing claim, missing alarm rates, the circular shift presented as the main null, and missing approximate-CI flags. Fix with the text below.
+
+### Rounding check (RESULTS table vs `primary_endpoint.json`)
+| Hazard | Onsets / groups | BSS | CI | p (descriptive) |
+|---|---|---|---|---|
+| H1 | 43 / 11 ✓ | 0.012713 → +0.013 ✓ | [−0.004095, 0.038256] → [−0.004, +0.038] ✓ | 0.069465 → 0.069 ✓ |
+| H2 | 9 / 3 ✓ | −0.014922 → −0.015 ✓ | [−27.503, 0.092874] → [−27.5, +0.093] ✓ | 0.637681 → 0.64 ✓ |
+| H4 | 9 / 2 ✓ | 0.018925 → +0.019 ✓ | [0.000101, 0.973369] → [+0.0001, +0.97] ✓ | 0.019990 → 0.020 ✓ |
+
+The controls quoted in the entry are also correct: 0.8605 → 0.86, 0.1721 → 0.17, 0.000999 → 0.001, 0.8304 → 0.83, 0.02178 → 0.022, 0.1661 → 0.17, 0.0 alarm-days, 1.0 / 0.1172 → 0.12, 0.8889 → 0.89 / 0.0636 → 0.06. The process details also check out: 295 rows, 12:05–14:01 EST, and the exact registered `score_command`.
+
+### Checklist summary
+
+| Category | Items checked | Passed | Failed | N/A |
+|---|---|---|---|---|
+| Single pass / ordering (push → A1 → marker → rows → end; one marker; one claim row; no restart) | 7 | 7 | 0 | 0 |
+| Freeze verification (commit = local ×2; code hash; calibration; data pins; artifacts; static inputs) | 7 | 7 | 0 | 0 |
+| Data leakage / prior test access (registry, 73 run records, markers, other workstreams) | 5 | 5 | 0 | 0 |
+| Decision rule (power rule, Holm p = 1, m = 3, gate = POD set, verdict, no fallback) | 6 | 6 | 0 | 0 |
+| Result authenticity / traceability (table, controls, independent BSS and bootstrap) | 6 | 6 | 0 | 0 |
+| Reporting fidelity (alarm rates, approximate CI, tiers, control reading, next steps, wording) | 6 | 1 | 4 (C-EWP-1, C-EWP-2 ×2, W-EWP-1) | 1 (OSF wording itself OK) |
+
+### Required replacement text for the RESULTS.md entry
+
+Replace the whole entry (header line through "Next:") with:
+
+```markdown
+- **2026-11-09 — EW-v2 Test-A single pass (M1 early warning; registry `ew_v2_test_score`, 295 rows; run `sentinel_runs/sonde/ew_v2_testA_score/`; marker `.ew_scored_test.json`). Post-results review: REVIEW_REPORT_POST_RESULTS.md "EW-v2 Test-A — post-results review (2026-11-09)" (integrity clean).**
+  - **Pass:** the lead ran the registered `score_command` exactly once, CPU only, 12:05–14:01 EST. The plan was pre-specified and frozen in a public GitHub commit (`cef72b6`, pushed 10:03 EST) before testing (not registered on OSF; addendum A1).
+  - **Primary family (lead 3 d, stack, test-role sites):** no hazard meets the pre-specified power rule (≥ 50 evaluable onsets and ≥ 2 basin groups with onsets), so every hazard enters Holm with p = 1 (m = 3). **No confirmatory claim. The RESEARCH_PLAN §15.2 EW-v2 threshold (≥ 2 hazards pass on Test-A) is not met.** Even with the descriptive p values, Holm would reject nothing (smallest 0.020 > 0.05/3). The H1 count (43) matches the pre-stated projection (≈ 44).
+
+    | Hazard | Evaluable onsets | Basin groups with onsets | BSS vs climatology [95 % CI] | One-sided p (descriptive) |
+    |---|---|---|---|---|
+    | H1 hypoxia | 43 | 11 | +0.013 [−0.004, +0.038] | 0.069 |
+    | H2 chloride | 9 | 3 | −0.015 [−27.5, +0.093]* | 0.64 |
+    | H4 nitrate | 9 | 2 | +0.019 [+0.0001, +0.97]* | 0.020 |
+
+    \* Fewer than 10 basin groups with onsets: two-stage CI approximate (protocol §7). The H4 interval and p come from a two-group bootstrap and are not evidence of skill.
+  - **Descriptive secondaries (stack unless stated, lead 3, test-role).** Frozen budget 1 alarm-day per 30 d. Realised rates are reported as they are.
+    - **H1, alarm level.** Realised 1.99 alarm-days per 30 d (budget exceeded; 39 % of sites over budget; 6.7 % of days in alarm).
+      - POD 0.86 (37/43); ≥ 24 h warning 0.70.
+      - Season-matched placebo POD 0.33. POD_real − POD_placebo +0.53 [0.38, 0.68], cluster bootstrap p 0.0005, 11 basin groups.
+      - Climatology at a similar rate (1.92): POD 0.49.
+      - Circular-shift surrogate mean POD 0.17 (p 0.001; this null does not control for season). Molchan skill 0.83.
+      - 0.0 alarm-days per 30 d at 11 negative-control sites.
+    - **H1, probabilistic.** Label permutation p 0.001 (association, not skill over climatology). Diebold–Mariano vs climatology p 0.022 and vs persistence p 0.17; DM is not basin-clustered, while the cluster-robust primary gives p 0.069. Relative economic value > 0 only at C/L 0.01.
+    - **H1 tiers.** < 4 mg/L: 56 onsets, 12 basin groups, `event_gbm_mono` BSS −0.002 [−0.020, +0.020]. < 2 mg/L: 34 onsets, 8 groups, BSS +0.008 [−0.010, +0.045].
+    - **H2.** POD 1.0 (9/9) at 4.54 alarm-days per 30 d (4.5× budget). Climatology alone: 8/9 at 5.41. No timing information beyond season.
+    - **H4.** POD 0.89 (8/9) at 0.59 alarm-days per 30 d vs climatology 0.33 (3/9). 9 onsets, 6 sites, 2 basin groups.
+    - **H2-acute.** BSS +0.25 is not skill: label-permutation p 0.999.
+  - **Reading:**
+    - For H1, alarms precede real onsets far more often than season-matched placebo dates and than climatology alarms at a similar rate. That is evidence of short-range timing information. It was obtained at about twice the frozen false-alarm budget and is descriptive only.
+    - Probabilistic skill over climatology is small (BSS +0.013) and not established. It is null in the one adequately sized cell (H1 < 4 mg/L tier).
+    - H2 and H4 are too small to interpret, and H2's alarms add nothing beyond seasonality.
+  - **Next (secondary only; cannot change this verdict):**
+    - The pre-specified pooled Test-A ∪ Test-B H1 analysis (pass `test_ab`, not before 2027-06-30) is labelled secondary in every report. Its Test-A part is already unblinded.
+    - The live-trial amendment (provisional-input variant; H2's confirmatory route) must be frozen in a dated public commit before 2026-12-01. It must state that Test-A results were known and must not re-tune thresholds from them.
+```

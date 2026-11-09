@@ -30,7 +30,7 @@ Protocol `docs/preregistration/downstream_d1n_beaches.md`; split file and sha256
 
 ## Evaluation
 Single pre-registered test look (registry experiment `d1n_beaches/test_look`); baselines and incumbents scored on identical rows;
-the §15.1 label is stated in the protocol's test-result section and in RESULTS.md. No numbers here.
+the §15.1 label is stated in `docs/preregistration/downstream_d1n_beaches_test_results.md` (the frozen protocol itself is read-only) and in RESULTS.md. No numbers here.
 
 **Evaluation summary:** Beats its re-implemented Virtual-Beach incumbent and the strongest simple baseline on the D1n track; NOT SOTA (a Brooks-style RF was not compared). Primary registry rows: bd1ea64b30fe, 5e2298a8f07e, 76bde9f699fd, a713b5934069.
 

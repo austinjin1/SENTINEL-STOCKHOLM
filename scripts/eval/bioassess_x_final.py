@@ -5,20 +5,19 @@
 
 Modes
 -----
-* (default) **test pass** — needs ``docs/preregistration/bioassess_x_freeze.json`` (lead-created; its
-  ``candidate_sha256`` must equal the candidate record's sha256) and ``--authorised-by``. Refuses if any hashed
-  file (code, configs, protocol, split, pools, folds, frozen split files, data, TabPFN weights) or package version
-  (Python and R) differs from the record, if the fixed one-time marker ``x_track/x_final_scored.json`` exists, or
-  if the registry already holds a ``bioassess_x_test`` row. Setup (imports, data, GPU lock) runs first; then the
-  marker is created exclusively and a **claim-time registry row** (``bioassess_x_claim``) is written; only then are
-  the test rows loaded. Phase 1 fits/predicts every unit (cached per unit with a sha256 manifest); phase 2 scores;
-  registry rows (``bioassess_x_test``) are flushed once at the end; outputs are sealed (mode 0444 + SHA256SUMS).
-* ``--dry-run-dev`` — the identical code path on the development folds (pseudo-test rows, training-pool rows only),
-  from the *candidate* record; no marker; claim + result rows go to a scratch registry in the run directory.
-  ``--max-folds N`` (dry run only) limits the folds per block for a smoke run.
-* ``--resume RUN_DIR`` (with ``--authorised-by``) — the pre-registered single resume (§9): only after an
-  infrastructure failure before the first ``bioassess_x_test`` row, once, same record; cached units are reused
-  (sha256-verified), never refitted.
+* (default) **test pass** — single-look enforcement in code (``sentinel/models/bioassess/xtestlook.py``, pattern of
+  ``sentinel/models/hydromet/testlook.py``): accepts ONLY the lead-written ``docs/preregistration/bioassess_x_freeze.json``
+  (never the candidate record; status ``frozen``; ``candidate_sha256`` and ``scoring_code_sha256`` must match),
+  verifies file/package hashes and content-hash data pins, refuses if the registry holds any ``bioassess_x_test``
+  row — all before the claim. Then setup (imports, data, GPU lock), then the claim: O_EXCL ``TEST_LOOK.json`` +
+  claim-time registry row. Test rows load only under that open claim. Phase 1 predicts every unit (per-unit sha256
+  cache), predictions are sealed (0444, ``SHA256SUMS``, O_EXCL ``PREDICTIONS_SAVED.json``); phase 2 scores the sealed
+  predictions, flushes the registry once, seals the results and writes the O_EXCL ``SCORED.json`` marker.
+* ``--resume RUN_DIR --authorised-by`` — the pre-registered single resume (crash before sealing; O_EXCL
+  ``RESUMED.json``; only the claim row may exist; cached units reused, never refitted).
+* ``--rescore-from-saved RUN_DIR --authorised-by`` — crash after sealing: score the sha-checked sealed predictions.
+* ``--dry-run-dev [--max-folds N] [--cpu]`` — the identical code path on the development folds from the *candidate*
+  record, with its own look directory and scratch registry inside the run directory (real markers untouched).
 
 Statistics (all from the record): per block × target, C-X vs the per-target comparator on ``r2_anomaly`` (paired
 location-cluster bootstrap, B = 10,000; one-sided rule p = two-sided p if Δ > 0 else 1); Holm over the 12 tests;
@@ -52,14 +51,13 @@ import pandas as pd  # noqa: E402
 from sentinel.core import paths  # noqa: E402
 from sentinel.core.registry import file_sha256, log_result, read_registry  # noqa: E402
 from sentinel.models.bioassess import xdev as XD  # noqa: E402
+from sentinel.models.bioassess import xtestlook as XL  # noqa: E402
 from sentinel.models.bioassess import xtrack as X  # noqa: E402
 
 REPO = paths.REPO_ROOT
-FREEZE = REPO / "docs/preregistration/bioassess_x_freeze.json"
-CANDIDATE = REPO / "docs/preregistration/bioassess_x_freeze_candidate.json"
-MARKER = XD.XDIR / "x_final_scored.json"
-RESUME_MARKER = XD.XDIR / "x_final_resumed.json"
-EXPERIMENT, CLAIM = "bioassess_x_test", "bioassess_x_claim"
+FREEZE = XL.FREEZE_FILE                  # the ONLY record a test pass accepts (lead-written)
+CANDIDATE = XL.CANDIDATE_FILE            # development dry run only
+EXPERIMENT = XL.EXPERIMENT
 R_ENV = Path.home() / "miniconda3/envs/rbioinfer"
 HOLM_Z = 3.71                      # (z_{1-0.05/24} + z_0.8), protocol §8
 SESOI = 0.02
@@ -123,15 +121,17 @@ def registry_has(experiment: str, registry_path=None) -> bool:
 
 
 def verify_freeze() -> dict:
-    if not FREEZE.exists():
-        raise SystemExit("no bioassess_x_freeze.json: the lead has not frozen M5-X")
-    fr = json.loads(FREEZE.read_text())
-    if fr.get("status") != "frozen" or fr.get("candidate_sha256") != file_sha256(CANDIDATE):
-        raise SystemExit("freeze record does not match the candidate record")
-    if MARKER.exists():
-        raise SystemExit(f"one-time marker {MARKER} exists: M5-X has been scored")
-    if registry_has(EXPERIMENT):
-        raise SystemExit("registry already holds bioassess_x_test rows")
+    """Test pass: the lead-written FREEZE file only (``xtestlook.load_freeze``), registry refusal, file/package hashes
+    and content-hash data pins — all before the claim, so a mismatch never burns the look."""
+    try:
+        fr = XL.load_freeze()
+        if XL.registry_rows(EXPERIMENT):
+            raise XL.SingleLookError("registry already holds bioassess_x_test rows — the M5-X look was used")
+        if (XL.look_dir() / "TEST_LOOK.json").exists():
+            raise XL.SingleLookError("the M5-X test look is already claimed")
+        XL.verify_data_pins(fr)
+    except XL.SingleLookError as e:
+        raise SystemExit(str(e)) from e
     bad = verify_record(fr)
     if bad:
         raise SystemExit("record verification failed: " + "; ".join(bad[:10]))
@@ -285,7 +285,6 @@ def label(row) -> tuple[str, str]:
 
 def score_blocks(pred: dict, truth: dict, meta: dict, rec: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
     """pred[block][model][seed] -> frame; returns (confirmatory table, marginal table)."""
-    from sentinel.eval import bootstrap as EB
     from sentinel.models.bioassess import evaluate as EV
 
     nb, nbc = int(rec["n_boot"]), int(rec["n_boot_confirmatory"])
@@ -388,10 +387,7 @@ def seal(run_dir: Path) -> None:
         p.chmod(stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
 
-def run_pass(rec: dict, *, dry: bool, run_dir: Path, authorised_by: str, max_folds: int | None, resume: bool,
-             cpu: bool = False) -> int:
-    reg = run_dir / "registry_dryrun.jsonl" if dry else None
-    # ---- setup (before any claim)
+def setup(dry: bool, cpu: bool):
     import torch
 
     torch.set_num_threads(2)
@@ -405,27 +401,14 @@ def run_pass(rec: dict, *, dry: bool, run_dir: Path, authorised_by: str, max_fol
 
     load_tabpfn()
     S, frozen, D = XD.load_context()
-    run_dir.mkdir(parents=True, exist_ok=True)
-    # ---- claim
-    claim = {"run_dir": str(run_dir), "authorised_by": authorised_by, "time": dt.datetime.now().isoformat(),
-             "record_sha256": file_sha256(FREEZE if not dry else CANDIDATE), "dry_run": dry, "resume": resume}
-    if not dry and not resume:
-        fd = os.open(MARKER, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o444)
-        with os.fdopen(fd, "w") as fh:
-            fh.write(json.dumps(claim))
-    if not dry and resume:
-        fd = os.open(RESUME_MARKER, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o444)
-        with os.fdopen(fd, "w") as fh:
-            fh.write(json.dumps(claim))
-    log_result(workstream="bioassess", experiment=CLAIM, model="m5x_final_pass", metric="claimed", value=1.0,
-               split="test" if not dry else "dry_run_dev", notes=("RESUME of " if resume else "") + "M5-X single pass "
-               "claimed by " + authorised_by, extra=claim, registry_path=reg)
-    # ---- design + folds
+    return device, S, frozen, D
+
+
+def design_and_folds(dry, S, frozen, D, max_folds):
     if dry:
-        folds = XD.read_folds(XD.DEV_DIR / "folds_dev_v1.json", S, frozen)
-        DD = D
+        folds, DD = XD.read_folds(XD.DEV_DIR / "folds_dev_v1.json", S, frozen), D
     else:
-        Dts = {b: XD.load_test_rows(S, b) for b in XD.BLOCKS}
+        Dts = {b: XD.load_test_rows(S, b) for b in XD.BLOCKS}          # requires the open claim (xtestlook)
         DD = D
         for b in XD.BLOCKS:
             DD = XD.combine(DD, Dts[b])
@@ -435,23 +418,124 @@ def run_pass(rec: dict, *, dry: bool, run_dir: Path, authorised_by: str, max_fol
     for b in XD.BLOCKS:
         for fo in folds[b]:
             X.assert_fit_ids(XD.keys_of(fo.train), S, frozen)
-    ctx = {"S": S, "frozen": frozen, "D": DD}
+    return DD, folds
+
+
+def model_specs(rec, b) -> dict:
+    specs = {c["name"]: c["spec"] for c in [rec["candidates"][b]["confirmatory"], *rec["candidates"][b]["secondary"]]}
+    specs.update({c["name"]: c["spec"] for c in rec["comparators"][b].values()})
+    specs["rf_geography"] = {"kind": "baseline", "name": "rf_geography", "variant": {}}
+    for name, spec in (rec.get("event_track", {}).get("threshold_baselines", {}).get(b, {})).items():
+        specs.setdefault(name, spec)                   # event track (v8): threshold-on-baseline models
+    return specs
+
+
+def predict_events(rec, ctx, folds, P, pred_dir: Path) -> None:
+    """Event track (v8, secondary): per-fold prevalence/climatology and the direct challenger (powered events only),
+    written with the other predictions so they are sealed together."""
+    from sentinel.events import bioassess_x as XE
+
+    D = ctx["D"]
+    for (b, code) in XE.TRACK:
+        if b not in folds:
+            continue
+        rows = []
+        for fo in folds[b]:
+            pv, cm = XE.fold_prevalence_climatology(D, b, code, fo)
+            rows.append(pd.DataFrame({"prevalence": pv, "climatology": cm}, index=fo.test))
+        out = pred_dir / b / f"event_clim_{code}.parquet"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        pd.concat(rows).to_parquet(out)
+        if (b, code) not in XE.POWERED:
+            continue
+        for s in rec["seeds"]:
+            parts = []
+            for fo in folds[b]:
+                key = P.cache.key(b, "event_direct", code, fo.g, s)
+                got = P.cache.get(key)
+                if got is None:
+                    X.assert_fit_ids(XD.keys_of(fo.train), ctx["S"], ctx["frozen"])
+                    got = pd.DataFrame({"p": XE.fold_direct(D, P.TM, b, code, fo, s, P.n_jobs)}, index=fo.test)
+                    P.cache.put(key, got)
+                parts.append(got)
+            pd.concat(parts).to_parquet(pred_dir / b / f"event_direct_{code}__s{s}.parquet")
+
+
+def score_events(rec, ctx, folds, pred_dir: Path, out_dir: Path, *, split: str, reg, record_sha: str) -> dict:
+    """Event track scoring from the sealed predictions + the frozen development calibration (secondary)."""
+    from sentinel.events import bioassess_x as XE
+
+    et = rec["event_track"]
+    cf = Path(et["calibration_file"])
+    if file_sha256(cf) != et["calibration_sha256"]:
+        raise SystemExit("event calibration file changed since the freeze")
+    calib = pd.read_parquet(cf)
+    DD, out = ctx["D"], {}
+    for (b, code), (t, _, _) in XE.TRACK.items():
+        if b not in folds:
+            continue
+        ids = pd.Index(np.concatenate([fo.test for fo in folds[b]]))
+        cl = DD.samples.loc[ids, "location_id"].astype(str).to_numpy()
+        yt = DD.Y.loc[ids, t].to_numpy(float)
+        ye = np.full(len(yt), np.nan)
+        ye[np.isfinite(yt)] = XE.labels(yt[np.isfinite(yt)], b, code)
+        cx = rec["candidates"][b]["confirmatory"]["name"]
+        probs = {}
+        for name, mname in [("C-X:" + cx, cx)] + [(m, m) for m in XE.COMPARATORS]:
+            mu = sum(pd.read_parquet(pred_dir / b / f"{mname}__s{s}.parquet").reindex(ids)[t].to_numpy(float)
+                     for s in rec["seeds"]) / len(rec["seeds"])
+            c = calib[(calib["block"] == b) & (calib["event"] == code) & (calib["model"] == name)]
+            raw = XE.derived_probability(mu, float(c["sd_all"].iloc[0]), b, code)
+            probs[name] = XE.frozen_calibrated(c["p_raw"].to_numpy(float), c["y"].to_numpy(float), raw)
+        clim = pd.read_parquet(pred_dir / b / f"event_clim_{code}.parquet").reindex(ids)
+        probs["prevalence"], probs["climatology"] = clim["prevalence"].to_numpy(), clim["climatology"].to_numpy()
+        if (b, code) in XE.POWERED:
+            raw = sum(pd.read_parquet(pred_dir / b / f"event_direct_{code}__s{s}.parquet").reindex(ids)["p"].to_numpy(float)
+                      for s in rec["seeds"]) / len(rec["seeds"])
+            c = calib[(calib["block"] == b) & (calib["event"] == code) & (calib["model"] == "direct")]
+            probs["direct"] = XE.frozen_calibrated(c["p_raw"].to_numpy(float), c["y"].to_numpy(float), raw)
+        ok = np.isfinite(ye)
+        pw = XE.power_flag(ye[ok], cl[ok])
+        status = "descriptive only" if ((b, code) in XE.DESCRIPTIVE_ONLY or pw["flag"] != "F") else "secondary"
+        cxn = "C-X:" + cx
+        mets = {n: XE.metrics(ye[ok], p[ok], cl[ok], p_ref=probs["climatology"][ok]) for n, p in probs.items()}
+        comps = {} if status == "descriptive only" else \
+            {f"{cxn} - {n}": XE.compare(ye[ok], probs[cxn][ok], probs[n][ok], cl[ok]) for n in probs if n != cxn}
+        out[f"{b}|{code}"] = {"power_test": pw, "status": status, "metrics": mets, "contrasts": comps}
+        for n, v in mets.items():
+            for k in ("auprc", "brier", "bss"):
+                if k in v:
+                    val, lo, hi = XE.metric_value(v, k)
+                    safe_log(workstream="bioassess", experiment=EXPERIMENT, model=n, metric=f"event_{k}",
+                             value=val, split=f"{b}_{split}", target=code, n=int(ok.sum()), registry_path=reg,
+                             ci_low=lo, ci_high=hi,
+                             ci_method="location-cluster bootstrap B=2000 (events.state_metrics)",
+                             is_baseline=not n.startswith("C-X"),
+                             notes=f"M5-X event track, SECONDARY ({status}); amendment v8",
+                             extra={"power_test": pw, "record_sha256": record_sha})
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "events.json").write_text(json.dumps(out, indent=1, default=lambda o: o.tolist()
+                                                    if hasattr(o, "tolist") else str(o)))
+    return out
+
+
+def predict_all(rec, ctx, folds, run_dir, device, pred_dir: Path) -> None:
+    """Phase 1: every unit (cached per unit, sha-verified), then one prediction file per (block, model, seed)."""
     P = Predictor(ctx, run_dir, rec["seeds"], device)
-    # ---- phase 1: every unit
-    models = {}
     for b in XD.BLOCKS:
-        specs = {c["name"]: c["spec"] for c in [rec["candidates"][b]["confirmatory"], *rec["candidates"][b]["secondary"]]}
-        specs.update({c["name"]: c["spec"] for c in rec["comparators"][b].values()})
-        specs["rf_geography"] = {"kind": "baseline", "name": "rf_geography", "variant": {}}
-        models[b] = {}
-        for name, spec in specs.items():
-            models[b][name] = {s: P.model(spec, b, folds[b], s) for s in rec["seeds"]}
-            for s, df in models[b][name].items():
-                out = run_dir / "predictions" / b / f"{name}__s{s}.parquet"
+        for name, spec in model_specs(rec, b).items():
+            for s in rec["seeds"]:
+                out = pred_dir / b / f"{name}__s{s}.parquet"
                 out.parent.mkdir(parents=True, exist_ok=True)
-                df.to_parquet(out)
-    # ---- phase 2: score
-    truth, meta = {}, {}
+                P.model(spec, b, folds[b], s).to_parquet(out)
+    if rec.get("event_track", {}).get("status") == "active":
+        predict_events(rec, ctx, folds, P, pred_dir)
+
+
+def score_saved(rec, ctx, folds, pred_dir: Path, out_dir: Path, *, split: str, reg, record_sha: str) -> pd.DataFrame:
+    """Phase 2: score the sealed predictions; one registry flush; write results."""
+    DD = ctx["D"]
+    models, truth, meta = {}, {}, {}
     for b in XD.BLOCKS:
         ids = pd.Index(np.concatenate([fo.test for fo in folds[b]]))
         truth[b] = pd.DataFrame({t: DD.Y.loc[ids, t].to_numpy(float) for t in XD.TARGETS[b]}, index=ids)
@@ -459,17 +543,18 @@ def run_pass(rec: dict, *, dry: bool, run_dir: Path, authorised_by: str, max_fol
         meta[b] = pd.DataFrame({"region": s["ag_eco9"].astype(str), "cluster": s["location_id"].astype(str),
                                 "lat": s["lat"], "lon": s["lon"],
                                 "analysis_method": s.get("analysis_method", pd.Series(None, index=ids))}, index=ids)
-        for name in models[b]:
-            models[b][name] = {sd: f.reindex(ids) for sd, f in models[b][name].items()}
+        models[b] = {}
+        for name in model_specs(rec, b):
+            models[b][name] = {sd: pd.read_parquet(pred_dir / b / f"{name}__s{sd}.parquet").reindex(ids)
+                               for sd in rec["seeds"]}
     C, M = score_blocks(models, truth, meta, rec)
     sec = secondary(models, truth, meta, rec)
-    C.to_json(run_dir / "confirmatory.json", orient="records", indent=1, default_handler=str)
-    M.to_json(run_dir / "marginal.json", orient="records", indent=1, default_handler=str)
-    (run_dir / "secondary.json").write_text(json.dumps(sec, indent=1, default=float))
-    # ---- one registry flush
-    split = "dry_run_dev" if dry else "test"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    C.to_json(out_dir / "confirmatory.json", orient="records", indent=1, default_handler=str)
+    M.to_json(out_dir / "marginal.json", orient="records", indent=1, default_handler=str)
+    (out_dir / "secondary.json").write_text(json.dumps(sec, indent=1, default=float))
     common = {"n_configurations": rec["n_configurations_tried"], "selection_note": rec["selection_note"],
-              "record_sha256": claim["record_sha256"]}
+              "record_sha256": record_sha}
     for r in M.itertuples():
         safe_log(workstream="bioassess", experiment=EXPERIMENT, model=r.model, metric="r2_anomaly",
                  value=r.r2_anomaly, split=f"{r.block}_{split}", target=r.target, n=r.n, ci_low=r.ci_low,
@@ -478,21 +563,52 @@ def run_pass(rec: dict, *, dry: bool, run_dir: Path, authorised_by: str, max_fol
                  notes="M5-X single pass (marginal)", extra={"r2": r.r2, "rmse": r.rmse, **common})
     for r in C.itertuples():
         safe_log(workstream="bioassess", experiment=EXPERIMENT, model=f"{r.candidate} - {r.comparator}",
-                   metric="delta_r2_anomaly_confirmatory", value=r.delta, split=f"{r.block}_{split}", target=r.target,
-                   n=r.n, ci_low=r.ci_low, ci_high=r.ci_high,
-                   ci_method=f"paired location-cluster bootstrap B={rec['n_boot_confirmatory']}", registry_path=reg,
-                   notes=f"M5-X confirmatory: {r.label}" + (f" ({r.label_reason})" if r.label_reason else ""),
-                   extra={"p_holm": r.p_holm, "p_one_sided_rule": r.p_one_sided_rule, "per_seed_delta": r.per_seed_delta,
-                          "region_ci": [r.region_ci_low, r.region_ci_high], "block50_ci": r.block50_ci,
-                          "realised_mde": r.realised_mde, "region_signs_positive": r.region_signs_positive,
-                          "n_regions": r.n_regions, **common})
-    (run_dir / "pass_info.json").write_text(json.dumps({**claim, "folds": {b: len(f) for b, f in folds.items()},
-                                                        "finished": dt.datetime.now().isoformat(),
-                                                        "pretrain_sha256": {str(p.relative_to(run_dir)): file_sha256(p)
-                                                                            for p in run_dir.rglob("encoder.pt")}},
-                                                       indent=1))
-    seal(run_dir)
-    log("sealed", run_dir)
+                 metric="delta_r2_anomaly_confirmatory", value=r.delta, split=f"{r.block}_{split}", target=r.target,
+                 n=r.n, ci_low=r.ci_low, ci_high=r.ci_high,
+                 ci_method=f"paired location-cluster bootstrap B={rec['n_boot_confirmatory']}", registry_path=reg,
+                 notes=f"M5-X confirmatory: {r.label}" + (f" ({r.label_reason})" if r.label_reason else ""),
+                 extra={"p_holm": r.p_holm, "p_one_sided_rule": r.p_one_sided_rule, "per_seed_delta": r.per_seed_delta,
+                        "region_ci": [r.region_ci_low, r.region_ci_high], "block50_ci": r.block50_ci,
+                        "realised_mde": r.realised_mde, "region_signs_positive": r.region_signs_positive,
+                        "n_regions": r.n_regions, **common})
+    if rec.get("event_track", {}).get("status") == "active":
+        score_events(rec, ctx, folds, pred_dir, out_dir, split=split, reg=reg, record_sha=record_sha)
+    return C
+
+
+def run_pass(rec: dict, *, dry: bool, run_dir: Path, authorised_by: str, max_folds: int | None, resume: bool = False,
+             rescore: bool = False, cpu: bool = False) -> int:
+    """Test pass (dry=False) or development dry run (dry=True: candidate record, dev folds, its own look directory
+    and scratch registry inside ``run_dir``; the real look directory and registry are never touched)."""
+    root = run_dir / "look" if dry else None
+    reg = run_dir / "registry_dryrun.jsonl" if dry else None
+    record_sha = file_sha256(CANDIDATE if dry else FREEZE)
+    run_dir.mkdir(parents=True, exist_ok=True)
+    device, S, frozen, D = setup(dry, cpu)                               # setup before any claim
+    if rescore:
+        pred_dir = XL.check_sealed(root=root)
+    else:
+        if resume:
+            XL.claim_resume(authorised_by, run_dir, root=root, registry_path=reg)
+        else:
+            XL.claim({**rec, "_path": str(CANDIDATE if dry else FREEZE), "_sha256": record_sha}, authorised_by, run_dir,
+                     root=root, registry_path=reg)
+        pred_dir = run_dir / "predictions"
+    DD, folds = design_and_folds(dry, S, frozen, D, max_folds)
+    ctx = {"S": S, "frozen": frozen, "D": DD}
+    if not rescore:
+        predict_all(rec, ctx, folds, run_dir, device, pred_dir)
+        XL.seal_predictions(pred_dir, root=root)
+        pred_dir = XL.check_sealed(root=root)
+    C = score_saved(rec, ctx, folds, pred_dir, run_dir / "results", split="dry_run_dev" if dry else "test", reg=reg,
+                    record_sha=record_sha)
+    info = {"record_sha256": record_sha, "dry_run": dry, "folds": {b: len(f) for b, f in folds.items()},
+            "test_rows_loaded": DD.info if not dry else None, "finished": dt.datetime.now().isoformat(),
+            "pretrain_sha256": {str(p.relative_to(run_dir)): file_sha256(p) for p in run_dir.rglob("encoder.pt")}}
+    (run_dir / "results" / "pass_info.json").write_text(json.dumps(info, indent=1, default=str))
+    seal(run_dir / "results")
+    XL.mark_scored({"results": str(run_dir / "results"), "n_confirmatory": int(len(C))}, root=root)
+    log("scored and sealed", run_dir)
     if len(C):
         log(C[["block", "target", "delta", "ci_low", "ci_high", "p_holm", "label"]].to_string())
     return 0
@@ -503,37 +619,43 @@ def main() -> int:
     ap.add_argument("--authorised-by")
     ap.add_argument("--dry-run-dev", action="store_true")
     ap.add_argument("--max-folds", type=int, default=None)
-    ap.add_argument("--resume")
     ap.add_argument("--cpu", action="store_true", help="dry run only: no GPU lock (smoke runs without GPU models)")
+    ap.add_argument("--resume", help="RUN_DIR of the claimed pass (pre-registered single resume)")
+    ap.add_argument("--rescore-from-saved", help="RUN_DIR whose sealed predictions are scored (crash after sealing)")
     a = ap.parse_args()
     stamp = dt.datetime.now().strftime("%Y%m%dT%H%M%S")
     if a.dry_run_dev:
+        if a.resume or a.rescore_from_saved:
+            raise SystemExit("resume / rescore are test-pass options")
         rec = json.loads(CANDIDATE.read_text())
         bad = verify_record(rec)
         if bad:
             raise SystemExit("candidate record verification failed: " + "; ".join(bad[:10]))
+        XL.verify_data_pins(rec)
         run_dir = paths.RUNS_ROOT / "bioassess" / f"x_final_dryrun_dev_{stamp}"
         return run_pass(rec, dry=True, run_dir=run_dir, authorised_by="dry-run (development data)",
-                        max_folds=a.max_folds, resume=False, cpu=a.cpu)
+                        max_folds=a.max_folds, cpu=a.cpu)
     if a.max_folds or a.cpu:
         raise SystemExit("--max-folds / --cpu are for the development dry run only")
     if not a.authorised_by:
         raise SystemExit("--authorised-by is required for the test pass")
+    try:
+        fr = XL.load_freeze()                                   # FREEZE only, never the candidate
+        XL.verify_data_pins(fr)
+    except XL.SingleLookError as e:
+        raise SystemExit(str(e)) from e
+    bad = verify_record(fr)
+    if bad:
+        raise SystemExit("record verification failed: " + "; ".join(bad[:10]))
     if a.resume:
-        if not FREEZE.exists() or not MARKER.exists() or RESUME_MARKER.exists() or registry_has(EXPERIMENT):
-            raise SystemExit("resume rule not met (needs a claimed, unfinished, never-resumed pass)")
-        mk = json.loads(MARKER.read_text())
-        if mk["run_dir"] != str(Path(a.resume)) or mk["authorised_by"] != a.authorised_by:
-            raise SystemExit("resume must use the same run directory and authorisation")
-        fr = json.loads(FREEZE.read_text())
-        bad = verify_record(fr)
-        if bad:
-            raise SystemExit("record verification failed: " + "; ".join(bad[:10]))
         return run_pass(fr, dry=False, run_dir=Path(a.resume), authorised_by=a.authorised_by, max_folds=None,
                         resume=True)
+    if a.rescore_from_saved:
+        return run_pass(fr, dry=False, run_dir=Path(a.rescore_from_saved), authorised_by=a.authorised_by,
+                        max_folds=None, rescore=True)
     fr = verify_freeze()
     run_dir = paths.RUNS_ROOT / "bioassess" / f"x_final_{stamp}"
-    return run_pass(fr, dry=False, run_dir=run_dir, authorised_by=a.authorised_by, max_folds=None, resume=False)
+    return run_pass(fr, dry=False, run_dir=run_dir, authorised_by=a.authorised_by, max_folds=None)
 
 
 if __name__ == "__main__":

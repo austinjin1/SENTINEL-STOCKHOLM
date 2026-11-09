@@ -4856,3 +4856,436 @@ training-pool rows only.
 - The freeze still requires: the freeze-candidate record (including `pools_x_v1.json` and the frozen split files);
   an independent pre-test review; the lead's freeze and authorisation; and a human Scopus/Scholar check before any
   SOTA wording.
+
+---
+
+## M7 Lite pre-test review (2026-11-09)
+
+**Mode:** pre-test gate for the single Test-A/Test-B scoring of the original 4-state track. **Reviewer:** independent
+agent with a fresh context. It was read-only except for this section. It did not write a FREEZE file, run the scorer
+in test mode, load any test-role row, or use git. The `--dry-run-val` was **not** re-run; its outputs
+(`$SENTINEL_RUNS/lite/smoke/dryrun_test_scoring_20261109-092043`) were inspected.
+**Scope:** `FREEZE_lite_candidate.json`; `lite_protocol.md` v1.3 (§1, §3–§9, §11, §12); `scripts/eval/lite_score_test.py`
+(main target); `sentinel/models/lite/{guard,data,evaluate,baselines,augment,distill,national,runner,model}.py`;
+`sentinel/eval/bootstrap.py`; `scripts/eval/lite_export.py`; `docs/model_cards/lite.md`; `docs/handoff/M7-lite.md`;
+RESEARCH_PLAN §3, §10, §14, §15.1, §15.2 H-G6, §15.5; the M6 single-look guard (`sentinel/models/hydromet/testlook.py`)
+and `scripts/eval/bioassess_final.py` for comparison; `$SENTINEL_RUNS/lite/*`; the registry; TRAINING_LOG.
+`scoring_code_sha256` at review time: **`9b9c6282…`** (53 files). It equals the candidate's value.
+
+**Status: 🔴 FAIL. Do not freeze yet.**
+
+The candidate's science is mostly clean:
+- the weights match;
+- selection used val only;
+- baselines are refit on train only;
+- the teacher is site-disjoint from val and test.
+
+The single-use scorer is not fit for a single look:
+- it has no single-look enforcement;
+- it accepts the candidate file as a freeze **today**;
+- it pins no data;
+- it does not implement the pre-registered decision rules;
+- it never scores the budget-compliant INT8 model that H-G6 is about.
+
+None of these needs new training except the optional W1. All must be fixed before `FREEZE_lite.json` is written,
+because the code hash changes with every fix.
+
+### Verified (passes)
+1. **Weights hashes.** I recomputed all 9 `weights_sha256` entries with `sha256sum` and every one matches the file on
+   disk:
+   - primary `kd03` seeds 0–2;
+   - no-KD `crop128` seeds 0–2;
+   - robust variant seed 0;
+   - `export_seed0/lite_fp32.onnx` and `lite_int8.onnx`.
+
+   The teacher manifest (`85122e29…`) also matches, as do its 5 checkpoints and `seen_points.parquet`.
+2. **Split and code hash.** `load_split` pins split `46ed6e1f…` (guard.py:33). The labels hash is enforced in
+   `role_frame` (data.py:321-322). The current `scoring_code_sha256` equals the candidate's.
+3. **Configurations and selection.** Run dirs and TRAINING_LOG give **16** original-track configurations:
+   - 8 on 2026-10-24: raw, film, scene, crop128, effl0, gloria, spectral, scenefilm;
+   - 8 on 2026-11-08/09: kd03, kd1, ep20, lrbb2e4, crop128_secchi, kd03_medpool, kd03_glint, kd03_secchi.
+
+   The 4 crashed runs (TRAINING_LOG lines 10786–10973) died inside `train()` with the `TARGETS` UnboundLocalError,
+   before any val result. None of them has a registry row. `selection.json` reproduces the §5 S rule on val
+   (kd03 S = 0.8684). kd03_secchi (S ≈ 1.011, computed from its registry rows) would not change the choice. The
+   glint keep rule (0.898 > 0.878) was applied as pre-declared.
+
+   No-test audit:
+   - the registry has no M7 row with any split other than `val` (640 rows);
+   - no `eval_test*` chip cache exists;
+   - no test-named artifact exists under `$SENTINEL_RUNS/lite`.
+4. **Baselines.**
+   - `baseline_preds` refits on the `train` role only (lite_score_test.py:126, 66-80).
+   - The band-ratio forms in the candidate equal the val-selected forms in `baselines_20261024-221014/summary.json`.
+   - The GBM uses fixed hyper-parameters and seeds 0–2.
+   - The dry run reproduces GBM and band-ratio val exactly (41.19 / 112.08 / 129.51; 60.96 / 83.34 / 105.31).
+5. **Statistics core.**
+   - H1 is 3 targets × {band_ratio, gbm_rgbn} = 6 comparisons, and H2 is 3. Holm is applied per family
+     (lines 183-186).
+   - Comparisons use a paired water-body cluster bootstrap with B = 2000 by default.
+   - The diff is student − comparator, so for MdSA "student better" means diff < 0. The sidedness (171, 180) and the
+     seed-rule sign (188) are correct.
+   - Primary populations follow §3/D1: Secchi on lakes; turbidity and TSS on all water bodies.
+6. **Leakage (recomputed where allowed).**
+   - The KD targets cover 892 S2 chips, all in the train role and none in val.
+   - Val sites (924) have 0 teacher rows within 2 km, 0 shared site ids and 0 shared HydroLAKES lakes.
+   - Train and val have 0 shared water bodies and 0 shared sites. Train and val years are ≤ 2021.
+   - The Test-A/Test-B zeros in `exclusion.json` and `teacher_targets_*/report.json` were **not** recomputed: that
+     needs test-role coordinates.
+   - The >10 km slice is distance to every labelled train site (line 191). The future-year slice is
+     `test ∩ naip_year ≥ 2022` (line 194). Both match §3.
+7. **Budgets are computed by code** (`lite_export.py` → `export_report.json`):
+   - `count_params`: 1,323,880;
+   - `count_macs` (`FlopCounterMode`, 512² tile): 1.128 GMAC;
+   - INT8 file size from `stat`: 1.65 MB;
+   - ORT 1-thread INT8 latency: 30.2 ms.
+
+   All four `budget` flags are true for seed 0. The model card correctly says the 3-seed ensemble exceeds the GMAC
+   and size budgets.
+
+### Critical issues (must fix before the freeze)
+- **🔴 C1. There is no single-look enforcement.** `lite_score_test.py:117-127` and `guard.check_access`
+  (guard.py:92-105) need only `--allow-test` and a valid freeze file:
+  - no registry check for earlier `lite_test*` rows;
+  - no O_EXCL claim marker;
+  - no `SCORED` marker;
+  - no sealed predictions.
+
+  So a second `--allow-test` run rescores test and appends a second set of registry rows (250-269). Registry rows are
+  written row by row after scoring, so a crash part-way leaves partial rows, and a re-run is unguarded.
+
+  **Fix:** port the M6 pattern (`hydromet/testlook.py`):
+  1. `load_freeze` and the data-pin check, before the claim;
+  2. refuse if the registry holds any `lite_test*` row;
+  3. write `$SENTINEL_RUNS/lite/test_look/TEST_LOOK.json` with O_CREAT|O_EXCL at mode 0444, plus a `look_claimed`
+     registry row;
+  4. have `check_access` load protected roles only while an unscored claim of *this* freeze exists;
+  5. write predictions once, sealed 0444, with `SHA256SUMS`;
+  6. buffer registry rows and flush them only after every block is scored, then write an O_EXCL `SCORED.json`;
+  7. add `--rescore-from-saved` for crash recovery.
+- **🔴 C2. The candidate file works as a freeze today, so test is reachable without the lead.** In test mode
+  `--freeze` takes any path (lines 103, 119; guard.py:71-72). The candidate has every `FREEZE_KEYS` entry, the
+  matching split and the current code hash. I ran `guard.check_access(("test","test_time"), allow_test=True,
+  freeze_file="docs/preregistration/FREEZE_lite_candidate.json")` and it returned OK (freeze sha `029cf514…`). This
+  needs no test data.
+
+  As a result, `python -B scripts/eval/lite_score_test.py --allow-test --freeze docs/preregistration/FREEZE_lite_candidate.json`
+  would score test now. The model card's "the guard ignores it" (lite.md:167) is false.
+
+  **Fix:**
+  - in test mode, accept only `guard.FREEZE_FILE` and refuse `--freeze`;
+  - require `status == "FROZEN"` and an `authorised_by`/`authorised_at` field, and refuse any record whose status
+    contains "CANDIDATE";
+  - set the candidate's `scoring_code_sha256` to `"PENDING"` until the real freeze.
+- **🔴 C3. No data pins exist.** The candidate has no `data_snapshots`, and the scorer verifies no data content.
+  These inputs decide the test numbers and are unpinned:
+  - the NAIP chip store `processed/naip_chips/wqp`. The national build modified it on 2026-11-08, and the handoff
+    says the `naip_matchups` manifest index hashes no longer match.
+  - `naip_scene_stats.parquet`, used by the student inputs and the baseline features;
+  - the baseline-refit chip cache `$SENTINEL_RUNS/lite/cache/train_*.npy`. It is keyed by chip ids only
+    (data.py:333-336), so stale content is never detected.
+  - the S2 teacher store, used for the red-edge gap.
+
+  `labels.parquet` is covered indirectly through `labels_sha256` (good).
+
+  **Fix:**
+  - add a `data_snapshots` block (manifest sha + content sha over the files the loader reads, as in M6
+    `verify_data_pins`) for: the chip shards holding train/test/test_time ids; the scene stats; the train cache; the
+    S2 store; and the `naip_matchups` and `lite_labels` manifests;
+  - verify the block before the claim;
+  - repair or re-pin the broken `naip_matchups` manifest first.
+- **🔴 C4. The decision rules are not the pre-registered ones.**
+  - (a) `holm_reject` (line 186) is Holm on the one-sided p only. Protocol §1 (H1, H2) and RESEARCH_PLAN §15.1(ii)
+    also require the paired 95% CI to exclude 0. At the last Holm step (α/1 = 0.05) a one-sided p in (0.025, 0.05]
+    rejects while the two-sided percentile CI still contains 0. The val dry run already has gbm/turbidity at
+    p1 = 0.03 with CI [−71.6, +4.2].
+  - (b) The scorer never computes these verdicts, so they would be read from test output after the fact:
+    - the composite H1: Secchi **and** (turbidity **or** TSS), each against **both** baselines;
+    - the composite H2;
+    - the §15.1(iii) every-seed rule for H2: there is no per-seed kd vs no-KD comparison;
+    - the H-G6 verdict.
+  - (c) H1 and H2 are computed, Holm-corrected and **registered** for `test_time` too (loop 134-186; 261-269), but
+    the protocol makes them Test-A families. This adds unregistered `holm_reject` rows.
+
+  **Fix:**
+  - set `reject = holm ∧ CI excludes 0 in the student-better direction`;
+  - compute the H1, H2 and H-G6 booleans, and the seed rule for H1 and H2, in code;
+  - run the confirmatory families only for `role == "test"`. Report `test_time` comparisons as secondary, with no
+    Holm flag.
+- **🔴 C5. The H-G6 deployable model is never scored, and later secondaries would need a second look.**
+  - The ONNX FP32/INT8 hashes are in the candidate, but the scorer never verifies or runs them: `load_models` handles
+    `.pt` only.
+  - H-G6 (§15.2) requires the **≤ 4 MB INT8 model** to beat the baselines. H1 tests the FP32 3-seed ensemble, which
+    is over budget (3.4 GMAC, 4.9 MB).
+  - Protocol §1 lists "INT8 vs FP32 Δ" as a secondary, and that cannot be computed after this pass.
+  - `save_predictions` (246-247) saves the student models only, not the baselines. Any later paired comparison
+    would therefore need another test pass.
+
+  **Fix:**
+  - verify the ONNX shas, and score `lite_int8.onnx` and `lite_fp32.onnx` on the test chips in the same pass
+    (`export.onnx_predict` with crop 128);
+  - pre-declare in protocol §9, before the freeze, which model carries the H-G6 claim, with its own paired
+    comparisons against both baselines;
+  - save and seal every model's and every baseline's predictions.
+
+### Warnings (should fix; W1–W3 before the freeze)
+- **🟡 W1. The H2 comparator may differ in code version, not only in KD.**
+  - The no-KD comparator was trained on 2026-10-24 (package `1e71b908…`) and `kd03` on 2026-11-08 (package
+    `2cccc0b3…`).
+  - `train.py` changed in between: `train_targets`, KD with crop, the CPU path, and the `TARGETS` bug fix.
+  - `sentinel/models/lite/` is untracked in git and no code snapshot exists, so "same code" cannot be shown.
+  - The val H2 effect is small: Secchi −2.5 [−5.2, −0.3].
+
+  **Fix (cheap):** retrain `mnv4s_raw_crop128` (kd_weight 0) under the current code, 3 seeds, train only, on GPU 0/1
+  via `sentinel/core/gpu.py`, and use it as the H2 comparator. Count it as a configuration re-run, not a new one.
+- **🟡 W2. The one-sided p can come from the wrong tail.** `p_one_sided = p_value/2` (171, 180) equals
+  `min(P(d≤0), P(d≥0))`. That is the wrong tail when the point estimate and the bootstrap mass disagree, which can
+  happen with medians on 44 clusters (turbidity, TSS).
+
+  **Fix:** compute `P(d ≥ 0)` directly from the bootstrap draws. Add a Lite-local helper so the shared
+  `bootstrap.py` stays unchanged.
+- **🟡 W3. Test-time parameters can be set from the CLI.**
+  - `--n-boot` works in test mode (line 105), while the registry `ci_method` hardcodes "B=2000" (257, 266).
+  - `--device cuda` calls `R.setup_gpu`, which prefers GPU 2 (runner.py:52-68). Current policy allows GPU 0/1 only.
+
+  **Fix:** in test mode, take B from the freeze and refuse `--n-boot`. Acquire the device through `core/gpu.py` with
+  0/1.
+- **🟡 W4. Some files that change predictions are not hashed.**
+  - `load_models` reads `run/pool.json` (90-92) with no hash. The primary run has none today.
+  - The red-edge path checks the teacher checkpoints against the manifest it reads (223-226), but never checks the
+    manifest against the candidate's `teacher_manifest_sha256`.
+
+  **Fix:** verify both against the freeze, and refuse an unhashed `pool.json`.
+- **🟡 W5. The scoring-code hash has gaps and couples to unrelated code.**
+  - Imported but not hashed:
+    - `sentinel/core/paths.py`, which decides the data roots;
+    - `sentinel/core/registry.py`;
+    - `sentinel/data/sonde_splits.py`;
+    - `sentinel/data/sources/stac.py`;
+    - the Orbit teacher stack (`orbit/{teacher,pipeline,features,data,split,guard}.py`).
+  - No package versions are recorded (torch, timm, lightgbm, onnxruntime).
+  - `FROZEN_GLOBS` does include national-track code and configs that are still changing (`kd03_nat` was trained at
+    09:29 today). Any national edit after the freeze invalidates it.
+
+  **Fix:**
+  - hash the import closure, or add these files to `SHARED_CODE`;
+  - record package versions;
+  - either finish the national edits first or give the national files a separate hash.
+- **🟡 W6. Pre-registered secondaries are missing from the single pass.**
+  - The location/season GBM baseline (§5 1(ii)) is missing from `baseline_preds`.
+  - The RGB-only vs RGBN ablation (§1; plan §14.5): no `rgb_only` model was ever trained.
+  - The GLORIA ablation: the run exists but is neither hashed nor scored.
+  - The robust-variant vs primary **paired** comparison (§9) is not computed.
+  - The lake-only turbidity/TSS secondary has a point estimate only, with no CI.
+
+  **Fix:** add these, or record dated deviations in §11 before the freeze.
+- **🟡 W7. The pass cannot settle a §15.1 label.** A SOTA or first-in-class label needs the strongest simple baseline
+  / every applicable baseline. On val, `gbm_rgbn_ctx` (Secchi 35.4) and `loc_knn` (TSS 85.9) beat the H1
+  comparators, but the scorer gives only marginal scores for them.
+
+  **Fix:** add paired comparisons against every baseline (secondary, outside the Holm families), and pre-declare
+  which label rule applies.
+- **🟡 W8. The teacher is checked for overlap per site, but Lite water bodies can be larger.**
+  - The W8 check uses ≤ 2 km, the site id or the same lake. Lite water bodies also merge flowing sites by HUC8, and
+    sites with the same name within 40 km.
+  - On val (recomputed): 151/924 sites have a teacher row 2–5 km away, and 20/128 flowing-class sites have one
+    within 5 km.
+  - Test-A turbidity and TSS are mostly non-lake (lake-only 58/92 and 62/98), and H2 includes them.
+  - The channel is indirect: teacher outputs reach only train chips. The effect is likely small, but it should be
+    quantified on test and test_time before the freeze, using the coordinates-only `distill.lite_sites` path, and
+    stated.
+- **🟡 W9. Test-A would be seen before the national track is frozen.** §12 lists "Test-A ∪ Test-N" as a national
+  secondary, and the national KD student is still being selected.
+
+  **Fix:** freeze the national track first, or drop Test-A from the national secondaries with a dated §12 note.
+- **🟡 W10. The records are inconsistent.**
+  - Configuration counts disagree: 16 (candidate; lite.md:7), 13 (lite.md:151), 14 (handoff), 15 (`selection.json`,
+    which lacks kd03_secchi).
+  - The partial run `…221015` was deleted without a TRAINING_LOG entry (R8).
+  - The candidate says the dry run "reproduces registered val numbers exactly". That holds only for the CPU-fp32
+    `lite_robustness_val` rows (46.61 / 72.55 / 107.15). Selection used `lite_val` from GPU AMP
+    (46.56 / 72.59 / 107.13).
+
+  **Fix:** reconcile all of these, and regenerate `selection.json` with all 16 configurations.
+
+### Observations
+- 🟢 O1. Test labels share `labels.parquet` with train and val, and protection is role filtering only.
+  `data.load_labels()` (data.py:309-310) has no guard, and every `role_frame` call holds test rows in memory before
+  filtering. Consider keeping the protected-role labels in a separate file that only the claimed scorer can read.
+- 🟢 O2. The S tie rule: kd03 vs medpool has |ΔS| = 0.0012 < 0.01 at equal size, which the rule does not resolve.
+  kd03, the base model, was kept. State this.
+- 🟢 O3. The Lite code is untracked in git and has no `freeze_archives` tarball (other workstreams have one). Archive
+  the code and weights at the freeze.
+- 🟢 O4. `export_report.json` `val_accuracy` uses all site classes for Secchi and chl-a (seed 0 Secchi 48.59 vs 47.98
+  on the primary population). Label the population in the INT8-Δ table.
+- 🟢 O5. Proxy latency was measured at host load ≈ 33. It is labelled as a proxy (correctly); expect noise.
+- 🟢 O6. On val, H1 already fails for Secchi vs GBM (+5.4 [+0.4, +9.6], student worse). The expected test label is
+  "competitive/negative". That does not invalidate the freeze, but the claim wording should be fixed in advance.
+
+### Checklist summary
+| Category | Checked | Passed | Failed | N/A |
+|---|---|---|---|---|
+| Single-look / access control (C1, C2) | 5 | 1 | 4 | 0 |
+| Hash coverage: weights, code, data (C3, W4, W5) | 6 | 3 | 3 | 0 |
+| Statistics vs pre-declaration (C4, W2, W3, W7) | 8 | 4 | 4 | 0 |
+| Leakage (W8) | 6 | 5 | 1 (partial) | 0 |
+| Selection and configuration count (W10) | 4 | 3 | 1 (records) | 0 |
+| Budgets computed by code | 4 | 4 | 0 | 0 |
+| Completeness of the single pass (C5, W6) | 5 | 1 | 4 | 0 |
+
+### Gate
+**Do not write `FREEZE_lite.json`** until C1–C5 are fixed and W1–W3 are fixed or have a recorded decision. Then:
+1. re-run `--dry-run-val` (CPU, ≤ 6 threads);
+2. recompute `scoring_code_sha256`;
+3. get a delta re-review of the scorer and guard diff.
+
+After that, the lead writes the freeze and authorises the single pass.
+
+## M6 HydroMet — delta re-review (2026-11-09)
+
+**Mode:** delta re-review of the pre-test fixes (handoff "Pre-test review fixes", status 12:30). **Reviewer:**
+independent agent with a fresh context. No FREEZE was written and no test look was run. No test rows were loaded:
+`sentinel_runs/hydromet/test_looks/` does not exist, and the registry has 0 `M6*/test` rows.
+**Code at review time:** `scoring_code_sha256` **`f519bb35…`** (46 files). I re-implemented the hash independently and
+got the same value. Protocol `3a13670f…`. Newest frozen-file edit: 11:24:23. Candidate written 11:28.
+**Tests:** `tests/test_hydromet{,_testlook,_tracks,_upstream}.py` give 72 passed, 0 failed (`sentinel2` env, CPU).
+**Probes:** sandboxed RUNS_ROOT with a stubbed registry, no real claim, in
+`/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/rev_m6_delta/probe.py`.
+
+**Verdict: 🟡 PASS WITH CONCERNS.**
+- **Fixed:** C1–C3 and W1–W4 are fixed in substance:
+  - the single look is enforced;
+  - the family, comparators and model set come only from the freeze block;
+  - predictions are sealed;
+  - data pins, code hash and protocol hash are re-verified against disk;
+  - the rehearsals are genuine.
+- **Before `FREEZE_hydromet.json`:** fix D1 and D4.
+  - Bundle D2, D3 and D5, because every edit changes the code hash.
+  - Then regenerate the candidate, `verify`, and re-run the `M6/test` rehearsal.
+  - A diff check of those few lines is enough; no science re-review is needed.
+
+### Item-by-item
+1. **C1 single look: fixed.** The probes confirm each of these:
+   - a second `claim` is refused (O_EXCL marker);
+   - after deleting the marker, a re-claim is still refused by the claim-time registry row;
+   - after `SCORED.json`, the guard refuses protected data;
+   - a modified sealed file is refused by `check_sealed`;
+   - `check_access` without `--allow-test` is refused.
+
+   The CLIs refuse protected data before anything is loaded: `hydromet_score.py:36-40`, `hydromet_predict.py:34-37`
+   and `hydromet_track_n.py:342-345`. This includes `--roles val,test` and `--block test_b`. Training refuses it
+   unconditionally (`runner.prepare`). `--rehearse-on-val` overrides the block and roles to val with no freeze
+   (`hydromet_test_look.py:129`), so it cannot reach test rows.
+2. **C2 family/label: fixed.**
+   - `look_block` enforces `n_hypotheses` = models × endpoints (`testlook.py:65-74`).
+   - Protected scoring refuses without a frozen family (`pipeline.py:217-223`). The driver re-checks the size
+     (`hydromet_test_look.py:108`).
+   - The candidate holds all 25 artifacts for the 7 models (Holm 28). The label model is `ealstm_ws_full`, and a
+     non-candidate win is secondary (protocol §8, lines 234–239).
+3. **C3 tracks: fixed.**
+   - Track R has fold-unique keys, its own freeze and its own look block. It is declared secondary/descriptive on
+     the same test cells (§10 (iii)–(iv)).
+   - Track N takes models, comparators and pins from the freeze block. Untestable hypotheses enter at p = 1, and
+     the family size is checked (`hydromet_track_n.py:250-275`).
+4. **W1 verify: fixed and genuine.**
+   - `verify` PASS. It re-hashes the 7 data pins, the 25 artifacts, `scoring_code_sha256` and the protocol, and
+     re-checks the look blocks (`hydromet_freeze_candidate.py:161-185`).
+   - I recomputed these independently and they match: the code hash; the raw sha256 of `ealstm_ws_full_s0`
+     (`54e79dfd`), `forcing_gbm` (`c8294442`) and `dosat_ratio[…]_ws` (`33bbc4c7`); and the `sonde_daily` content
+     pin (`65d86584`, 5,501 files, resolved `sonde_daily_refresh_20261108`).
+   - The pins are part of the freeze and are re-checked before every claim (`testlook.verify_data_pins`).
+   - W2–W4 text is present in §8 (lines 240–252) and §10 (lines 341–352).
+5. **Rehearsals: genuine, same code path as the look** (`predict`/`score` of `hydromet_test_look.py`; only the
+   claim, seal and registry steps are skipped).
+   - All three ran after the last code edit.
+   - `M6/test` on val vs `score_val_v4`: 28/28 rows; same comparators; |Δ| ≤ 2.4e-7 (CPU vs GPU inference);
+     p-values identical; Holm/won identical.
+   - `M6N/test` on val: `M6N/val_v2` was registered from these same predictions, so that equality is circular.
+     I therefore compared it with the independent `M6N/val_v1` CLI path. For the 13 shared models
+     (`ealstm`, seeds, blend, GBMs), max |ΔRMSE| ≤ 3e-6 over 1,938 station-endpoints, and exactly 0 for the GBMs.
+   - The `M6R/test` rehearsal is partial (3 folds) by design.
+6. **MIN_TEST_GROUPS = 3: legitimate.**
+   - It was added before any test look, from a val-only rehearsal that exposed a degenerate one-group bootstrap
+     (p = 0).
+   - It is conservative: an affected hypothesis stays in the family at p = 1 and can only lose a rejection.
+   - It is applied to every model alike (`evaluate.py:261, 287`; track N `:254`), and it is in protocol §7
+     (line 169).
+   - It does not bind on the primary cell (≥ 22 groups per endpoint). The val_v4 rehearsal is unchanged.
+7. **427 track-N stations with the local basin (no NLDI): disclosed, not leakage, but not "harmless".**
+   - The trackn manifest records `local (NLDI basin unavailable)`: 427 of 12,771 stations. The area ratio vs
+     StreamCat spans 0.03–88 across stations, so some `ws_*` inputs come from a badly wrong basin.
+   - This handicaps only the `_ws` members (the candidate and the `_ws` physics comparators) at those stations,
+     and no target is involved.
+   - Protocol §12 (lines 419–422) discloses the mechanism but not the count. **D5:** state 427 in §12 and pre-declare
+     a descriptive sensitivity analysis that excludes those stations.
+8. **Freeze ordering (track R).** One code hash for two freeze files is coherent: the guard checks only the hash,
+   and each freeze has its own claim, marker and registry experiment. It holds only if these constraints are met:
+   - **(a)** No edit to any of the 46 frozen files (including the protocol) between the two looks.
+   - **(b)** The track-R freeze reuses the primary's data pins **byte-identically**. Today `cmd_trackr` recomputes
+     them (`hydromet_freeze_candidate.py:222`). Make it copy them from `FREEZE_hydromet.json` and refuse a
+     mismatch.
+   - **(c)** The track-R family must not depend on anything decided after the primary look (see D4).
+   - **(d)** Track R stays descriptive, as declared.
+
+### Remaining items
+- **D1 (must fix). A non-freeze record is accepted as a freeze.**
+  - `guard.load_freeze(docs/preregistration/hydromet_freeze_candidate.json)` succeeds (probe P1). The record carries
+    all `FREEZE_KEYS` plus `looks`, and its `NOT_A_FREEZE` key is ignored.
+  - `verify_data_pins` passes on it, so `hydromet_test_look.py --look M6/test --freeze-file <candidate>` would claim
+    and burn the look without the lead's FREEZE.
+  - `hydromet_trackR_rehearsal.json` (`partial_rehearsal_only: True`) is refused today only because its code hash is
+    stale. Regenerated, it would enable a 3-fold M6R look.
+  - Fix in `guard.load_freeze` (`guard.py:60-81`) and `hydromet_test_look.py:146,160`:
+    - refuse records containing `NOT_A_FREEZE` or `partial_rehearsal_only`;
+    - require the canonical file name of `DEFAULT_FREEZE[look]` in `docs/preregistration/`.
+- **D2 (should fix). A claim authorises any protected data under that freeze, not only its own look's cell.**
+  - With an open `M6N/test` claim, `check_access` authorises sonde test-role sites × test block and the `test_b`
+    block (probes P2/P2b).
+  - A claim that crashes before sealing stays open forever: `check_sealed` refuses, and `open_claims` still lists it
+    (probe P3).
+  - The CLIs refuse protected data, so this is reachable only from custom Python, but the protection is weaker than
+    the protocol text.
+  - Fix:
+    - `require_open_claim` should match the requested blocks/roles to the claimed look's block (`testlook.py:140-156`);
+    - the driver should write an `ABORTED` marker on an exception before sealing, which closes the claim.
+- **D3 (low). `check_sealed` ignores unlisted files** (probe P4).
+  - An extra `*.npz` dropped into a sealed directory passes `check_sealed` (`testlook.py:179-193`).
+  - It is mostly blocked downstream by the duplicate-name and artifact/freeze-sha checks, but the fold-keyed track-R
+    path allows a same-name file from an unpredicted fold.
+  - Fix: refuse any `*.npz` not listed in `SHA256SUMS`.
+- **D4 (must fix before the primary look). The track-R model family is time-dependent.**
+  - `cmd_trackr` includes `ealstm_full` iff all 18 refits exist **when the builder is run**
+    (`hydromet_freeze_candidate.py:209-215`; protocol §10 lines 339–340, "if all refits finish").
+  - The builder runs after the primary look, so whether to wait for, or run, the refits becomes a decision made
+    after seeing the test cell.
+  - Fix now, in the protocol: for example, "`ealstm_full` is in the M6R family iff all 18 refit artifacts exist when
+    the `M6/test` claim is made", recorded in the primary freeze. Alternatively, drop it from M6R now.
+- **D5 (doc).**
+  - §12: give the 427 count and add the sensitivity analysis (item 7).
+  - §8 line 229 still says "(14 artifacts)"; it should say 25.
+  - §7 line 182 lists "train-role sites × val/test block" as a secondary analysis. The `M6/test` look block covers
+    test-role sites only, and protected data close after SCORED, so the train-role × test analysis can never be
+    computed. Add `train` to the look's roles as a descriptive cell, or drop "test" from that line.
+
+### Checklist
+| Area | Checked | Pass | Fail | Notes |
+|---|---|---|---|---|
+| Single look (claim, marker, registry, SCORED) | 6 | 6 | 0 | probes P5/P5b, tests |
+| Other entry points / CLI flags | 5 | 5 | 0 | score, predict, track_n, training, rehearsal |
+| Freeze authenticity | 2 | 0 | 2 | D1 (candidate and rehearsal records accepted) |
+| Claim scope / crash handling | 2 | 0 | 2 | D2 |
+| Sealed predictions | 2 | 1 | 1 | D3 (unlisted files) |
+| verify (code, protocol, pins, artifacts) | 4 | 4 | 0 | independent recomputation matches |
+| Rehearsals genuine / same path | 3 | 3 | 0 | val_v4 and M6N/val_v1 reproduced |
+| Post-hoc changes | 2 | 2 | 0 | MIN_TEST_GROUPS legit; 427 disclosed (D5 count) |
+| Track-R ordering | 3 | 1 | 2 | D4, pin reuse (8b) |
+| Tests | 1 | 1 | 0 | 72 passed |
+
+**Gate.**
+1. Apply D1 and D4. D2, D3 and D5 are recommended in the same edit.
+2. Regenerate `hydromet_freeze_candidate.json`, run `verify`, and re-run `--rehearse-on-val --look M6/test` (it must
+   still match `M6/val_v4`).
+3. Send the diff for a line-level check.
+
+The lead may then write `FREEZE_hydromet.json` from the candidate, minus `NOT_A_FREEZE` and the audit fields, and
+authorise `M6/test`, then `M6N/test`.

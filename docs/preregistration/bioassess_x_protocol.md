@@ -381,3 +381,53 @@ Same machinery as M5 (`bioassess_final.py` pattern):
   SENTINEL); it is disclosed as made after the first check's outcome was seen. (For completeness: an unlogged
   progress scoring of the finished X-L same-continent baselines and five X-U baselines was run at 07:38; no GJAM,
   bio.infer or SENTINEL prediction existed then, and nothing in v4–v6 depends on it.)
+- **2026-11-09 v7 — single-look enforcement (lead instruction after the M7 review; no science change).** The M5-X
+  scorer follows `sentinel/models/hydromet/testlook.py` (`sentinel/models/bioassess/xtestlook.py`): it accepts only
+  the lead-written `bioassess_x_freeze.json` (never the candidate), checks `scoring_code_sha256`, file/package hashes
+  and content-hash data pins (manifest sha + exact loader files) before the claim; registry refusal; O_EXCL
+  `TEST_LOOK.json` + claim-time registry row; test rows loadable only under that open claim; predictions sealed once
+  (0444, `SHA256SUMS`, O_EXCL `PREDICTIONS_SAVED.json`); O_EXCL `SCORED.json` after scoring. The single resume
+  (§9) is allowed only before sealing; `--rescore-from-saved` after sealing.
+- **2026-11-09 v8 — secondary EVENT TRACK (lead instruction: every model outputs (A) water quality and (B)
+  harmful-event detection; `docs/plans/event_layer_plan.md` M5 rows and §4). Written before any event prediction or
+  event metric was computed; only event label counts of the development pseudo-tests were looked at (below).**
+  M5-X is a chronic-stressor diagnosis (invertebrates integrate weeks–months); the track is **secondary**, never part
+  of the 12-test confirmatory family, scored inside the same single M5-X look. The original M5 test blocks are spent
+  and are not used.
+  1. **Events** (criterion-anchored, definitions from the shared `sentinel/eval/events.py`, imported, never copied):
+     E2a chloride > 230 mg/L; E5b TP > 0.1 mg/L; E6 pH < 6.5 or > 9.0 (lab pH); E3 (snapshot variant of E3a)
+     turbidity > 50 NTU. X-L: E2a, E5b, E6, E3. X-U: E2a, E6 (TP and turbidity are not X-U targets → n/a).
+  2. **Power (plan §1.2: ≥ 30 positives and ≥ 10 clusters with positives) on the development pseudo-tests:**
+     X-L E5b 105 / 105 (F), E6 46 / 46 (F), E2a 11 / 11 (U), E3 11 / 11 (U); X-U E2a 19 / 7 (U), E6 35 / 25 (would
+     pass on M5-X dev, but **descriptive only by lead ruling**: the plan's UK validation counts are 4 and 10
+     positives). U events and both X-U events are **descriptive only** (derived route, no direct head, no tests).
+  3. **Derived route (primary):** P(threshold exceeded) from the M5-X predictive distribution = Gaussian on the
+     model's (log-)target with mean = the model's seed-mean prediction and SD = its out-of-fold residual SD on the
+     development folds (per block × target); one Platt recalibration per (block, model, event) fitted on development
+     out-of-fold probabilities only (cross-fitted by development fold for the development numbers; fitted on all
+     development folds and frozen for the test look). Applied to the confirmatory candidate C-X of the block.
+  4. **Direct route (challenger), only for powered events (X-L E5b, E6):** LightGBM binary classifier on the
+     tabular community features (M5 fixed GBM hyperparameters, same-continent training rows of the fold, seeds 0–2
+     at test), recalibrated like every route.
+  5. **Comparators:** threshold-on-baseline = derived route applied to RF[geography] and TabPFNv2[community]
+     (their own residual SD + recalibration); prevalence (fold training prevalence) and climatology (fold training
+     prevalence by sampling month, add-one smoothing, fallback prevalence).
+  6. **Metrics:** `events.state_metrics` (AUPRC with prevalence as chance level, Brier, BSS vs climatology, ECE)
+     and paired ΔBrier / ΔAUPRC by `events.compare_routes`, location-cluster bootstrap B = 2,000; contrasts:
+     derived(C-X) − each comparator, derived − direct. Holm across the powered events of a block for derived vs
+     direct (plan §2.2); everything else unadjusted, labelled secondary.
+  7. **Test-block capacity:** test labels are not read before the look; the candidate reports projected positives
+     (development prevalence × test n). Inside the look, the plan's power rule is re-applied on the test rows and any
+     event below it is reported descriptively.
+  8. **Code:** adapter `sentinel/events/bioassess_x.py` (plan §4.1 location), development runner
+     `scripts/eval/bioassess_x_events.py`; frozen development calibration data
+     `x_track/dev/events/events_calibration_v1.parquet` (hashed in the candidate).
+- **2026-11-09 12:36 v8a — correction to v8.2 (lead correcting an earlier instruction that conflicted with the
+  pre-registered power rule; made before any event prediction, probability or metric existed — no
+  `x_track/dev/events/` output and no `bioassess_x_events_dev` registry row at the time of writing).** The lead's
+  earlier "UK pH underpowered, descriptive only" was based on the plan's preliminary UK validation counts and was not a
+  ruling meant to override the rule. The pre-registered rule (≥ 30 positives and ≥ 10 clusters with positives on the
+  development pseudo-test) governs: **X-U E6 (35 positives / 25 clusters) is powered** — secondary, with the direct
+  LightGBM head, exactly like X-L E5b and E6, and included in the derived-vs-direct Holm family of its block. X-U E2a
+  (19 / 7), X-L E2a (11 / 11) and X-L E3 (11 / 11) remain descriptive only by the rule. Everything else in v8 is
+  unchanged (approved by the lead).

@@ -1,0 +1,247 @@
+{
+ "created": "2026-11-09T14:58:30",
+ "status": "CANDIDATE",
+ "split_sha256": "ffe288f2fafecada964fc8125dcd35ddd9b332d3a04f782d0298e01f097a5e32",
+ "data_version": "dev_v4",
+ "data_manifest_sha256": "3602823c2a9bb1fcf92138de99cf055007d08ecddd26412911b25aa7c3b50762",
+ "satwq_checkpoints": [
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v4_noaug_s0/model.pt",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v4_noaug_s1/model.pt",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v4_noaug_s2/model.pt"
+ ],
+ "fitted_baselines": "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/baselines_dev_v4/fitted_baselines.pkl",
+ "blend_with": null,
+ "events_artifact": "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/events_satwq_v4_noaug/events_orbit_dev_v4.pkl",
+ "event_track": {
+  "protocol": "orbit_protocol.md \u00a712",
+  "primary_event": "E4a",
+  "tiers": [
+   "E4a_t12",
+   "E4a_t50"
+  ],
+  "descriptive": [
+   "E3a_tss",
+   "E3a_turb"
+  ],
+  "primary_route": "derived",
+  "challenger_route": "direct",
+  "note": "pre-registered (orbit_protocol.md \u00a712): derived route primary, direct head challenger; calibrators fitted on valxval_lake of dev_v4",
+  "not_compared": {
+   "CyAN_CI_cyano": "needs an Earthdata login the user has not provided"
+  }
+ },
+ "looks": {
+  "M2/test": {
+   "experiment": "orbit_TEST_dev_v4",
+   "cells": [
+    "headline",
+    "testB_2026",
+    "pooled_2024_2026"
+   ]
+  },
+  "M2U/test": {
+   "experiment": "orbit_TEST_dev_v4_trackU",
+   "cells": [
+    "trackU_test"
+   ]
+  }
+ },
+ "dryrun_dir": "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/test_looks_dryrun/satwq_v4_noaug",
+ "comparators": {
+  "chla": {
+   "mdn_b": {
+    "model": "mdn_b12_5k_lin",
+    "val_mdsa": 52.62100846859814,
+    "n_candidates": 12
+   },
+   "gbm_imagery_context": {
+    "model": "gbm_imagery_context#v3",
+    "val_mdsa": 56.44455716637029,
+    "n_candidates": 17
+   },
+   "location_knn": {
+    "model": "location_knn",
+    "val_mdsa": 126.54549680816771,
+    "n_candidates": 5
+   }
+  },
+  "tss": {
+   "mdn_b": {
+    "model": "mdn_b7_5k_lin",
+    "val_mdsa": 68.26612837674703,
+    "n_candidates": 12
+   },
+   "gbm_imagery_context": {
+    "model": "gbm_imagery_context#v1",
+    "val_mdsa": 79.63168965882399,
+    "n_candidates": 17
+   },
+   "location_knn": {
+    "model": "location_knn#k8",
+    "val_mdsa": 91.64766167910858,
+    "n_candidates": 5
+   }
+  },
+  "turbidity": {
+   "mdn_b": {
+    "model": "mdn_b12_20k_lin",
+    "val_mdsa": 32.99053296148146,
+    "n_candidates": 12
+   },
+   "gbm_imagery_context": {
+    "model": "gbm_imagery_context#v8",
+    "val_mdsa": 24.993681362598963,
+    "n_candidates": 17
+   },
+   "location_knn": {
+    "model": "location_knn",
+    "val_mdsa": 58.61131781814126,
+    "n_candidates": 5
+   }
+  },
+  "secchi": {
+   "mdn_b": {
+    "model": "mdn_b12_5k_log",
+    "val_mdsa": 32.230266711386335,
+    "n_candidates": 12
+   },
+   "gbm_imagery_context": {
+    "model": "gbm_imagery_context#v6",
+    "val_mdsa": 32.65564601544917,
+    "n_candidates": 17
+   },
+   "location_knn": {
+    "model": "location_knn",
+    "val_mdsa": 95.34485869716771,
+    "n_candidates": 5
+   }
+  }
+ },
+ "selection": {
+  "rule": "lowest val MdSA (chl-a, valxval_lake) among configurations scored on val, orbit_protocol.md \u00a76",
+  "note": "INTERIM dev_v4 candidate (satwq_v4_noaug, 3 seeds; lowest val chl-a MdSA among dev_v4 configs scored on val). Superseded automatically by chain7 on dev_v5 (protocol \u00a72.3 requires the latest data version); track U artifacts pending (chain6).",
+  "configs_tried": 33
+ },
+ "weights_sha256": {
+  "satwq_v4_noaug_s0": "1688952b498d0a83fb8dab4189488278527eec3014753d5c5230cf80124ecee1",
+  "satwq_v4_noaug_s1": "3d2da01a74e062f42978e09b4fe23bab10e67138bbebd1ef038caa35072cd6e2",
+  "satwq_v4_noaug_s2": "b47fa0a97a0c2fe29a66a8a0de40e7c306b271f4aadd3977b5c7fcfa59089128",
+  "fitted_baselines": "6f254ad14f89c52028b332f1faea76f7d69eb9fb23403ca634151739e3826926",
+  "events_orbit": "084e04e3b49efd1a96212bc06ff9c1d025fdcdd00584fc02971d782cf57047be"
+ },
+ "data_pins": {
+  "wqp_matchups": {
+   "loader_dir_rel": "",
+   "patterns": [
+    "s2_wqp_matchups/samples.parquet",
+    "s2_wqp_matchups/matchups.parquet",
+    "s2_wqp_matchups_hist/samples.parquet",
+    "s2_wqp_matchups_hist/matchups.parquet",
+    "s2_wqp_matchups_2026/samples.parquet",
+    "s2_wqp_matchups_2026/matchups.parquet"
+   ],
+   "n_files": 3,
+   "bytes": 94592256,
+   "content_sha256": "acb49e0438b0609eccb5a87edb549351facf93cb63ff59defcff3fe084a47980"
+  },
+  "aquacorr_tables": {
+   "loader_dir_rel": "aquacorr_global",
+   "patterns": [
+    "s2_chip_requests.parquet",
+    "s2_chip_plan.parquet"
+   ],
+   "n_files": 2,
+   "bytes": 40029309,
+   "content_sha256": "45e59b337444629839957ea3dbddf39bf9ba45577634aa35e29e4abf089f09d5"
+  },
+  "chips_wqp": {
+   "loader_dir_rel": "s2_chips/wqp",
+   "patterns": [
+    "index.parquet",
+    "index/*",
+    "layers.json",
+    "shards/*"
+   ],
+   "n_files": 182,
+   "bytes": 3548790319,
+   "content_sha256": "2bffeb6ab45f2586a4c4cc19dce96a9f104ed01b246d9efaf65a30f3aa52dff7"
+  },
+  "chips_aquacorr": {
+   "loader_dir_rel": "s2_chips/aquacorr",
+   "patterns": [
+    "index.parquet",
+    "index/*",
+    "layers.json",
+    "shards/*"
+   ],
+   "n_files": 421,
+   "bytes": 4639014244,
+   "content_sha256": "128c9ddde5a4476eb429c28e45094ddf752db855c1b61f9073b349967384dafb"
+  },
+  "hydrolakes": {
+   "loader_dir_rel": "hydrolakes",
+   "patterns": [
+    "hydrolakes_na_eu.parquet"
+   ],
+   "n_files": 1,
+   "bytes": 818283053,
+   "content_sha256": "a22fc90137faa447132cdaa44c401f7e22d519d9242f6e2fa9a1f68287aadd4a"
+  },
+  "wbd_huc12": {
+   "loader_dir_rel": "wbd_huc12",
+   "patterns": [
+    "huc12.parquet"
+   ],
+   "n_files": 1,
+   "bytes": 3131890,
+   "content_sha256": "adbd62cd2f69f3b418e6c34b08ad4d4732e2bc26bff47a43be4ff3938d90e968"
+  },
+  "gloria_srf": {
+   "loader_dir_rel": "gloria",
+   "patterns": [
+    "srf_info.parquet"
+   ],
+   "n_files": 1,
+   "bytes": 4728,
+   "content_sha256": "6c13af1760d42cf2503d6410524b30562939352fb4c7b4bb90d7d47e7f702658"
+  }
+ },
+ "scoring_code_sha256": "b852d3cd4afaaaebd3b0971a9c61ba881fdfe98d94d44a87a17603beee3f727d",
+ "frozen_files": [
+  "configs/events/orbit.yaml",
+  "configs/orbit/satwq.yaml",
+  "docs/preregistration/orbit_protocol.md",
+  "docs/preregistration/orbit_split_v3.json",
+  "scripts/eval/events_orbit.py",
+  "scripts/eval/orbit_prepare_freeze.py",
+  "scripts/eval/orbit_test.py",
+  "scripts/train/orbit_baselines.py",
+  "scripts/train/orbit_build_split.py",
+  "scripts/train/orbit_compare.py",
+  "scripts/train/orbit_placebo.py",
+  "scripts/train/orbit_power.py",
+  "scripts/train/orbit_satwq.py",
+  "scripts/train/orbit_tracks.py",
+  "sentinel/data/chips.py",
+  "sentinel/data/sources/hydrolakes.py",
+  "sentinel/data/sources/stac.py",
+  "sentinel/eval/bootstrap.py",
+  "sentinel/eval/events.py",
+  "sentinel/eval/metrics.py",
+  "sentinel/eval/splits.py",
+  "sentinel/events/__init__.py",
+  "sentinel/events/orbit.py",
+  "sentinel/models/orbit/__init__.py",
+  "sentinel/models/orbit/baselines.py",
+  "sentinel/models/orbit/data.py",
+  "sentinel/models/orbit/evaluate.py",
+  "sentinel/models/orbit/features.py",
+  "sentinel/models/orbit/guard.py",
+  "sentinel/models/orbit/mdn.py",
+  "sentinel/models/orbit/pipeline.py",
+  "sentinel/models/orbit/satwq.py",
+  "sentinel/models/orbit/split.py",
+  "sentinel/models/orbit/testlook.py",
+  "sentinel/models/orbit/track_u.py"
+ ]
+}

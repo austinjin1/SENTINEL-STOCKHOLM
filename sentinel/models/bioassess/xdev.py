@@ -452,8 +452,10 @@ def load_test_rows(S: pd.DataFrame, block: str):
     """The block's frozen TEST rows (tokens + labels) as a BioDesign. Called ONLY by the one-time scorer in its
     authorised test mode, after the fixed marker has been claimed (``scripts/eval/bioassess_x_final.py``)."""
     from sentinel.models.bioassess import xdata
+    from sentinel.models.bioassess import xtestlook as XL
     from sentinel.models.bioassess.data import BioDesign
 
+    XL.require_open_claim()                  # single-look guard: only under an open, unscored claim of this freeze
     T = S[(S["block"] == block) & (S["role"] == "test")]
     keys = set(zip(T["source"], T["id"].astype(str)))
     src, loader = {"X-L": ("nla", xdata._nla), "X-U": ("uk", xdata._uk)}[block]

@@ -1,0 +1,13 @@
+# pre-registered RGB-only vs RGBN ablation (protocol §1) of the selected config: NIR zeroed at input (train.normalise_input)
+name: mnv4s_raw_crop128_kd03_rgb
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+crop: 128
+epochs: 40
+lr_backbone: 5.0e-4
+kd_weight: 0.3
+kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe/teacher_targets.parquet
+rgb_only: true

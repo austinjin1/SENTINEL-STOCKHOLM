@@ -115,7 +115,9 @@ def cmd_write(a) -> int:
         raise SystemExit(f"no-test audit failed: {audit['violations']}")
     promo = paths.PROCESSED / "sonde_daily" / "compare_vs_sonde_daily.json"
     rec = {
-        "NOT_A_FREEZE": "candidate record for review; FREEZE_hydromet.json is written by the lead only",
+        "NOT_A_FREEZE": "candidate record for review; FREEZE_hydromet.json is written by the lead only (drop this key "
+                        "and the audit fields, set status FROZEN and authorised_by)",
+        "status": "CANDIDATE",
         "created": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
         "protocol": "docs/preregistration/hydromet_protocol.md (DRAFT v0.11, §8)",
         "protocol_sha256": _sha(paths.REPO_ROOT / "docs" / "preregistration" / "hydromet_protocol.md"),
@@ -124,15 +126,19 @@ def cmd_write(a) -> int:
                       "reported_separately": "ealstm_gbmblend"},
         "split_sha256": sp.sha256(),
         "scoring_code_sha256": guard.scoring_code_sha256(),
+        "frozen_files": frozen_file_hashes(),   # per-file sha256 of the hashed set (track-R reuse check)
         "weights_sha256": weights,
         "artifacts": {n: str(_artifact(n, r)) for n, r in RUNS.items()},
         "comparators": comps,
         "looks": {
-            "M6/test": {"block": "test", "roles": ["test"], "label_model": CANDIDATE,
+            "M6/test": {"block": "test", "roles": ["test"], "dataset": "sonde", "label_model": CANDIDATE,
                         "primary_models": PRIMARY_MODELS, "n_hypotheses": len(PRIMARY_MODELS) * len(comps),
                         "comparators": comps, "artifacts": {n: str(_artifact(n, r)) for n, r in RUNS.items()},
                         "data_snapshots": PRIMARY_PINS},
-            "M6N/test": {"block": "test", "roles": ["test"], "label_model": None,
+            "M6N/test": {"block": "test", "roles": ["test"], "dataset": "trackn", "label_model": None,
+                         "sensitivity": {"exclude_basin_method": "local (NLDI basin unavailable)",
+                                         "basins_file": "processed/hydromet_upstream_forcing/basins_trackn.parquet",
+                                         "experiment": "M6N/test_sens427", "descriptive": True},
                          "primary_models": TRACK_N_MODELS, "n_hypotheses": len(TRACK_N_MODELS) * 2,
                          "comparators": {v: comps[v] for v in ("temp_c_mean", "do_mgl_mean")},
                          "artifacts": {n: str(_artifact(n, RUNS[n])) for n in TRACK_N_ARTIFACTS},
@@ -173,6 +179,10 @@ def cmd_verify(a) -> int:
             bad.append(f"artifact {n} changed")
     if guard.scoring_code_sha256() != rec["scoring_code_sha256"]:
         bad.append("scoring_code_sha256 changed since the record was written")
+    now = frozen_file_hashes()
+    diff = sorted(k for k in set(now) | set(rec.get("frozen_files", {})) if now.get(k) != rec.get("frozen_files", {}).get(k))
+    if diff:
+        bad.append(f"frozen files changed: {diff[:5]}")
     if _sha(paths.REPO_ROOT / "docs" / "preregistration" / "hydromet_protocol.md") != rec["protocol_sha256"]:
         bad.append("protocol changed since the record was written")
     from sentinel.models.hydromet import testlook as TL
@@ -186,19 +196,39 @@ def cmd_verify(a) -> int:
     return 1 if bad else 0
 
 
+TRACK_R_MODELS = ["ealstm", "ealstm_gbmblend"]   # fixed 2026-11-09 (delta re-review D4): never ealstm_full
+
+
+def frozen_file_hashes() -> dict:
+    from sentinel.models.hydromet import guard
+
+    return {rel: _sha(paths.REPO_ROOT / rel) for rel in guard.frozen_files()}
+
+
 def cmd_trackr(a) -> int:
-    """Track-R candidate record (protocol §10): fold-unique keys trackr_<fold>/<model>_s<seed>; written when all folds
-    finished (``--allow-partial`` only for a val rehearsal of the code path, never for a freeze)."""
+    """Track-R candidate record (protocol §10): fold-unique keys trackr_<fold>/<model>_s<seed>. The family is FIXED
+    (``TRACK_R_MODELS``; no dependence on which artifacts exist). The data pins are COPIED byte-identically from the
+    primary ``FREEZE_hydromet.json`` and every one of its frozen files must be unchanged (same scoring-code hash).
+    ``--allow-partial`` (val rehearsal of the code path only, never a freeze) copies the pins from the primary
+    candidate record instead."""
     from sentinel.models.hydromet import data as D
     from sentinel.models.hydromet import guard
     from sentinel.models.hydromet import tracks as TR
 
     sp, _ = D.load_split()
     comps = json.loads((paths.REPO_ROOT / "docs" / "preregistration" / "hydromet_track_r_comparators.json").read_text())
+    primary_f = guard.FREEZE_FILE if guard.FREEZE_FILE.is_file() else (OUT if a.allow_partial else None)
+    if primary_f is None:
+        raise SystemExit("track-R record needs the primary FREEZE_hydromet.json (its data pins are copied, not recomputed)")
+    primary = json.loads(Path(primary_f).read_text())
+    now = frozen_file_hashes()
+    changed = sorted(k for k in set(now) | set(primary.get("frozen_files", {}))
+                     if now.get(k) != primary.get("frozen_files", {}).get(k))
+    if changed or guard.scoring_code_sha256() != primary["scoring_code_sha256"]:
+        raise SystemExit(f"frozen files changed since the primary record ({len(changed)}): {changed[:5]}")
     arts, missing = {}, []
     for f in TR.REGION_FOLDS:
         runs = {**{f"ealstm_s{k}": H / f"trackr_{f}_ealstm_s{k}" for k in range(3)},
-                **{f"ealstm_full_s{k}": H / f"trackr_{f}_full_s{k}" for k in range(3)},
                 **{f"forcing_gbm_bag_s{k}": H / f"trackr_{f}_gbmbag_s{k}" for k in range(3)},
                 **{n: H / f"trackr_{f}_base" for n in ("forcing_gbm", "air2stream_regional", "dosat_ratio[air2stream_regional]")}}
         for n, r in runs.items():
@@ -206,26 +236,23 @@ def cmd_trackr(a) -> int:
                 arts[f"trackr_{f}/{n}"] = str(_artifact(n, r))
             except (KeyError, FileNotFoundError, OSError):
                 missing.append(f"trackr_{f}/{n}")
-    full_ok = not any("/ealstm_full_" in m for m in missing)
-    if not full_ok:
-        arts = {k: v for k, v in arts.items() if "/ealstm_full_" not in k}
-        missing = [m for m in missing if "/ealstm_full_" not in m]
     if missing and not a.allow_partial:
         raise SystemExit(f"track R incomplete: {len(missing)} artifacts missing, e.g. {missing[:5]}")
-    models = ["ealstm", "ealstm_gbmblend"] + (["ealstm_full"] if full_ok else [])
+    pins = {r: primary["data_snapshots"][r] for r in PRIMARY_PINS}   # byte-identical copy
     rec = {"NOT_A_FREEZE": "track-R candidate; FREEZE_hydromet_trackR.json is written by the lead only",
-           "partial_rehearsal_only": bool(missing), "missing": missing,
+           "status": "CANDIDATE", "partial_rehearsal_only": bool(missing), "missing": missing,
            "created": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
-           "split_sha256": sp.sha256(), "scoring_code_sha256": guard.scoring_code_sha256(),
-           "fold_file_sha256": TR.TRACK_R_SHA256,
+           "primary_freeze_file": str(primary_f), "primary_freeze_sha256": _sha(Path(primary_f)),
+           "split_sha256": sp.sha256(), "scoring_code_sha256": primary["scoring_code_sha256"],
+           "frozen_files": primary["frozen_files"], "fold_file_sha256": TR.TRACK_R_SHA256,
            "weights_sha256": {k: guard.artifact_sha256(v) for k, v in arts.items()},
-           "data_snapshots": {r: content_pin(r) for r in PRIMARY_PINS},
-           "looks": {"M6R/test": {"block": "test", "roles": ["test"], "label_model": None, "primary_models": models,
-                                  "n_hypotheses": len(models) * len(comps), "comparators": comps, "artifacts": arts,
-                                  "data_snapshots": PRIMARY_PINS}}}
+           "data_snapshots": pins,
+           "looks": {"M6R/test": {"block": "test", "roles": ["test"], "dataset": "sonde", "label_model": None,
+                                  "primary_models": TRACK_R_MODELS, "n_hypotheses": len(TRACK_R_MODELS) * len(comps),
+                                  "comparators": comps, "artifacts": arts, "data_snapshots": PRIMARY_PINS}}}
     out = paths.REPO_ROOT / "docs" / "preregistration" / ("hydromet_trackR_rehearsal.json" if missing else "hydromet_trackR_candidate.json")
     out.write_text(json.dumps(rec, indent=1, default=str))
-    print(f"wrote {out}: {len(arts)} artifacts, models {models}, missing {len(missing)}")
+    print(f"wrote {out}: {len(arts)} artifacts, models {TRACK_R_MODELS}, missing {len(missing)}")
     return 0
 
 
