@@ -1,0 +1,21 @@
+{
+ "app": "toxinwatch",
+ "created": "2026-11-08T19:33:38",
+ "expected": {
+  "n_national_train_rows": 12357,
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+ },
+ "files": {
+  "processed/forcings_daily/coverage.parquet": "7834a44aaed630d05f5e062fcf5136dcea6c04fe2cee83974baeb63bd8c84ac8",
+  "processed/forcings_daily/dictionary.csv": "3b3f2903bc93b9ac68c1a16e60a8626bd3c5f3b012376832db62e5e454114c2c",
+  "processed/forcings_daily/forcings_daily.parquet": "cfbb6437bd1446609fb1daeb51a78c611bd4ce496c2083573ce94839d33cbe30",
+  "processed/labels_wa_toxic_algae/wa_sites.parquet": "672cd2ea8b90a6b225c2ace5d4f706384132043d777a9d634c2cf6bd00844616",
+  "processed/labels_wa_toxic_algae/wa_toxin_results.parquet": "a108c951db40c40209449c050e4816c45dd6f0b27f41f26e4e083d8be6019afc",
+  "processed/labels_wa_toxic_algae/wa_toxin_siteday.parquet": "dedc578e5c9947ecb995dd662cc8f01d244c01c336c8bf4079fa1db9d7dc0236",
+  "processed/labels_wa_toxic_algae/wa_year_summary_crosscheck.parquet": "58cdf906a9e64e5f8a182dec29b536a6be0f3020df69e7376dd140d50f7c71c4",
+  "processed/wbd_huc12/huc12.parquet": "6106911d8ba4aaa8fc5b651eab6d21b4c9f6acf666c0c9869a9291b673523421",
+  "processed/wqp_discrete/_stations.parquet": "f13dc5ed134e659b649a48823a91f351a7d6429b5d6e61b75cbdafa6270aceb0",
+  "processed/wqp_discrete/variable=microcystins/data.parquet": "52a85719df78ba295195525b0d493b8a87b5fd759bf1c005fde9ec4deaede277",
+  "raw/gridmet/site_cells.parquet": "97eaed0ec7c7c3b7247dc7021729d3a33bb3cd8c89468c5c68007267893ea7b2"
+ }
+}

@@ -1,0 +1,517 @@
+{
+ "status": "CANDIDATE \u2014 not frozen; the lead writes FREEZE_downstream_musselguard.json after the delta review",
+ "prepared": "2026-11-08T20:21:43",
+ "app": "musselguard",
+ "split_file": "docs/preregistration/downstream_musselguard_split.json",
+ "split_sha256": "04daee8a36e240443a8f711d8b8286c4db2f0e9cd2b9377f0b5d963eeb66dd46",
+ "scoring_code_sha256": "110351ae2e711866fc65a17e9f562d0e4889b6b640a7f21a2eb0d5111e23179d",
+ "scoring_files": {
+  "docs/preregistration/downstream_musselguard.md": "c2ad8032ad84188113e4803ebe7e15c36a8308165c2d9457af3c7f7ebabed1f0",
+  "docs/preregistration/downstream_musselguard_data_pins.json": "b71d04ba20eeb0192e1a195e3fbe571303e765af2ece0df5d179b19dcc618496",
+  "scripts/train/downstream_musselguard.py": "9fd30db280f9addc472f5daef7955f999a6eb04f8281b3b843b08d8437d068e4",
+  "scripts/train/downstream_musselguard_scrule.py": "78866ca25dfc039c4f92f2be1fa842cd6c132aeb9f992b379f185b78701df937",
+  "scripts/train/downstream_musselguard_test.py": "d86510593b8aef764182ed27499dfc84dab19993891595053183828163081a86",
+  "sentinel/data/sources/downstream_dreissena.py": "f35383912cb7308d51a471c3b68003fd8e8fac31c331b7a3ff46d401e549dd80",
+  "sentinel/data/sources/wbd_huc12.py": "8809b649f94da18b3864d1fddcae8513f9f0a756da012cb27be55213754c0649",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/downstream/common.py": "f26d66f2ee2d990bb83c7359da4f1f880a4eb6d1b4c7da442c16fd792ddef519",
+  "sentinel/models/downstream/crossfit.py": "3560dd8a13d4a087cc6d31b7bb1c7be2a6009888563b7d375603307a98917f3a",
+  "sentinel/models/downstream/musselguard.py": "e22937701e361891d02ed294c72db85ce81ee166a4b3a9e541ea8e3bda49c06f",
+  "sentinel/models/downstream/testlook.py": "9babf2cd7f0f2816b829272bd7504204cda045440930b1a9bec2412f6e3e8f8d",
+  "sentinel/models/downstream/weather.py": "85b0858c98309c6440967296828d91badd981cc42fb505177631f3e3bcfb810d"
+ },
+ "data_pins": {
+  "file": "docs/preregistration/downstream_musselguard_data_pins.json",
+  "sha256": "b71d04ba20eeb0192e1a195e3fbe571303e765af2ece0df5d179b19dcc618496",
+  "n_files": 8,
+  "expected": {
+   "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+  },
+  "verified_before_claim": true
+ },
+ "data_manifests": [
+  "labels_nas_dreissena",
+  "wbd_huc12",
+  "census_county",
+  "wqp_discrete"
+ ],
+ "configs_tried": 132,
+ "configs_note": "131 + 1 (SC rule)",
+ "selected": {
+  "model": "pressure_gbm (7 leaves, min_child 300, lr 0.03, 400 trees, 3 seeds)",
+  "fit_rows": "train + val origins 2006-2015"
+ },
+ "test_block": "origins 2018 and 2021, scored SEPARATELY (front <= 100 km primary; CONUS, MN, pooled secondary)",
+ "comparators": {
+  "incumbent": "kanankege_reimpl at the it2 selection (a 320 km, k 32, nugget 0.1)",
+  "baselines": [
+   "distance_only",
+   "gravity a4",
+   "kernel_smoother h20",
+   "location_only_gbm",
+   "pressure_logit C1",
+   "sc_rule"
+  ]
+ },
+ "claim_rule": "front-stratum AUPRC paired diff (HUC8) vs 7 baselines at EACH origin; Holm over 14; both origins required; plus the seed rule",
+ "seed_rule": "claim requires, for every primary comparison, Holm rejection with paired diff > 0 for the seed-averaged model AND a per-seed paired point estimate > 0 for each of >= 3 seeds on the test block (RESEARCH_PLAN \u00a715.1(iii); gate 2026-11-08)",
+ "counts_toward_HG4_beats_incumbent": "implemented only \u2014 NOT toward 'beats its incumbent' (original \u00a710 text; lead decision 2026-11-08)",
+ "single_pass_guard": "verify_data -> authorise (check_roles: FREEZE + split + scoring-code sha; claim_test_look: registry test rows = 0, O_EXCL marker) -> builders require_authorised -> save_predictions (once, before any registry write) -> score/log_test_metric -> mark_scored; crash after save: --rescore-from-saved only",
+ "test_scoring_path": {
+  "script": "scripts/train/downstream_musselguard_test.py",
+  "sha256": "d86510593b8aef764182ed27499dfc84dab19993891595053183828163081a86",
+  "invocation": "python -B scripts/train/downstream_musselguard_test.py --allow-test",
+  "run_with": "default SENTINEL_RUNS / SENTINEL_DATA (no overrides)",
+  "dry_run_on_val": {
+   "results": "/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/ds_final/runs/downstream/musselguard/testpath_dryrun/results.json",
+   "sha256": "3ee9f03343ba23253bca37c8e70a594097b74a39bf433e04b310825a735318d0",
+   "claim_met_on_val": true,
+   "seed_rule_ok": true,
+   "holm_ok": true
+  }
+ },
+ "environment": {
+  "python": "/home/bcheng/miniconda3/envs/sentinel2/bin/python",
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a",
+  "not_hashed": "sentinel/core/{paths,registry,runlog}.py and package __init__ files (gate S-O1)"
+ },
+ "ordering_evidence": "no git (user instruction): prereg_snapshot registry row written with the FREEZE file (testlook.prereg_snapshot)",
+ "artifacts": [
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/musselguard/phase1_it2_kanankege/phase1_results.json",
+   "sha256": "ff8fd1b9226616fb2e7bc8c14d4e1fea9a9b988ff76e0baf1cf035d1b5a780da"
+  },
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/musselguard/phase1_it2b_kanankege_grid/phase1_results.json",
+   "sha256": "894405dedec6c1af27d61d80f5b16037c5ec657aa1f9bae46b4357a324b0472c"
+  },
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/musselguard/it2_scrule/results.json",
+   "sha256": "0dc69485f3d674410cddff8af999946438d5db4c76b95dc382e7eba8e4c48f76"
+  }
+ ],
+ "evidence_registry_rows": [
+  {
+   "registry_id": "d6d9a844fed7",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "distance_only",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7717334132957845,
+   "ci": [
+    0.7198005369517864,
+    0.8140871853188527
+   ]
+  },
+  {
+   "registry_id": "bdd04a3c7035",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "distance_only",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.020515404842707974,
+   "ci": [
+    0.014277474655747831,
+    0.030811799094834384
+   ]
+  },
+  {
+   "registry_id": "6a2b5011f21d",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "gravity",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7691992885858144,
+   "ci": [
+    0.7188518718802441,
+    0.8110267404913247
+   ]
+  },
+  {
+   "registry_id": "329d1533ac29",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "gravity",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.02046690298721766,
+   "ci": [
+    0.013261639362092096,
+    0.030362780709814796
+   ]
+  },
+  {
+   "registry_id": "e01f855c186f",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "kernel_smoother",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7623207004542971,
+   "ci": [
+    0.7051976487857683,
+    0.8071295861202081
+   ]
+  },
+  {
+   "registry_id": "f8d30028db28",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "kernel_smoother",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.017028313843312222,
+   "ci": [
+    0.01147208847085238,
+    0.027054184439304244
+   ]
+  },
+  {
+   "registry_id": "26621b0ceefc",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "kanankege_reimpl",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7580959360691815,
+   "ci": [
+    0.714921577712594,
+    0.7984996203292125
+   ]
+  },
+  {
+   "registry_id": "d4f04aa9a686",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "kanankege_reimpl",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.021579689411008955,
+   "ci": [
+    0.0136315950304922,
+    0.04219724541618095
+   ]
+  },
+  {
+   "registry_id": "18a01426559f",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "location_only_gbm",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7990304727535287,
+   "ci": [
+    0.7443882582542433,
+    0.8459557166180339
+   ]
+  },
+  {
+   "registry_id": "af53f682cdf3",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "location_only_gbm",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.020312636255478456,
+   "ci": [
+    0.012877214763940025,
+    0.03425637197127621
+   ]
+  },
+  {
+   "registry_id": "e0721d39b674",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "pressure_logit",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.8637784774492258,
+   "ci": [
+    0.8293566008281231,
+    0.8902402974382565
+   ]
+  },
+  {
+   "registry_id": "c5143ca6df86",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "pressure_logit",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.03277389417596144,
+   "ci": [
+    0.021398771806260986,
+    0.051038965781280546
+   ]
+  },
+  {
+   "registry_id": "9191983f9fd3",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "pressure_gbm",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.8994804188103279,
+   "ci": [
+    0.8579506789954325,
+    0.9292256003831023
+   ]
+  },
+  {
+   "registry_id": "20634d3f3955",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "pressure_gbm",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.09257039097826804,
+   "ci": [
+    0.04720460882692009,
+    0.1554928093081165
+   ]
+  },
+  {
+   "registry_id": "3db4af95dcc0",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "pressure_pop_gbm",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.9061591008138487,
+   "ci": [
+    0.875570370370636,
+    0.92964250835177
+   ]
+  },
+  {
+   "registry_id": "f8baf6a8d51a",
+   "experiment": "musselguard/rolling_origin/front100km@it2_kanankege",
+   "model": "pressure_pop_gbm",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.08715141251298111,
+   "ci": [
+    0.04377284027240121,
+    0.1476520303775778
+   ]
+  },
+  {
+   "registry_id": "e8aa66f21ec5",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "distance_only",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7717334132957845,
+   "ci": [
+    0.7198005369517864,
+    0.8140871853188527
+   ]
+  },
+  {
+   "registry_id": "6b36f8b46c48",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "distance_only",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.020515404842707974,
+   "ci": [
+    0.014277474655747831,
+    0.030811799094834384
+   ]
+  },
+  {
+   "registry_id": "4ad24f869291",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "gravity",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7691992885858144,
+   "ci": [
+    0.7188518718802441,
+    0.8110267404913247
+   ]
+  },
+  {
+   "registry_id": "27266b37ca62",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "gravity",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.02046690298721766,
+   "ci": [
+    0.013261639362092096,
+    0.030362780709814796
+   ]
+  },
+  {
+   "registry_id": "be34b2551b3a",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "kernel_smoother",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7623207004542971,
+   "ci": [
+    0.7051976487857683,
+    0.8071295861202081
+   ]
+  },
+  {
+   "registry_id": "67b4287ad226",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "kernel_smoother",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.017028313843312222,
+   "ci": [
+    0.01147208847085238,
+    0.027054184439304244
+   ]
+  },
+  {
+   "registry_id": "28015bd25df0",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "kanankege_reimpl",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7716814272179183,
+   "ci": [
+    0.7323932744349991,
+    0.8072759584643834
+   ]
+  },
+  {
+   "registry_id": "de916a5e506e",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "kanankege_reimpl",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.021575891691259837,
+   "ci": [
+    0.013642435457508761,
+    0.04202009069463912
+   ]
+  },
+  {
+   "registry_id": "9b0bde94dd81",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "location_only_gbm",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.7990304727535287,
+   "ci": [
+    0.7443882582542433,
+    0.8459557166180339
+   ]
+  },
+  {
+   "registry_id": "54ee98f71516",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "location_only_gbm",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.020312636255478456,
+   "ci": [
+    0.012877214763940025,
+    0.03425637197127621
+   ]
+  },
+  {
+   "registry_id": "456e59eb95d1",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "pressure_logit",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.8637784774492258,
+   "ci": [
+    0.8293566008281231,
+    0.8902402974382565
+   ]
+  },
+  {
+   "registry_id": "7a8f91cc48ce",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "pressure_logit",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.03277389417596144,
+   "ci": [
+    0.021398771806260986,
+    0.051038965781280546
+   ]
+  },
+  {
+   "registry_id": "e992ac3fd7ea",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "pressure_gbm",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.8994804188103279,
+   "ci": [
+    0.8579506789954325,
+    0.9292256003831023
+   ]
+  },
+  {
+   "registry_id": "61bcfeb71691",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "pressure_gbm",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.09257039097826804,
+   "ci": [
+    0.04720460882692009,
+    0.1554928093081165
+   ]
+  },
+  {
+   "registry_id": "72e6c60406d9",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "pressure_pop_gbm",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.9061591008138487,
+   "ci": [
+    0.875570370370636,
+    0.92964250835177
+   ]
+  },
+  {
+   "registry_id": "9090fcc813b5",
+   "experiment": "musselguard/rolling_origin/front100km@it2b_kanankege_grid",
+   "model": "pressure_pop_gbm",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.08715141251298111,
+   "ci": [
+    0.04377284027240121,
+    0.1476520303775778
+   ]
+  },
+  {
+   "registry_id": "8bfe5b166f33",
+   "experiment": "musselguard/rolling_origin/front100km@it2_scrule",
+   "model": "sc_rule",
+   "metric": "auroc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.5572663892331954,
+   "ci": [
+    0.49493045467546765,
+    0.6070297265277199
+   ]
+  },
+  {
+   "registry_id": "1bee0a3fdb93",
+   "experiment": "musselguard/rolling_origin/front100km@it2_scrule",
+   "model": "sc_rule",
+   "metric": "auprc",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.005710547038709727,
+   "ci": [
+    0.003990700815163061,
+    0.00783246636798438
+   ]
+  },
+  {
+   "registry_id": "3865ab59ab93",
+   "experiment": "musselguard/rolling_origin/front100km@it2_scrule",
+   "model": "pressure_gbm",
+   "metric": "auprc_diff_vs_sc_rule",
+   "split": "val_origin2015_2016_2018",
+   "value": 0.08845886788334016,
+   "ci": [
+    0.044325486545408035,
+    0.14870746627634493
+   ]
+  }
+ ]
+}

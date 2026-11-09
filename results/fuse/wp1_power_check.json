@@ -1,0 +1,50 @@
+{
+ "do": {
+  "dev_sites_ge1y": 483,
+  "dev_days": 1241482,
+  "dev_basin_groups": 50,
+  "test_sites_ge180d": 182,
+  "test_days": 107418,
+  "test_basin_groups": 23
+ },
+ "turb": {
+  "dev_sites_ge1y": 302,
+  "dev_days": 658064,
+  "dev_basin_groups": 35,
+  "test_sites_ge180d": 64,
+  "test_days": 36513,
+  "test_basin_groups": 11
+ },
+ "no3": {
+  "dev_sites_ge1y": 59,
+  "dev_days": 105771,
+  "dev_basin_groups": 12,
+  "test_sites_ge180d": 33,
+  "test_days": 17933,
+  "test_basin_groups": 8
+ },
+ "chl": {
+  "dev_sites_ge1y": 6,
+  "dev_days": 5435,
+  "dev_basin_groups": 3,
+  "test_sites_ge180d": 4,
+  "test_days": 1697,
+  "test_basin_groups": 4
+ },
+ "temp": {
+  "dev_sites_ge1y": 1619,
+  "dev_days": 4663515,
+  "dev_basin_groups": 75,
+  "test_sites_ge180d": 364,
+  "test_days": 225953,
+  "test_basin_groups": 39
+ },
+ "sc": {
+  "dev_sites_ge1y": 925,
+  "dev_days": 2499433,
+  "dev_basin_groups": 61,
+  "test_sites_ge180d": 237,
+  "test_days": 145726,
+  "test_basin_groups": 30
+ }
+}

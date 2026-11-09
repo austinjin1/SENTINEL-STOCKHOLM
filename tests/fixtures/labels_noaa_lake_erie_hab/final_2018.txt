@@ -1,0 +1,35 @@
+                Experimental Lake Erie Harmful Algal Bloom Bulletin
+               26 October 2018, Seasonal Assessment
+2018 Bloom Analysis. The Microcystis cyanobacteria bloom in 2018 had a severity index (SI) of 3.6, indicating a relatively mild bloom. This is
+slightly more severe than 2016 (3.2), and much milder than the severe bloom of 2017 (SI=8). The severity index captures the amount of
+bloom biomass over the peak 30 days of the bloom. The bloom was smaller than the ensemble forecast prediction of 6, and all models
+overestimated the bloom to some degree (a range from 4.9 to 7.8).
+This bloom was unusual in that it started early, the last week of June. The early start was probably a result of the rapid early warming of
+Lake Erie, starting at the end of May. On the other end of the season, a storm on Sep 9-10 produced strong winds over Lake Erie, which
+severely disrupted the bloom. The bloom did not recover, and ended by the first week of October, one of the earliest ends of the bloom we
+have seen.
+While some scums did occur, scum was both more localized and less common in this bloom, especially in contrast to the much larger and
+more severe 2017 bloom.
+The reasons for the overestimates of the several models used in the ensemble will be reviewed. NOAA does update its models and strategy
+for creating an ensemble forecast based on past experience.
+The forecast models are based primarily on the load of bioavailable phosphorus from the Maumee River during the spring and early summer
+(March to July). River discharge and rainfall in 2018 were typical of long-term averages, higher in March and April, lower in May and June,
+and very low in July. This is much different from 2017, which saw extremely wet months in May and July, leading to extremely high
+discharge and load in those months. - Stumpf, Wynne, Dupuy.
+
+
+
+
+  Figure 1. Bloom severity index for 2002-2018, and the forecast for        Figure 2. Total bioavailable phosphorus from the Maumee River for
+  2018. The index is based on the amount of biomass over the peak 30-       2018 compared to some other years. Data collected by Heidelberg
+  days. The 2018 bloom had a severity of 3.6, comparable to 2016 (3.2).     University.
+  2011 had a severity of 10; 2015 was 10.5.
+
+
+
+
+   Figure 3. The Microcystis cyanobacteria bloom in western Lake Erie on 13 August 2018 taken with data derived from Copernicus Sentinel-3 data
+   provided by EUMETSAT. This date captures the largest extent of the bloom. The greenish area along southwest Lake Erie and northeast through
+   the islands is the bloom. Sandusky Bay has a bloom of Plantothrix , another cyanobacteria, which produced a darker brownish green at this
+   time.                     For more information and to subscribe to this bulletin, go to: http://coastalscience.noaa.gov/research/habs/forecasting
+

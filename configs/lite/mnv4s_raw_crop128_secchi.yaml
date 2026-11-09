@@ -1,0 +1,12 @@
+# variant of mnv4s_raw_crop128: direct-label loss on Secchi only (single-target idea)
+name: mnv4s_raw_crop128_secchi
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+crop: 128
+epochs: 40
+lr_backbone: 5.0e-4
+kd_weight: 0.0
+train_targets: [secchi]

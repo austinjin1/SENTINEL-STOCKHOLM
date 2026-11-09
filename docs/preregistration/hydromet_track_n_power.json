@@ -1,0 +1,60 @@
+{
+ "roles_sha256": "ffb41471c9a75dcbebedf083f273cfa41aae3ffeb7dabe7fd420c5f23120e2d0",
+ "role_counts": {
+  "train": 6244,
+  "test": 5046,
+  "val": 1365,
+  "excluded": 113
+ },
+ "rule_counts": {
+  "split_train": 6244,
+  "split_test": 3610,
+  "new_region": 1444,
+  "split_val": 1357,
+  "touches_test": 93,
+  "train_and_val": 20
+ },
+ "cells": {
+  "do_mgl_mean|test": {
+   "stations": 2724,
+   "groups": 36,
+   "new_region_groups": 4,
+   "median_days": 12.0
+  },
+  "do_mgl_mean|train": {
+   "stations": 4199,
+   "groups": 50,
+   "new_region_groups": 0,
+   "median_days": 13.0
+  },
+  "do_mgl_mean|val": {
+   "stations": 938,
+   "groups": 12,
+   "new_region_groups": 1,
+   "median_days": 12.0
+  },
+  "temp_c_mean|test": {
+   "stations": 3014,
+   "groups": 38,
+   "new_region_groups": 4,
+   "median_days": 13.0
+  },
+  "temp_c_mean|train": {
+   "stations": 4605,
+   "groups": 52,
+   "new_region_groups": 0,
+   "median_days": 14.0
+  },
+  "temp_c_mean|val": {
+   "stations": 1000,
+   "groups": 12,
+   "new_region_groups": 1,
+   "median_days": 14.0
+  }
+ },
+ "excluded_before_roles": {
+  "no_streamcat": 3,
+  "no_gridmet_cell": 0
+ },
+ "note": "Primary unit = basin group (FINAL group or new-region HUC4 union). Original-track val had 12 / 9 groups for temp_c_mean / do_mgl_mean; MDE scales ~ sqrt(G_orig / G_N) (see hydromet_track_r_power.json for the SE reference)."
+}

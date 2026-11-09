@@ -1,0 +1,2 @@
+uid,namedLocation,domainID,siteID,collectDate,laboratoryName,processedDate,dnaSampleID,dnaSampleCode,internalLabID,testProtocolVersion,forwardPrimer,reversePrimer,ampliconConcentration,targetGene,targetSubfragment,qaqcStatus,processedBy,remarks,dataQF
+2f7bc329-cf3f-4477-8b72-34f5a2320185,ARIK.AOS.S2,D10,ARIK,2019-08-06T17:35Z,Battelle Applied Genomics,2021-10-11,ARIK.SS.20190806.DNA-DNA1,LV7005094782,19A_11_0992,BMI_markerGenes_16Sv4v5SOP_v1.2,GTGYCAGCMGCCGCGGTAA,CCGYCAATTYMTTTRAGTTT,2.2,16S rRNA,v4v5,Pass,,,

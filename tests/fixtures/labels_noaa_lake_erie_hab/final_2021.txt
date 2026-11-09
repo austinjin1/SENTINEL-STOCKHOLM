@@ -1,0 +1,75 @@
+______________________________________________________________________________________________
+
+             NOAA Western Lake Erie Harmful Algal Bloom
+                      Seasonal Assessment
+          1 November 2021
+
+          2021 bloom severity and analysis: The 2021 Lake Erie cyanobacterial bloom had a severity index
+          (SI) of 6.0 which is considered moderately severe. The SI captures the amount of bloom biomass over
+          the peak 30 days of the bloom and is calculated using satellite imagery to assess both bloom biomass
+          and spatial extent. The bloom was slow to develop (late July), and reached a peak from late August
+          to early September, mostly in U.S. waters. The bloom weakened in mid-September, following several
+          days of strong winds (>20 mph). After a period of calm winds and seasonally warm waters, the bloom
+          re-intensified near the Michigan coast at the end of September. The bloom lasted longer than recent
+          years, through the end of October, which was likely due to persistent warm water temperatures.
+
+
+
+
+          Figure 1. (Left) Bloom severity index (SI) for 2002-2021, and the forecast SI for 2021. The 2021 forecast
+          ensemble range appears as red vertical bars. (Right) Total Bioavailable Phosphorus (TBP) load from the
+          Maumee River for 2021 (red bar, 310 metric tons) and previous years for March-July. The grey bar corresponds
+          to the highest recorded load (from 2015). TBP load data from: Heidelberg University, National Center for Water
+          Quality Research.
+
+          At its peak, the bloom covered 530 square miles. This large area may have resulted from the heavy
+          rain and associated high river discharge in July which may have dispersed nutrients further into the
+          western basin. The concentration (biomass) of algae within the bloom was moderate, resulting in less
+          extensive scum than has been seen in previous years. Toxins (microcystins) were detected throughout
+          the bloom, although at lower concentrations than some recent years .
+
+          Comparison to prior years: The bloom was more severe than in 2020, which had a severity of 3.0.
+          The size of the 2021 bloom was large, comparable in spatial extent to the severe blooms in 2017 and
+          2019, but overall had a lower bloom density.
+______________________________________________________________________________________________
+
+
+                   2019                                          2021
+
+
+
+
+            Figure 2. The Microcystis cyanobacteria bloom biomass in western Lake Erie showing differences between peaks
+            in 2019 and 2021: (Left) Jul 30-Aug 08, 2019 and (Right) Aug 30-Sep 08, 2021. The images used data derived
+            from the Copernicus Sentinel-3 mission provided by EUMETSAT. Blue indicates low concentrations that would
+            not be immediately obvious to the eye. Areas that are red had greater likelihood for scum formation. 2021 was
+            much less intense and reached the maximum bloom extent a month later than 2019.
+
+
+                                                                        Figure 3. Cumulative Total Bioavailable
+                                                                        Phosphorus (TBP) for the Maumee River from
+                                                                        March-July for the past three years along with
+                                                                        minimum (2012) and maximum (2015)
+                                                                        cumulative loads for the last 20 years . Data
+                                                                        collected by Heidelberg University, National
+                                                                        Center for Water Quality Research.
+
+
+
+
+            The Lake Erie HAB Seasonal Forecast was low: The forecasted bloom severity was between 2.0-
+            4.5, an underestimate. The forecast uses an ensemble of different models, each of which consider
+            phosphorus loading into the lake during the spring and early summer (March - July). The large
+            bioavailable phosphorus load in July 2021, the third highest since 2008, may have led to the larger
+            than forecasted bloom. Previous years (2015 and 2017) with large July loads also had wet springs,
+            leading to a large input of phosphorus in the spring, reducing the relative influence of the July load. In
+            contrast, 2021 had a drier spring than average, suggesting the relative importance of July loads on
+            the bloom. We will continue our assessment of the models in order to make improvements to the
+            forecast and severity metrics.
+
+            Stumpf, Hounshell, Davenport, Briggs, Tomlinson
+
+
+
+     For more information visit: http://www.ncwqr.org/ or http://coastalscience.noaa.gov/research/habs/forecasting
+

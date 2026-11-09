@@ -1,0 +1,16 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Chronos-2 zero-shot (sentinel/models/sonde/chronos.py); fp32 inference.
+model: chronos2
+modes: [uni, multi]
+chronos:
+  model_id: amazon/chronos-2
+  context: 512
+  batch_size: 1024
+  future_clim: true          # multi mode: training-years climatology as known-future covariates
+  chunk_rows: 50000
+  local_files_only: true
+smoke:
+  chronos:
+    batch_size: 512
+    chunk_rows: 20000

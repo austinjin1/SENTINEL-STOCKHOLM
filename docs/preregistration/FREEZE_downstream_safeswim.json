@@ -1,0 +1,182 @@
+{
+ "status": "FROZEN \u2014 single test look authorised by the lead 2026-11-08",
+ "prepared": "2026-11-08T20:21:43",
+ "app": "safeswim",
+ "split_file": "docs/preregistration/downstream_safeswim_split.json",
+ "split_sha256": "faabfff9bfbe6d5d72cca8c30f26c0ff79faeb8d1771626bbfd8d3dc854b25b9",
+ "scoring_code_sha256": "e42d42f3a37c3299ca28562b618edb0124fb949b9a79f6b31ab072cc57a104e4",
+ "scoring_files": {
+  "docs/preregistration/downstream_safeswim.md": "4722ce2437196e0fdb076dc3c7f3518d8c9669717f4b6afd3397e2b6b3d6f381",
+  "docs/preregistration/downstream_safeswim_data_pins.json": "605f5809ff879e6d38821c0baf60a85fded5ab21d382c2af829be9e3017fed9c",
+  "scripts/train/downstream_safeswim.py": "209fb756d67f4e7969ee8ec7d3e5a55a335c4361d925afccc3100d476029e432",
+  "scripts/train/downstream_safeswim_test.py": "a7182db98c7915de9e464ad4f538d2546188db40898d0fd7fab0da9516d4d7b2",
+  "sentinel/data/sources/downstream_chicago_beaches.py": "718c7c5ac2fa785564c8cd1167abc5700e60919f87b6427bc066d775042d8ea3",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/downstream/common.py": "f26d66f2ee2d990bb83c7359da4f1f880a4eb6d1b4c7da442c16fd792ddef519",
+  "sentinel/models/downstream/crossfit.py": "3560dd8a13d4a087cc6d31b7bb1c7be2a6009888563b7d375603307a98917f3a",
+  "sentinel/models/downstream/safeswim.py": "abaf0608c2788c0f773598a0ff88840fbf66b2aa79d450088b868ead9d236f0a",
+  "sentinel/models/downstream/testlook.py": "9babf2cd7f0f2816b829272bd7504204cda045440930b1a9bec2412f6e3e8f8d",
+  "sentinel/models/downstream/weather.py": "85b0858c98309c6440967296828d91badd981cc42fb505177631f3e3bcfb810d"
+ },
+ "data_pins": {
+  "file": "docs/preregistration/downstream_safeswim_data_pins.json",
+  "sha256": "605f5809ff879e6d38821c0baf60a85fded5ab21d382c2af829be9e3017fed9c",
+  "n_files": 17,
+  "expected": {
+   "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+  },
+  "verified_before_claim": true
+ },
+ "data_manifests": [
+  "labels_chicago_beaches",
+  "forcings_daily",
+  "safeswim_drivers"
+ ],
+ "configs_tried": 50,
+ "configs_note": "16 D1b-nowcast feature sets run, 15 distinct; 50 log entries / 40 unique hashes incl. one crashed run",
+ "selected": {
+  "task": "D1b qPCR Enterococci > 1,000 CCE/100 mL nowcast",
+  "learner": "logistic_l2 (C = 1)",
+  "feature_set": "compact_each+q (26 columns, asserted)",
+  "fit_rows": "D1b training years 2015-2019, 2021"
+ },
+ "test_block": "2024-2025 non-input beaches with an official City prediction (official_rows); 2026 reserve never loaded",
+ "comparators": {
+  "incumbent": "official_city_model",
+  "strongest_simple_baseline": "feature_beach_gm"
+ },
+ "claim_rule": "paired AUROC vs official AND vs GM; Holm m = 4 (D1a and D1b-forecast primaries unscored, p = 1); both ISO-week and beach clusters must reject",
+ "seed_rule": "deterministic logistic: seed rule trivially met",
+ "counts_toward_HG4_beats_incumbent": "yes (D1)",
+ "single_pass_guard": "verify_data -> authorise (check_roles: FREEZE + split + scoring-code sha; claim_test_look: registry test rows = 0, O_EXCL marker) -> builders require_authorised -> save_predictions (once, before any registry write) -> score/log_test_metric -> mark_scored; crash after save: --rescore-from-saved only",
+ "test_scoring_path": {
+  "script": "scripts/train/downstream_safeswim_test.py",
+  "sha256": "a7182db98c7915de9e464ad4f538d2546188db40898d0fd7fab0da9516d4d7b2",
+  "invocation": "python -B scripts/train/downstream_safeswim_test.py --allow-test",
+  "run_with": "default SENTINEL_RUNS / SENTINEL_DATA (no overrides)",
+  "dry_run_on_val": {
+   "results": "/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/ds_final/runs/downstream/safeswim/testpath_dryrun/results.json",
+   "sha256": "1348092420f7eb0423d7d79814fd283487df8fdd1abff87c3318aa8b7081801d",
+   "claim_met_on_val": true
+  }
+ },
+ "environment": {
+  "python": "/home/bcheng/miniconda3/envs/sentinel2/bin/python",
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a",
+  "not_hashed": "sentinel/core/{paths,registry,runlog}.py and package __init__ files (gate S-O1)"
+ },
+ "ordering_evidence": "no git (user instruction): prereg_snapshot registry row written with the FREEZE file (testlook.prereg_snapshot)",
+ "artifacts": [
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/safeswim/it3_d1b/summary.json",
+   "sha256": "503873bc29060a77567e0eea3e995846f89de3f3290cbbe49605e3e247810188"
+  }
+ ],
+ "evidence_registry_rows": [
+  {
+   "registry_id": "97f0e9e79d98",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2",
+   "metric": "auroc",
+   "split": "val_2022_2023",
+   "value": 0.7428356901514204,
+   "ci": [
+    0.6652324066552205,
+    0.8084064307218477
+   ]
+  },
+  {
+   "registry_id": "00463724c28e",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2",
+   "metric": "auprc",
+   "split": "val_2022_2023",
+   "value": 0.12404898134565713,
+   "ci": [
+    0.05346270119371555,
+    0.21726729419559943
+   ]
+  },
+  {
+   "registry_id": "0c61e07e4516",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2",
+   "metric": "brier",
+   "split": "val_2022_2023",
+   "value": 0.024885214230920615,
+   "ci": [
+    0.01733303464025885,
+    0.032711910131141345
+   ]
+  },
+  {
+   "registry_id": "416acf90c90f",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2",
+   "metric": "sens_at_spec85",
+   "split": "val_2022_2023",
+   "value": 0.4918032786885246,
+   "ci": [
+    null,
+    null
+   ]
+  },
+  {
+   "registry_id": "c5825ff0261e",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2_vs_official_city_model",
+   "metric": "auroc_diff_paired_week",
+   "split": "val_2022_2023",
+   "value": 0.12893917421805412,
+   "ci": [
+    0.04630852843357489,
+    0.2086445860850618
+   ]
+  },
+  {
+   "registry_id": "c34d65968bca",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2_vs_official_city_model",
+   "metric": "auroc_diff_paired_beach",
+   "split": "val_2022_2023",
+   "value": 0.12893917421805412,
+   "ci": [
+    0.05274961943228765,
+    0.22007156975497685
+   ]
+  },
+  {
+   "registry_id": "79e717113006",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2_vs_feature_beach_gm",
+   "metric": "auroc_diff_paired_week",
+   "split": "val_2022_2023",
+   "value": 0.04336128144162188,
+   "ci": [
+    0.014221726797269052,
+    0.0802383663325825
+   ]
+  },
+  {
+   "registry_id": "83c729b23807",
+   "experiment": "safeswim/d1b_nowcast/it3_compact_each+q/rows=official_rows",
+   "model": "logistic_l2_vs_feature_beach_gm",
+   "metric": "auroc_diff_paired_beach",
+   "split": "val_2022_2023",
+   "value": 0.04336128144162188,
+   "ci": [
+    0.014811646155423066,
+    0.06256086967017958
+   ]
+  }
+ ],
+ "frozen": "2026-11-08T20:21:59",
+ "candidate_record_sha256": "6908a6e113969b694fa371cb087fbd3e1f23bfd5b943fb40504e971d06887d0f",
+ "prereg_archive": {
+  "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/safeswim/prereg_archive/safeswim_prereg_20261108-202159.tar.gz",
+  "sha256": "f9bbda8886daf936091e4e564c77a9709f20a56dc2376b71f408eecb1e62dc46",
+  "n_files": 15
+ }
+}

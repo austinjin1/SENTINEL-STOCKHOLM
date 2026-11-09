@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- trimmed from https://sentinel2l2a01.blob.core.windows.net/sentinel2-l2/19/T/CH/2019/06/14/S2B_MSIL2A_20190614T153609_N0212_R111_T19TCH_20201006T021642.SAFE/MTD_MSIL2A.xml -->
+<Level-2A_User_Product><General_Info>
+<PROCESSING_BASELINE>02.12</PROCESSING_BASELINE>
+<BOA_QUANTIFICATION_VALUE unit="none">10000</BOA_QUANTIFICATION_VALUE>
+</General_Info></Level-2A_User_Product>

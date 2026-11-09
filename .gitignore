@@ -7,16 +7,16 @@ dist/
 build/
 *.egg
 .eggs/
+.pytest_cache/
+.ruff_cache/
 
 # Virtual environments
 .venv/
 venv/
 env/
 
-# Data (too large for git)
+# Data and run artifacts live outside the repo ($SENTINEL_DATA, $SENTINEL_RUNS).
 /data/
-data/raw/
-data/processed/
 *.tif
 *.tiff
 *.nc
@@ -26,71 +26,60 @@ data/processed/
 *.npz
 *.parquet
 *.feather
+*.zarr/
 
-# Model checkpoints
+# Model checkpoints (published separately with model cards)
 checkpoints/
 *.pt
 *.pth
 *.ckpt
+*.onnx
+*.safetensors
 wandb/
-results/checkpoints
-results/data
 
-# IDE
+# Logs (TRAINING_LOG.md at the repo root IS tracked; raw logs are not)
+logs/
+*.pid
+
+# Credentials — never commit
+.env
+*.env
+keys.env
+.config/
+
+# IDE / OS
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
 .DS_Store
 Thumbs.db
-
-# Jupyter
 .ipynb_checkpoints/
 
-# Environment
-.env
-*.env
-
-# Logs
-logs/
-*.pid
-
-# Figures (kept local; not published to the repo) — root only, not scripts/figures
-/figures/
-
-# Paper sources and exports (kept local; not published)
-/paper/
-
-# CI / GitHub workflows (removed from repo)
-/.github/
-
-# LaTeX build artifacts
-paper/*.aux
-paper/*.bbl
-paper/*.blg
-paper/*.log
-paper/*.out
-paper/*.toc
-paper/*.synctex.gz
-paper/*.fls
-paper/*.fdb_latexmk
-paper/_official/
+# LaTeX build artifacts (paper sources and compiled PDF are tracked)
+paper/**/*.aux
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.log
+paper/**/*.out
+paper/**/*.toc
+paper/**/*.synctex.gz
+paper/**/*.fls
+paper/**/*.fdb_latexmk
 texput.log
 
+# Front-end builds
+**/node_modules/
+**/dist/
+**/.vite/
 
-# Demo (React + Vite)
-demo/node_modules/
-demo/dist/
-demo/.vite/
-
-# Internal case-study analysis (kept local, not published)
-results/case_studies_v3/CASE_STUDY_TESTING_METHODOLOGY.md
-results/case_studies_v3/case_studies_v3_REAL_inference.json
-results/case_studies_v3/case_studies_v3_OLD_hardcoded_paper.json
-scripts/evaluation/reeval_case_studies_31.py
-
-# local scratch (paper revision working files)
+# Legacy (v1) local-only files that were never published
+legacy/results/case_studies_v3/CASE_STUDY_TESTING_METHODOLOGY.md
+legacy/results/case_studies_v3/case_studies_v3_REAL_inference.json
+legacy/results/case_studies_v3/case_studies_v3_OLD_hardcoded_paper.json
 /.paperwork/
 /.audit_scratch/
+
+# Live run registry is >100 MB (GitHub limit); a dated gzip snapshot is tracked instead
+/results/registry.jsonl
+/q4.log

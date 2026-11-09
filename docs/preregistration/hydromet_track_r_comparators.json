@@ -1,0 +1,18 @@
+{
+ "temp_c_mean": {
+  "gbm": "forcing_gbm_bag",
+  "physics": "air2stream_regional"
+ },
+ "temp_c_7dadm": {
+  "gbm": "forcing_gbm",
+  "physics": "air2stream_regional"
+ },
+ "do_mgl_mean": {
+  "gbm": "forcing_gbm",
+  "physics": "dosat_ratio[air2stream_regional]"
+ },
+ "do_mgl_min": {
+  "gbm": "forcing_gbm_bag",
+  "physics": "dosat_ratio[air2stream_regional]"
+ }
+}

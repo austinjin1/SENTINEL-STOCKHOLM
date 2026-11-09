@@ -1,0 +1,51 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+#
+# SENTINEL Console (FastAPI service + Streamlit app), CPU only, Python 3.11.
+# Build from the repository root:
+#   docker build -f docker/Dockerfile.platform -t sentinel-console:dev .
+# Data, runs and the results registry are mounted read-only at run time (docker/docker-compose.yml);
+# nothing from $SENTINEL_DATA or any credential is baked into the image.
+
+FROM python:3.11-slim
+
+ARG INSTALL_TORCH_CPU=0
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONPATH=/app \
+    SENTINEL_DATA=/data \
+    SENTINEL_RUNS=/runs \
+    SENTINEL_API_URL=http://127.0.0.1:8000 \
+    STREAMLIT_BROWSER_GATHER_USAGE_STATS=false \
+    STREAMLIT_SERVER_HEADLESS=true \
+    HOME=/home/sentinel
+
+WORKDIR /app
+
+COPY docker/requirements-platform.txt /tmp/requirements-platform.txt
+RUN pip install -r /tmp/requirements-platform.txt \
+ && if [ "$INSTALL_TORCH_CPU" = "1" ]; then \
+        pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu; \
+    fi
+
+# Code and the documents the Console renders. results/ (the registry) is mounted at run time.
+COPY sentinel/ /app/sentinel/
+COPY docs/ /app/docs/
+COPY tests/test_platform.py /app/tests/test_platform.py
+COPY RESULTS.md RESEARCH_PLAN.md README.md LICENSE /app/
+
+RUN useradd --create-home --home-dir /home/sentinel --uid 10001 sentinel \
+ && mkdir -p /app/results /data /runs \
+ && chown -R sentinel:sentinel /home/sentinel
+USER sentinel
+
+EXPOSE 8000 8501
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
+  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=8).status == 200 else 1)" || exit 1
+
+# Default: the API. The app service overrides the command (see docker-compose.yml).
+CMD ["python", "-B", "-m", "sentinel.platform.api", "--host", "0.0.0.0", "--port", "8000"]

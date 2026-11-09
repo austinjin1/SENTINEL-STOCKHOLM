@@ -1,0 +1,17 @@
+species_number|common_name|latin_name|kingdom|phylum_division|subphylum_div|superclass|class|tax_order|family|genus|species|subspecies|variety|ecotox_group|ncbi_taxid
+4|Rainbow Trout|Oncorhynchus mykiss|Animalia|Chordata|Vertebrata|Osteichthyes|Actinopterygii|Salmoniformes|Salmonidae|Oncorhynchus|mykiss|||Fish;Standard Test Species;U.S. Threatened and Endangered Species|8022
+5|Water Flea|Daphnia magna|Animalia|Arthropoda|Crustacea||Branchiopoda|Diplostraca|Daphniidae|Daphnia|magna|||Crustaceans;Standard Test Species|35525
+21|Common Carp|Cyprinus carpio|Animalia|Chordata|Vertebrata|Osteichthyes|Actinopterygii|Cypriniformes|Cyprinidae|Cyprinus|carpio|||Fish;Standard Test Species|7962
+86|Sheepshead Minnow|Cyprinodon variegatus|Animalia|Chordata|Vertebrata|Osteichthyes|Actinopterygii|Cyprinodontiformes|Cyprinodontidae|Cyprinodon|variegatus|||Fish;Standard Test Species|28743
+122|Midge|Chironomus sp.|Animalia|Arthropoda|Hexapoda||Insecta|Diptera|Chironomidae|Chironomus|sp.|||Insects/Spiders;Standard Test Species|7152
+142|Opossum Shrimp|Americamysis bahia|Animalia|Arthropoda|Crustacea||Malacostraca|Mysida|Mysidae|Americamysis|bahia|||Crustaceans;Standard Test Species|110441
+418|Snake-Head Catfish|Channa punctata|Animalia|Chordata|Vertebrata|Osteichthyes|Actinopterygii|Perciformes|Channidae|Channa|punctata|||Fish|304456
+487|Green Algae|Scenedesmus quadricauda|Plantae|Chlorophyta|||Chlorophyceae|Chlorococcales|Scenedesmaceae|Scenedesmus|quadricauda|||Algae;Standard Test Species|3089
+648|Giant River Prawn|Macrobrachium rosenbergii|Animalia|Arthropoda|Crustacea||Malacostraca|Decapoda|Palaemonidae|Macrobrachium|rosenbergii|||Crustaceans|79674
+757|Turbellarian, Flatworm|Dugesia sp.|Animalia|Platyhelminthes|||Turbellaria|Tricladida|Planariidae|Dugesia|sp.|||Worms|6160
+1146|Asian Common Toad|Duttaphrynus melanostictus|Animalia|Chordata|Vertebrata||Amphibia|Anura|Bufonidae|Duttaphrynus|melanostictus|||Amphibians|30335
+2441|Snail|Melanoides tuberculata|Animalia|Mollusca|||Gastropoda|Neotaenioglossa|Thiaridae|Melanoides|tuberculata|||Molluscs|55729
+4991|Earthworm|Eisenia fetida|Animalia|Annelida|||Clitellata|Lumbriculida|Lumbricidae|Eisenia|fetida|||Worms;Standard Test Species|6396
+5156|Zebra Danio|Danio rerio|Animalia|Chordata|Vertebrata|Osteichthyes|Actinopterygii|Cypriniformes|Cyprinidae|Danio|rerio|||Fish;Standard Test Species|7955
+6038|Harpacticoid Copepod|Tigriopus japonicus|Animalia|Arthropoda|Crustacea||Maxillopoda|Harpacticoida|Harpacticidae|Tigriopus|japonicus|||Crustaceans;Standard Test Species|158387
+17449|Green Algae|Desmodesmus subspicatus|Plantae|Chlorophyta|||Chlorophyceae|Chlorococcales|Scenedesmaceae|Desmodesmus|subspicatus|||Algae;Standard Test Species|104105

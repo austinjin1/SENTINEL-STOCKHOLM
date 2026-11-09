@@ -1,0 +1,6 @@
+startDateTime,endDateTime,sensorDepth,sensorDepthExpUncert,sensorDepthFinalQF,specificConductance,specificConductanceExpUncert,specificCondFinalQF,dissolvedOxygen,dissolvedOxygenExpUncert,dissolvedOxygenFinalQF,seaLevelDissolvedOxygenSat,seaLevelDOSatExpUncert,seaLevelDOSatFinalQF,localDissolvedOxygenSat,localDOSatExpUncert,localDOSatFinalQF,pH,pHExpUncert,pHFinalQF,chlorophyll,chlorophyllExpUncert,chlorophyllFinalQF,chlaRelativeFluorescence,chlaRelFluoroExpUncert,chlaRelFluoroFinalQF,turbidity,turbidityExpUncert,turbidityFinalQF,fDOM,rawCalibratedfDOM,fDOMExpUncert,fDOMFinalQF,buoyNAFlag
+"2023-07-01T00:00:38Z","2023-07-01T00:00:38Z",,,,513.34,6.01,0,2.97,0.06,0,33.38,0.66,0,38.30,0.77,0,7.61,0.09,0,,,,,,,1.56,0.02,0,106.61,105.46,0.86,1,
+"2023-07-01T00:01:38Z","2023-07-01T00:01:38Z",,,,513.41,6.01,0,2.97,0.06,0,33.40,0.66,0,38.33,0.77,0,7.61,0.09,0,,,,,,,1.51,0.02,0,106.99,105.83,0.87,1,
+"2023-07-01T00:02:38Z","2023-07-01T00:02:38Z",,,,513.36,6.01,0,2.98,0.06,0,33.50,0.66,0,38.44,0.77,0,7.61,0.09,0,,,,,,,1.49,0.02,0,106.74,105.58,0.87,1,
+"2023-07-01T00:03:38Z","2023-07-01T00:03:38Z",,,,513.32,6.01,0,2.98,0.06,0,33.49,0.66,0,38.43,0.77,0,7.61,0.09,0,,,,,,,1.62,0.03,0,106.64,105.48,0.87,1,
+"2023-07-01T00:04:38Z","2023-07-01T00:04:38Z",,,,513.38,6.01,0,2.99,0.06,0,33.68,0.67,0,38.64,0.77,0,7.61,0.09,0,,,,,,,1.67,0.03,0,106.63,105.46,0.87,1,

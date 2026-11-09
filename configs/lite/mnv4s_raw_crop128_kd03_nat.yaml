@@ -1,0 +1,12 @@
+# national track (protocol §12): distillation from the national Lite-safe teacher, kd_weight 0.3
+name: mnv4s_raw_crop128_kd03_nat
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+crop: 128
+epochs: 40
+lr_backbone: 5.0e-4
+kd_weight: 0.3
+kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national/teacher_targets.parquet

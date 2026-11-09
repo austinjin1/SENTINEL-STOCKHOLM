@@ -1,0 +1,27 @@
+# SatWQ-Net base configuration (orbit_protocol.md §4.1). Selection of variants: inner split + val cell only.
+model: satwq
+d: 64
+n_layers: 3
+n_heads: 4
+k: 5
+dropout: 0.1
+pretrain:
+  enabled: true
+  epochs: 300
+  lr: 0.001
+  batch: 256
+  aug: {mult_noise: 0.10, add_noise: 0.004, band_add_noise: 0.002, p_rgbn: 0.10, p_band_drop: 0.10, ctx_off: true,
+        p_pixel_subset: 0.0}
+finetune:
+  epochs: 80
+  lr: 0.0005
+  batch: 128
+  patience: 15
+  aug: {mult_noise: 0.02, add_noise: 0.001, band_add_noise: 0.0005, p_rgbn: 0.10, p_band_drop: 0.10,
+        p_ctx_drop: 0.5, p_pixel_subset: 0.3, ctx_off: false}
+select_targets: [chla, secchi]
+seeds: [0, 1, 2, 3, 4]
+smoke:
+  pretrain: {epochs: 2}
+  finetune: {epochs: 2}
+  smoke_n_fit: 500

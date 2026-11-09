@@ -1,0 +1,11 @@
+# Ablation control: spectral branch, random init (isolates GLORIA pretraining)
+name: mnv4s_raw_spectral
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+spectral: true
+epochs: 40
+batch: 32
+lr: 1.0e-3
+lr_backbone: 5.0e-4
+kd_weight: 0.0

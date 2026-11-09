@@ -1,0 +1,26 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# SENTINEL-Microbe common settings. docs/preregistration/microbe_protocol.md §2.3, §5.
+holdout:
+  kind: date_from
+  date: "2024-01-01"        # final-test events: collect_date >= date. Rule of protocol §2.3: 2023-01-01 held out 44% (> 30%) -> 1 Jan closest to 20% = 2024-01-01 (19.0%); see §10
+targets: [log_tn, log_tp, log_doc, log_no3, log_sc, log_turb, do, log_chla]
+seeds: [0, 1, 2]
+n_boot: 2000
+min_reads: 1000
+permutations: {rf_clr: 20, seqset: 3}
+primary_comparators: [context_rf, rf_clr]
+# Cross-release (V3V4 / DP1.20141.001) final-test reserve (review C1, amendment 2026-10-24, set before any target
+# was joined): .001 events collected BEFORE this date are never used in phase 1 (190 events, 15 domains, 24 sites).
+release_holdout:
+  kind: date_before
+  date: "2017-01-01"
+# Secondary time-out test block "Test-B" (protocol §10.5, pre-registered 2026-11-08 before any of its data exist
+# locally). Built only after NEON RELEASE-2027 (or the first later release) makes these events non-provisional.
+test_b:
+  kind: new_events_in_window
+  date_from: "2024-01-01"   # events not in the frozen primary holdout list (late-2024 events released later count here)
+  date_to: "2025-12-31"
+  exclude_ids_from: docs/preregistration/microbe_split.json   # holdout_ids + development_ids are never Test-B
+  product: DP1.20141.002
+  role: secondary            # primary endpoint = the 2024 holdout (holdout: above)

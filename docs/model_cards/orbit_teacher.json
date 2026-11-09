@@ -1,0 +1,27 @@
+{
+ "label": "satwq_base5",
+ "created": "2026-10-25T00:55:36",
+ "checkpoints": [
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_base_s0/model.pt",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_base_s1/model.pt",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_base_s2/model.pt",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_base_s3/model.pt",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_base_s4/model.pt"
+ ],
+ "sha256": [
+  "634354e903f289692314a1f812207f8ab09a577c2e4a192a764e939d1d788961",
+  "6bc5cb30f2934f82b83b34b85241067fa720b8365b8aa0c0d2623dae4f4fbe22",
+  "125c4a261d71a2f1e2136d2a9eb6d81b4fa5848dd47ea0fb999592cd15ae90c8",
+  "0522e40ca23925a49d3567c1c74208eb4ddd040ae29df24c404835371ee6c348",
+  "f6d228d5fcb2974b09f9d37f279e00051b1c802f691d878426541794c548f8c8"
+ ],
+ "split_sha256": "ffe288f2fafecada964fc8125dcd35ddd9b332d3a04f782d0298e01f097a5e32",
+ "note": "SatWQ-Net seed ensemble trained on the fit cell (train role x <= 2021) of orbit dev data; development teacher (validation only, test not scored)",
+ "predictions": {
+  "naip_teacher": {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/teacher/naip_teacher_teacher_preds.parquet",
+   "sha256": "ba6869f9c92826f45bc5622bda15eff1426584a7a3e7343e82f93edf201d8d51",
+   "n_chips": 2130
+  }
+ }
+}

@@ -1,0 +1,16 @@
+# Build-context exclusions for docker/Dockerfile.platform (BuildKit per-Dockerfile ignore file).
+.git
+legacy
+paper
+figures
+results
+**/__pycache__
+**/*.pyc
+**/*.parquet
+**/*.pt
+**/*.pth
+**/*.ckpt
+**/*.onnx
+**/*.env
+**/keys.env
+.env

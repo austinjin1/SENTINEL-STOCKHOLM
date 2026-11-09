@@ -1,0 +1,19 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# SENTINEL-Sonde (M1) shared settings; every model config is merged over this file.
+# A `smoke:` block (here or in a model config) is merged in only with --smoke.
+split: docs/preregistration/sonde_split.json   # FINAL split (pending); DEV split only with --smoke
+# scored targets (coordinator 2026-10-22: chl skipped - 0 val sites; fdom too sparse; pH via its median
+# statistic). Every TARGETS variable incl. discharge, chl, fdom is still loaded and used as an INPUT.
+variables: [temp_c_mean, do_mgl_mean, do_mgl_min, spcond_uscm_mean, ph_median, turb_fnu_mean,
+            turb_fnu_median, no3no2_mgl_mean]
+lstm_aux_outputs: [discharge_cfs_mean]   # LSTM also predicts discharge (auxiliary, not scored)
+horizons: [1, 2, 3, 5, 7, 10, 14]
+site_types: [ST, ST-TS, ST-CA, ST-DCH]   # headline = streams only (protocol §6); LK/ES are separate tracks
+include_test_sites: false   # test-role sites need --allow-test AND docs/preregistration/FREEZE_sonde.json
+seed: 0
+min_train_sites_per_var: 3   # a model scores a variable only if >= this many train-role sites have it
+smoke:
+  smoke_n_train: 30
+  smoke_n_val: 10
+  temp_split_site_types: [ST, ST-TS, ST-CA, ST-DCH]

@@ -1,0 +1,46 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# BioSet (taxon-embedding set model) candidates. docs/preregistration/bioassess_protocol.md §6.
+# `defaults` apply to every candidate; each candidate overrides a few keys.
+defaults:
+  arch: settransformer       # settransformer | deepsets
+  d_model: 128
+  n_layers: 2
+  n_heads: 4
+  dropout: 0.1
+  token_dropout: 0.1         # fraction of present taxa dropped per training sample
+  resolution_dropout: 0.0    # per-token probability of dropping genus + name levels
+  embedding: hierarchical    # hierarchical | flat
+  levels: [phylum, class, order, family, genus, name]
+  init_std: {phylum: 1.0, class: 0.7, order: 0.5, family: 0.35, genus: 0.25, name: 0.15}
+  min_name_count: 3          # names seen fewer times in the training fold map to UNK
+  loss: mse
+  lr: 0.001
+  weight_decay: 0.01
+  batch_size: 128
+  max_epochs: 200
+  patience: 25
+  pretrained: null           # path to a UK-pretrained encoder checkpoint, or null
+  finetune_lr_scale: 1.0
+  aux_targets: false         # true: also predict co-measured chemistry (data.AUX_TARGETS) as
+  aux_weight: 0.5            #   training-only outputs (never inputs, never evaluated)
+  region_loss_weight: 0.0    # >0: add within-batch within-ecoregion anomaly MSE (training rows only)
+candidates:
+  bioset_st: {}
+  bioset_ds: {arch: deepsets, n_layers: 0}
+  bioset_st_flat: {embedding: flat}
+  bioset_st_resdrop: {resolution_dropout: 0.3}
+  bioset_st_ukpt: {pretrained: auto, resolution_dropout: 0.3}
+  # --- improvement cycle 1 (RESEARCH_PLAN §15.5 amendment; added after phase-1 selection) ---
+  bioset_st_flat_aux: {embedding: flat, aux_targets: true}
+  # --- improvement cycle 2 (within-region skill) ---
+  bioset_st_flat_rloss: {embedding: flat, region_loss_weight: 1.0}
+pretrain_uk:
+  epochs: 12
+  batch_size: 256
+  lr: 0.0005
+  weight_decay: 0.01
+  mask_frac: 0.15
+  chem_loss_weight: 1.0
+  max_tokens: 96             # samples with more taxa keep the most abundant 96
+  patience: 3

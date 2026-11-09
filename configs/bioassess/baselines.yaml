@@ -1,0 +1,10 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Fixed baseline hyperparameters (no tuning). docs/preregistration/bioassess_protocol.md §6.
+rf: {n_estimators: 300, min_samples_leaf: 3, max_features: 0.3}
+gbm: {n_estimators: 600, learning_rate: 0.03, num_leaves: 31, min_child_samples: 20,
+      colsample_bytree: 0.3, subsample: 0.8, subsample_freq: 1, verbose: -1}
+knn_community: {k: 10, weights: distance}
+wapls: {n_components: 2}
+tabpfn: {n_estimators: 8, max_taxa: 300, max_train_rows: 6000, device: cuda, predict_chunk: 1000}
+nearest_reference: {k: 1}

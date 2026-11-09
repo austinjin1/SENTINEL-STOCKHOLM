@@ -1,0 +1,70 @@
+{
+ "conus_regions": [
+  "01",
+  "02",
+  "03",
+  "04",
+  "05",
+  "06",
+  "07",
+  "08",
+  "09",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18"
+ ],
+ "created": "2026-11-08",
+ "fit_exclusion": "held-out region or within 25.0 km of a held-out HUC12 centroid",
+ "held_out_regions": [
+  "02",
+  "06",
+  "09",
+  "18"
+ ],
+ "huc12_sha256": "6106911d8ba4aaa8fc5b651eab6d21b4c9f6acf666c0c9869a9291b673523421",
+ "huc12_table": "processed/wbd_huc12/huc12.parquet",
+ "n_held": 4,
+ "note": "defined before any model result on these tracks (RESEARCH_PLAN \u00a715.5 items 5-7)",
+ "region_rule": "HUC2 of nearest WBD HUC12 centroid to the split anchor (lake pour point for in-lake rows); 'nonUS' if > 30.0 km",
+ "region_u": {
+  "01": 0.9603598209286446,
+  "02": 0.3045926965311132,
+  "03": 0.5638862424332949,
+  "04": 0.5158771659397239,
+  "05": 0.5280772899109785,
+  "06": 0.032544133270530295,
+  "07": 0.4949680274645125,
+  "08": 0.5195803365890583,
+  "09": 0.08501011972890993,
+  "10": 0.5595527590470262,
+  "11": 0.6697205673616438,
+  "12": 0.5970583314350861,
+  "13": 0.9890805935747053,
+  "14": 0.6524405038907375,
+  "15": 0.6543441092524844,
+  "16": 0.6959876361274269,
+  "17": 0.40689391010297626,
+  "18": 0.04531584365606278
+ },
+ "rule_code_sha256": "4dbb05434908f6e7421e0288132367edf346fea00ddea9fdd8f315059d02dd7c",
+ "salt": "SENTINEL-Orbit-trackU|2026-11-08",
+ "selection": "none on U: main-track val-selected configuration and comparator members, refitted on U-fit",
+ "test_cell": "in-lake, non-buffer rows in held-out regions x test years (2024-2025), any main-split role",
+ "track": "U (unseen HUC2 regions x 2024-2025)",
+ "track_E": {
+  "cell": "headline cell rows (in-lake, test role x 2024-2025) with observed chl-a >= threshold; also the U-test cell",
+  "metrics": "MdSA, SSPB (bias) within stratum; bloom detection AUROC/AUPRC/recall@FPR10 at 20 and 50 ug/L",
+  "p95_from": "fit cell of dev_v4",
+  "threshold_fit_p95_ugL": 54.89499999999989,
+  "thresholds_ugL_fixed": [
+   20.0,
+   50.0
+  ]
+ }
+}

@@ -1,0 +1,110 @@
+{
+ "_fixture_note": "Real NAS API v2 responses recorded 2026-10-22 for /occurrence/search?species_ID=3118&state=MT&limit=1&offset={0,1,2}",
+ "pages": [
+  {
+   "endOfRecords": "false",
+   "count": 1,
+   "offset": 0,
+   "limit": 1,
+   "results": [
+    {
+     "key": 1322795,
+     "speciesID": 3118,
+     "group": "Mollusks-Bivalves",
+     "family": "Dreissenidae",
+     "genus": "Dreissena",
+     "species": "sp.",
+     "scientificName": "Dreissena sp.",
+     "commonName": "a dreissenid mussel",
+     "state": "Montana",
+     "county": "",
+     "locality": "Tiber Reservoir [Lake Elwell]",
+     "decimalLatitude": 48.348,
+     "decimalLongitude": -111.18026,
+     "latLongSource": "Map derived",
+     "latLongAccuracy": "Accurate",
+     "Centroid Type": "",
+     "huc8Name": "Marias",
+     "huc8": "10030203",
+     "huc10Name": "Dead Indian Coulee-Marias River",
+     "huc10": "1003020321",
+     "huc12Name": "Tiber Reservoir",
+     "huc12": "100302032102",
+     "date": "2016-11",
+     "year": 2016,
+     "month": 11,
+     "day": null,
+     "status": "failed",
+     "comments": "First positive test for larvae in the state. Specimen identified to Dreissena mussel. Montana FWP and USFWS divers spent 3 days in August 2017 and found no adults. A five year restriction was placed on the lake for boating. No additional detections in this waterbody.",
+     "recordType": "Literature",
+     "disposal": "",
+     "museumCatNumber": "",
+     "freshMarineIntro": "Freshwater",
+     "UUID": "",
+     "references": [
+      {
+       "key": 29184,
+       "refType": "Other",
+       "year": 2016,
+       "author": "Montana Fish, Wildlife and Parks",
+       "title": "Water samples test positive for invasive mussel larvae in Tiber Reservoir.",
+       "publisher": "Montana Fish, Wildlife and Parks",
+       "publisherLocation": "Helena, MT"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "endOfRecords": "true",
+   "count": 1,
+   "offset": 1,
+   "limit": 1,
+   "results": [
+    {
+     "key": 1613854,
+     "speciesID": 3118,
+     "group": "Mollusks-Bivalves",
+     "family": "Dreissenidae",
+     "genus": "Dreissena",
+     "species": "sp.",
+     "scientificName": "Dreissena sp.",
+     "commonName": "a dreissenid mussel",
+     "state": "Montana",
+     "county": "",
+     "locality": "Canyon Ferry Lake on the Missouri River",
+     "decimalLatitude": 46.544694,
+     "decimalLongitude": -111.61079,
+     "latLongSource": "Map derived",
+     "latLongAccuracy": "Accurate",
+     "Centroid Type": "",
+     "huc8Name": "Upper Missouri",
+     "huc8": "10030101",
+     "huc10Name": "Lower Canyon Ferry Lake-Missouri River",
+     "huc10": "1003010112",
+     "huc12Name": "Canyon Ferry Lake-Bilk Gulch",
+     "huc12": "100301011201",
+     "date": "2016",
+     "year": 2016,
+     "month": null,
+     "day": null,
+     "status": "failed",
+     "comments": "Considered \"Suspect\" for the presence of a population in the lake through 2019. The lake was removed in February 2020 from a list of water bodies confirmed or suspected for aquatic invasive mussels.",
+     "recordType": "Personal communication",
+     "disposal": "",
+     "museumCatNumber": "",
+     "freshMarineIntro": "Freshwater",
+     "UUID": "A4B51206-CB24-4E30-A09A-76D80FA2857D",
+     "references": []
+    }
+   ]
+  },
+  {
+   "endOfRecords": "true",
+   "count": 0,
+   "offset": 2,
+   "limit": 1,
+   "results": []
+  }
+ ]
+}

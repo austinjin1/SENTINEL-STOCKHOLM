@@ -1,0 +1,112 @@
+{
+ "buffer_excluded_rows": 393,
+ "cells_all_rows": {
+  "testxtest": {
+   "n_rows": 392,
+   "n_waterbodies": 117
+  },
+  "testxtrain": {
+   "n_rows": 3733,
+   "n_waterbodies": 564
+  },
+  "testxval": {
+   "n_rows": 1476,
+   "n_waterbodies": 299
+  },
+  "trainxtest": {
+   "n_rows": 1400,
+   "n_waterbodies": 503
+  },
+  "trainxtrain": {
+   "n_rows": 9382,
+   "n_waterbodies": 2050
+  },
+  "trainxval": {
+   "n_rows": 3184,
+   "n_waterbodies": 1039
+  },
+  "valxtest": {
+   "n_rows": 617,
+   "n_waterbodies": 154
+  },
+  "valxtrain": {
+   "n_rows": 4033,
+   "n_waterbodies": 636
+  },
+  "valxval": {
+   "n_rows": 1672,
+   "n_waterbodies": 376
+  }
+ },
+ "split_distance_km": {
+  "all_val_to_train_km": {
+   "min": 0.40133266667897294,
+   "p05": 2.005404482610854,
+   "median": 13.463829316160684,
+   "n_points": 2091,
+   "frac_within_10km": 0.3787661406025825
+  },
+  "all_test_to_train_km": {
+   "min": 0.6617205097011073,
+   "p05": 2.690513455567579,
+   "median": 12.270259554170341,
+   "n_points": 2014,
+   "frac_within_10km": 0.3828202581926514
+  },
+  "in_lake_val_to_train_km": {
+   "min": 1.0048928009403757,
+   "p05": 2.4192240999967556,
+   "median": 14.952962960744802,
+   "n_points": 1163,
+   "frac_within_10km": 0.352536543422184
+  },
+  "in_lake_test_to_train_km": {
+   "min": 0.6617205097011073,
+   "p05": 3.6494631040289334,
+   "median": 20.342636159961224,
+   "n_points": 818,
+   "frac_within_10km": 0.21882640586797067
+  }
+ },
+ "targets_by_cell": {
+  "trainxtrain": {
+   "chla": 7029,
+   "tss": 913,
+   "turbidity": 522,
+   "secchi": 7752
+  },
+  "trainxval": {
+   "chla": 2687,
+   "tss": 113,
+   "turbidity": 176,
+   "secchi": 2695
+  },
+  "valxtrain": {
+   "chla": 3134,
+   "tss": 173,
+   "turbidity": 159,
+   "secchi": 3254
+  },
+  "valxval": {
+   "chla": 1459,
+   "tss": 37,
+   "turbidity": 24,
+   "secchi": 1371
+  }
+ },
+ "n_rows_final": 18270,
+ "image_qc_pass": 26598,
+ "n_rows_with_chip": 70174,
+ "by_source": {
+  "aquacorr": 67303,
+  "wqp": 2871
+ },
+ "access": {
+  "n_protected_dropped": 7618
+ },
+ "split_file": {
+  "path": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/orbit_split_v2.json",
+  "sha256": "06e5067dba2d499c6fe67f6664ec5e3a6f65e38a4e141c871a5b95105c72b70e",
+  "rule_code_sha256": "f9aa799b04f5f1111326deb8feb6722368487f3ca4eea12abb8dc9d24a0ff3eb"
+ }
+}

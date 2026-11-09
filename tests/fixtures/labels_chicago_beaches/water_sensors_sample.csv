@@ -1,0 +1,8 @@
+beach_name,measurement_timestamp,water_temperature,turbidity,transducer_depth,wave_height,wave_period,battery_life,measurement_timestamp_label,measurement_id
+Ohio Street Beach,2023-10-22T01:00:00.000,-100000,-100000,,0,6.3,12.2,10/22/2023 1:00 AM,OhioStreetBeach202310220100
+Ohio Street Beach,2020-05-15T15:00:00.000,23.1,0.37,,-99999.992,-100000,10.9,05/15/2020 3:00 PM,OhioStreetBeach202005151500
+63rd Street Beach,2025-03-17T19:30:00.000,0,0,,0,0,0,03/17/2025 7:30 PM,63rdStreetBeach202503171930
+Ohio Street Beach,2024-09-10T10:00:00.000,37.3,0,,0,6.3,13.6,09/10/2024 10:00 AM,OhioStreetBeach202409101000
+Old - Ohio Street Beach,2025-03-17T21:30:00.000,0,0,,0,0,0,03/17/2025 9:30 PM,Old-OhioStreetBeach202503172130
+Osterman Beach,2013-08-31T23:00:00.000,21.5,3.51,1.538,0.231,4,9.4,08/31/2013 11:00 PM,OstermanBeach201308312300
+Osterman Beach,2014-06-12T16:00:00.000,16.1,7.55,1.2,0.125,4,12.5,06/12/2014 4:00 PM,OstermanBeach201406121600

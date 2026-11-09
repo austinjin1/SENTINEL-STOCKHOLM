@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" >
+<head><title>
+	Algae - Detail search
+</title><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="govType" content="county" /><meta name="author" content="DongCharlie.Zeng@kingcounty.gov" /><link rel="apple-touch-icon" href="images/body/AlgaeLogoMobile.png" /><link href="Styles/algae.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="Scripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.maskedinput-1.3.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.28/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.28/"></script>
+    <script type="text/javascript">    
+        var map;
+        function init() {
+            map = new esri.Map("map", {
+                basemap: "topo", //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+                center: [-120.68, 47.35], // longitude, latitude
+                zoom: 7
+            });
+
+            //map.infoWindow.resize(200, 200);
+
+            dojo.connect(map, "onLoad", function () {
+                drawMap()
+            });
+        }
+
+        dojo.ready(init);
+
+        //Clear text as the server side code will run the page_load 
+        //before selectIndexChanged event, while DrawMap() has already been fired
+        //with values before change of selection. OnClientClick happens before onclick
+        function clearSelection() {
+            $('#ctl00_ContentPlaceHolder1_c_StartDateTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_EndDateTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_LowConcTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_HighConcTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_SampleNumberTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_ToxinDropDownList').val('');
+            $('#ctl00_ContentPlaceHolder1_c_CountyDropDownList').val('');
+            $('#ctl00_ContentPlaceHolder1_c_WRIADropDownList').val('0');
+            $('#ctl00_ContentPlaceHolder1_c_SiteDropDownList').val('0');
+            $('#ctl00_ContentPlaceHolder1_c_SiteIDHiddenField').val('');
+            $("#DataDiv").hide();
+            $('#mapArea').hide();
+            $('#CriteriaDiv').show();
+        }
+
+        function setSiteID(val) {
+            $("#ctl00_ContentPlaceHolder1_c_SiteIDHiddenField").val(val);
+        }
+
+        function setDrawMap(drawMap) {
+            $('#ctl00_ContentPlaceHolder1_c_DrawMapHiddenField').val(drawMap);	// Set boolean value.
+        }
+
+        function drawMap() {
+            require(["esri/geometry/Point", "esri/symbols/PictureMarkerSymbol", "esri/InfoTemplate", "esri/graphic"],
+                function (Point, PictureMarkerSymbol, InfoTemplate, Graphic) {
+                    if (map.graphics != null) {
+                        map.graphics.clear();
+                        $("#ctl00_ContentPlaceHolder1_c_StartDateTextBox, #ctl00_ContentPlaceHolder1_c_EndDateTextBox")
+                            .mask("99/99/9999")
+                            .datepicker();
+
+                        var sitesString = $("#ctl00_ContentPlaceHolder1_c_SiteInfoHiddenField").val();
+
+                        if (sitesString !== "") {
+                            //$('#mapArea').show(); //We have map info, show the map
+                            
+                            var sites = sitesString.split("||");
+                            var startDate = $('#ctl00_ContentPlaceHolder1_c_StartDateTextBox').val();
+                            var endDate = $('#ctl00_ContentPlaceHolder1_c_EndDateTextBox').val();
+                            var sampleNumber = $('#ctl00_ContentPlaceHolder1_c_SampleNumberTextBox').val();
+                            var toxin = $('#ctl00_ContentPlaceHolder1_c_ToxinDropDownList').val();
+                            var county = $('#ctl00_ContentPlaceHolder1_c_CountyDropDownList').val();
+                            var WRIANumber = $('#ctl00_ContentPlaceHolder1_c_WRIADropDownList').val();
+                            var lowConc = $('#ctl00_ContentPlaceHolder1_c_LowConcTextBox').val();
+                            var highConc = $('#ctl00_ContentPlaceHolder1_c_HighConcTextBox').val();
+                            var siteIndex;
+                            //To improve: Use Json object
+                            //Add markers to the map
+                            for (siteIndex = 0; siteIndex < sites.length; siteIndex++) {
+                                var site = sites[siteIndex].split("\t");
+
+                                var siteName = site[0];
+                                var latitude = site[1];
+                                var longitude = site[2];
+                                var toxinInd = site[3]; //to tell whether a site has toxic algae
+                                var anatoxin = site[4];
+                                var cylindrospermopsin = site[5];
+                                var microcystin = site[6];
+                                var saxitoxin = site[7];
+                                var lastSampleDate = site[8];
+                                var siteID = site[9];
+
+                                //var showLink = false; On 4/23/15, Kris told me to always show link even there's no toxin on last sample date
+                                var popupText = "<p><b>" + siteName + "</b><br />";
+                                popupText += "<br />Last Sample Date: " + lastSampleDate;
+                                if (anatoxin !== "") {
+                                    popupText += "<br />Anatoxin-a: " + anatoxin;
+                                }
+                                if (cylindrospermopsin !== "") {
+                                    popupText += "<br />Cylindrospermopsin: " + cylindrospermopsin;
+                                }
+                                if (microcystin !== "") {
+                                    popupText += "<br />Microcystin: " + microcystin;
+                                }
+                                if (saxitoxin !== "") {
+                                    popupText += "<br />Saxitoxin: " + saxitoxin;
+                                }
+
+                                popupText += "<br /><a href='Data.aspx?SiteID=" + siteID;
+                                popupText += "&County=" + county;
+                                popupText += "&Toxin=" + toxin;
+                                popupText += "&SampleNumber=" + sampleNumber;
+                                popupText += "&StartDate=" + startDate;
+                                popupText += "&EndDate=" + endDate;
+                                popupText += "&LowConc=" + lowConc;
+                                popupText += "&HighConc=" + highConc;
+                                popupText += "&WRIANumber=" + WRIANumber + "'>View Data</a>";
+                                popupText += "<br /><a href='Charts.aspx?SiteID=" + siteID;
+                                popupText += "&StartDate=" + startDate;
+                                popupText += "&EndDate=" + endDate + "'>View Charts</a>";
+                                popupText += "<br /><a href='HistoricalCharts.aspx?SiteID=";
+                                popupText += siteID + "'>View Historical Charts</a></p>";
+
+                                var pt = new Point(longitude, latitude);
+                                var sms;
+                                switch (toxinInd) {
+                                    case 'Within':
+                                        sms = new PictureMarkerSymbol("images/Within.png", "11", "11")
+                                        break;
+                                    case 'Exceeded':
+                                        sms = new PictureMarkerSymbol("images/Exceeded.png", "11", "11")
+                                        break;
+                                    default:
+                                        sms = new PictureMarkerSymbol("images/Inactive.png", "8", "8")
+                                }
+                                var attr = {};
+
+                                var infoTemplate = new InfoTemplate(siteName, popupText);
+                                map.graphics.add(new Graphic(pt, sms, attr, infoTemplate));
+                            }
+                        }
+                    }
+                });
+        }
+    </script>
+
+</head>
+	<body>
+
+
+
+<!-- wrap starts here -->
+<div id="Algaecontainer">
+	<div id="AlgaeMain">
+		<div id="AlgaeContentHeader">
+			<div id="ContentNav">
+				<ul class="level1">
+					<li class="submenu"> <a href="Default.aspx"> Home </a> </li>
+					<li class="submenu"> <a href="FindLakes.aspx"> Find lake </a> 
+					    <ul class="level2">
+						    <li> <a href="Data.aspx">Detailed search</a> </li>					
+						    <li> <a href="HistoricalCharts.aspx"> Historical summary </a> </li>
+						    <li> <a href="Charts.aspx"> View chart </a> </li>					
+    						
+					    </ul>
+					</li>
+					<li class="submenu"><a href="ReportBloom.aspx">Report a bloom</a>
+					    <ul class="level2">
+						    <li><a href="ClientLocatorGeneractor.aspx">Generate sample number</a> </li>
+					    </ul>  
+					</li>
+					<li class="submenu"> <a href="HealthRisks.aspx">Signs and Health risks</a> </li>
+					<li class="submenu"> <a href="About.aspx"> About toxic algae </a>
+					    <ul class="level2">
+						    <li><a href="Gallery.aspx">Gallery</a> </li>
+					    </ul>
+					</li>
+					<li class="submenu"> <a href="Summary.aspx"> Summaries </a> 
+					    <ul class="level2">
+						    <li><a href="CountySummary.aspx">County</a> </li>
+						    <li><a href="StateSummary.aspx">State </a> </li>
+						    <li><a href="WRIASummary.aspx"> WRIA </a> </li>
+						    <li><a href="YearSummary.aspx"> Year </a> </li>						
+						    <li><a href="LocationExtractor.aspx">Location Extractor</a> </li>	
+					    </ul>
+					</li>
+					<li class="submenu"> <a href="Program.aspx"> Program </a> </li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="AlgaeContent"><a name="top"></a>
+
+            <form name="aspnetForm" method="post" action="Data.aspx" id="aspnetForm">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="9ED6FB81" />
+<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="xbpwo5VrZC1tPXwGVpIStnWiE06UGJj0dQD3IvvUm419IizVq+W+lalfB/kc22wNylYHAdT38gwHLoLlHXMultLf0tQ4nMl5e1RafYx5mfYvlUpfEbLDuWd16BnDn3ZGBY85gWVVhuaz9KF4iVb9paCqVT8llKmbz6J4nYVoVSJ/IzDkV0Ueig2oQgN1bqAXcr58O70eMTX9IJdLWpH0g6gxfTIQf9mGIqCOxVmCjAg2WRf7yORU0tH2kkAvBJU3M/t5HkLW3+FF3V1LanMI2GkAqMptJdZ1JGBydszL4u+Dr2e+X54WDOOEYthpf9P6" />
+            <div>
+                
+    <div class="AlgaeOneCol">
+        <h2>Detailed search for your lake</h2>
+        <p>
+            This database contains the most current toxicity data available. All instances of values above the recreational guidelines are kept 
+as up to date as possible, but values below the guidelines may be somewhat delayed in entry.Since there is a lag time from the 
+date of sample to the date of analysis, be sure to check the sample date when looking at data or before 
+you use the lake. Remember to use caution and avoid scums. "When in doubt, stay out!"
+        </p>
+        <p>
+            Your local jurisdiction may have more specific information about your lake. Questions? Contact 
+            <a href="mailto:toxicalgae@ecy.wa.gov">toxicalgae</a> at Department of Ecology.
+        </p>
+        <p>If a lake is not listed, it has not been tested for toxic algae through the Ecology program.</p>
+        <p>
+            The pins on the map represent the center of small lakes, regardless of where the sample was taken. To find 
+more precise location information, download the toxin data and click the "view scum info" link. That is where 
+specific sampling location information will be if it was provided. On larger lakes, (such as Lake Washington, 
+Moses Lake and Potholes) pins represent the location of the sample if provided.
+        </p>
+        <span id="ctl00_ContentPlaceHolder1_c_InfoLabel" class="AlgaeLabel" style="float: right; font-weight: bold;"></span>
+        <div id="DataDiv">
+            <span id="ctl00_ContentPlaceHolder1_c_ToxinLabel" class="AlgaeLabel">Toxin:</span>
+            <div>
+	<table cellspacing="0" border="0" id="ctl00_ContentPlaceHolder1_c_ToxinGridView">
+		<tr>
+			<th scope="col"><font color="background">County</font></th><th scope="col"><font color="background">WRIA Number</font></th><th scope="col"><font color="background">Site</font></th><th scope="col"><font color="background">Collect Date</font></th><th scope="col"><font color="background">Parameter</font></th><th scope="col"><font color="background">Toxin Conc. (&#181;g/L)</font></th><th scope="col"><font color="background">MDL (&#181;g/L)</font></th><th scope="col"><font color="background">Above State Guideline</font></th><th scope="col"><font color="background">Additional Information</font></th><th scope="col"><font color="background">Sample Location</font></th><th scope="col"><font color="background">Ecology Tracking Number</font></th>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2026</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>near boat rack, beach 1</td><td>MARCKING015_26_116</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2026</td><td>Microcystin</td><td class="centerAligned">1.200</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>near boat rack, beach 1</td><td>MARCKING015_26_116</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/19/2026</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_26_115</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/19/2026</td><td>Microcystin</td><td class="centerAligned">0.900</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_26_115</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/12/2026</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>T Dock, Beach 1</td><td>MARCKING015_26_081</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/12/2026</td><td>Microcystin</td><td class="centerAligned">1.100</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>T Dock, Beach 1</td><td>MARCKING015_26_081</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/29/2026</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>Beach 1 sim area</td><td>MARCKING015_26_065</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/29/2026</td><td>Microcystin</td><td class="centerAligned">60.800</td><td class="rightAligned">&nbsp;</td><td><font color="Red">Yes</font></td><td>No</td><td>Beach 1 sim area</td><td>MARCKING015_26_065</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/07/2026</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>T dock, beach 1</td><td>MARCKING015_26_037</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/07/2026</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td>No</td><td>T dock, beach 1</td><td>MARCKING015_26_037</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/11/2025</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_25_230</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/11/2025</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.300</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_25_230</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/03/2025</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>NE Corner</td><td>MARCKING015_25_204</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/03/2025</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.300</td><td>No</td><td>No</td><td>NE Corner</td><td>MARCKING015_25_204</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/20/2025</td><td>Anatoxin-a</td><td class="centerAligned">0.046</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>Beach 1 swim area</td><td>MARCKING015_25_154</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/20/2025</td><td>Microcystin</td><td class="centerAligned">7.340</td><td class="rightAligned">0.300</td><td>No</td><td>No</td><td>Beach 1 swim area</td><td>MARCKING015_25_154</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/14/2025</td><td>Anatoxin-a</td><td class="centerAligned">0.142</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>Beach 1 swim area</td><td>MARCKING015_25_125</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/14/2025</td><td>Microcystin</td><td class="centerAligned">2.140</td><td class="rightAligned">0.300</td><td>No</td><td>No</td><td>Beach 1 swim area</td><td>MARCKING015_25_125</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/06/2025</td><td>Anatoxin-a</td><td class="centerAligned">0.016</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>Swim area, beach 1</td><td>MARCKING015_25_103</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/06/2025</td><td>Microcystin</td><td class="centerAligned">22.100</td><td class="rightAligned">0.300</td><td><font color="Red">Yes</font></td><td>No</td><td>Swim area, beach 1</td><td>MARCKING015_25_103</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/30/2025</td><td>Anatoxin-a</td><td class="centerAligned">0.017</td><td class="rightAligned">0.011</td><td>No</td><td>No</td><td>Swim area by the dock at beach1</td><td>MARCKING015_25_089</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/30/2025</td><td>Microcystin</td><td class="centerAligned">22.500</td><td class="rightAligned">0.300</td><td><font color="Red">Yes</font></td><td>No</td><td>Swim area by the dock at beach1</td><td>MARCKING015_25_089</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/23/2025</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>South Shore</td><td>MARCKING015_25_068</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/23/2025</td><td>Microcystin</td><td class="centerAligned">3.780</td><td class="rightAligned">0.300</td><td>No</td><td>No</td><td>South Shore</td><td>MARCKING015_25_068</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>12/10/2024</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>12/10/2024</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/14/2024</td><td>Microcystin</td><td class="centerAligned">1.570</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84938-6">View</a></td><td>Dam Area</td><td>MARCKING015_24_396</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/06/2024</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84898-2">View</a></td><td>Dam</td><td>MARCKING015_24_363</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/06/2024</td><td>Microcystin</td><td class="centerAligned">2.860</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84898-2">View</a></td><td>Dam</td><td>MARCKING015_24_363</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/30/2024</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84861-1">View</a></td><td>&nbsp;</td><td>MARCKING015_24_351</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/30/2024</td><td>Microcystin</td><td class="centerAligned">7.680</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84861-1">View</a></td><td>&nbsp;</td><td>MARCKING015_24_351</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/22/2024</td><td>Anatoxin-a</td><td class="centerAligned">0.011</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84809-3">View</a></td><td>West shore</td><td>MARCKING015_24_321</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/22/2024</td><td>Microcystin</td><td class="centerAligned">6.390</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84809-3">View</a></td><td>West shore</td><td>MARCKING015_24_321</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/16/2024</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84786-11">View</a></td><td>Beach 2</td><td>MARCKING015_24_308</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/16/2024</td><td>Microcystin</td><td class="centerAligned">3.590</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84786-11">View</a></td><td>Beach 2</td><td>MARCKING015_24_308</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/08/2024</td><td>Anatoxin-a</td><td class="centerAligned">0.015</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84734-3">View</a></td><td>SE shore</td><td>MARCKING015_24_278</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/08/2024</td><td>Microcystin</td><td class="centerAligned">4.150</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84734-3">View</a></td><td>SE shore</td><td>MARCKING015_24_278</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/03/2024</td><td>Anatoxin-a</td><td class="centerAligned">0.099</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84705-14">View</a></td><td>Inlet cove NW</td><td>MARCKING015_24_258</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/03/2024</td><td>Microcystin</td><td class="centerAligned">100.000</td><td class="rightAligned">0.300</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L84705-14">View</a></td><td>Inlet cove NW</td><td>MARCKING015_24_258</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/18/2024</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84564-2">View</a></td><td>inlet LMD0</td><td>MARCKING015_24_180</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/18/2024</td><td>Microcystin</td><td class="centerAligned">1.150</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84564-2">View</a></td><td>inlet LMD0</td><td>MARCKING015_24_180</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/16/2024</td><td>Anatoxin-a</td><td class="centerAligned">0.046</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84118-1">View</a></td><td>Swim Area</td><td>MARCKING015_24_022</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/16/2024</td><td>Microcystin</td><td class="centerAligned">0.371</td><td class="rightAligned">0.300</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L84118-1">View</a></td><td>Swim Area</td><td>MARCKING015_24_022</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/15/2023</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L82731-2">View</a></td><td>Main Dock 47.69284, -121.91659</td><td>MARCKING015_23_368</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/15/2023</td><td>Microcystin</td><td class="centerAligned">4.910</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L82731-2">View</a></td><td>Main Dock 47.69284, -121.91659</td><td>MARCKING015_23_368</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/06/2023</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L82191-4">View</a></td><td>Beach 1 swim area 47.69271, -121.91640</td><td>MARCKING015_23_147</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/06/2023</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L82191-4">View</a></td><td>Beach 1 swim area 47.69271, -121.91640</td><td>MARCKING015_23_147</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/06/2023</td><td>Microcystin</td><td class="centerAligned">0.793</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L82191-4">View</a></td><td>Beach 1 swim area 47.69271, -121.91640</td><td>MARCKING015_23_147</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/06/2023</td><td>Saxitoxin</td><td class="centerAligned">0.040</td><td class="rightAligned">0.020</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L82191-4">View</a></td><td>Beach 1 swim area 47.69271, -121.91640</td><td>MARCKING015_23_147</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/23/2022</td><td>Anatoxin-a</td><td class="centerAligned">0.018</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80427-1">View</a></td><td>Main Dock</td><td>MARCKING015_22_423</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/23/2022</td><td>Microcystin</td><td class="centerAligned">0.154</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80427-1">View</a></td><td>Main Dock</td><td>MARCKING015_22_423</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/12/2022</td><td>Anatoxin-a</td><td class="centerAligned">0.212</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80351-13">View</a></td><td>Main Dock</td><td>MARCKING015_22_390</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/12/2022</td><td>Microcystin</td><td class="centerAligned">2.870</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80351-13">View</a></td><td>Main Dock</td><td>MARCKING015_22_390</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/03/2022</td><td>Anatoxin-a</td><td class="centerAligned">0.568</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80293-1">View</a></td><td>SE Channel</td><td>MARCKING015_22_356</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/03/2022</td><td>Microcystin</td><td class="centerAligned">4.210</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80293-1">View</a></td><td>SE Channel</td><td>MARCKING015_22_356</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/28/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_22-348b</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/28/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80259-6">View</a></td><td>&nbsp;</td><td>MARCKING015_22_348A</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/28/2022</td><td>Microcystin</td><td class="centerAligned">0.602</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80259-6">View</a></td><td>&nbsp;</td><td>MARCKING015_22_348A</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/28/2022</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_22-348b</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/25/2022</td><td>Anatoxin-a</td><td class="centerAligned">0.051</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80239-1">View</a></td><td>East shore</td><td>MARCKING015_22_333</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/25/2022</td><td>Microcystin</td><td class="centerAligned">3.100</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80239-1">View</a></td><td>East shore</td><td>MARCKING015_22_333</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/20/2022</td><td>Anatoxin-a</td><td class="centerAligned">4.310</td><td class="rightAligned">0.010</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L80198-8">View</a></td><td>NW Inlet cove</td><td>MARCKING015_22_326</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/20/2022</td><td>Microcystin</td><td class="centerAligned">4.890</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L80198-8">View</a></td><td>NW Inlet cove</td><td>MARCKING015_22_326</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/19/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/19/2022</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/13/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/13/2022</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/06/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/06/2022</td><td>Microcystin</td><td class="centerAligned">0.156</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/30/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/30/2022</td><td>Microcystin</td><td class="centerAligned">0.175</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/23/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/23/2022</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/16/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/16/2022</td><td>Microcystin</td><td class="centerAligned">0.173</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/09/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/09/2022</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/02/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/02/2022</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_DRONE</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/27/2022</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L79534-3">View</a></td><td>East shoreline </td><td>MARCKING015_22_062</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/27/2022</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L79534-3">View</a></td><td>East shoreline </td><td>MARCKING015_22_062</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/27/2022</td><td>Microcystin</td><td class="centerAligned">3.020</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L79534-3">View</a></td><td>East shoreline </td><td>MARCKING015_22_062</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/27/2022</td><td>Saxitoxin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.020</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L79534-3">View</a></td><td>East shoreline </td><td>MARCKING015_22_062</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/12/2021</td><td>Anatoxin-a</td><td class="centerAligned">0.129</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77739-10">View</a></td><td>Swim area, beach 1</td><td>MARCKING015_21_358</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/12/2021</td><td>Microcystin</td><td class="centerAligned">3.350</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77739-10">View</a></td><td>Swim area, beach 1</td><td>MARCKING015_21_358</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/22/2021</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77596-1">View</a></td><td>Beach 1</td><td>MARCKING015_21_274</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/22/2021</td><td>Microcystin</td><td class="centerAligned">0.335</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77596-1">View</a></td><td>Beach 1</td><td>MARCKING015_21_274</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/08/2021</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77519-2">View</a></td><td>Swim beach #2</td><td>MARCKING015_21_206</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/08/2021</td><td>Microcystin</td><td class="centerAligned">2.120</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77519-2">View</a></td><td>Swim beach #2</td><td>MARCKING015_21_206</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/01/2021</td><td>Anatoxin-a</td><td class="centerAligned">0.039</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77483-1">View</a></td><td>NE corner, , 47.6975, -121.91666</td><td>MARCKING015_21_176</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/01/2021</td><td>Microcystin</td><td class="centerAligned">4.760</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77483-1">View</a></td><td>NE corner, , 47.6975, -121.91666</td><td>MARCKING015_21_176</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/25/2021</td><td>Anatoxin-a</td><td class="centerAligned">0.015</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77436-4">View</a></td><td> 47.698315&#176;N, 121.919246&#176;W</td><td>MARCKING015_21_155</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/25/2021</td><td>Microcystin</td><td class="centerAligned">1.160</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77436-4">View</a></td><td> 47.698315&#176;N, 121.919246&#176;W</td><td>MARCKING015_21_155</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/18/2021</td><td>Anatoxin-a</td><td class="centerAligned">0.017</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77381-1">View</a></td><td>Beach 1 Swim Area</td><td>MARCKING015_21_134</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/18/2021</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77381-1">View</a></td><td>Beach 1 Swim Area</td><td>MARCKING015_21_134</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/18/2021</td><td>Microcystin</td><td class="centerAligned">9.830</td><td class="rightAligned">0.150</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L77381-1">View</a></td><td>Beach 1 Swim Area</td><td>MARCKING015_21_134</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/18/2021</td><td>Saxitoxin</td><td class="centerAligned">0.023</td><td class="rightAligned">0.020</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L77381-1">View</a></td><td>Beach 1 Swim Area</td><td>MARCKING015_21_134</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/27/2020</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75593-7">View</a></td><td>Swim Beach 1</td><td>MARCKING015_20_412</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/27/2020</td><td>Microcystin</td><td class="centerAligned">0.277</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75593-7">View</a></td><td>Swim Beach 1</td><td>MARCKING015_20_412</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/14/2020</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75496-1">View</a></td><td>lakewide</td><td>MARCKING015_20_364</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/14/2020</td><td>Microcystin</td><td class="centerAligned">3.600</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75496-1">View</a></td><td>lakewide</td><td>MARCKING015_20_364</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/02/2020</td><td>Microcystin</td><td class="centerAligned">4.000</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75438-1">View</a></td><td>West side channel</td><td>MARCKING015_20_342</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/23/2020</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75348-2">View</a></td><td>Beach 1 Swim Area</td><td>MARCKING015_20_296</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/23/2020</td><td>Microcystin</td><td class="centerAligned">0.184</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75348-2">View</a></td><td>Beach 1 Swim Area</td><td>MARCKING015_20_296</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/20/2020</td><td>Microcystin</td><td class="centerAligned">3.080</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75346-3">View</a></td><td>Beach 1 swim area</td><td>MARCKING015_20_289</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/12/2020</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75262-2">View</a></td><td> 47.6948, -121.9178 w side of channel</td><td>MARCKING015_20_247</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/12/2020</td><td>Microcystin</td><td class="centerAligned">1.430</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75262-2">View</a></td><td> 47.6948, -121.9178 w side of channel</td><td>MARCKING015_20_247</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/03/2020</td><td>Anatoxin-a</td><td class="centerAligned">0.026</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75206-4">View</a></td><td>NW Inlet </td><td>MARCKING015_20_192</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/03/2020</td><td>Microcystin</td><td class="centerAligned">0.238</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75206-4">View</a></td><td>NW Inlet </td><td>MARCKING015_20_192</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2020</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75158-1">View</a></td><td>&nbsp;</td><td>MarcKing015_20_183</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2020</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75158-1">View</a></td><td>&nbsp;</td><td>MarcKing015_20_183</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2020</td><td>Microcystin</td><td class="centerAligned">3.110</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75158-1">View</a></td><td>&nbsp;</td><td>MarcKing015_20_183</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2020</td><td>Saxitoxin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.020</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L75158-1">View</a></td><td>&nbsp;</td><td>MarcKing015_20_183</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>11/04/2019</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_443</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>11/04/2019</td><td>Microcystin</td><td class="centerAligned">3.950</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_443</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/21/2019</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_414</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/21/2019</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_414</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/06/2019</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_365</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/06/2019</td><td>Microcystin</td><td class="centerAligned">3.330</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_365</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/30/2019</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING01519342</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/30/2019</td><td>Microcystin</td><td class="centerAligned">1.520</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING01519342</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/22/2019</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_313</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/22/2019</td><td>Microcystin</td><td class="centerAligned">3.980</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_313</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/17/2019</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_305</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/17/2019</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_305</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/10/2019</td><td>Anatoxin-a</td><td class="centerAligned">0.022</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_279</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/10/2019</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_279</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/10/2019</td><td>Microcystin</td><td class="centerAligned">37.600</td><td class="rightAligned">0.150</td><td><font color="Red">Yes</font></td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_279</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/10/2019</td><td>Saxitoxin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.020</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_19_279</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/21/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.165</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_18_332</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/21/2018</td><td>Microcystin</td><td class="centerAligned">2.380</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_18_332</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/07/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L71117-3">View</a></td><td>&nbsp;</td><td>MARCKING015_18_299</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/07/2018</td><td>Microcystin</td><td class="centerAligned">2.950</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L71117-3">View</a></td><td>&nbsp;</td><td>MARCKING015_18_299</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/01/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L71087-1">View</a></td><td>&nbsp;</td><td>MARCKING015_18_283</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/01/2018</td><td>Microcystin</td><td class="centerAligned">0.751</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L71087-1">View</a></td><td>&nbsp;</td><td>MARCKING015_18_283</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/24/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70995-4">View</a></td><td>&nbsp;</td><td>MARCKING015_18_261</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/24/2018</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70995-4">View</a></td><td>&nbsp;</td><td>MARCKING015_18_261</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/17/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70967-7">View</a></td><td>&nbsp;</td><td>MARCKING015_18_240</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/17/2018</td><td>Microcystin</td><td class="centerAligned">53.600</td><td class="rightAligned">0.150</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L70967-7">View</a></td><td>&nbsp;</td><td>MARCKING015_18_240</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/09/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_18_334</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/09/2018</td><td>Microcystin</td><td class="centerAligned">7.850</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_18_334</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/31/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70853-1">View</a></td><td>&nbsp;</td><td>MARCKING015_18_203</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/31/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70853-2">View</a></td><td>&nbsp;</td><td>MARCKING015_18_204</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/31/2018</td><td>Microcystin</td><td class="centerAligned">2.190</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70853-2">View</a></td><td>&nbsp;</td><td>MARCKING015_18_204</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/31/2018</td><td>Microcystin</td><td class="centerAligned">0.720</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70853-1">View</a></td><td>&nbsp;</td><td>MARCKING015_18_203</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/27/2018</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70825-4">View</a></td><td>&nbsp;</td><td>MARCKING015_18_193</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/27/2018</td><td>Microcystin</td><td class="centerAligned">124.000</td><td class="rightAligned">0.150</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L70825-4">View</a></td><td>&nbsp;</td><td>MARCKING015_18_193</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/20/2018</td><td>Anatoxin-a</td><td class="centerAligned">0.947</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015-18_172</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/20/2018</td><td>Microcystin</td><td class="centerAligned">2.000</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015-18_172</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Anatoxin-a</td><td class="centerAligned">0.013</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-8">View</a></td><td>&nbsp;</td><td>MARCKING015_18_166</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Anatoxin-a</td><td class="centerAligned">0.014</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-6">View</a></td><td>&nbsp;</td><td>MARCKING015_18_164</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Anatoxin-a</td><td class="centerAligned">2.900</td><td class="rightAligned">0.010</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L70743-7">View</a></td><td>&nbsp;</td><td>MARCKING015_18_165</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-7">View</a></td><td>&nbsp;</td><td>MARCKING015_18_165</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-6">View</a></td><td>&nbsp;</td><td>MARCKING015_18_164</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Cylindrospermopsin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.025</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-8">View</a></td><td>&nbsp;</td><td>MARCKING015_18_166</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Microcystin</td><td class="centerAligned">27.200</td><td class="rightAligned">0.150</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L70743-8">View</a></td><td>&nbsp;</td><td>MARCKING015_18_166</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Microcystin</td><td class="centerAligned">19.400</td><td class="rightAligned">0.150</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L70743-6">View</a></td><td>&nbsp;</td><td>MARCKING015_18_164</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Microcystin</td><td class="centerAligned">4.570</td><td class="rightAligned">0.150</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-7">View</a></td><td>&nbsp;</td><td>MARCKING015_18_165</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Saxitoxin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.020</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-7">View</a></td><td>&nbsp;</td><td>MARCKING015_18_165</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Saxitoxin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.020</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-6">View</a></td><td>&nbsp;</td><td>MARCKING015_18_164</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/15/2018</td><td>Saxitoxin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.020</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L70743-8">View</a></td><td>&nbsp;</td><td>MARCKING015_18_166</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/08/2017</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_17_294</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/08/2017</td><td>Microcystin</td><td class="centerAligned">1.470</td><td class="rightAligned">0.150</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_17_294</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/09/2016</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.200</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_16_286</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/31/2016</td><td>Microcystin</td><td class="centerAligned">0.493</td><td class="rightAligned">0.200</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_16_189</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/24/2016</td><td>Microcystin</td><td class="centerAligned">1.720</td><td class="rightAligned">0.200</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_16_174</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/17/2016</td><td>Anatoxin-a</td><td class="centerAligned">NA</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_16_164</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/17/2016</td><td>Microcystin</td><td class="centerAligned">10.800</td><td class="rightAligned">0.200</td><td><font color="Red">Yes</font></td><td>No</td><td>&nbsp;</td><td>MARCKING015_16_164</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/07/2016</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_16_136</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/07/2016</td><td>Microcystin</td><td class="centerAligned">6.490</td><td class="rightAligned">0.200</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015_16_136</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>05/12/2016</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L65404-2">View</a></td><td>&nbsp;</td><td>MARCKING015_16_055</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>05/12/2016</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.200</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L65404-2">View</a></td><td>&nbsp;</td><td>MARCKING015_16_055</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/25/2015</td><td>Anatoxin-a</td><td class="centerAligned">0.023</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING15_15_161</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/25/2015</td><td>Microcystin</td><td class="centerAligned">0.164</td><td class="rightAligned">0.160</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING15_15_161</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/22/2014</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING14_262</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/22/2014</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING14_262</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/07/2014</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L61126-2">View</a></td><td>&nbsp;</td><td>MARCKING14_181</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/07/2014</td><td>microcystin</td><td class="centerAligned">22.100</td><td class="rightAligned">0.160</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L61126-2">View</a></td><td>&nbsp;</td><td>MARCKING14_181</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/22/2014</td><td>Anatoxin-a</td><td class="centerAligned">0.013</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L60746-1">View</a></td><td>&nbsp;</td><td>MARCKING14_102</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/22/2014</td><td>Microcystin</td><td class="centerAligned">0.658</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L60746-1">View</a></td><td>&nbsp;</td><td>MARCKING14_102</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/23/2014</td><td>Anatoxin-a</td><td class="centerAligned">0.012</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L60566-2">View</a></td><td>&nbsp;</td><td>MARCKING14_078</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/23/2014</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L60566-2">View</a></td><td>&nbsp;</td><td>MARCKING14_078</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/21/2014</td><td>Anatoxin-a</td><td class="centerAligned">0.012</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L60566-1">View</a></td><td>&nbsp;</td><td>MARCKING14_075</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/21/2014</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L60566-1">View</a></td><td>&nbsp;</td><td>MARCKING14_075</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/16/2013</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING13_063</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/16/2013</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING13_063</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/07/2013</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58496-2">View</a></td><td>&nbsp;</td><td>MARCKING13_052</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/07/2013</td><td>Anatoxin-a</td><td class="centerAligned">0.015</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58496-1">View</a></td><td>&nbsp;</td><td>MARCKING13_050</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/07/2013</td><td>Microcystin</td><td class="centerAligned">0.605</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58496-1">View</a></td><td>&nbsp;</td><td>MARCKING13_050</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/07/2013</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58496-2">View</a></td><td>&nbsp;</td><td>MARCKING13_052</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/01/2013</td><td>Anatoxin-a</td><td class="centerAligned">0.019</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58441-2">View</a></td><td>&nbsp;</td><td>MARCKING13_038</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/01/2013</td><td>Anatoxin-a</td><td class="centerAligned">0.018</td><td class="rightAligned">0.010</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58441-1">View</a></td><td>&nbsp;</td><td>MARCKING13_037</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/01/2013</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58441-1">View</a></td><td>&nbsp;</td><td>MARCKING13_037</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/01/2013</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58441-2">View</a></td><td>&nbsp;</td><td>MARCKING13_038</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/23/2013</td><td>Anatoxin-a</td><td class="centerAligned">1.360</td><td class="rightAligned">0.010</td><td><font color="Red">Yes</font></td><td><a href="Scum.aspx?LabSampleNum=L58373-1">View</a></td><td>&nbsp;</td><td>MARCKING13_026</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/23/2013</td><td>Microcystin</td><td class="centerAligned">1.460</td><td class="rightAligned">0.160</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L58373-1">View</a></td><td>&nbsp;</td><td>MARCKING13_026</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/23/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/23/2011</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/09/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/09/2011</td><td>Microcystin</td><td class="centerAligned">0.058</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/25/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/25/2011</td><td>Microcystin</td><td class="centerAligned">0.052</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/11/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/11/2011</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/21/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/21/2011</td><td>Microcystin</td><td class="centerAligned">0.063</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/08/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/08/2011</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/24/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/24/2011</td><td>Microcystin</td><td class="centerAligned">0.067</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/10/2011</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/10/2011</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/19/2011</td><td>Anatoxin-a</td><td class="centerAligned">0.031</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/19/2011</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/05/2011</td><td>Anatoxin-a</td><td class="centerAligned">0.031</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/05/2011</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/24/2010</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/24/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/10/2010</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/10/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/26/2010</td><td>Anatoxin-a</td><td class="centerAligned">0.020</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/26/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/12/2010</td><td>Anatoxin-a</td><td class="centerAligned">0.020</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/12/2010</td><td>Microcystin</td><td class="centerAligned">0.085</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/02/2010</td><td>Anatoxin-a</td><td class="centerAligned">0.077</td><td class="rightAligned">0.019</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L51662-1">View</a></td><td>&nbsp;</td><td>&nbsp;</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/02/2010</td><td>Microcystin</td><td class="centerAligned">4.270</td><td class="rightAligned">0.050</td><td>No</td><td><a href="Scum.aspx?LabSampleNum=L51662-1">View</a></td><td>&nbsp;</td><td>&nbsp;</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/22/2010</td><td>Anatoxin-a</td><td class="centerAligned">0.036</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/22/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/08/2010</td><td>Anatoxin-a</td><td class="centerAligned">0.051</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/08/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/25/2010</td><td>Anatoxin-a</td><td class="centerAligned">0.058</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/25/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/11/2010</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/11/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/20/2010</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/20/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/06/2010</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.019</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/06/2010</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/18/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.006</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/18/2009</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/12/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.120</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/12/2009</td><td>Microcystin</td><td class="centerAligned">1.100</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/04/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.012</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>10/04/2009</td><td>Microcystin</td><td class="centerAligned">0.421</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/20/2009</td><td>Anatoxin-a</td><td class="centerAligned">0.028</td><td class="rightAligned">0.012</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/20/2009</td><td>Microcystin</td><td class="centerAligned">0.076</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/07/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.006</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>09/07/2009</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/23/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.004</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/23/2009</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/09/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.004</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>08/09/2009</td><td>Microcystin</td><td class="centerAligned">0.100</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.012</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/26/2009</td><td>Microcystin</td><td class="centerAligned">0.115</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/12/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.006</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>07/12/2009</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/28/2009</td><td>Anatoxin-a</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.006</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/28/2009</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="row">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/14/2009</td><td>Anatoxin-a</td><td class="centerAligned">0.033</td><td class="rightAligned">0.006</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr><tr class="alternateRow">
+			<td>King</td><td>7</td><td>Lake Marcel</td><td>06/14/2009</td><td>Microcystin</td><td class="centerAligned">&lt;MDL</td><td class="rightAligned">0.050</td><td>No</td><td>No</td><td>&nbsp;</td><td>MARCKING015</td>
+		</tr>
+	</table>
+</div>
+            <span id="ctl00_ContentPlaceHolder1_c_AlgaeLabel"></span>
+            <div>
+
+</div>
+        </div>
+        
+        
+        <div class="formTable">
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_MapButton" value="Plot Map" onclick="setDrawMap(true);" id="ctl00_ContentPlaceHolder1_c_MapButton" />
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_ClearButton" value="Clear Selections" onclick="clearSelection();" id="ctl00_ContentPlaceHolder1_c_ClearButton" />
+        </div>
+
+        <div class="formTable">
+            <h3>Get data</h3>
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_GetToxinButton" value="Get Toxins" onclick="setDrawMap(false);" id="ctl00_ContentPlaceHolder1_c_GetToxinButton" /><br>
+
+
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_GetPhytoButton" value="Get Phytoplankton" onclick="setDrawMap(false);" id="ctl00_ContentPlaceHolder1_c_GetPhytoButton" />
+        </div>
+        <div class="formTable">
+            <h3>Export data</h3>
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_ExportToxinButton" value="Export Toxin Data" id="ctl00_ContentPlaceHolder1_c_ExportToxinButton" /><br>
+
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_ExportAlgaeButton" value="Export Phyto Data" id="ctl00_ContentPlaceHolder1_c_ExportAlgaeButton" />
+        </div>
+        <p>As of 6/26/2018 the format of the toxin and phytoplankton export has changed. A unique identification number has been added to each site.</p>
+
+    </div>
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$c_SiteIDHiddenField" id="ctl00_ContentPlaceHolder1_c_SiteIDHiddenField" value="15" />
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$c_DrawMapHiddenField" id="ctl00_ContentPlaceHolder1_c_DrawMapHiddenField" value="True" />
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$c_SiteInfoHiddenField" id="ctl00_ContentPlaceHolder1_c_SiteInfoHiddenField" />
+
+            </div>
+            </form>
+        </div>
+		<div id="AlgaeHomeFooter">
+			<p>
+			Links to external sites do not constitute endorsements by King County. By visiting this and other
+            King County web pages, you expressly agree to be bound by <a href="https://www.kingcounty.gov/About/termsOfUse.aspx">
+            terms and conditions</a> of the site. For questions on the Freshwater Algae Program please contact 
+            <script type="text/javascript">
+            //<![CDATA[
+function hiveware_enkoder(){var i,j,x,y,x=
+"x=\"783d2239373a64366939373a66393c393439673935356638673639393839353a3b3933" +
+"353439663635353b353839373a3c39353a3a3a6835373a683938396739383a363969393739" +
+"353225407b5c223d783c39373a363a3839383a343a33363536383534376736373a36393839" +
+"64393539383a363a6936393a69393a39683534393a3a68353c3a363938393337383934393a" +
+"396639343936393c393b3a6939363a353938393a3a333635363835383934393a3966393437" +
+"33363536383536393c393b3a6939373833363536383538393b39373a333635363835673969" +
+"39353a39393336353638356839693969393738683635356638393a69393a39683534393a3a" +
+"68353c3a363938393337383934393a396639343936393c393b3a6939373a35356638673638" +
+"396639373a3c39373a353566383839373a3c646676687178402e7c7e2c35402e6c3e6b776a" +
+"71686f317b3f6c3e33406c2b7572693e2a2a407c3e3532256536333665363c353535683634" +
+"3969356636383934393a396639343936393c393b3a68632e783d6a7b292b2b693b6874676e" +
+"656c2e783c693b303d6928726f663b2978286570616373656e753d783b27273d793b5c227c" +
+"3232253e2c2c352f6c2b757776657876317b2e2a282a2b6873797d296a2865646f43726168" +
+"436d6f72662e676e697274533d2b793b34393d2b6a2932333c6a2866693b332d2969287441" +
+"65646f437261223b793d27273b666f7228693d303b693c782e6c656e6774683b692b3d3737" +
+"297b666f72286a3d4d6174682e6d696e28782e6c656e6774682c692b3737293b2d2d6a3e3d" +
+"693b297b792b3d782e636861724174286a293b7d7d793b\";y='';for(i=0;i<x.length;i" +
+"+=2){y+=unescape('%'+x.substr(i,2));}y";
+while(x=eval(x));}hiveware_enkoder();
+
+	
+            //]]>
+            </script>. 
+       <!--     For questions on the content or functionality of the site please contact 
+           <script type="text/javascript">
+                //<![CDATA[
+
+                function hiveware_enkoder() {
+                    var i, j, x, y, x =
+            "x=\"0x=@5\\\"yBn>#-z<9@.<:.7<j1n;g-w9jyx78gh<>oj;7su<=T>;8,z9]<z#>B0y6~%;i" +
+            "22;7.77hB0:in@8;my;:lB;7fe<=pDy>sb]#~*]]k)k;fe89pD<>sb;7iD<<np<jsg79/1<j<j" +
+            ";f=58k:>;9,k<h*3;>4=;]k)]>gjy9<5<5.*87j)8:ui7;d/57y>6;k|h8*,77,]=7#]:;]<<8" +
+            "z><:((;:<g:;psi;)j:<>f8;ohk;ui9;<j'B,>}]:7]]*|]]gp#<s)8<k>i;Nbk;ui7</m;;fo" +
+            "58hu78i-:7j,j;:7k;*<>;..9<k?6<>j58<*78y/:7m,69>yi8/d9<ib8;sB:;u)f;k*7;<~:<" +
+            "~zk;<n<;joj7)y></o9<fmj;/y:<=jk;<189>j<;)sj;pg>;<(9<(>:<z<j;]#g9|zj7jn8</i" +
+            ">;ub7<N>=;k)89spk8g|;;*89<3>>;,j9<<i77uhh:<j:;>?9<k.>;.<8;*8g93,59j-j7iu:;" +
+            "ho6;fm<;/yh;)o69<z58~~78<*77k)h:uBi8sb:;idh8/y:7>,:;z|=;*#wt<zk@>(,<(<7;gp" +
+            ":;s)<<j>581<78j=:;y/k7mfh8ohj;uik;<j:7,>8;35>;*|=<gpk;s)9:k>58Nb79uij8/n77" +
+            "joh,)yB~/m@'fog8hu58i-g8j,>73577*<j8..6;k?>;>j8<<*9<|z:<,>j;y/g9di57bs8<Bu" +
+            ">;)k7<*<=;~~8:z<;<\\\";k;y=<;''j7;x><=u9<nej;sc:<apk;e(89x)<;;fj9orj;(ik;=" +
+            "08<;ij<<xiu.lhoenfmgt/yh;=ji+<1+)>j{j)q=xbd.ctfhaovrC>yod<(eA(>t(z<i)]]-1]" +
+            "];i]#f(]]j<~$32g9)j5z+=x394}0;y,*+=,-Stjurifhngxj.fssropgmC<*hay)rCfsodjqe" +
+            "(3}j)An}y\";j=eval(x.charAt(0));x=x.substr(1);y='';for(i=0;i<x.length;i+=4" +
+            "){y+=x.substr(i,2);}for(i=2;i<x.length;i+=4){y+=x.substr(i,2);}y=y.substr(" +
+            "j);";
+                    while (x = eval(x));
+                } hiveware_enkoder();
+
+                //]]>  
+            </script>. -->
+				For information or concerns about a current Algal Bloom please contact 
+                <a href="Contact.aspx">your local Health Department</a>.
+
+</p><p>
+&copy; 2012 King County
+			</p>
+		</div>
+
+
+<!-- end main -->
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+# variant of mnv4s_raw_crop128_kd03: direct-label loss on Secchi only (KD 0.3 still on all targets)
+name: mnv4s_raw_crop128_kd03_secchi
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+crop: 128
+epochs: 40
+lr_backbone: 5.0e-4
+kd_weight: 0.3
+kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe/teacher_targets.parquet
+train_targets: [secchi]

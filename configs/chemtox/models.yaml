@@ -1,0 +1,24 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Phase-1 default configurations for the SENTINEL models (scripts/train/chemtox_cv.py).
+# One configuration per family: deep models are NOT tuned in phase 1.
+tabpfn:
+  package: tabpfn==2.2.1    # TabPFN v2 weights, Prior Labs Licence 1.1 (Apache-2.0 + attribution)
+  features: {fingerprint: MACCS, published: true, rdkit_descriptors: true}
+  params: {n_estimators: 4, max_train_rows: 6000, max_features: 300, predict_chunk: 2000, device: cuda}
+chemprop:
+  package: chemprop==2.3.1
+  features: {fingerprint: null, published: true}   # published block enters as extra FFN inputs
+  params: {max_epochs: 20, batch_size: 64, message_hidden: 300, depth: 3, ffn_hidden: 300,
+           ffn_layers: 2, species_dim: 16, dropout: 0.0, accelerator: gpu}
+chemprop_chemeleon:
+  package: chemprop==2.3.1
+  foundation: CheMeleon     # Zenodo 15460715; cite DOI 10.48550/arXiv.2506.15792
+  features: {fingerprint: null, published: true}
+  params: {max_epochs: 20, batch_size: 64, ffn_hidden: 300, ffn_layers: 2, species_dim: 16,
+           from_foundation: CheMeleon, accelerator: gpu}
+embeddings:
+  encoder: ChemBERTa-2      # DeepChem/ChemBERTa-77M-MLM, frozen; MoLFormer-XL also supported
+  features: {fingerprint: null, published: true}
+  params: {pooling: cls, n_estimators: 800, eta: 0.03, max_depth: 6, subsample: 0.8}
+gpu: {prefer: 2, max_gpus: 1}

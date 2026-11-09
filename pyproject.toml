@@ -4,58 +4,60 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinel"
-version = "0.1.0"
-description = "SENTINEL: Scalable Environmental Network for Temporal Intelligence and Ecological Learning"
+version = "2.0.0.dev0"
+description = "SENTINEL v2: honest multimodal deep learning for freshwater water-quality forecasting, disaster early warning and ecological insight"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 license = {text = "MIT"}
 authors = [
-    {name = "SENTINEL Team"},
+    {name = "Austin Jin"},
+    {name = "Bryan Cheng"},
 ]
-
+# Exact pins for the reference environment are in requirements-v2.txt.
 dependencies = [
-    "torch>=2.1",
-    "torchvision",
-    "numpy",
-    "pandas",
+    "torch>=2.7,<2.8",
+    "numpy>=1.26,<2.3",
+    "pandas>=2.2",
+    "pyarrow",
     "scipy",
     "scikit-learn",
+    "statsmodels",
+    "lightgbm",
+    "xgboost",
     "matplotlib",
-    "seaborn",
-    "transformers",
-    "timm",
-    "segmentation-models-pytorch",
-    "stable-baselines3",
-    "dataretrieval",
-    "earthengine-api",
-    "pystac-client",
-    "planetary-computer",
-    "rasterio",
-    "geopandas",
-    "shapely",
-    "GEOparse",
-    "biom-format",
-    "umap-learn",
-    "tqdm",
+    "requests",
     "pyyaml",
-    "wandb",
-    "rich",
+    "tqdm",
 ]
 
 [project.optional-dependencies]
-dashboard = [
-    "flask",
-    "flask-cors",
-]
-dev = [
-    "pytest",
-    "pytest-cov",
-    "ruff",
-]
+geo = ["rasterio", "rioxarray", "xarray", "pystac-client", "planetary-computer", "odc-stac",
+       "shapely", "pyproj", "geopandas", "pyogrio", "py7zr"]
+ts = ["chronos-forecasting>=2.3", "dataretrieval>=1.4"]
+dl = ["timm", "transformers", "accelerate", "safetensors", "einops", "captum", "shap"]
+causal = ["tigramite"]
+platform = ["fastapi", "uvicorn", "streamlit", "folium", "streamlit-folium", "pydeck", "plotly",
+            "python-multipart", "httpx", "rasterio", "rdkit"]
+edge = ["onnx", "onnxruntime"]
+# M4 SENTINEL-ChemTox (sentinel/models/chemtox). TabPFN is pinned to the 2.x line on purpose:
+# its weights are Prior Labs Licence 1.1 (Apache-2.0 + attribution) while 2.5+ are
+# non-commercial. Install tabpfn with --no-deps — its 'scikit-learn<1.7' and
+# 'huggingface-hub<1' pins would downgrade the shared environment (see requirements-v2.txt).
+chemtox = ["chemprop>=2.2.0", "rdkit==2025.9.3", "lightning>=2.6", "xgboost", "scikit-learn",
+           "transformers", "tabpfn==2.2.1", "lightgbm", "catboost", "gpboost==1.8.0"]
+# M2 SENTINEL-Orbit (sentinel/models/orbit): h5py reads the official MDN-STREAM Keras weights (data only).
+orbit = ["h5py==3.12.1", "lightgbm", "geopandas", "pyogrio"]
+dev = ["pytest", "ruff"]
+tsfm = ["timesfm==3.0.2"]
 
 [tool.setuptools.packages.find]
 include = ["sentinel*"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider -q"
+
 [tool.ruff]
-line-length = 100
+line-length = 110
 target-version = "py311"
+exclude = ["legacy"]

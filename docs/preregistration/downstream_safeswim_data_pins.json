@@ -1,0 +1,26 @@
+{
+ "app": "safeswim",
+ "created": "2026-11-08T19:33:22",
+ "expected": {
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+ },
+ "files": {
+  "processed/forcings_daily/coverage.parquet": "7834a44aaed630d05f5e062fcf5136dcea6c04fe2cee83974baeb63bd8c84ac8",
+  "processed/forcings_daily/dictionary.csv": "3b3f2903bc93b9ac68c1a16e60a8626bd3c5f3b012376832db62e5e454114c2c",
+  "processed/forcings_daily/forcings_daily.parquet": "cfbb6437bd1446609fb1daeb51a78c611bd4ce496c2083573ce94839d33cbe30",
+  "processed/labels_chicago_beaches/advisories_2016.parquet": "1bc8f947bbf067299e3df7806d6d2d6af9eab2c7cf8b7c8d7ec19491a4c02c69",
+  "processed/labels_chicago_beaches/beaches.parquet": "5ffa6ff1b7567950dab1c7150ddfbdc80bd5bed5b357f6047e1898ed063cddb5",
+  "processed/labels_chicago_beaches/build_stats.json": "ffe76c58b8a2f3e9145b9315b017f46bdf0ddddb70471df7dbbab0f72394ad1e",
+  "processed/labels_chicago_beaches/culture_ecoli.parquet": "9f960f94e73e2a18cd27372097766591c1eb39888f070e9f8082bd6ca134a4b6",
+  "processed/labels_chicago_beaches/predictions_official.parquet": "8cd8bb06d5ca59e30b6a8fdb601c1cf0eeca2e3822a2c9510b3e9af20a428f56",
+  "processed/labels_chicago_beaches/predictions_vs_qpcr_matched.parquet": "5f0271b7a9af32fe34c79073d8babf1375b4a9cacefe8573a0ea40422deb3184",
+  "processed/labels_chicago_beaches/qpcr_enterococci.parquet": "56229ad7b27ee41ec1a2127381fe885c5936d66000e783e053ae23084de762ad",
+  "processed/labels_chicago_beaches/sensor_locations.parquet": "ca7a0b106d8f4d872372deda969f251fb15cd5d88f9186d26cc149d1db726d70",
+  "processed/labels_chicago_beaches/water_sensors_long.parquet": "83ea40af7c546df9e98319a9a1fafa0f1be448c3856a76e7a24d18657b4f9b07",
+  "processed/labels_chicago_beaches/weather_sensors_long.parquet": "756d85e0445fae9c3e7b851019da8416e0cc05a0833b68107cc01b78417fd8b0",
+  "processed/safeswim_drivers/coops_water_level_daily.parquet": "7d4900f466df3e8e7c6ab7f45d53ad1c157b0bac2f1fef902318c8af00baa66f",
+  "processed/safeswim_drivers/ndbc_daily.parquet": "c1e0710179a4a08f47b016e69e425740e894010c42dd9bee2a7e39cafa65a9e3",
+  "processed/safeswim_drivers/usgs_discharge_daily.parquet": "22367a4e2e35e7224b52b5a332110e97bf100e3368c9a4d2821a3c5012e735a0",
+  "raw/gridmet/site_cells.parquet": "97eaed0ec7c7c3b7247dc7021729d3a33bb3cd8c89468c5c68007267893ea7b2"
+ }
+}

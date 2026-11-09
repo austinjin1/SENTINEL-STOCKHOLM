@@ -1,0 +1,11 @@
+# variant of mnv4s_raw_crop128: 20 epochs (turbidity val curve overfits after ~20; regularisation idea 1)
+name: mnv4s_raw_crop128_ep20
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+crop: 128
+epochs: 20
+lr_backbone: 5.0e-4
+kd_weight: 0.0

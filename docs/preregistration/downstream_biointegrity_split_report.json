@@ -1,0 +1,50 @@
+{
+ "sha256": "0d9de79a17b33e06e57703e15b2f4309bcabd0dbc55e8e21f3eb2a9558f1601c",
+ "n_units": 7804,
+ "by_role": {
+  "size": {
+   "test": 1944,
+   "train": 3942,
+   "val": 1918
+  },
+  "count": {
+   "test": 1489,
+   "train": 3007,
+   "val": 1445
+  },
+  "sum": {
+   "test": 883.0,
+   "train": 1733.0,
+   "val": 821.0
+  }
+ },
+ "by_role_class": {
+  "Fair": {
+   "test": 455,
+   "train": 935,
+   "val": 473
+  },
+  "Good": {
+   "test": 606,
+   "train": 1274,
+   "val": 624
+  },
+  "Poor": {
+   "test": 883,
+   "train": 1733,
+   "val": 821
+  }
+ },
+ "new_location_by_role": {
+  "false": {
+   "test": 83,
+   "train": 3942,
+   "val": 962
+  },
+  "true": {
+   "test": 1861,
+   "train": 0,
+   "val": 956
+  }
+ }
+}

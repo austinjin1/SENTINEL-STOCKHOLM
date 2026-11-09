@@ -1,0 +1,118 @@
+{
+ "status": "CANDIDATE \u2014 not frozen; M1 bar NOT met on the unseen (val-role) cell on val; the lead decides whether to freeze for Test-A now or after further cycles. Test data never loaded.",
+ "prepared": "2026-11-08T17:57:06",
+ "model": "SENTINEL-Sonde ens3w = equal-weight quantile average (sonde_ensemble.py) of Chronos-2 fine-tuned multivariate + LSTM with lagged observed weather + zero-shot Chronos-2 multivariate; one ensemble per seed s0-s2 (FT seed s, LSTM seed s)",
+ "members_per_seed": {
+  "s0": [
+   "chronos2_ft_multi_s0",
+   "lstm_weather_s0",
+   "chronos2_zs_multi"
+  ],
+  "s1": [
+   "chronos2_ft_multi_s1",
+   "lstm_weather_s1",
+   "chronos2_zs_multi"
+  ],
+  "s2": [
+   "chronos2_ft_multi_s2",
+   "lstm_weather_s2",
+   "chronos2_zs_multi"
+  ]
+ },
+ "weights": "equal (1/3 each), pre-specified, not tuned",
+ "weights_sha256": {
+  "chronos2_ft_multi_s0": "c71e2af621428503ff1a9fdcdb220c829f82294f6105b53e99bee05fe681761b",
+  "lstm_weather_s0": "5c4f0fa84b9afb89461f1e0c674a3abe8e80cbbc56f94c530f1b0cbed370d8bf",
+  "chronos2_ft_multi_s1": "d3c05e8a069730b4828246f2220c53a3e04811eb68a36e7a3be1a38c724bb817",
+  "lstm_weather_s1": "c4bd53b17f1c0165f7630abf821c3dd23363cad44380f55ffd15c923a4b8bf4c",
+  "chronos2_ft_multi_s2": "458650b622eca67a91dafd73127e27b64acbff46af16db4c2bcf281d51114e93",
+  "lstm_weather_s2": "e071917a44d663f641c2d9b5550d68749855dfc8f6e08a707f0f8e9e3dd8a2f5",
+  "chronos2_zs_multi": "bc19aeefe2ad914fbfd2c87408208f4ab033077615b19a0900e7ef4791550f31"
+ },
+ "checkpoint_paths": {
+  "chronos2_ft_multi_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_chronos_ft_s0/trainer/finetuned-ckpt",
+  "lstm_weather_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc1_lstm_weather_s0/lstm_best.pt",
+  "chronos2_ft_multi_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_chronos_ft_s1/trainer/finetuned-ckpt",
+  "lstm_weather_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc1_lstm_weather_s1/lstm_best.pt",
+  "chronos2_ft_multi_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_chronos_ft_s2/trainer/finetuned-ckpt",
+  "lstm_weather_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc1_lstm_weather_s2/lstm_best.pt",
+  "chronos2_zs_multi": "/home/bcheng/STOCKHOLM/sentinel_runs/hf_cache/hub/models--amazon--chronos-2/snapshots/29ec3766d36d6f73f0696f85560a422f50e8498c"
+ },
+ "split_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+ "scoring_code_files": [
+  "sentinel/eval/metrics.py",
+  "sentinel/eval/bootstrap.py",
+  "sentinel/eval/early_warning.py",
+  "sentinel/eval/hazards.py",
+  "sentinel/eval/ew_scoring.py",
+  "sentinel/data/sonde_splits.py",
+  "sentinel/data/sonde_daily.py",
+  "sentinel/models/baselines/sonde_baselines.py",
+  "sentinel/models/sonde/data.py",
+  "sentinel/models/sonde/common.py",
+  "sentinel/models/sonde/evaluate.py",
+  "sentinel/models/sonde/events.py",
+  "sentinel/models/sonde/guard.py",
+  "scripts/eval/sonde_score.py",
+  "scripts/eval/sonde_predict.py",
+  "scripts/train/sonde_events.py",
+  "scripts/eval/sonde_ensemble.py",
+  "scripts/eval/sonde_strata_power.py"
+ ],
+ "scoring_code_sha256": "5b82fd8409a5af2af3068158a80d8332c6884778526aa9462429e13bbd2036ae",
+ "references_primary": [
+  "damped_anomaly",
+  "climatology",
+  "persistence",
+  "gbm_weather",
+  "lstm_s0",
+  "lstm_weather_s0",
+  "chronos2_zs_uni",
+  "chronos2_zs_multi",
+  "timesfm25_zs"
+ ],
+ "references_strict_control": [
+  "baseline_ens_gbm_lstm",
+  "control3_gbmw_lstm_zsmulti",
+  "control3w_gbmw_lstmw_zsmulti"
+ ],
+ "val_evidence": {
+  "scoring_run": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc3_score_members_ens3w",
+  "registry_experiment": "sonde_forecast_val",
+  "unseen_val_cell_h1-7_met_of_5_vs_primary_refs": {
+   "s0": {
+    "SC": 4,
+    "turb_mean": 4,
+    "nitrate": 2,
+    "DO_mean": 2,
+    "pH": 2,
+    "DO_min": 0,
+    "temp": 0
+   },
+   "s1": {
+    "SC": 5,
+    "turb_mean": 4,
+    "nitrate": 2,
+    "DO_mean": 2,
+    "pH": 3,
+    "DO_min": 0,
+    "temp": 0
+   },
+   "s2": {
+    "SC": 5,
+    "turb_mean": 5,
+    "nitrate": 3,
+    "DO_mean": 2,
+    "pH": 3,
+    "DO_min": 0,
+    "temp": 0
+   }
+  },
+  "note": "unseen val cell has only 8-13 basin groups per variable (nitrate 3), so CIs are wide; point estimates of worst-case skill are > 0 for DO, SC, nitrate, turbidity mean, pH at 3-7 d"
+ },
+ "known_caveats": [
+  "W6: FT-Chronos and LSTM early-stop on the val block (selection bias in val numbers); inner-train-site selection variant (cyc2_chronos_ft_innerval_s0/s1) is not better on val and has 2 seeds",
+  "configs tried (M1 forecasting, configs_tried.jsonl non-smoke + ensembles): see handoff; report with any claim",
+  "test forecasts must come from scripts/eval/sonde_predict.py (hash-checked) then sonde_ensemble.py"
+ ]
+}

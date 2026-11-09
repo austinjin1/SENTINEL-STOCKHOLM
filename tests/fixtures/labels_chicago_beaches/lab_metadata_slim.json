@@ -1,0 +1,77 @@
+{
+ "id": "2ivx-z93u",
+ "name": "Beach Lab Data",
+ "attribution": "Chicago Park District",
+ "rowsUpdatedAt": 1791495889,
+ "license": null,
+ "columns": [
+  {
+   "fieldName": "dna_test_id",
+   "description": "Unique ID for a DNA test on one or two water samples taken from the same beach on the same day."
+  },
+  {
+   "fieldName": "dna_sample_timestamp",
+   "description": "Date and time when the water sample for DNA testing was taken."
+  },
+  {
+   "fieldName": "beach",
+   "description": ""
+  },
+  {
+   "fieldName": "dna_sample_1_reading",
+   "description": "Enterococci calibrator cell equivalents (CCE) per 100 ml of water"
+  },
+  {
+   "fieldName": "dna_sample_2_reading",
+   "description": "Enterococci calibrator cell equivalents (CCE) per 100 ml of water"
+  },
+  {
+   "fieldName": "dna_reading_mean",
+   "description": "The geometric mean of the DNA Sample 1 Reading and the DNA Sample 2 Reading (if any)."
+  },
+  {
+   "fieldName": "culture_test_id",
+   "description": "Unique ID for a culture test on one or two water samples taken from the same beach on the same day."
+  },
+  {
+   "fieldName": "culture_sample_1_timestamp",
+   "description": "Date and time when the first water sample for culture was taken.  Prior to 2016, the time is not available."
+  },
+  {
+   "fieldName": "culture_sample_1_reading",
+   "description": "Colony Forming Units (CFU) per 100 ml of water"
+  },
+  {
+   "fieldName": "culture_sample_2_reading",
+   "description": "Colony Forming Units (CFU) per 100 ml of water"
+  },
+  {
+   "fieldName": "culture_reading_mean",
+   "description": "The geometric mean of Culture Sample 1 Reading and Culture Sample 2 Reading (if any)."
+  },
+  {
+   "fieldName": "culture_note",
+   "description": "Notes on the culture tests."
+  },
+  {
+   "fieldName": "culture_sample_interval",
+   "description": "Time in minutes between collection of the two samples for culture testing."
+  },
+  {
+   "fieldName": "culture_sample_2_timestamp",
+   "description": "Date and time when the second water sample for culture was taken."
+  },
+  {
+   "fieldName": "latitude",
+   "description": ""
+  },
+  {
+   "fieldName": "longitude",
+   "description": ""
+  },
+  {
+   "fieldName": "location",
+   "description": ""
+  }
+ ]
+}

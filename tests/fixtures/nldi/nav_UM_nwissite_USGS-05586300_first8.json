@@ -1,0 +1,197 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -89.654825,
+     40.57309426
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-05563800",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-05563800/navigation",
+    "name": "ILLINOIS RIVER AT PEKIN, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 13606212,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-05563800",
+    "reachcode": "07130003001439",
+    "measure": 0.0,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-05563800"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -88.6986846,
+     41.32142228
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-411917088415501",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-411917088415501/navigation",
+    "name": "ILLINOIS RIVER AB DAM AT MARSEILLES, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 14780184,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-411917088415501",
+    "reachcode": "07120005000005",
+    "measure": 0.0,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-411917088415501"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -90.4367918,
+     40.020326
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-05584000",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-05584000/navigation",
+    "name": "ILLINOIS RIVER AT BEARDSTOWN, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 13609062,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-05584000",
+    "reachcode": "07130003001363",
+    "measure": 100.0,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-05584000"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -89.5495396,
+     40.72503739
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-05559900",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-05559900/navigation",
+    "name": "ILLINOIS RIVER ABOVE RTE 150 AT PEORIA, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 14839329,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-05559900",
+    "reachcode": "07130001002362",
+    "measure": 0.0,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-05559900"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -87.3697222,
+     41.17916667
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-411045087221101",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-411045087221101/navigation",
+    "name": null,
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 13437933,
+    "type": "hydrolocation",
+    "uri": null,
+    "reachcode": "07120001002824",
+    "measure": 64.9711,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-411045087221101"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -87.369722222,
+     41.179166667
+    ]
+   },
+   "properties": {
+    "identifier": "IN033-411045087221101",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/IN033-411045087221101/navigation",
+    "name": "KANKAKEE RV 1226 US OF CR 1200 N NR SHELBY IN",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 13437933,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/IN033-411045087221101",
+    "reachcode": "07120001002824",
+    "measure": 64.9711,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "IN033-411045087221101"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -89.8884972,
+     40.476575
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-05568615",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-05568615/navigation",
+    "name": "ILLINOIS RIVER AT COPPERAS CREEK, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 13606862,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-05568615",
+    "reachcode": "07130003001435",
+    "measure": 69.2508,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-05568615"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -88.5559037,
+     41.32281049
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-411922088332101",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-411922088332101/navigation",
+    "name": "ILLINOIS RIVER AT BARRY ISLAND NEAR SENECA, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 14780192,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-411922088332101",
+    "reachcode": "07120005000014",
+    "measure": 70.925,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-411922088332101"
+  }
+ ]
+}

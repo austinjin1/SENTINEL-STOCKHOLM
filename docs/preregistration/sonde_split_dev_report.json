@@ -1,0 +1,61 @@
+{
+ "file": "sonde_split_dev.json",
+ "sha256": "dbb62387d414207d00214528f7dbcec2a2a3eb84402d8761ee99d7111aeda7ec",
+ "n_sites": 2792,
+ "notes": "DEV split for smoke tests only \u2014 NOT for model selection or reporting",
+ "roles": {
+  "train": 1934,
+  "val": 296,
+  "test": 562
+ },
+ "n_basin_groups": 191,
+ "edges_used": 0,
+ "cross_role_edges": 0,
+ "sites_per_var_role": {
+  "chl_ugl_mean": {
+   "test": 3,
+   "train": 15,
+   "val": 1
+  },
+  "do_mgl_mean": {
+   "test": 196,
+   "train": 554,
+   "val": 64
+  },
+  "do_mgl_min": {
+   "test": 186,
+   "train": 561,
+   "val": 67
+  },
+  "fdom_qse_mean": {
+   "test": 2,
+   "train": 11,
+   "val": 14
+  },
+  "no3no2_mgl_mean": {
+   "test": 25,
+   "train": 70,
+   "val": 5
+  },
+  "ph_mean": {
+   "test": 18,
+   "train": 34,
+   "val": 2
+  },
+  "spcond_uscm_mean": {
+   "test": 390,
+   "train": 1037,
+   "val": 110
+  },
+  "temp_c_mean": {
+   "test": 530,
+   "train": 1798,
+   "val": 281
+  },
+  "turb_fnu_mean": {
+   "test": 115,
+   "train": 329,
+   "val": 16
+  }
+ }
+}

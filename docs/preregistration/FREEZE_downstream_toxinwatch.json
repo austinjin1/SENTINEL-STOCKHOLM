@@ -1,0 +1,741 @@
+{
+ "status": "FROZEN \u2014 single test look authorised by the lead 2026-11-08",
+ "prepared": "2026-11-08T20:21:43",
+ "app": "toxinwatch",
+ "split_file": "docs/preregistration/downstream_toxinwatch_split_v2.json",
+ "split_sha256": "13852e4a97490da97ddafeefeb757074c2b832c7cb361ab9bf85c077e11bef85",
+ "scoring_code_sha256": "f41c90a72efef842c5a01204561cfed57ebce1c910dc2142d2e2534e07046121",
+ "scoring_files": {
+  "docs/preregistration/downstream_d2n_microcystin_split.json": "0d9eb684285155c7d73a8454b3b211aea626e5bb6b1bc809970d55ded4176295",
+  "docs/preregistration/downstream_toxinwatch.md": "cc15ccb073d098a0c67ed8bb648d143b2b47f617ac7c850873ce1fc510b5e202",
+  "docs/preregistration/downstream_toxinwatch_data_pins.json": "b4535fef9f801f99f26bd483d1c43910c783675d060a9d3589c40a42b3cb0e5e",
+  "scripts/train/downstream_toxinwatch.py": "c94d3ad52b47e043404d60574059f6e372980686f0405fa49ae340eb1f8d3523",
+  "scripts/train/downstream_toxinwatch_it3.py": "45e812df57f18eac83a095f2c59e4443f49d5e8c42549ac92fa62f72a722d5a5",
+  "scripts/train/downstream_toxinwatch_test.py": "e4e3498a61657732d035189c953e6f6da905ba412e6a58cd7ed4fb44990834fe",
+  "sentinel/data/sources/events_wa_toxic_algae.py": "690ca3bbb5d5f77c1c362bdd26689aaf9a3dada66be9bfcc5fe2fc9461e5a2fa",
+  "sentinel/data/wqp_harmonize.py": "8b4d341f5b408cca37d8301027f7ecc23c65db4604c087be051142a77251c975",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/downstream/common.py": "f26d66f2ee2d990bb83c7359da4f1f880a4eb6d1b4c7da442c16fd792ddef519",
+  "sentinel/models/downstream/crossfit.py": "3560dd8a13d4a087cc6d31b7bb1c7be2a6009888563b7d375603307a98917f3a",
+  "sentinel/models/downstream/d2n_microcystin.py": "3ca704afdb59caa2d51e7241499f2298a64ce9c3534ce436b1a798fa1979b5d7",
+  "sentinel/models/downstream/testlook.py": "9babf2cd7f0f2816b829272bd7504204cda045440930b1a9bec2412f6e3e8f8d",
+  "sentinel/models/downstream/toxinwatch.py": "75e3bd9ffbe5bdaa75a54bb94e8ec0f7ae06d74d68f9fa59b1067d65da6c2f85",
+  "sentinel/models/downstream/weather.py": "85b0858c98309c6440967296828d91badd981cc42fb505177631f3e3bcfb810d",
+  "sentinel/models/downstream/wqp_track.py": "88b339d19a946f3ad1f095ce5a0d33e4cc011b0878a27b660469fa4367e6bec4"
+ },
+ "data_pins": {
+  "file": "docs/preregistration/downstream_toxinwatch_data_pins.json",
+  "sha256": "b4535fef9f801f99f26bd483d1c43910c783675d060a9d3589c40a42b3cb0e5e",
+  "n_files": 11,
+  "expected": {
+   "n_national_train_rows": 12357,
+   "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+  },
+  "verified_before_claim": true
+ },
+ "data_manifests": [
+  "labels_wa_toxic_algae",
+  "forcings_daily",
+  "wqp_discrete",
+  "wbd_huc12"
+ ],
+ "configs_tried": 72,
+ "configs_note": "88 (72 D2 + 16 D2n phase 1)",
+ "selected": {
+  "model": "gbm_challenger it3 (7 leaves, min_child 60, inner early stopping, 3 seeds)",
+  "fit_rows": "WA train lakes 2007-2018 + 12,357 D2n national train rows (pinned)"
+ },
+ "test_block": "WA known lakes (train-role clusters with >= 1 training row) 2022-2026-10-14 and WA test lakes 2022-2026; Lake Washington ~60 % of known rows, wa_lc0026 ~39 % of new rows",
+ "comparators": {
+  "incumbent": "st_glmm_incumbent_v2_pooled (strongest of four on validation)",
+  "strongest_simple_baseline": "known: location_knn; new: lake_history_rate"
+ },
+ "claim_rule": "Holm over the 2 test sets separately per family (incumbent; simple), each CI > 0, plus the seed rule; all-four Holm reported; if only it fails -> 'not robust to all-comparison correction'",
+ "seed_rule": "claim requires, for every primary comparison, Holm rejection with paired diff > 0 for the seed-averaged model AND a per-seed paired point estimate > 0 for each of >= 3 seeds on the test block (RESEARCH_PLAN \u00a715.1(iii); gate 2026-11-08)",
+ "counts_toward_HG4_beats_incumbent": "yes (D2)",
+ "single_pass_guard": "verify_data -> authorise (check_roles: FREEZE + split + scoring-code sha; claim_test_look: registry test rows = 0, O_EXCL marker) -> builders require_authorised -> save_predictions (once, before any registry write) -> score/log_test_metric -> mark_scored; crash after save: --rescore-from-saved only",
+ "test_scoring_path": {
+  "script": "scripts/train/downstream_toxinwatch_test.py",
+  "sha256": "e4e3498a61657732d035189c953e6f6da905ba412e6a58cd7ed4fb44990834fe",
+  "invocation": "python -B scripts/train/downstream_toxinwatch_test.py --allow-test",
+  "run_with": "default SENTINEL_RUNS / SENTINEL_DATA (no overrides)",
+  "dry_run_on_val": {
+   "results": "/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/ds_final/runs/downstream/toxinwatch/testpath_dryrun/results.json",
+   "sha256": "449ba744375effcff5a69f041243893940f126562ab75a4f3971f29e9c925f69",
+   "claim_met_on_val": true,
+   "label": "beats both, not robust to all-comparison correction",
+   "claim_met_all_four_holm": false
+  }
+ },
+ "environment": {
+  "python": "/home/bcheng/miniconda3/envs/sentinel2/bin/python",
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a",
+  "not_hashed": "sentinel/core/{paths,registry,runlog}.py and package __init__ files (gate S-O1)"
+ },
+ "ordering_evidence": "no git (user instruction): prereg_snapshot registry row written with the FREEZE file (testlook.prereg_snapshot)",
+ "artifacts": [
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/toxinwatch/val_emb7_it3/val_results.json",
+   "sha256": "fad1edaa3f53891155b541cf87336cf7ebdb8939946fe37e0701287ac9591497"
+  }
+ ],
+ "evidence_registry_rows": [
+  {
+   "registry_id": "3b93d652b4bf",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_prevalence",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.5,
+   "ci": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "registry_id": "4caef82f15c3",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_climatology_month",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.5765245645006434,
+   "ci": [
+    0.4993863416791656,
+    0.6249384274225552
+   ]
+  },
+  {
+   "registry_id": "80dad68ac59c",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_location_knn",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.9104097509059119,
+   "ci": [
+    0.6515439548154418,
+    0.9663680821557037
+   ]
+  },
+  {
+   "registry_id": "f0d09d73c9bd",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_persistence",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.904975687493489,
+   "ci": [
+    0.7380692526731301,
+    0.9486876059150062
+   ]
+  },
+  {
+   "registry_id": "666c0f6c2323",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_lake_history_rate",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.8829057879814285,
+   "ci": [
+    0.6832608929904768,
+    0.9343858657616692
+   ]
+  },
+  {
+   "registry_id": "327eed12046c",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.9158592999912717,
+   "ci": [
+    0.6882529732864263,
+    0.9694750257946925
+   ]
+  },
+  {
+   "registry_id": "abdde14e6b81",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent_v2",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.9245256456821721,
+   "ci": [
+    0.7014968610543831,
+    0.9733286510815448
+   ]
+  },
+  {
+   "registry_id": "74ff925674c4",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent_pooled",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.922245028395093,
+   "ci": [
+    0.703041155462675,
+    0.9725802015928466
+   ]
+  },
+  {
+   "registry_id": "3c78c434d0ac",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent_v2_pooled",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.9297569875579657,
+   "ci": [
+    0.7169912724167278,
+    0.9746912942687157
+   ]
+  },
+  {
+   "registry_id": "c3098c91aecb",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.9353684323149392,
+   "ci": [
+    0.7327243595175137,
+    0.9761140263741975
+   ]
+  },
+  {
+   "registry_id": "27480d0dd35b",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger",
+   "metric": "auroc",
+   "split": "val_known_2019_2021",
+   "value": 0.9389132436290534,
+   "ci": [
+    0.7522454001183119,
+    0.9770831193118852
+   ]
+  },
+  {
+   "registry_id": "50ef0970dac6",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.02305394363778157,
+   "ci": [
+    0.005976589958888176,
+    0.08809694572605738
+   ]
+  },
+  {
+   "registry_id": "be866f385418",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent_pooled",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.016668215233960337,
+   "ci": [
+    0.004098326726913434,
+    0.07763877560929786
+   ]
+  },
+  {
+   "registry_id": "1202a80648cc",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent_v2",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.01438759794688138,
+   "ci": [
+    0.0015437404380715114,
+    0.06586665240526367
+   ]
+  },
+  {
+   "registry_id": "b9394fb9a5a7",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent_v2_pooled",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.00915625607108772,
+   "ci": [
+    0.0010757512250683444,
+    0.04501482744762703
+   ]
+  },
+  {
+   "registry_id": "5d37b6281f28",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_persistence",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.033937556135564595,
+   "ci": [
+    0.008151506476120054,
+    0.05996181912551254
+   ]
+  },
+  {
+   "registry_id": "3886a17e30ce",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_location_knn",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.028503492723141566,
+   "ci": [
+    0.0057846673163360314,
+    0.13426016819876008
+   ]
+  },
+  {
+   "registry_id": "a3655ae49052",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_climatology_month",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.36238867912841,
+   "ci": [
+    0.22008778734134202,
+    0.4080576228783642
+   ]
+  },
+  {
+   "registry_id": "5d2064da8413",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_lake_history_rate",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.05600745564762499,
+   "ci": [
+    0.02846428336310857,
+    0.1265758582101179
+   ]
+  },
+  {
+   "registry_id": "fc19a6b30c0a",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.019509132323667244,
+   "ci": [
+    0.004352101982691073,
+    0.07393745887358648
+   ]
+  },
+  {
+   "registry_id": "65911a84a566",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent_pooled",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.01312340391984601,
+   "ci": [
+    0.0007698910462268506,
+    0.0646929960132269
+   ]
+  },
+  {
+   "registry_id": "de82bb6c0be4",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent_v2",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.010842786632767054,
+   "ci": [
+    -0.0017819622155163444,
+    0.05487470846399918
+   ]
+  },
+  {
+   "registry_id": "ab56a5fbd482",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent_v2_pooled",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.005611444756973394,
+   "ci": [
+    -0.006067703140639943,
+    0.037010303080017556
+   ]
+  },
+  {
+   "registry_id": "b82dd66a74d2",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_persistence",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.030392744821450268,
+   "ci": [
+    -0.009703179639185364,
+    0.05741628689009139
+   ]
+  },
+  {
+   "registry_id": "cead89b91a9c",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_location_knn",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.02495868140902724,
+   "ci": [
+    0.003854818836196236,
+    0.12319279178945464
+   ]
+  },
+  {
+   "registry_id": "27343c871073",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_climatology_month",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.35884386781429567,
+   "ci": [
+    0.20425216070711733,
+    0.40484024418897807
+   ]
+  },
+  {
+   "registry_id": "594676d07a12",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_lake_history_rate",
+   "metric": "auroc_diff",
+   "split": "val_known_2019_2021",
+   "value": 0.052462644333510666,
+   "ci": [
+    0.02003069645575629,
+    0.11836167270842053
+   ]
+  },
+  {
+   "registry_id": "ca21ce7d03ce",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_prevalence",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.5,
+   "ci": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "registry_id": "75c3ef4e2f37",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_climatology_month",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.595436940208182,
+   "ci": [
+    0.4745636244871714,
+    0.6971812989903016
+   ]
+  },
+  {
+   "registry_id": "3ccdab52bbd8",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_location_knn",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.5919874122488502,
+   "ci": [
+    0.38431926929743415,
+    0.774560790121605
+   ]
+  },
+  {
+   "registry_id": "1c9228dbac1b",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_persistence",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.7374122488501573,
+   "ci": [
+    0.6179682037727762,
+    0.8229763434619796
+   ]
+  },
+  {
+   "registry_id": "aab9d21f8a4c",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_lake_history_rate",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.7558702493343016,
+   "ci": [
+    0.6335769575115577,
+    0.8364519732408077
+   ]
+  },
+  {
+   "registry_id": "1a4b5da67cb1",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.706003389009925,
+   "ci": [
+    0.557387594563546,
+    0.7963277176899468
+   ]
+  },
+  {
+   "registry_id": "a4abb7ceeebb",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent_v2",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.6282982328733963,
+   "ci": [
+    0.44077192165814594,
+    0.7586521134704209
+   ]
+  },
+  {
+   "registry_id": "565e16ad4020",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent_pooled",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.738077947228274,
+   "ci": [
+    0.6140543977423251,
+    0.8160452326091726
+   ]
+  },
+  {
+   "registry_id": "4ac58eca5d7c",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_st_glmm_incumbent_v2_pooled",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.747034616315662,
+   "ci": [
+    0.6238025210084034,
+    0.820906373925377
+   ]
+  },
+  {
+   "registry_id": "22ea25f44475",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.8191721132897604,
+   "ci": [
+    0.7195517111843088,
+    0.8803950811093668
+   ]
+  },
+  {
+   "registry_id": "5e04dbb92ca6",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger",
+   "metric": "auroc",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.8065843621399177,
+   "ci": [
+    0.7193077256821251,
+    0.8797168231969608
+   ]
+  },
+  {
+   "registry_id": "9903d99a01ce",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.10058097312999281,
+   "ci": [
+    0.04263900352752971,
+    0.21808444940476185
+   ]
+  },
+  {
+   "registry_id": "1f447be28c69",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent_pooled",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.06850641491164378,
+   "ci": [
+    0.01230367039476967,
+    0.17180864635010623
+   ]
+  },
+  {
+   "registry_id": "ce582039b42d",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent_v2",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.17828612926652143,
+   "ci": [
+    0.06924512597295754,
+    0.3461477083458748
+   ]
+  },
+  {
+   "registry_id": "81d9dd20ec16",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_st_glmm_incumbent_v2_pooled",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.05954974582425576,
+   "ci": [
+    0.005536838851968257,
+    0.1630895777329748
+   ]
+  },
+  {
+   "registry_id": "930bf75d7e30",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_persistence",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.06917211328976047,
+   "ci": [
+    0.004059005415690942,
+    0.16410873644504845
+   ]
+  },
+  {
+   "registry_id": "b32a40c92dc3",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_location_knn",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.2145969498910676,
+   "ci": [
+    0.015354146980562198,
+    0.4497315100002105
+   ]
+  },
+  {
+   "registry_id": "a99dca99ca1b",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_climatology_month",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.21114742193173575,
+   "ci": [
+    0.11686128123565803,
+    0.3179210117323954
+   ]
+  },
+  {
+   "registry_id": "f11b664b87a7",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_gbm_challenger_minus_lake_history_rate",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.05071411280561622,
+   "ci": [
+    0.001563757174838898,
+    0.1260281798481011
+   ]
+  },
+  {
+   "registry_id": "5f07b8426bf8",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.11316872427983538,
+   "ci": [
+    0.04623586208157703,
+    0.2133253433125556
+   ]
+  },
+  {
+   "registry_id": "6ea59815638a",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent_pooled",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.08109416606148634,
+   "ci": [
+    0.006411653632879308,
+    0.16568547902166222
+   ]
+  },
+  {
+   "registry_id": "6fe7a45a85b3",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent_v2",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.190873880416364,
+   "ci": [
+    0.09014377407450574,
+    0.330296845369785
+   ]
+  },
+  {
+   "registry_id": "e68383ca852b",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_st_glmm_incumbent_v2_pooled",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.07213749697409833,
+   "ci": [
+    0.024464872827077353,
+    0.15295037877819345
+   ]
+  },
+  {
+   "registry_id": "c8a14c441a48",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_persistence",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.08175986443960304,
+   "ci": [
+    0.03103955010600463,
+    0.14161706598521245
+   ]
+  },
+  {
+   "registry_id": "25fac46f1082",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_location_knn",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.22718470104091015,
+   "ci": [
+    0.04755399459909544,
+    0.43382202073925774
+   ]
+  },
+  {
+   "registry_id": "0d0e9507c159",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_climatology_month",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.2237351730815783,
+   "ci": [
+    0.1112434335958677,
+    0.33561070722755504
+   ]
+  },
+  {
+   "registry_id": "9d2da06d50dc",
+   "experiment": "toxinwatch/mc_exceed8@it3",
+   "model": "toxinwatch_logistic_minus_lake_history_rate",
+   "metric": "auroc_diff",
+   "split": "val_new_lakes_2019_2021",
+   "value": 0.06330186395545878,
+   "ci": [
+    -0.011913607854512794,
+    0.1368386884476505
+   ]
+  }
+ ],
+ "frozen": "2026-11-08T20:22:17",
+ "candidate_record_sha256": "bc6e7c4c8997ac114bca299b783e2236e06e1078bf9c7660cb5db516cd27e6f4",
+ "prereg_archive": {
+  "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/toxinwatch/prereg_archive/toxinwatch_prereg_20261108-202217.tar.gz",
+  "sha256": "74c078bd408b25e2171feffa774111ebd79830cb42731a890542eb71119eaf68",
+  "n_files": 20
+ }
+}

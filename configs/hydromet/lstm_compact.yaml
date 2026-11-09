@@ -1,0 +1,55 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# PROTOCOL v0.9 (cycle 4): EA-LSTM on the a-priori compact static set (data.COMPACT_STATIC, 45 attributes) instead of
+# all 188; otherwise identical to configs/hydromet/lstm.yaml (run with --hparams-from the DIAG selection.json).
+static_ablation: compact
+model: ealstm_compact
+seeds: [0, 1, 2]
+iteration: cycle4        # RESEARCH_PLAN §15.5 improvement cycle 4 (protocol v0.9)
+refs: [doy_location_gbm, forcing_gbm, air2stream_regional]
+# Matched tuning budget (protocol §8): 3 configurations, selected on inner train-role groups with seed 0;
+# forcing_gbm gets the same number (configs/hydromet/baselines.yaml forcing_gbm_grid).
+# Grid actually run (protocol v0.4, §8): static-input noise sweep, hidden 128, dropout 0.4, 8 epochs of 200 steps,
+# seed 0, inner train-role groups only ($SENTINEL_RUNS/hydromet/DIAG_ealstm_inner/selection.json). Full runs use
+# --hparams-from that selection.json.
+grid:
+  - {hidden: 128, dropout: 0.4, static_noise: 0.0}
+  - {hidden: 128, dropout: 0.4, static_noise: 0.5}
+  - {hidden: 128, dropout: 0.4, static_noise: 1.0}
+ealstm:
+  seq_len: 365
+  predict_last: 90
+  hidden: 128
+  static_emb: 32
+  dropout: 0.2
+  static_to_head: true
+  head: gaussian
+  physics_do: false
+  detach_temp_for_do: false
+  ratio_bounds: [0.2, 1.6]
+  initial_forget_bias: 3.0
+  batch_size: 256
+  lr: 0.0005
+  weight_decay: 1.0e-4
+  max_epochs: 60
+  steps_per_epoch: 200
+  patience: 6
+  grad_clip: 1.0
+  val_max_windows: 4000
+  early_stop_metric: mse      # inner point MSE of mu (NLL logged too)
+  static_noise: 0.0           # overridden by the selected grid point
+  site_sampling: target_share
+  max_minutes: null         # protocol v0.5 (iteration cycle 1): no time cap; early stopping on inner point MSE (patience 6, <= 60 epochs)
+smoke:
+  seeds: [0, 1]
+  grid:
+    - {hidden: 16}
+    - {hidden: 32}
+  ealstm:
+    hidden: 64
+    max_epochs: 4
+    steps_per_epoch: 60
+    patience: 2
+    batch_size: 128
+    val_max_windows: 600
+    max_minutes: 8

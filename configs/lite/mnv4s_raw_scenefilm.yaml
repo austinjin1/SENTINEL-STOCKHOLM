@@ -1,0 +1,12 @@
+# variant of mnv4s_raw: FiLM on DOQQ (scene) statistics
+name: mnv4s_raw_scenefilm
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+epochs: 40
+batch: 32
+lr: 1.0e-3
+lr_backbone: 5.0e-4
+kd_weight: 0.0
+film: true
+film_source: scene

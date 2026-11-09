@@ -1,0 +1,15 @@
+PWSID	FacilityID	SamplePointID	SampleEventCode	AdditionalDataElement	Response	IfOtherText
+OH0200811	52634	EP001	SE1	CyanotoxinBloomOccurrence	No	
+OH0200811	52634	EP001	SE1	CyanotoxinCyanotoxinOccurrence	Yes	
+OH0200811	52634	EP001	SE1	CyanotoxinCyanotoxinOccurrenceDetail	MIC	
+OH0200811	52634	EP001	SE1	CyanotoxinCyanotoxinOccurrenceDetail	YP	
+OH0200811	52634	EP001	SE1	CyanotoxinPossibleBloomSourceWater	No	
+OH0200811	52634	EP001	SE1	CyanotoxinPossibleBloomTreatment	No	
+OH0200811	52634	EP001	SE1	DisinfectantType	CLGA	
+OH0200811	52634	EP001	SE1	TreatmentInformation	SFN	
+OH0200811	52634	EP001	SE2	CyanotoxinBloomOccurrence	No	
+OH0200811	52634	EP001	SE2	CyanotoxinCyanotoxinOccurrence	Yes	
+OH0200811	52634	EP001	SE2	CyanotoxinCyanotoxinOccurrenceDetail	MIC	
+OH0200811	52634	EP001	SE2	CyanotoxinCyanotoxinOccurrenceDetail	YP	
+OH0200811	52634	EP001	SE2	CyanotoxinPossibleBloomSourceWater	No	
+OH0200811	52634	EP001	SE2	CyanotoxinPossibleBloomTreatment	No	

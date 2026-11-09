@@ -1,0 +1,30 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Chronos-2 fine-tuning via the official Chronos2Pipeline.fit() (sentinel/models/sonde/chronos_ft.py).
+model: chronos2_ft
+base_model: amazon/chronos-2
+inference_batch_size: 1024
+chronos_ft:
+  mode: multi
+  context: 512
+  future_clim: true
+  finetune_mode: full        # 'lora' (peft 0.21.2) available as an ablation
+  learning_rate: 1.0e-5
+  num_steps: 2000
+  batch_size: 128
+  eval_steps: 200
+  val_cut_every_days: 28
+  val_max_sites: 300
+  min_past: 60
+  min_obs: 120
+  fp16: false
+  logging_steps: 50
+smoke:
+  inference_batch_size: 512
+  chronos_ft:
+    num_steps: 60
+    batch_size: 32
+    eval_steps: 30
+    logging_steps: 10
+    val_cut_every_days: 56
+    val_max_sites: 20

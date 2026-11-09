@@ -1,0 +1,96 @@
+{
+ "cells_all_rows": {
+  "testxtest": {
+   "n_rows": 251,
+   "n_waterbodies": 94
+  },
+  "testxtrain": {
+   "n_rows": 2190,
+   "n_waterbodies": 479
+  },
+  "testxval": {
+   "n_rows": 585,
+   "n_waterbodies": 235
+  },
+  "trainxtest": {
+   "n_rows": 1430,
+   "n_waterbodies": 501
+  },
+  "trainxtrain": {
+   "n_rows": 10416,
+   "n_waterbodies": 1952
+  },
+  "trainxval": {
+   "n_rows": 3811,
+   "n_waterbodies": 1082
+  },
+  "valxtest": {
+   "n_rows": 728,
+   "n_waterbodies": 180
+  },
+  "valxtrain": {
+   "n_rows": 3527,
+   "n_waterbodies": 621
+  },
+  "valxval": {
+   "n_rows": 1680,
+   "n_waterbodies": 351
+  }
+ },
+ "split_distance_km": {
+  "val_to_train_km": {
+   "min": 0.3509063018201877,
+   "p05": 3.9111169605636458,
+   "median": 16.759844936610595,
+   "n_points": 1914
+  },
+  "test_to_train_km": {
+   "min": 0.6617205097011073,
+   "p05": 4.128856480342655,
+   "median": 22.700965951196967,
+   "n_points": 1078
+  }
+ },
+ "targets_by_cell": {
+  "trainxtrain": {
+   "chla": 8489,
+   "tss": 793,
+   "turbidity": 510,
+   "secchi": 8609
+  },
+  "trainxval": {
+   "chla": 3384,
+   "tss": 99,
+   "turbidity": 162,
+   "secchi": 3217
+  },
+  "valxtrain": {
+   "chla": 3001,
+   "tss": 267,
+   "turbidity": 174,
+   "secchi": 2902
+  },
+  "valxval": {
+   "chla": 1576,
+   "tss": 46,
+   "turbidity": 36,
+   "secchi": 1433
+  }
+ },
+ "n_rows_final": 19433,
+ "image_qc_pass": 25037,
+ "n_rows_with_chip": 67162,
+ "by_source": {
+  "aquacorr": 64291,
+  "wqp": 2871
+ },
+ "access": {
+  "n_protected_dropped": 5184
+ },
+ "split_file": {
+  "path": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/orbit_split.json",
+  "sha256": "27854499e9659e872f795f83fa6691790e2561e9fd3b724abad96b3a2cb66437",
+  "rule_code_sha256_at_freeze": "44abe7194d7e51bf61ef2d235ab804b29c9c95457da3baf554c1b375b0ccf8a3",
+  "rule_code_sha256_now": "44abe7194d7e51bf61ef2d235ab804b29c9c95457da3baf554c1b375b0ccf8a3"
+ }
+}

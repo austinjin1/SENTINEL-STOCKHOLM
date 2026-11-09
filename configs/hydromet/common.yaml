@@ -1,0 +1,21 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# SENTINEL-HydroMet (M6) shared settings; every model config is merged over this file.
+# A `smoke:` block (here or in a model config) is merged in only with --smoke.
+split: docs/preregistration/sonde_split.json   # FINAL frozen split (M1/EW-v2); train/val/test roles by basin group
+mode: nowcast            # nowcast = same-day observed weather (forcing_lag_days 0); lagged = forcings <= t - lag
+forcing_lag_days: 0
+inner_frac: 0.15         # share of train-role sites (by basin group) held out for early stopping / selection
+seed: 0                  # model seed (LightGBM / torch); overridden per EA-LSTM seed
+inner_seed: 0            # inner basin-group split; fixed across model seeds (protocol §2)
+eval_roles: [val]        # headline cell: val-role sites (unseen basin groups) x val block
+secondary_eval_roles: [train]   # descriptive: train-role sites x val block (temporal extrapolation only)
+min_days_per_site: 60    # a site is scored for a target only with >= this many approved days in the block
+n_boot: 2000             # bootstrap resamples (primary unit = basin group; site = sensitivity)
+smoke:                   # FINAL split, <= 50 TRAIN-ROLE sites only (review C3a); scored on inner groups
+  smoke_n_train: 50
+  smoke_site_seed: 0       # smoke site set; fixed across model seeds
+  inner_frac: 0.3
+  eval_roles: [inner]
+  secondary_eval_roles: []
+  n_boot: 200

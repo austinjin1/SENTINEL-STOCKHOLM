@@ -1,0 +1,52 @@
+{
+ "created": "2026-10-24",
+ "note": "frozen before any SENTINEL-Orbit model selection; roles are a pure function of (lon, lat, date) + HydroLAKES",
+ "rule": {
+  "anchor": "lake pour point (Pour_long/Pour_lat) for lake points, else the point itself",
+  "block_function": "sentinel.eval.splits.spatial_blocks(lat, lon, block_km)",
+  "block_km": 50.0,
+  "cluster_km": 10.0,
+  "lake_max_dist_m": 100.0,
+  "role_cuts": [
+   [
+    "test",
+    0.2
+   ],
+   [
+    "val",
+    0.4
+   ],
+   [
+    "train",
+    1.0
+   ]
+  ],
+  "role_hash": "u = int(sha256(salt + '|' + block).hexdigest()[:12], 16) / 16**12",
+  "salt": "SENTINEL-Orbit-v1|2026-10-24",
+  "version": "orbit-v1",
+  "waterbody_source": "HydroLAKES v1.0 polygons (manifest 'hydrolakes'), North America + Europe",
+  "year_blocks": [
+   [
+    "train",
+    null,
+    2021
+   ],
+   [
+    "val",
+    2022,
+    2023
+   ],
+   [
+    "test",
+    2024,
+    2025
+   ],
+   [
+    "test_b",
+    2026,
+    null
+   ]
+  ]
+ },
+ "rule_code_sha256": "44abe7194d7e51bf61ef2d235ab804b29c9c95457da3baf554c1b375b0ccf8a3"
+}

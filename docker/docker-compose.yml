@@ -1,0 +1,59 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+#
+# SENTINEL Console: API (port 8000) + Streamlit app (port 8501), CPU only.
+#
+#   export SENTINEL_DATA=~/STOCKHOLM/sentinel_data SENTINEL_RUNS=~/STOCKHOLM/sentinel_runs
+#   docker compose -f docker/docker-compose.yml up --build
+#
+# Host data, run and registry directories are mounted READ-ONLY. The optional USGS key is passed
+# through from the host environment (API_USGS_PAT) and never written into the image.
+name: sentinel-console
+
+x-common: &common
+  image: sentinel-console:dev
+  build:
+    context: ..
+    dockerfile: docker/Dockerfile.platform
+  environment: &env
+    SENTINEL_DATA: /data
+    SENTINEL_RUNS: /runs
+    SENTINEL_LIVE: ${SENTINEL_LIVE:-1}
+  volumes:
+    - ${SENTINEL_DATA:?set SENTINEL_DATA to the host data directory}:/data:ro
+    - ${SENTINEL_RUNS:?set SENTINEL_RUNS to the host runs directory}:/runs:ro
+    - ../results:/app/results:ro
+    - ../docs:/app/docs:ro
+    - ../RESULTS.md:/app/RESULTS.md:ro
+    - ../RESEARCH_PLAN.md:/app/RESEARCH_PLAN.md:ro
+    - ../sentinel/platform/models.yaml:/app/sentinel/platform/models.yaml:ro
+  restart: unless-stopped
+
+services:
+  api:
+    <<: *common
+    command: ["python", "-B", "-m", "sentinel.platform.api", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      <<: *env
+      API_USGS_PAT: ${API_USGS_PAT:-}
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  app:
+    <<: *common
+    command: ["streamlit", "run", "sentinel/platform/app/streamlit_app.py",
+              "--server.address", "0.0.0.0", "--server.port", "8501",
+              "--server.headless", "true", "--browser.gatherUsageStats", "false"]
+    environment:
+      <<: *env
+      SENTINEL_API_URL: http://api:8000
+    ports:
+      - "127.0.0.1:8501:8501"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=8).status == 200 else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      api:
+        condition: service_healthy

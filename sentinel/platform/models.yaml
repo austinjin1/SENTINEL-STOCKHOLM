@@ -1,0 +1,27 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+#
+# SENTINEL Console model plugin registry, read by sentinel/platform/plugins.py.
+#
+# No v2 model has been trained yet, so the list is empty and every
+# POST /predict/{modality} answers HTTP 503 {"status": "model not yet trained"}
+# (after validating the upload).
+#
+# Entry schema (full contract in docs/platform.md, section "Plugin interface"):
+#
+#   - modality: sonde | orbit | lite | microbe | chemtox | bioassess
+#     model_id: <registry "model" name of the served model>
+#     entry_point: "package.module:callable"   # called as predict(upload) -> dict
+#     required_inputs: [...]                   # sonde: variable / time column names;
+#                                              # orbit, lite: band names; microbe, bioassess:
+#                                              # column names; chemtox: identifier kinds (smiles, cas)
+#     registry_experiment: <registry "experiment" holding the model's validated metrics>
+#     model_card: docs/model_cards/<model_id>.md
+#     enabled: true                            # optional; at most one enabled entry per modality
+#     description: ""                          # optional
+#
+# An entry is served only if its model card exists and results/registry.jsonl holds at
+# least one current entry for (registry_experiment, model_id). Metrics shown next to
+# predictions always come from that registry, never from the plugin.
+version: 1
+models: []

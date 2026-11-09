@@ -1,0 +1,17 @@
+{
+ "app": "musselguard",
+ "created": "2026-11-08T19:33:33",
+ "expected": {
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+ },
+ "files": {
+  "processed/census_county/counties_2010.parquet": "5d529c27b930c4e644ff10c4206b1027f9e1ed8853434c36575f274c2b20c602",
+  "processed/labels_nas_dreissena/nas_dreissena_first_detection_huc12.parquet": "efce004375679ca3669613991e8485eb2d36dbd80c6810072e1f1d40220f4d60",
+  "processed/labels_nas_dreissena/nas_dreissena_occurrences.parquet": "39ef593f95445a6141748127cbed8b763ec4edc83c546707a4e4ca96fb41870b",
+  "processed/labels_nas_dreissena/nas_dreissena_references.parquet": "6ce37c19b439fdeeee34869264fee453a977a73df475a3c396290b5b44a4d85b",
+  "processed/labels_nas_dreissena/nas_dreissena_stats.json": "030ac9d070bf1fffb2c11c2eacbd64e5699ae8cc010fd056d0f3f5d1108f51bc",
+  "processed/wbd_huc12/huc12.parquet": "6106911d8ba4aaa8fc5b651eab6d21b4c9f6acf666c0c9869a9291b673523421",
+  "processed/wqp_discrete/variable=ph/data.parquet": "88177b4e2072cb6082dab2abd3b3996cab7537409ad55814c72bfe1a15b1963a",
+  "processed/wqp_discrete/variable=spcond/data.parquet": "b6f72897cd7f4475e03c0c75324ad9c7d96853ae0f411762c535e6a1a0f5d29f"
+ }
+}

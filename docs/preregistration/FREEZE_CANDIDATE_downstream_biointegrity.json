@@ -1,0 +1,231 @@
+{
+ "status": "CANDIDATE \u2014 not frozen; the lead writes FREEZE_downstream_biointegrity.json after the delta review",
+ "prepared": "2026-11-08T20:21:43",
+ "app": "biointegrity",
+ "split_file": "docs/preregistration/downstream_biointegrity_split.json",
+ "split_sha256": "0d9de79a17b33e06e57703e15b2f4309bcabd0dbc55e8e21f3eb2a9558f1601c",
+ "scoring_code_sha256": "1a83df2e9d0bc52350484fb19f7c57e4e8eea28d4c1b8d60c6c9bade888b6488",
+ "scoring_files": {
+  "docs/preregistration/downstream_biointegrity.md": "ef6e23b2fca503b1eab72a7fa3cd9cff07d3bc6e85e1c719f77f7803dcaff168",
+  "docs/preregistration/downstream_biointegrity_data_pins.json": "af510bf93e7f174c123d2a968c3c79465b1ce45da8e2246e820625d30004a3cd",
+  "scripts/train/downstream_biointegrity.py": "9e4d3cf3aa2f50c5ef9e0df201d141dd86b1183166d52f8a6897ce2271482e87",
+  "scripts/train/downstream_biointegrity_ens.py": "205cdb5e588539d9534accc751631d54fa8b66ccf1e40a0571807e3e7ed5f819",
+  "scripts/train/downstream_biointegrity_iter.py": "6ca4fcbbc583dba56ea1ec087217ae8fba527b59843e902028906e24c4417747",
+  "scripts/train/downstream_biointegrity_test.py": "05eeb4d54dd0766fa96b3eb6d9b741560cf043313edc694fdefe8556253d56ca",
+  "sentinel/data/downstream_links.py": "7e4d2904f250b4180e62d9629660c49ca72935e5b4f2a7158765ed7f711b9b98",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/bioassess/data.py": "a09d9e9daeccaa1508555d9943e0613c76f404103f84c1028930c0b79d122853",
+  "sentinel/models/downstream/biointegrity.py": "f80f4096a8dde2ebc268425d28b72f66e16d5e7132372fa5073182400b0619d0",
+  "sentinel/models/downstream/common.py": "f26d66f2ee2d990bb83c7359da4f1f880a4eb6d1b4c7da442c16fd792ddef519",
+  "sentinel/models/downstream/crossfit.py": "3560dd8a13d4a087cc6d31b7bb1c7be2a6009888563b7d375603307a98917f3a",
+  "sentinel/models/downstream/testlook.py": "9babf2cd7f0f2816b829272bd7504204cda045440930b1a9bec2412f6e3e8f8d",
+  "sentinel/models/downstream/weather.py": "85b0858c98309c6440967296828d91badd981cc42fb505177631f3e3bcfb810d"
+ },
+ "data_pins": {
+  "file": "docs/preregistration/downstream_biointegrity_data_pins.json",
+  "sha256": "af510bf93e7f174c123d2a968c3c79465b1ce45da8e2246e820625d30004a3cd",
+  "n_files": 22,
+  "expected": {
+   "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+  },
+  "verified_before_claim": true
+ },
+ "data_manifests": [
+  "nars_streams",
+  "downstream_catchment",
+  "forcings_daily",
+  "gridmet_sites"
+ ],
+ "configs_tried": 92,
+ "configs_note": "92 configurations over 4 iterations on one validation cycle",
+ "selected": {
+  "model": "ens_tuned_gbm_rf = 0.5 x (tuned GBM + tuned RF, geo+StreamCat), it2 params, 3 seeds per member",
+  "fit_rows": "NRSA 2008-09 + 2013-14 + 2018-19"
+ },
+ "test_block": "NRSA 2023-24 first visits at new locations (\u00a76); secondaries: all first visits, revisits (+persistence), frozen flag subset, accuracy@0.5, logistic-geo",
+ "comparators": {
+  "incumbent": "hill2017_rf_streamcat (+ tuned)",
+  "parity": "rf_geo_streamcat (+ tuned)"
+ },
+ "claim_rule": "paired AUROC (HUC4) vs all four RF rows, Holm over four, plus the seed rule",
+ "seed_rule": "claim requires, for every primary comparison, Holm rejection with paired diff > 0 for the seed-averaged model AND a per-seed paired point estimate > 0 for each of >= 3 seeds on the test block (RESEARCH_PLAN \u00a715.1(iii); gate 2026-11-08)",
+ "counts_toward_HG4_beats_incumbent": "yes (D5)",
+ "single_pass_guard": "verify_data -> authorise (check_roles: FREEZE + split + scoring-code sha; claim_test_look: registry test rows = 0, O_EXCL marker) -> builders require_authorised -> save_predictions (once, before any registry write) -> score/log_test_metric -> mark_scored; crash after save: --rescore-from-saved only",
+ "test_scoring_path": {
+  "script": "scripts/train/downstream_biointegrity_test.py",
+  "sha256": "05eeb4d54dd0766fa96b3eb6d9b741560cf043313edc694fdefe8556253d56ca",
+  "invocation": "python -B scripts/train/downstream_biointegrity_test.py --allow-test",
+  "run_with": "default SENTINEL_RUNS / SENTINEL_DATA (no overrides)",
+  "dry_run_on_val": {
+   "results": "/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/ds_final/runs/downstream/biointegrity/testpath_dryrun/results.json",
+   "sha256": "43bbf739fd0744d013bf7a4b6f9348ab34862ffdf0cc099a7c8c67f325aa1a44",
+   "claim_met_on_val": true,
+   "seed_rule_ok": true,
+   "holm_ok": true
+  }
+ },
+ "environment": {
+  "python": "/home/bcheng/miniconda3/envs/sentinel2/bin/python",
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a",
+  "not_hashed": "sentinel/core/{paths,registry,runlog}.py and package __init__ files (gate S-O1)"
+ },
+ "ordering_evidence": "no git (user instruction): prereg_snapshot registry row written with the FREEZE file (testlook.prereg_snapshot)",
+ "artifacts": [
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/biointegrity/it3_ens/results.json",
+   "sha256": "67831b1ea409955fea42ca54721b5f6f75e81599a548d814487d4f00f1f4a6af"
+  },
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/biointegrity/it2_tuned_20261025-012347/results.json",
+   "sha256": "9514c9952d67d2c80d06aec026af2fa2b63a71b9285033b7c6b0544546ca7b7d"
+  }
+ ],
+ "evidence_registry_rows": [
+  {
+   "registry_id": "179e63b9e5fb",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc",
+   "split": "val_nrsa1819_newloc",
+   "value": 0.8576102743835055,
+   "ci": [
+    0.8268038777390906,
+    0.8867885516490357
+   ]
+  },
+  {
+   "registry_id": "7a0afb18ebce",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_hill2017_rf_streamcat",
+   "split": "val_nrsa1819_newloc",
+   "value": 0.013703387957437418,
+   "ci": [
+    0.004562741021662214,
+    0.0227862478800527
+   ]
+  },
+  {
+   "registry_id": "90a76f0834c9",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_tuned_hill2017_rf_streamcat",
+   "split": "val_nrsa1819_newloc",
+   "value": 0.020918190142401594,
+   "ci": [
+    0.010281120232306512,
+    0.03277676791815262
+   ]
+  },
+  {
+   "registry_id": "5e15810fda35",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_rf_geo_streamcat",
+   "split": "val_nrsa1819_newloc",
+   "value": 0.012606169682043533,
+   "ci": [
+    0.0038789320836934067,
+    0.021366734148517988
+   ]
+  },
+  {
+   "registry_id": "16211d3f5a23",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_tuned_rf_geo_streamcat",
+   "split": "val_nrsa1819_newloc",
+   "value": 0.011295822676896883,
+   "ci": [
+    0.003982765669564975,
+    0.018641942371684237
+   ]
+  },
+  {
+   "registry_id": "3f24b998f11c",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_tuned_gbm_geo_streamcat",
+   "split": "val_nrsa1819_newloc",
+   "value": -0.0006393861892582953,
+   "ci": [
+    -0.005879020086732767,
+    0.004651236063011314
+   ]
+  },
+  {
+   "registry_id": "ffee57a06ff2",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc",
+   "split": "val_nrsa1819_all",
+   "value": 0.8954858833817421,
+   "ci": [
+    0.8751077892144563,
+    0.9149114787552769
+   ]
+  },
+  {
+   "registry_id": "472dd0c6ecb6",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_hill2017_rf_streamcat",
+   "split": "val_nrsa1819_all",
+   "value": 0.013180650551235185,
+   "ci": [
+    0.008016148043732092,
+    0.018396016730852206
+   ]
+  },
+  {
+   "registry_id": "798b94de9fcb",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_tuned_hill2017_rf_streamcat",
+   "split": "val_nrsa1819_all",
+   "value": 0.011981167431837303,
+   "ci": [
+    0.007765948654979038,
+    0.016392524771658354
+   ]
+  },
+  {
+   "registry_id": "8b68f0ab31e2",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_rf_geo_streamcat",
+   "split": "val_nrsa1819_all",
+   "value": 0.01176157125456756,
+   "ci": [
+    0.006581034132073724,
+    0.01673253595079267
+   ]
+  },
+  {
+   "registry_id": "dcd8ac060384",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_tuned_rf_geo_streamcat",
+   "split": "val_nrsa1819_all",
+   "value": 0.008897061119960026,
+   "ci": [
+    0.005044813002576529,
+    0.012788287340248037
+   ]
+  },
+  {
+   "registry_id": "e41615d3b518",
+   "experiment": "biointegrity/iter/it3_ens",
+   "model": "ens_tuned_gbm_rf",
+   "metric": "auroc_diff_vs_tuned_gbm_geo_streamcat",
+   "split": "val_nrsa1819_all",
+   "value": -0.0001815328398763194,
+   "ci": [
+    -0.0040360484010762004,
+    0.0036132634483614073
+   ]
+  }
+ ]
+}

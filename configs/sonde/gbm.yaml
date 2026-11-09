@@ -1,0 +1,28 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Global LightGBM per (variable, horizon) on the climatological anomaly (sentinel/models/sonde/gbm.py).
+model: gbm
+gbm:
+  objective: l1              # median regression
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_rounds: 2000
+  early_stopping_rounds: 100  # on the VALIDATION block (train- and val-role sites)
+  num_threads: 6   # shared-host rule (CONTRIBUTING_V2: <= 6 threads)
+  fit_end: "2019-09-30"       # fit rows: target day <= end of WY2019
+  cal_start: "2019-10-01"     # residual-quantile slice: WY2020-2021 (issue >= cal_start + embargo)
+  cal_embargo_days: 42
+  row_stride: 1
+  max_fit_rows: null
+  es_max_rows: 400000
+  scale_floor_frac: 0.05
+smoke:
+  gbm:
+    max_rounds: 300
+    early_stopping_rounds: 30
+    num_threads: 6

@@ -1,0 +1,19 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Protocol constants for SENTINEL-BioAssess (M5). docs/preregistration/bioassess_protocol.md.
+# These values are the protocol, not tunables.
+dev_surveys: [nrsa0809, nrsa1314]
+test_surveys: [nrsa1819]          # external tests A/B (untouched in phase 1)
+replication_surveys: [nrsa2324]   # external test C (untouched in phase 1)
+visit_filter: first visits (visit_no == "1")
+location_radius_km: 1.0
+min_samples_per_taxon: 10         # tabular prevalence filter, fit on the training fold
+schemes:
+  loeo: {split: nrsa0814/loeo_cv, group: ag_eco9}
+  block50: {split: nrsa0814/block50_cv, block_km: 50, n_folds: 10, seed: 0}
+  random5: {split: nrsa0814/random5_cv, n_folds: 5, seed: 0}
+inner_val: {frac: 0.15, block_km: 50, seed: 0}
+seeds: [0, 1, 2]
+n_boot: 2000
+uk_reserved_test: {block_km: 50, test_frac: 0.20, val_frac: 0.05, seed: 0}
+selection_metric: mean pooled LOEO R2 over the 6 targets (nrsa0814/loeo_cv)

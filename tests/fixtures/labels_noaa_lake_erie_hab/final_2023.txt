@@ -1,0 +1,38 @@
+          Western Lake Erie HAB Seasonal Assessment
+                                                                                                                                         2023-11-02
+
+Summary:
+The 2023 western Lake Erie cyanobacterial bloom had a severity index (SI) of 5.3, which is moderately severe. The SI captures the amount of
+biomass over the peak 30-days of the bloom and is calculated using satellite imagery to assess bloom biomass and spatial extent. The
+Microcystis bloom started at the beginning of July and was fully developed by mid-July, with a peak in mid-August and persisted to early-
+September. The bloom stayed closer to the U.S. coast this year, primarily from Monroe, MI to Port Clinton, OH. Unlike 2022, cooler
+temperatures and elevated winds in early-September reduced cyanobacterial biomass, although some bloom continued until mid-October.
+
+The 2023 bloom (SI of 5.3; 312 square miles) was less intense than in 2022 (SI of 6.8; 416 square miles). The 2023 SI was slightly above the
+seasonal forecast (2-4.5; issued Jun. 29), but within the range of the updated forecast (4.5-5.5; issued Jul. 27). The seasonal forecast used an
+ensemble of different models, each of which include phosphorus loading into the lake during the spring and early summer (Mar.-Jul.). Since
+2002, the 2023 bloom was the second earliest bloom start (Jul. 4, 2023), following 2018. The early bloom start likely allowed the
+cyanobacterial bloom to approach the higher end of the updated forecasted bloom severity (5.5). Like 2022, the 2023 bloom lasted for several
+weeks (~5 weeks) at or near its highest bloom intensity.
+
+
+Bloom Severity                                                                  Cumulative Total Bioavailable Phosphorus
+
+
+
+
+Fig. 1. Bloom severity index (SI) for 2002-2023. The SI is based                Fig. 2. Cumulative TBP loads for the Maumee River (Waterville,
+on the amount of biomass over the peak 30-days. The 2023                        OH). Each line denotes a different year. 2023 is in red. TBP loads in
+bloom had a severity of 5.3. A severity below 3 is the goal of the              2023 were just below those observed in 2022.
+Great Lakes Water Quality Agreement (GLWQA).                                    TESTTESTTESTTEST
+Total Bioavailable Phosphorus                                                   Comparative Bloom Severity
+
+
+
+
+Fig. 3. Total bioavailable phosphorus (TBP) load                             Fig. 4. The maximum bloom severity in 2022 (Aug. 10-19) and 2023
+accumulated from the Maumee River near Waterville, OH from                   (Aug. 10-19). Bluish-green to dark blue indicates low cyanobacterial
+March-July 2023. The right axis denotes the TBP load from                    concentrations. Sandusky Bay has a different type of cyanobacteria that
+selected previous years.                                                     typically does not form scum.
+For more information visit: coastalscience.noaa.gov/science-areas/habs/hab-forecasts/lake-erie/ or ncwqr.org/       Questions? Contact: hab@noaa.gov
+

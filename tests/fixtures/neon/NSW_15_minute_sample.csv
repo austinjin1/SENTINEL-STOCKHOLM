@@ -1,0 +1,4 @@
+startDateTime,endDateTime,surfWaterNitrateMean,surfWaterNitrateMinimum,surfWaterNitrateMaximum,surfWaterNitrateVariance,surfWaterNitrateNumPts,surfWaterNitrateExpUncert,surfWaterNitrateStdErMean,finalQF
+"2020-09-01T00:00:00Z","2020-09-01T00:15:00Z",,,,,,,,1
+"2020-09-01T00:15:00Z","2020-09-01T00:30:00Z",,,,,,,,1
+"2020-09-01T00:30:00Z","2020-09-01T00:45:00Z",,,,,,,,1

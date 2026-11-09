@@ -1,0 +1,4 @@
+GLORIA_ID,Noisy_red,Noisy_blue,Baseline_shift,Oxygen_signal,Negative_uv_slope,QWIP_fail,Suspect,Flagged
+GID_1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+GID_2000,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+GID_5000,,,0.0,0.0,,0.0,0.0,0.0

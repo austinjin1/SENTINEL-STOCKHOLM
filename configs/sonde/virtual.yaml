@@ -1,0 +1,22 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Task N-b virtual sensing at unseen stations (sentinel/models/sonde/virtual.py).
+model: virtual_nb
+use_weather: true             # lagged observed weather (same for GBM and VirtualLSTM)
+num_threads: 6   # shared-host rule (CONTRIBUTING_V2: <= 6 threads)
+gbm_max_rounds: 2000
+vlstm:
+  context: 90
+  hidden: 128
+  batch_size: 512
+  lr: 0.001
+  max_epochs: 30
+  steps_per_epoch: 800
+  patience: 4
+  amp: true
+smoke:
+  num_threads: 6
+  gbm_max_rounds: 200
+  vlstm:
+    max_epochs: 2
+    steps_per_epoch: 50

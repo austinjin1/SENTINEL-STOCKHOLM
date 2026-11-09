@@ -1,0 +1,193 @@
+{
+ "created": "2026-11-08T17:38:53.592979+00:00",
+ "protocol": "sim_protocol.md \u00a74.6",
+ "split_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+ "definitions": {
+  "heatwave": "target day in a run of >= 3 days with air-T anomaly >= site train-block P90",
+  "low_flow": "observed Q(target) <= site train-block P10",
+  "high_flow": "observed Q(target) >= site train-block P95",
+  "power_rule": {
+   "min_sites": 10,
+   "min_groups": 5,
+   "min_rows": 500
+  }
+ },
+ "region_folds": {
+  "F1_ohio": [
+   "05"
+  ],
+  "F2_northeast_greatlakes": [
+   "01",
+   "04"
+  ],
+  "F3_pacific": [
+   "17",
+   "18"
+  ],
+  "F4_interior": [
+   "07",
+   "08",
+   "11",
+   "12",
+   "13"
+  ]
+ },
+ "region_fold_table": [
+  {
+   "fold": "F1_ohio",
+   "huc2": [
+    "05"
+   ],
+   "val_sites": 57,
+   "val_groups": 1,
+   "train_cal_removed": 8
+  },
+  {
+   "fold": "F2_northeast_greatlakes",
+   "huc2": [
+    "01",
+    "04"
+   ],
+   "val_sites": 35,
+   "val_groups": 4,
+   "train_cal_removed": 44
+  },
+  {
+   "fold": "F3_pacific",
+   "huc2": [
+    "17",
+    "18"
+   ],
+   "val_sites": 21,
+   "val_groups": 2,
+   "train_cal_removed": 282
+  },
+  {
+   "fold": "F4_interior",
+   "huc2": [
+    "07",
+    "08",
+    "11",
+    "12",
+    "13"
+   ],
+   "val_sites": 20,
+   "val_groups": 5,
+   "train_cal_removed": 88
+  }
+ ],
+ "val_huc2_not_in_any_fold": [],
+ "power_val_cell": [
+  {
+   "stratum": "heatwave",
+   "var": "temp_c_mean",
+   "h": 3,
+   "n_rows_upper_bound": 4366,
+   "n_sites": 108,
+   "n_groups": 12,
+   "powered": true
+  },
+  {
+   "stratum": "low_flow",
+   "var": "temp_c_mean",
+   "h": 3,
+   "n_rows_upper_bound": 7770,
+   "n_sites": 97,
+   "n_groups": 10,
+   "powered": true
+  },
+  {
+   "stratum": "high_flow",
+   "var": "temp_c_mean",
+   "h": 3,
+   "n_rows_upper_bound": 2244,
+   "n_sites": 101,
+   "n_groups": 12,
+   "powered": true
+  },
+  {
+   "stratum": "heatwave",
+   "var": "temp_c_mean",
+   "h": 7,
+   "n_rows_upper_bound": 4352,
+   "n_sites": 108,
+   "n_groups": 12,
+   "powered": true
+  },
+  {
+   "stratum": "low_flow",
+   "var": "temp_c_mean",
+   "h": 7,
+   "n_rows_upper_bound": 7725,
+   "n_sites": 97,
+   "n_groups": 10,
+   "powered": true
+  },
+  {
+   "stratum": "high_flow",
+   "var": "temp_c_mean",
+   "h": 7,
+   "n_rows_upper_bound": 2228,
+   "n_sites": 101,
+   "n_groups": 12,
+   "powered": true
+  },
+  {
+   "stratum": "heatwave",
+   "var": "do_mgl_mean",
+   "h": 3,
+   "n_rows_upper_bound": 590,
+   "n_sites": 23,
+   "n_groups": 8,
+   "powered": true
+  },
+  {
+   "stratum": "low_flow",
+   "var": "do_mgl_mean",
+   "h": 3,
+   "n_rows_upper_bound": 1806,
+   "n_sites": 23,
+   "n_groups": 8,
+   "powered": true
+  },
+  {
+   "stratum": "high_flow",
+   "var": "do_mgl_mean",
+   "h": 3,
+   "n_rows_upper_bound": 382,
+   "n_sites": 22,
+   "n_groups": 6,
+   "powered": false
+  },
+  {
+   "stratum": "heatwave",
+   "var": "do_mgl_mean",
+   "h": 7,
+   "n_rows_upper_bound": 578,
+   "n_sites": 23,
+   "n_groups": 8,
+   "powered": true
+  },
+  {
+   "stratum": "low_flow",
+   "var": "do_mgl_mean",
+   "h": 7,
+   "n_rows_upper_bound": 1795,
+   "n_sites": 23,
+   "n_groups": 8,
+   "powered": true
+  },
+  {
+   "stratum": "high_flow",
+   "var": "do_mgl_mean",
+   "h": 7,
+   "n_rows_upper_bound": 363,
+   "n_sites": 22,
+   "n_groups": 6,
+   "powered": false
+  }
+ ],
+ "n_val_sites": 133,
+ "stratum_flags_sha256_val_cell": "3a90aa7614189414a1010bbe0006ea3545d2a61cd6d3eeaeda8f41873651c1bd",
+ "definition_sha256": "817525867c0348efd9ab85750142540c19fb39bd612d6650dde0002db3bdb0fd"
+}

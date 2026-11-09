@@ -1,0 +1,5 @@
+station_name,measurement_timestamp,air_temperature,wet_bulb_temperature,humidity,rain_intensity,interval_rain,total_rain,precipitation_type,wind_direction,wind_speed,maximum_wind_speed,barometric_pressure,solar_radiation,heading,battery_life,measurement_timestamp_label,measurement_id
+63rd Street Weather Station,2016-02-24T12:00:00.000,0.4,0.3,98,0,1.8,16.9,70,280,999.9,999.9,978.2,70,353,11.9,02/24/2016 12:00 PM,63rdStreetWeatherStation201602241200
+63rd Street Weather Station,2018-02-24T12:00:00.000,22.2,14.8,45,0,0,0,0,280,999.9,999.9,1021.6,-100000,348,14.1,02/24/2018 12:00 PM,63rdStreetWeatherStation201802241200
+63rd Street Weather Station,2025-03-17T19:30:00.000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,03/17/2025 7:30 PM,63rdStreetWeatherStation202503171930
+63rd Street Weather Station,2015-04-25T09:00:00.000,7,5.9,86,7.2,5,5.2,60,119,5.1,7.1,986.1,38,354,12,04/25/2015 9:00 AM,63rdStreetWeatherStation201504250900

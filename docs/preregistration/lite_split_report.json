@@ -1,0 +1,153 @@
+{
+ "sha256": "46ed6e1f8724a2ef4aded2f4251c151d322a920d3c1df0d90874bb81a3397475",
+ "params": {
+  "block_km": 25.0,
+  "test_frac": 0.2,
+  "val_frac": 0.25,
+  "seed": 20261024,
+  "buffer_km": 2.0,
+  "last_train_year": 2021,
+  "water_body_radius_km": 2.0,
+  "water_body_name_km": 40.0,
+  "buffer_val_km": 2.0
+ },
+ "n_chips": {
+  "train": 2795,
+  "val": 1278,
+  "test": 1178,
+  "test_time": 747,
+  "excluded": 0
+ },
+ "n_labels": {
+  "train": {
+   "secchi": 2526,
+   "turbidity": 575,
+   "tss": 544,
+   "chla": 994
+  },
+  "val": {
+   "secchi": 1163,
+   "turbidity": 132,
+   "tss": 161,
+   "chla": 428
+  },
+  "test": {
+   "secchi": 1094,
+   "turbidity": 92,
+   "tss": 98,
+   "chla": 310
+  },
+  "test_time": {
+   "secchi": 602,
+   "turbidity": 190,
+   "tss": 166,
+   "chla": 361
+  },
+  "excluded": {
+   "secchi": 0,
+   "turbidity": 0,
+   "tss": 0,
+   "chla": 0
+  }
+ },
+ "n_water_bodies": {
+  "train": 725,
+  "val": 378,
+  "test": 420,
+  "test_time": 327,
+  "excluded": 0
+ },
+ "n_lake_labels": {
+  "train": {
+   "secchi": 2069,
+   "turbidity": 180,
+   "tss": 178,
+   "chla": 617
+  },
+  "val": {
+   "secchi": 1083,
+   "turbidity": 50,
+   "tss": 57,
+   "chla": 329
+  },
+  "test": {
+   "secchi": 1065,
+   "turbidity": 58,
+   "tss": 62,
+   "chla": 271
+  },
+  "test_time": {
+   "secchi": 480,
+   "turbidity": 51,
+   "tss": 43,
+   "chla": 160
+  },
+  "excluded": {
+   "secchi": 0,
+   "turbidity": 0,
+   "tss": 0,
+   "chla": 0
+  }
+ },
+ "val_to_train_km": {
+  "min": 2.118885460888144,
+  "median": 10.877766508686609
+ },
+ "test_to_train_km": {
+  "min": 2.047489228357695,
+  "median": 13.793421026975498
+ },
+ "label_report": {
+  "n_in": 10672,
+  "dropped_other_targets": 22,
+  "dropped_unit": {
+   "secchi": 14,
+   "turbidity": 271,
+   "tss": 51,
+   "chla": 80
+  },
+  "dropped_censored": {
+   "secchi": 46,
+   "turbidity": 1,
+   "tss": 8,
+   "chla": 17
+  },
+  "dropped_missing_value": {
+   "secchi": 8,
+   "turbidity": 3,
+   "tss": 0,
+   "chla": 0
+  },
+  "dropped_bounds": {
+   "secchi": 5,
+   "turbidity": 29,
+   "tss": 4,
+   "chla": 0
+  },
+  "n_out": 10113,
+  "n_out_by_target": {
+   "secchi": 5474,
+   "chla": 2673,
+   "turbidity": 992,
+   "tss": 974
+  },
+  "n_sites_in_hydrolakes": 3015,
+  "n_chips": 5998,
+  "n_sites": 4228,
+  "n_water_bodies": 1616,
+  "water_body_rule": {
+   "radius_km": 2.0,
+   "name_km": 40.0,
+   "flowing_huc8": [
+    "river_stream",
+    "estuary_coastal",
+    "canal",
+    "other",
+    "wetland"
+   ],
+   "hydrolakes": true,
+   "lake_max_dist_m": 100.0
+  },
+  "labels_sha256": "bb3e6ec90ecd2976699308dd00c71db65c8f29e1ae0528ce1faab216f5bfd72a"
+ }
+}

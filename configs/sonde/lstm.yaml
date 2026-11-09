@@ -1,0 +1,37 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Multi-site quantile LSTM (sentinel/models/sonde/lstm.py).
+model: lstm
+seeds: [0, 1, 2]
+lstm:
+  context: 365
+  hidden: 256
+  layers: 1
+  dropout: 0.2
+  static_hidden: 32
+  huc_emb: 4
+  head_hidden: 256
+  batch_size: 256
+  lr: 0.001
+  weight_decay: 1.0e-5
+  max_epochs: 40
+  steps_per_epoch: 1000
+  patience: 5
+  amp: true                 # fp16 autocast + GradScaler (no bf16 on Turing)
+  val_stride_days: 3
+  val_max_samples: 60000
+  grad_clip: 1.0
+  anom_clip: 8.0
+  scale_floor_frac: 0.05
+  balance_variables: true
+  max_minutes: null
+smoke:
+  seeds: [0]
+  lstm:
+    hidden: 128
+    head_hidden: 128
+    max_epochs: 30
+    steps_per_epoch: 300
+    patience: 4
+    val_max_samples: 5000
+    max_minutes: 7

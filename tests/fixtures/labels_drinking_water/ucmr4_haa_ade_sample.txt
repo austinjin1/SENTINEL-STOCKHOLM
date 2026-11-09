@@ -1,0 +1,15 @@
+PWSID	FacilityID	SamplePointID	SampleEventCode	AdditionalDataElement	Response	IfOtherText
+OH0100012	52615	DS201	SE1	DisinfectantResidual	CL2	
+OH0100012	52615	DS201	SE1	DisinfectantType	CLGA	
+OH0100012	52615	DS201	SE1	DisinfectantType	PEMB	
+OH0100012	52615	DS201	SE1	TreatmentInformation	NTU	
+OH0100012	52615	DS201	SE2	DisinfectantResidual	CL2	
+OH0100012	52615	DS201	SE2	DisinfectantType	CLGA	
+OH0100012	52615	DS201	SE2	DisinfectantType	PEMB	
+OH0100012	52615	DS201	SE2	TreatmentInformation	NTU	
+OH0100012	52615	DS202	SE1	DisinfectantResidual	CL2	
+OH0100012	52615	DS202	SE1	DisinfectantType	CLGA	
+OH0100012	52615	DS202	SE1	DisinfectantType	PEMB	
+OH0100012	52615	DS202	SE1	TreatmentInformation	NTU	
+OH0100012	52615	DS202	SE2	DisinfectantResidual	CL2	
+OH0100012	52615	DS202	SE2	DisinfectantType	CLGA	

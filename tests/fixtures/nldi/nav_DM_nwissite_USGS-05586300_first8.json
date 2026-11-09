@@ -1,0 +1,197 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -89.9036111,
+     37.95416667
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-375715089541301",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-375715089541301/navigation",
+    "name": "Mississippi River (Streambed Sediment MS 07)",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 5089888,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-375715089541301",
+    "reachcode": "07140105000124",
+    "measure": 89.0183,
+    "mainstem": "https://geoconnex.us/ref/mainstems/312091"
+   },
+   "id": "USGS-375715089541301"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -89.1989572,
+     36.57283874
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-07024070",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-07024070/navigation",
+    "name": "MISSISSIPPI RIVER AT HICKMAN, KY",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 7469386,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-07024070",
+    "reachcode": "08010100000686",
+    "measure": 8.214,
+    "mainstem": "https://geoconnex.us/ref/mainstems/312091"
+   },
+   "id": "USGS-07024070"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -90.1076071,
+     38.82865944
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-05587750",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-05587750/navigation",
+    "name": "Mississippi River at Hartford, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 880678,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-05587750",
+    "reachcode": "07110009000684",
+    "measure": 99.6891,
+    "mainstem": "https://geoconnex.us/ref/mainstems/312091"
+   },
+   "id": "USGS-05587750"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -90.159831,
+     38.77588266
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-07001000",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-07001000/navigation",
+    "name": "MISSISSIPPI RIVER AT EAST ST. LOUIS, ILL. (MO)",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 3624705,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-07001000",
+    "reachcode": "07140101000111",
+    "measure": 20.5862,
+    "mainstem": "https://geoconnex.us/ref/mainstems/312091"
+   },
+   "id": "USGS-07001000"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -90.06094609,
+     38.0064415
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-07020150",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-07020150/navigation",
+    "name": "MISSISSIPPI RIVER AT STE. GENEVIEVE, MO.",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 3629267,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-07020150",
+    "reachcode": "07140101000004",
+    "measure": 93.6104,
+    "mainstem": "https://geoconnex.us/ref/mainstems/312091"
+   },
+   "id": "USGS-07020150"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -90.0581682,
+     38.01005258
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-07020125",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-07020125/navigation",
+    "name": "MISSISSIPPI RIVER AT KELLOGG, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 3629267,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-07020125",
+    "reachcode": "07140101000004",
+    "measure": 92.3419,
+    "mainstem": "https://geoconnex.us/ref/mainstems/312091"
+   },
+   "id": "USGS-07020125"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -90.6077778,
+     39.63277778
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-05586300",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-05586300/navigation",
+    "name": "ILLINOIS RIVER AT FLORENCE, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 3607116,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-05586300",
+    "reachcode": "07130011002494",
+    "measure": 74.1997,
+    "mainstem": "https://geoconnex.us/ref/mainstems/324005"
+   },
+   "id": "USGS-05586300"
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -89.8302111,
+     37.90074167
+    ]
+   },
+   "properties": {
+    "identifier": "USGS-07020500",
+    "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-07020500/navigation",
+    "name": "Mississippi River at Chester, IL",
+    "source": "nwissite",
+    "sourceName": "NWIS Surface Water Sites",
+    "comid": 5089904,
+    "type": "hydrolocation",
+    "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-07020500",
+    "reachcode": "07140105000123",
+    "measure": 88.498,
+    "mainstem": "https://geoconnex.us/ref/mainstems/312091"
+   },
+   "id": "USGS-07020500"
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+site	resolution	required_timestep	model_name	K600_lnQ_nodes_centers	K600_lnQ_nodediffs_sdlog	K600_daily_sigma_sigma	burnin_steps	saved_steps	solar.time.src	DO.obs.src	DO.sat.src	depth.src	temp.water.src	light.src	discharge.src
+nwis_01548303	15min	0.01041667	b_Kb_oipi_tr_plrckm.stan	seq(-5.5,1.5,by=0.2)	0.1	0.8503	1000	500	calcLon	nwis	calcGGbts	calcDischHarvey	nwis	calcLatSw	nwis
+nwis_01400500	60min	0.04166667	b_Kb_oipi_tr_plrckm.stan	seq(1.1,6.5,by=0.2)	0.1	0.0771	2000	2000	calcLon	nwis	calcGGbts	calcDischHarvey	nwis	calcLatSw	nwis
+nwis_01400500	15min	0.01041667	b_Kb_oipi_tr_plrckm.stan	seq(1.1,6.5,by=0.2)	0.1	0.0771	1000	500	calcLon	nwis	calcGGbts	calcDischHarvey	nwis	calcLatSw	nwis
+nwis_01400500	30min	0.02083333	b_Kb_oipi_tr_plrckm.stan	seq(1.1,6.5,by=0.2)	0.1	0.0771	1000	500	calcLon	nwis	calcGGbts	calcDischHarvey	nwis	calcLatSw	nwis
+nwis_01648010	5min	0.00347222	b_Kb_oipi_tr_plrckm.stan	seq(-2.1,4.3,by=0.2)	0.1	0.0775	1000	500	calcLon	nwis	calcGGbts	calcDischHarvey	nwis	calcLatSw	nwis
+nwis_01648010	15min	0.01041667	b_Kb_oipi_tr_plrckm.stan	seq(-2.1,4.3,by=0.2)	0.1	0.0775	1000	500	calcLon	nwis	calcGGbts	calcDischHarvey	nwis	calcLatSw	nwis

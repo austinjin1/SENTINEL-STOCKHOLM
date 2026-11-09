@@ -1,0 +1,400 @@
+{
+ "status": "FROZEN by lead 2026-11-08 after M5 pre-test gate + delta re-review fixes (R1,R2,W-a,W-b); single test pass authorised",
+ "prepared": "2026-11-08T22:00:23",
+ "candidates": [
+  "BioSet[bioset_st_flat]",
+  "Ensemble[BioSet[bioset_st_flat]+TabPFNv2[community]]",
+  "Ensemble[BioSet[bioset_st_flat]+geography+RandomForest[community+geography]+TabPFNv2[community]]"
+ ],
+ "sota_comparators": {
+  "log10_tp_ug_l": "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]",
+  "log10_tn_mg_l": "Ensemble[RandomForest[community+context]+TabPFNv2[community]]",
+  "log10_cond_us_cm": "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]",
+  "log10_chloride_mg_l": "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]",
+  "log10_turbidity_ntu": "TabPFNv2[community]",
+  "ph_lab": "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]"
+ },
+ "comparator_evidence_dev_loeo": {
+  "log10_tp_ug_l": {
+   "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.3607592833733101,
+    "registry_id": "7ac1d32d09ac"
+   },
+   "Ensemble[RandomForest[community+context]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.3595776803166293,
+    "registry_id": "388e3d8413bf"
+   },
+   "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]": {
+    "r2": 0.3586051907639385,
+    "registry_id": "cb0971f639f3"
+   },
+   "Ensemble[RandomForest[community+context]+TabPFNv2[community]]": {
+    "r2": 0.3565832990480957,
+    "registry_id": "ed5685f540b9"
+   },
+   "Ensemble[LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.356285267752826,
+    "registry_id": "f37f4729b357"
+   },
+   "TabPFNv2[community]": {
+    "r2": 0.35507332672419656,
+    "registry_id": "70dd03e769db"
+   },
+   "LightGBM[community]": {
+    "r2": 0.32982781759775626,
+    "registry_id": "1b909839396e"
+   },
+   "RandomForest[community+geography]": {
+    "r2": 0.3273532587819037,
+    "registry_id": "5f6b07d1bac0"
+   },
+   "RandomForest[community+context]": {
+    "r2": 0.3224483102688218,
+    "registry_id": "ca87436e639f"
+   },
+   "RandomForest[community]": {
+    "r2": 0.31598260495879493,
+    "registry_id": "b1fab5fd8b43"
+   }
+  },
+  "log10_tn_mg_l": {
+   "Ensemble[RandomForest[community+context]+TabPFNv2[community]]": {
+    "r2": 0.44301578792162966,
+    "registry_id": "904222d8dc0f"
+   },
+   "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]": {
+    "r2": 0.4408987448983872,
+    "registry_id": "2400d0b8bbe2"
+   },
+   "RandomForest[community+context]": {
+    "r2": 0.4325293651516561,
+    "registry_id": "cd03723b943f"
+   },
+   "Ensemble[RandomForest[community+context]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.42827863015757084,
+    "registry_id": "e0e8be0cf49a"
+   },
+   "RandomForest[community+geography]": {
+    "r2": 0.4277564262852567,
+    "registry_id": "dca710270305"
+   },
+   "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.4268994041234523,
+    "registry_id": "6a13a5d29ceb"
+   },
+   "TabPFNv2[community]": {
+    "r2": 0.38956201288460823,
+    "registry_id": "014519cda665"
+   },
+   "Ensemble[LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.3850111048221624,
+    "registry_id": "c524461bf422"
+   },
+   "LightGBM[community]": {
+    "r2": 0.35549494180166463,
+    "registry_id": "0be4ceb57af4"
+   },
+   "RandomForest[community]": {
+    "r2": 0.3364447126857034,
+    "registry_id": "49de44aa1f9f"
+   }
+  },
+  "log10_cond_us_cm": {
+   "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]": {
+    "r2": 0.5654151676554193,
+    "registry_id": "43e312f1ef6b"
+   },
+   "Ensemble[RandomForest[community+context]+TabPFNv2[community]]": {
+    "r2": 0.564359423752552,
+    "registry_id": "59d19ec5eff1"
+   },
+   "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.547790361734278,
+    "registry_id": "3321dbcbb5ab"
+   },
+   "Ensemble[RandomForest[community+context]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.5470821255590308,
+    "registry_id": "d0e9be250bf9"
+   },
+   "RandomForest[community+geography]": {
+    "r2": 0.5351984542134287,
+    "registry_id": "50e0685f3623"
+   },
+   "RandomForest[community+context]": {
+    "r2": 0.5319804191546051,
+    "registry_id": "3db58c9af533"
+   },
+   "TabPFNv2[community]": {
+    "r2": 0.4973567530466856,
+    "registry_id": "c5dff6b57483"
+   },
+   "Ensemble[LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.4944354065684009,
+    "registry_id": "2824c9d70e8f"
+   },
+   "LightGBM[community]": {
+    "r2": 0.46106009560161065,
+    "registry_id": "f4f7975a2bbe"
+   },
+   "RandomForest[community]": {
+    "r2": 0.3906751112039816,
+    "registry_id": "92789ee0ec91"
+   }
+  },
+  "log10_chloride_mg_l": {
+   "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]": {
+    "r2": 0.4769308666494372,
+    "registry_id": "198b69d0cebf"
+   },
+   "Ensemble[RandomForest[community+context]+TabPFNv2[community]]": {
+    "r2": 0.47598312312487767,
+    "registry_id": "45dd8ffeef48"
+   },
+   "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.47193039061978526,
+    "registry_id": "93f4aaee2e33"
+   },
+   "Ensemble[RandomForest[community+context]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.47125343110737283,
+    "registry_id": "f894f5705fef"
+   },
+   "RandomForest[community+geography]": {
+    "r2": 0.45803080825758646,
+    "registry_id": "e278fa93955e"
+   },
+   "RandomForest[community+context]": {
+    "r2": 0.4568208152197131,
+    "registry_id": "1ac346d278f0"
+   },
+   "Ensemble[LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.4368522371985284,
+    "registry_id": "258ee5e67899"
+   },
+   "TabPFNv2[community]": {
+    "r2": 0.4290577450586033,
+    "registry_id": "3a2f597a73c9"
+   },
+   "LightGBM[community]": {
+    "r2": 0.41850005507745835,
+    "registry_id": "4274f79feb92"
+   },
+   "RandomForest[community]": {
+    "r2": 0.3908607253274924,
+    "registry_id": "ad8bb4cced4f"
+   }
+  },
+  "log10_turbidity_ntu": {
+   "TabPFNv2[community]": {
+    "r2": 0.3864601200037985,
+    "registry_id": "812837ce0644"
+   },
+   "Ensemble[LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.38569507877510245,
+    "registry_id": "10265bff77f3"
+   },
+   "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.3845068837892679,
+    "registry_id": "43df16a0ea7b"
+   },
+   "Ensemble[RandomForest[community+context]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.38370316463230125,
+    "registry_id": "309422f080d3"
+   },
+   "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]": {
+    "r2": 0.3818465793117286,
+    "registry_id": "a8646a1ba5ab"
+   },
+   "Ensemble[RandomForest[community+context]+TabPFNv2[community]]": {
+    "r2": 0.3805729360888154,
+    "registry_id": "24e5a8b50e04"
+   },
+   "LightGBM[community]": {
+    "r2": 0.359492676901068,
+    "registry_id": "3ff123892adf"
+   },
+   "RandomForest[community]": {
+    "r2": 0.34349976763168255,
+    "registry_id": "7592f5ade497"
+   },
+   "RandomForest[community+geography]": {
+    "r2": 0.3433609417614478,
+    "registry_id": "2e7d72e16cc5"
+   },
+   "RandomForest[community+context]": {
+    "r2": 0.33981567148856506,
+    "registry_id": "76772792abf9"
+   }
+  },
+  "ph_lab": {
+   "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]": {
+    "r2": 0.41000404080645936,
+    "registry_id": "6a5d13383f99"
+   },
+   "Ensemble[RandomForest[community+context]+TabPFNv2[community]]": {
+    "r2": 0.4078117488212094,
+    "registry_id": "7c72e116a50e"
+   },
+   "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.39914193929475805,
+    "registry_id": "182a7ae9a507"
+   },
+   "Ensemble[RandomForest[community+context]+LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.39754571514464365,
+    "registry_id": "548bdbaafd8e"
+   },
+   "TabPFNv2[community]": {
+    "r2": 0.3766437207623211,
+    "registry_id": "5105d8635dfe"
+   },
+   "Ensemble[LightGBM[community]+TabPFNv2[community]]": {
+    "r2": 0.36840398332588886,
+    "registry_id": "460e0b77e4ad"
+   },
+   "RandomForest[community+geography]": {
+    "r2": 0.35758823726417777,
+    "registry_id": "54ed48590d4a"
+   },
+   "RandomForest[community+context]": {
+    "r2": 0.352866682419951,
+    "registry_id": "662f1fd8abaf"
+   },
+   "LightGBM[community]": {
+    "r2": 0.3237554782524177,
+    "registry_id": "fd32a7e132ae"
+   },
+   "RandomForest[community]": {
+    "r2": 0.25712912069076765,
+    "registry_id": "8a7a052da0c4"
+   }
+  }
+ },
+ "h_m5_reference": "RandomForest[community]",
+ "h_m5_family_candidate": "BioSet[bioset_st_flat]",
+ "controls_for": {
+  "Ensemble[BioSet[bioset_st_flat]+geography+RandomForest[community+geography]+TabPFNv2[community]]": {
+   "leave_bioset_out": "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]",
+   "equal_size_baseline": "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]"
+  }
+ },
+ "models": [
+  "BioSet[bioset_st_flat]",
+  "Ensemble[BioSet[bioset_st_flat]+TabPFNv2[community]]",
+  "Ensemble[BioSet[bioset_st_flat]+geography+RandomForest[community+geography]+TabPFNv2[community]]",
+  "RandomForest[community]",
+  "LightGBM[community]",
+  "TabPFNv2[community]",
+  "RandomForest[community+geography]",
+  "Ensemble[RandomForest[community+geography]+TabPFNv2[community]]",
+  "Ensemble[LightGBM[community]+TabPFNv2[community]]",
+  "Ensemble[RandomForest[community+geography]+LightGBM[community]+TabPFNv2[community]]",
+  "RandomForest[community+context]",
+  "Ensemble[RandomForest[community+context]+TabPFNv2[community]]",
+  "Ensemble[RandomForest[community+context]+LightGBM[community]+TabPFNv2[community]]",
+  "RandomForest[geography]",
+  "RandomForest[context]",
+  "EcoregionMean",
+  "NearestReferenceSite",
+  "kNN-MAT[community]",
+  "WA-PLS2[community]",
+  "BioSet[bioset_st_flat]+geography",
+  "Ensemble[BioSet[bioset_st_flat]+geography+TabPFNv2[community]]"
+ ],
+ "tests": [
+  "A",
+  "B",
+  "C",
+  "T"
+ ],
+ "confirmatory_test": "A",
+ "n_boot": 2000,
+ "n_boot_confirmatory": 10000,
+ "alpha": 0.05,
+ "families": {
+  "sota": "Holm over 3 candidates x 6 targets = 18 tests (Test A only)",
+  "h_m5": "Holm over model A x 6 targets = 6 tests (Test A only); B and C vs RF[community] are reported as secondary"
+ },
+ "decision_rule": "one-sided: p = two-sided paired-bootstrap p if delta > 0 else 1 (one-sided at alpha/2); SOTA label for (candidate, target) only if Holm-rejected in the SOTA family AND the per-seed delta is > 0 for seeds 0, 1 and 2; candidate C's 'adds signal' framing only where delta > 0 against both its leave-BioSet-out and equal-size controls (secondary)",
+ "n_configurations_tried": {
+  "sentinel_side": 13,
+  "baseline_side_additions": 7,
+  "detail": "protocol \u00a710 (cycles 1-2)"
+ },
+ "selection_note": "candidates selected on development LOEO (NRSA 2008-14) after 13 SENTINEL configurations; development scores are selection-biased",
+ "sha256": {
+  "docs/preregistration/bioassess_protocol.md": "710a595677c2784f023408f741915744525e23397fe3c07ec45b024a99de107f",
+  "configs/bioassess/common.yaml": "18650836439bc8d1ec80d0f7badf31e6a665a7db03b25001aea6841dc0b656ed",
+  "configs/bioassess/bioset.yaml": "e7ceb31d0755d0a1e9a357279833da445cb4b96d9d712a403412c9f000730806",
+  "configs/bioassess/baselines.yaml": "bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a",
+  "sentinel/models/bioassess/__init__.py": "1e4cb0ebf1c09ed203811b85e4e1f763fe51444377ca0f824ff1e767d5dc9bae",
+  "sentinel/models/bioassess/data.py": "a09d9e9daeccaa1508555d9943e0613c76f404103f84c1028930c0b79d122853",
+  "sentinel/models/bioassess/splits.py": "01348a865a87f2065dead08b639a314432b7eb7ec2b4c78ff14f9f8a8833da5a",
+  "sentinel/models/bioassess/features.py": "73840717838093739ff39fa23bb7df5650768cc25b3d817c097065c023e404dc",
+  "sentinel/models/bioassess/baselines.py": "07611b77e723e6d679f11319490628b0b735ead7f72750655e5cc42ffd52b38a",
+  "sentinel/models/bioassess/bioset.py": "909c8ca3851093464bb7d1c6e494e6684ff8ca7037ed7e5682f8a7eb577154d1",
+  "sentinel/models/bioassess/cv.py": "4acd3010291554b1766f3c2cba78ac978b493ef70efa6b923d42752e3f595ee9",
+  "sentinel/models/bioassess/evaluate.py": "a2071dfa1bf37a2b428404d54db0728f512febe57f79eff0cf90a21a36df96d8",
+  "sentinel/models/bioassess/transfer.py": "3acce9005962a262e2777d4e90d22fa7ecb66772867b8d26a2a57c156f0bd8ac",
+  "sentinel/models/bioassess/uk.py": "b88ef9dc60626c77a222bcc35f58c3fe5c5c3da73b7e3587c333f5ecda2f0029",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/core/seed.py": "b4dc8bd4e26e39755e364df6927e61f3b1ac412a8d1eb7a9da279c38aa1a75f7",
+  "sentinel/core/registry.py": "8e1f1733a546b30189335403e3acfc61c9637301195c94f06dd17582a73605f7",
+  "sentinel/core/paths.py": "9bbe6f726dfdd9d3879331de3b976c5780bb0bb27814fb48fd9171b8a6de20f3",
+  "sentinel/core/gpu.py": "a2c79b40f3a7a7d32f761a3a09bc6831a9eab00324b75201f006aa0abf9ee77d",
+  "sentinel/core/runlog.py": "e31ef200946e35b5919691f1352c811eefdf35ad0a4232ec94280f69af087720",
+  "sentinel/models/chemtox/tabpfn_model.py": "d91bfdbf44087a95ac03f5efc7d47e11426ea5a0bc0e9b2a16d5e602cdea657f",
+  "sentinel/models/chemtox/__init__.py": "1a8ee0efbce68705f18440f25632d287f753044c4dd1d1e542c4d812bfb7c888",
+  "sentinel/models/chemtox/evaluate.py": "697a2ace62b8686047919321b762dd5dfff3944ab7af6fcc94f75a1c88ccb2f5",
+  "sentinel/models/chemtox/features.py": "873dc040521521925bb4c2d26ff5a110b78663331e4ff8d09267770bfa4fdee5",
+  "sentinel/__init__.py": "c56348c43d5fc13068b63471b47901b374fbff7db2ae6c4051f9ae65555d7071",
+  "sentinel/core/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/eval/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/models/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "scripts/eval/bioassess_final.py": "2e491a80b53973672622924588edb66bd36c78e153e44ecb7d6ccb135fa56118"
+ },
+ "data_sha256": {
+  "processed/nars_streams/visits.parquet": "cbf1e2270b90b9cea744ca7fc5853326a629e01afb18a295265b000fb2e83a22",
+  "processed/nars_streams/benthic_counts.parquet": "a33e114dc3a06adac8e74b9fa660559cb7d0c7467ec7ad1a53eac4a885d5e114",
+  "processed/nars_streams/chemistry_wide.parquet": "3febe1023fb9706085360cda3e767c12f6594ae87cd9bae82baf87f16040164c",
+  "processed/nars_streams/chemistry_long.parquet": "5b7df8edf2feb9fce2dbbf9cdb4f44913bde3cfb156bce166eb277a2e42c3a79",
+  "processed/taxonomy_harmonised/taxon_map.parquet": "bff231fc5746555e04895ee5e694fdd9e302d70c3cd058c601789ac57756a885",
+  "processed/uk_ea_ecology/sites.parquet": "6aff21ce7df9a8a84bcbeaac71e5d0bfe86b37ba3216e242652e419c1fe21afe",
+  "processed/uk_ea_ecology/samples_invertebrate.parquet": "e3886df0ad601867cee889aa7ea03e90424889ffc8de798d9f98ef32f048e4bf",
+  "processed/uk_ea_ecology/counts_invertebrate.parquet": "4bc7fd40b68613c39651891270a0f6350e31fc3d6bb73b40a8a6aea9d4bfb663",
+  "processed/uk_ea_ecology/chemistry_matched_wide_pm30d_invertebrate.parquet": "54ab13e997b38d65b513802db2f8cb0d78acf9658d8344de9f5e435485f87bda"
+ },
+ "tabpfn_checkpoint": {
+  "path": "/home/bcheng/.cache/tabpfn/tabpfn-v2-regressor.ckpt",
+  "sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736"
+ },
+ "package_versions": {
+  "tabpfn": "2.2.1",
+  "torch": "2.7.1+cu118",
+  "scikit-learn": "1.9.1",
+  "lightgbm": "4.7.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.17.1",
+  "joblib": "1.6.0",
+  "pyarrow": "26.0.0",
+  "PyYAML": "6.0.3"
+ },
+ "lead_decisions_2026_10_24": {
+  "admitted_candidates": [
+   "BioSet[bioset_st_flat]",
+   "Ensemble[BioSet[bioset_st_flat]+TabPFNv2[community]]",
+   "Ensemble[BioSet[bioset_st_flat]+geography+RandomForest[community+geography]+TabPFNv2[community]]"
+  ],
+  "claim_framing": {
+   "BioSet[bioset_st_flat]": "H-M5: above the blocked RF[community] (Holm, 6 tests); SOTA only where it beats the per-target strongest baseline (Holm, 18 tests) with all seeds positive",
+   "Ensemble[BioSet[bioset_st_flat]+TabPFNv2[community]]": "SOTA only where it beats the per-target strongest baseline (Holm, 18 tests) with all seeds positive",
+   "Ensemble[BioSet[bioset_st_flat]+geography+RandomForest[community+geography]+TabPFNv2[community]]": "BioSet adds signal beyond the strongest baselines (contains RF[community+geography] as a member); equal-size baseline-ensemble control stays in the comparator set"
+  }
+ },
+ "exposure_note": "NRSA 2018-19 (Tests A/B, T1) was used before the pass (i) by the research-phase RF baseline (rf_blocked_baseline) and (ii) from 2026-10-25 03:43 UTC as the validation cycle of D5 BioIntegrity (benthic condition labels from the same samples; one oracle, oracle_gbm_chem, takes 2018-19 chemistry as input). No M5 setting was chosen on it; M5's candidates, comparators and settings were fixed on NRSA 2008-14 before (ii). Test C (2023-24) was not scored by any workstream at freeze.",
+ "resume_rule": "one resume after an infrastructure failure before the first registry row: same record, same authorisation, from the sha256-verified per-unit prediction cache; cached units are never refitted (protocol \u00a79.1)",
+ "expected_runtime_h": "6-9 (one GPU)",
+ "frozen_at": "2026-11-08T22:02:27",
+ "candidate_sha256": "a299842968ca576393fbffc993751f59bc795b76577106a276af72ad881cc6b9"
+}

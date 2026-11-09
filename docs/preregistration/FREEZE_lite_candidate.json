@@ -1,0 +1,45 @@
+{
+ "status": "CANDIDATE for the lead's pre-test review - NOT a freeze. Test not scored. scoring_code_sha256 must be recomputed when FREEZE_lite.json is written.",
+ "created": "2026-11-09T00:59:03",
+ "split_sha256": "46ed6e1f8724a2ef4aded2f4251c151d322a920d3c1df0d90874bb81a3397475",
+ "scoring_code_sha256": "9b9c6282f91494f12a721fd27aa134ffdda8d365676ffbdaad07aafa1e86ca94",
+ "weights_sha256": {
+  "primary_seed0": "890f02627e70f7933a569cf9076b0dbd192de1d0e022c5eabc556bbe12e384e3",
+  "primary_seed1": "17174e9e8b54e8162afdfe89c3244465e07d2325e0df6bb0d85d6d1dee9142df",
+  "primary_seed2": "ddce83e3dea897a648585d8294e7b163bc3280cec43f7e313f77c566b56fc468",
+  "nokd_seed0": "f9f59c0a439cfe5e60bfd2062a6308381f4c936ad36bea63fc3735603cb4ba22",
+  "nokd_seed1": "6b59d0963ee199ac10133ba2552f17b288e93550ddf39c0162e586f68b8c8ab6",
+  "nokd_seed2": "e9e246c361be8b9a5fec70f4ea48f874a7bd90ffbc128cfec40d196d820c4ace",
+  "robust_variant_seed0": "fd26bfe16e583d9a494091421a84b3d6a6f9fdc368986014b281685cfe8fdc57",
+  "deployable_onnx_int8_seed0": "0a4b5c355de2a8ab3c691a4312f13e4771b1f7cd9b13ca3b4a84e15a09475d08",
+  "deployable_onnx_fp32_seed0": "8d0e29d2658d55a0cdf1814f8d4279464f08e23b853971e8fbc6fd028947f1f4"
+ },
+ "runs": {
+  "primary": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_20261108-152950",
+  "nokd": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_20261024-224754",
+  "robust_variant": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_glint_20261108-201455",
+  "baselines": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/baselines_20261024-221014"
+ },
+ "deployable": "primary_seed0",
+ "selected_configuration": "mnv4s_raw_crop128_kd03 (protocol \u00a75 S = 0.868 on val)",
+ "band_ratio_forms": {
+  "secchi": "kloiber_log",
+  "turbidity": "red_green_log_water",
+  "tss": "red_nir_log",
+  "chla": "oc_ndvi"
+ },
+ "teacher_manifest": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_litesafe/manifest.json",
+ "teacher_manifest_sha256": "85122e296045ffbd51d7ba69142b9bd992c64cc45b389cadbb5660be6c85ac6d",
+ "configurations_tried": {
+  "original_track": 16,
+  "note": "8 (2026-10-24) + kd03, kd1, ep20, lrbb2e4, secchi-only, medpool, glint, kd03+secchi-only; 4 crashed runs re-run (bug), not counted"
+ },
+ "scoring_script": "scripts/eval/lite_score_test.py",
+ "scoring_code_sha256_at": "2026-11-09T09:33:09",
+ "dry_run_val": {
+  "dir": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/smoke/dryrun_test_scoring_20261109-092043",
+  "result": "full path ran on the val role with this candidate: reproduces registered val numbers exactly (ensemble 46.61/72.55/107.15; GBM 41.19/112.08/129.51; band-ratio 60.96/83.34/105.31); nothing registered"
+ },
+ "robust_variant_note": "secondary robustness variant (protocol \u00a79), outside H1/H2 Holm families",
+ "single_test_run_command": "python -B scripts/eval/lite_score_test.py --allow-test   (after FREEZE_lite.json is written by the lead's authorisation)"
+}

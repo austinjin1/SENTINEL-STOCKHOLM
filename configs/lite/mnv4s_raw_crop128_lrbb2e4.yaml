@@ -1,0 +1,11 @@
+# variant of mnv4s_raw_crop128: backbone LR 2e-4 (regularisation idea 2)
+name: mnv4s_raw_crop128_lrbb2e4
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+crop: 128
+epochs: 40
+lr_backbone: 2.0e-4
+kd_weight: 0.0

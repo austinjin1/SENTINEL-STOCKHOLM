@@ -1,0 +1,19 @@
+PWSID	PWSName	Size	FacilityID	FacilityName	FacilityWaterType	SamplePointID	SamplePointName	SamplePointType	AssociatedFacilityID	AssociatedSamplePointID	CollectionDate	SampleID	Contaminant	MRL	Units	MethodID	AnalyticalResultsSign	AnalyticalResultValue	SampleEventCode	MonitoringRequirement	Region	State	UCMR1SampleType
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			6/12/2018	3959688	total organic carbon	1000	µg/L	SM 5310C	=	3110	SE1	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			6/12/2018	3959687	bromide	20	µg/L	EPA 300.0	=	157	SE1	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			9/10/2018	4051240	bromide	20	µg/L	EPA 300.0	=	117	SE2	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			9/10/2018	4051241	total organic carbon	1000	µg/L	SM 5310C	=	2670	SE2	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			12/10/2018	4145600	bromide	20	µg/L	EPA 300.0	=	134	SE3	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			12/10/2018	4145601	total organic carbon	1000	µg/L	SM 5310C	=	3730	SE3	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			3/12/2019	4224707	bromide	20	µg/L	EPA 300.0	=	214	SE4	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00007	Northern Well Field	GU	RAW1	Northern Well Field Blend Raw	SR			3/12/2019	4224708	total organic carbon	1000	µg/L	SM 5310C	=	3370	SE4	AM	1	01	
+OH0200811	City of Lima	L	22222	LIMA WATER TREATMENT PLANT	SW	SR001	RAW WATER	SR			2/11/2020	1173327	total organic carbon	1000	µg/L	SM 5310C	=	3656.8	SE1	AM	5	OH	
+OH0200811	City of Lima	L	22222	LIMA WATER TREATMENT PLANT	SW	SR001	RAW WATER	SR			2/11/2020	1173327	bromide	20	µg/L	EPA 300.0	=	30.962	SE1	AM	5	OH	
+OH0200811	City of Lima	L	22222	LIMA WATER TREATMENT PLANT	SW	SR001	RAW WATER	SR			5/12/2020	1187922	bromide	20	µg/L	EPA 300.0	=	26.989	SE2	AM	5	OH	
+OH0200811	City of Lima	L	22222	LIMA WATER TREATMENT PLANT	SW	SR001	RAW WATER	SR			5/12/2020	1187922	total organic carbon	1000	µg/L	SM 5310C	=	3897.6	SE2	AM	5	OH	
+OH0200811	City of Lima	L	22222	LIMA WATER TREATMENT PLANT	SW	SR001	RAW WATER	SR			8/11/2020	1206454	bromide	20	µg/L	EPA 300.0	=	43.466	SE3	AM	5	OH	
+OH0200811	City of Lima	L	22222	LIMA WATER TREATMENT PLANT	SW	SR001	RAW WATER	SR			8/11/2020	1206454	total organic carbon	1000	µg/L	SM 5310C	=	3968	SE3	AM	5	OH	
+055294214	Northside	S	10001	Wells 1/2	GW	SR1	Wells 1/2 Combined Pre-treatment Tap	SR			9/5/2018	307763P	bromide	20	µg/L	EPA 300.1	<		SE2	AM	5	05	
+083890015	Ft. Berthold Rural Water	S	10001	Lake Sakakawea	SW	SR1	Raw Water Tap @ Four Bears WTP	SR			5/8/2019	311621P	bromide	20	µg/L	EPA 300.1	<		SE2	AM	8	08	
+010106001	Mashantucket Pequot Water	L	00008	Southern Well Field	GU	RAW2	Southern Well Field Blend Raw	SR			6/12/2018	3959690	total organic carbon	1000	µg/L	SM 5310C	<		SE1	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00008	Southern Well Field	GU	RAW2	Southern Well Field Blend Raw	SR			9/10/2018	4051239	total organic carbon	1000	µg/L	SM 5310C	<		SE2	AM	1	01	

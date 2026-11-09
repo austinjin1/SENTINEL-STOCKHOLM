@@ -1,0 +1,111 @@
+{
+ "fold_file": "hydromet_track_r_folds.json",
+ "fold_sha256": "142341a9d0379f2b50c90bdc72508cce8aa24d78d79db855aba9f1065f92a6c8",
+ "split_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+ "eligibility": {
+  "candidates": 2678,
+  "excluded_not_stream": 0,
+  "excluded_no_gridmet": 107,
+  "excluded_no_streamcat": 119,
+  "eligible": 2559
+ },
+ "per_fold": {
+  "R1_northeast": {
+   "train": 299,
+   "test": 119,
+   "val": 27
+  },
+  "R2_southeast": {
+   "train": 365,
+   "test": 132,
+   "val": 30
+  },
+  "R3_midwest_greatlakes": {
+   "test": 225,
+   "val": 157,
+   "train": 80
+  },
+  "R4_plains_texas": {
+   "train": 335,
+   "test": 47,
+   "val": 19
+  },
+  "R5_southwest_basin": {
+   "train": 164,
+   "test": 19,
+   "val": 7
+  },
+  "R6_pacific": {
+   "train": 469,
+   "val": 60,
+   "test": 5
+  }
+ },
+ "power": {
+  "temp_c_mean": {
+   "cv_sites": 1326,
+   "cv_groups": 67,
+   "orig_val_groups": 12,
+   "orig_se": 0.0157,
+   "mde_orig": 0.0583,
+   "mde_track_r": 0.0247,
+   "groups_per_fold": {
+    "R1_northeast": 8,
+    "R2_southeast": 13,
+    "R3_midwest_greatlakes": 15,
+    "R4_plains_texas": 12,
+    "R5_southwest_basin": 8,
+    "R6_pacific": 11
+   }
+  },
+  "temp_c_7dadm": {
+   "cv_sites": 1274,
+   "cv_groups": 63,
+   "orig_val_groups": 10,
+   "orig_se": 0.0204,
+   "mde_orig": 0.0756,
+   "mde_track_r": 0.0301,
+   "groups_per_fold": {
+    "R1_northeast": 8,
+    "R2_southeast": 12,
+    "R3_midwest_greatlakes": 14,
+    "R4_plains_texas": 12,
+    "R5_southwest_basin": 6,
+    "R6_pacific": 11
+   }
+  },
+  "do_mgl_mean": {
+   "cv_sites": 379,
+   "cv_groups": 44,
+   "orig_val_groups": 9,
+   "orig_se": 0.0372,
+   "mde_orig": 0.1378,
+   "mde_track_r": 0.0623,
+   "groups_per_fold": {
+    "R1_northeast": 5,
+    "R2_southeast": 10,
+    "R3_midwest_greatlakes": 11,
+    "R4_plains_texas": 8,
+    "R5_southwest_basin": 3,
+    "R6_pacific": 7
+   }
+  },
+  "do_mgl_min": {
+   "cv_sites": 386,
+   "cv_groups": 41,
+   "orig_val_groups": 7,
+   "orig_se": 0.0388,
+   "mde_orig": 0.1439,
+   "mde_track_r": 0.0595,
+   "groups_per_fold": {
+    "R1_northeast": 6,
+    "R2_southeast": 8,
+    "R3_midwest_greatlakes": 11,
+    "R4_plains_texas": 8,
+    "R5_southwest_basin": 1,
+    "R6_pacific": 7
+   }
+  }
+ },
+ "method": "SE of the median-KGE difference under basin-group resampling scales ~ 1/sqrt(G); SE_orig from the M6/val_v2 group-bootstrap CI width of ealstm vs the selected GBM ((hi-lo)/3.92); MDE = (z_{1-alpha/(2m)} + z_0.8) * SE_orig * sqrt(G_orig / G_R), worst-case Holm alpha/m, m=12. G counts are upper bounds from record spans (the >= 60 approved val-block days rule applies at scoring)."
+}

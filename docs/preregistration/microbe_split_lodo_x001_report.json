@@ -1,0 +1,67 @@
+{
+ "scheme": "lodo_x001",
+ "split_sha256": "a61416982db82cd10323e2e565d00fda544fdb9c6bd339194f02486556e58caa",
+ "n_folds": 19,
+ "test_rows_identical_to_primary_lodo": true,
+ "train_rows_added_per_target_001": {
+  "log_tn": 491,
+  "log_tp": 502,
+  "log_doc": 490,
+  "log_no3": 496,
+  "log_sc": 155,
+  "log_turb": 87,
+  "do": 139,
+  "log_chla": 140
+ },
+ "power_basis": "paired site-cluster bootstrap SE of ens_seqset_kmer+ridge_clr vs rf_clr on primary LODO (B=1000); MDD = (z_(1-alpha/2) + z_0.8) * SE",
+ "power": {
+  "log_tn": {
+   "n_test": 1181,
+   "paired_se_site": 0.05678524155798621,
+   "mdd_alpha_0.05/8": 0.20306345710067236,
+   "mdd_alpha_0.05/16": 0.21560152832808538
+  },
+  "log_tp": {
+   "n_test": 1183,
+   "paired_se_site": 0.029405361563738044,
+   "mdd_alpha_0.05/8": 0.10515327948953848,
+   "mdd_alpha_0.05/16": 0.1116459263047765
+  },
+  "log_doc": {
+   "n_test": 1147,
+   "paired_se_site": 0.03276818669713985,
+   "mdd_alpha_0.05/8": 0.11717870860594527,
+   "mdd_alpha_0.05/16": 0.12441386069000163
+  },
+  "log_no3": {
+   "n_test": 1180,
+   "paired_se_site": 0.049503200864898164,
+   "mdd_alpha_0.05/8": 0.17702295225618306,
+   "mdd_alpha_0.05/16": 0.1879531630186965
+  },
+  "log_sc": {
+   "n_test": 730,
+   "paired_se_site": 0.043455738200094775,
+   "mdd_alpha_0.05/8": 0.15539728611988193,
+   "mdd_alpha_0.05/16": 0.16499222885225065
+  },
+  "log_turb": {
+   "n_test": 655,
+   "paired_se_site": 0.05316476750098587,
+   "mdd_alpha_0.05/8": 0.19011667800478613,
+   "mdd_alpha_0.05/16": 0.20185535558064063
+  },
+  "do": {
+   "n_test": 683,
+   "paired_se_site": 0.03961294067625243,
+   "mdd_alpha_0.05/8": 0.1416554805253333,
+   "mdd_alpha_0.05/16": 0.15040194101575785
+  },
+  "log_chla": {
+   "n_test": 394,
+   "paired_se_site": 0.036973221799958864,
+   "mdd_alpha_0.05/8": 0.13221587216782185,
+   "mdd_alpha_0.05/16": 0.14037948784886897
+  }
+ }
+}

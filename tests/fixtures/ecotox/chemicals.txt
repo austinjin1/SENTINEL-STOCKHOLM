@@ -1,0 +1,14 @@
+cas_number|chemical_name|ecotox_group|dtxsid
+63252|1-Naphthalenol methylcarbamate|Endocrine Disrupting Chemicals (EDCs)|DTXSID9020247
+100005|1-Chloro-4-nitrobenzene||DTXSID5020281
+100027|4-Nitrophenol||DTXSID0021834
+100378|2-(Diethylamino)ethanol||DTXSID5021837
+100663|Methoxybenzene||DTXSID4041608
+1910425|1,1'-Dimethyl-4,4'-bipyridinium chloride (1:2)||DTXSID7024243
+10025737|Chromium chloride (CrCl3)||DTXSID20858722
+10043013|Sulfuric acid, Aluminum salt (3:2)|Aluminum|DTXSID2040317
+10099748|Nitric acid, Lead (2+) salt (2:1)|Lead|DTXSID2035069
+10108642|Cadmium chloride (CdCl2)|Cadmium|DTXSID6020226
+10265926|Phosphoramidothioic acid, O,S-Dimethyl ester|Endocrine Disrupting Chemicals (EDCs)|DTXSID6024177
+10402296|Nitric acid, Copper salt||DTXSID301351849
+13674845|1-Chloro-2-propanol 2,2',2''-phosphate||DTXSID5026259

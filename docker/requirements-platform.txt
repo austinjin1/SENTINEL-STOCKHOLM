@@ -1,0 +1,21 @@
+# SENTINEL Console (API + web app) runtime, CPU only. Versions match requirements-v2.txt.
+# torch is NOT needed to run the Console itself; model plugins that need it are installed
+# with the INSTALL_TORCH_CPU build argument (see Dockerfile.platform).
+fastapi==0.159.1
+starlette==1.9.0
+uvicorn==0.54.0
+python-multipart==0.0.32
+pydantic==2.14.1
+httpx==0.28.1
+requests==2.34.2
+streamlit==1.66.1
+plotly==7.1.0
+pydeck==0.9.3
+altair==6.3.0
+numpy==2.2.6
+pandas==2.3.3
+pyarrow==26.0.0
+PyYAML==6.0.3
+rasterio==1.4.4
+rdkit==2025.9.3
+pytest==9.1.1

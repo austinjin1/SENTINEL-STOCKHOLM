@@ -1,0 +1,22 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Shared benchmark protocol for SENTINEL-ChemTox (M4). RESEARCH_PLAN §5.4, docs/research/04 §D.3.
+# These values are the protocol, not tunables: changing them changes what is being measured.
+benchmark: ADORE            # Schür et al. 2023, DOI 10.25678/0008C9, CC BY 4.0
+challenges: [t-F2F, t-C2C, a-CA2F-same, a-CA2F-diff]
+primary_challenge: t-F2F
+primary_split: split_occurrence
+secondary_split: split_scaffold-murcko
+target: molar               # result_conc1_mean_mol_log (log10 mol/L); 'mass' = log10 mg/L check
+selection: official CV folds 0-4 inside the training partition
+test_policy: scored once, after the configuration is frozen (R6); phase 1 scores test only for the
+  reproduced published baseline
+metrics: [rmse, mae, r2, rmse_macro, rmse_chemical, rmse_taxon, within_1_log, median_abs_fold_error]
+ci: cluster bootstrap, resampling unit = chemical (test_cas), 2000 resamples
+reference_points:
+  published_micro_rmse: 0.927        # XGBoost + MACCS   (Gasser et al. 2024)
+  published_rmse_macro: 0.904        # random forest + MACCS
+  published_rmse_taxon: 0.938        # XGBoost + MACCS
+  published_rmse_chemical: 0.845     # random forest + ToxPrint
+  replicate_noise_floor: 0.383       # pooled within-experiment SD, docs/research/04 §A.2
+  reproduction_tolerance: 0.03       # RESEARCH_PLAN §15.2 H-M4

@@ -1,0 +1,1040 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" >
+<head><title>
+	Algae - Detail search
+</title><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="govType" content="county" /><meta name="author" content="DongCharlie.Zeng@kingcounty.gov" /><link rel="apple-touch-icon" href="images/body/AlgaeLogoMobile.png" /><link href="Styles/algae.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="Scripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.maskedinput-1.3.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.28/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.28/"></script>
+    <script type="text/javascript">    
+        var map;
+        function init() {
+            map = new esri.Map("map", {
+                basemap: "topo", //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+                center: [-120.68, 47.35], // longitude, latitude
+                zoom: 7
+            });
+
+            //map.infoWindow.resize(200, 200);
+
+            dojo.connect(map, "onLoad", function () {
+                drawMap()
+            });
+        }
+
+        dojo.ready(init);
+
+        //Clear text as the server side code will run the page_load 
+        //before selectIndexChanged event, while DrawMap() has already been fired
+        //with values before change of selection. OnClientClick happens before onclick
+        function clearSelection() {
+            $('#ctl00_ContentPlaceHolder1_c_StartDateTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_EndDateTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_LowConcTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_HighConcTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_SampleNumberTextBox').val('');
+            $('#ctl00_ContentPlaceHolder1_c_ToxinDropDownList').val('');
+            $('#ctl00_ContentPlaceHolder1_c_CountyDropDownList').val('');
+            $('#ctl00_ContentPlaceHolder1_c_WRIADropDownList').val('0');
+            $('#ctl00_ContentPlaceHolder1_c_SiteDropDownList').val('0');
+            $('#ctl00_ContentPlaceHolder1_c_SiteIDHiddenField').val('');
+            $("#DataDiv").hide();
+            $('#mapArea').hide();
+            $('#CriteriaDiv').show();
+        }
+
+        function setSiteID(val) {
+            $("#ctl00_ContentPlaceHolder1_c_SiteIDHiddenField").val(val);
+        }
+
+        function setDrawMap(drawMap) {
+            $('#ctl00_ContentPlaceHolder1_c_DrawMapHiddenField').val(drawMap);	// Set boolean value.
+        }
+
+        function drawMap() {
+            require(["esri/geometry/Point", "esri/symbols/PictureMarkerSymbol", "esri/InfoTemplate", "esri/graphic"],
+                function (Point, PictureMarkerSymbol, InfoTemplate, Graphic) {
+                    if (map.graphics != null) {
+                        map.graphics.clear();
+                        $("#ctl00_ContentPlaceHolder1_c_StartDateTextBox, #ctl00_ContentPlaceHolder1_c_EndDateTextBox")
+                            .mask("99/99/9999")
+                            .datepicker();
+
+                        var sitesString = $("#ctl00_ContentPlaceHolder1_c_SiteInfoHiddenField").val();
+
+                        if (sitesString !== "") {
+                            //$('#mapArea').show(); //We have map info, show the map
+                            
+                            var sites = sitesString.split("||");
+                            var startDate = $('#ctl00_ContentPlaceHolder1_c_StartDateTextBox').val();
+                            var endDate = $('#ctl00_ContentPlaceHolder1_c_EndDateTextBox').val();
+                            var sampleNumber = $('#ctl00_ContentPlaceHolder1_c_SampleNumberTextBox').val();
+                            var toxin = $('#ctl00_ContentPlaceHolder1_c_ToxinDropDownList').val();
+                            var county = $('#ctl00_ContentPlaceHolder1_c_CountyDropDownList').val();
+                            var WRIANumber = $('#ctl00_ContentPlaceHolder1_c_WRIADropDownList').val();
+                            var lowConc = $('#ctl00_ContentPlaceHolder1_c_LowConcTextBox').val();
+                            var highConc = $('#ctl00_ContentPlaceHolder1_c_HighConcTextBox').val();
+                            var siteIndex;
+                            //To improve: Use Json object
+                            //Add markers to the map
+                            for (siteIndex = 0; siteIndex < sites.length; siteIndex++) {
+                                var site = sites[siteIndex].split("\t");
+
+                                var siteName = site[0];
+                                var latitude = site[1];
+                                var longitude = site[2];
+                                var toxinInd = site[3]; //to tell whether a site has toxic algae
+                                var anatoxin = site[4];
+                                var cylindrospermopsin = site[5];
+                                var microcystin = site[6];
+                                var saxitoxin = site[7];
+                                var lastSampleDate = site[8];
+                                var siteID = site[9];
+
+                                //var showLink = false; On 4/23/15, Kris told me to always show link even there's no toxin on last sample date
+                                var popupText = "<p><b>" + siteName + "</b><br />";
+                                popupText += "<br />Last Sample Date: " + lastSampleDate;
+                                if (anatoxin !== "") {
+                                    popupText += "<br />Anatoxin-a: " + anatoxin;
+                                }
+                                if (cylindrospermopsin !== "") {
+                                    popupText += "<br />Cylindrospermopsin: " + cylindrospermopsin;
+                                }
+                                if (microcystin !== "") {
+                                    popupText += "<br />Microcystin: " + microcystin;
+                                }
+                                if (saxitoxin !== "") {
+                                    popupText += "<br />Saxitoxin: " + saxitoxin;
+                                }
+
+                                popupText += "<br /><a href='Data.aspx?SiteID=" + siteID;
+                                popupText += "&County=" + county;
+                                popupText += "&Toxin=" + toxin;
+                                popupText += "&SampleNumber=" + sampleNumber;
+                                popupText += "&StartDate=" + startDate;
+                                popupText += "&EndDate=" + endDate;
+                                popupText += "&LowConc=" + lowConc;
+                                popupText += "&HighConc=" + highConc;
+                                popupText += "&WRIANumber=" + WRIANumber + "'>View Data</a>";
+                                popupText += "<br /><a href='Charts.aspx?SiteID=" + siteID;
+                                popupText += "&StartDate=" + startDate;
+                                popupText += "&EndDate=" + endDate + "'>View Charts</a>";
+                                popupText += "<br /><a href='HistoricalCharts.aspx?SiteID=";
+                                popupText += siteID + "'>View Historical Charts</a></p>";
+
+                                var pt = new Point(longitude, latitude);
+                                var sms;
+                                switch (toxinInd) {
+                                    case 'Within':
+                                        sms = new PictureMarkerSymbol("images/Within.png", "11", "11")
+                                        break;
+                                    case 'Exceeded':
+                                        sms = new PictureMarkerSymbol("images/Exceeded.png", "11", "11")
+                                        break;
+                                    default:
+                                        sms = new PictureMarkerSymbol("images/Inactive.png", "8", "8")
+                                }
+                                var attr = {};
+
+                                var infoTemplate = new InfoTemplate(siteName, popupText);
+                                map.graphics.add(new Graphic(pt, sms, attr, infoTemplate));
+                            }
+                        }
+                    }
+                });
+        }
+    </script>
+
+</head>
+	<body>
+
+
+
+<!-- wrap starts here -->
+<div id="Algaecontainer">
+	<div id="AlgaeMain">
+		<div id="AlgaeContentHeader">
+			<div id="ContentNav">
+				<ul class="level1">
+					<li class="submenu"> <a href="Default.aspx"> Home </a> </li>
+					<li class="submenu"> <a href="FindLakes.aspx"> Find lake </a> 
+					    <ul class="level2">
+						    <li> <a href="Data.aspx">Detailed search</a> </li>					
+						    <li> <a href="HistoricalCharts.aspx"> Historical summary </a> </li>
+						    <li> <a href="Charts.aspx"> View chart </a> </li>					
+    						
+					    </ul>
+					</li>
+					<li class="submenu"><a href="ReportBloom.aspx">Report a bloom</a>
+					    <ul class="level2">
+						    <li><a href="ClientLocatorGeneractor.aspx">Generate sample number</a> </li>
+					    </ul>  
+					</li>
+					<li class="submenu"> <a href="HealthRisks.aspx">Signs and Health risks</a> </li>
+					<li class="submenu"> <a href="About.aspx"> About toxic algae </a>
+					    <ul class="level2">
+						    <li><a href="Gallery.aspx">Gallery</a> </li>
+					    </ul>
+					</li>
+					<li class="submenu"> <a href="Summary.aspx"> Summaries </a> 
+					    <ul class="level2">
+						    <li><a href="CountySummary.aspx">County</a> </li>
+						    <li><a href="StateSummary.aspx">State </a> </li>
+						    <li><a href="WRIASummary.aspx"> WRIA </a> </li>
+						    <li><a href="YearSummary.aspx"> Year </a> </li>						
+						    <li><a href="LocationExtractor.aspx">Location Extractor</a> </li>	
+					    </ul>
+					</li>
+					<li class="submenu"> <a href="Program.aspx"> Program </a> </li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="AlgaeContent"><a name="top"></a>
+
+            <form name="aspnetForm" method="post" action="Data.aspx" id="aspnetForm">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="DBmT56TONRc2WQHoI1/95UuUnNdLWw2eaSkWTo4psXjNZ+ok8E/AAWo5SsWzyqn+vr/jhDdPzW0OWUDCM6qmGUKfPVfpoIsLVqca50vIklr45rkUTXLM+DwC6wMF0vyrl+j+oXAXVagd3tLXo89kNdRHp69ZaJWtEu3tXO87l8hufp6fcnXHAqKjMV+zB2l5yJ+thqNLswcY8neG9gyST+ViE2xJ+prH7d5jo5df785uxdeR3IwtY+IOY00BXeCaGgjkVc186kj2FJDdSDzNTHpkOYiQWwMAtKiAmKp2e7j6AWHiLqdxCQnYJmNaXBvJxw+0ie1VOy7XWgvmjWVl4o0+WKcg0FOLwGcm9v5FCH6H0exlcFaMhm7SK3LtQ7y+6yIDk7Ga+DEe67KWOfAPxVmsqA4Xed1MJzBf7znxLgaShruVh6i0V1fp0m/5pgvfSUlb/q+ew5oxJaqWYvkTLKEfYWTuYgnMxvzrQY+WF3JMwuOxRnnIxux/KUfj+9cr86+vfO1EuGV/LxyCBsb5isqRQzG6QCEy3P00NGPK1JeIrGGgV3tXNU0dBqi02vGQuaos9xNYCTDh+hBU6FjQ6DaKX2R3zwiTQsyM9g+BmNPJFeGDUhYD8cHLDtaJb0GTtVYmjrTLSfODSr3OdDjBkA0nNM7owblPQs/fg48XYgM8OmpqxQn7IHSw/oeTmgjWgVKhXX8EDJy8zHPhvKjROMLEL4pZFkCLRke+Apax+0u44Py0fpT7m16/dE2RDPeUNZC5Fmx/XZrSe/siWzR30CF6IM3TG5MrVrqDLxj7nBPPX+Zjnzq+szeHwiG5MyLkvt9wz8+xr9zv4QQxC+0YALbFy/RLFGkLHK5oFoAGpuZWnRc/N/ILuFUor2ANuIi+qAKVyl+ckRSoocJSOoQlYmVuX5qh45kPpycpjmO6IgLxny6EhY/qa9Afo90DrJhzXBWKgqCuedgyYGqIhuKZD7C3xtkp8OaWAzmjKjQe/Zs7frYOsziEQaAWLQGdmfmDJrDZfSI1cCqbYoGElOeUlFT3gososUg1LobrrDJoHk3z1a0xdb/NzHme6kV3wIL+L074JUzInznUW+8QvrOPD3q5Zl+45FLgIdcM5LdiD6qDwJxLVVvrLprriHzwOaHvHlTKPkRc8SqYNHOukgbMt3Mc/SfKI/fu+vEYeK5N4OM6M+1Kjbmwu332746BZpvPbnq0NjwUE8n2Jc/5Xvxky2HHu8uehx7bNZk899NXldydOeEEKU+ATtxmO0gLu4Bx7D4DNqQolDsNtamVs9NUU3N9HKv07OPOyAYQzGrfbs0WKyfIySX/PQZd0N9OzcmUiw5aLmJRSdYYoo4om9VVlTYKOGv8nApHC20kM+7czlLzhkgNS+A5RMnVayjJoPrGKrDTB/+2Wj2qm9pn21XuLCZjF9mLxGZOKwFnJ8DRzWMUTtDSXjD/qgOERKquEnKSzqoXR+1nDlw+1t4QRyXJ0cmGkvZuzFs0IwgaLTFZ22clryaUQ5RuLNQx+zCYIf+MJXJV8uPZtPoIZFHwXzfiW2KRR8f6UNBoF54OGt8ue0a/85HkLQckcsnJaDKntrJI4lKEkJKdsZGjmpM8XQ3Frt9tjKwCPnGn4z98oPHagn72q3SihxoeRl3nml6COjqz6j+dn/S3yRhbjma12FLq2DZcmJBsVXeLJN0GXvoZRQGFruHLKHFUxzpOahZhUZyhdJHNHWiRE+QDvMZsIN6GoTORml6+jhAkdWIilRsMoRSWfL4jEiPJnuPOsz6xlY/2d+UG+dcJ6NKG96UPkB0FLXNPNqMJ0ya9kGPueQDYBjMRvEqeOZNwfNqlQOJ6GkT6FIGxdin7ZdVBmAm/fci/Z7llN9kUBo/GNmZhEEuxUwxnWpgynp2eiCKSUMArrXAfNfnraCrh1Ag/8PaM+PGQOtid8uA6JKki7iLBQp+dn1eMDWxL89w4ahB8SnZ1HLFwfYlfrTGZS0WnZjkCxmeguON/JmKSjtAXpOjVNjfQe5hUGxLkganqT8BsydOGFARMBRMS/aQTalC/7PgvMU5ywYvG/AJNsahf8OgtMUEO9L2dZE4NVF2pjwsNoa5MR6gD0DVAR1nBGc1/Ag9fz6LWgQ0ilJggAsxKH55cYiomFVQft39rKfQYqqWXfk4dSXlfEgA7RpNg11QuBe8MTe4ZE3HrgPUKJGspzHsx6Tj+qScebDqHDIDg0WTtR5L6LuRKyy07QB77JDKN5SuDJg50W8hVUsOmUlogCNRzm6kUfgO1lHAsD+q9prsqOK2pEAhpYx4OWcxQMw2iVtm0Pq4Rc8U1L+8+578PoTkZ/KoBvAHB5HDwF789hNIhl0O96MN8PeuXazaKCYYFkuQStw1di08iatJf887DmzTWXen7EFrv6YarU6gypQXWm2q3IRVE9o+ogV84jm0a/nmLR8IorgKy/j0NA0KqyREL9yhgv0wFxN/yun8idoJYKDxHXdN+hi4nzPAKTHZMttRic3ahSGWWdn2em3zfDbZz2W1DTvPuDlNxtC+ok3PTp144BWZj2rSHtyWuzu8yLRopipskWEU4dG24Au0O2yBIjKp60+kHiizWE4onf6pxM7dkl/luxAs/AICUv7onM5aYlDIYNtTv++tnoMauGl6LKkaUxIBKch7jL+ZP8R/lDVEBGyRw321p/yuOeLnn4peqBZPoZhk0T19pd+Yrn7osuq1czBxym/kJnd2ime9t0xTRssTxy23mzhiZSfH6JI40Ac0PZfdRI/3Wlq8HIUhIohe5ZxLVGt/8+/PTtKuEgu+p328hDM6PzRPQ7ElQD7rd99MPmQQft/ALXjEIwu31Us5thg+FSoIiHme6FyNyJL/MxVa1yHfrq6gNNLj5wHRjK1pkBZuenPlC+dgf2UkCOn3kBn4kA1/uMHL5q69hsp+xpwYFJV6EtfnyQheAb6upDOENHF+zGvB47ZXmWSuLf8Df6e0WkYiiHVfr4+sZE/NZIAERpABr60bZNPeQiC/K/thw2lG5c8B4NLyV6bTuWgEpdaGh+sDvPlkNYWeygXqDHWi5idab/rn53RMef8Fh1EQ5O/JlmxGZQRqVsYijI4ivrIkLON0zouP+OiXEv6FEK0ehFPvazX0euku6nhIuERXSqND5hmsA5pkclur39EZDJalgeLaQT7MRjdJBw6AOrUd/UL8BmVRg4akkKxptW6zTAaKkADJq9sp6YzCjTltcVddQih7Cif24nn01bcH1SRe+MdyKlBKAnldRkquNFsI8O7mEJUk8RPE/WcZS/mk84nAeryajyzabOw/ijuFBUTBeqZgKFHNn1BWAzdVnag4fMP/iI8qa0FXkDWDRtw7SWKrd+lWg5mtUSiUCzaCnmWw7rOnifO4qjdpWVIN6IiTqu05I3oBENlD1CWMpXKAex3NwaChRUAw4T7oavdt2pmX08HCimCGEH0ZMSMv+3T+JK1n6mMk1Rsqon/9GLminLhO4ekDDzdtExEd+vIA4WKasdKds+P5w/7UfXjg3gXNYLPKLjCbNKzXBqPjdUEv2XXNNqgLTBF3iOcQ9MpI4DblTh0HEvqqUeGwFVMWYcspqLM7lxPEQ/MzbsFTPJsByL2ssDG1xIYH1teDUE23VZYMdmqur46MlopoxNdLizUH/V6OZMUNcgC3YT7wiuNjwrjybQB6i6PMAeOFBieWTLHjiuX8dELs2FwDunp2XbdiRDOppy+Kxq4HAdUEK+BWuDm9cwBoOPg8Q9l7c9iKhvny7" />
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="9ED6FB81" />
+<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="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" />
+            <div>
+                
+    <div class="AlgaeOneCol">
+        <h2>Detailed search for your lake</h2>
+        <p>
+            This database contains the most current toxicity data available. All instances of values above the recreational guidelines are kept 
+as up to date as possible, but values below the guidelines may be somewhat delayed in entry.Since there is a lag time from the 
+date of sample to the date of analysis, be sure to check the sample date when looking at data or before 
+you use the lake. Remember to use caution and avoid scums. "When in doubt, stay out!"
+        </p>
+        <p>
+            Your local jurisdiction may have more specific information about your lake. Questions? Contact 
+            <a href="mailto:toxicalgae@ecy.wa.gov">toxicalgae</a> at Department of Ecology.
+        </p>
+        <p>If a lake is not listed, it has not been tested for toxic algae through the Ecology program.</p>
+        <p>
+            The pins on the map represent the center of small lakes, regardless of where the sample was taken. To find 
+more precise location information, download the toxin data and click the "view scum info" link. That is where 
+specific sampling location information will be if it was provided. On larger lakes, (such as Lake Washington, 
+Moses Lake and Potholes) pins represent the location of the sample if provided.
+        </p>
+        <span id="ctl00_ContentPlaceHolder1_c_InfoLabel" class="AlgaeLabel" style="float: right; font-weight: bold;"></span>
+        <div id="DataDiv">
+            <span id="ctl00_ContentPlaceHolder1_c_ToxinLabel"></span>
+            <div>
+
+</div>
+            <span id="ctl00_ContentPlaceHolder1_c_AlgaeLabel"></span>
+            <div>
+
+</div>
+        </div>
+        <div id="ctl00_ContentPlaceHolder1_MapDiv">
+            <div id="mapArea" style="float: right; width: 600px;">
+                <div id="mapLegend">
+                    <b>Map Legend:</b>
+                    <img src="images/Exceeded.png" alt="Image to show toxic site" style="width: 11px;" />Exceeded state recreation
+			            guideline&nbsp;
+			        <img src="images/Within.png" alt="Image to show non-toxic site" style="width: 11px;" />Within state recreation
+			            guideline<br />
+                    <img src="images/Inactive.png" alt="Image to show unknown site" style="width: 11px;" />
+                    <span id="ctl00_ContentPlaceHolder1_c_FreshessLabel">No data is available for the past 4 weeks.</span>
+                </div>
+                <div style="clear: both; height: 1px;">
+                </div>
+                <div id='map' style="position: relative; width: 100%; height: 520px; left: 1px;">
+                </div>
+            </div>
+        </div>
+        <div id="ctl00_ContentPlaceHolder1_CriteriaDiv" style="padding: 0px; margin-top: 5px; width: 200px; float: left;">
+            <div class="formTable">
+                County<br />
+                <select name="ctl00$ContentPlaceHolder1$c_CountyDropDownList" id="ctl00_ContentPlaceHolder1_c_CountyDropDownList">
+	<option selected="selected" value="">--All Counties--</option>
+	<option value="Adams">Adams</option>
+	<option value="Asotin">Asotin</option>
+	<option value="Benton">Benton</option>
+	<option value="Chelan">Chelan</option>
+	<option value="Clallam">Clallam</option>
+	<option value="Clark">Clark</option>
+	<option value="Columbia">Columbia</option>
+	<option value="Cowlitz">Cowlitz</option>
+	<option value="Douglas">Douglas</option>
+	<option value="Ferry">Ferry</option>
+	<option value="Franklin">Franklin</option>
+	<option value="Garfield">Garfield</option>
+	<option value="Grant">Grant</option>
+	<option value="Grays Harbor">Grays Harbor</option>
+	<option value="Island">Island</option>
+	<option value="Jefferson">Jefferson</option>
+	<option value="King">King</option>
+	<option value="Kitsap">Kitsap</option>
+	<option value="Kittias">Kittias</option>
+	<option value="Kittitas">Kittitas</option>
+	<option value="Klickitat">Klickitat</option>
+	<option value="Lewis">Lewis</option>
+	<option value="Lincoln">Lincoln</option>
+	<option value="Mason">Mason</option>
+	<option value="Okanogan">Okanogan</option>
+	<option value="Pacific">Pacific</option>
+	<option value="Pend Oreille">Pend Oreille</option>
+	<option value="Pierce">Pierce</option>
+	<option value="San Juan">San Juan</option>
+	<option value="Skagit">Skagit</option>
+	<option value="Skamania">Skamania</option>
+	<option value="Snohomish">Snohomish</option>
+	<option value="Spokane">Spokane</option>
+	<option value="Stevens">Stevens</option>
+	<option value="Thurston">Thurston</option>
+	<option value="Thurston County">Thurston County</option>
+	<option value="Wahkiakum">Wahkiakum</option>
+	<option value="Walla Walla">Walla Walla</option>
+	<option value="Whatcom">Whatcom</option>
+	<option value="Whitman">Whitman</option>
+	<option value="Yakima">Yakima</option>
+
+</select>
+            </div>
+            <div class="formTable">
+                WRIA<br />
+                <select name="ctl00$ContentPlaceHolder1$c_WRIADropDownList" id="ctl00_ContentPlaceHolder1_c_WRIADropDownList">
+	<option selected="selected" value="0">--All WRIAs--</option>
+	<option value="1">1 - Nooksack</option>
+	<option value="2">2 - San Juan</option>
+	<option value="3">3 - Lower Skagit / Samish</option>
+	<option value="4">4 - Upper Skagit</option>
+	<option value="5">5 - Stillaguamish</option>
+	<option value="6">6 - Island</option>
+	<option value="7">7 - Snohomish</option>
+	<option value="8">8 - Cedar-Sammamish</option>
+	<option value="9">9 - Duwamish-Green</option>
+	<option value="10">10 - Puyallup-White</option>
+	<option value="11">11 - Nisqually</option>
+	<option value="12">12 - Chambers-Clover</option>
+	<option value="13">13 - Deschutes</option>
+	<option value="14">14 - Kennedy-Goldsborough</option>
+	<option value="15">15 - Kitsap</option>
+	<option value="16">16 - Skokomish-Dosewallips</option>
+	<option value="17">17 - Quilcene-Snow</option>
+	<option value="18">18 - Elwha-Dungeness</option>
+	<option value="19">19 - Lyre-Hoko</option>
+	<option value="20">20 - Soleduc</option>
+	<option value="21">21 - Queets-Quinault</option>
+	<option value="22">22 - Lower Chehalis</option>
+	<option value="23">23 - Upper Chehalis</option>
+	<option value="24">24 - Willapa</option>
+	<option value="25">25 - Grays/Elochoman</option>
+	<option value="26">26 - Cowlitz</option>
+	<option value="27">27 - Lewis</option>
+	<option value="28">28 - Salmon-Washougal</option>
+	<option value="29">29 - Wind-White Salmon</option>
+	<option value="30">30 - Klickitat</option>
+	<option value="31">31 - Rock-Glade</option>
+	<option value="32">32 - Walla Walla</option>
+	<option value="33">33 - Lower Snake</option>
+	<option value="34">34 - Palouse</option>
+	<option value="35">35 - Middle Snake</option>
+	<option value="36">36 - Esquatzel Coulee</option>
+	<option value="37">37 - Lower Yakima</option>
+	<option value="38">38 - Naches</option>
+	<option value="39">39 - Upper Yakima</option>
+	<option value="40">40 - Alkali-Squilchuck</option>
+	<option value="41">41 - Lower Crab</option>
+	<option value="42">42 - Grand Coulee</option>
+	<option value="43">43 - Upper Crab-Wilson</option>
+	<option value="44">44 - Moses Coulee</option>
+	<option value="45">45 - Wenatchee</option>
+	<option value="46">46 - Entiat</option>
+	<option value="47">47 - Chelan</option>
+	<option value="48">48 - Methow</option>
+	<option value="49">49 - Okanogan</option>
+	<option value="50">50 - Foster</option>
+	<option value="51">51 - Nespelem</option>
+	<option value="52">52 - Sanpoil</option>
+	<option value="53">53 - Lower Lake Roosevelt</option>
+	<option value="54">54 - Lower Spokane</option>
+	<option value="55">55 - Little Spokane</option>
+	<option value="56">56 - Hangman</option>
+	<option value="57">57 - Middle Spokane</option>
+	<option value="58">58 - Middle Lake Roosevelt</option>
+	<option value="59">59 - Colville</option>
+	<option value="60">60 - Kettle</option>
+	<option value="61">61 - Upper Lake Roosevelt</option>
+	<option value="62">62 - Pend Oreille</option>
+
+</select>
+            </div>
+            <div class="formTable">
+                Site<br />
+                <select name="ctl00$ContentPlaceHolder1$c_SiteDropDownList" id="ctl00_ContentPlaceHolder1_c_SiteDropDownList" onblur="setSiteID(this.value);">
+	<option selected="selected" value="0">--All sites--</option>
+	<option value="84">Aberdeen Lake, Grays Harbor</option>
+	<option value="694">Ackerman Island (Columbia River), Clark</option>
+	<option value="259">Admirals Cove Lake, Island</option>
+	<option value="727">Alder Lake, Pierce</option>
+	<option value="375">Allen Creek, Snohomish</option>
+	<option value="256">Allen Lake, King</option>
+	<option value="374">Allen Pond, Snohomish</option>
+	<option value="52">American Lake, Pierce</option>
+	<option value="188">Ames Lake, King</option>
+	<option value="75">Anderson Lake, Jefferson</option>
+	<option value="197">Andrews Bay - Seward Park, King</option>
+	<option value="33">Arbor Lake, King</option>
+	<option value="238">Arrow Lake, King</option>
+	<option value="651">Ashenfelter Bay, Pend Oreille</option>
+	<option value="342">Baker Pond, Garfield</option>
+	<option value="231">Bartch Pond, Yakima</option>
+	<option value="355">Battle Ground Lake, Clark</option>
+	<option value="73">Bay Lake, Pierce</option>
+	<option value="212">Beaver Lake Beach, King</option>
+	<option value="22">Beaver Lake, King</option>
+	<option value="591">Beaver Lake, Skagit</option>
+	<option value="128">Ben Burr Pond, Spokane</option>
+	<option value="268">Bennington Lake, Walla Walla</option>
+	<option value="640">Benson Lake, Mason</option>
+	<option value="678">Berglund Lake, Yakima</option>
+	<option value="644">Beverly Lake, Snohomish</option>
+	<option value="227">Big Lake, Skagit</option>
+	<option value="158">Bitter Lake, King</option>
+	<option value="163">Black Frog Pond, Jefferson</option>
+	<option value="131">Black Lake, Stevens</option>
+	<option value="142">Black Lake, Thurston</option>
+	<option value="637">Black River, Thurston</option>
+	<option value="132">Blackmans Lake, Snohomish</option>
+	<option value="301">Blue Lake, Grant</option>
+	<option value="103">Blythe Lake, Grant</option>
+	<option value="43">Bonney Lake, Pierce</option>
+	<option value="139">Breseman Pond, Pierce</option>
+	<option value="271">Browns Lake, Lincoln</option>
+	<option value="583">Bryant Lake, Snohomish</option>
+	<option value="671">Buena Pond , Yakima</option>
+	<option value="34">Burien Lake, King</option>
+	<option value="602">Burns Road (Columbia River), Franklin</option>
+	<option value="696">Burrows Landing (Lake Washington), King</option>
+	<option value="643">Cain Lake, Whatcom</option>
+	<option value="707">Caples Rd (Columbia River), Cowlitz</option>
+	<option value="664">Cascade Lake, San Juan</option>
+	<option value="104">Cascade Park (Moses Lake), Grant</option>
+	<option value="648">Casey Pond, Walla Walla</option>
+	<option value="97">Chamberlain Lake, Klickitat</option>
+	<option value="320">Chambers Lake, Thurston</option>
+	<option value="690">Charbonneau Park, Walla Walla</option>
+	<option value="603">Chiawana Park (Columbia River), Franklin</option>
+	<option value="179">Chico Creek, Kitsap</option>
+	<option value="76">Chinese Garden, Jefferson</option>
+	<option value="253">Chinook Water District Reservoir, Pacific</option>
+	<option value="638">Christmas Lake, King</option>
+	<option value="348">Clark Lake, King</option>
+	<option value="186">Clarks Creek Stormwater Retention Pond, Pierce</option>
+	<option value="45">Clear Lake, Pierce</option>
+	<option value="234">Clear Lake, Skagit</option>
+	<option value="609">Clear Lake, Spokane</option>
+	<option value="168">Clear Lake, Thurston</option>
+	<option value="599">Clover Island (Columbia River), Benton</option>
+	<option value="305">Coffeepot Lake, Lincoln</option>
+	<option value="608">Columbia Park (Columbia River), Benton</option>
+	<option value="597">Columbia Point Marina Park (Columbia River), Benton</option>
+	<option value="695">Columbia River (Willow Grove), Cowlitz</option>
+	<option value="3">Columbia River, Beverly Island, Grant</option>
+	<option value="298">Columbia River, Malaga, Chelan</option>
+	<option value="596">Connelly Park (Moses Lake), Grant</option>
+	<option value="699">Connor Lake, Snohomish</option>
+	<option value="343">Cook Lake, Adams</option>
+	<option value="677">Cool Lake, Yakima</option>
+	<option value="23">Cottage Lake, King</option>
+	<option value="105">County Access, Grant</option>
+	<option value="106">County Site, Grant</option>
+	<option value="476">Cozy Creek, Kittitas</option>
+	<option value="280">Crabapple Lake, Snohomish</option>
+	<option value="276">Crabapple Lake, Snohomish</option>
+	<option value="10">Cranberry Lake, Island</option>
+	<option value="352">Crescent Lake, Pierce</option>
+	<option value="77">Crocker Lake, Jefferson</option>
+	<option value="595">Crouch Pond, Kitsap</option>
+	<option value="284">Crystal Lake, Snohomish</option>
+	<option value="369">Curlew Lake, Ferry</option>
+	<option value="228">Curley Creek Mouth, Kitsap</option>
+	<option value="360">D93109 Stormwater Pond, King</option>
+	<option value="185">DeCoursey Pond, Pierce</option>
+	<option value="274">Dee&#39;s Pond, Jefferson</option>
+	<option value="625">Deep Lake, King</option>
+	<option value="178">Deep Lake, Stevens</option>
+	<option value="88">Deep Lake, Thurston</option>
+	<option value="474">Deer Lake, Island</option>
+	<option value="655">Deer Lake, Stevens</option>
+	<option value="159">Diamond Lake, Pend Oreille</option>
+	<option value="357">Dickenson Lake, Whatcom</option>
+	<option value="702">Dog Lake, Yakima</option>
+	<option value="349">Drano Lake, Skamania</option>
+	<option value="85">Duck Lake, Grays Harbor</option>
+	<option value="615">Duportail Bridge (Yakima River), Benton</option>
+	<option value="368">Earth Sanctuary Fen Pond, Island</option>
+	<option value="241">Easter Lake, King</option>
+	<option value="214">Echo Lake Beach, King</option>
+	<option value="24">Echo Lake, King</option>
+	<option value="617">Echo Lake, Snohomish</option>
+	<option value="598">Edison St Boat Launch (Columbia River), Benton</option>
+	<option value="719">Egg Lake, San Juan</option>
+	<option value="11">Eisenman Pond, Island</option>
+	<option value="669">Elton Pond, Yakima</option>
+	<option value="216">Enatai Beach, King</option>
+	<option value="731">Evans Pond, Asotin</option>
+	<option value="688">Evans Pond, Stevens</option>
+	<option value="700">Fairweather Bay (Lake Washington), King</option>
+	<option value="701">Fairweather Creek, King</option>
+	<option value="86">Fake Lake, Grays Harbor</option>
+	<option value="363">Fallen Leaf Lake, Clark</option>
+	<option value="67">Fawn Lake, Mason</option>
+	<option value="247">Fiorito Pond, Kittitas</option>
+	<option value="288">Fire Train Pond, King</option>
+	<option value="713">Fish Hook Park (Snake River), Walla Walla</option>
+	<option value="240">Fish Lake, Chelan</option>
+	<option value="362">Fishing Pond, Benton</option>
+	<option value="100">Fishtrap Lake, Lincoln</option>
+	<option value="667">Fivemile Lake Beach, King</option>
+	<option value="330">Fivemile Lake, King</option>
+	<option value="299">Florence Lake, Pierce</option>
+	<option value="251">Flowing Lake, Snohomish</option>
+	<option value="331">Forbes Lake, Mason</option>
+	<option value="680">Franz Lake, Skamania</option>
+	<option value="40">French Lake, King</option>
+	<option value="730">Frog Lake, Skamania</option>
+	<option value="202">Gene Coulon, King</option>
+	<option value="78">Gibbs Lake, Jefferson</option>
+	<option value="661">Gissberg Pond North, Snohomish</option>
+	<option value="673">Gissberg Ponds South, Snohomish</option>
+	<option value="647">Granger Pond, Yakima</option>
+	<option value="277">Grass Lake, Thurston</option>
+	<option value="226">Gravelly Lake, Pierce</option>
+	<option value="99">Graybill Pond, Walla Walla</option>
+	<option value="365">Green Gate Pond, Spokane</option>
+	<option value="257">Green Lake (Duck Island Launch), King</option>
+	<option value="232">Green Lake (East Beach), King</option>
+	<option value="213">Green Lake (West Beach), King</option>
+	<option value="25">Green Lake , King</option>
+	<option value="217">Groveland Park Beach, King</option>
+	<option value="657">Hall Lake, Snohomish</option>
+	<option value="224">Haller Lake, King</option>
+	<option value="122">Hammond Lake, Douglas</option>
+	<option value="653">Hangman Creek, Whitman</option>
+	<option value="46">Harts Lake, Pierce</option>
+	<option value="306">Hawks Prairie Golf Course, Thurston</option>
+	<option value="166">Heart Lake, Skagit</option>
+	<option value="60">Hewitt Lake, Thurston</option>
+	<option value="35">Hicklin Lake, King</option>
+	<option value="249">Hicks Lake, Thurston</option>
+	<option value="193">Hidden Lake Beach, King</option>
+	<option value="189">Hideaway Lake, Pierce</option>
+	<option value="272">Hoag Pond, Whatcom</option>
+	<option value="300">Hog Lake, Spokane</option>
+	<option value="327">Holmes Pond, whatcom</option>
+	<option value="725">Home Valley Park (Columbia River), Skamania</option>
+	<option value="12">Honeymoon Lake, Island</option>
+	<option value="632">Hood Park (Snake River), Walla Walla</option>
+	<option value="693">Horn Rapids (Columbia River), Benton</option>
+	<option value="93">Horseshoe Lake, Cowlitz</option>
+	<option value="68">Horseshoe Lake, Kitsap</option>
+	<option value="649">Horseshoe Lake, Pend Oreille</option>
+	<option value="309">Horseshoe Lake, Thurston</option>
+	<option value="266">Horsethief Lake, Klickitat</option>
+	<option value="209">Houghton Beach, King</option>
+	<option value="345">Hourglass Pond, Spokane</option>
+	<option value="593">Howard Amon Park (Columbia River), Benton</option>
+	<option value="17">Howard Lake, Snohomish</option>
+	<option value="341">Huber Lake, Asotin</option>
+	<option value="151">I-90 Pond, King</option>
+	<option value="711">Ice Harbor Dam (Snake River), Walla Walla</option>
+	<option value="194">Idylwood Beach, King</option>
+	<option value="211">Idylwood Creek, King</option>
+	<option value="2">Irrigation Culvert, Clallam</option>
+	<option value="235">Island Lake, Kitsap</option>
+	<option value="358">Island Lake, Mason</option>
+	<option value="123">Jameson Lake, Douglas</option>
+	<option value="162">Jean Rice&#39;s Pond, Jefferson</option>
+	<option value="242">Joe&#39;s Creek, King</option>
+	<option value="206">John&#39;s Creek, King</option>
+	<option value="624">Josephine Lake, Pierce</option>
+	<option value="196">Juanita Beach, King</option>
+	<option value="207">Juanita Creek, King</option>
+	<option value="258">Kalaloch Creek Intake, Jefferson</option>
+	<option value="292">Kennedy Creek, Thurston</option>
+	<option value="260">Kennedy Lagoon, Island</option>
+	<option value="218">Kennydale Beach, King</option>
+	<option value="639">Keogh Lake, Stevens</option>
+	<option value="69">Kitsap Creek, Kitsap</option>
+	<option value="70">Kitsap Lake, Kitsap</option>
+	<option value="656">Kline Pond, Clark</option>
+	<option value="685">Kress Lake, Cowlitz</option>
+	<option value="629">Kwann Lake, Whatcom</option>
+	<option value="94">Lacamas Lake, Clark</option>
+	<option value="147">Lake 14, Pierce</option>
+	<option value="312">Lake Alice, King</option>
+	<option value="630">Lake Anderson, Mason</option>
+	<option value="8">Lake Armstrong, Snohomish</option>
+	<option value="32">Lake Ballinger, Snohomish</option>
+	<option value="631">Lake Beecher, Snohomish</option>
+	<option value="137">Lake Bellevue, King</option>
+	<option value="173">Lake Boren, King</option>
+	<option value="294">Lake Bosworth, Snohomish</option>
+	<option value="169">Lake Bryan, Columbia</option>
+	<option value="170">Lake Campbell, Skagit</option>
+	<option value="18">Lake Cassidy, Snohomish</option>
+	<option value="171">Lake Cavanaugh, Skagit</option>
+	<option value="326">Lake Celilo, Klickitat</option>
+	<option value="134">Lake Chain, Snohomish</option>
+	<option value="261">Lake Chaplain, Snohomish</option>
+	<option value="237">Lake Chelan, Chelan</option>
+	<option value="26">Lake Desire, King</option>
+	<option value="281">Lake Dolloff, King</option>
+	<option value="5">Lake Erie, Skagit</option>
+	<option value="302">Lake Fazon, Whatcom</option>
+	<option value="310">Lake Fenwick, King</option>
+	<option value="287">Lake Geneva, King</option>
+	<option value="366">Lake Gilbert, Spokane</option>
+	<option value="354">Lake Goodwin, Snohomish</option>
+	<option value="13">Lake Goss, Island</option>
+	<option value="41">Lake Jeane, King</option>
+	<option value="333">Lake Joy, King</option>
+	<option value="351">Lake Kapowsin, Pierce</option>
+	<option value="263">Lake Kathleen, King</option>
+	<option value="7">Lake Ketchum, Snohomish</option>
+	<option value="295">Lake Killarney, King</option>
+	<option value="61">Lake Lawrence, Thurston</option>
+	<option value="578">Lake Leota, King</option>
+	<option value="724">Lake Leprechaun, Mason</option>
+	<option value="723">Lake Limerick, Mason</option>
+	<option value="475">Lake Lois, Thurston</option>
+	<option value="19">Lake Loma, Snohomish</option>
+	<option value="42">Lake Lorene, King</option>
+	<option value="54">Lake Louise, Pierce</option>
+	<option value="313">Lake Lucerne, King</option>
+	<option value="15">Lake Marcel, King</option>
+	<option value="279">Lake Margaret, King</option>
+	<option value="254">Lake McDonald, King</option>
+	<option value="265">Lake McMurray, Skagit</option>
+	<option value="619">Lake Meridian, King</option>
+	<option value="686">Lake Merwin, Cowlitz</option>
+	<option value="318">Lake Minterwood, Pierce</option>
+	<option value="245">Lake Morton, King</option>
+	<option value="192">LAKE NEED, CLARK</option>
+	<option value="4">Lake Padden, Whatcom</option>
+	<option value="167">Lake Pateros, Douglas</option>
+	<option value="181">Lake Pleasant, Clallam</option>
+	<option value="645">Lake Ponce de Leon, King</option>
+	<option value="338">Lake River Felida Moorage, Clark</option>
+	<option value="339">Lake River Miller&#39;s Landing, Clark</option>
+	<option value="275">Lake Roesiger, Snohomish</option>
+	<option value="152">Lake Roosevelt, Okanogan</option>
+	<option value="290">Lake Sacajawea, Cowlitz</option>
+	<option value="716">Lake Samish, Whatcom</option>
+	<option value="195">Lake Sammamish Beach, King</option>
+	<option value="27">Lake Sammamish, King</option>
+	<option value="36">Lake Sawyer, King</option>
+	<option value="729">Lake Six, King</option>
+	<option value="6">Lake Sixteen, Skagit</option>
+	<option value="126">Lake Spokane, Spokane</option>
+	<option value="51">Lake St. Clair, Thurston</option>
+	<option value="20">Lake Stevens, Snohomish</option>
+	<option value="83">Lake Sutherland, Clallam</option>
+	<option value="283">Lake Tapps, Pierce</option>
+	<option value="337">Lake Terrell, Whatcom</option>
+	<option value="324">Lake Twelve, King</option>
+	<option value="654">Lake Tyee, Skagit</option>
+	<option value="28">Lake Union, King</option>
+	<option value="291">Lake Washington Arrowhead PT, King</option>
+	<option value="29">Lake Washington, King</option>
+	<option value="311">Lake Whatcom, Whatcom</option>
+	<option value="47">Lake Whitman, Pierce</option>
+	<option value="223">Lake Wilderness Beach, King</option>
+	<option value="39">Lake Wilderness, King</option>
+	<option value="586">Lake Yvonne, Kittitas</option>
+	<option value="138">Lakes at Kent, King</option>
+	<option value="633">Lakeside Apartments, Snohomish</option>
+	<option value="1">Lanhams Pond</option>
+	<option value="581">Larsen Lake, King</option>
+	<option value="79">Leland Lake, Jefferson</option>
+	<option value="594">Leslie Groves Park (Columbia River), Benton</option>
+	<option value="129">Liberty Lake, Spokane</option>
+	<option value="108">Lind Coulee #1, Grant</option>
+	<option value="109">Lind Coulee A, Grant</option>
+	<option value="110">Lind Coulee B, Grant</option>
+	<option value="107">Lind Coulee, Grant</option>
+	<option value="243">Little Cranberry Lake, Skagit</option>
+	<option value="576">Little Spokane River, Spokane</option>
+	<option value="297">Log Boom Park (Lake Washington), King</option>
+	<option value="14">Lone Lake, Island</option>
+	<option value="71">Long Lake, Kitsap</option>
+	<option value="62">Long Lake, Thurston</option>
+	<option value="340">Look Lake, Klickitat</option>
+	<option value="687">Loon Lake, Stevens</option>
+	<option value="350">Lords Lake, Snohomish</option>
+	<option value="157">Lost Lake, Mason</option>
+	<option value="136">Lost Lake, Snohomish</option>
+	<option value="697">Lost Lake, Thurston</option>
+	<option value="612">Lower Granite Dam, Garfield</option>
+	<option value="344">Lower Granite Reservoir, Whitman</option>
+	<option value="221">Luther Burbank Beach, King</option>
+	<option value="650">Lyons Ferry Fish Hatchery, Franklin</option>
+	<option value="613">Lyons Ferry State Park, Franklin</option>
+	<option value="293">Lystair (Star) Lake, Mason</option>
+	<option value="205">Madison Park Beach, King</option>
+	<option value="220">Madrona Beach, King</option>
+	<option value="319">Maggie Lake, Mason</option>
+	<option value="200">Magnuson Beach Off Leash Area, King</option>
+	<option value="201">Magnuson Beach, King</option>
+	<option value="335">Main Impound, Pacific</option>
+	<option value="289">Mallard Lake, King</option>
+	<option value="587">Margaret Lake, Kittitas</option>
+	<option value="296">Marina Park Beach, King</option>
+	<option value="698">Marr&#39;s Shallows, Grays Harbor</option>
+	<option value="361">Marshall Creek, Spokane </option>
+	<option value="154">Martha John Creek, Kitsap</option>
+	<option value="135">Martha Lake N, Snohomish</option>
+	<option value="592">Maryhill State Park, Klickitat</option>
+	<option value="190">Mason Lake, Mason</option>
+	<option value="198">Matthews Beach, King</option>
+	<option value="177">Mayo Cove, Pierce</option>
+	<option value="176">Mayo Creek, Pierce</option>
+	<option value="239">McIntosh Lake, Thurston</option>
+	<option value="665">McNary Dam Boat Launch (Columbia River), Benton</option>
+	<option value="334">McNary Slough, Walla Walla</option>
+	<option value="676">Meadow Lake, Snohomish</option>
+	<option value="101">Medical Lake, Spokane</option>
+	<option value="264">Medina Park North Pond, King</option>
+	<option value="203">Meydenbauer Bay Beach, King</option>
+	<option value="585">Meyers Falls Reservoir, Stevens</option>
+	<option value="580">Mile Post 8, Kittitas</option>
+	<option value="611">Mill Creek, Walla Walla</option>
+	<option value="150">Miller&#39;s Pond, Jefferson</option>
+	<option value="233">Mission Lake, Kitsap</option>
+	<option value="141">Morey Creek, Pierce</option>
+	<option value="116">Moses Lake South, Grant</option>
+	<option value="102">Moses Lake, BH Park, Grant</option>
+	<option value="115">Moses Lake, Grant</option>
+	<option value="113">Moses Lake, Montlake, Grant</option>
+	<option value="199">Mount Baker Beach, King</option>
+	<option value="282">Munn Lake, Thurston County</option>
+	<option value="672">Myron Lake, Yakima</option>
+	<option value="278">Nahwatzel Lake, Mason</option>
+	<option value="622">Naneum Pond, Kittitas</option>
+	<option value="204">Newcastle Beach, King</option>
+	<option value="130">Newman Lake, Spokane</option>
+	<option value="183">North Lake, King</option>
+	<option value="252">North Lake, Kitsap</option>
+	<option value="230">North Twin Lake, Ferry</option>
+	<option value="286">Northshore PArkway Apartment Ponds, Pierce</option>
+	<option value="63">Offutt Lake, Thurston</option>
+	<option value="48">Ohop Lake, Pierce</option>
+	<option value="626">Osprey Pond, San Juan</option>
+	<option value="165">Otter Lake, Spokane</option>
+	<option value="125">Owhi Lake, Okanogan</option>
+	<option value="149">Pacific Science Center, King</option>
+	<option value="663">Pacific Topsoil Lagoon, King</option>
+	<option value="329">Palmer Lake, Okanogan</option>
+	<option value="74">Palmer Lake, Pierce</option>
+	<option value="244">Palouse River, Whitman</option>
+	<option value="684">Panther Lake, Kitsap</option>
+	<option value="250">Panther Lake, Snohomish</option>
+	<option value="367">Paradise Lake, King</option>
+	<option value="621">Park Lake, Grant</option>
+	<option value="140">Parklank Well, Pierce</option>
+	<option value="607">Pasco Boat Basin (Columbia River), Franklin</option>
+	<option value="174">Pass Lake, Skagit</option>
+	<option value="267">Patterson Lake, Okanogan</option>
+	<option value="64">Pattison Lake, Thurston</option>
+	<option value="248">Pearrygin Lake, Okanogan</option>
+	<option value="187">Pebble Pond, Kitsap</option>
+	<option value="30">Phantom Lake, King</option>
+	<option value="315">Phillips Lake, Mason</option>
+	<option value="718">Picnic Point Lake, Snohomish</option>
+	<option value="215">Pine Lake Beach, King</option>
+	<option value="285">Pine Lake, King</option>
+	<option value="720">Pioneer Park pond, Walla Walla</option>
+	<option value="270">Pioneer Place, Pierce</option>
+	<option value="314">Pipe Lake, King</option>
+	<option value="588">Plymouth Boat Launch (Columbia River), Benton</option>
+	<option value="675">Pond 4 (Yakima River), Yakima</option>
+	<option value="670">Pond 7 (Yakima River), Yakima</option>
+	<option value="119">Potholes #2, Grant</option>
+	<option value="155">Potholes #4, Grant</option>
+	<option value="156">Potholes #5, Grant</option>
+	<option value="120">Potholes Reservoir, Grant</option>
+	<option value="111">Potholes, Mardon Park, Grant</option>
+	<option value="112">Potholes, Medicine 1, Grant</option>
+	<option value="117">Potholes, O&#39;Sullivan, Grant</option>
+	<option value="208">Pritchard Island Beach, King</option>
+	<option value="635">Private Pond (Nooksack), Whatcom</option>
+	<option value="148">Private Pond, Thurston</option>
+	<option value="681">Putters Lake, Douglas</option>
+	<option value="616">Quarry Pond (Columbia River), Walla Walla</option>
+	<option value="180">Quilomene Cove, Kittitas</option>
+	<option value="584">Railroad Island Park, Klickitat</option>
+	<option value="659">Rainbow Lake, Columbia</option>
+	<option value="225">Rapjohn Lake, Pierce</option>
+	<option value="714">Rasmussen Lake, King</option>
+	<option value="715">Reed Lake, Whatcom</option>
+	<option value="620">Reflection Lake, Lewis</option>
+	<option value="127">Reflection Lake, Spokane</option>
+	<option value="373">Retreat Lake, King</option>
+	<option value="704">Rice Bar (Snake River), Garfield</option>
+	<option value="364">Riffe Lake, Lewis</option>
+	<option value="618">Ringold boat launch (Columbia River), Franklin</option>
+	<option value="604">Road 54 Boat Launch (Columbia River), Franklin</option>
+	<option value="679">Rocky Coulee (Columbia River), Kittias</option>
+	<option value="371">Ronald Bog, King</option>
+	<option value="689">Roses Lake, Chelan</option>
+	<option value="95">Round Lake, Clark</option>
+	<option value="98">Rowland Lake, Klickitat</option>
+	<option value="124">Rufus Woods Lake, Douglas</option>
+	<option value="606">Sacajawea Park, Franklin</option>
+	<option value="652">Sacheen Lake, Pend Oreille</option>
+	<option value="623">Sagemoor Pond, Franklin</option>
+	<option value="605">Sam&#39;s Point (Columbia River), Franklin</option>
+	<option value="219">Sammamish Landing Beach, King</option>
+	<option value="80">Sandy Shore Lake, Jefferson</option>
+	<option value="703">Sarg Hubbard, Yakima</option>
+	<option value="328">Schroeder&#39;s Pond, Skagit</option>
+	<option value="255">Scootney Reservoir, Franklin</option>
+	<option value="89">Scott Lake, Thurston</option>
+	<option value="332">Scudder Pond, whatcom</option>
+	<option value="370">Seabreeze Lake, Pacific</option>
+	<option value="579">Setchfield Lake, Thurston</option>
+	<option value="133">Shadow Lake, King</option>
+	<option value="175">Shelley Lake, Spokane</option>
+	<option value="321">Shoecraft Lake, Snohomish</option>
+	<option value="81">Silent Lake, Jefferson</option>
+	<option value="90">Silver Lake, Cowlitz</option>
+	<option value="49">Silver Lake, Pierce</option>
+	<option value="646">Silver Lake, Snohomish</option>
+	<option value="353">Silver Lake, Whatcom</option>
+	<option value="590">Sixteen Lake, Skagit</option>
+	<option value="721">Snake River - Chief Looking Glass Park, Asotin</option>
+	<option value="614">Snake River, Franklin</option>
+	<option value="710">Snake River, Garfield</option>
+	<option value="662">Snake River, Whitman</option>
+	<option value="706">Snoqualmie Trail, King</option>
+	<option value="636">Soap Lake, Grant</option>
+	<option value="262">Solmar Lake, Clallam</option>
+	<option value="172">Solstice Farm, Jefferson</option>
+	<option value="91">South County Pond, Lewis</option>
+	<option value="705">South Prairie Creek, Pierce</option>
+	<option value="55">Spanaway Lake, Pierce</option>
+	<option value="304">Spearfish Lake, Klickitat</option>
+	<option value="273">Spencer Lake, Mason</option>
+	<option value="577">Spokane River, Spokane</option>
+	<option value="610">Sprague Lake, Adams</option>
+	<option value="31">Spring Lake, King</option>
+	<option value="184">Stansberry Lake, Pierce</option>
+	<option value="121">State Park, Grant</option>
+	<option value="37">Steel Lake, King</option>
+	<option value="56">Steilacoom Lake, Pierce</option>
+	<option value="229">Storm Lake, Snohomish</option>
+	<option value="322">Sullivan&#39;s Pond, Clallam</option>
+	<option value="182">Summit Lake, Thurston</option>
+	<option value="9">Sunday Lake, Snohomish</option>
+	<option value="307">Sunset Lake, Jefferson</option>
+	<option value="728">Sunset Pond, Whatcom</option>
+	<option value="709">Swamp Creek, Stevens</option>
+	<option value="712">Swan Lake, King</option>
+	<option value="628">Swift Reservoir, Skamania</option>
+	<option value="87">Sylvia Lake, Grays Harbor</option>
+	<option value="50">Tanwax Lake, Pierce</option>
+	<option value="356">Tarboo Lake, Jefferson</option>
+	<option value="82">Teal Lake, Jefferson</option>
+	<option value="372">Tee Lake, Mason</option>
+	<option value="65">Tempo Lake, Thurston</option>
+	<option value="164">Teri Lake, Jefferson</option>
+	<option value="589">Test, Wahkiakum</option>
+	<option value="210">Thornton Creek, King</option>
+	<option value="323">Thunderbird Lake, Whatcom</option>
+	<option value="674">Tim&#39;s Pond, Yakima</option>
+	<option value="316">Timber Lake, Mason</option>
+	<option value="269">Toad Lake, Whatcom</option>
+	<option value="658">Trafton Lake, Skagit</option>
+	<option value="683">Trout Lake, Pierce</option>
+	<option value="16">Tuck Lake, King</option>
+	<option value="642">Tudor Pond, Benton</option>
+	<option value="57">Tule Lake, Pierce</option>
+	<option value="44">Twin Lake, Pierce</option>
+	<option value="325">Twin Ponds, King</option>
+	<option value="600">Two Rivers Park (Columbia River), Benton</option>
+	<option value="21">Tye Lake, Snohomish</option>
+	<option value="153">Unknown, Okanogan</option>
+	<option value="143">UPS-stormwater pond</option>
+	<option value="347">Vance Creek Pond 1, Grays Harbor</option>
+	<option value="346">Vance Creek Pond 2, Grays Harbor</option>
+	<option value="96">Vancouver Lake, Clark</option>
+	<option value="682">Vashon Is Water Dist 19 (Recycle Pond), King</option>
+	<option value="660">Wade Park (Columbia River), Franklin</option>
+	<option value="317">Wagner Lake, Snohomish</option>
+	<option value="708">Walker Habitat Management, Walla Walla</option>
+	<option value="38">Walker Lake, King</option>
+	<option value="92">Walupt Lake, Lewis</option>
+	<option value="726">Wanapum Lake (Columbia River), Grant</option>
+	<option value="58">Wapato Lake, Pierce</option>
+	<option value="66">Ward Lake, Thurston</option>
+	<option value="601">Washington Beach (Columbia River), Franklin</option>
+	<option value="692">Washougal Waterfront Park (Columbia River), Clark</option>
+	<option value="59">Waughop Lake, Pierce</option>
+	<option value="222">Waverly Park Beach, King</option>
+	<option value="666">Wawawai County Park, Whitman</option>
+	<option value="308">Wecoma Lake, Skamania</option>
+	<option value="634">Welcome Lake, King</option>
+	<option value="668">Wenas Lake, Yakima</option>
+	<option value="717">West Medical Lake, Spokane</option>
+	<option value="627">Wild Duck Lake, Kittitas</option>
+	<option value="72">Wildcat Lake, Kitsap</option>
+	<option value="641">Williams Lake, Spokane</option>
+	<option value="246">Williams Pond, Jefferson</option>
+	<option value="359">Willow Lake, Grant</option>
+	<option value="691">Wintler Community Park (Columbia River), Clark</option>
+	<option value="236">Wiser Lake, Whatcom</option>
+	<option value="303">Yakima Delta, Benton</option>
+	<option value="722">Yakima Greenway South Pond, Yakima</option>
+	<option value="582">Yale Lake, Cowlitz</option>
+	<option value="336">Zyistra Lake, San Juan</option>
+
+</select>
+            </div>
+            <div class="formTable">
+                Toxin<br />
+                <select name="ctl00$ContentPlaceHolder1$c_ToxinDropDownList" id="ctl00_ContentPlaceHolder1_c_ToxinDropDownList">
+	<option selected="selected" value="">--All toxins--</option>
+	<option value="anatoxin-a">Anatoxin-a</option>
+	<option value="cylindrospermopsin">Cylindrospermopsin</option>
+	<option value="microcystin">Microcystin</option>
+	<option value="saxitoxin">Saxitoxin</option>
+
+</select>
+                <br />
+            </div>
+
+            <div class="formTable">
+                Minimum Toxin Concentration<br />
+                <input name="ctl00$ContentPlaceHolder1$c_LowConcTextBox" type="text" id="ctl00_ContentPlaceHolder1_c_LowConcTextBox" class="number" />
+            </div>
+            <div class="formTable">
+                Maximum Toxin Concentration<br />
+                <input name="ctl00$ContentPlaceHolder1$c_HighConcTextBox" type="text" id="ctl00_ContentPlaceHolder1_c_HighConcTextBox" class="number" />
+            </div>
+            <div class="formTable">
+                Start Date (MM/DD/YYYY)<br />
+                <input name="ctl00$ContentPlaceHolder1$c_StartDateTextBox" type="text" id="ctl00_ContentPlaceHolder1_c_StartDateTextBox" />
+            </div>
+            <div class="formTable">
+                End Date (MM/DD/YYYY)<br />
+                <input name="ctl00$ContentPlaceHolder1$c_EndDateTextBox" type="text" id="ctl00_ContentPlaceHolder1_c_EndDateTextBox" />
+            </div>
+            <div class="formTable">
+                Lab Sample Number<br />
+                <input name="ctl00$ContentPlaceHolder1$c_SampleNumberTextBox" type="text" id="ctl00_ContentPlaceHolder1_c_SampleNumberTextBox" />
+            </div>
+        </div>
+        <div class="formTable">
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_MapButton" value="Plot Map" onclick="setDrawMap(true);" id="ctl00_ContentPlaceHolder1_c_MapButton" />
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_ClearButton" value="Clear Selections" onclick="clearSelection();" id="ctl00_ContentPlaceHolder1_c_ClearButton" />
+        </div>
+
+        <div class="formTable">
+            <h3>Get data</h3>
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_GetToxinButton" value="Get Toxins" onclick="setDrawMap(false);" id="ctl00_ContentPlaceHolder1_c_GetToxinButton" /><br>
+
+
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_GetPhytoButton" value="Get Phytoplankton" onclick="setDrawMap(false);" id="ctl00_ContentPlaceHolder1_c_GetPhytoButton" />
+        </div>
+        <div class="formTable">
+            <h3>Export data</h3>
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_ExportToxinButton" value="Export Toxin Data" id="ctl00_ContentPlaceHolder1_c_ExportToxinButton" /><br>
+
+            <input type="submit" name="ctl00$ContentPlaceHolder1$c_ExportAlgaeButton" value="Export Phyto Data" id="ctl00_ContentPlaceHolder1_c_ExportAlgaeButton" />
+        </div>
+        <p>As of 6/26/2018 the format of the toxin and phytoplankton export has changed. A unique identification number has been added to each site.</p>
+
+    </div>
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$c_SiteIDHiddenField" id="ctl00_ContentPlaceHolder1_c_SiteIDHiddenField" />
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$c_DrawMapHiddenField" id="ctl00_ContentPlaceHolder1_c_DrawMapHiddenField" value="True" />
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$c_SiteInfoHiddenField" id="ctl00_ContentPlaceHolder1_c_SiteInfoHiddenField" value="	48.034216	-117.798567	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/22/2025	709||Aberdeen Lake	46.984114	-123.742328	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.961 (µg/L)	&amp;lt;MDL	07/05/2022	84||Ackerman Island (Columbia River)	45.573881	-122.456096	Unknown	49.100 (µg/L)	&amp;lt;MDL	0.379 (µg/L)	&quot;&amp;lt;MDL,H&quot;	11/09/2024	694||Admirals Cove Lake	48.162515	-122.621698	Unknown	&amp;lt;MDL		41.700 (µg/L)		08/10/2016	259||Allen Creek	48.059105	-122.159300	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/03/2021	375||Allen Lake	47.614637	-122.011064	Unknown	&amp;lt;MDL	&amp;lt;MDL	&quot;&amp;lt;MDL,H&quot;	&amp;lt;MDL	09/04/2024	256||Allen Pond	48.059270	-122.159855	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/03/2021	374||American Lake	47.129861	-122.563016	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/02/2026	52||Ames Lake	47.640902	-121.959357	Unknown	&amp;lt;MDL		0.348 (µg/L)		09/08/2025	188||Anderson Lake	48.018852	-122.801244	Exceeded	219.000 (µg/L)		0.450 (µg/L)		04/27/2026	75||Andrews Bay - Seward Park	47.551540	-122.256520	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	197||Arbor Lake	47.492940	-122.329727	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	0.038 (µg/L)	07/05/2022	33||Arrow Lake	47.426705	-122.338608	Unknown	0.146 (µg/L)		0.526 (µg/L)		07/12/2018	238||Ashenfelter Bay	48.195205	-117.047636	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/31/2023	651||Bartch Pond	46.543964	-120.640976	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/07/2014	231||Battle Ground Lake	45.804817	-122.494178	Unknown	&amp;lt;MDL		&amp;lt;MDL		04/06/2020	355||Bay Lake	47.244207	-122.757943	Exceeded	&amp;lt;MDL		14.800 (µg/L)		10/13/2026	73||Beaver Lake	47.590734	-121.996910	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL		05/17/2026	22||Beaver Lake	48.448938	-122.218778	Unknown	&amp;lt;MDL		0.161 (µg/L)		10/24/2022	591||Beaver Lake Beach	47.587378	-122.002425	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/07/2022	212||Ben Burr Pond	47.605200	-117.352600	Unknown			0.050 (µg/L)		07/20/2010	128||Bennington Lake	46.065703	-118.260431	Within	&amp;lt;MDL		&amp;lt;MDL		10/05/2026	268||Benson Lake	47.337664	-122.924005	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/15/2023	640||Berglund Lake	46.627765	-120.517115	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/29/2024	678||Beverly Lake	47.931882	-122.224857	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/05/2023	644||Big Lake	48.380996	-122.229424	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/06/2025	227||Bitter Lake	47.726490	-122.352240	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/04/2022	158||Black Frog Pond			Unknown			&amp;lt;MDL		08/11/2011	163||Black Lake	46.992466	-122.977905	Within	&amp;lt;MDL		1.400 (µg/L)		10/12/2026	142||Black Lake	48.561156	-117.626058	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/27/2021	131||Black River	46.909019	-123.020072	Unknown	0.012 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/15/2022	637||Blackmans Lake	47.932268	-122.094002	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	11/12/2024	132||Blue Lake	47.562761	-119.451898	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/21/2017	301||Bonney Lake	47.189008	-122.185772	Unknown	0.019 (µg/L)	&amp;lt;MDL	0.352 (µg/L)	&amp;lt;MDL	07/27/2023	43||Breseman Pond	47.123915	-122.447958	Unknown			128.000 (µg/L)		08/27/2019	139||Browns Lake	47.385273	-117.911524	Unknown			2.400 (µg/L)		09/18/2023	271||Bryant Lake	48.234360	-122.150570	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/16/2021	583||Buena Pond 	46.420432	-120.321781	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/15/2024	671||Burien Lake	47.464680	-122.353712	Unknown	&amp;lt;MDL	&amp;lt;MDL	1.800 (µg/L)		06/22/2026	34||Burns Road (Columbia River)	46.285752	-119.263110	Unknown	0.074 (µg/L)				09/20/2021	602||Cain Lake	48.650114	-122.329874	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.181 (µg/L)	&amp;lt;MDL	05/25/2023	643||Caples Rd (Columbia River)	45.904748	-122.804156	Unknown	&amp;lt;MDL	0.029 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	09/16/2025	707||Cascade Lake	48.651366	-122.854516	Unknown			&amp;lt;MDL		10/17/2023	664||Cascade Park (Moses Lake)	47.138906	-119.314950	Unknown			0.372 (µg/L)		10/23/2023	104||Casey Pond	46.164253	-118.953314	Within	&amp;lt;MDL		7.400 (µg/L)		10/06/2026	648||Chamberlain Lake	45.702369	-121.304044	Unknown	&amp;lt;MDL		&amp;lt;MDL		04/20/2016	97||Chambers Lake	47.021738	-122.837357	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/08/2026	320||Charbonneau Park	46.257777	-118.845749	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/25/2026	690||Chiawana Park (Columbia River)	46.243920	-119.205042	Unknown	0.023 (µg/L)				09/26/2022	603||Chico Creek	47.602471	-122.705777	Unknown	&amp;lt;MDL		17.000 (µg/L)		10/16/2023	179||Chinese Garden	48.137790	-122.778750	Unknown					07/06/2009	76||Chinook Water District Reservoir	46.287402	-123.923039	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/22/2015	253||Christmas Lake	47.433812	-121.760325	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.272 (µg/L)	&amp;lt;MDL	03/05/2023	638||Clark Lake	47.383257	-122.174798	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/12/2019	348||Clarks Creek Stormwater Retention Pond	47.188781	-122.322185	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/22/2013	186||Clear Lake	46.823090	-122.474100	Exceeded			10.700 (µg/L)		10/05/2026	168||Clear Lake	46.930448	-122.273679	Unknown	&amp;lt;MDL		&amp;lt;MDL		04/09/2018	45||Clear Lake	47.528469	-117.693417	Unknown	&amp;lt;MDL		0.260 (µg/L)		09/27/2021	609||Clear Lake	48.459849	-122.225299	Unknown	0.017 (µg/L)		&amp;lt;MDL		06/23/2014	234||Clover Island (Columbia River)	46.217888	-119.113610	Unknown	0.046 (µg/L)				10/21/2024	599||Coffeepot Lake	47.491721	-118.566601	Unknown	&amp;lt;MDL		0.301 (µg/L)		09/06/2017	305||Columbia Park (Columbia River)	46.223121	-119.141269	Unknown	0.357 (µg/L)		&amp;lt;MDL		09/23/2024	608||Columbia Point Marina Park (Columbia River)	46.263811	-119.251454	Unknown	0.038 (µg/L)				10/13/2025	597||Columbia River (Willow Grove)	46.173796	-123.084899	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/02/2025	695||Columbia River, Beverly Island	46.833300	-119.946900	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/23/2021	3||Columbia River, Malaga	47.374993	-120.200605	Unknown	1.690 (µg/L)		0.329 (µg/L)		07/25/2017	298||Connelly Park (Moses Lake)	47.186970	-119.353931	Unknown	&amp;lt;MDL		120.000 (µg/L)		09/22/2026	596||Connor Lake	48.021700	-122.034039	Unknown	&amp;lt;MDL		0.436 (µg/L)		07/13/2025	699||Cool Lake	46.593380	-120.458919	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.324 (µg/L)	&amp;lt;MDL	07/08/2025	677||Cottage Lake	47.753212	-122.088289	Exceeded	&amp;lt;MDL		12.200 (µg/L)		09/28/2026	23||County Access	47.146206	-119.340553	Unknown			33.600 (µg/L)		08/24/2020	105||County Site	47.146206	-119.340553	Unknown			3.170 (µg/L)		10/26/2011	106||Cozy Creek			Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/22/2021	476||Crabapple Lake	48.131886	-122.273064	Unknown	0.044 (µg/L)		&amp;lt;MDL		07/16/2017	276||Cranberry Lake	48.394095	-122.655777	Unknown	&amp;lt;MDL		7.400 (µg/L)		09/08/2026	10||Crescent Lake	47.392086	-122.568378	Unknown			2.820 (µg/L)		11/09/2020	352||Crocker Lake	47.936522	-122.880781	Unknown	&amp;lt;MDL		0.400 (µg/L)		08/24/2026	77||Crouch Pond	47.662175	-122.646586	Unknown	&amp;lt;MDL	&amp;lt;MDL	2.920 (µg/L)	&amp;lt;MDL	09/15/2021	595||Crystal Lake	47.779270	-122.105209	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/09/2022	284||Curlew Lake	48.746733	-118.665902	Unknown	0.014 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/27/2025	369||Curley Creek Mouth	47.499191	-122.582338	Unknown			&amp;lt;MDL		10/30/2013	228||D93109 Stormwater Pond	47.703103	-122.010734	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/10/2020	360||DeCoursey Pond	47.186860	-122.320000	Unknown	&amp;lt;MDL		&amp;lt;MDL	0.030 (µg/L)	05/07/2014	185||Dee&#39;s Pond	48.075687	-122.857917	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/10/2016	274||Deep Lake	46.907411	-122.912495	Unknown	&amp;lt;MDL		0.800 (µg/L)		08/25/2026	88||Deep Lake	47.273766	-121.939761	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/22/2022	625||Deep Lake	48.860000	-117.604100	Unknown	&amp;lt;MDL		&amp;lt;MDL		12/06/2016	178||Deer Lake	47.974186	-122.384056	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/07/2021	474||Deer Lake	48.111802	-117.587304	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/04/2025	655||Diamond Lake	48.120744	-117.207899	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/17/2012	159||Dickenson Lake	48.681519	-122.644173	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/01/2020	357||Dog Lake	46.657430	-121.359624	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/31/2025	702||Drano Lake	45.713068	-121.635737	Unknown	0.023 (µg/L)		0.318 (µg/L)		09/26/2019	349||Duck Lake	46.981172	-124.146567	Within			6.000 (µg/L)		09/29/2026	85||Duportail Bridge (Yakima River)	46.264136	-119.306888	Unknown	&amp;lt;MDL				11/08/2021	615||Earth Sanctuary Fen Pond	48.010944	-122.498183	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/29/2020	368||Easter Lake	47.323909	-122.318357	Unknown	&amp;lt;MDL		0.973 (µg/L)		09/19/2014	241||Echo Lake	47.771421	-122.343185	Unknown	&amp;lt;MDL		3.530 (µg/L)		06/28/2024	24||Echo Lake	47.786441	-122.051401	Unknown			&amp;lt;MDL		11/03/2025	617||Echo Lake Beach	47.772985	-122.340065	Within	&amp;lt;MDL		2.800 (µg/L)		10/13/2026	214||Edison St Boat Launch (Columbia River)	46.231520	-119.192046	Unknown	0.236 (µg/L)				09/20/2021	598||Egg Lake	48.566700	-123.083000	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.400 (µg/L)		08/18/2026	719||Eisenman Pond	48.240484	-122.711524	Unknown			&amp;lt;MDL		03/29/2009	11||Elton Pond	46.657941	-120.493651	Unknown	&amp;lt;MDL		3.120 (µg/L)		08/26/2025	669||Enatai Beach	47.578830	-122.197030	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	216||Evans Pond	48.711324	-118.024500	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/10/2024	688||Fairweather Bay (Lake Washington)	47.642667	-122.234055	Unknown	0.135 (µg/L)		&amp;lt;MDL		07/28/2025	700||Fairweather Creek	47.634549	-122.230390	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/28/2025	701||Fake Lake	46.872356	-124.107036	Unknown			&amp;lt;MDL		10/29/2009	86||Fallen Leaf Lake	45.601291	-122.411241	Unknown	&amp;lt;MDL	&amp;lt;MDL	4.460 (µg/L)	&amp;lt;MDL	10/26/2020	363||Fawn Lake	47.165084	-123.075305	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.768 (µg/L)	&amp;lt;MDL	08/25/2025	67||Fiorito Pond	46.940226	-120.504759	Unknown	&amp;lt;MDL		0.600 (µg/L)		08/31/2026	247||Fire Train Pond	47.452982	-121.661115	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	09/13/2016	288||Fish Hook Park (Snake River)	46.317312	-118.766686	Unknown	&amp;lt;MDL		7.100 (µg/L)		09/29/2025	713||Fish Lake	47.835594	-120.703665	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/21/2026	240||Fishing Pond	46.219146	-119.143982	Unknown			1.640 (µg/L)		07/14/2025	362||Fishtrap Lake	47.337181	-117.833582	Unknown			1.410 (µg/L)		09/12/2011	100||Fivemile Lake	47.273077	-122.285621	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	09/23/2024	330||Fivemile Lake Beach	47.274300	-122.283486	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	667||Florence Lake	47.167524	-122.687004	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/11/2026	299||Flowing Lake	47.947887	-121.987321	Unknown			&amp;lt;MDL		03/18/2015	251||Forbes Lake	47.192376	-122.972384	Unknown	0.327 (µg/L)		&amp;lt;MDL		05/19/2020	331||Franz Lake	45.605039	-122.077312	Unknown	&amp;lt;MDL	0.063 (µg/L)	0.475 (µg/L)	&amp;lt;MDL	08/06/2024	680||French Lake	47.317120	-122.336800	Unknown			&amp;lt;MDL		10/09/2008	40||Frog Lake	45.707478	-121.738067	Within	&amp;lt;MDL		&amp;lt;MDL		10/06/2026	730||Gene Coulon	47.504677	-122.201768	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	202||Gibbs Lake	47.972126	-122.814383	Unknown	0.090 (µg/L)		&amp;lt;MDL		04/13/2026	78||Gissberg Pond North	48.143760	-122.192257	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	06/10/2026	661||Gissberg Ponds South	48.142381	-122.190845	Unknown	&amp;lt;MDL		0.519 (µg/L)		07/16/2025	673||Granger Pond	46.335536	-120.193610	Unknown	0.017 (µg/L)		0.358 (µg/L)		09/25/2025	647||Grass Lake			Unknown	&amp;lt;MDL		&amp;lt;MDL		04/20/2016	277||Gravelly Lake	47.147641	-122.530947	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/26/2013	226||Graybill Pond	46.041800	-118.309130	Unknown			&amp;lt;MDL		08/06/2008	99||Green Gate Pond	47.570796	-117.760518	Unknown	0.023 (µg/L)		0.181 (µg/L)	0.059 (µg/L)	09/06/2021	365||Green Lake 	47.678510	-122.337900	Unknown	&amp;lt;MDL		&amp;lt;MDL		01/28/2026	25||Green Lake (Duck Island Launch)	47.680836	-122.342410	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	257||Green Lake (East Beach)	47.680183	-122.329674	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	232||Green Lake (West Beach)	47.682170	-122.339330	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	213||Groveland Park Beach	47.551320	-122.234420	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/18/2026	217||Hall Lake	47.807877	-122.309185	Unknown	0.028 (µg/L)		&amp;lt;MDL		08/22/2023	657||Haller Lake	47.719976	-122.333692	Unknown	0.017 (µg/L)		&amp;lt;MDL		08/26/2026	224||Hammond Lake	47.369506	-120.123926	Unknown	0.017 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/08/2023	122||Hangman Creek	47.220331	-117.075272	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/09/2023	653||Harts Lake	46.893296	-122.469339	Unknown	&amp;lt;MDL		3.900 (µg/L)		08/17/2026	46||Hawks Prairie Golf Course	47.095553	-122.772205	Unknown	0.030 (µg/L)		&amp;lt;MDL		08/22/2017	306||Heart Lake	48.476140	-122.630550	Unknown	0.011 (µg/L)		0.150 (µg/L)		08/01/2022	166||Hewitt Lake	47.002140	-122.869618	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.214 (µg/L)	&amp;lt;MDL	03/03/2021	60||Hicklin Lake	47.503212	-122.344818	Unknown	&amp;lt;MDL		4.560 (µg/L)		08/23/2022	35||Hicks Lake	47.021766	-122.798271	Unknown	&amp;lt;MDL		4.640 (µg/L)		08/20/2025	249||Hidden Lake Beach	47.752182	-122.369980	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/13/2021	193||Hideaway Lake	47.301585	-122.605941	Unknown			786.000 (µg/L)		08/29/2013	189||Hoag Pond	48.708001	-122.482461	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/14/2015	272||Hog Lake	47.376991	-117.802387	Unknown	&amp;lt;MDL		2.940 (µg/L)		09/17/2018	300||Holmes Pond			Unknown	&amp;lt;MDL		&amp;lt;MDL		06/19/2018	327||Home Valley Park (Columbia River)	45.707920	-121.778620	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/27/2026	725||Honeymoon Lake	48.051258	-122.552715	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	0.027 (µg/L)	08/22/2023	12||Hood Park (Snake River)	46.214957	-119.018149	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/08/2026	632||Horn Rapids (Columbia River)	46.351255	-119.265965	Unknown	0.064 (µg/L)				10/21/2024	693||Horseshoe Lake	45.896164	-122.744503	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/25/2025	93||Horseshoe Lake	47.408222	-122.664338	Unknown	0.019 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	0.045 (µg/L)	07/23/2024	68||Horseshoe Lake	48.111969	-117.419306	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/24/2023	649||Horsethief Lake	45.646233	-121.102642	Unknown	&amp;lt;MDL		0.400 (µg/L)		09/22/2026	266||Houghton Beach	47.659622	-122.206266	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	209||Hourglass Pond	47.575497	-117.762131	Unknown	&amp;lt;MDL		0.301 (µg/L)		09/20/2021	345||Howard Amon Park (Columbia River)	46.273906	-119.269462	Unknown	16.100 (µg/L)				09/08/2026	593||Howard Lake	48.156440	-122.326090	Unknown	&amp;lt;MDL	&amp;lt;MDL	1.930 (µg/L)	&amp;lt;MDL	11/18/2025	17||I-90 Pond			Unknown	&amp;lt;MDL		0.053 (µg/L)		07/13/2011	151||Ice Harbor Dam (Snake River)	46.246193	-118.878696	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/14/2025	711||Idylwood Beach	47.641644	-122.099823	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	194||Irrigation Culvert	48.079700	-123.214350	Unknown			&amp;lt;MDL		05/11/2009	2||Island Lake	47.249078	-123.114541	Unknown	0.015 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/22/2020	358||Island Lake	47.682224	-122.659794	Unknown			&amp;lt;MDL		06/19/2014	235||Jameson Lake	47.686328	-119.624342	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/15/2010	123||Jean Rice&#39;s Pond	48.072040	-122.842880	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/29/2012	162||Joe&#39;s Creek	47.312903	-122.377428	Unknown	&amp;lt;MDL		4.000 (µg/L)		09/14/2016	242||John&#39;s Creek	47.504831	-122.201638	Unknown			&amp;lt;MDL		07/12/2015	206||Josephine Lake	47.157084	-122.682611	Unknown	0.010 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/20/2022	624||Juanita Beach	47.704210	-122.214630	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	196||Kalaloch Creek Intake	47.604889	-124.368093	Unknown	&quot;&amp;lt;MDL,H&quot;		&amp;lt;MDL		06/08/2015	258||Kennedy Creek	47.095356	-123.090703	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/10/2017	292||Kennedy Lagoon	48.226910	-122.735464	Unknown	0.065 (µg/L)		&amp;lt;MDL		06/24/2015	260||Kennydale Beach	47.523200	-122.207800	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	218||Keogh Lake	48.513885	-117.808753	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/02/2024	639||Kitsap Creek	47.579060	-122.711671	Unknown			0.070 (µg/L)	0.020 (µg/L)	12/11/2012	69||Kitsap Lake	47.572437	-122.705140	Unknown	&amp;lt;MDL		0.152 (µg/L)		04/26/2023	70||Kline Pond	45.707934	-122.656337	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/21/2023	656||Kress Lake	46.047116	-122.850691	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/26/2024	685||Kwann Lake	48.942007	-122.776269	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.189 (µg/L)	0.028 (µg/L)	07/23/2023	629||Lacamas Lake	45.616562	-122.425293	Within	&amp;lt;MDL		5.900 (µg/L)		10/12/2026	94||Lake 14			Unknown	&amp;lt;MDL		0.062 (µg/L)		08/22/2011	147||Lake Alice	47.532822	-121.887836	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/01/2022	312||Lake Anderson	47.382017	-122.845826	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/20/2022	630||Lake Armstrong	48.226467	-122.123941	Unknown	0.024 (µg/L)		0.393 (µg/L)		09/14/2020	8||Lake Ballinger	47.782250	-122.329280	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/21/2026	32||Lake Beecher	47.848983	-122.091315	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/21/2022	631||Lake Bellevue			Unknown			&amp;lt;MDL		09/15/2009	137||Lake Boren	47.533040	-122.165200	Unknown	&amp;lt;MDL	&amp;lt;MDL	4.520 (µg/L)	&amp;lt;MDL	09/16/2024	173||Lake Bosworth	48.043710	-121.971234	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/05/2017	294||Lake Bryan	46.588040	-118.013600	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/23/2023	169||Lake Campbell	48.439700	-122.619000	Unknown	&amp;lt;MDL		0.300 (µg/L)		09/03/2026	170||Lake Cassidy	48.052034	-122.095196	Unknown	&amp;lt;MDL	&amp;lt;MDL	6.970 (µg/L)	&amp;lt;MDL	07/13/2025	18||Lake Cavanaugh	48.321300	-122.009200	Unknown	0.021 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/12/2021	171||Lake Celilo	45.657288	-120.947659	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/06/2022	326||Lake Chain	47.903786	-121.970839	Unknown	&amp;lt;MDL		0.304 (µg/L)		08/13/2025	134||Lake Chaplain	47.961110	-121.846627	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/29/2015	261||Lake Desire	47.441263	-122.106392	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/09/2024	26||Lake Dolloff	47.325422	-122.286272	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	0.041 (µg/L)	08/06/2023	281||Lake Erie	48.452709	-122.640714	Unknown	&amp;lt;MDL		&amp;lt;MDL		03/13/2023	5||Lake Fazon	48.865992	-122.367787	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/08/2026	302||Lake Fenwick	47.366370	-122.271069	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/17/2025	310||Lake Geneva	47.291529	-122.281313	Unknown	&amp;lt;MDL		&amp;lt;MDL		11/01/2020	287||Lake Gilbert	47.573931	-117.760490	Unknown	&amp;lt;MDL	&amp;lt;MDL	50.000 (µg/L)	0.028 (µg/L)	08/28/2024	366||Lake Goodwin	48.141363	-122.297897	Unknown	0.605 (µg/L)	&amp;lt;MDL	0.500 (µg/L)	&amp;lt;MDL	04/08/2020	354||Lake Goss	48.036732	-122.479688	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/07/2021	13||Lake Jeane	47.311181	-122.382043	Unknown				0.750 (µg/L)	11/20/2024	41||Lake Joy	47.696789	-121.870093	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/24/2026	333||Lake Kapowsin	46.977344	-122.226335	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/15/2024	351||Lake Kathleen	47.478139	-122.088101	Unknown	0.107 (µg/L)		0.295 (µg/L)		06/17/2018	263||Lake Ketchum	48.282224	-122.345157	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.444 (µg/L)	&amp;lt;MDL	05/13/2020	7||Lake Killarney	47.286606	-122.290891	Unknown	&amp;lt;MDL	&amp;lt;MDL	2.170 (µg/L)	&amp;lt;MDL	05/07/2018	295||Lake Lawrence	46.852041	-122.571019	Exceeded	&amp;lt;MDL		417.000 (µg/L)		10/14/2026	61||Lake Leota	47.759806	-122.121750	Unknown	0.021 (µg/L)	&amp;lt;MDL	0.153 (µg/L)	&amp;lt;MDL	08/08/2023	578||Lake Leprechaun	47.289653	-123.057487	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/26/2026	724||Lake Limerick	47.287143	-123.044998	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/27/2026	723||Lake Lois	47.040775	-122.797956	Unknown	&amp;lt;MDL		0.158 (µg/L)		12/28/2020	475||Lake Loma	48.133867	-122.252617	Unknown	&amp;lt;MDL	&amp;lt;MDL	47.300 (µg/L)	&amp;lt;MDL	10/23/2023	19||Lake Lorene	47.311916	-122.387678	Unknown			&quot;&amp;lt;MDL,H&quot;		10/23/2015	42||Lake Louise	47.161861	-122.567971	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/08/2010	54||Lake Lucerne	47.367861	-122.051261	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.222 (µg/L)	0.026 (µg/L)	05/02/2021	313||Lake Marcel	47.694967	-121.916775	Unknown	&amp;lt;MDL		1.200 (µg/L)		07/26/2026	15||Lake Margaret	47.768589	-121.898939	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/08/2026	279||Lake McDonald	47.471618	-122.077163	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/28/2020	254||Lake McMurray	48.316082	-122.227445	Unknown	&amp;lt;MDL		0.502 (µg/L)		12/18/2023	265||Lake Meridian	47.362883	-122.152912	Unknown	0.371 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/01/2022	619||Lake Merwin	45.986663	-122.475916	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/05/2024	686||Lake Minterwood	47.358250	-122.734333	Unknown	&amp;lt;MDL		1.010 (µg/L)		08/05/2024	318||Lake Morton	47.323983	-122.084061	Unknown	&amp;lt;MDL		0.900 (µg/L)		08/25/2026	245||Lake Padden	48.702904	-122.453363	Within	&amp;lt;MDL		&amp;lt;MDL		10/06/2026	4||Lake Pateros	48.091600	-119.759970	Unknown	0.086 (µg/L)		&amp;lt;MDL		08/24/2015	167||Lake Pleasant	48.067500	-124.327500	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	12/09/2019	181||Lake Ponce de Leon	47.312425	-122.366133	Unknown	&amp;lt;MDL	&amp;lt;MDL	5.750 (µg/L)	0.035 (µg/L)	06/12/2023	645||Lake River Felida Moorage	45.707760	-122.721941	Unknown	0.702 (µg/L)		0.664 (µg/L)		08/12/2019	338||Lake River Miller&#39;s Landing	45.815250	-122.749209	Unknown	1.950 (µg/L)		4.060 (µg/L)		08/12/2019	339||Lake Roesiger	47.987219	-121.920798	Unknown	0.017 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/16/2023	275||Lake Roosevelt			Unknown			&amp;lt;MDL		07/30/2009	152||Lake Sacajawea			Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL		10/25/2016	290||Lake Samish	48.666995	-122.386746	Unknown	&amp;lt;MDL		0.300 (µg/L)		07/22/2026	716||Lake Sammamish	47.602343	-122.088675	Unknown	0.171 (µg/L)		0.114 (µg/L)		06/14/2012	27||Lake Sammamish Beach	47.556844	-122.070323	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	195||Lake Sawyer	47.333289	-122.037608	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/16/2026	36||Lake Six	47.532840	-122.231105	Within	&amp;lt;MDL		&amp;lt;MDL		09/28/2026	729||Lake Sixteen	48.344330	-122.289140	Unknown			&amp;lt;MDL		11/14/2010	6||Lake Spokane	47.805114	-117.599451	Unknown			0.600 (µg/L)		09/23/2026	126||Lake St. Clair	47.000256	-122.720034	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.739 (µg/L)	&amp;lt;MDL	08/26/2025	51||Lake Stevens	48.004380	-122.084707	Unknown	&amp;lt;MDL		&amp;lt;MDL		12/01/2025	20||Lake Sutherland	48.077812	-123.708708	Unknown					07/11/2009	83||Lake Tapps	47.214800	-122.170200	Unknown			0.195 (µg/L)		06/27/2022	283||Lake Terrell	48.865836	-122.687995	Unknown	&amp;lt;MDL		3.200 (µg/L)		10/14/2019	337||Lake Twelve	47.325518	-121.975451	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/23/2026	324||Lake Tyee	48.575679	-121.765335	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/22/2026	654||Lake Union	47.641686	-122.330325	Unknown	&amp;lt;MDL		&amp;lt;MDL		12/21/2023	28||Lake Washington	47.624448	-122.262373	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/25/2021	29||Lake Washington Arrowhead PT	47.743452	-122.271641	Unknown	0.195 (µg/L)		3.290 (µg/L)		12/12/2023	291||Lake Whatcom	48.731930	-122.327320	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/18/2026	311||Lake Whitman	46.962802	-122.257218	Unknown	&amp;lt;MDL		9.300 (µg/L)		08/24/2026	47||Lake Wilderness	47.374573	-122.035609	Unknown			&amp;lt;MDL		01/23/2024	39||Lake Wilderness Beach	47.376946	-122.038853	Exceeded	&amp;lt;MDL		4.000 (µg/L)		10/12/2026	223||Lake Yvonne	47.378562	-121.337734	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.184 (µg/L)	&amp;lt;MDL	08/29/2021	586||Lakes at Kent			Unknown	&amp;lt;MDL		&quot;&amp;lt;MDL,H,TA&quot;		08/30/2010	138||Lakeside Apartments	47.801434	-122.316952	Unknown	0.080 (µg/L)	&amp;lt;MDL	0.368 (µg/L)	&amp;lt;MDL	10/12/2022	633||Lanhams Pond	47.904200	-117.938400	Unknown			&amp;lt;MDL		10/26/2009	1||Larsen Lake	47.605033	-122.140401	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.210 (µg/L)	&amp;lt;MDL	08/11/2021	581||Leland Lake	47.895084	-122.882330	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/20/2026	79||Leslie Groves Park (Columbia River)	46.306822	-119.263120	Unknown	28.000 (µg/L)				09/08/2026	594||Liberty Lake	47.645152	-117.078058	Unknown	0.068 (µg/L)	0.558 (µg/L)	0.920 (µg/L)	0.048 (µg/L)	09/15/2025	129||Lind Coulee	46.989433	-119.220230	Unknown			7.740 (µg/L)		11/28/2011	107||Lind Coulee #1	46.987625	-119.231300	Unknown			0.377 (µg/L)		01/10/2012	108||Lind Coulee B	46.985058	-119.241104	Unknown			0.418 (µg/L)		08/22/2011	110||Little Cranberry Lake	48.493633	-122.644039	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/23/2026	243||Little Spokane River	47.889737	-117.355745	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/21/2023	576||Log Boom Park (Lake Washington)	47.757667	-122.264293	Unknown	&amp;lt;MDL		0.209 (µg/L)		08/18/2021	297||Lone Lake	48.021125	-122.461805	Exceeded	14.000 (µg/L)		0.400 (µg/L)		10/05/2026	14||Long Lake	47.019149	-122.774760	Unknown	&amp;lt;MDL		5.600 (µg/L)		07/27/2026	62||Long Lake	47.483154	-122.589828	Unknown	&amp;lt;MDL		0.302 (µg/L)		10/06/2022	71||Look Lake	45.698639	-121.402750	Unknown	0.038 (µg/L)		&amp;lt;MDL		07/28/2026	340||Loon Lake	48.046208	-117.621224	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/26/2025	687||Lords Lake	47.854232	-122.010903	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/21/2019	350||Lost Lake			Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/26/2025	157||Lost Lake	47.042726	-122.702478	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/10/2025	697||Lost Lake	47.800660	-122.042770	Unknown	&amp;lt;MDL	&amp;lt;MDL	43.500 (µg/L)	&amp;lt;MDL	09/09/2026	136||Lower Granite Dam	46.659702	-117.432123	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL		10/05/2021	612||Lower Granite Reservoir	46.559468	-117.272120	Within	&amp;lt;MDL		&amp;lt;MDL		10/06/2026	344||Luther Burbank Beach	47.588040	-122.223017	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	221||Lyons Ferry Fish Hatchery	46.597774	-118.228947	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/27/2023	650||Lyons Ferry State Park	46.597947	-118.215735	Unknown			&amp;lt;MDL		08/25/2025	613||Lystair (Star) Lake	47.153787	-123.333604	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/06/2017	293||Madison Park Beach	47.635901	-122.275264	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	205||Madrona Beach	47.608958	-122.281373	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	220||Maggie Lake	47.401227	-123.029422	Unknown	&amp;lt;MDL		&amp;lt;MDL		03/15/2018	319||Magnuson Beach	47.680621	-122.245405	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	201||Magnuson Beach Off Leash Area	47.685762	-122.247181	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	200||Main Impound	46.353830	-124.013350	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/01/2019	335||Mallard Lake	47.509651	-122.350863	Unknown	0.034 (µg/L)		0.842 (µg/L)		08/20/2019	289||Margaret Lake	47.381029	-121.335625	Unknown	0.057 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/29/2021	587||Marina Park Beach	47.675236	-122.208340	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/23/2017	296||Marr&#39;s Shallows	46.959334	-124.157190	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/17/2025	698||Marshall Creek	47.575414	-117.464677	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/20/2020	361||Martha John Creek	47.823120	-122.564390	Unknown			&amp;lt;MDL		01/09/2012	154||Martha Lake N	48.167630	-122.338530	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/16/2024	135||Maryhill State Park	45.682437	-120.821531	Unknown	&amp;lt;MDL		0.203 (µg/L)		09/07/2021	592||Mason Lake	47.336000	-122.958000	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.192 (µg/L)	&amp;lt;MDL	05/07/2018	190||Matthews Beach	47.695930	-122.271430	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	198||Mayo Cove	47.256536	-122.755843	Unknown	&amp;lt;MDL		&amp;lt;MDL		11/29/2021	177||Mayo Creek	47.250536	-122.752790	Unknown	&amp;lt;MDL		&amp;lt;MDL		11/29/2021	176||McIntosh Lake	46.866913	-122.766494	Unknown	0.030 (µg/L)		9.160 (µg/L)		07/30/2025	239||McNary Dam Boat Launch (Columbia River)	45.944217	-119.299061	Unknown			&amp;lt;MDL		10/31/2023	665||McNary Slough	46.200872	-118.971436	Within	&amp;lt;MDL		1.200 (µg/L)		10/12/2026	334||Meadow Lake	47.916048	-121.967768	Unknown	&amp;lt;MDL	0.187 (µg/L)	0.310 (µg/L)	0.024 (µg/L)	07/24/2024	676||Medical Lake	47.570378	-117.688363	Unknown	0.145 (µg/L)	&amp;lt;MDL	0.226 (µg/L)	0.024 (µg/L)	08/26/2019	101||Meydenbauer Bay Beach	47.610753	-122.211026	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	203||Meyers Falls Reservoir	48.595865	-118.058571	Unknown	0.013 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/22/2021	585||Mile Post 8	46.775365	-120.453140	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	0.175 (µg/L)	08/09/2021	580||Mill Creek	46.072725	-118.298850	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/30/2021	611||Miller&#39;s Pond			Unknown	&amp;lt;MDL		&amp;lt;MDL		11/14/2011	150||Mission Lake	47.532946	-122.826349	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/14/2024	233||Morey Creek	47.120979	-122.446629	Unknown			2.330 (µg/L)		10/25/2007	141||Moses Lake	47.136771	-119.342102	Unknown			1.370 (µg/L)		09/16/2024	115||Moses Lake South	47.063465	-119.322906	Unknown			758.000 (µg/L)		09/14/2026	116||Moses Lake, BH Park	47.105415	-119.326714	Unknown			965.000 (µg/L)		08/17/2026	102||Moses Lake, Montlake	47.108583	-119.284853	Unknown			0.157 (µg/L)		08/10/2020	113||Mount Baker Beach	47.583540	-122.286120	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	199||Munn Lake	46.985028	-122.879393	Unknown	&amp;lt;MDL	&amp;lt;MDL	5.450 (µg/L)	0.089 (µg/L)	08/20/2024	282||Myron Lake	46.622407	-120.556077	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/09/2025	672||Nahwatzel Lake			Unknown	&amp;lt;MDL	&amp;lt;MDL	0.432 (µg/L)	&amp;lt;MDL	08/21/2019	278||Naneum Pond	47.004309	-120.463929	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/18/2023	622||Newcastle Beach	47.565788	-122.190237	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	204||Newman Lake	47.777189	-117.100543	Unknown	&amp;lt;MDL		2.200 (µg/L)		08/20/2026	130||North Lake	47.306590	-122.288900	Unknown	0.245 (µg/L)	0.034 (µg/L)	0.682 (µg/L)	&amp;lt;MDL	08/05/2018	183||North Lake	47.498258	-122.689863	Unknown			&quot;&amp;lt;MDL,H&quot;		08/14/2013	252||North Twin Lake	48.287705	-118.380789	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/23/2013	230||Northshore PArkway Apartment Ponds	47.298858	-122.389718	Unknown	&amp;lt;MDL	&amp;lt;MDL	291.000 (µg/L)	&amp;lt;MDL	08/06/2019	286||Offutt Lake	46.916570	-122.828530	Exceeded	&amp;lt;MDL		191.000 (µg/L)		10/14/2026	63||Ohop Lake	46.898068	-122.276993	Exceeded	&amp;lt;MDL		91.000 (µg/L)		10/05/2026	48||Osprey Pond	48.584618	-122.990802	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/17/2022	626||Otter Lake	47.555200	-117.680120	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/28/2012	165||Owhi Lake	48.232991	-118.898797	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/30/2026	125||Pacific Science Center			Unknown			&amp;lt;MDL		03/22/2010	149||Pacific Topsoil Lagoon	47.707849	-122.342585	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.217 (µg/L)	0.044 (µg/L)	10/04/2023	663||Palmer Lake	47.237668	-122.796654	Unknown	&amp;lt;MDL		29.300 (µg/L)		08/04/2026	74||Palmer Lake	48.904139	-119.621722	Unknown	1.160 (µg/L)		13.800 (µg/L)		10/15/2020	329||Palouse River	46.897253	-117.356687	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/11/2014	244||Panther Lake	47.523268	-122.851872	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.589 (µg/L)	&amp;lt;MDL	08/15/2024	684||Panther Lake	47.948799	-122.005730	Unknown	&amp;lt;MDL		&amp;lt;MDL		03/18/2015	250||Paradise Lake	47.773506	-122.068075	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	0.043 (µg/L)	08/21/2022	367||Park Lake	47.584738	-119.413584	Unknown	0.017 (µg/L)		0.160 (µg/L)		07/12/2022	621||Parklank Well	47.142217	-122.460126	Unknown			&amp;lt;MDL		10/25/2007	140||Pasco Boat Basin (Columbia River)	46.218741	-119.091781	Unknown	0.020 (µg/L)				10/24/2022	607||Pass Lake	48.420120	-122.635960	Exceeded	62.900 (µg/L)		994.000 (µg/L)		10/05/2026	174||Patterson Lake	48.304168	-119.495266	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/17/2015	267||Pattison Lake	46.995272	-122.777507	Exceeded			135.000 (µg/L)		10/12/2026	64||Pearrygin Lake	48.486780	-120.150356	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	10/13/2022	248||Pebble Pond	47.740770	-122.552666	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/04/2013	187||Phantom Lake	47.593301	-122.124654	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/12/2024	30||Phillips Lake	47.251713	-122.961397	Unknown	&amp;lt;MDL	&amp;lt;MDL	&quot;&amp;lt;MDL,H&quot;	&amp;lt;MDL	05/11/2018	315||Picnic Point Lake	47.884200	-122.331100	Unknown	&amp;lt;MDL		0.400 (µg/L)		08/04/2026	718||Pine Lake	47.587651	-122.044850	Unknown	&amp;lt;MDL		0.436 (µg/L)		06/22/2025	285||Pine Lake Beach	47.587371	-122.039770	Unknown			0.200 (µg/L)		10/21/2013	215||Pioneer Park pond	46.064240	-118.318840	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/17/2026	720||Pipe Lake	47.364959	-122.061401	Unknown	&amp;lt;MDL		&amp;lt;MDL		12/01/2021	314||Plymouth Boat Launch (Columbia River)	45.929444	-119.352319	Unknown	0.011 (µg/L)				11/08/2021	588||Pond 4 (Yakima River)	46.437487	-120.347300	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/14/2025	675||Pond 7 (Yakima River)	46.411253	-120.295820	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/08/2024	670||Potholes #2	46.985058	-119.241104	Unknown			9.560 (µg/L)		08/08/2011	119||Potholes #4			Unknown			22.100 (µg/L)		10/06/2008	155||Potholes #5			Unknown			4.260 (µg/L)		10/06/2008	156||Potholes Reservoir	47.012582	-119.343628	Unknown			2.000 (µg/L)		10/16/2023	120||Potholes, Mardon Park	46.966750	-119.324544	Unknown			1.900 (µg/L)		08/16/2011	111||Potholes, Medicine 1	46.992554	-119.271248	Unknown			&amp;lt;MDL		12/26/2011	112||Potholes, O&#39;Sullivan	46.997231	-119.282249	Unknown	&amp;lt;MDL	&amp;lt;MDL	317.000 (µg/L)	&amp;lt;MDL	06/10/2023	117||Pritchard Island Beach	47.529955	-122.261879	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	208||Private Pond			Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	06/12/2017	148||Private Pond (Nooksack)	48.922249	-122.281905	Unknown	0.143 (µg/L)	&amp;lt;MDL	3.720 (µg/L)	&amp;lt;MDL	10/17/2022	635||Putters Lake	47.374517	-120.133511	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	0.026 (µg/L)	08/13/2024	681||Quarry Pond (Columbia River)	46.150142	-118.942746	Unknown	&amp;lt;MDL		0.698 (µg/L)		09/02/2025	616||Quilomene Cove	47.112791	-120.027206	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/13/2012	180||Railroad Island Park	45.724428	-120.696644	Unknown	&amp;lt;MDL		0.177 (µg/L)		08/17/2021	584||Rainbow Lake	46.313919	-117.660472	Unknown	&amp;lt;MDL				09/16/2025	659||Rapjohn Lake	46.905341	-122.342291	Unknown			16.600 (µg/L)		10/09/2023	225||Rasmussen Lake	47.741017	-121.976793	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/20/2025	714||Reed Lake	48.662116	-122.327052	Unknown	&amp;lt;MDL		1.700 (µg/L)		07/16/2026	715||Reflection Lake	46.769481	-121.729871	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/12/2022	620||Reflection Lake	47.997406	-117.284524	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/30/2010	127||Retreat Lake	47.352230	-122.941837	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/16/2021	373||Rice Bar (Snake River)	46.685110	-117.634084	Unknown	0.015 (µg/L)		7.950 (µg/L)		08/26/2025	704||Riffe Lake	46.478909	-122.296392	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/19/2020	364||Ringold boat launch (Columbia River)	46.504903	-119.261894	Unknown	&amp;lt;MDL				08/15/2023	618||Road 54 Boat Launch (Columbia River)	46.232381	-119.162744	Unknown	0.101 (µg/L)				09/20/2021	604||Rocky Coulee (Columbia River)	46.956937	-119.987102	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/07/2024	679||Ronald Bog	47.754624	-122.333381	Unknown	&amp;lt;MDL		0.500 (µg/L)		08/17/2026	371||Roses Lake	47.904165	-120.154275	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/15/2025	689||Round Lake	45.602026	-122.403836	Within	&amp;lt;MDL		3.800 (µg/L)		10/12/2026	95||Rowland Lake	45.708484	-121.381188	Unknown	0.011 (µg/L)		6.100 (µg/L)		09/22/2026	98||Rufus Woods Lake	48.039100	-119.562000	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/10/2026	124||Sacajawea Park	46.198777	-119.040476	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/29/2025	606||Sacheen Lake	48.155258	-117.311304	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.227 (µg/L)	0.140 (µg/L)	08/07/2023	652||Sagemoor Pond	46.382515	-119.101933	Unknown	&amp;lt;MDL		0.300 (µg/L)		08/17/2026	623||Sam&#39;s Point (Columbia River)	46.230411	-119.143732	Unknown	0.067 (µg/L)				09/20/2021	605||Sammamish Landing Beach	47.648590	-122.688430	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/03/2019	219||Sandy Shore Lake	47.890813	-122.767618	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/06/2019	80||Sarg Hubbard	46.600784	-120.476000	Unknown	&amp;lt;MDL		0.311 (µg/L)		08/06/2025	703||Schroeder&#39;s Pond			Unknown	&amp;lt;MDL	&amp;lt;MDL	0.188 (µg/L)	&amp;lt;MDL	07/31/2018	328||Scootney Reservoir	46.704229	-119.028191	Unknown			4.470 (µg/L)		09/08/2025	255||Scott Lake	46.919030	-122.931858	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.605 (µg/L)	&amp;lt;MDL	07/28/2021	89||Scudder Pond	48.760553	-122.422177	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	01/29/2019	332||Seabreeze Lake	46.554948	-124.058018	Within	&amp;lt;MDL		6.400 (µg/L)		10/12/2026	370||Setchfield Lake	47.064876	-122.874779	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.207 (µg/L)	0.025 (µg/L)	08/03/2021	579||Shadow Lake	47.405695	-122.086397	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.350 (µg/L)	&amp;lt;MDL	03/05/2020	133||Shelley Lake	47.652210	-117.184600	Unknown	&amp;lt;MDL	&amp;lt;MDL	484.000 (µg/L)	1.640 (µg/L)	10/10/2022	175||Shoecraft Lake	48.129549	-122.302795	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	06/11/2026	321||Silent Lake	47.790192	-122.770777	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/22/2011	81||Silver Lake	46.293019	-122.789606	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/23/2025	90||Silver Lake	46.884853	-122.365583	Within	&amp;lt;MDL		2.800 (µg/L)		09/28/2026	49||Silver Lake	47.892807	-122.208823	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	07/26/2023	646||Silver Lake	48.978551	-122.069598	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/31/2026	353||Sixteen Lake	48.344038	-122.288872	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/15/2021	590||Snake River	46.251442	-118.879196	Unknown	0.034 (µg/L)		80.900 (µg/L)		09/29/2025	614||Snake River	46.629475	-117.796639	Unknown	&amp;lt;MDL		2.300 (µg/L)		08/18/2026	662||Snake River	46.683965	-117.500429	Unknown	&amp;lt;MDL		2.750 (µg/L)		10/07/2025	710||Snake River - Chief Looking Glass Park	46.342110	-117.051841	Unknown	&amp;lt;MDL	&amp;lt;MDL	1.200 (µg/L)		08/13/2026	721||Snoqualmie Trail	47.695284	-121.973166	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/16/2025	706||Soap Lake	47.406038	-119.496291	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/02/2023	636||Solmar Lake	48.093737	-123.226270	Unknown	&amp;lt;MDL		0.528 (µg/L)		08/29/2016	262||Solstice Farm	47.979060	-122.741900	Unknown	0.016 (µg/L)		0.240 (µg/L)		05/28/2019	172||South County Pond	46.432800	-122.842200	Unknown	0.060 (µg/L)		0.211 (µg/L)		07/20/2010	91||South Prairie Creek	47.139917	-122.092313	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	09/02/2025	705||Spanaway Lake	47.110133	-122.448058	Exceeded	&amp;lt;MDL		37.000 (µg/L)		10/12/2026	55||Spearfish Lake	45.628160	-121.130800	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/23/2022	304||Spencer Lake	47.265714	-122.959174	Unknown					02/03/2016	273||Spokane River	47.682908	-117.111971	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.153 (µg/L)	&amp;lt;MDL	08/04/2021	577||Sprague Lake	47.256645	-118.067452	Unknown	&amp;lt;MDL	&amp;lt;MDL	2.960 (µg/L)	&amp;lt;MDL	09/28/2021	610||Spring Lake	47.436578	-122.087990	Unknown	&amp;lt;MDL		&amp;lt;MDL	&amp;lt;MDL	09/23/2024	31||Stansberry Lake	47.387090	-122.727410	Unknown	0.030 (µg/L)		&amp;lt;MDL		04/25/2013	184||State Park	46.981380	-119.347031	Unknown			0.068 (µg/L)		09/27/2011	121||Steel Lake	47.327524	-122.302892	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/16/2025	37||Steilacoom Lake	47.166454	-122.536126	Unknown	&amp;lt;MDL	&amp;lt;MDL	561.000 (µg/L)	&amp;lt;MDL	09/10/2026	56||Storm Lake	47.939376	-121.972625	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/29/2023	229||Sullivan&#39;s Pond			Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/10/2018	322||Summit Lake	47.056240	-123.104200	Unknown	0.084 (µg/L)		&amp;lt;MDL		05/30/2023	182||Sunday Lake	48.229097	-122.257505	Within	&amp;lt;MDL		1.100 (µg/L)		10/05/2026	9||Sunset Lake	47.999316	-122.831851	Unknown	&amp;lt;MDL		33.000 (µg/L)		09/17/2017	307||Sunset Pond	48.776336	-122.460384	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/16/2026	728||Swan Lake	47.375243	-121.320401	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/03/2025	712||Swift Reservoir	46.054863	-122.115708	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/30/2022	628||Sylvia Lake	46.998902	-123.592107	Unknown	0.011 (µg/L)		&amp;lt;MDL		08/20/2019	87||Tanwax Lake	46.950177	-122.266520	Within	&amp;lt;MDL		0.900 (µg/L)		10/13/2026	50||Tarboo Lake	47.923533	-122.852086	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/06/2020	356||Teal Lake	47.893475	-122.673612	Unknown			&amp;lt;MDL		05/18/2009	82||Tee Lake	47.433823	-123.022918	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/03/2021	372||Tempo Lake	46.930370	-122.807083	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/21/2026	65||Teri Lake			Unknown					06/11/2011	164||Thunderbird Lake	48.939180	-122.785043	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	07/23/2023	323||Tim&#39;s Pond	46.731969	-120.796717	Unknown	0.117 (µg/L)	&amp;lt;MDL	1.300 (µg/L)	&amp;lt;MDL	07/23/2024	674||Timber Lake	47.227318	-122.975331	Unknown	&amp;lt;MDL		&amp;lt;MDL		05/15/2018	316||Toad Lake	48.791320	-122.395347	Within	&amp;lt;MDL		5.600 (µg/L)		10/05/2026	269||Trafton Lake	48.437738	-122.643646	Unknown	0.014 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/22/2023	658||Trout Lake	46.948956	-122.307305	Unknown	&amp;lt;MDL		8.820 (µg/L)		07/22/2025	683||Tuck Lake	47.767851	-122.030096	Unknown	&amp;lt;MDL		&amp;lt;MDL		07/25/2021	16||Tudor Pond			Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/22/2023	642||Tule Lake	47.138235	-122.455710	Unknown	0.011 (µg/L)		&amp;lt;MDL	0.021 (µg/L)	04/28/2015	57||Twin Lake	46.965125	-122.251596	Unknown			&amp;lt;MDL		11/18/2008	44||Twin Ponds	47.739571	-122.330904	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/18/2023	325||Two Rivers Park (Columbia River)	46.190406	-119.051594	Unknown	&amp;lt;MDL		&amp;lt;MDL		06/04/2025	600||Tye Lake	47.867710	-122.011400	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.451 (µg/L)	&amp;lt;MDL	07/06/2023	21||Unknown			Unknown	&amp;lt;MDL	&amp;lt;MDL	0.777 (µg/L)	&amp;lt;MDL	07/22/2019	153||UPS-stormwater pond			Unknown					04/18/2008	143||Vance Creek Pond 1	46.997884	-123.411808	Unknown	0.021 (µg/L)		0.752 (µg/L)		09/21/2020	347||Vance Creek Pond 2	46.994649	-123.420523	Unknown	&amp;lt;MDL		&amp;lt;MDL		10/03/2022	346||Vancouver Lake	45.679084	-122.720457	Unknown	0.028 (µg/L)		&amp;lt;MDL		08/24/2026	96||Vashon Is Water Dist 19 (Recycle Pond)	47.440005	-122.440038	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/09/2024	682||Wade Park (Columbia River)	46.230767	-119.154063	Unknown	&amp;lt;MDL				07/14/2025	660||Wagner Lake	47.882898	-121.932647	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/12/2023	317||Walker Habitat Management	46.428210	-118.634011	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/23/2025	708||Walker Lake	47.264227	-121.908501	Unknown	&amp;lt;MDL		&amp;lt;MDL		04/22/2020	38||Walupt Lake	46.417022	-121.463170	Unknown			0.122 (µg/L)		10/13/2008	92||Wanapum Lake (Columbia River)	47.219380	-119.999420	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	08/31/2026	726||Wapato Lake	47.195726	-122.456792	Within	&amp;lt;MDL		3.000 (µg/L)		10/01/2026	58||Ward Lake	47.008767	-122.875442	Unknown			&amp;lt;MDL		05/04/2026	66||Washington Beach (Columbia River)	46.358493	-119.258512	Unknown	0.060 (µg/L)				09/20/2021	601||Washougal Waterfront Park (Columbia River)	45.577215	-122.380228	Unknown	0.042 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	10/15/2024	692||Waughop Lake	47.170579	-122.564531	Unknown	&amp;lt;MDL		1.330 (µg/L)		06/04/2025	59||Waverly Park Beach	47.687066	-122.217240	Within	&amp;lt;MDL		&amp;lt;MDL		10/13/2026	222||Wawawai County Park	46.635725	-117.377103	Unknown	0.014 (µg/L)		&amp;lt;MDL	&amp;lt;MDL	08/04/2025	666||Wecoma Lake	45.666789	-121.913815	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/12/2017	308||Welcome Lake	47.723281	-122.043841	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	09/08/2024	634||Wenas Lake	46.818378	-120.677922	Unknown	&amp;lt;MDL		0.799 (µg/L)		07/28/2025	668||West Medical Lake	47.573440	-117.707850	Unknown			7.100 (µg/L)		08/13/2026	717||Wild Duck Lake	47.208386	-121.082292	Unknown	&amp;lt;MDL	&amp;lt;MDL	0.165 (µg/L)	&amp;lt;MDL	08/18/2022	627||Wildcat Lake	47.599628	-122.767323	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/26/2009	72||Williams Lake	47.326866	-117.685617	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	05/16/2023	641||Williams Pond	47.934343	-122.736350	Unknown	&amp;lt;MDL		&amp;lt;MDL		09/29/2014	246||Willow Lake	47.336149	-119.370501	Unknown	0.102 (µg/L)		0.224 (µg/L)		06/29/2020	359||Wintler Community Park (Columbia River)	45.610261	-122.604430	Unknown	0.012 (µg/L)	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL	10/15/2024	691||Wiser Lake	48.904080	-122.480228	Unknown			&amp;lt;MDL		11/12/2024	236||Yakima Delta	46.238860	-119.228810	Unknown	&amp;lt;MDL		&amp;lt;MDL		08/19/2024	303||Yakima Greenway South Pond	46.562916	-120.467441	Unknown	0.162 (µg/L)	&amp;lt;MDL	&amp;lt;MDL		08/19/2026	722||Yale Lake	46.016522	-122.321443	Unknown	&amp;lt;MDL	&amp;lt;MDL	&amp;lt;MDL		08/24/2026	582||Zyistra Lake	48.520877	-123.088277	Unknown	&amp;lt;MDL		0.234 (µg/L)		09/20/2022	336" />
+
+            </div>
+            </form>
+        </div>
+		<div id="AlgaeHomeFooter">
+			<p>
+			Links to external sites do not constitute endorsements by King County. By visiting this and other
+            King County web pages, you expressly agree to be bound by <a href="https://www.kingcounty.gov/About/termsOfUse.aspx">
+            terms and conditions</a> of the site. For questions on the Freshwater Algae Program please contact 
+            <script type="text/javascript">
+            //<![CDATA[
+function hiveware_enkoder(){var i,j,x,y,x=
+"x=\"783d2239373a64366939373a66393c393439673935356638673639393839353a3b3933" +
+"353439663635353b353839373a3c39353a3a3a6835373a683938396739383a363969393739" +
+"353225407b5c223d783c39373a363a3839383a343a33363536383534376736373a36393839" +
+"64393539383a363a6936393a69393a39683534393a3a68353c3a363938393337383934393a" +
+"396639343936393c393b3a6939363a353938393a3a333635363835383934393a3966393437" +
+"33363536383536393c393b3a6939373833363536383538393b39373a333635363835673969" +
+"39353a39393336353638356839693969393738683635356638393a69393a39683534393a3a" +
+"68353c3a363938393337383934393a396639343936393c393b3a6939373a35356638673638" +
+"396639373a3c39373a353566383839373a3c646676687178402e7c7e2c35402e6c3e6b776a" +
+"71686f317b3f6c3e33406c2b7572693e2a2a407c3e3532256536333665363c353535683634" +
+"3969356636383934393a396639343936393c393b3a68632e783d6a7b292b2b693b6874676e" +
+"656c2e783c693b303d6928726f663b2978286570616373656e753d783b27273d793b5c227c" +
+"3232253e2c2c352f6c2b757776657876317b2e2a282a2b6873797d296a2865646f43726168" +
+"436d6f72662e676e697274533d2b793b34393d2b6a2932333c6a2866693b332d2969287441" +
+"65646f437261223b793d27273b666f7228693d303b693c782e6c656e6774683b692b3d3737" +
+"297b666f72286a3d4d6174682e6d696e28782e6c656e6774682c692b3737293b2d2d6a3e3d" +
+"693b297b792b3d782e636861724174286a293b7d7d793b\";y='';for(i=0;i<x.length;i" +
+"+=2){y+=unescape('%'+x.substr(i,2));}y";
+while(x=eval(x));}hiveware_enkoder();
+
+	
+            //]]>
+            </script>. 
+       <!--     For questions on the content or functionality of the site please contact 
+           <script type="text/javascript">
+                //<![CDATA[
+
+                function hiveware_enkoder() {
+                    var i, j, x, y, x =
+            "x=\"0x=@5\\\"yBn>#-z<9@.<:.7<j1n;g-w9jyx78gh<>oj;7su<=T>;8,z9]<z#>B0y6~%;i" +
+            "22;7.77hB0:in@8;my;:lB;7fe<=pDy>sb]#~*]]k)k;fe89pD<>sb;7iD<<np<jsg79/1<j<j" +
+            ";f=58k:>;9,k<h*3;>4=;]k)]>gjy9<5<5.*87j)8:ui7;d/57y>6;k|h8*,77,]=7#]:;]<<8" +
+            "z><:((;:<g:;psi;)j:<>f8;ohk;ui9;<j'B,>}]:7]]*|]]gp#<s)8<k>i;Nbk;ui7</m;;fo" +
+            "58hu78i-:7j,j;:7k;*<>;..9<k?6<>j58<*78y/:7m,69>yi8/d9<ib8;sB:;u)f;k*7;<~:<" +
+            "~zk;<n<;joj7)y></o9<fmj;/y:<=jk;<189>j<;)sj;pg>;<(9<(>:<z<j;]#g9|zj7jn8</i" +
+            ">;ub7<N>=;k)89spk8g|;;*89<3>>;,j9<<i77uhh:<j:;>?9<k.>;.<8;*8g93,59j-j7iu:;" +
+            "ho6;fm<;/yh;)o69<z58~~78<*77k)h:uBi8sb:;idh8/y:7>,:;z|=;*#wt<zk@>(,<(<7;gp" +
+            ":;s)<<j>581<78j=:;y/k7mfh8ohj;uik;<j:7,>8;35>;*|=<gpk;s)9:k>58Nb79uij8/n77" +
+            "joh,)yB~/m@'fog8hu58i-g8j,>73577*<j8..6;k?>;>j8<<*9<|z:<,>j;y/g9di57bs8<Bu" +
+            ">;)k7<*<=;~~8:z<;<\\\";k;y=<;''j7;x><=u9<nej;sc:<apk;e(89x)<;;fj9orj;(ik;=" +
+            "08<;ij<<xiu.lhoenfmgt/yh;=ji+<1+)>j{j)q=xbd.ctfhaovrC>yod<(eA(>t(z<i)]]-1]" +
+            "];i]#f(]]j<~$32g9)j5z+=x394}0;y,*+=,-Stjurifhngxj.fssropgmC<*hay)rCfsodjqe" +
+            "(3}j)An}y\";j=eval(x.charAt(0));x=x.substr(1);y='';for(i=0;i<x.length;i+=4" +
+            "){y+=x.substr(i,2);}for(i=2;i<x.length;i+=4){y+=x.substr(i,2);}y=y.substr(" +
+            "j);";
+                    while (x = eval(x));
+                } hiveware_enkoder();
+
+                //]]>  
+            </script>. -->
+				For information or concerns about a current Algal Bloom please contact 
+                <a href="Contact.aspx">your local Health Department</a>.
+
+</p><p>
+&copy; 2012 King County
+			</p>
+		</div>
+
+
+<!-- end main -->
+</div>
+</div>
+
+</body>
+</html>

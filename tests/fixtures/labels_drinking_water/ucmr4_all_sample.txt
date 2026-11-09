@@ -1,0 +1,49 @@
+PWSID	PWSName	Size	FacilityID	FacilityName	FacilityWaterType	SamplePointID	SamplePointName	SamplePointType	AssociatedFacilityID	AssociatedSamplePointID	CollectionDate	SampleID	Contaminant	MRL	Units	MethodID	AnalyticalResultsSign	AnalyticalResultValue	SampleEventCode	MonitoringRequirement	Region	State	UCMR1SampleType
+OH0100012	Adams County Regional Water District	L	52614	Adams County Water Co., Inc.	GW	EP001	Entry Point to Dist. System	EP			2/19/2020	35532005001SEA1	manganese	0.4	µg/L	EPA 200.8	=	1.7	SE1	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52614	Adams County Water Co., Inc.	GW	EP001	Entry Point to Dist. System	EP			9/2/2020	35575246001SEA2	manganese	0.4	µg/L	EPA 200.8	=	.83	SE2	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS201	806 Blue Creek Rd	DS			2/19/2020	35532005003SEH1	HAA9		µg/L	EPA 552.3	=	12.8	SE1	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS201	806 Blue Creek Rd	DS			2/19/2020	35532005003SEH1	HAA5		µg/L	EPA 552.3	=	5.6	SE1	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS201	806 Blue Creek Rd	DS			2/19/2020	35532005003SEH1	HAA6Br		µg/L	EPA 552.3	=	9.2	SE1	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS201	806 Blue Creek Rd	DS			9/2/2020	35575246003SEH2	HAA9		µg/L	EPA 552.3	=	17.75	SE2	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS201	806 Blue Creek Rd	DS			9/2/2020	35575246003SEH2	HAA5		µg/L	EPA 552.3	=	9.75	SE2	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS201	806 Blue Creek Rd	DS			9/2/2020	35575246003SEH2	HAA6Br		µg/L	EPA 552.3	=	10.25	SE2	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS202	3095 Ginger Ridge Rd	DS			2/19/2020	35532005004SEH1	HAA9		µg/L	EPA 552.3	=	11.2	SE1	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS202	3095 Ginger Ridge Rd	DS			2/19/2020	35532005004SEH1	HAA5		µg/L	EPA 552.3	=	4.4	SE1	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS202	3095 Ginger Ridge Rd	DS			2/19/2020	35532005004SEH1	HAA6Br		µg/L	EPA 552.3	=	8.5	SE1	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS202	3095 Ginger Ridge Rd	DS			9/1/2020	35575246004SEH2	HAA9		µg/L	EPA 552.3	=	12.1	SE2	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS202	3095 Ginger Ridge Rd	DS			9/1/2020	35575246004SEH2	HAA5		µg/L	EPA 552.3	=	6	SE2	AM	5	OH	
+OH0100012	Adams County Regional Water District	L	52615	Distribution System	GW	DS202	3095 Ginger Ridge Rd	DS			9/1/2020	35575246004SEH2	HAA6Br		µg/L	EPA 552.3	=	9.2	SE2	AM	5	OH	
+OH0200112	Bluffton Village	S	20001	Connection	SW	EP1	POE for purchase connection to Ottawa	EP			3/11/2019	110823Q	manganese	0.4	µg/L	EPA 200.8	<		SE1	AM	5	OH	
+OH0200112	Bluffton Village	S	20001	Connection	SW	EP1	POE for purchase connection to Ottawa	EP			6/12/2019	112692Q	manganese	0.4	µg/L	EPA 200.8	<		SE2	AM	5	OH	
+OH0200112	Bluffton Village	S	20001	Connection	SW	EP1	POE for purchase connection to Ottawa	EP			9/9/2019	114821Q	manganese	0.4	µg/L	EPA 200.8	<		SE3	AM	5	OH	
+OH0200112	Bluffton Village	S	20001	Connection	SW	EP1	POE for purchase connection to Ottawa	EP			12/9/2019	116261Q	manganese	0.4	µg/L	EPA 200.8	=	1.558	SE4	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			3/11/2019	510825P	HAA9		µg/L	EPA 552.3	=	31.856	SE1	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			3/11/2019	510825P	HAA5		µg/L	EPA 552.3	=	19.849	SE1	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			3/11/2019	510825P	HAA6Br		µg/L	EPA 552.3	=	14.037	SE1	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			6/12/2019	512694P	HAA9		µg/L	EPA 552.3	=	41.765	SE2	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			6/12/2019	512694P	HAA5		µg/L	EPA 552.3	=	30.849	SE2	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			6/12/2019	512694P	HAA6Br		µg/L	EPA 552.3	=	13.344	SE2	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			9/9/2019	514823P	HAA9		µg/L	EPA 552.3	=	56.15	SE3	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			9/9/2019	514823P	HAA5		µg/L	EPA 552.3	=	38.05	SE3	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			9/9/2019	514823P	HAA6Br		µg/L	EPA 552.3	=	21.15	SE3	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			12/9/2019	516263P	HAA9		µg/L	EPA 552.3	=	55.541	SE4	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			12/9/2019	516263P	HAA5		µg/L	EPA 552.3	=	38.106	SE4	AM	5	OH	
+OH0200112	Bluffton Village	S	30001	Distribution System	SW	DS1	Stage 2 DBPR sample site	DS			12/9/2019	516263P	HAA6Br		µg/L	EPA 552.3	=	21.372	SE4	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			2/11/2020	1173328	HAA9		µg/L	EPA 552.3	=	27.887	SE1	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			2/11/2020	1173328	HAA5		µg/L	EPA 552.3	=	20.519	SE1	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			2/11/2020	1173328	HAA6Br		µg/L	EPA 552.3	=	9.162	SE1	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			5/12/2020	1187924	HAA9		µg/L	EPA 552.3	=	28.73	SE2	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			5/12/2020	1187924	HAA5		µg/L	EPA 552.3	=	22.363	SE2	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			5/12/2020	1187924	HAA6Br		µg/L	EPA 552.3	=	8.441	SE2	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			8/11/2020	1206455	HAA9		µg/L	EPA 552.3	=	26.321	SE3	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			8/11/2020	1206455	HAA5		µg/L	EPA 552.3	=	18.516	SE3	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			8/11/2020	1206455	HAA6Br		µg/L	EPA 552.3	=	11.337	SE3	AM	5	OH	
+OH0200811	City of Lima	L	11111	LIMA CITY DISTRIBUTION SYSTEM	SW	DS201	4675 ALLENTOWN ROAD	DS			11/4/2020	1226897	HAA9		µg/L	EPA 552.3	=	22.463	SE4	AM	5	OH	
+AL0000804	Auburn Waterworks	L	00804	James E. Estes Water Treatment Plant	SW	LAB	Lab Sink	EP			7/6/2020	35561662001SEC3	anatoxin-a	0.03	µg/L	EPA 545	=	.077	SE3	AM	4	AL	
+AR0000119	Conway Co. Regional Water District	L	00001	WTP	SW	0119001	Tap @ WTP	EP			7/17/2018	40289601	anatoxin-a	0.03	µg/L	EPA 545	=	.076	SE4	AM	6	AR	
+055294214	Northside	S	30001	Distribution System	GW	DS1	Tower Sample Tap	DS			9/5/2018	507766P	HAA5		µg/L	EPA 552.3	=	0	SE2	AM	5	05	
+010106001	Mashantucket Pequot Water	L	00006	MPTN WTP	GU	TP1	Entry point to Dist. System	EP			8/14/2019	4389078	total microcystins	0.3	µg/L	EPA 546	<		SE1	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00006	MPTN WTP	GU	TP1	Entry point to Dist. System	EP			8/14/2019	4389077	cylindrospermopsin	0.09	µg/L	EPA 545	<		SE1	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00006	MPTN WTP	GU	TP1	Entry point to Dist. System	EP			8/14/2019	4389077	anatoxin-a	0.03	µg/L	EPA 545	<		SE1	AM	1	01	
+010106001	Mashantucket Pequot Water	L	00006	MPTN WTP	GU	TP1	Entry point to Dist. System	EP			8/29/2019	4404474	total microcystins	0.3	µg/L	EPA 546	<		SE2	AM	1	01	
+CO0107473	City of Lafayette	L	00006	Baseline South WTP Clearwell	SW	006	Entry Point	EP			8/7/2018	4013973	total microcystins	0.3	µg/L	EPA 546	=	.363	SE7	AM	8	CO	

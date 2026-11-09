@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- trimmed from https://sentinel2l2a01.blob.core.windows.net/sentinel2-l2/19/T/CH/2022/07/23/S2A_MSIL2A_20220723T153611_N0400_R111_T19TCH_20220725T163150.SAFE/MTD_MSIL2A.xml -->
+<Level-2A_User_Product><General_Info>
+<PROCESSING_BASELINE>04.00</PROCESSING_BASELINE>
+<BOA_QUANTIFICATION_VALUE unit="none">10000</BOA_QUANTIFICATION_VALUE>
+<BOA_ADD_OFFSET_VALUES_LIST>
+        <BOA_ADD_OFFSET band_id="0">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="1">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="2">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="3">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="4">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="5">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="6">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="7">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="8">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="9">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="10">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="11">-1000</BOA_ADD_OFFSET>
+        <BOA_ADD_OFFSET band_id="12">-1000</BOA_ADD_OFFSET>
+      </BOA_ADD_OFFSET_VALUES_LIST>
+</General_Info></Level-2A_User_Product>

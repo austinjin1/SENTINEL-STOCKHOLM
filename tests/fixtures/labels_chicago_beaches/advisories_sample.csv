@@ -1,0 +1,6 @@
+beach_name,date,predicted_level,probability,swim_advisory,recordid
+Montrose,2016-06-10T00:00:00.000,423.7,0.661,Y,Montrose20160610
+Montrose,2016-06-15T00:00:00.000,254.7,0.523,Y,Montrose20160615
+63rdStreet,2016-06-04T00:00:00.000,33.6,0.106,N,63rdStreet20160604
+Calumet,2016-06-04T00:00:00.000,33.8,0.107,N,Calumet20160604
+63rdStreet,2016-06-18T00:00:00.000,-1000,-1,N,63rdStreet20160618

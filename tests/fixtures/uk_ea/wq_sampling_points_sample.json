@@ -1,0 +1,134 @@
+{
+ "@context": "https://environment.data.gov.uk/water-quality/context/wqa_samplingpoint_context.json-ld",
+ "@type": "hydra:Collection",
+ "totalItems": 18449,
+ "view": {
+  "first": "http://environment.data.gov.uk/water-quality/sampling-point?limit=100&samplingPointType=F6&skip=0",
+  "last": "http://environment.data.gov.uk/water-quality/sampling-point?limit=100&samplingPointType=F6&skip=18400",
+  "next": "http://environment.data.gov.uk/water-quality/sampling-point?limit=100&samplingPointType=F6&skip=100"
+ },
+ "member": [
+  {
+   "id": "https://environment.data.gov.uk/water-quality/sampling-point/AN-01M02",
+   "@type": [
+    "sosa:FeatureOfInterest",
+    "geo:Feature"
+   ],
+   "altLabel": "SYRESHAM STR.TRIB.OUSE.A43 RD.BR.KINDSHL",
+   "prefLabel": "SYRESHAM STR.TRIB.OUSE.A43 RD.BR.KINDSHL",
+   "notation": "AN-01M02",
+   "hasObservations": "https://environment.data.gov.uk/water-quality/sampling-point/AN-01M02/observation",
+   "geometry": {
+    "id": "https://environment.data.gov.uk/water-quality/sampling-point/AN-01M02#Geometry",
+    "@type": "geo:Geometry",
+    "asWKT": "POINT(463800 241400) <http://www.opengis.net/def/crs/EPSG/0/27700>"
+   },
+   "samplingPointStatus": {
+    "@id": "_:status#O",
+    "@type": [
+     "skos:Concept",
+     "sosa:Property"
+    ],
+    "prefLabel": "OPEN",
+    "notation": "O"
+   },
+   "samplingPointType": {
+    "@id": "_:samplingPointType#F6",
+    "@type": [
+     "skos:Concept",
+     "sosa:Property"
+    ],
+    "prefLabel": "FRESHWATER - RIVERS",
+    "notation": "F6"
+   },
+   "region": {
+    "@id": "_:samplingPointRegion#AN",
+    "@type": [
+     "skos:Concept",
+     "geo:Feature"
+    ],
+    "prefLabel": "Anglian",
+    "notation": "AN"
+   },
+   "area": {
+    "@id": "_:samplingPointArea#L",
+    "@type": [
+     "skos:Concept",
+     "geo:Feature"
+    ],
+    "prefLabel": "ANGLIAN - CAMBS AND BEDFORDSHIRE",
+    "notation": "L"
+   },
+   "subArea": {
+    "@id": "_:samplingPointSubArea#L-S",
+    "@type": [
+     "skos:Concept",
+     "geo:Feature"
+    ],
+    "prefLabel": "BRAMPTON TEAM SUB AREA",
+    "notation": "L-S"
+   }
+  },
+  {
+   "id": "https://environment.data.gov.uk/water-quality/sampling-point/AN-01M04",
+   "@type": [
+    "sosa:FeatureOfInterest",
+    "geo:Feature"
+   ],
+   "altLabel": "R.OUSE A422 RD.BR.BRACKLEY",
+   "prefLabel": "R.OUSE A422 RD.BR.BRACKLEY",
+   "notation": "AN-01M04",
+   "hasObservations": "https://environment.data.gov.uk/water-quality/sampling-point/AN-01M04/observation",
+   "geometry": {
+    "id": "https://environment.data.gov.uk/water-quality/sampling-point/AN-01M04#Geometry",
+    "@type": "geo:Geometry",
+    "asWKT": "POINT(459427 236819) <http://www.opengis.net/def/crs/EPSG/0/27700>"
+   },
+   "samplingPointStatus": {
+    "@id": "_:status#O",
+    "@type": [
+     "skos:Concept",
+     "sosa:Property"
+    ],
+    "prefLabel": "OPEN",
+    "notation": "O"
+   },
+   "samplingPointType": {
+    "@id": "_:samplingPointType#F6",
+    "@type": [
+     "skos:Concept",
+     "sosa:Property"
+    ],
+    "prefLabel": "FRESHWATER - RIVERS",
+    "notation": "F6"
+   },
+   "region": {
+    "@id": "_:samplingPointRegion#AN",
+    "@type": [
+     "skos:Concept",
+     "geo:Feature"
+    ],
+    "prefLabel": "Anglian",
+    "notation": "AN"
+   },
+   "area": {
+    "@id": "_:samplingPointArea#L",
+    "@type": [
+     "skos:Concept",
+     "geo:Feature"
+    ],
+    "prefLabel": "ANGLIAN - CAMBS AND BEDFORDSHIRE",
+    "notation": "L"
+   },
+   "subArea": {
+    "@id": "_:samplingPointSubArea#L-S",
+    "@type": [
+     "skos:Concept",
+     "geo:Feature"
+    ],
+    "prefLabel": "BRAMPTON TEAM SUB AREA",
+    "notation": "L-S"
+   }
+  }
+ ]
+}

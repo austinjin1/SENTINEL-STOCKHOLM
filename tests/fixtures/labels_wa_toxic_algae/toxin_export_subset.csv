@@ -1,0 +1,322 @@
+County,Site,LabSampleNum,WRIANumber,CollectDate,Parameter,Toxin Concentration (µg/L),MDL (µg/L),ExceedInd,ScumInd,Location,ClientLocator,SiteID
+,Lanhams Pond,L49503-1,,10/26/2009,Microcystin,<MDL,,No,No,,,1
+Benton,Duportail Bridge (Yakima River),L77986-1,37,10/19/2021,Anatoxin-a,<MDL,0.010,No,No,Richland, WA,DUPOBENT615_21_522,615
+Benton,Columbia Park (Columbia River),L77986-5,31,10/19/2021,Anatoxin-a,0.058,0.010,No,No,Kennewick, WA,PARKBENT608_21_526,608
+Benton,Columbia Park (Columbia River),L77960-13,31,10/12/2021,Anatoxin-a,0.045,0.010,No,Yes,Richland, WA,PARKBENT608_21_507,608
+Benton,Two Rivers Park (Columbia River),L86264-2,31,06/04/2025,Anatoxin-a,<MDL,0.010,No,No,south shore, small slough,TWORBENT600_25_036,600
+Benton,Two Rivers Park (Columbia River),L86264-2,31,06/04/2025,Microcystin,<MDL,0.300,No,No,south shore, small slough,TWORBENT600_25_036,600
+Chelan,Fish Lake,L88877-1,45,07/21/2026,Anatoxin-a,<MDL,0.010,No,No,22612 ALPINE DR, Lake Wenatchee, WA 98826,FISHCHEL240_26_095,240
+Clark,Lacamas Lake,L85018-3,28,10/28/2024,Microcystin,8.000,0.150,Yes,Yes,Heritage boat ramp ,LACACLAR094_24_438,94
+Clark,Lacamas Lake,L81984-4,28,07/05/2023,Microcystin,8.000,0.150,Yes,Yes,Cove,LACACLAR094_23_065,94
+Clark,Vancouver Lake,L75398-4,28,08/31/2020,Anatoxin-a,,0.010,No,Yes,Flushing channel,VANCCLAR096_20_328,96
+Clark,Vancouver Lake,L75398-5,28,08/31/2020,Anatoxin-a,,0.010,No,Yes,Swim beach ,VANCCLAR096_20_329,96
+Douglas,Rufus Woods Lake,,50,08/20/2024,Anatoxin-a,0.059,0.010,No,No,Upstream,RUFUDOUG124_24_202,124
+Douglas,Rufus Woods Lake,,50,08/20/2024,Microcystin,0.230,0.160,No,No,Upstream,RUFUDOUG124_24_202,124
+Douglas,Rufus Woods Lake,,50,08/20/2024,Saxitoxin,<RDL,0.020,No,No,Upstream,RUFUDOUG124_24_202,124
+Franklin,Sagemoor Pond,L82028-3,36,07/12/2023,Anatoxin-a,,0.010,No,Yes,West  Side,SAGEFRAN623_23_079,623
+Grant,Potholes Reservoir,L43761-1,41,08/29/2007,Microcystin,>100,0.050,No,No,,,120
+Jefferson,Anderson Lake,L69499-1,17,02/05/2018,Cylindrospermopsin,<MDL,,No,Yes,,ANDEJEFF075_18_000,75
+Jefferson,Anderson Lake,L61402-1,17,10/06/2014,anatoxin-a,32.500,0.010,Yes,Yes,,ANDEJEFF14_285,75
+Jefferson,Anderson Lake,L61402-1,17,10/06/2014,microcystin,13.700,0.160,Yes,Yes,,ANDEJEFF14_285,75
+Jefferson,Anderson Lake,L48932-1,17,08/24/2009,Anatoxin-a,1.000,0.038,Yes,No,,,75
+Jefferson,Gibbs Lake,L69499-3,17,02/05/2018,Cylindrospermopsin,<MDL,,No,No,,GIBBJEFF078_18_000,78
+Jefferson,Leland Lake,L69499-2,17,02/05/2018,Cylindrospermopsin,<MDL,,No,No,,LELAJEFF079_18_0000,79
+Jefferson,Miller's Pond,L54663-1       ,,11/14/2011,Anatoxin-a,<MDL,0.019,No,Yes,,,150
+Jefferson,Miller's Pond,L54663-1       ,,11/14/2011,Microcystin,<MDL,0.050,No,Yes,,,150
+King,Magnuson Beach Off Leash Area,L61997-1,8,01/20/2015,microcystin,0.298,0.160,No,No,,0826KING15_021,200
+King,Echo Lake Beach,L61075-1,8,09/02/2014,microcystin,1.960,0.160,No,Yes,,A764KING14_203,214
+King,Hicklin Lake,L65990-10,9,08/16/2016,Anatoxin-a,NA,0.010,No,No,,HICKKING035_16_160,35
+King,Lake Jeane,L65754-6,10,07/12/2016,Anatoxin-a,N/A,0.010,No,Yes,,JEANKING041_16_092,41
+King,Lake Jeane,L65596-1,10,06/12/2016,Anatoxin-a,NA,0.010,No,Yes,,JEANKING041_16_078,41
+King,Lake Marcel,L88893-2,7,07/26/2026,Anatoxin-a,<MDL,0.010,No,No,near boat rack, beach 1,MARCKING015_26_116,15
+King,Lake Marcel,L88893-2,7,07/26/2026,Microcystin,1.200,0.150,No,No,near boat rack, beach 1,MARCKING015_26_116,15
+King,Lake Marcel,L88861-1,7,07/19/2026,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_26_115,15
+King,Lake Marcel,L88861-1,7,07/19/2026,Microcystin,0.900,0.150,No,No,,MARCKING015_26_115,15
+King,Lake Marcel,L88789-1,7,07/12/2026,Anatoxin-a,<MDL,0.010,No,No,T Dock, Beach 1,MARCKING015_26_081,15
+King,Lake Marcel,L88789-1,7,07/12/2026,Microcystin,1.100,0.150,No,No,T Dock, Beach 1,MARCKING015_26_081,15
+King,Lake Marcel,L88722-6,7,06/29/2026,Anatoxin-a,<MDL,0.010,No,No,Beach 1 sim area,MARCKING015_26_065,15
+King,Lake Marcel,L88722-6,7,06/29/2026,Microcystin,60.800,,Yes,No,Beach 1 sim area,MARCKING015_26_065,15
+King,Lake Marcel,L88598-2,7,06/07/2026,Anatoxin-a,<MDL,0.010,No,No,T dock, beach 1,MARCKING015_26_037,15
+King,Lake Marcel,L88598-2,7,06/07/2026,Microcystin,<MDL,0.160,No,No,T dock, beach 1,MARCKING015_26_037,15
+King,Lake Marcel,L86722-9,7,08/11/2025,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_25_230,15
+King,Lake Marcel,L86722-9,7,08/11/2025,Microcystin,<MDL,0.300,No,No,,MARCKING015_25_230,15
+King,Lake Marcel,L86641-2,7,08/03/2025,Anatoxin-a,<MDL,0.010,No,No,NE Corner,MARCKING015_25_204,15
+King,Lake Marcel,L86641-2,7,08/03/2025,Microcystin,<MDL,0.300,No,No,NE Corner,MARCKING015_25_204,15
+King,Lake Marcel,L86568-1,7,07/20/2025,Anatoxin-a,0.046,0.010,No,No,Beach 1 swim area,MARCKING015_25_154,15
+King,Lake Marcel,L86568-1,7,07/20/2025,Microcystin,7.340,0.300,No,No,Beach 1 swim area,MARCKING015_25_154,15
+King,Lake Marcel,L86514-5,7,07/14/2025,Anatoxin-a,0.142,0.010,No,No,Beach 1 swim area,MARCKING015_25_125,15
+King,Lake Marcel,L86514-5,7,07/14/2025,Microcystin,2.140,0.300,No,No,Beach 1 swim area,MARCKING015_25_125,15
+King,Lake Marcel,L86450-1,7,07/06/2025,Anatoxin-a,0.016,0.010,No,No,Swim area, beach 1,MARCKING015_25_103,15
+King,Lake Marcel,L86450-1,7,07/06/2025,Microcystin,22.100,0.300,Yes,No,Swim area, beach 1,MARCKING015_25_103,15
+King,Lake Marcel,L86412-1,7,06/30/2025,Anatoxin-a,0.017,0.011,No,No,Swim area by the dock at beach1,MARCKING015_25_089,15
+King,Lake Marcel,L86412-1,7,06/30/2025,Microcystin,22.500,0.300,Yes,No,Swim area by the dock at beach1,MARCKING015_25_089,15
+King,Lake Marcel,L86365-3,7,06/23/2025,Anatoxin-a,<MDL,0.010,No,No,South Shore,MARCKING015_25_068,15
+King,Lake Marcel,L86365-3,7,06/23/2025,Microcystin,3.780,0.300,No,No,South Shore,MARCKING015_25_068,15
+King,Lake Marcel,L85259-2,7,12/10/2024,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015,15
+King,Lake Marcel,L85259-2,7,12/10/2024,Microcystin,<MDL,0.150,No,No,,MARCKING015,15
+King,Lake Marcel,L84938-6,7,10/14/2024,Microcystin,1.570,0.300,No,Yes,Dam Area,MARCKING015_24_396,15
+King,Lake Marcel,L84898-2,7,10/06/2024,Anatoxin-a,<MDL,0.010,No,Yes,Dam,MARCKING015_24_363,15
+King,Lake Marcel,L84898-2,7,10/06/2024,Microcystin,2.860,0.300,No,Yes,Dam,MARCKING015_24_363,15
+King,Lake Marcel,L84861-1,7,09/30/2024,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_24_351,15
+King,Lake Marcel,L84861-1,7,09/30/2024,Microcystin,7.680,0.300,No,Yes,,MARCKING015_24_351,15
+King,Lake Marcel,L84809-3,7,09/22/2024,Anatoxin-a,0.011,0.010,No,Yes,West shore,MARCKING015_24_321,15
+King,Lake Marcel,L84809-3,7,09/22/2024,Microcystin,6.390,0.300,No,Yes,West shore,MARCKING015_24_321,15
+King,Lake Marcel,L84786-11,7,09/16/2024,Anatoxin-a,<MDL,0.010,No,Yes,Beach 2,MARCKING015_24_308,15
+King,Lake Marcel,L84786-11,7,09/16/2024,Microcystin,3.590,0.300,No,Yes,Beach 2,MARCKING015_24_308,15
+King,Lake Marcel,L84734-3,7,09/08/2024,Anatoxin-a,0.015,0.010,No,Yes,SE shore,MARCKING015_24_278,15
+King,Lake Marcel,L84734-3,7,09/08/2024,Microcystin,4.150,0.300,No,Yes,SE shore,MARCKING015_24_278,15
+King,Lake Marcel,L84705-14,7,09/03/2024,Anatoxin-a,0.099,0.010,No,Yes,Inlet cove NW,MARCKING015_24_258,15
+King,Lake Marcel,L84705-14,7,09/03/2024,Microcystin,100.000,0.300,Yes,Yes,Inlet cove NW,MARCKING015_24_258,15
+King,Lake Marcel,L84564-2,7,08/18/2024,Anatoxin-a,<MDL,0.010,No,Yes,inlet LMD0,MARCKING015_24_180,15
+King,Lake Marcel,L84564-2,7,08/18/2024,Microcystin,1.150,0.300,No,Yes,inlet LMD0,MARCKING015_24_180,15
+King,Lake Marcel,L84118-1,7,06/16/2024,Anatoxin-a,0.046,0.010,No,Yes,Swim Area,MARCKING015_24_022,15
+King,Lake Marcel,L84118-1,7,06/16/2024,Microcystin,0.371,0.300,No,Yes,Swim Area,MARCKING015_24_022,15
+King,Lake Marcel,L82731-2,7,10/15/2023,Anatoxin-a,<MDL,0.010,No,Yes,Main Dock 47.69284, -121.91659,MARCKING015_23_368,15
+King,Lake Marcel,L82731-2,7,10/15/2023,Microcystin,4.910,0.150,No,Yes,Main Dock 47.69284, -121.91659,MARCKING015_23_368,15
+King,Lake Marcel,L82191-4,7,08/06/2023,Anatoxin-a,<MDL,0.010,No,Yes,Beach 1 swim area 47.69271, -121.91640,MARCKING015_23_147,15
+King,Lake Marcel,L82191-4,7,08/06/2023,Cylindrospermopsin,<MDL,0.025,No,Yes,Beach 1 swim area 47.69271, -121.91640,MARCKING015_23_147,15
+King,Lake Marcel,L82191-4,7,08/06/2023,Microcystin,0.793,0.150,No,Yes,Beach 1 swim area 47.69271, -121.91640,MARCKING015_23_147,15
+King,Lake Marcel,L82191-4,7,08/06/2023,Saxitoxin,0.040,0.020,No,Yes,Beach 1 swim area 47.69271, -121.91640,MARCKING015_23_147,15
+King,Lake Marcel,L80427-1,7,10/23/2022,Anatoxin-a,0.018,0.010,No,Yes,Main Dock,MARCKING015_22_423,15
+King,Lake Marcel,L80427-1,7,10/23/2022,Microcystin,0.154,0.150,No,Yes,Main Dock,MARCKING015_22_423,15
+King,Lake Marcel,L80351-13,7,10/12/2022,Anatoxin-a,0.212,0.010,No,Yes,Main Dock,MARCKING015_22_390,15
+King,Lake Marcel,L80351-13,7,10/12/2022,Microcystin,2.870,0.150,No,Yes,Main Dock,MARCKING015_22_390,15
+King,Lake Marcel,L80293-1,7,10/03/2022,Anatoxin-a,0.568,0.010,No,Yes,SE Channel,MARCKING015_22_356,15
+King,Lake Marcel,L80293-1,7,10/03/2022,Microcystin,4.210,0.150,No,Yes,SE Channel,MARCKING015_22_356,15
+King,Lake Marcel,L80259-6,7,09/28/2022,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_22_348A,15
+King,Lake Marcel,L80259-7,7,09/28/2022,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_22-348b,15
+King,Lake Marcel,L80259-7,7,09/28/2022,Microcystin,<MDL,0.150,No,No,,MARCKING015_22-348b,15
+King,Lake Marcel,L80259-6,7,09/28/2022,Microcystin,0.602,0.150,No,Yes,,MARCKING015_22_348A,15
+King,Lake Marcel,L80239-1,7,09/25/2022,Anatoxin-a,0.051,0.010,No,Yes,East shore,MARCKING015_22_333,15
+King,Lake Marcel,L80239-1,7,09/25/2022,Microcystin,3.100,0.150,No,Yes,East shore,MARCKING015_22_333,15
+King,Lake Marcel,L80198-8,7,09/20/2022,Anatoxin-a,4.310,0.010,Yes,Yes,NW Inlet cove,MARCKING015_22_326,15
+King,Lake Marcel,L80198-8,7,09/20/2022,Microcystin,4.890,0.150,No,Yes,NW Inlet cove,MARCKING015_22_326,15
+King,Lake Marcel,L80111-3,7,09/19/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L80111-3,7,09/19/2022,Microcystin,<MDL,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L80096-3,7,09/13/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L80096-3,7,09/13/2022,Microcystin,<MDL,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L80058-3,7,09/06/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L80058-3,7,09/06/2022,Microcystin,0.156,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79997-3,7,08/30/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79997-3,7,08/30/2022,Microcystin,0.175,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79993-3,7,08/23/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79993-3,7,08/23/2022,Microcystin,<MDL,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79838-3,7,08/16/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79838-3,7,08/16/2022,Microcystin,0.173,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79793-3,7,08/09/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79793-3,7,08/09/2022,Microcystin,<MDL,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79759-3,7,08/02/2022,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79759-3,7,08/02/2022,Microcystin,<MDL,0.150,No,No,,MARCKING015_DRONE,15
+King,Lake Marcel,L79534-3,7,06/27/2022,Anatoxin-a,<MDL,0.010,No,Yes,East shoreline ,MARCKING015_22_062,15
+King,Lake Marcel,L79534-3,7,06/27/2022,Cylindrospermopsin,<MDL,0.025,No,Yes,East shoreline ,MARCKING015_22_062,15
+King,Lake Marcel,L79534-3,7,06/27/2022,Microcystin,3.020,0.150,No,Yes,East shoreline ,MARCKING015_22_062,15
+King,Lake Marcel,L79534-3,7,06/27/2022,Saxitoxin,<MDL,0.020,No,Yes,East shoreline ,MARCKING015_22_062,15
+King,Lake Marcel,L77739-10,7,09/12/2021,Anatoxin-a,0.129,0.010,No,Yes,Swim area, beach 1,MARCKING015_21_358,15
+King,Lake Marcel,L77739-10,7,09/12/2021,Microcystin,3.350,0.150,No,Yes,Swim area, beach 1,MARCKING015_21_358,15
+King,Lake Marcel,L77596-1,7,08/22/2021,Anatoxin-a,<MDL,0.010,No,Yes,Beach 1,MARCKING015_21_274,15
+King,Lake Marcel,L77596-1,7,08/22/2021,Microcystin,0.335,0.150,No,Yes,Beach 1,MARCKING015_21_274,15
+King,Lake Marcel,L77519-2,7,08/08/2021,Anatoxin-a,<MDL,0.010,No,Yes,Swim beach #2,MARCKING015_21_206,15
+King,Lake Marcel,L77519-2,7,08/08/2021,Microcystin,2.120,0.150,No,Yes,Swim beach #2,MARCKING015_21_206,15
+King,Lake Marcel,L77483-1,7,08/01/2021,Anatoxin-a,0.039,0.010,No,Yes,NE corner, , 47.6975, -121.91666,MARCKING015_21_176,15
+King,Lake Marcel,L77483-1,7,08/01/2021,Microcystin,4.760,0.150,No,Yes,NE corner, , 47.6975, -121.91666,MARCKING015_21_176,15
+King,Lake Marcel,L77436-4,7,07/25/2021,Anatoxin-a,0.015,0.010,No,Yes, 47.698315°N, 121.919246°W,MARCKING015_21_155,15
+King,Lake Marcel,L77436-4,7,07/25/2021,Microcystin,1.160,0.150,No,Yes, 47.698315°N, 121.919246°W,MARCKING015_21_155,15
+King,Lake Marcel,L77381-1,7,07/18/2021,Anatoxin-a,0.017,0.010,No,Yes,Beach 1 Swim Area,MARCKING015_21_134,15
+King,Lake Marcel,L77381-1,7,07/18/2021,Cylindrospermopsin,<MDL,0.025,No,Yes,Beach 1 Swim Area,MARCKING015_21_134,15
+King,Lake Marcel,L77381-1,7,07/18/2021,Microcystin,9.830,0.150,Yes,Yes,Beach 1 Swim Area,MARCKING015_21_134,15
+King,Lake Marcel,L77381-1,7,07/18/2021,Saxitoxin,0.023,0.020,No,Yes,Beach 1 Swim Area,MARCKING015_21_134,15
+King,Lake Marcel,L75593-7,7,09/27/2020,Anatoxin-a,<MDL,0.010,No,Yes,Swim Beach 1,MARCKING015_20_412,15
+King,Lake Marcel,L75593-7,7,09/27/2020,Microcystin,0.277,0.150,No,Yes,Swim Beach 1,MARCKING015_20_412,15
+King,Lake Marcel,L75496-1,7,09/14/2020,Anatoxin-a,<MDL,0.010,No,Yes,lakewide,MARCKING015_20_364,15
+King,Lake Marcel,L75496-1,7,09/14/2020,Microcystin,3.600,0.150,No,Yes,lakewide,MARCKING015_20_364,15
+King,Lake Marcel,L75438-1,7,09/02/2020,Microcystin,4.000,0.150,No,Yes,West side channel,MARCKING015_20_342,15
+King,Lake Marcel,L75348-2,7,08/23/2020,Anatoxin-a,<MDL,0.010,No,Yes,Beach 1 Swim Area,MARCKING015_20_296,15
+King,Lake Marcel,L75348-2,7,08/23/2020,Microcystin,0.184,0.150,No,Yes,Beach 1 Swim Area,MARCKING015_20_296,15
+King,Lake Marcel,L75346-3,7,08/20/2020,Microcystin,3.080,0.150,No,Yes,Beach 1 swim area,MARCKING015_20_289,15
+King,Lake Marcel,L75262-2,7,08/12/2020,Anatoxin-a,<MDL,0.010,No,Yes, 47.6948, -121.9178 w side of channel,MARCKING015_20_247,15
+King,Lake Marcel,L75262-2,7,08/12/2020,Microcystin,1.430,0.150,No,Yes, 47.6948, -121.9178 w side of channel,MARCKING015_20_247,15
+King,Lake Marcel,L75206-4,7,08/03/2020,Anatoxin-a,0.026,0.010,No,Yes,NW Inlet ,MARCKING015_20_192,15
+King,Lake Marcel,L75206-4,7,08/03/2020,Microcystin,0.238,0.150,No,Yes,NW Inlet ,MARCKING015_20_192,15
+King,Lake Marcel,L75158-1,7,07/26/2020,Anatoxin-a,<MDL,0.010,No,Yes,,MarcKing015_20_183,15
+King,Lake Marcel,L75158-1,7,07/26/2020,Cylindrospermopsin,<MDL,0.025,No,Yes,,MarcKing015_20_183,15
+King,Lake Marcel,L75158-1,7,07/26/2020,Microcystin,3.110,0.150,No,Yes,,MarcKing015_20_183,15
+King,Lake Marcel,L75158-1,7,07/26/2020,Saxitoxin,<MDL,0.020,No,Yes,,MarcKing015_20_183,15
+King,Lake Marcel,L73655-2,7,11/04/2019,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_19_443,15
+King,Lake Marcel,L73655-2,7,11/04/2019,Microcystin,3.950,0.150,No,No,,MARCKING015_19_443,15
+King,Lake Marcel,L73540-1,7,10/21/2019,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_19_414,15
+King,Lake Marcel,L73540-1,7,10/21/2019,Microcystin,<MDL,0.150,No,No,,MARCKING015_19_414,15
+King,Lake Marcel,L73444-2,7,10/06/2019,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_19_365,15
+King,Lake Marcel,L73444-2,7,10/06/2019,Microcystin,3.330,0.150,No,No,,MARCKING015_19_365,15
+King,Lake Marcel,L73408-4,7,09/30/2019,Anatoxin-a,<MDL,0.010,No,No,,MARCKING01519342,15
+King,Lake Marcel,L73408-4,7,09/30/2019,Microcystin,1.520,0.150,No,No,,MARCKING01519342,15
+King,Lake Marcel,L73329-2,7,09/22/2019,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_19_313,15
+King,Lake Marcel,L73329-2,7,09/22/2019,Microcystin,3.980,0.150,No,No,,MARCKING015_19_313,15
+King,Lake Marcel,L73304-2,7,09/17/2019,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_19_305,15
+King,Lake Marcel,L73304-2,7,09/17/2019,Microcystin,<MDL,0.150,No,No,,MARCKING015_19_305,15
+King,Lake Marcel,L73267-3,7,09/10/2019,Anatoxin-a,0.022,0.010,No,No,,MARCKING015_19_279,15
+King,Lake Marcel,L73267-3,7,09/10/2019,Cylindrospermopsin,<MDL,0.025,No,No,,MARCKING015_19_279,15
+King,Lake Marcel,L73267-3,7,09/10/2019,Microcystin,37.600,0.150,Yes,No,,MARCKING015_19_279,15
+King,Lake Marcel,L73267-3,7,09/10/2019,Saxitoxin,<MDL,0.020,No,No,,MARCKING015_19_279,15
+King,Lake Marcel,L71196-3,7,10/21/2018,Anatoxin-a,<MDL,0.165,No,No,,MARCKING015_18_332,15
+King,Lake Marcel,L71196-3,7,10/21/2018,Microcystin,2.380,0.150,No,No,,MARCKING015_18_332,15
+King,Lake Marcel,L71117-3,7,10/07/2018,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_18_299,15
+King,Lake Marcel,L71117-3,7,10/07/2018,Microcystin,2.950,0.150,No,Yes,,MARCKING015_18_299,15
+King,Lake Marcel,L71087-1,7,10/01/2018,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_18_283,15
+King,Lake Marcel,L71087-1,7,10/01/2018,Microcystin,0.751,0.150,No,Yes,,MARCKING015_18_283,15
+King,Lake Marcel,L70995-4,7,09/24/2018,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_18_261,15
+King,Lake Marcel,L70995-4,7,09/24/2018,Microcystin,<MDL,0.150,No,Yes,,MARCKING015_18_261,15
+King,Lake Marcel,L70967-7,7,09/17/2018,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_18_240,15
+King,Lake Marcel,L70967-7,7,09/17/2018,Microcystin,53.600,0.150,Yes,Yes,,MARCKING015_18_240,15
+King,Lake Marcel,L70900-3,7,09/09/2018,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_18_334,15
+King,Lake Marcel,L70900-3,7,09/09/2018,Microcystin,7.850,0.150,No,No,,MARCKING015_18_334,15
+King,Lake Marcel,L70853-1,7,08/31/2018,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_18_203,15
+King,Lake Marcel,L70853-2,7,08/31/2018,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_18_204,15
+King,Lake Marcel,L70853-1,7,08/31/2018,Microcystin,0.720,0.150,No,Yes,,MARCKING015_18_203,15
+King,Lake Marcel,L70853-2,7,08/31/2018,Microcystin,2.190,0.150,No,Yes,,MARCKING015_18_204,15
+King,Lake Marcel,L70825-4,7,08/27/2018,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_18_193,15
+King,Lake Marcel,L70825-4,7,08/27/2018,Microcystin,124.000,0.150,Yes,Yes,,MARCKING015_18_193,15
+King,Lake Marcel,L70773-1,7,08/20/2018,Anatoxin-a,0.947,0.010,No,No,,MARCKING015-18_172,15
+King,Lake Marcel,L70773-1,7,08/20/2018,Microcystin,2.000,0.150,No,No,,MARCKING015-18_172,15
+King,Lake Marcel,L70743-6,7,08/15/2018,Anatoxin-a,0.014,0.010,No,Yes,,MARCKING015_18_164,15
+King,Lake Marcel,L70743-8,7,08/15/2018,Anatoxin-a,0.013,0.010,No,Yes,,MARCKING015_18_166,15
+King,Lake Marcel,L70743-7,7,08/15/2018,Anatoxin-a,2.900,0.010,Yes,Yes,,MARCKING015_18_165,15
+King,Lake Marcel,L70743-6,7,08/15/2018,Cylindrospermopsin,<MDL,0.025,No,Yes,,MARCKING015_18_164,15
+King,Lake Marcel,L70743-7,7,08/15/2018,Cylindrospermopsin,<MDL,0.025,No,Yes,,MARCKING015_18_165,15
+King,Lake Marcel,L70743-8,7,08/15/2018,Cylindrospermopsin,<MDL,0.025,No,Yes,,MARCKING015_18_166,15
+King,Lake Marcel,L70743-6,7,08/15/2018,Microcystin,19.400,0.150,Yes,Yes,,MARCKING015_18_164,15
+King,Lake Marcel,L70743-8,7,08/15/2018,Microcystin,27.200,0.150,Yes,Yes,,MARCKING015_18_166,15
+King,Lake Marcel,L70743-7,7,08/15/2018,Microcystin,4.570,0.150,No,Yes,,MARCKING015_18_165,15
+King,Lake Marcel,L70743-6,7,08/15/2018,Saxitoxin,<MDL,0.020,No,Yes,,MARCKING015_18_164,15
+King,Lake Marcel,L70743-7,7,08/15/2018,Saxitoxin,<MDL,0.020,No,Yes,,MARCKING015_18_165,15
+King,Lake Marcel,L70743-8,7,08/15/2018,Saxitoxin,<MDL,0.020,No,Yes,,MARCKING015_18_166,15
+King,Lake Marcel,L68781-1,7,10/08/2017,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_17_294,15
+King,Lake Marcel,L68781-1,7,10/08/2017,Microcystin,1.470,0.150,No,No,,MARCKING015_17_294,15
+King,Lake Marcel,L66358-5,7,10/09/2016,Microcystin,<MDL,0.200,No,No,,MARCKING015_16_286,15
+King,Lake Marcel,L66084-5,7,08/31/2016,Microcystin,0.493,0.200,No,No,,MARCKING015_16_189,15
+King,Lake Marcel,L66036-3,7,08/24/2016,Microcystin,1.720,0.200,No,No,,MARCKING015_16_174,15
+King,Lake Marcel,L65998-2,7,08/17/2016,Anatoxin-a,NA,0.010,No,No,,MARCKING015_16_164,15
+King,Lake Marcel,L65998-2,7,08/17/2016,Microcystin,10.800,0.200,Yes,No,,MARCKING015_16_164,15
+King,Lake Marcel,L65913-1,7,08/07/2016,Anatoxin-a,<MDL,0.010,No,No,,MARCKING015_16_136,15
+King,Lake Marcel,L65913-1,7,08/07/2016,Microcystin,6.490,0.200,No,No,,MARCKING015_16_136,15
+King,Lake Marcel,L65404-2,7,05/12/2016,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING015_16_055,15
+King,Lake Marcel,L65404-2,7,05/12/2016,Microcystin,<MDL,0.200,No,Yes,,MARCKING015_16_055,15
+King,Lake Marcel,L63104-2,7,06/25/2015,Anatoxin-a,0.023,0.010,No,No,,MARCKING15_15_161,15
+King,Lake Marcel,L63104-2,7,06/25/2015,Microcystin,0.164,0.160,No,No,,MARCKING15_15_161,15
+King,Lake Marcel,L61261-1,7,09/22/2014,Anatoxin-a,<MDL,0.010,No,No,,MARCKING14_262,15
+King,Lake Marcel,L61261-1,7,09/22/2014,Microcystin,<MDL,0.160,No,No,,MARCKING14_262,15
+King,Lake Marcel,L61126-2,7,09/07/2014,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING14_181,15
+King,Lake Marcel,L61126-2,7,09/07/2014,microcystin,22.100,0.160,Yes,Yes,,MARCKING14_181,15
+King,Lake Marcel,L60746-1,7,07/22/2014,Anatoxin-a,0.013,0.010,No,Yes,,MARCKING14_102,15
+King,Lake Marcel,L60746-1,7,07/22/2014,Microcystin,0.658,0.160,No,Yes,,MARCKING14_102,15
+King,Lake Marcel,L60566-2,7,06/23/2014,Anatoxin-a,0.012,0.010,No,Yes,,MARCKING14_078,15
+King,Lake Marcel,L60566-2,7,06/23/2014,Microcystin,<MDL,0.160,No,Yes,,MARCKING14_078,15
+King,Lake Marcel,L60566-1,7,06/21/2014,Anatoxin-a,0.012,0.010,No,Yes,,MARCKING14_075,15
+King,Lake Marcel,L60566-1,7,06/21/2014,Microcystin,<MDL,0.160,No,Yes,,MARCKING14_075,15
+King,Lake Marcel,L58543-1,7,08/16/2013,Anatoxin-a,<MDL,0.010,No,No,,MARCKING13_063,15
+King,Lake Marcel,L58543-1,7,08/16/2013,Microcystin,<MDL,0.160,No,No,,MARCKING13_063,15
+King,Lake Marcel,L58496-1,7,08/07/2013,Anatoxin-a,0.015,0.010,No,Yes,,MARCKING13_050,15
+King,Lake Marcel,L58496-2,7,08/07/2013,Anatoxin-a,<MDL,0.010,No,Yes,,MARCKING13_052,15
+King,Lake Marcel,L58496-2,7,08/07/2013,Microcystin,<MDL,0.160,No,Yes,,MARCKING13_052,15
+King,Lake Marcel,L58496-1,7,08/07/2013,Microcystin,0.605,0.160,No,Yes,,MARCKING13_050,15
+King,Lake Marcel,L58441-2,7,08/01/2013,Anatoxin-a,0.019,0.010,No,Yes,,MARCKING13_038,15
+King,Lake Marcel,L58441-1,7,08/01/2013,Anatoxin-a,0.018,0.010,No,Yes,,MARCKING13_037,15
+King,Lake Marcel,L58441-2,7,08/01/2013,Microcystin,<MDL,0.160,No,Yes,,MARCKING13_038,15
+King,Lake Marcel,L58441-1,7,08/01/2013,Microcystin,<MDL,0.160,No,Yes,,MARCKING13_037,15
+King,Lake Marcel,L58373-1,7,07/23/2013,Anatoxin-a,1.360,0.010,Yes,Yes,,MARCKING13_026,15
+King,Lake Marcel,L58373-1,7,07/23/2013,Microcystin,1.460,0.160,No,Yes,,MARCKING13_026,15
+King,Lake Marcel,L53533-10,7,10/23/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53533-10,7,10/23/2011,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53532-10,7,10/09/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53532-10,7,10/09/2011,Microcystin,0.058,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53531-10,7,09/25/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53531-10,7,09/25/2011,Microcystin,0.052,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53530-10,7,09/11/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53530-10,7,09/11/2011,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53529-10,7,08/21/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53529-10,7,08/21/2011,Microcystin,0.063,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53528-10,7,08/08/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53528-10,7,08/08/2011,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53011-10,7,07/24/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53011-10,7,07/24/2011,Microcystin,0.067,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53010-10,7,07/10/2011,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53010-10,7,07/10/2011,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53009-10,7,06/19/2011,Anatoxin-a,0.031,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53009-10,7,06/19/2011,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L53006-10,7,06/05/2011,Anatoxin-a,0.031,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L53006-10,7,06/05/2011,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L51639-10,7,10/24/2010,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L51639-10,7,10/24/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L51638-10,7,10/10/2010,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L51638-10,7,10/10/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L51575-10,7,09/26/2010,Anatoxin-a,0.020,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L51575-10,7,09/26/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L51410-10,7,09/12/2010,Anatoxin-a,0.020,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L51410-10,7,09/12/2010,Microcystin,0.085,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L51662-1,7,09/02/2010,Anatoxin-a,0.077,0.019,No,Yes,,,15
+King,Lake Marcel,L51662-1,7,09/02/2010,Microcystin,4.270,0.050,No,Yes,,,15
+King,Lake Marcel,L51302-10,7,08/22/2010,Anatoxin-a,0.036,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L51302-10,7,08/22/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L51210-10,7,08/08/2010,Anatoxin-a,0.051,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L51210-10,7,08/08/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L51057-10,7,07/25/2010,Anatoxin-a,0.058,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L51057-10,7,07/25/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L50973-10,7,07/11/2010,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L50973-10,7,07/11/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L50452-10,7,06/20/2010,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L50452-10,7,06/20/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L50450-10,7,06/06/2010,Anatoxin-a,<MDL,0.019,No,No,,MARCKING015,15
+King,Lake Marcel,L50450-10,7,06/06/2010,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48998-4,7,10/18/2009,Anatoxin-a,<MDL,0.006,No,No,,MARCKING015,15
+King,Lake Marcel,L48998-4,7,10/18/2009,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48997-36,7,10/12/2009,Anatoxin-a,<MDL,0.120,No,No,,MARCKING015,15
+King,Lake Marcel,L48997-36,7,10/12/2009,Microcystin,1.100,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48997-4,7,10/04/2009,Anatoxin-a,<MDL,0.012,No,No,,MARCKING015,15
+King,Lake Marcel,L48997-4,7,10/04/2009,Microcystin,0.421,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48899-4,7,09/20/2009,Anatoxin-a,0.028,0.012,No,No,,MARCKING015,15
+King,Lake Marcel,L48899-4,7,09/20/2009,Microcystin,0.076,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48898-4,7,09/07/2009,Anatoxin-a,<MDL,0.006,No,No,,MARCKING015,15
+King,Lake Marcel,L48898-4,7,09/07/2009,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48754-4,7,08/23/2009,Anatoxin-a,<MDL,0.004,No,No,,MARCKING015,15
+King,Lake Marcel,L48754-4,7,08/23/2009,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48639-4,7,08/09/2009,Anatoxin-a,<MDL,0.004,No,No,,MARCKING015,15
+King,Lake Marcel,L48639-4,7,08/09/2009,Microcystin,0.100,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48438-4,7,07/26/2009,Anatoxin-a,<MDL,0.012,No,No,,MARCKING015,15
+King,Lake Marcel,L48438-4,7,07/26/2009,Microcystin,0.115,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L48321-4,7,07/12/2009,Anatoxin-a,<MDL,0.006,No,No,,MARCKING015,15
+King,Lake Marcel,L48321-4,7,07/12/2009,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L47910-4,7,06/28/2009,Anatoxin-a,<MDL,0.006,No,No,,MARCKING015,15
+King,Lake Marcel,L47910-4,7,06/28/2009,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Marcel,L47833-4,7,06/14/2009,Anatoxin-a,0.033,0.006,No,No,,MARCKING015,15
+King,Lake Marcel,L47833-4,7,06/14/2009,Microcystin,<MDL,0.050,No,No,,MARCKING015,15
+King,Lake Sawyer,L68040-1,9,06/18/2017,Anatoxin-a,,0.010,No,No,,SAWYKING036_17_108,36
+King,Lake Washington,L65119-1,8,03/30/2016,Anatoxin-a,NA,0.010,No,No,,WASHKING029_16_020,29
+King,Lake Washington,L65091-1,8,03/23/2016,Anatoxin-a,NA,0.010,No,Yes,,WASHKING029_16_019,29
+King,Lake Washington,L65059-1,8,03/16/2016,Anatoxin-a,NA,0.010,No,Yes,,WASHKING029_16_018,29
+King,Lake Wilderness,L66309-2,9,10/03/2016,Microcystin,73,0.160,No,No,,WILDKING039_16_268,39
+Kitsap,Kitsap Lake,L55954-1,15,06/21/2012,Anatoxin-a,0.020,,No,Yes,,,70
+Klickitat,Rowland Lake,L87327-2,29,11/04/2025,Anatoxin-a,<MDL,0.010,No,No,SW"Beach",ROWLKLIC098_25_488,98
+Klickitat,Rowland Lake,L87327-2,29,11/04/2025,Microcystin,5.790,0.300,No,No,SW"Beach",ROWLKLIC098_25_488,98
+Klickitat,Rowland Lake,L65839-1,29,07/26/2016,Microcystin,NA,0.160,No,Yes,,ROWLKLIC098_16_118,98
+Mason,Spencer Lake,l64787-1,14,02/03/2016,Anatoxin-a,,0.010,No,Yes,,,273
+Mason,Spencer Lake,l64787-1,14,02/03/2016,Microcystin,,0.160,No,Yes,,,273
+Pierce,Clear Lake,L64810-1,11,02/08/2016,Anatoxin-a,,0.010,No,Yes,,,45
+Pierce,Clear Lake,L64810-1,11,02/08/2016,Microcystin,,0.160,No,Yes,,,45
+Pierce,Spanaway Lake,L64812-1,12,02/09/2016,Anatoxin-a,,0.010,No,Yes,,,55
+Pierce,Wapato Lake,L65959-6,12,08/10/2016,Anatoxin-a,NA,0.010,No,Yes,,WAPAPIER058_16_149,58
+Pierce,Wapato Lake,L65901-1,12,08/01/2016,Anatoxin-a,NA,0.010,No,Yes,,WAPAPIER058_16_127,58
+Pierce,Waughop Lake,L48449-27,12,08/10/2009,Saxitoxin,193.000,0.020,Yes,No,,WAUGPIER059,59
+Snohomish,Lake Armstrong,L65990-5,5,08/14/2016,Anatoxin-a,NA,0.010,No,No,,ARMSNOH_08_16_158,8
+Snohomish,Lake Armstrong,L65901-6,5,08/03/2016,Anatoxin-a,NA,0.010,No,Yes,,ARMSNOH_08_16_129,8
+Snohomish,Lake Cassidy,L43763-1,7,08/30/2007,Microcystin,>100,,No,No,,,18
+Snohomish,Lake Cassidy,L43763-2,7,08/29/2007,Microcystin,>100,,No,No,,,18
+Snohomish,Crabapple Lake,L65531-1,7,05/25/2016,Anatoxin-a,NA,0.010,No,No,,CrabSnoh276_16_068,276
+Snohomish,Crystal Lake,L65990-6,7,08/14/2016,Anatoxin-a,NA,0.010,No,No,,CRYSSNOH284_16_159,284
+Snohomish,Howard Lake,L65498-1,7,05/24/2016,Saxitoxin,NA,0.020,No,No,,HowaSnoh017_16_062,17
+Thurston,Pattison Lake,L79852-6,13,08/08/2022,Anatoxin-a,0.043,0.010,No,Yes,46°59'45.4"N 122°46'15.5"W,PATTTHUR064_22_164,64
+Thurston,Pattison Lake,L79852-6,13,08/08/2022,Microcystin,2.560,0.150,No,Yes,46°59'45.4"N 122°46'15.5"W,PATTTHUR064_22_164,64
+Thurston,Summit Lake,L72096-1,14,03/30/2019,Cylindrospermopsin,,0.025,No,Yes,,SUMMTHUR182_19_004,182
+Thurston,Summit Lake,L68010-1,14,06/12/2017,Anatoxin-a,<0.05,0.010,No,No,,,182
+Thurston,Summit Lake,L68010-2,14,06/12/2017,Anatoxin-a,<0.05,0.010,No,No,,,182
+Thurston,Summit Lake,L68010-6,14,06/12/2017,Anatoxin-a,<0.05,0.010,No,No,,,182
+Walla Walla,McNary Slough,L80259-3,32,09/28/2022,Anatoxin-a,,0.010,No,Yes,Sough #3 East side of Lake Rd,MCNAWALL334_22_349,334
+Walla Walla,McNary Slough,L80259-4,32,09/28/2022,Anatoxin-a,,0.010,No,Yes,McNary Slough #4,MCNAWALL334_22_350,334

@@ -1,0 +1,374 @@
+{
+ "status": "CANDIDATE \u2014 not frozen; the lead writes FREEZE_downstream_d1n_beaches.json after the delta review",
+ "prepared": "2026-11-08T20:21:43",
+ "app": "d1n_beaches",
+ "split_file": "docs/preregistration/downstream_d1n_beaches_split.json",
+ "split_sha256": "aa601b505530f2d93bf90881e106d882ffc46efdf38ac9cda2db1816e6f96861",
+ "scoring_code_sha256": "386c22a4457221c3dc12aeed601d3634418206efb84b0995c4c7948361b33f35",
+ "scoring_files": {
+  "docs/preregistration/downstream_d1n_beaches.md": "73cd840de98cd641b30df39b92006f672e060547ec90411ea6e37003471d688f",
+  "docs/preregistration/downstream_d1n_beaches_data_pins.json": "fe9cbfb15bb19bee3774d8febddd2940688f74fe0e1ddc6946d758a54c98e863",
+  "scripts/train/downstream_d1n_beaches.py": "1797411e8350dc652984784db36fbd5c7c575079f32e8bb76aad30cd23f4ddb0",
+  "scripts/train/downstream_d1n_beaches_alpha.py": "171a3ffb6952ca5a451e186577f9a49304972fd81165a2bace664d38ca9c437b",
+  "scripts/train/downstream_d1n_beaches_test.py": "cd0be904ee8756652f4533f71165187a29ab7ab7f37bbe6d68f11155997420be",
+  "sentinel/data/wqp_harmonize.py": "8b4d341f5b408cca37d8301027f7ecc23c65db4604c087be051142a77251c975",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/downstream/common.py": "f26d66f2ee2d990bb83c7359da4f1f880a4eb6d1b4c7da442c16fd792ddef519",
+  "sentinel/models/downstream/crossfit.py": "3560dd8a13d4a087cc6d31b7bb1c7be2a6009888563b7d375603307a98917f3a",
+  "sentinel/models/downstream/d1n_beaches.py": "06ebe7a8a0679af4d5afc47666bae47710195c5aef6b6d1354d4cf0500d8d6bb",
+  "sentinel/models/downstream/testlook.py": "9babf2cd7f0f2816b829272bd7504204cda045440930b1a9bec2412f6e3e8f8d",
+  "sentinel/models/downstream/weather.py": "85b0858c98309c6440967296828d91badd981cc42fb505177631f3e3bcfb810d",
+  "sentinel/models/downstream/wqp_track.py": "88b339d19a946f3ad1f095ce5a0d33e4cc011b0878a27b660469fa4367e6bec4"
+ },
+ "data_pins": {
+  "file": "docs/preregistration/downstream_d1n_beaches_data_pins.json",
+  "sha256": "fe9cbfb15bb19bee3774d8febddd2940688f74fe0e1ddc6946d758a54c98e863",
+  "n_files": 7,
+  "expected": {
+   "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+  },
+  "verified_before_claim": true
+ },
+ "data_manifests": [
+  "wqp_discrete",
+  "forcings_daily",
+  "wbd_huc12"
+ ],
+ "configs_tried": 20,
+ "configs_note": "12 phase-1 + 8 alpha-grid configurations",
+ "selected": {
+  "learner": "logistic (C = 1)",
+  "fit_rows": "train + val rows (protocol \u00a710); every comparator refit on the same rows",
+  "incumbent_alpha": "100 (re-selected on the widened inner grid 0.1..1e6, interior)"
+ },
+ "test_block": "test_known (clusters with >= 1 fit row) and test_new (never-fitted HUC4s) 2021-2025; 2026 reserve",
+ "comparators": {
+  "incumbent": "vb_mlr_incumbent",
+  "strongest_simple_baseline": "history_rate"
+ },
+ "claim_rule": "paired AUROC (HUC8) vs incumbent and vs history_rate on BOTH sets; Holm over all 4",
+ "seed_rule": "deterministic logistic: seed rule trivially met",
+ "counts_toward_HG4_beats_incumbent": "as the D1 national track (D1 counted once)",
+ "single_pass_guard": "verify_data -> authorise (check_roles: FREEZE + split + scoring-code sha; claim_test_look: registry test rows = 0, O_EXCL marker) -> builders require_authorised -> save_predictions (once, before any registry write) -> score/log_test_metric -> mark_scored; crash after save: --rescore-from-saved only",
+ "test_scoring_path": {
+  "script": "scripts/train/downstream_d1n_beaches_test.py",
+  "sha256": "cd0be904ee8756652f4533f71165187a29ab7ab7f37bbe6d68f11155997420be",
+  "invocation": "python -B scripts/train/downstream_d1n_beaches_test.py --allow-test",
+  "run_with": "default SENTINEL_RUNS / SENTINEL_DATA (no overrides)",
+  "dry_run_on_val": {
+   "results": "/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/ds_final/runs/downstream/d1n_beaches/testpath_dryrun/results.json",
+   "sha256": "67eb51ce075b227b2f90f633182ba51cff219e80200bd499f0bacd70e2758a6e",
+   "claim_met_on_val": true,
+   "seed_rule_ok": true,
+   "holm_ok": true
+  }
+ },
+ "environment": {
+  "python": "/home/bcheng/miniconda3/envs/sentinel2/bin/python",
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a",
+  "not_hashed": "sentinel/core/{paths,registry,runlog}.py and package __init__ files (gate S-O1)"
+ },
+ "ordering_evidence": "no git (user instruction): prereg_snapshot registry row written with the FREEZE file (testlook.prereg_snapshot)",
+ "artifacts": [
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/d1n_beaches/phase1/phase1_results.json",
+   "sha256": "eb151f875722d3f2751b9c702950d1ab88a4c5a61a93c5d99bf36ac0dd9aad1e"
+  },
+  {
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/d1n_beaches/alpha_wide/results.json",
+   "sha256": "2e9da88e32de1e125b2e6be96ffa22e1371f02dfbcea11be88bceee42b24d593"
+  }
+ ],
+ "evidence_registry_rows": [
+  {
+   "registry_id": "e677fe9c8a73",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "auroc",
+   "split": "val_known_2016_2019",
+   "value": 0.7891489474027674,
+   "ci": [
+    0.7587065871608188,
+    0.8125885564338627
+   ]
+  },
+  {
+   "registry_id": "1efb6ad5a56c",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "auprc",
+   "split": "val_known_2016_2019",
+   "value": 0.3430423937726924,
+   "ci": [
+    0.2757254833262444,
+    0.40770523726033187
+   ]
+  },
+  {
+   "registry_id": "95cd3753a727",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "brier",
+   "split": "val_known_2016_2019",
+   "value": 0.08973678497340068,
+   "ci": [
+    0.07407682952180197,
+    0.1113471785264651
+   ]
+  },
+  {
+   "registry_id": "8516ef3e747d",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "vb_mlr_incumbent",
+   "metric": "auroc",
+   "split": "val_known_2016_2019",
+   "value": 0.7502010900289409,
+   "ci": [
+    0.7138441626019413,
+    0.7837119678654717
+   ]
+  },
+  {
+   "registry_id": "881d77c69be8",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "vb_mlr_incumbent",
+   "metric": "auprc",
+   "split": "val_known_2016_2019",
+   "value": 0.3114200323957326,
+   "ci": [
+    0.22856608571744605,
+    0.39406565843895747
+   ]
+  },
+  {
+   "registry_id": "b19e0552a26b",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_climatology",
+   "split": "val_known_2016_2019",
+   "value": 0.0803631564123991,
+   "ci": [
+    0.05630791222343827,
+    0.11502954781452734
+   ]
+  },
+  {
+   "registry_id": "b0a64d299664",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_location_only",
+   "split": "val_known_2016_2019",
+   "value": 0.08257196937386435,
+   "ci": [
+    0.058647780084760445,
+    0.11675691182239127
+   ]
+  },
+  {
+   "registry_id": "1c9d03faeabf",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_history_rate",
+   "split": "val_known_2016_2019",
+   "value": 0.06689595981148666,
+   "ci": [
+    0.048420919302965895,
+    0.09605187487790404
+   ]
+  },
+  {
+   "registry_id": "d07ebc75867f",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_persistence",
+   "split": "val_known_2016_2019",
+   "value": 0.10561058081181918,
+   "ci": [
+    0.07812794190654282,
+    0.13159640270250278
+   ]
+  },
+  {
+   "registry_id": "c16956ed76a5",
+   "experiment": "d1n_beaches/d1n_beaches/val_known",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_vb_mlr_incumbent",
+   "split": "val_known_2016_2019",
+   "value": 0.038947857373826555,
+   "ci": [
+    0.01761503810075861,
+    0.06315401270896386
+   ]
+  },
+  {
+   "registry_id": "ce5ed08f8f5e",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "auroc",
+   "split": "val_new_2016_2019",
+   "value": 0.7829320628685186,
+   "ci": [
+    0.6995730423060582,
+    0.8103164556651578
+   ]
+  },
+  {
+   "registry_id": "3dab9e95e23c",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "auprc",
+   "split": "val_new_2016_2019",
+   "value": 0.3581694483228919,
+   "ci": [
+    0.16000027322397814,
+    0.43770730652286594
+   ]
+  },
+  {
+   "registry_id": "38cd0ecdc55b",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "brier",
+   "split": "val_new_2016_2019",
+   "value": 0.08131077444123645,
+   "ci": [
+    0.0493690739174863,
+    0.10892496359556743
+   ]
+  },
+  {
+   "registry_id": "0d613731e152",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "vb_mlr_incumbent",
+   "metric": "auroc",
+   "split": "val_new_2016_2019",
+   "value": 0.7671514964747512,
+   "ci": [
+    0.677694616754698,
+    0.7994694485039618
+   ]
+  },
+  {
+   "registry_id": "ea7d25b45eea",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "vb_mlr_incumbent",
+   "metric": "auprc",
+   "split": "val_new_2016_2019",
+   "value": 0.3393225585409941,
+   "ci": [
+    0.15379829289392585,
+    0.4241985041871024
+   ]
+  },
+  {
+   "registry_id": "48331443a1c2",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_climatology",
+   "split": "val_new_2016_2019",
+   "value": 0.286121618868149,
+   "ci": [
+    0.23378869955909234,
+    0.3586424551589162
+   ]
+  },
+  {
+   "registry_id": "38d62c75eca8",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_location_only",
+   "split": "val_new_2016_2019",
+   "value": 0.16088922834322805,
+   "ci": [
+    0.08759402986460746,
+    0.3711314297546701
+   ]
+  },
+  {
+   "registry_id": "4207a0db910c",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_history_rate",
+   "split": "val_new_2016_2019",
+   "value": 0.07123347005721647,
+   "ci": [
+    0.048206843365301455,
+    0.12209691322997115
+   ]
+  },
+  {
+   "registry_id": "0f9d69c285b4",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_persistence",
+   "split": "val_new_2016_2019",
+   "value": 0.11722890579891243,
+   "ci": [
+    0.041580819676156504,
+    0.12549027658233974
+   ]
+  },
+  {
+   "registry_id": "df480cc54faa",
+   "experiment": "d1n_beaches/d1n_beaches/val_new",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_vb_mlr_incumbent",
+   "split": "val_new_2016_2019",
+   "value": 0.015780566393767348,
+   "ci": [
+    0.00245103298991983,
+    0.040156607254428
+   ]
+  },
+  {
+   "registry_id": "98704f4416d2",
+   "experiment": "d1n_beaches/val_known@alpha_wide",
+   "model": "vb_mlr_incumbent",
+   "metric": "auroc",
+   "split": "val_known_2016_2019",
+   "value": 0.7502010900289409,
+   "ci": [
+    0.7138441626019413,
+    0.7837119678654717
+   ]
+  },
+  {
+   "registry_id": "4cd217e920fd",
+   "experiment": "d1n_beaches/val_known@alpha_wide",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_vb_mlr_incumbent",
+   "split": "val_known_2016_2019",
+   "value": 0.038947857373826555,
+   "ci": [
+    0.01761503810075861,
+    0.06315401270896386
+   ]
+  },
+  {
+   "registry_id": "91c99a4c019e",
+   "experiment": "d1n_beaches/val_new@alpha_wide",
+   "model": "vb_mlr_incumbent",
+   "metric": "auroc",
+   "split": "val_new_2016_2019",
+   "value": 0.7671514964747512,
+   "ci": [
+    0.677694616754698,
+    0.7994694485039618
+   ]
+  },
+  {
+   "registry_id": "bbe765052ca6",
+   "experiment": "d1n_beaches/val_new@alpha_wide",
+   "model": "logistic",
+   "metric": "auroc_diff_vs_vb_mlr_incumbent",
+   "split": "val_new_2016_2019",
+   "value": 0.015780566393767348,
+   "ci": [
+    0.00245103298991983,
+    0.040156607254428
+   ]
+  }
+ ]
+}

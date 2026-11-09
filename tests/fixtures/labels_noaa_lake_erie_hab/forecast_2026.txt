@@ -1,0 +1,45 @@
+              Western Lake Erie HAB Seasonal Forecast
+                                                                                                                                       2026-06-25
+Summary: NOAA NCCOS and partners forecast the cyanobacterial harmful algal bloom (HAB) in western Lake Erie this summer to have a
+severity of 3.5, with a potential range of 3-4.5, which is similar to 2024 but higher than 2025. The forecast bloom severity is likely a moderate
+bloom. At their peak, moderate blooms tend to impact about a third of the western basin and are likely to have some patches of noticeable scum.
+The bloom severity depends on the load of total bioavailable phosphorus (TBP) from the Maumee River from March to July. Slightly higher than
+normal rainfall and river flow are expected through July, which is accounted for in the forecast.
+The bloom varies in size and location due to wind. We expect a bloom start in July, and a bloom peak in August that likely continues into
+September. At this severity we expect the bloom to remain mostly in the western basin. While toxicity varies throughout the duration of the bloom,
+toxins will concentrate in any surface scums that form during calm weather. People and pets should not swim in areas with scum. Information on
+the location and intensity of the bloom can be found at NOAA's Lake Erie Harmful Algal Bloom Forecast webpage, in collaboration with NOAA’s
+Great Lakes Environmental Research Laboratory (GLERL). For additional information on safe recreation, please visit Ohio EPA's webpage on
+HABs.
+The severity is based on the quantity (biomass) of the bloom over a sustained 30 day period. The phosphorous loads were estimated by the
+Heidelberg University National Center for Water Quality Research. Projected July river discharge for the Maumee River uses forecasts from the
+National Weather Service - Ohio River Forecast Center. Models used in the forecast are provided by NOAA's NCCOS, the University of
+Michigan, and North Carolina State University. The forecast will be updated in late July as we have new information on the bloom size and
+severity.
+
+Predicted Bloom Severity                                                           Cumulative Total Bioavailable Phosphorus
+
+
+
+
+                                                                                     Fig. 2. Estimated cumulative TBP loads for the Maumee River
+                                                                                     (Waterville, OH). Each line denotes cumulative load for different
+ Fig. 1. Predicted bloom severity as compared to previous years. The                 years. 2026 is in orange: the solid line is the estimated load to
+ wide orange bar is the likely range of severity based on current forecast           June 22 and predicted load for the rest of the loading season
+ uncertainty (3-4.5; Moderate bloom). The uncertainty in the bloom                   (thru July); the darker and lighter orange shading show,
+ severity forecast is due to uncertainty in both the bloom severity models           respectively, the likely and possible load ranges for the
+ and the forecast river flow and TBP loads through the end of July.                  remainder of the season.
+Total Bioavailable Phosphorus                                                      Satellite Image - True Color
+
+
+
+
+                                                                                     Fig. 4. True color image for 20 June 2026 derived from the
+                                                                                     Copernicus Sentinel-3a/b satellite. The western basin has
+                                                                                     substantial suspended sediment (brown color) along the Ohio
+                                                                                     coast.
+ Fig. 3. Estimated total bioavailable phosphorus (TBP) load accumulated
+ from the Maumee River near Waterville, OH to date. The right axis
+ denotes the TBP load from selected previous years.
+   For more information visit: coastalscience.noaa.gov/science-areas/habs/hab-forecasts/lake-erie or ncwqr.org     Questions? Contact: hab@noaa.gov
+

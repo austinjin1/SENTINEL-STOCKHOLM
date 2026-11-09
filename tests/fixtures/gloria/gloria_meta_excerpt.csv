@@ -1,0 +1,4 @@
+GLORIA_ID,Dataset_ID,Site_name,Latitude,Longitude,Date_Time_UTC,Water_body_type,Chla,TSS,aCDOM440,Secchi_depth,Turbidity
+GID_1,AlikasK_EE_UT-TO,Lake Peipsi,58.49994,27.28475,2013-07-08T08:27,1,,2.67,2.53284360229345,1.85,
+GID_2000,JametC_FR_ULCO-LOG,South China Sea,9.3048,106.629,2014-06-24T06:35,3,2.876,3.96,0.06457612,,
+GID_5000,SchallesJ_US_Creighton,"Bayou Heron, MS",30.4083333333333,-88.4009166666667,2003-10-06T16:31,2,,16.92,0.4,1.11,

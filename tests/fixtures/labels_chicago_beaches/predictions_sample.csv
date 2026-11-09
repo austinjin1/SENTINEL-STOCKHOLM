@@ -1,0 +1,5 @@
+beach_name,date,prediction_source,predicted_level,recordid,latitude,longitude,location
+12th Street,2017-05-26T00:00:00.000,DNA Model,160,12thStreet20170526,41.8638,-87.6082,"(41.8638, -87.6082)"
+12th Street,2017-05-27T00:00:00.000,DNA Model,54.7,12thStreet20170527,41.8638,-87.6082,"(41.8638, -87.6082)"
+12th Street,2017-05-29T00:00:00.000,DNA Model,109.5,12thStreet20170529,41.8638,-87.6082,"(41.8638, -87.6082)"
+12th Street,2017-05-30T00:00:00.000,DNA Model,53.2,12thStreet20170530,41.8638,-87.6082,"(41.8638, -87.6082)"

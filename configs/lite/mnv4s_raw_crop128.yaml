@@ -1,0 +1,11 @@
+# variant of mnv4s_raw: crop: 128
+name: mnv4s_raw_crop128
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+epochs: 40
+batch: 32
+lr: 1.0e-3
+lr_backbone: 5.0e-4
+kd_weight: 0.0
+crop: 128

@@ -1,0 +1,26 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# SeqSet (set transformer over DNA-encoded ASVs) candidates. docs/preregistration/microbe_protocol.md §6.
+defaults:
+  seq_mode: frozen          # frozen (DNA-encoder table) | id (learned per-sequence embedding; ablation)
+  encoder: dnabert_s        # dnabert_s | kmer5  (frozen tables in $SENTINEL_DATA/interim/microbe_seqemb)
+  d_model: 128
+  n_layers: 2
+  n_heads: 4
+  dropout: 0.1
+  token_dropout: 0.1
+  max_tokens: 256           # most abundant sequences kept per sample
+  min_seq_count: 3          # id mode: sequences in < 3 training-fold samples -> UNK
+  primer_onehot: true
+  context: false            # true = community + DOY/location inputs (control variant, not a selection candidate)
+  lr: 0.0005
+  weight_decay: 0.01
+  batch_size: 64
+  max_epochs: 300
+  patience: 30
+  inner_val_frac: 0.15
+candidates:
+  seqset_dnabert: {}
+  seqset_kmer: {encoder: kmer5}
+  seqset_id: {seq_mode: id, encoder: null}
+  seqset_kmer_v4: {encoder: kmer5_v4}   # cycle-5 candidate (protocol §10.6, not yet run): k-mers of the harmonised V4 window

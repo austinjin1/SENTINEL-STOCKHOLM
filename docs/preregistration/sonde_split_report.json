@@ -1,0 +1,71 @@
+{
+ "file": "sonde_split.json",
+ "sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+ "n_sites": 2678,
+ "notes": "FINAL split (frozen at creation; see ew_v2_protocol.md \u00a710)",
+ "roles": {
+  "train": 1780,
+  "val": 334,
+  "test": 564
+ },
+ "n_basin_groups": 120,
+ "edges_used": 39453,
+ "cross_role_edges": 0,
+ "sites_per_var_role": {
+  "chl_ugl_mean": {
+   "test": 3,
+   "train": 9,
+   "val": 0
+  },
+  "do_mgl_mean": {
+   "test": 240,
+   "train": 449,
+   "val": 80
+  },
+  "do_mgl_min": {
+   "test": 236,
+   "train": 450,
+   "val": 83
+  },
+  "fdom_qse_mean": {
+   "test": 2,
+   "train": 22,
+   "val": 5
+  },
+  "no3no2_mgl_mean": {
+   "test": 38,
+   "train": 53,
+   "val": 8
+  },
+  "ph_mean": {
+   "test": 19,
+   "train": 25,
+   "val": 4
+  },
+  "ph_median": {
+   "test": 200,
+   "train": 342,
+   "val": 75
+  },
+  "spcond_uscm_mean": {
+   "test": 348,
+   "train": 894,
+   "val": 179
+  },
+  "temp_c_mean": {
+   "test": 539,
+   "train": 1617,
+   "val": 311
+  },
+  "turb_fnu_mean": {
+   "test": 113,
+   "train": 286,
+   "val": 39
+  },
+  "turb_fnu_median": {
+   "test": 66,
+   "train": 212,
+   "val": 26
+  }
+ }
+}

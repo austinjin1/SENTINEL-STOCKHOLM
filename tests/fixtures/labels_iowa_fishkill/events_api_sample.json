@@ -1,0 +1,442 @@
+{
+ "total": 15,
+ "rows": [
+  {
+   "fo": 1,
+   "impactedSegs": [
+    {
+     "id": 447,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/447",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/447"
+    }
+   ],
+   "id": 1084,
+   "date": "2026-10-07T12:00:00",
+   "originWaterbody": "Hecker Creek",
+   "county": "Allamakee",
+   "wbType": "River/Stream",
+   "cause": "Ammonia/Fertilizer",
+   "causeOrigin": "Anthropogenic",
+   "causeMode": "Runoff",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 5,
+    "magnitudeDesc": "10,001 - 25,000",
+    "estFishKilled": 24860
+   },
+   "lat": 43.0945,
+   "lon": -91.579,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/1084"
+  },
+  {
+   "fo": 4,
+   "impactedSegs": [
+    {
+     "id": 1199,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/1199",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/1199"
+    }
+   ],
+   "id": 1072,
+   "date": "2025-08-25T12:00:00",
+   "originWaterbody": "Swan Lake",
+   "county": "Carroll",
+   "wbType": "Lake",
+   "cause": "Environmental",
+   "causeOrigin": "Natural",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 3,
+    "magnitudeDesc": "1001 - 5000",
+    "estFishKilled": null
+   },
+   "lat": 42.03654,
+   "lon": -94.8405,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/1072"
+  },
+  {
+   "fo": 5,
+   "impactedSegs": [
+    {
+     "id": 706,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/706",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/706"
+    }
+   ],
+   "id": 982,
+   "date": "2019-09-11T12:00:00",
+   "originWaterbody": "Little Bear Creek",
+   "county": "Poweshiek",
+   "wbType": "River/Stream",
+   "cause": "Animal Waste",
+   "causeOrigin": "Anthropogenic",
+   "causeMode": "Runoff",
+   "awEvent": {
+    "source": "Confinement",
+    "animal": "Poultry",
+    "approxHead": 7500000
+   },
+   "magnitude": {
+    "magnitudeID": 1,
+    "magnitudeDesc": "1 - 100",
+    "estFishKilled": null
+   },
+   "lat": 41.71313,
+   "lon": -92.5835,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/982"
+  },
+  {
+   "fo": 1,
+   "impactedSegs": [
+    {
+     "id": 6622,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/6622",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/6622"
+    }
+   ],
+   "id": 900,
+   "date": "2016-07-18T12:00:00",
+   "originWaterbody": "Buck Creek",
+   "county": "Delaware",
+   "wbType": "River/Stream",
+   "cause": "Unknown",
+   "causeOrigin": "Unknown",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 6,
+    "magnitudeDesc": "25,001 - 50,000",
+    "estFishKilled": 41665
+   },
+   "lat": 42.35081,
+   "lon": -91.44222,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/900"
+  },
+  {
+   "fo": 6,
+   "impactedSegs": [],
+   "id": 836,
+   "date": "2011-05-12T12:00:00",
+   "originWaterbody": "UT to Short Creek",
+   "county": "Louisa",
+   "wbType": "River/Stream",
+   "cause": "Unknown",
+   "causeOrigin": "Unknown",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 2,
+    "magnitudeDesc": "101 - 1000",
+    "estFishKilled": 400
+   },
+   "lat": null,
+   "lon": null,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/836"
+  },
+  {
+   "fo": 3,
+   "impactedSegs": [
+    {
+     "id": 1163,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/1163",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/1163"
+    }
+   ],
+   "id": 218,
+   "date": "1981-02-20T12:00:00",
+   "originWaterbody": "Lake Creek",
+   "county": "Calhoun",
+   "wbType": "River/Stream",
+   "cause": "Environmental",
+   "causeOrigin": "Natural",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 0,
+    "magnitudeDesc": "Unknown/Unspecified",
+    "estFishKilled": null
+   },
+   "lat": 42.31755,
+   "lon": -94.65411,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/218"
+  },
+  {
+   "fo": 4,
+   "impactedSegs": [],
+   "id": 783,
+   "date": "2008-08-21T12:00:00",
+   "originWaterbody": "Farm Pond",
+   "county": "Guthrie",
+   "wbType": "Pond",
+   "cause": "Unknown",
+   "causeOrigin": "Unknown",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 2,
+    "magnitudeDesc": "101 - 1000",
+    "estFishKilled": 300
+   },
+   "lat": null,
+   "lon": null,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/783"
+  },
+  {
+   "fo": 2,
+   "impactedSegs": [],
+   "id": 961,
+   "date": "2007-08-06T12:00:00",
+   "originWaterbody": "Private Lake",
+   "county": "Mitchell",
+   "wbType": "Lake",
+   "cause": "Unknown",
+   "causeOrigin": "Unknown",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 2,
+    "magnitudeDesc": "101 - 1000",
+    "estFishKilled": null
+   },
+   "lat": null,
+   "lon": null,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/961"
+  },
+  {
+   "fo": 5,
+   "impactedSegs": [
+    {
+     "id": 3268,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/3268",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/3268"
+    }
+   ],
+   "id": 991,
+   "date": "2019-10-31T12:00:00",
+   "originWaterbody": "Wolf Creek",
+   "county": "Tama",
+   "wbType": "River/Stream",
+   "cause": "Animal Waste",
+   "causeOrigin": "Anthropogenic",
+   "causeMode": "Runoff",
+   "awEvent": {
+    "source": "Land-Applied",
+    "animal": "Unknown/Unspecified",
+    "approxHead": null
+   },
+   "magnitude": {
+    "magnitudeID": 0,
+    "magnitudeDesc": "Unknown/Unspecified",
+    "estFishKilled": null
+   },
+   "lat": 42.00722,
+   "lon": -92.42936,
+   "estLoc": true,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/991"
+  },
+  {
+   "fo": 1,
+   "impactedSegs": [
+    {
+     "id": 88,
+     "isOriginSeg": false,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/88",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/88"
+    },
+    {
+     "id": 103,
+     "isOriginSeg": false,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/103",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/103"
+    },
+    {
+     "id": 104,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/104",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/104"
+    }
+   ],
+   "id": 916,
+   "date": "2016-09-19T12:00:00",
+   "originWaterbody": "Whitewater Creek",
+   "county": "Dubuque",
+   "wbType": "River/Stream",
+   "cause": "Animal Waste",
+   "causeOrigin": "Anthropogenic",
+   "causeMode": "Runoff",
+   "awEvent": {
+    "source": "Unknown/Unspecified",
+    "animal": "Unknown/Unspecified",
+    "approxHead": null
+   },
+   "magnitude": {
+    "magnitudeID": 4,
+    "magnitudeDesc": "5001 - 10,000",
+    "estFishKilled": 7821
+   },
+   "lat": 42.42749,
+   "lon": -90.8963,
+   "estLoc": true,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/916"
+  },
+  {
+   "fo": 6,
+   "impactedSegs": [
+    {
+     "id": 1002,
+     "isOriginSeg": false,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/1002",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/1002"
+    },
+    {
+     "id": 1003,
+     "isOriginSeg": false,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/1003",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/1003"
+    },
+    {
+     "id": 1004,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/1004",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/1004"
+    }
+   ],
+   "id": 1060,
+   "date": "2024-08-28T12:00:00",
+   "originWaterbody": "Des Moines River",
+   "county": "Van Buren",
+   "wbType": "River/Stream",
+   "cause": "Environmental",
+   "causeOrigin": "Natural",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 3,
+    "magnitudeDesc": "1001 - 5000",
+    "estFishKilled": 4099
+   },
+   "lat": 40.72408,
+   "lon": -91.85414,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/1060"
+  },
+  {
+   "fo": 3,
+   "impactedSegs": [],
+   "id": 1083,
+   "date": "2026-08-07T12:00:00",
+   "originWaterbody": "Dry Run",
+   "county": "O'Brien",
+   "wbType": "River/Stream",
+   "cause": "Unknown (Anthro Suspected)",
+   "causeOrigin": "Unknown",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 5,
+    "magnitudeDesc": "10,001 - 25,000",
+    "estFishKilled": 10019
+   },
+   "lat": 43.06935,
+   "lon": -95.61867,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/1083"
+  },
+  {
+   "fo": 3,
+   "impactedSegs": [
+    {
+     "id": 1655,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/1655",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/1655"
+    }
+   ],
+   "id": 989,
+   "date": "2018-08-13T12:00:00",
+   "originWaterbody": "Spirit Lake",
+   "county": "Dickinson",
+   "wbType": "Lake",
+   "cause": "Cyanobacteria Bloom",
+   "causeOrigin": "Natural",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 0,
+    "magnitudeDesc": "Unknown/Unspecified",
+    "estFishKilled": null
+   },
+   "lat": 43.44831,
+   "lon": -95.09332,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/989"
+  },
+  {
+   "fo": 6,
+   "impactedSegs": [],
+   "id": 1079,
+   "date": "2026-07-23T12:00:00",
+   "originWaterbody": "Private Pond",
+   "county": "Washington",
+   "wbType": "Pond",
+   "cause": "Unknown (Natural Suspected)",
+   "causeOrigin": "Unknown",
+   "causeMode": "N/A",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 0,
+    "magnitudeDesc": "Unknown/Unspecified",
+    "estFishKilled": null
+   },
+   "lat": 41.26768,
+   "lon": -91.69269,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/1079"
+  },
+  {
+   "fo": 3,
+   "impactedSegs": [
+    {
+     "id": 1554,
+     "isOriginSeg": true,
+     "html_url": "https://programs.iowadnr.gov/adbnet/segments/1554",
+     "api_url": "https://programs.iowadnr.gov/adbnet/api/v1/segments/1554"
+    }
+   ],
+   "id": 503,
+   "date": "2002-01-08T12:00:00",
+   "originWaterbody": "Floyd River",
+   "county": "Sioux",
+   "wbType": "River/Stream",
+   "cause": "Ammonia/Fertilizer",
+   "causeOrigin": "Anthropogenic",
+   "causeMode": "Spill",
+   "awEvent": null,
+   "magnitude": {
+    "magnitudeID": 10,
+    "magnitudeDesc": "1,000,000 or more",
+    "estFishKilled": 1034842
+   },
+   "lat": 43.1808,
+   "lon": -95.86877,
+   "estLoc": false,
+   "html_url": "https://programs.iowadnr.gov/fishkill/events/503"
+  }
+ ],
+ "_note": "Real subset of https://programs.iowadnr.gov/fishkill/api/v1/events?f=strict retrieved 2026-10-22"
+}

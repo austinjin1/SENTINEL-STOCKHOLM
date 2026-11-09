@@ -1,0 +1,44 @@
+          Western Lake Erie HAB Seasonal Assessment
+                                                                                                                          Bulletin 08 - 2025-12-04
+
+Summary: The 2025 western Lake Erie cyanobacterial bloom had a severity index (SI) of 2.4, which is considered a mild bloom. The 2025
+severity fell towards the lower end of the seasonal forecast (2-4; issued June 26), which uses an ensemble of different models, each of which
+includes phosphorus loading into the western basin during the spring and early summer (March-July) to predict upcoming summer
+cyanobacterial bloom severity. The SI is determined from satellite imagery used to monitor cyanobacterial biomass by first combining and
+compositing daily images to 10-day composites. The SI is then determined from the three 10-day composites with the maximum amount of
+biomass.
+The Microcystis bloom started in early July in far western Maumee Bay. Unlike most recent years (2020-2024) when the bloom was well
+developed in July, in 2025, the bloom slowly intensified and did not fully establish until early August. The bloom reached peak biomass and
+area in late August before declining rapidly in early September, unlike other recent years when the bloom did not decline until the end of
+September. A weak bloom did persist until ending in late October following seasonally cooler temperatures and mixing from stronger winds.
+Through the season, the bloom stayed closer to the U.S. coast, primarily from Stony Point, MI to east of Port Clinton, OH.
+Overall, the 2025 bloom (SI of 2.4; average bloom area of 411 square miles) was less intense than the 2024 bloom (SI of 4.2; average bloom
+area of 626 square miles). In the last decade, the 2025 bloom severity was most similar to 2018 (SI of 2.7; average bloom area of 474 square
+miles), and was only slightly more intense than the mildest bloom (2020, SI of 1.9).
+Since 2009, NCCOS has used satellite data from sensors across three different satellite missions to monitor the severity and impacts of the
+annually occurring bloom. Following the 2024 bloom season, NCCOS reprocessed the full time series (2000-2024) with updated
+satellite calibrations, improved algorithms and additional data, generating a more complete, consistent and continuous data set for HAB
+monitoring in the lake.
+
+Predicted Bloom Severity                                                        Cumulative Total Bioavailable Phosphorus
+
+
+
+
+Fig. 1. Bloom severity index (SI) for 2000-2025. The SI is based                Fig. 2. Cumulative total bioavailable phosphorus (TBP) loads for the
+on satellite imagery used to identify the amount of                             Maumee River (Waterville, OH). Each line denotes cumulative load
+cyanobacterial biomass over the three 10-day composites with                    for different years. 2025 is in orange.
+the greatest biomass. The 2025 bloom had a severity of 2.4,
+which is considered a mild bloom.
+Total Bioavailable Phosphorus                                                   Comparative Bloom Severity
+
+
+
+
+                                                                                Fig. 4. The 10-day maximum bloom severity in 2024 (Aug. 10-19)
+Fig. 3. Total bioavailable phosphorus (TBP) load accumulated                    and 2025 (Aug. 18-29). Bluish-green to dark blue indicates low
+from the Maumee River near Waterville, OH through the spring                    cyanobacterial concentrations. Sandusky Bay exhibited a mixed
+loading period (March-July). The right axis denotes the TBP load                cyanobacteria bloom in 2025 that contained higher concentrations of
+from selected previous years.                                                   the toxin Microcystin than past years, which peaked in July-August.
+For more information visit: coastalscience.noaa.gov/science-areas/habs/hab-forecasts/lake-erie/ or ncwqr.org/       Questions? Contact: hab@noaa.gov
+

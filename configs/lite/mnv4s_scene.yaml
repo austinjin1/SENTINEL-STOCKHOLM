@@ -1,0 +1,10 @@
+# SENTINEL-Lite student, MobileNetV4-Conv-S, per-DOQQ scene normalisation (p50, p98-p02)
+name: mnv4s_scene
+backbone: mnv4s
+dec_ch: 48
+input_mode: scene
+epochs: 40
+batch: 32
+lr: 1.0e-3
+lr_backbone: 5.0e-4
+kd_weight: 0.0

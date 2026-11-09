@@ -1,0 +1,19 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Extra time-series foundation models for M1 SENTINEL-Sonde (approved 2026-10-24).
+# Rule: never change torch or any existing pin of the shared env; conflicting packages get their own env.
+
+# ---------------------------------------------------------------- env: sentinel2 (shared; Python 3.11, torch 2.7.1+cu118)
+# Installed with no dependency changes (pip --dry-run checked; torch/numpy/pandas untouched):
+#   /home/bcheng/miniconda3/envs/sentinel2/bin/pip install --no-deps timesfm==3.0.2
+# Requires (already pinned in requirements-v2.txt): huggingface_hub, numpy, safetensors
+# Model: google/timesfm-2.5-200m-pytorch (Apache-2.0), class timesfm.TimesFM_2p5_200M_torch
+timesfm==3.0.2
+
+# ---------------------------------------------------------------- env: sentinel2-toto (not created yet)
+# toto-ts 0.2.0 would install torch 2.7.0 (cu12 wheels), numpy 1.26.4, pandas 2.2.3, transformers 4.52.1
+# into sentinel2 -> NOT installed there. Needs its own env (cu118 torch build) if pursued.
+
+# ---------------------------------------------------------------- TiRex / Moirai-2: not installed
+# TiRex needs torch >= 2.8 (no cu118 build for driver 470) -> CPU-only env or skip (documented in RESULTS).
+# Moirai-2 (uni2ts) needs torch < 2.5 -> separate env sentinel2-moirai (torch 2.4.1+cu118) if pursued.

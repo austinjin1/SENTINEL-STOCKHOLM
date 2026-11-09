@@ -1,0 +1,18 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# Reproduction of Gasser et al. 2024 (scripts/train/chemtox_xgb.py).
+model: xgboost              # also run with model: rf for the macro-average reference numbers
+features:
+  fingerprint: MACCS        # informative bits: SD over unique training chemicals > 0.1
+  published: true           # the 37 experimental/chemical/taxonomic columns
+  drop_first: true          # one-hot with the first level dropped -> exactly 37 columns
+  include_migration: false  # see sentinel/models/chemtox/features.py docstring
+  chemical: four            # MW, water solubility, melting point, logP (standardised on train)
+grid:                       # the six hyper-parameters the paper tuned (their ESI grid is not public)
+  n_estimators: [300, 800]
+  eta: [0.03, 0.1]
+  max_depth: [6, 10]
+  min_child_weight: [1, 5]
+  gamma: [0.0]
+  subsample: [0.8, 1.0]
+seed: 0

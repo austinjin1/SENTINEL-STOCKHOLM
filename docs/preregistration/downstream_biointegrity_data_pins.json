@@ -1,0 +1,31 @@
+{
+ "app": "biointegrity",
+ "created": "2026-11-08T19:33:32",
+ "expected": {
+  "pip_freeze_sha256": "c3ba836b82a581703effb62022364d22b1acfcdf5049e8c81de30f771284954a"
+ },
+ "files": {
+  "processed/downstream_catchment/streamcat_comid.parquet": "860b795e74406c3a30547cd13e29df98b5b124cdcbaeb21224318abd48f73b52",
+  "processed/downstream_catchment/streamcat_dictionary.csv": "93bce399941e601178b1eaf636e83c59d5ef88b672abe6040c562d5c07cfce6a",
+  "processed/downstream_catchment/unit_links.parquet": "8afcbc45725668547e0b774985f2e3dc7af6e909606b28210c0c8361d7e49b20",
+  "processed/forcings_daily/coverage.parquet": "7834a44aaed630d05f5e062fcf5136dcea6c04fe2cee83974baeb63bd8c84ac8",
+  "processed/forcings_daily/dictionary.csv": "3b3f2903bc93b9ac68c1a16e60a8626bd3c5f3b012376832db62e5e454114c2c",
+  "processed/forcings_daily/forcings_daily.parquet": "cfbb6437bd1446609fb1daeb51a78c611bd4ce496c2083573ce94839d33cbe30",
+  "processed/nars_streams/analyte_dictionary.json": "8b5cef400b801efdbffc7951c3c0d38be4f93a1e83cd6e78176997731bb8f261",
+  "processed/nars_streams/benthic_counts.parquet": "a33e114dc3a06adac8e74b9fa660559cb7d0c7467ec7ad1a53eac4a885d5e114",
+  "processed/nars_streams/benthic_counts_qc_duplicates.parquet": "a7348235d94c80cac2c7eb5bd796d0ac03c2078f76eb420c59b74fde1e03bb7b",
+  "processed/nars_streams/build_stats.json": "ac1c3773edcaa425908742f44e9279224e4d3e9c4c24ee5b84ac5e4d9f4c6585",
+  "processed/nars_streams/chemistry_long.parquet": "5b7df8edf2feb9fce2dbbf9cdb4f44913bde3cfb156bce166eb277a2e42c3a79",
+  "processed/nars_streams/chemistry_wide.parquet": "3febe1023fb9706085360cda3e767c12f6594ae87cd9bae82baf87f16040164c",
+  "processed/nars_streams/condition_long.parquet": "951a455a1e2d6ded3f051532da05e567e627bccba59e6ea3b1099043b61634bb",
+  "processed/nars_streams/condition_wide.parquet": "f36030d24194a897eb75336487d1ce42e08d528921a919b4bccdb4d56c4fa9ed",
+  "processed/nars_streams/fish_counts.parquet": "753563ec0839d617965dad2c4db69edbb13a42244aca5f57908dcfc2b9a8907d",
+  "processed/nars_streams/periphyton.parquet": "58ecb33691a5b26be4511bc6e5218d958f95f4315a78a23cb104f687fb540ce3",
+  "processed/nars_streams/phab_key_wide.parquet": "93e183794a7a6c3b0411f8bc7abc7514a63f7c14d69fc3fa0092a60e52439a3c",
+  "processed/nars_streams/phab_long.parquet": "56fb39f44c417b1289d6c8b8d1f1b53679274e814851bf66f06e43a40489fa51",
+  "processed/nars_streams/taxa_source.parquet": "27d5e148d4c160eb2560825a3a0526715838a46a26d5a540b81c4ce8bf564a30",
+  "processed/nars_streams/uid_alignment.csv": "c27da48398abffe45a2e6b03e45ba7dbfbb6945527bc1ffc69221cc4872f356c",
+  "processed/nars_streams/visits.parquet": "cbf1e2270b90b9cea744ca7fc5853326a629e01afb18a295265b000fb2e83a22",
+  "raw/gridmet/site_cells.parquet": "97eaed0ec7c7c3b7247dc7021729d3a33bb3cd8c89468c5c68007267893ea7b2"
+ }
+}
