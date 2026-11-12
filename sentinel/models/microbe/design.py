@@ -96,6 +96,14 @@ def load_design(*, allow_holdout: bool = False, root: str | Path | None = None,
     """Development design (default). ``with_release_v1`` appends the DP1.20141.001 events
     (``source_product``) for the cross-release scheme only."""
     default_root = root is None
+    if allow_holdout:
+        # real holdout rows (2024 test, .001 pre-2017 reserve): only under an open single-look claim of the
+        # lead-written freeze (sentinel.models.microbe.testlook); access closes when predictions are sealed.
+        # Lead ruling I-03 (2026-11-10): the claim is required for EVERY root that holds real data, however the
+        # root was passed; only a declared synthetic test root is exempt.
+        from sentinel.models.microbe.testlook import require_claim_for_root
+
+        require_claim_for_root(root, "samples.parquet")
     root = Path(root) if root else paths.PROCESSED / DATASET
     samples = pd.read_parquet(root / "samples.parquet")
     tokens = pd.read_parquet(root / "tokens.parquet")

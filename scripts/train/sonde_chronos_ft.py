@@ -26,6 +26,9 @@ def main() -> int:
     if a.seed is not None:
         cfg["seed"] = a.seed
     seed = int(cfg["seed"])
+    from sentinel.models.sonde import gpu_budget
+
+    gpu_budget.widen()   # lead ruling 2026-11-10: GPUs 0-9 via the cap file, idle GPUs only
     gpu = runner.setup_gpu("sonde_chronos_ft" + ("_smoke" if a.smoke else ""), prefer=a.gpu_prefer)
     from sentinel.models.sonde.chronos import ChronosForecaster, load_pipeline
     from sentinel.models.sonde.chronos_ft import ChronosFTConfig, finetune

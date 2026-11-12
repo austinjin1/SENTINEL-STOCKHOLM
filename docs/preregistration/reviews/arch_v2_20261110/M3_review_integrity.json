@@ -1,0 +1,161 @@
+{
+  "sha256": "022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a",
+  "hash_matches": true,
+  "findings": [
+    {
+      "id": "I-01-DESIGNB-SPENT-BLOCK",
+      "severity": "should_fix",
+      "section": "§9.4 lines 556-570; §10.1 item 3; OQ5",
+      "issue": "Default design B scores the EA-dev block in look M3E/test and then releases those labels as H4 training and tuning data. Campaign rule 1 forbids exactly that, and OQ5 does not tell the lead about the conflict. The alternatives do not avoid it: C scores EA-test twice, and A makes every H3 determinand descriptive under the file's own §9.6 rule (7 groups, fewer than the 10 required). So without an explicit lead exception, no design in the file gives an inferential H3. No M3E guard exists in code, and the label-extract writer of step 2 is unspecified.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/sota_campaign.md:30 'A spent block is never used for training, tuning or a second claim'. /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/microbe/testlook.py:67 LOOKS = ('M3/test', 'M3/test_b'); grep for M3E|microbe_ea|PRJEB90117 in sentinel/ and scripts/ finds only microbe_ea_partition.py and download_ea_biofilm.py. Amendment §9.6 line 582-583 (fewer than 10 letter groups -> descriptive). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/architecture_research/SYNTHESIS.md:468 expects a separate M3E amendment 'before any EA label download'.",
+      "suggested_ruling": "This stamp authorises no EA label download. Before any EA label file is fetched, the lead either (a) grants a reasoned, written exception to campaign rule 1 for design B only (EA-dev scored once under frozen NEON-only models, then released to H4 alone; no H3 model, comparator, selection or wording may change after M3E/test), or (b) approves another design in a separate M3E amendment; and a guard for M3E/test and M3E/h4_test exists with tests, in which the EA-dev extract is written by id from the frozen partition, refuses EA-test and unpartitioned ids, and sits inside the hashed scoring closure."
+    },
+    {
+      "id": "I-02-TON-NOT-UNCHANGED",
+      "severity": "should_fix",
+      "section": "Header lines 37-39 and governing-input row for M3E '(unchanged)'; §9 title line 489; §9.4 lines 559-561; §9.6 line 580-581",
+      "issue": "The file says three times that the registered TON analysis is unchanged, and lists the M3E protocol as unchanged. Under design B the primary TON inference becomes the 15 EA-dev groups (1,094 runs) and the 22-group figure is demoted. H4 also trains on EA rows, which M3E forbids. These are changes to a frozen protocol and must be declared as such before any EA label exists.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/microbe_ea_protocol.md:70-74 (ids = all linked runs; cluster unit = 22 letter groups), :96 (cluster bootstrap over the 22 letter groups), :78 ('no EA row ever enters fitting, tuning or calibration'), :8 (own single look M3E/test). Amendment line 559-561: 'Only the EA-dev block (15 groups, 1,094 runs) is scored. This is the primary H3 inference, for the registered TON analysis'.",
+      "suggested_ruling": "Under whichever design is adopted, the rulings file states that the registered TON analysis IS changed (primary population and cluster count; the 22-group estimate is secondary) as a deviation from M3E §2.5 and §4 declared before any EA label exists, and that M3E §3 'no EA row enters fitting' is superseded for H4 models only and stays in force for every H3 model and comparator."
+    },
+    {
+      "id": "I-03-GUARD-ROOT-BYPASS",
+      "severity": "should_fix",
+      "section": "§7.2 lines 386-389 ('The protected file is read only by the scorer under the open claim')",
+      "issue": "The code does not enforce that sentence. Both protected-row loaders skip the open-claim check whenever a root argument is passed, including the real data directory. One script already uses that path. The protected GEO file was built at 13:11 with mode 0664, and the same holdout and reserve values sit unguarded in the source chemistry table. No test covers the real-root-by-argument path.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/data/microbe_geo.py:221-227 (require_open_claim only 'if root is None'). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/microbe/design.py:98-104 (claim only when allow_holdout and default root). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/train/microbe_freeze_split.py:93 load_design(allow_holdout=True, root=..., verify_frozen=False). /home/bcheng/STOCKHOLM/sentinel_data/processed/microbe_wq_geo/protected_labels.parquet mode 0664, 45,132 bytes (not opened). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/tests/test_microbe.py:320-323 tests tmp roots only. Readers beside the guard: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/data/fuse_tiers.py:261 reads microbe_wq/samples.parquet with all columns; neon_chem/chem_event_wide.parquet is read in full by scripts/data/microbe_geo_counts.py and build_microbe_geo.py.",
+      "suggested_ruling": "Before any D1-D4 or GEO development run, load_design and load_protected_labels require the open claim whenever the resolved directory is the real data root, however it was passed; a unit test covers that path; protected_labels.parquet is set to 0444; and within M3 modelling and scoring code the neon_chem tables are read only by the two builders, checked by a test over the import closure."
+    },
+    {
+      "id": "I-04-PROTECTED-CENSOR-COUNTS",
+      "severity": "should_fix",
+      "section": "Header lines 28-29 ('Holdout and reserve rows: counts only'); §7.1 line 373; Appendix A.1 lines 781-794",
+      "issue": "Per-target censored-flag counts and value-present counts on the 2024 holdout and the reserve were computed, stored in two JSON files and printed in the amendment. A censored flag is a one-bit function of a protected label value, so 'counts only' understates what was seen. I found no rule that depends on these numbers: the NH4 rule was fixed in the plan before the count and uses the development share. The detection-limit floors are also taken over all laboratory records, not split by block (method metadata).",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/data/microbe_geo_counts.py:84-87 (n_cens, n_cens_noval, n_cens_val per block). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/microbe_arch_v2_evidence/geo_counts.json: 002/holdout nh4 n_cens 41, uv254 2; 001/reserve nh4 35 of 62, cl 1. Amendment line 373 'Holdout: 41 of 214 = 19.2%'; A.1 column 'Holdout censored' (ortho-P 58). /home/bcheng/STOCKHOLM/sentinel_data/processed/microbe_wq_geo/counts.json holds the same. Plan rule: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/architecture_research/M3_architecture_plan.md:358 (mtime 11:52, before the 12:38 count).",
+      "suggested_ruling": "The 'what had been seen' list is corrected to say that per-target censored-flag and value-present counts of holdout and reserve rows were computed and printed; no rule, floor, family membership, power figure or selection may use them; and every later count-only mode (GAS-3, EA) emits only row and non-null counts for protected or test blocks, never a censoring share or any other value-derived statistic."
+    },
+    {
+      "id": "I-05-TESTB-AND-FREEZE-PINS",
+      "severity": "should_fix",
+      "section": "§7.6; §7.7 lines 446-454; §8 lines 479-482; §12 rules 10-11",
+      "issue": "The GEO and GAS-3 fallbacks rely on Test-B, but as coded a second M3 look cannot be claimed once M3/test has any registry row, including its own look_claimed row. The freeze pin list also omits the amendment, a rulings file, the lodo_x001 split file and the GEO loader. The fallback text does not say what happens to the 2024-holdout GEO or GAS labels if a family moves to Test-B.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/microbe/testlook.py:275-278 (claim() calls test_rows() with no look filter and refuses if any row exists); :239-241 (is_test_row matches every split starting with 'M3/test' and every experiment in TEST_EXPERIMENTS); :73-75 FROZEN_GLOBS. /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/eval/microbe_final.py:225-236 (--look choices LOOKS, then TL.claim).",
+      "suggested_ruling": "The guard extension owed in §7.7 also makes the refusal look-specific, with a test that M3/test_b can be claimed after M3/test is sealed and scored, and pins the stamped amendment, the rulings file, the log, microbe_split_lodo_x001.json and both GEO tables in the freeze; if GEO or GAS-3 falls back to Test-B, the models are those frozen at the primary freeze and the 2024-holdout labels of that family stay protected and are never used for training, tuning or selection."
+    },
+    {
+      "id": "I-06-LICENCE-ROWS-AND-LABEL-USE",
+      "severity": "should_fix",
+      "section": "§8 line 461-463; §9.1 lines 494-496; §9.2 lines 529-530; §10.3 line 617",
+      "issue": "The licence register has no row for Zenodo 18668846 or for NEON DP1.20097.001. Its existing EA rows restrict use to evaluation, while H4 trains on EA rows. H4 says it predicts TON but does not name the label file; the only registered TON source is the Warren CSV, which has no licence and is marked evaluation only. The register also has no TabPFN row although TabPFN v2 is a mandatory comparator.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/licenses.md: line 11 (NEON products, no DP1.20097.001); line 13 (ENA PRJEB90117, 'M3 (EA external evaluation track only)'); line 15 (Warren CSV 'no licence file in the repository ... not redistributed; research evaluation only; flagged for lead/author confirmation'); grep for 18668846, Thorpe and tabpfn: 0 hits. /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/microbe_arch_v2_evidence/zenodo_18668846.json: licence cc-by-4.0, sizes and md5 match §9.1. tabpfn 2.2.1 is installed in the sentinel2 environment.",
+      "suggested_ruling": "Before any download, docs/licenses.md gains rows for Zenodo 18668846 (CC BY 4.0, file list and md5 as in the evidence JSON) and NEON DP1.20097.001, and the ENA row's stated use is widened to H4; every H4 training label, TON included, comes from water_chem.csv only; the Warren CSV is never a training or tuning label and stays scorer-only for the registered TON analysis; a TabPFN v2 weights licence row is added."
+    },
+    {
+      "id": "I-07-LETTER-GROUP-UNIT",
+      "severity": "should_fix",
+      "section": "§10 title ('area-blocked'); §10.2 line 614; §10.4 line 645; §10.5 lines 654-655",
+      "issue": "H4's split unit and claim wording assume the title letter is a geographic area. Nothing on disk supports that, and the label-free metadata gives reasons for doubt. Site-level disjointness of EA-dev and EA-test cannot be verified, and the letter is confounded with sampling month.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/microbe_arch_v2_evidence/ena_PRJEB90117_samples.tsv (sha256 f8b9ee...850d, label-free): lat, lon and location each have 1 unique value; 21 of 22 letters use numbers spanning 1 to 65 or 66 whatever the group size (S: 32 runs, numbers up to 66); 1,077 letter+number codes, 466 in more than one year; each letter is sampled in 1 to 10 of the 20 calendar months present (X: 14 runs, one month). M3E protocol line 74-75 calls the area reading 'undocumented'.",
+      "suggested_ruling": "H3 and H4 results are worded 'held-out anonymised letter groups', never 'areas', 'area-blocked' or 'unsampled areas of England', unless a citable source documenting the letter as a geographic unit is recorded in the log before the H4 freeze; the confound of letter group with sampling month is disclosed with every H4 result."
+    },
+    {
+      "id": "I-08-COUNT-ONLY-MODE",
+      "severity": "should_fix",
+      "section": "§9.1 lines 504-514; §9.5 line 573; §9.6 lines 582-583; §10.6 lines 661-662",
+      "issue": "The text says the count-only mode reads the ID column alone, but the kill rules need labelled-sample counts per determinand in the scored block and in EA-test, which requires touching the value columns. The mode is therefore underspecified. The two ASV files are called label-free by description only, with no header check. 'About 1,070 linked runs' is an estimate with no stated source, and the M3E figure it scales from is itself inconsistent with M3E's own disclosure.",
+      "evidence": "Amendment line 506-507 ('reads the ID column alone') against line 582 ('< 500 linked labelled samples in the scored block') and line 661 ('< 300 linked labelled EA-test samples'). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/microbe_ea_protocol.md:70 ('1,620 of 1,649, linked by id only') against :33 ('Only the header row has been read'). 1,094 x 1,620/1,643 = 1,079. No EA label file is on disk (find for water_chem, warren, ASV_counts, microbe_ea_ids: 0 hits).",
+      "suggested_ruling": "The count-only mode may read the id column and test determinand columns for null only; it emits integers per determinand, block and letter group and no value, quantile or censoring statistic; it is unit-tested on synthetic data and is inside the hashed closure; the two ASV files get the same first-line header check before download and are rejected if any column is a chemistry variable; M3 records in the log how '1,620 of 1,649' was obtained."
+    },
+    {
+      "id": "I-09-SYNTHESIS-ITEMS-NOT-CARRIED",
+      "severity": "should_fix",
+      "section": "Governing inputs lines 14-24; §2.4-§2.6 (D1 gate); §4 (D2); §10.6 line 663-665",
+      "issue": "SYNTHESIS.md was written 15 minutes before this draft and asks for three M3 additions. None is in the file and SYNTHESIS is not a governing input. SYNTHESIS calls its items proposals, so they bind only if the lead says so. The missing D1 safeguards matter because the D1 gate decides slot #8.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/architecture_research/SYNTHESIS.md (sha256 a7d74c...43da4, mtime 12:30:55): line 468 'Add: the D1 classical-calibration ablation and slope diagnostic (§3.4 item 1) and the Thorpe/M5-X overlap count (C3)'; lines 388-393 'Required before the D1 gate: (i) an unregularised bio.infer-style ablation ... (ii) ... within-region slope and predicted/observed SD'; lines 334-337 (X7: physics-constants module 'must exist before any amendment that uses these constants is stamped'). grep of the amendment for bio.infer, unregular, physics_constants, SYNTHESIS: 0 hits (only the deshrinking clip at line 148). find for sentinel/physics_constants*: nothing outside legacy/.",
+      "suggested_ruling": "SYNTHESIS §3.4 item 1 (i)-(ii), C3 and X7 are adopted for M3: the unregularised ablation and the slope and SD-ratio diagnostic on D1's development predictions are specified in the log before D1's first development run, reported with the gate, and the ablation is a counted, disclosed configuration; the counts-only Thorpe/M5-X overlap report is owed before the H4 freeze; D2 and its XGB twin may not run until sentinel/physics_constants exists with unit tests."
+    },
+    {
+      "id": "I-10-D2-STRUCTURE-OPEN",
+      "severity": "should_fix",
+      "section": "§4 lines 254-265; §7.1 line 378",
+      "issue": "D2's design is not internally consistent and is finished only after D1's results on the same development rows. The 18-d latent has no alkalinity, Mg, Na or K, yet the 'exact' pH and conductivity identities need them. pH, SC, DO, TN and TP are listed both as latents and as decoder outputs. Line 378 implies further heads that the latent list lacks. This leaves structural choices open after results.",
+      "evidence": "Amendment line 254 (latent = 17 master dimensions + SRP), lines 256-258 (SC from ions, McCleskey; pH from DIC and alkalinity, Plummer and Busenberg), lines 260-261 (remaining hyperparameters fixed later; 'may use nothing but D1's results'), lines 264-265 (decoder derives SC, pH, DO, TN, TP), line 378 (Mg, Na, K, Si, TDN, TDP, SRP reported only if D2 runs). Master vector at lines 115-117; GEO-8 table at lines 357-366 (no alkalinity, Mg, Na, K).",
+      "suggested_ruling": "D2's complete latent list, the decoder's input-output map (which of pH, SC, DO, TN, TP are latent and which derived), and its auxiliary labels (given identically to the XGB twin) are fixed in a dated log entry before D1's first development number is read; only optimiser, epochs and the three scalars with their priors may be fixed afterwards; any later structural change is a new counted configuration under rule 16."
+    },
+    {
+      "id": "I-11-DISK-FLOOR-AND-DATA-CAP",
+      "severity": "should_fix",
+      "section": "§8 lines 464-465; §12 rules 12 and 21; §13 (EA read stream)",
+      "issue": "The EA read stream that §13 lists as allowed stops at 50 GB free, below the 60 GB project floor, and it has started. The 5 GB M3 new-data cap is not totalled across the EA stream (own cap 5 GB), GAS-3 (1 GB) and the Thorpe files (78.6 MB), so the stated caps can sum to more than 5 GB.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/data/download_ea_biofilm.py:40 (CAP_GB = 5.0) and :138 ('if used > CAP_GB or free < 50'). /home/bcheng/STOCKHOLM/sentinel_data/processed/ea_biofilm/_parts holds 5 run files written 13:18-13:19 (280 KB); no stream process running at check time. df: 179 GB free, 95% used. /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/sota_campaign.md:86 (M3 cap 5 GB).",
+      "suggested_ruling": "The M3 5 GB cap applies to the summed retained footprint of the EA windows, DP1.20097.001 and the Thorpe files, reported with du in the log after each download; the EA stream's stop threshold is raised to 60 GB free before its next batch."
+    },
+    {
+      "id": "I-12-M6-DATE-RESERVATION",
+      "severity": "note",
+      "section": "§10 (H4); cross-workstream",
+      "issue": "98 grouped EA runs were collected on or after 2023-10-01 (50 in EA-dev, 48 in EA-test), so their 3-month-mean labels include EA measurements from the period the campaign reserves for M6. The lead has already ruled there is no overlap because M6 reserves Hydrology-API sonde data. The campaign line is worded more broadly than that ruling, and the amendment does not mention the point.",
+      "evidence": "ENA TSV collection_date counts by partition (2023-10: 74 runs, 2023-11: 24). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/sota_campaign.md:93 ('EA values from 2023-10-01 onward'). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/ea_england_allocation.md reservation 1 (sonde values). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/plans/architecture_research/LEAD_DECISIONS_20261110.md:61 and :187-188 (ruling 4b). bioassess_x_protocol.md and hydromet_ea_protocol.md: 0 mentions of M3 or biofilm.",
+      "suggested_ruling": "No action needed; optionally record that sample-based WIMS means are outside the M6 reservation as ruling 4b scopes it, and reword campaign line 93 to 'EA sonde values'."
+    },
+    {
+      "id": "I-13-FROZEN-FILE-MODES",
+      "severity": "note",
+      "section": "Governing-input table lines 16-24; §12 rule 1; OQ11",
+      "issue": "The five protocol and split files called frozen or unchanged are mode 0664 and no microbe/prereg_snapshot row exists yet. Their hashes equal the amendment's table today, but nothing prevents an edit. The new stamp gate module exists and has no caller yet.",
+      "evidence": "stat: microbe_protocol.md, microbe_ea_protocol.md, events_microbe_protocol.md, microbe_split.json, microbe_split_lodo_x001.json all 0664 in /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/. Registry scan: 0 rows with experiment microbe/prereg_snapshot. /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/microbe/stamp.py (12:58): grep for require_stamp finds no caller in M3 code.",
+      "suggested_ruling": "At the stamp, the five files are set to 0444 and their sha256 values are included in the snapshot row; every code path that produces a development number on a new arm or target calls require_stamp before the first such run."
+    },
+    {
+      "id": "I-14-VERIFIED-OK",
+      "severity": "note",
+      "section": "Header; §10.2; Appendix A; Appendix B; §13",
+      "issue": "Items checked against the repo that hold as stated. All seven governing-input hashes and all six Appendix B hashes match. The EA partition reproduces exactly. Appendix A.1, A.3 and A.4 counts equal the evidence JSON. No result exists on any new arm, target or protected block. No EA or dissolved-gas label file is on disk. Required packages are present, so nothing needs installing into the sentinel2 environment. Work done before the stamp is within the allow-list.",
+      "evidence": "Partition rerun with numpy 2.2.6, one thread: EA-test {A,F,I,M,N,R,X}, 549 of 1,643 runs (0.3341), first draw accepted; 1,649 unique titles; 22 groups. Registry: 2,821 M3-microbe rows, all development CV on the 8 primary targets with existing models; no holdout, reserve or Test-B row. /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv holds only lodo, lodo_x001, release_002_to_001 and the registered secondary release_001_to_002 (running job, existing models; protocol line 159). importlib.metadata: tabpfn 2.2.1, xgboost 3.2.0, lightgbm 4.7.0. GEO build ran 13:11 printing counts only.",
+      "suggested_ruling": "None."
+    }
+  ],
+  "points": [
+    {
+      "point": "OQ5 (H3/H4 look design)",
+      "recommendation": "Do not approve design B by default. Either carve all EA-label use (§9-§10) out of this stamp into a separate M3E amendment, or approve B with a written exception to campaign rule 1 and these conditions: the TON change is declared; no H3 model, comparator, selection or wording changes after M3E/test; the EA-dev extract is written by id, tested to refuse EA-test ids, and hashed; EA-test labels stay scorer-only between the two looks; a guard for both M3E looks exists before any label download. Reject C.",
+      "reason": "B uses a scored block for training (sota_campaign.md:30). C scores EA-test twice. A leaves 7 clusters, which the file's own §9.6 rule makes descriptive. testlook.py:67 has no M3E look. SYNTHESIS line 468 already expects a separate M3E amendment before any EA label download."
+    },
+    {
+      "point": "OQ6 (M5-X test-key exclusion)",
+      "recommendation": "H4 does not train until a new written ruling replaces the part of ruling 4a that cannot be met. First run the post-stamp header check. If water_chem.csv exposes site and date keys, M5-X supplies a key list, a counts-only overlap report is filed, and overlapping rows are excluded by id. If not, accept the firewall only with a ruling that no H4 model, prediction or EA-derived table ever enters M5-X, Fuse, the event layer or downstream, and that M5-X never ingests the Thorpe or Warren tables. Otherwise drop H4.",
+      "reason": "Ruling 4a is literal about excluding M5-X test keys. ENA gives one coordinate for all runs and titles are anonymised, so keys cannot be matched from what is on disk. bioassess_x_protocol.md does not mention M3 or biofilm, so the reservation exists on one side only."
+    },
+    {
+      "point": "OQ7 (Thorpe file pin and header check)",
+      "recommendation": "Accept, with conditions. Record md5 and size now and both md5 and sha256 at download. Run the header check only after the stamp, with a hashed script under python -I in an empty directory, which holds the 2,048 bytes in memory, aborts without output if no newline is in the range, prints the first line only and stores nothing else. Apply the same check to the two ASV files. Never fetch correlations.csv, envfit.csv or titan_all.csv.",
+      "reason": "The md5 and sizes come from the Zenodo record metadata, whose evidence file hash matches Appendix B. A 2,048-byte range of a CSV normally contains the first data rows, which may be EA-test label values, so the discard must happen before anything is printed or logged."
+    },
+    {
+      "point": "OQ9 (who runs the DP1.20097.001 download)",
+      "recommendation": "The lead runs it through scripts/data/download_neon.py. M3 never reads the key file or the token variable. Before the run: add the licence row; add the product to the downloader by a reviewed change; do the size listing (the script has no size-only flag today); cap 1 GB and count it toward the 5 GB total. The build must split development from protected rows and print counts only, as the GEO build does.",
+      "reason": "download_neon.py loads the token itself (line 464, neon.read_token), sends it only as an API header, uses a token-free session for files and redacts it in errors. Dissolved-gas values for 2024 events are new holdout labels and need the same guard as GEO."
+    },
+    {
+      "point": "OQ11 (execution entries in a new log file)",
+      "recommendation": "Yes. Use the new log file. At the stamp set the three protocol files and two split files to 0444 and include their hashes in the snapshot row. Add one rulings sentence saying that the outcomes microbe_protocol.md §9-§10 expected 'recorded here' are recorded in the log instead.",
+      "reason": "Editing microbe_protocol.md would change a governing-input hash listed in the amendment. Those files are 0664 today with no snapshot row, so nothing currently prevents an edit."
+    },
+    {
+      "point": "OQ8 (Warren comparator, licence and data aspect)",
+      "recommendation": "Reimplementing the recipe without copying code is correct. Use Table 1 values only with a page reference recorded in the log. The Warren CSV stays scorer-only and is never a training or tuning label. If Table 1 cannot be transcribed, the stricter choice is the full published search space, not the reduced 60-draw search.",
+      "reason": "docs/licenses.md line 15 records that the Warren repository has no licence and limits the CSV to research evaluation. A reduced budget for the published method could weaken the strongest-published comparator; that judgement belongs to the comparator review."
+    },
+    {
+      "point": "OQ2 (17-dimension master vector, data aspect)",
+      "recommendation": "Acceptable on data grounds if three things are bound: every reference twin required by lead rule 3 is trained with the same 9 auxiliary labels; field_temp_c is a training label only and never a prediction-time input for held-out rows; GEO and temperature values of holdout and reserve rows stay in the protected file.",
+      "reason": "GEO labels exist on 1,117 to 1,182 of the 1,215 development events, so the auxiliary supervision is real added information and comparators must receive it too. The owed unit test 'predictions do not change when held-out labels change' covers the second condition only if temperature is included in it."
+    },
+    {
+      "point": "OQ1 (run cap, protocol aspect)",
+      "recommendation": "Default to the stated fallback (8 runs) unless the lead raises the cap in the rulings as a declared deviation from protocol §10.8. Whatever the cap, the unregularised D1 ablation, the attribution control and ablations A1-A3 are counted and disclosed.",
+      "reason": "The cap is a number in a frozen protocol. SYNTHESIS §3.4 asks for an extra D1 ablation that the file does not count, so the real number of configurations exceeds what the file totals."
+    }
+  ],
+  "summary": "Hash matches. Governing-input and Appendix B hashes, the seed-20261110 partition (reproduced: 549 runs, 33.4%), Appendix A counts and the Zenodo pins all verify. The registry and run folders hold no result on any new arm or target, and no EA or gas label file is on disk. No blocking finding in this lens. Eleven should_fix items need binding rulings: design B trains H4 on a scored block against campaign rule 1 and changes the registered TON analysis; both protected-row loaders skip the claim when root= is passed; holdout censoring counts were computed and printed; Test-B cannot be claimed after M3/test as coded; licence rows are missing; the letter group is unverified as an area."
+}

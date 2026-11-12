@@ -115,7 +115,8 @@ def main(argv=None):
                 pr["claim"] = bool(rec["status"] == "inferential" and pr["domain"].get("holm_reject")
                                    and pr["site"].get("holm_reject") and pr["domain"]["delta_brier"]["diff"] < 0)
         # frozen sigma/Platt maps of the evaluated model (fitted on all development rows; for the test pass)
-        out["frozen_maps"] = {code: ME.frozen_maps(S, oof[a.model].loc[idx], code) for code in out["events"]}
+        out["frozen_maps"] = {code: {m: ME.frozen_maps(S, oof[m].loc[idx], code) for m in names}
+                              for code in out["events"]}
         dest = paths.ensure(paths.RUNS_ROOT / "microbe" / "events") / f"events_dev_{a.model}_{a.scheme}.json"
         dest.write_text(json.dumps(out, indent=1, default=float))
         if not a.no_log:

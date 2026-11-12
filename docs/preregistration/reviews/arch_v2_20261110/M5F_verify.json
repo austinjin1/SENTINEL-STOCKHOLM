@@ -1,0 +1,136 @@
+{
+ "file_sha256": "480c765fb3f783b2d441f6aaeec6e6d263d42b9ccf15b2515fe23f9ef1ef099e",
+ "verdicts": [
+  {
+   "id": "B1",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Could not refute. Protocol L490-523 (items 1-9) give algorithm names and input sets only. L546-548 fix row budgets, L557-561 list the development-chosen variant dimensions (training pool, diatom block, region descriptors, pool-prevalence columns, auxiliary features) and none is a setting. The only tuning wording is L577, about the candidate. G5 (L809) orders the first comparator table but does not freeze settings. bioassess_x_protocol.md L209 and L317-322 did fix them (Hellinger features of taxa in >= 10 rows, TabPFN at the 300 most prevalent, median fill, `configs/bioassess/baselines.yaml`). That config is on disk, read-only, sha256 bfc4e86b...011a, with entries rf, gbm, knn_community, wapls, tabpfn, nearest_reference and none for MEMLM, multi-output RF, extra trees or a ridge penalty. `pfn_hybrid.py` L12 and L158 already call the M5-X learner (`XD._fit_learner('tabpfn', ...)`), so the fix matches the code's intent. As written, comparator settings can be set or left weak after French development numbers exist, while the candidate is fixed: a rule choosable after results, in SENTINEL's favour.",
+   "recommended_lead_ruling": "Additive ruling, no design change (points to stamp_with_lead_rulings). Exact text: \"Comparator settings (fixed now). Tabular features and hyperparameters of the comparators of items 1, 2 and 5-9 are those of the M5-X scorer: `configs/bioassess/baselines.yaml` (sha256 bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a), Hellinger features of harmonised taxa present in >= 10 training rows of the fold, missing numeric inputs filled with training-row medians, no tuning on French rows. A setting that file does not hold (MEMLM members and stacking rule, multi-output RF, the index-regression RF, the ridge penalty of the region-offset model, the TabPFN taxon cap with two assemblages, which is not below the hybrid's 200 + 100) is written in the comparator table before the first French development fit of any model and is not changed afterwards. No comparator is weakened or removed (RESEARCH_PLAN §15.5 item 4).\""
+  },
+  {
+   "id": "B1",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Same defect as integrity B1, verified on the same lines (L490-523, L546-561, L577). The reviewer's list of settings missing from `baselines.yaml` is correct: I read the file and it has no MEMLM, multi-output RF, ridge or index-regression entry. One finding, not two.",
+   "recommended_lead_ruling": "Merge with integrity B1 into one ruling (text given there). Use the integrity wording for the features (Hellinger, >= 10 rows, median fill) and add the stats reviewer's items (multi-output RF, index-regression RF, geography-only RF) to the list of settings written before the first French development number."
+  },
+  {
+   "id": "B2",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "L707 and L709 name the members as \"RF[c+ctx], TabPFN v2\" with no recipe. L711-713 fix only the BioSet-MA member; L714-715 fix only the training pool and budgets of the #8 members. L557-558 says each comparator's variant is chosen on French development, seed 0, and nothing says whether the ensemble members are those variants or a fixed recipe, or whether they take the diatom block, descriptors or prevalence columns. Partly mitigated for #8: L715 (\"no French label enters any member\") and L731-732 already bar the development-chosen reading there, so the leak the reviewer describes for #8 would contradict the text. It is not mitigated for #6 (`ens_f`), which L796 calls the likeliest SOTA candidate: its make-up could be picked after development numbers and would be an uncounted configuration beyond the cap (L716). This is an ambiguity in the confirmatory candidate's definition.",
+   "recommended_lead_ruling": "Additive ruling fixing one recipe before the stamp (points to stamp_with_lead_rulings; it defines the candidate and leaves the family, test and decision table unchanged). Exact text, after L715: \"Fixed baseline members. The RF and TabPFN v2 members of #6 and #8 are one fixed recipe for every target, not chosen on development and not the comparator variants of §8: inputs = invertebrate Hellinger features + the attached-diatom Hellinger features (parity table, row 1) + the context columns of §9.1 (without latitude and longitude in #8); training rows = the candidate's own pool for the track (#6) or the UK allowed rows (#8); no region descriptors, no pool-prevalence columns, no auxiliary out-of-fold features; the settings of `configs/bioassess/baselines.yaml`.\" The lead may take the M5 form without the diatom block instead; no French data and no validation number exist (verified), so either choice is result-blind today. It must be in the rulings file at the stamp."
+  },
+  {
+   "id": "B3",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "L791-792 says the per-cluster variance was \"seen in M5-X (NRSA and UK rows, `r2_anomaly`)\". bioassess_x_protocol.md L246-260 defines the proxy as the empirical SE of the paired difference on frozen M5 Test A (1,901 clusters) scaled by sqrt(1,901 / n), and states \"The SE proxy comes from NRSA streams\" and that orthophosphate, ammonia and nitrate have no proxy. `scripts/eval/bioassess_x_power.py` computes it from `pred_testA.parquet` for TP, TN, conductivity, chloride, turbidity and pH only. `power_x_v1.json` (key names and counts only) has n_clusters_testA 1901; the 2,149 UK figure is a scaling target. No UK row contributed. The arithmetic itself is right (multipliers 4.039 / 3.833 / 3.707, the table at L782-784, 1,435 and 3,673 clusters all reproduce). False statement of fact; no rule or gate changes.",
+   "recommended_lead_ruling": "Correction of record in the rulings file, which is what the lead did today for other workstreams (microbe rulings I-04; hydromet rulings L5 \"corrections of the amendment text\"). Exact text replacing L791-793: \"Assumption. The scaling assumes that the per-cluster variance of the paired difference seen on frozen M5 Test A (NRSA streams, about 1 sample per cluster, `r2_anomaly`), scaled by cluster count as in M5-X, transfers to France. No UK row contributed to it. Nitrate-N, ammonium-N and orthophosphate-P, pooled R² and the F-T targets have no proxy until `power_f_v1.json`. It may not transfer: samples per cluster and label noise can differ. The realised CI widths feed row 4.\" Under a strict reading of the stamp rubric a false statement needs a v2; that v2 would change only these three lines."
+  },
+  {
+   "id": "S1",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "L164-166 names `ftrack.locked_availability()` as the one audited reader. A repo-wide search finds the name in no .py file. `ftrack.py` was edited during this review (14:52 EST, now 491 lines; the reviewer saw 439 and I first saw 438): it still has only `window_counts` (now L270), and the `locked_dir()` docstring (now L133-134) still says \"Store of French chemistry rows dated >= LOCK_FROM\", the v0 design. `UK_ALLOWED_TO` is now 2020-12-01 at L58, so that item of L955 is done. L955 lists the not-yet-written code and omits `locked_availability`. L86-88: count requests (`size=1`) land in the locked store and the fetcher reads their count, an unlisted second reader. Nothing can leak today because no French data is on disk.",
+   "recommended_lead_ruling": "One ruling: \"`ftrack.locked_availability()` is not yet written (only `window_counts` exists) and the `locked_dir()` docstring is stale; both are added to the §15.3 list and are owed before gate G2. The fetcher reads only the `count` field of a count response and never parses a record.\""
+  },
+  {
+   "id": "S2",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "L165-166 says the function returns the number of analyses and of distinct dates and nothing else. Rules 5, 7 and 8 (L393-396) need the result field (empty result, exact-duplicate removal on result, non-numeric), and rule 10 (L398) counts \">= 6 analyses ... after rule 7\". L404-406 says the unlocked tabulation does not read `resultat`. Only rule 9 has a stated handling for locked rows (L397). The text does not say which rules the pre-look count applies, nor whether the scored set is the frozen mask or the scorer's recomputation. The masks drive the 650 gate, G3 and the family, so the gap should be closed, but it cannot be exploited with a label value.",
+   "recommended_lead_ruling": "Ruling as the reviewer proposes: \"`locked_availability()` applies rules 1-8 of §6.3 inside the function and returns counts only. The scored rows of a target are the rows of the frozen availability mask whose label exists when the scorer applies rules 1-10. The number of mask rows without a label is reported and never changes the family.\""
+  },
+  {
+   "id": "S3",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "L82-83: step C requests chemistry only for stations with an eligible invertebrate operation. L212-216: the fallback is a different, nearby chemistry station and \"is added for all rows\". No pull for the fallback stations is described and the text does not say whether two stations' analyses are pooled. The choice is from counts only and before the split freeze (L213), so it is not result-driven.",
+   "recommended_lead_ruling": "Ruling as the reviewer proposes: \"If the fallback is triggered, the fallback stations are requested in one further step-C pull under the same lock, size-check and cap rules, and the counts are redone once. A row uses its same-station analyses when it has any in the window; the fallback station is used only for a row with none. Analyses of the two stations are never pooled.\""
+  },
+  {
+   "id": "S4",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "L451-452: derived event probabilities \"are recalibrated on development rows only\"; L544: comparator residual spread \"estimated on development rows\". Neither names the regions, and the development pseudo-test of fold g is region g, 2019-2021. Calibrating on the test region's own earlier labels weakens leave-region-out. It affects F-E only (secondary, outside the Holm family) and both sides alike.",
+   "recommended_lead_ruling": "Ruling: \"For fold g, F-E recalibration (L452) and the comparator residual spread (L544) use the development pseudo-test rows of the other regions only.\""
+  },
+  {
+   "id": "S5",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "All five quotes match. (i) L206-207: eligible `code_methode` values fixed at G4 \"from the SANDRE method reference and from the number of operations per code\", no criterion. (ii) L407-409: above 5 % outside the whitelist \"the lead is told\" and the whitelist \"may be changed\", no rule. (iii) L236-237: match below 90 % gives \"the lead is told\", no consequence. (iv) L546-548: a rule for raising TabPFN budgets, none for TabPFN not fitting. (v) L508-509: I2M2 component metrics \"only if they are delivered as index results\", codes not fixed. All are pre-label and counts-only, so none can see a result value.",
+   "recommended_lead_ruling": "Five one-sentence rulings as the reviewer wrote them: (i) eligibility by SANDRE record naming a standard macroinvertebrate stream protocol, unknown codes stay eligible under the 'unknown' token, operation counts never a criterion; (ii) a code is added to the whitelist only if its SANDRE record shows the same quantity convertible by a fixed molar factor, nothing is removed; (iii) below 90 % the split freeze waits for a stamped ruling and matching rules (a)-(c) do not change after any French chemistry count is seen; (iv) if TabPFN v2 does not fit, context rows and then taxa are halved for comparator, hybrid and controls together, TabPFN is never dropped; (v) component-metric index codes are listed in `bioassess_f_codes.json` at G4 from SANDRE records."
+  },
+  {
+   "id": "S6",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "L569-571: a comparator \"applies\" when it can be fitted under the pools of §3, and one that cannot is listed \"not compared, with reason\" in the freeze candidate, which is written after development numbers exist. Row 1 (L758) depends on this set. L564 protects only a comparator that is strongest somewhere on development. The criterion is factual (can it be fitted), which limits the room, but nothing bars a declaration made after a development score is known. Close to the blocking line; kept at should_fix because the stated criterion is not a score.",
+   "recommended_lead_ruling": "Ruling replacing the last sentence of L569-571: \"A comparator applies to a track and target if it produced a development prediction for it. 'Not compared, with reason' is allowed only for a technical inability recorded in the comparator table when it first occurs and before any candidate validation number on that track. It is never based on a score.\""
+  },
+  {
+   "id": "S7",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "L810 (G6): \"more than 0.02 below the best single comparator on the selection score components for >= 4 of 6 F-A primary targets\" does not define components, the seed, or the case of fewer than 6 targets, and applies an F-A count to both tracks. L811 (G7): \"mean development pooled R²\" names no targets, track or seed. L745: \"Up to two further configurations per track are secondary\" does not say which two. These decide which configuration becomes the candidate, on development only; the test stays valid. Same lines as stats S3.",
+   "recommended_lead_ruling": "One ruling, merged with stats S3: G6 = (pooled R² + r2_anomaly)/2 of the target, French development, seed 0, for at least two thirds of the final F-A primary targets, and it applies to F-A and F-T; G7 = mean over the final F-A and F-T primary targets of French development pooled R², seed 0; L745 = the two next-highest eligible configurations by selection score."
+  },
+  {
+   "id": "S1",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Upgraded. L760: row 3 \"Below\" is only \"against the per-target comparator\". L759: a Holm-rejected candidate that fails row 1 is \"Above, not robust\" even when the failure is a listed comparator significantly above it. L762: otherwise \"Competitive\". L772-773: target-level SOTA needs only \"not Below\" on the other metric. The per-target comparator is the strongest on development (L563-564), not necessarily at test. The lead already ruled on this for M5-X after v1 was received: bioassess_x_protocol.md amendment v10 (L492 onward, 14:37 EST) makes row 3 fire against any listed comparator, checked before rows 2, 4 and 5, and `label()` in `scripts/eval/bioassess_x_final.py` (L333) implements it. The reviewer cited only v9 and proposed a weaker fix. As written, M5-F would print \"Above, not robust\" or \"Competitive\" next to a comparator that is significantly better, which is a label unfair in SENTINEL's favour and differs from the sister protocol's rule.",
+   "recommended_lead_ruling": "Ruling overriding row 3, in the v10 wording (label function only; family and tests unchanged): \"Row 3. A track × target × metric is labelled 'Below' when the paired 95 % CI of the candidate minus the comparator has its upper bound < 0 against the per-target comparator or against any listed comparator that applies (§8). This is checked before rows 2, 4 and 5: 'Above, not robust', 'Inconclusive (underpowered)' and 'Competitive' are given only if no listed comparator is significantly above the candidate. The comparator is named in the reason text.\" With this, L772-773 needs no change."
+  },
+  {
+   "id": "S2",
+   "lens": "stats",
+   "holds": "partly",
+   "severity_after_check": "should_fix",
+   "evidence": "L758 gives \"region-unit paired CI > 0\" with no level, resample count or comparator, and \"per-seed Δ > 0\" with no comparator. Much is inferable: L472-473 gives B = 10,000 for paired CIs and names the region-unit CI; every other CI in §8 and §10 is 95 %; the family at L749 is against the per-target comparator; L478-480 defines per-seed pairing and points to the M5-X scorer, which uses a 95 % percentile paired bootstrap over region units against the per-target comparator and per-seed Δ against the same comparator (verified in `bioassess_x_final.py`). The gap is real because L472-473 calls the region-unit CI a sensitivity while row 1 makes it a condition, and with 6-8 units the exact definition decides labels.",
+   "recommended_lead_ruling": "One-line ruling: \"The region-unit CI of row 1 is a 95 % percentile paired bootstrap that resamples region units (B = 10,000) on the seed-mean statistic, against the per-target comparator; row 1 needs its lower bound above 0. Per-seed Δ is against the per-target comparator. Both are as in `scripts/eval/bioassess_x_final.py`.\""
+  },
+  {
+   "id": "S3",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "G6, G7 and L745 as under integrity S7. In addition: L812 (G8) \"on the selection score\" names no track; L515-516 \"the mean of the three strongest single baselines on development\" names no metric, target scope or seed; L563-564 \"the strongest comparator on development for that metric\" names no seed and no tie rule, while the candidate side has one (L743-744). Seed 0 is the likely reading (L558, L741), and all of these are settled on development and written in the freeze candidate before the look.",
+   "recommended_lead_ruling": "Merge with integrity S7 and add: G8 = the selection score of §9.5, per track; item 7 = the three single baselines with the highest per-target mean of the two co-primary metrics, French development, seed 0; per-target comparator = seed 0, ties within 0.002 go to the earlier item of the §8 list."
+  },
+  {
+   "id": "S4",
+   "lens": "stats",
+   "holds": "partly",
+   "severity_after_check": "should_fix",
+   "evidence": "The protocol has no saturation rule: the word appears only for DO saturation and a SANDRE field. RESEARCH_PLAN §15.5 (amendment 2026-11-08) asks for harder tracks and difficulty strata to be defined before results. The strata part is met: the >= 50 km stratum (L299-300) and the same-watercourse stratum (L301-302) are fixed a priori, and F-E exists as a secondary track. What is missing is a pre-declared flag tying them to a saturated outcome and a sentence closing the block to new strata after the look.",
+   "recommended_lead_ruling": "Additive ruling: \"Saturation flag. A track × target is flagged 'saturated' if the strongest simple baseline of item 1 has pooled R² >= 0.9 at test or if the candidate and every named comparator of items 5-7 tie within paired CIs. For a flagged target the >= 50 km stratum, the same-watercourse stratum and F-E are the pre-declared hardness strata and are reported next to the row. No new track or stratum is defined on the 2023-2025 block after the look.\""
+  },
+  {
+   "id": "S5",
+   "lens": "stats",
+   "holds": "partly",
+   "severity_after_check": "should_fix",
+   "evidence": "L537 calls WA-PLS2, kNN-MAT and MEMLM \"invertebrate methods\" and withholds diatom-only training rows from them. WA-PLS and MAT are general transfer functions first used on diatoms, so the reason given is loose, and the candidates #2-#6 do read diatom tokens. The exposure is limited: the ML baselines of item 6 receive the diatom features and diatom-only rows (L536-537), the index regressions already use IBD and IPS (L507-508), and row 1 needs every listed comparator beaten. So this is a gap in the published-method comparator for pH and nutrients, with no hidden advantage shown.",
+   "recommended_lead_ruling": "Additive ruling (adds comparators, weakens none): \"WA-PLS2 and kNN-MAT are also fitted on the diatom Hellinger features of all labelled training rows with a diatom sample, and on the two assemblages together, as named variants of items 2 and 3 with the `baselines.yaml` settings; they apply to rows with an attached diatom operation. MEMLM follows the same rule if it is implemented.\" If the lead declines, the ruling should instead state the reason in the 'not compared' list."
+  }
+ ],
+ "missed_blocking_issues": [],
+ "overall": "stamp_with_lead_rulings",
+ "overall_reason": "The hash matched at the start and at the end (480c765f...099e, 960 lines, 85,198 bytes). Four items are blocking after my check: comparator settings not fixed (B1, both lenses), the RF and TabPFN members of `ens_f` and `ens_zs` not fixed (stats B2), the wrong provenance of the power proxy at L791-792 (stats B3), and row 3 \"Below\" tested only against the per-target comparator (stats S1, which I upgraded because the lead's own M5-X amendment v10 of 14:37 EST closes the same gap). Each has an exact ruling text above; none changes the Holm family of 36, the tests, the folds, the lock or the candidate list. The remaining findings are one-sentence clarifications. I recommend stamping with rulings and not asking for a v2, with one caveat: B3 is a false statement of fact, which the rubric for this review lists under revise_before_stamp. I still point to rulings because the lead corrected amendment text through the rulings file twice today (microbe I-04, hydromet L5) and the correction changes no rule. If the lead reads the rubric strictly, a v2 needs only the three lines of B3 rewritten. The B2 member recipe must be in the rulings file at the stamp, not after. The author-flagged facts hold: (b) both date cuts allow 199,234 invertebrate and 14,030 diatom samples and the 2020-12-01 cut drops 0 (metadata only); (a) L525-530; (k) L645-651; (g) L624-626; no French data is on disk; the registry has one M5-F row, `bioassess_f/smoke_synthetic`, and no validation number. The department assignment, multipliers, power table, molar factors and event thresholds all reproduce. Not checked: anything needing French data, and licence strings at source. `ftrack.py` was edited during this review (14:52 EST, 491 lines); `locked_availability()` still does not exist."
+}

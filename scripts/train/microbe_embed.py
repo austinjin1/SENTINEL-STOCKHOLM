@@ -37,7 +37,7 @@ from sentinel.models.microbe.cv import EMB_DIR_NAME
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--encoder", choices=["kmer5", "dnabert_s", "kmer5_v4"], required=True)
+    ap.add_argument("--encoder", choices=["kmer5", "dnabert_s", "kmer5_v4", "kmer5_v4_150"], required=True)
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--batch", type=int, default=128)
     ap.add_argument("--fp16", action="store_true", help="fp16 inference (default fp32; see scripts/eval/microbe_dnabert_parity.py)")
@@ -54,17 +54,18 @@ def main(argv=None):
     if a.encoder == "kmer5":
         emb = dna.kmer_profile(seqs["sequence"].tolist(), k=5)
         info = {"k": 5}
-    elif a.encoder == "kmer5_v4":   # k-mer profile of the primer-harmonised V4 window (protocol §10.3); 0 if none
+    elif a.encoder in ("kmer5_v4", "kmer5_v4_150"):   # k-mers of the harmonised V4 window (§10.3; 150 bp = EMP, §10.8)
+        L = 150 if a.encoder == "kmer5_v4_150" else dna.V4_LEN
         prim = {}
         for d in sorted(paths.PROCESSED.glob("microbe_wq*/")):
             smp = pd.read_parquet(d / "samples.parquet", columns=["sample_id", "primer_set"]).set_index("sample_id")
             tok = pd.read_parquet(d / "tokens.parquet", columns=["sample_id", "seq_id"]).drop_duplicates("seq_id")
             prim.update(dict(zip(tok["seq_id"], smp["primer_set"].reindex(tok["sample_id"]).astype(str))))
-        win = [dna.v4_window(q, prim.get(i, "")) for i, q in zip(seqs["seq_id"], seqs["sequence"])]
+        win = [dna.v4_window(q, prim.get(i, ""), L) for i, q in zip(seqs["seq_id"], seqs["sequence"])]
         has = np.array([w is not None for w in win])
         emb = np.zeros((len(seqs), 4 ** 5), np.float32)
         emb[has] = dna.kmer_profile([w for w in win if w is not None], k=5)
-        info = {"k": 5, "window": f"V4 {dna.V4_LEN} bp after 515F", "frac_with_window": float(has.mean())}
+        info = {"k": 5, "window": f"V4 {L} bp after 515F", "frac_with_window": float(has.mean())}
     else:
         enc = dna.DNABERTS(device=a.device, fp16=a.fp16)
         emb = enc.embed(seqs["sequence"].tolist(), batch=a.batch)

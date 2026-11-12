@@ -92,6 +92,19 @@ def main() -> int:
         run.metric("n_params", S.n_params(model))
         print(f"SatWQ-Net params {S.n_params(model)}; fit {fit.sum()} inner {inner.sum()}")
         hist = {}
+        sc = cfg.get("ssl", {}) or {}
+        if sc.get("enabled"):          # orbit_protocol.md §11.6: SSL on unlabelled train-role <=2021 water pixels
+            from sentinel.models.orbit import ssl as SSL
+
+            t0 = time.time()
+            hist["ssl"] = SSL.pretrain_ssl(model, epochs=int(sc["epochs"]), mask_frac=float(sc["mask_frac"]),
+                                           lr=float(sc["lr"]), batch=int(sc["batch"]), device=device, seed=a.seed,
+                                           max_pixels=sc.get("max_pixels"), variant=str(sc.get("pixels", "v1")))
+            if a.fit_scheme == "track_u" and not str(sc.get("pixels", "v1")).endswith("_trackU"):
+                raise RuntimeError("track-U refits must use the track-U SSL pixel set (ssl.pixels=v1_trackU)")
+            run.metric("ssl_minutes", (time.time() - t0) / 60)
+            run.metric("ssl_final_mse", hist["ssl"]["history"][-1]["ssl_mse"])
+            run.note(f"SSL pixels {hist['ssl']['n_pixels']} ({hist['ssl']['manifest']}, sha {hist['ssl']['pixels_sha256'][:12]})")
         if cfg["pretrain"]["enabled"]:
             g = D.gloria_rows()
             gs = PL.gloria_set(g, norm)

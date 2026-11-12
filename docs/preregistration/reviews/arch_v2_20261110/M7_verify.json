@@ -1,0 +1,286 @@
+{
+  "sha256": "2b369018d2fc2a340594790756b3edbef3b1de28a38cf6073eb5908111908a56",
+  "verdicts": [
+    {
+      "id": "F1",
+      "verdict": "partly",
+      "final_severity": "should_fix",
+      "evidence": "Merges DS-01. sha256sum of /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/lite_arch_v2_amendment.md = 2b369018...8a56 (DRAFT v0.3, 45,651 bytes, mtime 13:14:38 EST, mode 0664); re-hashed 5 times between 19:15Z and 19:36Z, unchanged. The given hash ca281d84...d771 (v0.2) is not on disk. The identity problem is closed, not open: LEAD_DECISIONS_20261110.md (afternoon rulings) names v0.3 sha 2b369018...8a56 as 'frozen for review; further points go in a separate addendum draft', and reviews/arch_v2_20261110/README.md records that both reviewers read 2b369018. So a v0.4 is not needed for identity. Still true in v0.3: l.29-32 ('No code ... No P2 site list, index or chip exists') contradicts l.68-75; l.383 says the eligible count 'is not known'; header l.3-9 'No rule, constant ... was changed' is not accurate (v0.3 added the several-limits sentence of section 3.3 and the 1 % all-zero criterion of section 8.5 l.396-398); section 0 table lists only the no-KD twin of config 3; the lock's columns_read names 2 sources while p2.py candidate_pool reads 7 or more (all metadata).",
+      "ruling_text": "The stamped text is DRAFT v0.3, sha256 2b369018d2fc2a340594790756b3edbef3b1de28a38cf6073eb5908111908a56, set to 0444 at the stamp; the hash ca281d84...d771 (v0.2) is void. These v0.3 statements are superseded as statements of fact: l.29-32 (P2 code, lock, index and 513 chips exist; l.68-75 is the state), l.383 (the eligible test_p2 count is known), and the header sentence 'No rule, constant, model, comparator or threshold was changed' (v0.3 added the several-limits sentence of section 3.3 and the all-zero-pixel criterion of section 8.5). The section 0 table is completed by the no-KD twin of config 6 (validation rows registered 18:12 UTC). The P2 lock build read metadata columns of more sources than columns_read lists; the full list is recorded in the deviations file."
+    },
+    {
+      "id": "F2",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges DS-04 and Q4. Not refutable: /home/bcheng/miniconda3/envs/sentinel2/lib/python3.11/site-packages/tabpfn-2.2.1.dist-info exists; /home/bcheng/.cache/tabpfn/tabpfn-v2-regressor.ckpt is 44,390,977 bytes; sentinel/models/chemtox/tabpfn_model.py l.35 TABPFN_PIN = 'tabpfn==2.2.1', l.58 load_tabpfn(). Amendment l.291, l.482, Q4 and section 12 ('Package absent') state the opposite. SYNTHESIS X6 makes it mandatory where n <= 10k; plan M7_architecture_plan.md l.311 and l.319 put C2-TPF in the strongest-simple family 'if admitted'. Nothing was fitted by me. Downgraded from blocking because the lead has already decided to write it into the rulings file, and the specification can be fixed by one ruling without an edit.",
+      "ruling_text": "Comparator S10 = TabPFN v2 regressor (tabpfn 2.2.1 and the checkpoint already on disk, loaded only through sentinel.models.chemtox.tabpfn_model.load_tabpfn; no install, no download) on the 98 features of S6, with the same v2 training rows, label rule, log10 targets and evaluation rows as S6: one model per target, FNU and NTU handled as in S7, uncensored rows only, package defaults, no tuning, 3 seeds averaged. Where a target has more than 10,000 training rows, whole water bodies are kept in ascending order of sha256('SENTINEL-Lite-tabpfn|' + water_body) until the next one would exceed 10,000 rows, and the kept count is registered. S10 is a member of set C on P2, of the strongest-simple family and of the national baseline list of Q1b; its validation rows are registered before any candidate validation number. Amendment l.291, l.482, Q4 and the 'Package absent' row of section 12 are superseded."
+    },
+    {
+      "id": "F3",
+      "verdict": "confirmed",
+      "final_severity": "blocking",
+      "evidence": "Merges DS-02. Code: sentinel/data/matchups.py l.658-661 RESULT_KEEP has no depth_m; l.664-710 load_wqp reads every parquet under the root, so the sidecars _qc_rejects.parquet (225,652 rows) and _unmapped.parquet (175,399 rows) are read as results; l.589-655 wqp_surface_samples therefore sees depth as missing and only drops 'bottom'-flagged results. Callers include scripts/data/build_naip_matchups_window.py l.84-85 (national builds). sentinel/models/litev2/p2_index.py WQP_SAFE_COLS has no depth_m (P2 reads only variable=turbidity_fnu, so no sidecar, but is depth-blind). Counts, keys only (/home/bcheng/STOCKHOLM/sentinel_runs/lite/counts_arch_v2/wqp_sample_counts.json, written 14:29 EST by M7): national build depth field 'unspecified' for 4,433 of 4,433 turbidity, 2,879 of 2,879 TSS, 5,552 of 5,552 chl-a matchup rows; sidecar-touched 1,337 of 21,455 national matchup rows, 690 with no QC-passed harmonised row; national_pm7 1,993 and 869 of 51,381. Chip level (wqp_defect_counts.json): val+val_n turbidity 619 chips: 487 clean, 22 would drop, 111 may change; test roles turbidity 1,033: 853 clean. P2: of 34 WQP-labelled eligible test_p2 chips, 6 have a result deeper than 1 m and 2 have only deep results (189 -> 187 chips). The amendment has no depth rule (only mention: l.181) and fixes the opposite at section 3.4 item 1 ('every national evaluation label is unchanged'). Reviewers disagree (F3: keep 'as built'; DS-02: the M2 rule). The stricter option is the M2 rule; it is also the lead's project-wide rule and matches frozen lite_protocol.md section 2 ('WQP surface samples'), and it can be carried out. Blocking, not should_fix, because the rule changes things only the author can supply before a stamp: the national label hash and with it the pinned split hash (see missed item 1), the section 3.1 table, the P2 index hash 68688fac... and its counts; and the lead's own hold ('the national-2b label build is not finalised') is still open.",
+      "ruling_text": "Every WQP label of national-2b and of P2, in every role and for every model and comparator, comes from the harmonised QC-passed tables only (wqp_discrete/variable=*/); surface means depth_m <= 1.0 m or unknown; a result flagged 'bottom' is dropped at any depth; Secchi is exempt; the unchanged wqp_surface_samples applies it with depth_m passed as result_depth; a sample with no QC-passed surface result is dropped and the reason is recorded; sonde labels are unchanged; no other depth threshold is run or reported. Section 3.4 item 1 and the word 'unchanged' in l.14-17 and section 3.4 item 4 are superseded: chip roles and water-body ids are unchanged, label values and label hashes are not. Before the stamp M7 supplies a counts-only addendum: rows kept, dropped and changed per build, target and role; the corrected section 3.1 table; the new national label and split hashes; the rebuilt P2 index hash and eligible counts; and the list of existing models that are re-scored or re-run. No v2 arm or comparator is fitted on as-built labels."
+    },
+    {
+      "id": "F4",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges DS-05. Amendment l.208-212 keeps 0.3*KD on 'the existing file; no new teacher target is computed'; S8 (l.275) and P3b (l.281) use the teacher mean as a feature or KD head; section 9 l.479 gates CIR-Lite-R on Sentinel-2 water cells of val and val_n; l.508 says only 'M7 training is not changed'. /home/bcheng/STOCKHOLM/sentinel_runs/lite/counts_arch_v2/tests_overlap_counts.json: national-2 train chips on Test-S 777 (510 sites, 298 lakes), with_teacher_pairing 308; val_on_test_s 114; val_n_on_test_s 18. docs/handoff/M2-orbit.md l.35-36 reports 242 chips of the M7 teacher store in Test-S lakes x archive years. 242 and 308 count different things and nobody has reconciled them. The warm start (l.196-198) is from config 3, which was trained with KD on those pairings before the reservation; this cannot be undone without retraining and must be disclosed. The lead has already decided the core rule.",
+      "ruling_text": "In every v2 arm, ablation and comparator (S8 and P3b included) a teacher pairing on an M2 Test-S site-date (orbit-v3 test-role lake, in-lake, 2015-06-23 to 2023-12-31) carries KD weight 0 and supplies no teacher-derived feature; the mask is built from keys by this rule, its count (308 as counted today) is registered before the first v2 run and reconciled in writing with M2's count of 242 teacher-store chips; the 777 labelled chips stay in M7 training; no M7 output is ever an input to anything scored on Test-S. The CIR-Lite-R gate cells exclude the same lake-dates (114 val and 18 val_n chips are on Test-S lakes). Every write-up states that slots 7-8 warm-start from config 3, which was trained with KD on those pairings before the reservation."
+    },
+    {
+      "id": "F5",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges DS-08 and the author's statement on the twin of config 6. Amendment l.235-241 lists no no-KD ablation; section 0 table (l.43-55) lists only the twin of config 3; l.300 says 'The no-KD twins are comparators and are not counted'. Registry (read before): no-KD twin of config 3 validation rows 17:26Z; no-KD twin of config 6 (lite_student_mnv4s_raw_crop256_nokd_ctx_national2) validation rows 18:12Z. So 8 student configurations have national-2 validation numbers, 6 counted. Frozen lite_protocol.md requires the no-KD model of the selected configuration (H2; a freeze without it is refused) and l.317-318 counts the no-KD re-run 'separately ... not as selection candidates'; docs/handoff/M7-lite.md l.413-414 declared the no-KD comparator 'not a candidate' beforehand. So the twin of config 6 is not a breach of lead rule 2 (it is the H2 comparator of an existing configuration, not a new arm) and not a 9th configuration, provided it can never be selected. For slots 7-8 a twin made by setting the KD weight to 0 would still start from the KD-trained config 3.",
+      "ruling_text": "A no-KD twin is the same configuration with every setting identical and KD weight 0. It is never a selection candidate and never the carrier, it is named in a registry row before it runs, and it is not counted against the cap of 8 (frozen lite_protocol.md l.317-318). Two exist now (configs 3 and 6; validation rows 17:26 and 18:12 UTC); every write-up states '8 counted configurations plus N uncounted no-KD twins' and lists all their scores. For slot 7 or 8 the twin has KD weight 0 in the residual branch and starts its image branch from the seed-matched no-KD checkpoint natstudent_mnv4s_raw_crop256_nokd_national2_20261110-115426; its 3 seeds, export and registry rows must exist before the freeze is authorised, otherwise the slot cannot be selected."
+    },
+    {
+      "id": "F6",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges DS-13, Q1a, Q1b and the lead's question on slots 7-8. Amendment l.57-65 admits 'every design choice below was made knowing the national validation picture' and that config 6 (S = 0.853) is not better than GBM + context with a CI excluding 0. The cap of 8 is not in any stamped file: grep for 'cap' or 'configuration' in lite_national_protocol.md finds only the 10 GB cap (l.93); the cap is in docs/handoff/M7-lite.md l.371 only. docs/novelty_checks/lite.md (46 lines) is 'provisional, web-search pass only (2026-10-24)' and does not mention an anchor, residual or hybrid design. Frozen section 8a: 'State of the art' not applicable; First-in-class needs the novelty search and H1 for Secchi AND (turbidity OR TSS) against every applicable baseline, with diff < 0 for each of the 3 seeds. Test-N is unseen and the look is single, so the frozen label remains reachable; nothing wider is.",
+      "ruling_text": "National slots 7-8 can earn only the label of frozen lite_protocol.md section 8a, decided in code and unchanged: 'State of the art' is not applicable; 'First-in-class' needs the novelty search extended to the GBM-anchored hybrid before the look, and H1 for Secchi and for turbidity or TSS against every applicable baseline, which now includes S1-S11, P1, P2a/b and P3a/b, each with diff < 0 for each of the 3 seeds. The cap of 8 national-2 configurations is fixed by this ruling. Every write-up states that slots 7-8 were designed after the national-2 validation numbers of configs 1-6 were seen, and names the model a GBM-anchored hybrid."
+    },
+    {
+      "id": "F7",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Recounted by me from keys and coordinates only (P2 index sha 68688fac...; 25-km block roles from lite_split.json block_role, lite_split_national.json block_role_new and lite_split_national2.json block_role_unseen: 1,236 train, 506 test, 470 val blocks). Eligible labelled train_p2 chips: 128 in total; 13 in national val-role blocks (4 water bodies, 6 sites), 12 in national test-role blocks (4 water bodies, 4 sites), 7 in train-role blocks, 96 in blocks with no Lite chip (35 water bodies). Exactly the reviewer's 12 + 13. Section 3.4 item 2 applies the block rule (and the national-1 salted rule for unseen blocks) to new national-2b rows, but 'v2 training rows = national-2b train + train_p2' (l.170-171) brings train_p2 in without it.",
+      "ruling_text": "Before any v2 run, every train_p2 water body with a chip or site in a 25-km block that holds a national val, val_n, test or test_n role is removed from the v2 training rows by keys (25 eligible chips today: 13 in val-role and 12 in test-role blocks), and train_p2 rows in blocks without any Lite chip (96 chips) get the national-1 salted block rule of section 3.4 item 2 and are removed if it gives a role other than train. The removed counts are registered; the lock file is not changed; the same reduced row set serves every arm and comparator."
+    },
+    {
+      "id": "F8",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges DS-03 and Q12. P2 index (sha 68688fac... verified; 513 rows): eligible labelled test_p2 = 189 chips, 38 water bodies, 75 sites; largest water bodies 48, 26, 12, 12, 9 chips; effective number of water bodies 9.77; all river_stream. val_p2 = 153 chips, 21 water bodies, one with 91 chips, effective 2.72. Floor in section 8.6 = 100 chips and 40 water bodies: missed. Power arithmetic of l.404-435 reproduces (22*sqrt(162/40) = 44.3; /100 = 28.0) but is scaled from chips of the narrowest comparison, not from 10 effective water bodies. The lead has ruled Q12 (floor stays, P2 descriptive, no label). Left open in the text: section 2 l.89-94 ('One scoped label is possible'), section 8.1 and the confirmatory tests of section 8.8; and the selection steps that use val_p2 (config choice, DenseNet learning rate).",
+      "ruling_text": "P2 is descriptive in this round: one hardened look, no label of any kind; the sentence 'One scoped label is possible' of section 2 and the confirmatory tests of section 8.8 are not applied; the floor is not lowered and no water body changes role. Every P2 number is reported with 'rivers and streams only', the number of test water bodies and the effective number of water bodies (about 10). Nothing is selected on val_p2 (effective 2.7 water bodies): the P2 headline model is config 1 of section 6 as written, all P2 configs are reported, and for P3a/P3b both backbone learning rates are run with 3 seeds and both are reported."
+    },
+    {
+      "id": "F9",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges DS-12. grep -rn prereg_snapshot over sentinel/models/lite, sentinel/models/litev2 and the lite scripts: 0 hits, so the guard of amendment l.37-38 and K3 does not exist. The existing lite/prereg_snapshot registry row d2e93e086ce7 stores extra.files / archive / archive_sha256, not extra.sha256[<path>] as l.38 says; the two P2 rows are under workstream 'lite', all others under 'M7-lite'. Index: stored label values non-null for 162 val_p2 and 145 train_p2 rows, 0 for test_p2 (limits 0); p2_index.py asserts this at l.332 and reads test_p2 through a value_present projection. So no test_p2 value was read (confirmed), but 513 chips and the train/val values were built before any stamp, against SYNTHESIS 4.1 'P2 before any chip extraction'; the amendment itself reports 34 train_p2 + 12 val_p2 values printed to a deleted log (l.68-75). No rule-2 breach (no validation number on a new arm; registry has none).",
+      "ruling_text": "No lite or litev2 loader returns a val, val_n or val_p2 row to any v2 arm or comparator until a guard, covered by a unit test, has verified a prereg_snapshot registry row that holds sha256 2b369018...8a56 of the amendment and the sha256 of this rulings file; the guard uses the workstream name and field that the stamp row actually has, and the wording of l.37-38 is superseded by that. Deviation 1 of lite_arch_v2_deviations.md records that the P2 index and 513 chips were built, and 34 train_p2 and 12 val_p2 label values were printed to a log since deleted, before the stamp; no test_p2 value was read. The eligibility constants (30 m, 50 m2, 1 % no-data) are frozen as built."
+    },
+    {
+      "id": "F10",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Recounted by keys from docs/preregistration/lite_p2_lock.json (sha f3d4c63e...52be, 0444, 636 water bodies, 1,963 sites, 0 rule violations on recomputing u and role). M1 sonde_split.json test role: 0 exact overlaps; 1 non-USGS id (org CBP_WQX, role train_p2) whose trailing id equals an M1 test-role site (p2.py excludes M1 test sites only for ids starting 'USGS-'); M1 train or val sondes in test_p2: 96 (88 + 8). M6 Track-N test: 0; val or excluded stations: 19. fuse_tier_c_split.json site_role: test_region 13 in train_p2, 3 in val_p2, 16 in test_p2; test_spatial 1 in train_p2. All of the reviewer's counts reproduce. The amendment (section 10) does not reserve test_p2 against other workstreams.",
+      "ruling_text": "The lock is not changed. M7 checks the one CBP_WQX train_p2 site against the M1 test-role site by coordinates and drops it from training at load time if they are the same station. The Fuse and Track-N overlap counts are added to the record. test_p2 site-dates join the campaign's reserved list: no workstream trains or tunes on them a model that is compared on, or fused for, P2. No Lite output is an input to an M1, M2, M6 or Fuse model scored on its own test roles."
+    },
+    {
+      "id": "F11",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "docs/licenses.md (48 lines): no row matches densenet, imagenet, mobilenet, timm or hydrolakes; l.9 lists NWIS users as 'M1, M6, EW-v2, D*' (no M7 although P2 uses NWIS sondes); l.19 NAIP 'M7'. No DenseNet121 weights under ~/.cache/torch/hub/checkpoints or the Hugging Face cache (listing only). Amendment l.506 and Q8 ask for a download with no licence row.",
+      "ruling_text": "Before any v2 run docs/licenses.md gains rows for the ImageNet-pretrained DenseNet121 weight file (source, licence, sha256), for the MobileNetV4 weights already in use and for HydroLAKES, and names M7 as a user of NWIS sonde data. No weight file is downloaded before its row exists and the lead or the user has approved the download."
+    },
+    {
+      "id": "DS-06",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.288-290: GBM-stacked is 'Descriptive only (never in a label set)'. Plan M7_architecture_plan.md l.312 defines C3 as the matched check ('if C3 ties ANCHOR-Lite, the gain is credited to CNN features, not to the end-to-end residual design'), l.397 and l.402 list it as a parity comparator; SYNTHESIS 4.1 M7 row lists 'C2/C2-AFT/C3/C4b' as must-contain and X8 requires a matched control for every stack. The demotion is a comparator weaker than promised.",
+      "ruling_text": "Comparator S11 = GBM-stacked as the amendment describes it at l.289-290 (S6 features plus 16 principal components of the pooled embedding of the config 3 network that slots 7-8 start from, seed-matched, PCA fitted on v2 training rows only), fitted like S6. S11 is a member of set C on P2 and of the national baseline list of Q1b, and its validation rows are registered before any candidate validation number. If the hybrid does not beat S11 (CI includes 0), every write-up credits the gain to CNN features, not to the residual-anchor design. The words 'descriptive only' at l.288 no longer apply to GBM-stacked."
+    },
+    {
+      "id": "DS-07",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.316-319: slots enter 'only if the registry holds, by 2026-11-16 23:59 EST and before the lead authorises the national freeze' the validation rows and a passing export-parity test; 'Otherwise ... both slots are recorded as unused'. l.307: 'A slot that is not run is recorded as \"not run\" and still counts'. The second condition has no fixed time, so entry can still be settled after the slots' validation numbers are seen; and 'unused' contradicts sota_campaign rule 6 once a validation number exists. The lead's label hold also makes the 11-16 date uncertain.",
+      "ruling_text": "Slots 7-8 enter the national selection only if the registry holds, by 2026-11-16 23:59 EST by registry timestamp, their 3-seed validation rows, the passing export-parity test of the seed-0 INT8 pipeline under the frozen protocol's criterion, and the no-KD twin rows. The lead does not authorise the national freeze before that time unless both slots are already registered or recorded as not run. The cut-off can be moved only by a stamped deviation written before any validation number of slot 7 or 8 exists. A slot with any validation number is counted and reported; 'recorded as unused' at l.319 is replaced by 'counted, reported, not selectable'."
+    },
+    {
+      "id": "DS-09",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.250-251: 'The carrier is the INT8 pipeline of seed 0. If the 3-seed ensemble of the selected config meets every budget as a whole, the carrier is the INT8 3-seed ensemble.' Frozen lite_protocol.md section 8a fixes the H-G6 carrier as the INT8 ONNX model of seed 0. Whether the ensemble fits is known only after training and measurement, so the subject of the test would be set after results.",
+      "ruling_text": "On both tracks the carrier is the INT8 pipeline of seed 0 of the selected configuration, as in frozen lite_protocol.md section 8a. The sentence of l.250-251 that makes the 3-seed ensemble the carrier is void; the ensemble is reported descriptively and earns no label. No second, weaker latency or size tier is introduced."
+    },
+    {
+      "id": "DS-10",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment section 8.8 item 3 (l.454-455) tests each seed only against the member of S1-S9 and of P1-P3b with the lowest test MdSA, a comparator picked from test results. Frozen section 8a: 'every rejected comparison must also have diff < 0 for each of the 3 seeds individually'. Section 8.8 is not applied this round (P2 descriptive), but the text is stamped and will be reused, and the national seed rule must not be read through it.",
+      "ruling_text": "Wherever a seed rule is applied, on the national track now or on P2 under a later stamped addendum, every rejected comparison must also have diff < 0 for each of the 3 seeds individually against that same comparator; the 'lowest test MdSA member' form of section 8.8 item 3 is void."
+    },
+    {
+      "id": "DS-11",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment Q8 l.527-528 'timm or torchvision' (two different weight files); l.283-287 learning-rate rule has no tie rule; S9 (l.276) runs 'only if a target has >= 20 censored training rows' with no target list, and the censored counts move under the label rule (censored TSS train 111, of which 43 would drop); l.307-309 restart 'only if it produced no validation number' has no objective test. P2 index: 0 censored site-dates in any role, so S9 and the Tobit term do not exist on P2.",
+      "ruling_text": "The DenseNet121 weights are torchvision DenseNet121_Weights.IMAGENET1K_V1, one file, its sha256 in a registry row before use. On the national track a learning-rate tie (difference in S below 0.01) keeps 1e-4 and both seed-0 runs are reported. The list of targets for which S9 runs is fixed from training-row counts under the label rule and registered before any validation number; it is stated that S9 and the Tobit term do not exist for FNU on P2. A restart is allowed only when the run directory holds no evaluation file and the registry holds no row for that config and seed; both job ids are logged."
+    },
+    {
+      "id": "F12+F13+DS-14",
+      "verdict": "confirmed",
+      "final_severity": "note",
+      "evidence": "Reviewer notes, spot-checked. Role water-body sets in the lock are pairwise disjoint and 0 HydroLAKES id is in more than one role; index stores 0 test_p2 values. Amendment l.16 cites 976b5be7... which is the canonical split_sha256 of sentinel/models/lite/national2.py l.36, while sha256sum of lite_split_national2.json begins 0e6f1c506c62. Not re-checked by me: the teacher same-lake overlap for P2 and the lock-time script hash. p2.py and p2_index.py were edited by another agent at 14:25:18 EST during this review (import refactor; LOCK_SHA256 pin unchanged).",
+      "ruling_text": "The hash 976b5be7... cited for lite_split_national2.json is the canonical split hash computed by national2.split_sha256, not the file hash; the two P2 registry rows are under workstream 'lite'."
+    }
+  ],
+  "points": [
+    {
+      "point": "Q1a - ANCHOR-Lite and A1 as national slots 7-8",
+      "ruling": "Allowed, only under the rulings of F3, F5, F6, F7 and DS-07 together; if the lead does not adopt any one of them, ANCHOR-Lite and A1 run on P2 only. No new national label type either way.",
+      "reason": "Both reviewers allow it under terms. Test-N is unseen and the look is single, but the design followed the national validation picture and the cap of 8 is in no stamped file, so the terms carry the protection. The slots must train on labels built under the label rule."
+    },
+    {
+      "point": "Q1b - added comparators as applicable national baselines",
+      "ruling": "Yes, and mandatory for whichever configuration is selected: S6-S9, S10 (TabPFN), S11 (GBM-stacked), P1, P2a/b and P3a/b join the frozen list, each under the every-seed rule, fitted on the selected candidate's own training rows and label version.",
+      "reason": "It can only remove a label. Without S6, S10 and S11 a candidate with scene, location and season inputs could pass H1 against baselines that lack them."
+    },
+    {
+      "point": "Q2 - recovered labels on national test-role chips",
+      "ruling": "Not built, not loaded, not reported. The descriptive table is rejected.",
+      "reason": "Both reviewers agree. The lead ruled that no target-scoped label is added on the national track after validation was seen; a table would create new label values on protected rows."
+    },
+    {
+      "point": "Q3 - reduced context set",
+      "ruling": "Accepted as written (50 scene statistics, lat, lon, DOY; no site class, no HydroLAKES morphometry), identical for candidate, anchor and every parity comparator; nothing is added later; recorded as a plan deviation; claims say 'GBM with the same information', never 'strongest tabular model'.",
+      "reason": "Parity holds because the candidate lacks those inputs too. The plan's wider C2 feature set is not tested, so the wording must not imply it was."
+    },
+    {
+      "point": "Q4 - TabPFN not run",
+      "ruling": "Not acceptable. S10 runs as specified in the F2 ruling.",
+      "reason": "The premise is false: tabpfn 2.2.1, its regressor checkpoint and a project loader are on disk; SYNTHESIS X6 and the lead's afternoon ruling make it mandatory."
+    },
+    {
+      "point": "Q5 - out-of-fold anchor in training, refit anchor at evaluation; XGBoost AFT",
+      "ruling": "Accepted. Before any validation number, unit tests must show: no fold model is fitted on a row of the water body it predicts; the refit table holds no evaluation-role chip or water body; national-2b additions and train_p2 take water-body ids from one grouping; the evaluation anchor and S6 are one hash-pinned artefact. Anchors on time-held-out rows of training water bodies are reported as a separate stratum. AFT accepted with the fixed parameters and a registered target list.",
+      "reason": "No label leak found: folds are whole water bodies by salted hash (l.189-190), evaluation rows are never training rows, and baselines.GBM_PARAMS has no early stopping or eval_set (baselines.py l.14-15, l.72-74), so no validation row enters a fit. Train anchors are out-of-fold and evaluation anchors are refit; that shift works against the candidate, not for it."
+    },
+    {
+      "point": "Q6 - P2 constants",
+      "ruling": "All stand exactly as locked: 40/20/40, sonde mean else median, 50 m2 within 30 m, floor 100 chips and 40 water bodies, train_p2 years <= 2021. When the index is rebuilt for the label rule, only the label filter changes.",
+      "reason": "The lock predates the matched counts; the counts are now known and val_p2 values have been read, so any change would be a choice made after counts."
+    },
+    {
+      "point": "Q7 - CyFi-style and DenseNet differences",
+      "ruling": "Accepted, always worded 'CyFi-style' and 'HydroVision-style re-implementation on NAIP' with the differences listed in every table; P2b and P3b are required; national learning-rate tie keeps 1e-4; on P2 both learning rates are run and reported.",
+      "reason": "The differences are forced by NAIP or favour the comparator. A win over them is not a win over the published systems. val_p2 is too concentrated (91 of 153 chips in one water body) to tune a comparator on."
+    },
+    {
+      "point": "Q8 - download of DenseNet121 weights",
+      "ruling": "One named file (torchvision DenseNet121_Weights.IMAGENET1K_V1), after its licence row exists and the lead or the user approves the download; sha256 registered before use. This review grants nothing.",
+      "reason": "'timm or torchvision' leaves two comparators open. Weights are not on disk and docs/licenses.md has no row for any pretrained backbone."
+    },
+    {
+      "point": "Q9 - second, weaker tier for P2",
+      "ruling": "No weaker tier. Carrier = INT8 pipeline of seed 0 on both tracks.",
+      "reason": "A second tier would be a lower bar added after the validation picture and the counts were known; P2 is descriptive anyway."
+    },
+    {
+      "point": "Q10 - Track-N and orbit test-lake exclusions",
+      "ruling": "Kept; they are in the immutable lock.",
+      "reason": "Verified by keys: 0 P2 sites with M1 test role, 0 with Track-N test role. Removing them would need a new lock after counts."
+    },
+    {
+      "point": "Q11 - extra FNU rows at existing train-role water bodies",
+      "ruling": "Not used in this round. A later use needs its own stamped addendum and a new data version before any validation number.",
+      "reason": "Both reviewers agree. It would change the training set after the validation picture and the P2 counts are known, and it cannot repair the test-block floor."
+    },
+    {
+      "point": "Q12 - P2 misses the floor",
+      "ruling": "As the lead already ruled: the floor stays, P2 is descriptive with one hardened look and no label, no val or train water body moves to test, and M7 uses no 'state of the art' wording this round. Under the label rule the eligible test count is expected to fall from 189 to 187 chips; the recount goes in the addendum.",
+      "reason": "38 water bodies against 40, about 10 effective, all rivers and streams. Lowering the floor moves a bar after counts; val_p2 values were read."
+    },
+    {
+      "point": "Lead fact - header and section 0 contradict each other; hash given differs",
+      "ruling": "Stamp v0.3 (2b369018...8a56) byte for byte; the F1 ruling lists the superseded sentences. No v0.4 is needed for this point.",
+      "reason": "The lead's own decisions file records v0.3 as frozen for review and both reviewers read that hash. The file has been stable since 13:14:38 EST."
+    },
+    {
+      "point": "Lead fact - TabPFN is installed and mandatory",
+      "ruling": "The rulings file adds S10 with the F2 specification; four passages of the amendment are superseded.",
+      "reason": "Confirmed on disk; see F2."
+    },
+    {
+      "point": "Lead fact - WQP depth rule",
+      "ruling": "National-2, national-2b and P2 WQP labels all inherit the defect; the amendment states no depth rule. Write the M2-identical project rule (F3 ruling), for every role, target, model and comparator, before any national-2b or P2 validation number. The author's counts-only addendum is required before the stamp.",
+      "reason": "Confirmed by code and by key counts. The stricter of the two reviewer options, it matches the frozen 'WQP surface samples' wording and can be carried out. It changes hashes and counts that the amendment pins."
+    },
+    {
+      "point": "Lead fact - teacher store on Test-S and rule X2",
+      "ruling": "X2 is not met by the amendment text. KD weight 0 and no teacher-derived feature on Test-S pairings, mask by rule, count registered and reconciled with 242, CIR-Lite-R gate cells excluded, warm start disclosed (F4 ruling).",
+      "reason": "All new arms keep KD on the existing teacher file and S8/P3b use the teacher mean. The amendment gives no count; 308 and 242 count different units."
+    },
+    {
+      "point": "Lead fact - can slots 7-8 support a confirmatory national label",
+      "ruling": "Yes, the frozen section 8a label only ('First-in-class' at most; 'State of the art' not applicable), under the F6 ruling and the widened baseline list. No target-scoped or new label.",
+      "reason": "Test-N unseen, single look, selection on validation by the frozen rule; but the slots were designed after validation was seen."
+    },
+    {
+      "point": "Author statement - no-KD twin of config 6 is an uncounted comparator",
+      "ruling": "Accepted as an uncounted H2 comparator, never selectable, listed in section 0 by ruling and counted openly in every write-up (F5 ruling). Not a breach of lead rule 2.",
+      "reason": "The frozen protocol requires a no-KD model of the selected configuration and counts such re-runs separately; the handoff declared it 'not a candidate' beforehand. It has validation numbers (18:12 UTC), so silence in section 0 is the defect."
+    },
+    {
+      "point": "Author statements - no validation number on new arms; lock counts; FNU 128 / at most 365; power; caps",
+      "ruling": "Verified: no registry row or run on any new arm, comparator or P2 validation/test; lock and index counts and hashes reproduce; section 3.1 row sums are right (FNU 128 train, 237 without role). Not accepted as final: 'at most 365' becomes at most 316 and 128 becomes at most 115 under the label rule; the power figures are arithmetic-correct but optimistic (about 10 effective water bodies).",
+      "reason": "Registry and key counts; wqp_defect_counts.json (turb_fnu train: 13 would drop, 72 change, 43 unaffected; no-role: 36 would drop)."
+    }
+  ],
+  "missed": [
+    {
+      "severity": "blocking",
+      "section": "Header l.14-17; section 3.4 items 1 and 4; lite_national_protocol.md N6 l.100",
+      "issue": "The pinned national-2 split hash covers label values, so the label rule cannot be applied while the amendment's promise that the national-2 split hash is unchanged holds. This is a conflict with a pinned file that neither reviewer saw.",
+      "evidence": "sentinel/models/lite/national2.py l.36 FROZEN_SHA256 = 976b5be7...ebe2; split_sha256() hashes ('version', 'params', 'national1_split_sha256', 'labels_sha256', 'chip_role'); national.labels_sha256 hashes rounded y_secchi, y_turbidity, y_tss, y_chla; load_split raises ProtectedDataError on mismatch. lite_national_protocol.md N6 l.100 pins the same hash. Any corrected label changes labels_sha256 and so the split hash. No lite_split_national2b.json exists yet, so the section 3.4 checks cannot be verified, and the item 4 check 'uncensored train rows identical to national-2' will fail.",
+      "suggested_ruling": "Chip roles and water-body ids of national-2 are unchanged and this is asserted on the chip_role mapping alone. The corrected labels are a new label version with its own labels_sha256 and split hash, pinned in a new file and a registry row before any v2 run; 976b5be7... stays as the pin of the as-built version and is used only to reproduce numbers already seen. The frozen-list baselines are refitted on the corrected rows."
+    },
+    {
+      "severity": "should_fix",
+      "section": "Section 7 l.314-316; section 0 l.57-65",
+      "issue": "'Selection among configs 1-6 has been run and stands' and 'Nothing queued is delayed' no longer hold: the selection was made on validation labels of which about one fifth of the turbidity chips drop or may change, and configs 1-6 were trained on as-built labels while slots 7-8 and all v2 comparators would train on corrected ones. The amendment has no rule for the numbers already seen.",
+      "evidence": "wqp_defect_counts.json: val+val_n turbidity 619 chips, 487 clean. LEAD_DECISIONS afternoon rulings: 'the national-2 freeze candidate does not go to pre-test review' until the lead rules on M7's counts. Amendment section 10 estimates 6 configs x 3 seeds at about 5 GPU-h, so re-runs are affordable.",
+      "suggested_ruling": "Every counted national-2 configuration and each no-KD twin is re-run with unchanged settings on the corrected labels (logged re-runs, not new configurations), the selection rule S is applied once to the corrected validation rows, and the as-built and corrected validation tables are both reported. No setting is changed between the two. If the lead does not authorise the re-runs, configs 1-6 are only re-scored, each model is compared with baselines fitted on its own label version, and the label version of every model is stated in each table."
+    },
+    {
+      "severity": "should_fix",
+      "section": "Section 3.1 l.103-118; section 5 S9",
+      "issue": "The training-gain numbers do not survive the label rule, so the stamped table would overstate the recovered data.",
+      "evidence": "wqp_defect_counts.json: turb_fnu train n = 128: 13 would drop, 72 rows change, 43 unaffected (at most 115 kept); turb_fnu without role 237: 36 would drop (so 'at most 365' is at most 316); censored TSS train 111: 43 would drop. The S9 run condition (>= 20 censored training rows) depends on these counts.",
+      "suggested_ruling": "The counts of section 3.1 are replaced by the recount under the label rule, given in the addendum per target and role; 'FNU: 128 rows now, at most 365' is read as 'at most 115 now, at most 316'. No text quotes the v0.3 counts as the training gain."
+    },
+    {
+      "severity": "should_fix",
+      "section": "Section 8.2 l.337-354; section 8.1",
+      "issue": "'Unseen water bodies' holds at water-body level only. Test and training water bodies share HUC8 basins and 25-km blocks, and the amendment presents HUC8 as part of the water-body rule without this disclosure.",
+      "evidence": "Lock, keys only: 402 HUC8s with a P2 site; 21 hold water bodies of more than one P2 role; 15 hold both test_p2 and train_p2 water bodies (among them 5 river_stream test water bodies). Index: of 189 eligible test_p2 chips, 17 lie in national train-role blocks, 37 in val-role blocks, 5 in test-role blocks, 130 in blocks with no Lite chip.",
+      "suggested_ruling": "P2 reports say 'unseen water bodies', not unseen basins or regions, and give every P2 number also for the stratum of test_p2 chips whose HUC8 and 25-km block hold no v2 training row; the stratum counts are registered before the look."
+    },
+    {
+      "severity": "note",
+      "section": "Section 3.3 l.140-143 against sentinel/models/litev2/p2_index.py l.313-314",
+      "issue": "The text and the code give different rules for several censored limits on one chip.",
+      "evidence": "Text: 'the limit is the largest one for < and the smallest one for >'. Code: right = (cens_type == '>') & (cens_n == 1), comment 'one limit only (max is unsafe)'. P2 has 0 censored site-dates, so nothing changes today; the national-2b censored build does not exist yet.",
+      "suggested_ruling": "One rule is used in both builds: a right-censored chip with more than one distinct limit is not used as a censored row (the stricter, implemented rule); the left-censored rule is as written."
+    },
+    {
+      "severity": "note",
+      "section": "Section 5 P2a (l.279); section 4.1 l.181",
+      "issue": "The CyFi-style comparator uses 'days between image and sample', a label-side field the candidate may not use. It is 0 for every sonde row. Acceptable for a comparator, but it is not deployable and must be said.",
+      "evidence": "Amendment l.279 and l.181; index: 155 of 189 eligible test_p2 chips are sonde-labelled.",
+      "suggested_ruling": "P2a and P2b keep the days-between feature as in the published recipe; tables mark it as a label-side input that the candidate does not have."
+    },
+    {
+      "severity": "note",
+      "section": "Frozen-file hygiene",
+      "issue": "lite_protocol.md and lite_national_protocol.md, the frozen texts this amendment rests on, are mode 0664, and the protocol's file hash is not found verbatim in FREEZE_lite.json.",
+      "evidence": "ls: lite_protocol.md 0664, mtime Nov 9 16:39 (before FREEZE_lite.json 17:05); sha256 24b695fc...2cb4, grep count in FREEZE_lite.json = 0 (it may be pinned through an archive hash; not resolved by me). lite_national_protocol.md 0664, mtime Nov 10 10:38, sha256 4ae31936...d4b9.",
+      "suggested_ruling": "The rulings file records the sha256 of lite_protocol.md (24b695fc...) and lite_national_protocol.md (4ae31936...) as the texts meant by 'frozen section 8a' and 'N1-N8', and both are set to 0444."
+    },
+    {
+      "severity": "note",
+      "section": "Section 10 l.497-500; spent data",
+      "issue": "The 30 GPU-h ceiling and the run list do not include S10, S11, the twin for slots 7-8 or any label-rule re-run. Separately, the spent v1 4-state test look was scored on as-built labels.",
+      "evidence": "Amendment section 10; wqp_sample_counts.json: 4-state matchup rows touched by a sidecar 269 of 10,672.",
+      "suggested_ruling": "The addendum restates the compute ceiling with the added runs. The v1 results stay reported as they are, with a counts-only erratum on the label defect; no spent test row is re-scored without the lead's authorisation."
+    }
+  ],
+  "recommendation": "revise_then_stamp",
+  "reason": "Reviewed v0.3 as on disk (2b369018...8a56; the given ca281d84... is v0.2, gone; the lead already froze v0.3). Fifteen of sixteen merged findings close by ruling sentences. The WQP label rule does not: under the project rule the national evaluation labels, the pinned split hash 976b5be7..., the section 3.1 counts and the P2 index hash all change, and the lead's hold on the label build is open. The author must first supply a counts-only label addendum; v0.3 itself need not be edited. Then stamp v0.3, addendum and rulings together."
+}

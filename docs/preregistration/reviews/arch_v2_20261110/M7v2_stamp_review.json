@@ -1,0 +1,426 @@
+{
+ "written": "2026-11-10T19:54:42-05:00",
+ "sha256_start": {
+  "docs/preregistration/lite_arch_v2_label_addendum.md": "bcbd86de12ff116100f216f5c7c3c5de2e8f1de4d7bb567fd2badf5e12d29049",
+  "docs/preregistration/lite_arch_v2_deviations.md": "23e6fd8705fe4bfc102df74160e46477c8c6b31b3ee38ff504370ed3fc00642c",
+  "docs/preregistration/lite_split_national2b.json": "03f0114a8683aa8fcc0d2b49901dc580c376ec3fdcdd2a8f41d1ee2242395663",
+  "docs/preregistration/lite_arch_v2_amendment.md": "2b369018d2fc2a340594790756b3edbef3b1de28a38cf6073eb5908111908a56",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/lite/counts_arch_v2/c2_teacher_scored_m2_test_lake_keys.csv": "4786aa121eb673ced502d487fb4af714fff37027677677048d2024c960cfc699",
+  "sentinel/models/litev2/stamp.py": "0ecf0f3cb54496ce8c80ed7555c3d6bea86218b073492ba5745566a10093f0fb"
+ },
+ "sha256_end": {
+  "docs/preregistration/lite_arch_v2_label_addendum.md": "bcbd86de12ff116100f216f5c7c3c5de2e8f1de4d7bb567fd2badf5e12d29049",
+  "docs/preregistration/lite_arch_v2_deviations.md": "23e6fd8705fe4bfc102df74160e46477c8c6b31b3ee38ff504370ed3fc00642c",
+  "docs/preregistration/lite_split_national2b.json": "03f0114a8683aa8fcc0d2b49901dc580c376ec3fdcdd2a8f41d1ee2242395663",
+  "docs/preregistration/lite_arch_v2_amendment.md": "2b369018d2fc2a340594790756b3edbef3b1de28a38cf6073eb5908111908a56",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/lite/counts_arch_v2/c2_teacher_scored_m2_test_lake_keys.csv": "4786aa121eb673ced502d487fb4af714fff37027677677048d2024c960cfc699",
+  "sentinel/models/litev2/stamp.py": "0ecf0f3cb54496ce8c80ed7555c3d6bea86218b073492ba5745566a10093f0fb"
+ },
+ "sha256_mismatch_at_end": [],
+ "c2_csv_mode_at_end": "0o444",
+ "verdict": "stamp_with_lead_rulings",
+ "findings": [
+  {
+   "id": "R-01",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/lite_arch_v2_label_addendum.md:3-4, :55; docs/preregistration/lite_arch_v2_deviations.md:45, :60, :77, :153; docs/licenses.md:53; scripts/train/litev2_tabpfn_memtest.py:3-6; sentinel/models/lite/national_testlook.py (NATIONAL_CODE comment); docs/preregistration/lite_arch_v2_code_readings_20261110.md:4",
+   "what": "The package rests on lead orders and rulings that are on file nowhere I could find: 'order of 15:05 EST' (items 2(b), 2(c), 3, 5, 6, 7(ii)), '18:26', 'ruled 18:45 EST: no change, the rows go', a 'message of 19:38 EST' and an 'order 19:42 EST'. The last one is cited in a code comment of a file whose mtime is 19:39 EST (wall clock at my check 19:40:34 EST), i.e. a time that had not yet come.",
+   "evidence": "docs/plans/architecture_research/LEAD_DECISIONS_20261110.md has mtime 14:53 EST and contains none of them; grep over docs/ finds only citations (licenses.md, handoffs, addendum, deviations, code comments). The S10 fallback caps 10,000/8,000/6,000, the DenseNet download approval, the reserved new-site block (deviation 3) and the choice to drop 39 test_n chips with no original label all hang on these orders.",
+   "proposed_ruling": "The rulings file reproduces verbatim, with its time, every lead order the addendum, the deviations file, docs/licenses.md and the v2 code cite (15:05 EST items 2(b), 2(c), 3, 5, 6, 7(ii); 18:26; 18:45 items 1-3; 19:38; 19:42). A cited order that this file does not reproduce is void and the choice resting on it is re-ruled here before the stamp."
+  },
+  {
+   "id": "R-02",
+   "severity": "ruling_needed",
+   "where": "sentinel/models/litev2/stamp.py:36 (STAMPED_FILES), :83-88; sentinel/models/litev2/labels2b.py:57",
+   "what": "The stamp guard verifies four markdown files only (amendment, addendum, deviations, rulings: existence, current sha256 in one lead row, no write bit). The files that actually fix the data are outside it: the split pin (0664), the label table labels_national2b.parquet (0664), the P2 index, the Test-S mask flags, the C2 keys csv, the count files, both frozen protocols (0664) and all v2 code. The split is pinned only by a constant in labels2b.py, which is itself not stamped.",
+   "evidence": "Temp-registry exercise (scratch guard_tmp/): the guard opens for a row with experiment 'lite/prereg_snapshot', workstream 'M7-lite', extra.written_by 'lead' and the four current hashes, and closes on any edit, write bit or missing file of the four. By the code, the guard reads no other file, so a change of the split pin, the label table or a protocol does not close it. Real state: not stamped (rulings file missing, 0 lead rows).",
+   "proposed_ruling": "The lead's stamp row also records, under extra.pins, the sha256 of lite_split_national2b.json (03f0114a...), labels_national2b.parquet (2969c729...), the P2 index (5c404be9...), lite_p2_lock.json (f3d4c63e...), the C2 keys csv (4786aa12...) and its meta file (ea2b0b11...), lite_protocol.md (24b695fc...), lite_national_protocol.md (4ae31936...) and lite_arch_v2_code_readings_20261110.md (002d5d08...); the split pin, the label table and both protocols are set to 0444 at the stamp. A change of any pinned file voids the stamp until a new lead row exists."
+  },
+  {
+   "id": "R-03",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:163-170 (entry 10); docs/preregistration/FREEZE_lite.json; sentinel/models/lite/guard.py (SHARED_CODE, load_freeze)",
+   "what": "Entry 10 is incomplete and one sentence is wrong. Two hashed files were edited after the freeze, not one: sentinel/models/orbit/data.py (2026-11-10 13:06 EST) and sentinel/models/orbit/pipeline.py (2026-11-10 11:53 EST). The statement that the scoring-code hash 'can no longer be reproduced from the working tree' is true, but the hash is reproducible from version control.",
+   "evidence": "FREEZE_lite.json (0444, sha a066b57a...) and the claim marker TEST_LOOK.json (0444) both record scoring_code_sha256 a7a8be82...f9ff. Working tree now: c048a73d...9f48. Taking the two files from git commit 34df74e (git show, read-only) and the other 78 from the working tree gives a7a8be82... exactly; reverting data.py alone does not. SCORED.json exists, so testlook.check_sealed refuses any re-score; all lite_test* registry rows carry freeze_sha256 a066b57a.... G.load_freeze now fails closed for any 4-state protected read (none is pending). The national look hashes its own list at its own freeze and does not depend on a7a8be82.... The failing test fails for a second, separate reason (closure reaches matchups.py and orbit/wqp_surface.py, not in the frozen list).",
+   "proposed_ruling": "FREEZE_lite.json, the 4-state frozen file list, the spent look's markers and tests/test_lite.py are not edited; the failing closure test stays failing and is the record of deviation 10. The frozen 4-state scoring code is the working tree with sentinel/models/orbit/data.py and sentinel/models/orbit/pipeline.py as at commit 34df74e; with those two files the hash a7a8be82...f9ff is reproduced (independent review, 2026-11-10). M7 appends an entry to the deviations file that corrects entry 10 to name both files (preferably before the stamp, since the stamp row hashes that file). No 4-state row is re-scored. The national freeze hashes the full import closure of the national scorer (tests/test_litev2_national_closure.py must pass at that freeze)."
+  },
+  {
+   "id": "R-04",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/lite_arch_v2_label_addendum.md:204-217, :345-370; scripts/train/litev2_comparators.py:144; sentinel/models/litev2/labels2b.py:409-446; M7_verify.json point Q1b",
+   "what": "Two training-row sets exist and the comparators cover one. Re-runs of configs 1-6 and their twins train on the 'rerun' view (national-2 chips with a corrected original label); slots 7-8 and every added comparator (S6-S11, P1, P2a/b, P3a/b) train on the 'v2' view (10,651 rows: plus 144 added chips, recovered labels, 60 train_p2 rows). The verifier's Q1b requires each added comparator 'fitted on the selected candidate's own training rows and label version'. The package has no sentence for the case that a configuration 1-6 is selected, and the comparator script has no path for the rerun view.",
+   "evidence": "litev2_comparators.py takes rows only from rows.train_rows() (v2 view). national2b_rerun.py refits only the frozen baseline list on the rerun view. Selection S over the 8 configurations therefore compares models trained on different row sets (same corrected validation rows).",
+   "proposed_ruling": "Whichever configuration is selected must pass H1 against every applicable comparator fitted on that configuration's own training rows and label version. If a configuration 1-6 is selected, S6-S11, P1 and P2a/b are refitted on the rerun-view rows (CPU, no tuning) and their validation rows registered before the freeze is authorised; the comparators fitted on the v2 rows (a superset, DenseNet P3a/b included) apply as well, so the added rows can only remove a label. Every table states the training-row set and label version of each model, and that slots 7-8 train on 10,651 rows against the rerun-view rows of configs 1-6."
+  },
+  {
+   "id": "R-05",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/lite_arch_v2_label_addendum.md:438-470 (power section; national test roles absent); docs/preregistration/lite_protocol.md section 12 (role table and power check); docs/preregistration/lite_national_protocol.md:36-55",
+   "what": "The addendum states power from counts for P2 and for national validation, but not for the confirmatory national endpoints on Test-N, although the label rule removes Test-N labels (turbidity 486 to 460, TSS 270 to 262, chl-a 422 to 350; Secchi 379 unchanged; 39 chips lose every original label). The frozen power check was computed at 135 / 105 / 152 water bodies.",
+   "evidence": "My recount from keys and presence flags only (scratch recount.out, recount2.out): test_n chips / water bodies / Kish effective water bodies: Secchi 379 / 152 / 54.9; turbidity 460 / 126 / 30.4; TSS 262 / 102 / 30.1; chl-a 350 / 137 / 39.8. test: 1094 / 392 / 145.4; 91 / 43 / 21.1; 98 / 44 / 22.1; 303 / 122 / 49.7. Frozen half-widths 13 (turbidity), 17 (TSS), 9 (Secchi) MdSA points scale by sqrt of the water-body ratio to about 13.5, 17.2 and 9. N2 (at least 10 chips per target) holds for every test-role target by count. The N3 event floor on Test-N (30 positives in 10 water bodies) cannot be checked without label values.",
+   "proposed_ruling": "No floor, threshold, endpoint or family of lite_protocol.md or lite_national_protocol.md is changed by the label rule. Test-N under national-2b has 379 / 460 / 262 / 350 labelled chips in 152 / 126 / 102 / 137 water bodies (Secchi / turbidity / TSS / chl-a); the expected 95 % half-widths of section 12 become about 9 (Secchi), 13.5 (turbidity) and 17 (TSS) MdSA points, computed from counts only and optimistic, since the effective number of water bodies is 55 / 30 / 30. The N3 floor on Test-N is applied by the scorer at the look, as written."
+  },
+  {
+   "id": "R-06",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/lite_arch_v2_label_addendum.md:342-343 (778), :295-296 (187 chips, 38 water bodies); docs/preregistration/lite_arch_v2_amendment.md:407, :425",
+   "what": "Two counts in the lead's intended ruling text are the as-built ones. Under the label rule the train chips on M2 Test-S site-dates are 778 (not 777; the 308 masked pairings are unchanged) and the usable test_p2 chips are 187 in 38 water bodies and 74 sites (not 189), effective number of water bodies 10.08.",
+   "evidence": "Recounted from the label table keys, the mask flags and the P2 index (sha 5c404be9..., 511 rows; eligible flag and role only). Both figures equal the addendum.",
+   "proposed_ruling": "Write the C2 sentence with '308 teacher pairings ... the 778 labelled chips (777 as built) stay in M7 training' and the P2 sentence with 'floor of at least 100 chips in at least 40 water bodies not met: 187 chips in 38 water bodies (189 as built); the floor is not lowered'."
+  },
+  {
+   "id": "R-07",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/lite_arch_v2_code_readings_20261110.md (whole file; section 7 l.1-4 of that section); not in the package, not in STAMPED_FILES",
+   "what": "A new M7 file (0444, written 19:47 EST, after the package hashes were taken) records 37 readings the code made where the amendment was silent, four of which M7 itself says touch a stamped number or sentence: ANCHOR-Set measures 307,341 parameters against 'about 0.15 M'; 12 DenseNet runs; candidate fits are not blocked by the comparators-first gate (only candidate validation evaluation is); A1 keeps the delta-squared penalty and ANCHOR-Set has no radiometric augmentation. Also H5: a neural arm is scored on validation as the 3-seed ensemble. I read the file but did not check its statements against the code. It also gives 29 GPU-h for the round where the addendum gives 31.",
+   "evidence": "sha256 002d5d0822dab92d725467f59966b106b866c1c958855b801fef330aaf22a4d4. The guard does not cover it, so it can change after the stamp without closing the guard (mode 0444 is the only protection).",
+   "proposed_ruling": "The readings of lite_arch_v2_code_readings_20261110.md (sha256 002d5d08...a4d4) are adopted as fixed before any validation number; none may change after the stamp without a stamped deviation. Of its section 7: (1) ANCHOR-Set is the architecture as written, 307,341 parameters; (2) 12 DenseNet runs, inside the ceiling; (3) the stricter order holds: no candidate fit starts before every comparator validation row of H3 is registered; (4) accepted as written. The validation score that enters selection S for slots 7-8 is computed on the same unit (ensemble or seed) as it was for configs 1-6 and their re-runs; the carrier stays the INT8 pipeline of seed 0."
+  },
+  {
+   "id": "R-08",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:172-181 (entry 11, five open points); docs/preregistration/lite_arch_v2_label_addendum.md:365-369, :372-387, :468-470; docs/licenses.md:53",
+   "what": "Five points are left to the lead by the package itself. Recommendations and exact ruling text are under open_points (a)-(e).",
+   "evidence": "See open_points.",
+   "proposed_ruling": "One sentence each, as given under open_points."
+  },
+  {
+   "id": "R-09",
+   "severity": "ruling_needed",
+   "where": "tests/test_litev2_tabular.py:83 (the one test found); M7_verify.json point Q5",
+   "what": "Q5 requires four unit tests before any validation number. I found one (out-of-fold anchor never sees its own water body). Not found: the refit table holds no evaluation-role chip or water body (only test roles are refused by rows.check); national-2b additions and train_p2 take water-body ids from one grouping; the evaluation anchor and S6 are one hash-pinned artefact.",
+   "evidence": "grep of test names in tests/test_litev2*.py. Key-only check: train_p2 ids are 'p2:<site>' strings, a different namespace from national water_body ids; 0 of 64 train_p2 sites share a site id with, or lie within 2 km of, a national-2b train chip (2 within 5 km), so in the data as built no water body is split across anchor folds by the two namespaces.",
+   "proposed_ruling": "Before the first comparator or candidate validation row is written, the three missing Q5 tests exist and pass, and the lead is told their names: (i) the refit table holds no val, val_n, val_p2 or test-role chip or water body; (ii) no train_p2 water body is the same water body as a national-2b training one under a different id (as built: no train_p2 site within 2 km of a national-2b train chip); (iii) the evaluation anchor and S6 are one artefact with one registered sha256."
+  },
+  {
+   "id": "N-01",
+   "severity": "note",
+   "where": "docs/preregistration/lite_arch_v2_label_addendum.md:9-12 against :232-233; docs/preregistration/lite_arch_v2_deviations.md:77-86 (entry 4)",
+   "what": "The addendum says protected roles were handled 'never by comparing values', but it reports '0 label values changed' between the two P2 index builds for train_p2 and val_p2. That is an equality comparison of stored validation label values (result: a count, 0). No value was printed and no test-role value is involved.",
+   "evidence": "scripts for the stamp counts compare y_turb_fnu between builds by key and report only the number of differences.",
+   "proposed_ruling": "The sentence of addendum l.9-12 is read with one exception, stated here: the stored val_p2 and train_p2 values of the two index builds were compared for equality and only the number of differences (0) was kept."
+  },
+  {
+   "id": "N-02",
+   "severity": "note",
+   "where": "docs/preregistration/lite_split_national2b.json (chip_role); label table columns water_body and national2b_wb",
+   "what": "Role disjointness holds on the water-body id of record (column water_body): test, test_n, val, val_n and train share no id, and no national-2 train, val or val_n water body is in a test role. Under the regrouped id (national2b_wb) it does not: 15 groups are in test and train, 7 in test_n and train, 16 in test and val; 169 of 1,178 test chips and 79 of 773 test_n chips sit in a group that holds a national-2 train chip. This is inherited from national-2 (0 role changes), none involves an added chip.",
+   "evidence": "scratch recount.out. Added train chips: 144 chips in 77 water bodies, none after 2021, nearest evaluation-role site 2.48 km away.",
+   "proposed_ruling": "The water body of record for every role rule and every cluster bootstrap is the column water_body of the pinned split, as in national-2. The national look also reports each primary metric without the test and test_n chips whose national2b_wb group holds a training chip (169 and 79 chips), as a sensitivity row fixed now."
+  },
+  {
+   "id": "N-03",
+   "severity": "note",
+   "where": "sentinel/models/litev2/stamp.py:83",
+   "what": "extra.written_by == 'lead' is an unauthenticated string; any process that can append to the registry can write a row the guard accepts. The rulings file must exist with mode 0444 first, which M7 has no business creating, but nothing technical prevents it. A post-stamp append to the deviations file closes the guard until a new lead row.",
+   "evidence": "Guard code and temp-registry exercise.",
+   "proposed_ruling": "The lead records the id of the stamp row in the rulings file's companion note and in LEAD_DECISIONS; a v2 run whose log cites another prereg_snapshot row id is void."
+  },
+  {
+   "id": "N-04",
+   "severity": "note",
+   "where": "docs/preregistration/lite_protocol.md, docs/preregistration/lite_national_protocol.md (both mode 0664)",
+   "what": "Verifier missed item 6 is not done: the two frozen protocol texts are writable and their hashes are in no stamped file.",
+   "evidence": "sha256 24b695fc381e...2cb4 and 4ae319369a59...d4b9 (unchanged during this review).",
+   "proposed_ruling": "As in R-02 (hashes in the stamp row, files 0444)."
+  },
+  {
+   "id": "N-05",
+   "severity": "note",
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:12-44 (entry 1), :135-152 (entry 8), :153-162 (entry 9)",
+   "what": "Things done before the stamp that cannot be undone or re-checked: a log holding 34 train_p2 and 12 val_p2 printed label values was deleted (so 'no test_p2 value' cannot be confirmed from it; the index stores none per the verifier); the not-yet-frozen national scorer was edited in place to block the teacher step; the DenseNet weight file was downloaded at 18:43 EST on an approval that is not on file; a train-only feature cache (10,651 rows) was built at 19:25 EST and the comparator script has a --train-smoke path that fits on training rows before the stamp (nothing scored or registered).",
+   "evidence": "File times and code; no registry row or run directory of any new arm, comparator or P2 validation/test exists (check 7).",
+   "proposed_ruling": "No model object, checkpoint or prediction made before the stamp is used by any v2 run; every v2 fit starts after the stamp row. No log of a v2 job is deleted."
+  },
+  {
+   "id": "N-06",
+   "severity": "note",
+   "where": "sentinel/models/litev2/*.py, scripts/train/litev2_*.py, tests/test_litev2_*.py",
+   "what": "M7 edited v2 code and tests during this review (file times 19:27 to 19:40 EST), so test counts are snapshots. Run 1 (19:33-19:36 EST, 5 files): 82 collected, 81 passed, 1 failed. Run 2 (19:43-19:45 EST, 7 files): 112 collected, 111 passed, 1 failed. The one failure in both is tests/test_lite.py::test_scoring_hash_covers_scorer_import_closure (deviation 10). tests/test_litev2.py + tests/test_litev2_stamp.py hold 11 + 19 = 30 tests, all passed, equal to the handoff's '30 passed'.",
+   "evidence": "scratch pytest.out, pytest2.out, code_sha_at_test.txt, code_sha_at_test2.txt.",
+   "proposed_ruling": "The lead (or M7 in the lead's sight) runs the litev2 tests once more on the code state that will run, and records the count and the code hashes with the stamp row."
+  }
+ ],
+ "verifier_items": [
+  {
+   "id": "F1",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"The stamped text is DRAFT v0.3, sha256 2b369018d2fc2a340594790756b3edbef3b1de28a38cf6073eb5908111908a56, set to 0444 at the stamp; the hash ca281d84...d771 (v0.2) is void. These v0.3 statements are superseded as statements of fact: l.29-32 (P2 code, lock, index and 513 chips exist; l.68-75 is the state), l.383 (the eligible test_p2 count is known), and the header sentence 'No rule, constant, model, comparator or threshold was changed' (v0.3 added the several-limits sentence of section 3.3 and the all-zero-pixel criterion of section 8.5). The section 0 table is completed by the no-KD twin of config 6 (validation rows registered 18:12 UTC). The P2 lock build read metadata columns of more sources than columns_read lists; the full list is recorded in the deviations file.\" | NOTE: the lock-column list is recorded in deviations entry 1 (l.24-36); the 0444 mode is the lead's act at the stamp."
+  },
+  {
+   "id": "F2",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Comparator S10 = TabPFN v2 regressor (tabpfn 2.2.1 and the checkpoint already on disk, loaded only through sentinel.models.chemtox.tabpfn_model.load_tabpfn; no install, no download) on the 98 features of S6, with the same v2 training rows, label rule, log10 targets and evaluation rows as S6: one model per target, FNU and NTU handled as in S7, uncensored rows only, package defaults, no tuning, 3 seeds averaged. Where a target has more than 10,000 training rows, whole water bodies are kept in ascending order of sha256('SENTINEL-Lite-tabpfn|' + water_body) until the next one would exceed 10,000 rows, and the kept count is registered. S10 is a member of set C on P2, of the strongest-simple family and of the national baseline list of Q1b; its validation rows are registered before any candidate validation number. Amendment l.291, l.482, Q4 and the 'Package absent' row of section 12 are superseded.\" | NOTE: the package adds a memory-test fallback (cap = largest of 10,000 / 8,000 / 6,000 that fits) on 'lead order item 6', which is not on file; the rulings file must carry that sentence or S10 runs at 10,000 only. No target has more than 10,000 uncensored training rows (largest 9,371)."
+  },
+  {
+   "id": "F3",
+   "status": "closed_in_package",
+   "sentence": "Rule stated in addendum (i) l.26-31 and implemented through M2's reader (sentinel/models/orbit/wqp_surface.py, unchanged wqp_surface_samples with depth); counts-only addendum supplied and recounted by me. The rulings file should still adopt the rule sentence and the supersession of amendment section 3.4 item 1: VERIFIER: \"Every WQP label of national-2b and of P2, in every role and for every model and comparator, comes from the harmonised QC-passed tables only (wqp_discrete/variable=*/); surface means depth_m <= 1.0 m or unknown; a result flagged 'bottom' is dropped at any depth; Secchi is exempt; the unchanged wqp_surface_samples applies it with depth_m passed as result_depth; a sample with no QC-passed surface result is dropped and the reason is recorded; sonde labels are unchanged; no other depth threshold is run or reported. Section 3.4 item 1 and the word 'unchanged' in l.14-17 and section 3.4 item 4 are superseded: chip roles and water-body ids are unchanged, label values and label hashes are not. Before the stamp M7 supplies a counts-only addendum: rows kept, dropped and changed per build, target and role; the corrected section 3.1 table; the new national label and split hashes; the rebuilt P2 index hash and eligible counts; and the list of existing models that are re-scored or re-run. No v2 arm or comparator is fitted on as-built labels.\""
+  },
+  {
+   "id": "F4",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"In every v2 arm, ablation and comparator (S8 and P3b included) a teacher pairing on an M2 Test-S site-date (orbit-v3 test-role lake, in-lake, 2015-06-23 to 2023-12-31) carries KD weight 0 and supplies no teacher-derived feature; the mask is built from keys by this rule, its count (308 as counted today) is registered before the first v2 run and reconciled in writing with M2's count of 242 teacher-store chips; the 777 labelled chips stay in M7 training; no M7 output is ever an input to anything scored on Test-S. The CIR-Lite-R gate cells exclude the same lake-dates (114 val and 18 val_n chips are on Test-S lakes). Every write-up states that slots 7-8 warm-start from config 3, which was trained with KD on those pairings before the reservation.\" | NOTE: mask built, 308 registered (row lite/tests_mask) and reconciled with 242 in addendum (vi). Write 778 for 777 (R-06). The last sentence must be reworded if open points (a)/(b) are ruled as recommended: the warm start is then from re-runs trained after the reservation with KD weight 0 on those pairings."
+  },
+  {
+   "id": "F5",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"A no-KD twin is the same configuration with every setting identical and KD weight 0. It is never a selection candidate and never the carrier, it is named in a registry row before it runs, and it is not counted against the cap of 8 (frozen lite_protocol.md l.317-318). Two exist now (configs 3 and 6; validation rows 17:26 and 18:12 UTC); every write-up states '8 counted configurations plus N uncounted no-KD twins' and lists all their scores. For slot 7 or 8 the twin has KD weight 0 in the residual branch and starts its image branch from the seed-matched no-KD checkpoint natstudent_mnv4s_raw_crop256_nokd_national2_20261110-115426; its 3 seeds, export and registry rows must exist before the freeze is authorised, otherwise the slot cannot be selected.\" | NOTE: under recommendation (b) the checkpoint named here (as-built, ...115426) is replaced by the corrected-label re-run of the no-KD twin; state the two twins that exist as built and that both are re-run."
+  },
+  {
+   "id": "F6",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"National slots 7-8 can earn only the label of frozen lite_protocol.md section 8a, decided in code and unchanged: 'State of the art' is not applicable; 'First-in-class' needs the novelty search extended to the GBM-anchored hybrid before the look, and H1 for Secchi and for turbidity or TSS against every applicable baseline, which now includes S1-S11, P1, P2a/b and P3a/b, each with diff < 0 for each of the 3 seeds. The cap of 8 national-2 configurations is fixed by this ruling. Every write-up states that slots 7-8 were designed after the national-2 validation numbers of configs 1-6 were seen, and names the model a GBM-anchored hybrid.\""
+  },
+  {
+   "id": "F7",
+   "status": "closed_in_package",
+   "sentence": "Deviation 5 and addendum (v): stricter reading, 128 -> 60 usable train_p2 rows, registry row e89036650629 (lite/p2_f7), unit test test_f7_removes_whole_water_bodies_and_draws_the_unseen_blocks. Verifier text for adoption: VERIFIER: \"Before any v2 run, every train_p2 water body with a chip or site in a 25-km block that holds a national val, val_n, test or test_n role is removed from the v2 training rows by keys (25 eligible chips today: 13 in val-role and 12 in test-role blocks), and train_p2 rows in blocks without any Lite chip (96 chips) get the national-1 salted block rule of section 3.4 item 2 and are removed if it gives a role other than train. The removed counts are registered; the lock file is not changed; the same reduced row set serves every arm and comparator.\""
+  },
+  {
+   "id": "F8",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"P2 is descriptive in this round: one hardened look, no label of any kind; the sentence 'One scoped label is possible' of section 2 and the confirmatory tests of section 8.8 are not applied; the floor is not lowered and no water body changes role. Every P2 number is reported with 'rivers and streams only', the number of test water bodies and the effective number of water bodies (about 10). Nothing is selected on val_p2 (effective 2.7 water bodies): the P2 headline model is config 1 of section 6 as written, all P2 configs are reported, and for P3a/P3b both backbone learning rates are run with 3 seeds and both are reported.\" | NOTE: counts under the label rule: 187 chips, 38 water bodies, 74 sites, effective 10.08 (R-06)."
+  },
+  {
+   "id": "F9",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"No lite or litev2 loader returns a val, val_n or val_p2 row to any v2 arm or comparator until a guard, covered by a unit test, has verified a prereg_snapshot registry row that holds sha256 2b369018...8a56 of the amendment and the sha256 of this rulings file; the guard uses the workstream name and field that the stamp row actually has, and the wording of l.37-38 is superseded by that. Deviation 1 of lite_arch_v2_deviations.md records that the P2 index and 513 chips were built, and 34 train_p2 and 12 val_p2 label values were printed to a log since deleted, before the stamp; no test_p2 value was read. The eligibility constants (30 m, 50 m2, 1 % no-data) are frozen as built.\" | NOTE: guard and tests exist (stamp.py; 19 tests pass) and deviation 1 holds the record; the guard checks four files, not the split, labels or protocols (R-02)."
+  },
+  {
+   "id": "F10",
+   "status": "closed_in_package",
+   "sentence": "Deviations 2 and 7: 4 lock sites excluded at load (0 index rows at them, verified), overlap counts recorded, reserved-list sentence present. Verifier text for adoption: VERIFIER: \"The lock is not changed. M7 checks the one CBP_WQX train_p2 site against the M1 test-role site by coordinates and drops it from training at load time if they are the same station. The Fuse and Track-N overlap counts are added to the record. test_p2 site-dates join the campaign's reserved list: no workstream trains or tunes on them a model that is compared on, or fused for, P2. No Lite output is an input to an M1, M2, M6 or Fuse model scored on its own test roles.\""
+  },
+  {
+   "id": "F11",
+   "status": "closed_in_package",
+   "sentence": "docs/licenses.md l.9 (NWIS names M7), l.51 (HydroLAKES), l.52 (MobileNetV4), l.53 (DenseNet121); registry row lite/pretrained_weights. The DenseNet licence is 'not stated by the source' and the download approval is not on file: see open point (e) and R-01. VERIFIER: \"Before any v2 run docs/licenses.md gains rows for the ImageNet-pretrained DenseNet121 weight file (source, licence, sha256), for the MobileNetV4 weights already in use and for HydroLAKES, and names M7 as a user of NWIS sonde data. No weight file is downloaded before its row exists and the lead or the user has approved the download.\""
+  },
+  {
+   "id": "DS-06",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Comparator S11 = GBM-stacked as the amendment describes it at l.289-290 (S6 features plus 16 principal components of the pooled embedding of the config 3 network that slots 7-8 start from, seed-matched, PCA fitted on v2 training rows only), fitted like S6. S11 is a member of set C on P2 and of the national baseline list of Q1b, and its validation rows are registered before any candidate validation number. If the hybrid does not beat S11 (CI includes 0), every write-up credits the gain to CNN features, not to the residual-anchor design. The words 'descriptive only' at l.288 no longer apply to GBM-stacked.\" | NOTE: 'the config 3 network that slots 7-8 start from' is the corrected-label re-run under recommendation (b)."
+  },
+  {
+   "id": "DS-07",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Slots 7-8 enter the national selection only if the registry holds, by 2026-11-16 23:59 EST by registry timestamp, their 3-seed validation rows, the passing export-parity test of the seed-0 INT8 pipeline under the frozen protocol's criterion, and the no-KD twin rows. The lead does not authorise the national freeze before that time unless both slots are already registered or recorded as not run. The cut-off can be moved only by a stamped deviation written before any validation number of slot 7 or 8 exists. A slot with any validation number is counted and reported; 'recorded as unused' at l.319 is replaced by 'counted, reported, not selectable'.\""
+  },
+  {
+   "id": "DS-09",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"On both tracks the carrier is the INT8 pipeline of seed 0 of the selected configuration, as in frozen lite_protocol.md section 8a. The sentence of l.250-251 that makes the 3-seed ensemble the carrier is void; the ensemble is reported descriptively and earns no label. No second, weaker latency or size tier is introduced.\""
+  },
+  {
+   "id": "DS-10",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Wherever a seed rule is applied, on the national track now or on P2 under a later stamped addendum, every rejected comparison must also have diff < 0 for each of the 3 seeds individually against that same comparator; the 'lowest test MdSA member' form of section 8.8 item 3 is void.\""
+  },
+  {
+   "id": "DS-11",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"The DenseNet121 weights are torchvision DenseNet121_Weights.IMAGENET1K_V1, one file, its sha256 in a registry row before use. On the national track a learning-rate tie (difference in S below 0.01) keeps 1e-4 and both seed-0 runs are reported. The list of targets for which S9 runs is fixed from training-row counts under the label rule and registered before any validation number; it is stated that S9 and the Tobit term do not exist for FNU on P2. A restart is allowed only when the run directory holds no evaluation file and the registry holds no row for that config and seed; both job ids are logged.\" | NOTE: done in the package: weight file sha registered (row e7ebd23c8ede), S9 target list registered (lite/s9_targets: secchi, tss, chla; 47 / 83 / 51 censored rows per the addendum). Still a sentence: the learning-rate tie rule and the restart rule."
+  },
+  {
+   "id": "F12+F13+DS-14",
+   "status": "closed_in_package",
+   "sentence": "Addendum (iii)/(iv) use 976b5be7... as the canonical hash and name the P2 rows under workstream 'lite'. VERIFIER: \"The hash 976b5be7... cited for lite_split_national2.json is the canonical split hash computed by national2.split_sha256, not the file hash; the two P2 registry rows are under workstream 'lite'.\""
+  },
+  {
+   "id": "Q1a",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Allowed, only under the rulings of F3, F5, F6, F7 and DS-07 together; if the lead does not adopt any one of them, ANCHOR-Lite and A1 run on P2 only. No new national label type either way.\""
+  },
+  {
+   "id": "Q1b",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Yes, and mandatory for whichever configuration is selected: S6-S9, S10 (TabPFN), S11 (GBM-stacked), P1, P2a/b and P3a/b join the frozen list, each under the every-seed rule, fitted on the selected candidate's own training rows and label version.\" | NOTE: not met by the package for a selected configuration 1-6 (R-04)."
+  },
+  {
+   "id": "Q2",
+   "status": "closed_in_package",
+   "sentence": "Deviation 6 item 4; my recount: 0 recovered or censored labels on any test role. VERIFIER: \"Not built, not loaded, not reported. The descriptive table is rejected.\""
+  },
+  {
+   "id": "Q3",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Accepted as written (50 scene statistics, lat, lon, DOY; no site class, no HydroLAKES morphometry), identical for candidate, anchor and every parity comparator; nothing is added later; recorded as a plan deviation; claims say 'GBM with the same information', never 'strongest tabular model'.\""
+  },
+  {
+   "id": "Q4",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Not acceptable. S10 runs as specified in the F2 ruling.\""
+  },
+  {
+   "id": "Q5",
+   "status": "open",
+   "sentence": "Three of the four required unit tests were not found (R-09). VERIFIER: \"Accepted. Before any validation number, unit tests must show: no fold model is fitted on a row of the water body it predicts; the refit table holds no evaluation-role chip or water body; national-2b additions and train_p2 take water-body ids from one grouping; the evaluation anchor and S6 are one hash-pinned artefact. Anchors on time-held-out rows of training water bodies are reported as a separate stratum. AFT accepted with the fixed parameters and a registered target list.\""
+  },
+  {
+   "id": "Q6",
+   "status": "closed_in_package",
+   "sentence": "Lock sha f3d4c63e... unchanged (0444); only the label filter changed in the index rebuild (deviation 4). VERIFIER: \"All stand exactly as locked: 40/20/40, sonde mean else median, 50 m2 within 30 m, floor 100 chips and 40 water bodies, train_p2 years <= 2021. When the index is rebuilt for the label rule, only the label filter changes.\""
+  },
+  {
+   "id": "Q7",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Accepted, always worded 'CyFi-style' and 'HydroVision-style re-implementation on NAIP' with the differences listed in every table; P2b and P3b are required; national learning-rate tie keeps 1e-4; on P2 both learning rates are run and reported.\""
+  },
+  {
+   "id": "Q8",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"One named file (torchvision DenseNet121_Weights.IMAGENET1K_V1), after its licence row exists and the lead or the user approves the download; sha256 registered before use. This review grants nothing.\" | NOTE: the file is already on disk (downloaded 18:43 EST, sha a639ec97... verified, 0444); the approval is cited, not on file (R-01, open point e)."
+  },
+  {
+   "id": "Q9",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"No weaker tier. Carrier = INT8 pipeline of seed 0 on both tracks.\""
+  },
+  {
+   "id": "Q10",
+   "status": "closed_in_package",
+   "sentence": "Lock unchanged. VERIFIER: \"Kept; they are in the immutable lock.\""
+  },
+  {
+   "id": "Q11",
+   "status": "closed_in_package",
+   "sentence": "No such rows in the v2 training rows; added chips carry recovered labels only (deviation 6 item 5). VERIFIER: \"Not used in this round. A later use needs its own stamped addendum and a new data version before any validation number.\""
+  },
+  {
+   "id": "Q12",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"As the lead already ruled: the floor stays, P2 is descriptive with one hardened look and no label, no val or train water body moves to test, and M7 uses no 'state of the art' wording this round. Under the label rule the eligible test count is expected to fall from 189 to 187 chips; the recount goes in the addendum.\" | NOTE: 187 confirmed by recount."
+  },
+  {
+   "id": "P13",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Stamp v0.3 (2b369018...8a56) byte for byte; the F1 ruling lists the superseded sentences. No v0.4 is needed for this point.\" | NOTE: see F1."
+  },
+  {
+   "id": "P14",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"The rulings file adds S10 with the F2 specification; four passages of the amendment are superseded.\" | NOTE: see F2."
+  },
+  {
+   "id": "P15",
+   "status": "closed_in_package",
+   "sentence": "Addendum supplied; see F3. VERIFIER: \"National-2, national-2b and P2 WQP labels all inherit the defect; the amendment states no depth rule. Write the M2-identical project rule (F3 ruling), for every role, target, model and comparator, before any national-2b or P2 validation number. The author's counts-only addendum is required before the stamp.\""
+  },
+  {
+   "id": "P16",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"X2 is not met by the amendment text. KD weight 0 and no teacher-derived feature on Test-S pairings, mask by rule, count registered and reconciled with 242, CIR-Lite-R gate cells excluded, warm start disclosed (F4 ruling).\" | NOTE: see F4."
+  },
+  {
+   "id": "P17",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Yes, the frozen section 8a label only ('First-in-class' at most; 'State of the art' not applicable), under the F6 ruling and the widened baseline list. No target-scoped or new label.\""
+  },
+  {
+   "id": "P18",
+   "status": "needs_ruling_sentence",
+   "sentence": "VERIFIER: \"Accepted as an uncounted H2 comparator, never selectable, listed in section 0 by ruling and counted openly in every write-up (F5 ruling). Not a breach of lead rule 2.\""
+  },
+  {
+   "id": "P19",
+   "status": "closed_in_package",
+   "sentence": "Recounts are in the addendum; no registry row or run of a new arm found by me either (check 7). VERIFIER: \"Verified: no registry row or run on any new arm, comparator or P2 validation/test; lock and index counts and hashes reproduce; section 3.1 row sums are right (FNU 128 train, 237 without role). Not accepted as final: 'at most 365' becomes at most 316 and 128 becomes at most 115 under the label rule; the power figures are arithmetic-correct but optimistic (about 10 effective water bodies).\""
+  },
+  {
+   "id": "M0",
+   "status": "closed_in_package",
+   "sentence": "New label version national-2b pinned in lite_split_national2b.json (canonical 29f0dd00..., labels f4612981...) and registry row lite/label_version; chip roles unchanged on the mapping alone (0 role changes of 32,820 chips, recounted); 976b5be7... kept for the as-built version. VERIFIER: \"Chip roles and water-body ids of national-2 are unchanged and this is asserted on the chip_role mapping alone. The corrected labels are a new label version with its own labels_sha256 and split hash, pinned in a new file and a registry row before any v2 run; 976b5be7... stays as the pin of the as-built version and is used only to reproduce numbers already seen. The frozen-list baselines are refitted on the corrected rows.\""
+  },
+  {
+   "id": "M1",
+   "status": "needs_ruling_sentence",
+   "sentence": "Package does the re-runs (addendum (vii), national2b_rerun.py refuses changed settings); the two stated exceptions to 'unchanged' and open point (a) need the lead's sentence. VERIFIER: \"Every counted national-2 configuration and each no-KD twin is re-run with unchanged settings on the corrected labels (logged re-runs, not new configurations), the selection rule S is applied once to the corrected validation rows, and the as-built and corrected validation tables are both reported. No setting is changed between the two. If the lead does not authorise the re-runs, configs 1-6 are only re-scored, each model is compared with baselines fitted on its own label version, and the label version of every model is stated in each table.\""
+  },
+  {
+   "id": "M2",
+   "status": "closed_in_package",
+   "sentence": "Addendum (ii) recount. VERIFIER: \"The counts of section 3.1 are replaced by the recount under the label rule, given in the addendum per target and role; 'FNU: 128 rows now, at most 365' is read as 'at most 115 now, at most 316'. No text quotes the v0.3 counts as the training gain.\""
+  },
+  {
+   "id": "M3",
+   "status": "closed_in_package",
+   "sentence": "Addendum (ix): stratum 135 chips, 22 water bodies, registered (lite/p2_stratum); wording 'unseen water bodies' at l.426. VERIFIER: \"P2 reports say 'unseen water bodies', not unseen basins or regions, and give every P2 number also for the stratum of test_p2 chips whose HUC8 and 25-km block hold no v2 training row; the stratum counts are registered before the look.\""
+  },
+  {
+   "id": "M4",
+   "status": "closed_in_package",
+   "sentence": "Deviation 6 item 3 (19 Secchi chips dropped). VERIFIER: \"One rule is used in both builds: a right-censored chip with more than one distinct limit is not used as a censored row (the stricter, implemented rule); the left-censored rule is as written.\""
+  },
+  {
+   "id": "M5",
+   "status": "closed_in_package",
+   "sentence": "Deviation 6 item 8. VERIFIER: \"P2a and P2b keep the days-between feature as in the published recipe; tables mark it as a label-side input that the candidate does not have.\""
+  },
+  {
+   "id": "M6",
+   "status": "needs_ruling_sentence",
+   "sentence": "Not done: both protocol files are still 0664 and their hashes are in no stamped file (N-04, R-02). VERIFIER: \"The rulings file records the sha256 of lite_protocol.md (24b695fc...) and lite_national_protocol.md (4ae31936...) as the texts meant by 'frozen section 8a' and 'N1-N8', and both are set to 0444.\""
+  },
+  {
+   "id": "M7",
+   "status": "needs_ruling_sentence",
+   "sentence": "Ceiling restated at 45 GPU-h in the addendum (open point c); erratum on the spent look is in addendum (x). VERIFIER: \"The addendum restates the compute ceiling with the added runs. The v1 results stay reported as they are, with a counts-only erratum on the label defect; no spent test row is re-scored without the lead's authorisation.\""
+  }
+ ],
+ "open_points": {
+  "a": {
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:173-174; docs/preregistration/lite_arch_v2_label_addendum.md:365-369 (re-runs reuse the KD target file as built)",
+   "recommendation": "Apply the Test-S KD mask to the re-runs too. Reason: F4 tolerated KD on those pairings only because config 3 'was trained ... before the reservation' and it 'cannot be undone without retraining'; the re-runs are that retraining, done after the reservation, and slots 7-8 would inherit it through the warm start. One KD pairing set for all 8 selectable configurations also keeps selection like-for-like. Cost: the corrected table then differs from the as-built one by the labels and by 308 KD pairings; say so. This needs a wiring change in the re-run path (the wrapper now uses the KD file as built).",
+   "ruling_text": "The re-runs of configurations 1-6 give KD weight 0 to the 308 teacher pairings on M2 Test-S site-dates, through the same key-built mask as the v2 arms; this is the third and last exception to 'unchanged settings' (with the corrected labels and the 4 reserved-site chips), and no other setting differs. No fit started after the reservation uses a teacher value on a Test-S site-date. Tables of as-built against corrected validation scores name these differences. A unit test shows that the re-run KD tensors hold no masked pairing, before the first re-run starts."
+  },
+  "b": {
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:175-177; M7_verify.json F4, F5, DS-06 ruling texts (name as-built checkpoints)",
+   "recommendation": "Warm-start from the corrected-label re-runs, as M7 proposes. Reason: F3 says no v2 arm is fitted on as-built labels; an as-built checkpoint carries the uncorrected labels and the unmasked KD into slots 7-8. Fix the checkpoints by rule before they exist, and allow no fallback.",
+   "ruling_text": "Slots 7 and 8 start, seed for seed, from the re-run of configuration 3 on national-2b labels; their no-KD twins start from the re-run of the no-KD twin of configuration 3; S11 takes its embeddings from the same re-run checkpoints. The as-built checkpoints named in the verifier's F4 and F5 texts are loaded by no v2 job. The sha256 of each re-run checkpoint is registered before the first slot-7 or slot-8 job starts; if a re-run checkpoint is missing the slot does not run (restart only under the DS-11 rule), and there is no fallback to an as-built checkpoint. The cut-off of DS-07 is unchanged. Write-ups state: slots 7-8 warm-start from configuration 3 as re-run on corrected labels with KD weight 0 on Test-S pairings; the as-built configuration 3 had been trained with KD on those pairings before the reservation."
+  },
+  "c": {
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:178; docs/preregistration/lite_arch_v2_label_addendum.md:372-387; docs/preregistration/lite_arch_v2_amendment.md:497-508 (30 GPU-h)",
+   "recommendation": "Accept 45 GPU-h only as a hard stop over a closed run list, set before any number. Reason: the rise from 30 comes from runs the verifier ordered (12 DenseNet runs, re-runs, twins, S10, S11; estimate 31, M7's later estimate 29); the 14 GPU-h of slack is harmless only if it cannot buy extra runs or be raised later, and if a ceiling hit can never be the reason a comparator is missing.",
+   "ruling_text": "The hard ceiling of this round is 45 GPU-h, replacing 30 of amendment section 10, for exactly the runs of the addendum's compute table; no other run is added under it, and a gated slot of section 6 opens only by its own gate as written and counts under the same ceiling. GPU-hours are logged per job in the registry. Comparators, re-runs and twins are run before any candidate, so that reaching the ceiling can never remove a reference; a candidate run not finished under the ceiling is recorded as not run and still counts. The ceiling is never raised after the first v2 validation number exists."
+  },
+  "d": {
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:179; docs/preregistration/lite_arch_v2_label_addendum.md:468-470; docs/preregistration/lite_national_protocol.md:43-55 (N3)",
+   "recommendation": "Do not recount before the stamp; keep endpoint, threshold and floors; let a post-stamp recount only be able to remove the endpoint. Reason: the recount needs validation label values, which nobody should read before the stamp; N3's '48 positives in 18 water bodies' is an as-built figure (val_n turbidity labels 483 -> 467, and kept values can change too, so counts give no bound).",
+   "ruling_text": "The N3 endpoints, thresholds and floors are unchanged. The sentence 'val_n has 48 positives in 18 water bodies' describes the as-built labels. After the stamp and before any v2 event number, the frozen scorer recounts the E3a_turb positives and their water bodies on val_n under national-2b once, and the two counts are registered; if val_n then has fewer than 30 positives or fewer than 10 water bodies with positives, E3a_turb is descriptive only on the national track. The Test-N floor of N3 is applied at the look as written. No threshold is changed in either case."
+  },
+  "e": {
+   "where": "docs/preregistration/lite_arch_v2_deviations.md:153-162 (entry 9); docs/licenses.md:53",
+   "recommendation": "Run and report P3a/P3b regardless; publish no weight or derived checkpoint; make publication of any artefact depend on the user's written approval after the terms are read. Reason: the licence is unstated at the source and the ImageNet terms were not read; a licence doubt must not become a way to drop a reference after its result is known; the approval for the download is cited but not on file.",
+   "ruling_text": "P3a and P3b are run and their results reported whatever they are; the licence question can never be a reason to omit them. The DenseNet121 weight file, every checkpoint fine-tuned from it and every artefact derived from it stay on the project disk: none is uploaded, released or served. Every write-up states that the weights are torchvision DenseNet121_Weights.IMAGENET1K_V1, that the source states no licence for the file and that the ImageNet-1k terms were not verified at download. Before any public write-up the terms are read, the licence row is completed, and the user's written approval is recorded. The lead's approval of the one download (2026-11-10) is recorded here with its time."
+  }
+ },
+ "checks_run": [
+  "sha256 of the six package items at start, mid-review (about 19:38 EST) and end; C2 csv mode",
+  "Check 1: read the label-rule code path (matchups.wqp_surface_samples, orbit/wqp_surface.py, litev2/wqp_rule.py, labels2b.py); harmonised tables carry depth_m and activity_relative_depth; sidecars never read; every count file under counts_arch_v2 scanned: integers, percentages and effective numbers only",
+  "Check 2: canonical split and label hashes reproduced; 32,820 national-2 chips, 0 role changes; 714 added chips (144 train, 570 excluded); role disjointness on water_body; nothing moved into a test role; per-role label-present counts equal the addendum; floors N2, P2 (187/38, not met, not lowered), val_p2 minimum, S9 minimum checked from counts; split built from role mapping and keys (code read)",
+  "Check 3: every verifier verdict, point and missed item classified (45 items)",
+  "Check 4: deviations 1-11 read one by one against files, registry row names and counts",
+  "Entry 10: frozen hash reproduced from git commit 34df74e for orbit/data.py and orbit/pipeline.py (git show only); spent-look markers and registry row counts checked",
+  "Check 6: stamp.py read; guard exercised on a temp registry and temp file tree in scratch (never the real registry); real state 'not stamped'",
+  "pytest, CPU only, 4 threads: run 1 (5 files) 81 passed / 1 failed; run 2 (7 files) 111 passed / 1 failed",
+  "Check 7: registry scanned by experiment, model, split and time only (no value field of a v2 validation row read; none exists); run directories listed",
+  "Check 8: comparator and re-run entry points read; section 15.1 of RESEARCH_PLAN.md and rules 1-8 of sota_campaign.md read; Test-role power counts computed from keys",
+  "P2 index: sha, row counts per role, eligible counts, 0 rows at the 4 excluded sites; train_p2 against national-2b train chips by site id and distance",
+  "DenseNet weight file sha and mode; licence rows"
+ ],
+ "not_checked": [
+  "No label value, prediction or score of any validation, test or Test-S row was read; therefore N3 positives, the size of label changes, and any value-level correctness of the rebuilt labels are unverified",
+  "What the label builders printed when they ran: no build log of national-2b exists to read; I read the code only",
+  "The lead orders of 15:05, 18:26, 18:45, 19:38 and 19:42 EST: not on file, so every 'as ordered' statement is unverified",
+  "The deleted P2 log of deviation 1 (34 + 12 printed values)",
+  "The P2 lock rebuild was not re-run; the lock sha was only compared",
+  "Whether a null count of y_turb_fnu on test_p2 is 0: taken from the verifier, not repeated",
+  "lite_arch_v2_code_readings_20261110.md (appeared 19:47 EST): read, not checked against the code; nets.py and fit.py were not reviewed",
+  "Whether selection S for configs 1-6 was computed on an ensemble or on single seeds (matters for reading H5)",
+  "ImageNet-1k terms and the torchvision weight licence (no network)",
+  "Code changed during the review; the code state that will run after the stamp is not the one I tested",
+  "GPU memory behaviour of S10, any timing or compute estimate",
+  "lite_arch_v2_change_list_draft.md: first 25 lines only"
+ ]
+}

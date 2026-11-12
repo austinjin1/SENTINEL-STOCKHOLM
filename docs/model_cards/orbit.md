@@ -76,6 +76,13 @@ registry entry (`results/registry.jsonl`, workstream `M2-orbit`).
   CyAN CI-cyano was not compared (needs an Earthdata login the user has not provided).
 - Validation results: registry experiment `orbit_events_val_<version>` (development, not claims).
 
+## Numeric outputs and uncertainty
+- Each prediction gives a numeric value per target (chl-a µg/L, TSS mg/L, turbidity NTU family, Secchi m). The value
+  is the median of the seed-ensemble Gaussian mixture, or the declared 50/50 log10 blend with GBM if that
+  configuration is selected.
+- Each prediction also gives central 68% and 95% predictive intervals (mixture quantiles).
+- At test, empirical coverage (role-block CI) and mean width are reported per target next to MdSA/SSPB (protocol §5).
+
 ## Evaluation
 - Headline cell: unseen lakes × 2024–2025. Not yet scored: `[PENDING]`.
 - Validation (development) results are in the registry under experiments `orbit_val_dev_v3` (fit = train role × ≤ 2021)

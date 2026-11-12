@@ -131,13 +131,17 @@ def build_model(cfg: dict, seq_dim: int, n_vocab: int, n_glob: int, n_out: int):
                                        nn.Linear(d, d), nn.GELU())
             self.head = nn.Linear(d, n_out)
 
-        def embed(self, seqvec, seq, ab, mask):
+        def encode_tokens(self, seqvec, seq, ab, mask):
             tok = self.proj(seqvec) if self.mode == "frozen" else self.idemb(seq)
             h = tok + self.ab(ab)
             pad = ~mask
             for b in self.blocks:
                 h = b(h, pad)
-            h = self.ln(h)
+            return self.ln(h)
+
+        def embed(self, seqvec, seq, ab, mask):
+            h = self.encode_tokens(seqvec, seq, ab, mask)
+            pad = ~mask
             w = ab[..., 1] * mask
             w = w / w.sum(1, keepdim=True).clamp_min(1e-9)
             wmean = (h * w.unsqueeze(-1)).sum(1)
@@ -242,16 +246,31 @@ def fit_seqset(cfg: dict, table: np.ndarray | None, tr: SetBatch, Ytr: np.ndarra
     ym = np.where(np.isfinite(ym), ym, 0.0)
     mode = cfg.get("seq_mode", "frozen")
     tab_t = None
+    init = None
+    if cfg.get("init_state"):          # cycle 6: encoder pretrained label-free on EMP (pretrain_seqset)
+        from pathlib import Path as _P
+
+        from sentinel.core import paths as _paths
+
+        ip = _P(cfg["init_state"])
+        ip = ip if ip.is_absolute() else _paths.RUNS_ROOT / ip      # relative to $SENTINEL_RUNS
+        init = torch.load(ip, map_location="cpu", weights_only=False)
     if mode == "frozen":
         rows = np.unique(tr.seq[tr.mask])
         mu = table[rows].mean(0)
         sd = table[rows].std(0)
         sd = np.where(sd > 1e-6, sd, 1.0)
+        if init is not None and cfg.get("table_norm") == "pretrain":
+            mu, sd = np.asarray(init["mu"]), np.asarray(init["sd"])
         tz = ((table - mu) / sd).astype(np.float32)
         tz[UNK] = 0.0
         tab_t = torch.as_tensor(tz, device=device)
     seq_dim = table.shape[1] if table is not None else 0
     model = build_model(cfg, seq_dim, n_vocab, tr.glob.shape[1], Ytr.shape[1]).to(device)
+    if init is not None:
+        missing, unexpected = model.load_state_dict(init["state"], strict=False)
+        if unexpected or not any(k.startswith("blocks.") for k in init["state"]):
+            raise ValueError(f"pretrained state does not match the SeqSet encoder: {unexpected[:5]}")
     opt = torch.optim.AdamW(model.parameters(), lr=float(cfg["lr"]), weight_decay=float(cfg["weight_decay"]))
     fitted = FittedSeqSet(model, cfg, tab_t, gm.astype(np.float32), gs, ym, ys, [], -1, 0)
     ytr = torch.as_tensor(((Ytr - ym) / ys).astype(np.float32), device=device)
@@ -299,3 +318,86 @@ def fit_seqset(cfg: dict, table: np.ndarray | None, tr: SetBatch, Ytr: np.ndarra
     if log:
         log(f"best epoch {best_ep} val {best:.4f} ({len(hist)} epochs, {fitted.n_params} params)")
     return fitted
+
+
+ENCODER_PREFIXES = ("proj.", "ab.", "blocks.", "ln.")
+
+
+def pretrain_seqset(cfg: dict, table: np.ndarray, data: SetBatch, *, seed: int = 0, device: str = "cpu",
+                    mask_frac: float = 0.15, val_frac: float = 0.05, max_epochs: int = 200, patience: int = 15,
+                    log=None) -> dict:
+    """Label-free masked-token pretraining of the SeqSet token encoder (protocol §10.8, cycle 6).
+
+    ``mask_frac`` of each sample's valid tokens get a zero (= mean, after standardisation) sequence vector; the
+    encoder must reconstruct their standardised k-mer vectors from the rest of the community (MSE). Abundance
+    features stay visible: the task is "which organism is this, given its abundance and the rest of the
+    community". Early stopping on ``val_frac`` held-out pretraining samples. Returns the encoder state
+    (``ENCODER_PREFIXES``), the table standardisation (mu, sd) and the history. No labels are used."""
+    import torch
+    from torch import nn
+
+    from sentinel.core.seed import seed_everything
+
+    seed_everything(seed)
+    rows = np.unique(data.seq[data.mask])
+    mu = table[rows].mean(0)
+    sd = table[rows].std(0)
+    sd = np.where(sd > 1e-6, sd, 1.0)
+    tz = ((table - mu) / sd).astype(np.float32)
+    tz[UNK] = 0.0
+    tab = torch.as_tensor(tz, device=device)
+    model = build_model(cfg, table.shape[1], 1, 0, 1).to(device)
+    head = nn.Linear(int(cfg["d_model"]), table.shape[1]).to(device)
+    params = list(model.parameters()) + list(head.parameters())
+    opt = torch.optim.AdamW(params, lr=float(cfg["lr"]), weight_decay=float(cfg["weight_decay"]))
+    rs = np.random.default_rng(seed)
+    perm = rs.permutation(len(data.ids))
+    n_val = max(1, int(round(val_frac * len(perm))))
+    va, tr = perm[:n_val], perm[n_val:]
+    S, A, M = (torch.as_tensor(x, device=device) for x in (data.seq, data.ab, data.mask))
+    gen = torch.Generator(device=device)
+    gen.manual_seed(seed)
+
+    def loss_on(idx, train: bool):
+        sq, ab, m = S[idx], A[idx], M[idx]
+        msk = (torch.rand(m.shape, generator=gen, device=device) < mask_frac) & m
+        sv = tab[sq].clone()
+        sv[msk] = 0.0
+        h = model.encode_tokens(sv, sq, ab, m)
+        pred = head(h[msk])
+        return ((pred - tab[sq][msk]) ** 2).mean()
+
+    bs = int(cfg["batch_size"])
+    best, best_state, bad, hist = math.inf, None, 0, []
+    for ep in range(max_epochs):
+        model.train()
+        head.train()
+        order = torch.as_tensor(rs.permutation(tr), device=device)
+        tot = 0.0
+        for s in range(0, len(order), bs):
+            idx = order[s:s + bs]
+            loss = loss_on(idx, True)
+            opt.zero_grad(set_to_none=True)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(params, 1.0)
+            opt.step()
+            tot += float(loss) * len(idx)
+        model.eval()
+        head.eval()
+        with torch.no_grad():
+            gen.manual_seed(seed + 10_000)           # fixed validation masks
+            vl = float(np.mean([float(loss_on(torch.as_tensor(va[s:s + 256], device=device), False))
+                                for s in range(0, len(va), 256)]))
+        hist.append((ep, tot / max(len(tr), 1), vl))
+        if vl < best - 1e-4:
+            best, bad = vl, 0
+            best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()
+                          if k.startswith(ENCODER_PREFIXES)}
+        else:
+            bad += 1
+            if bad >= patience:
+                break
+    if log:
+        log(f"pretrain best val {best:.4f} after {len(hist)} epochs")
+    return {"state": best_state, "mu": mu.astype(np.float32), "sd": sd.astype(np.float32), "history": hist,
+            "best_val": best, "cfg": {k: cfg[k] for k in ("d_model", "n_layers", "n_heads", "dropout")}}

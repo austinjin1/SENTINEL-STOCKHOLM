@@ -174,7 +174,8 @@ def holm_with_ci(results: dict, alpha: float = 0.05) -> dict:
     the paired 95% CI excludes 0 in the student-better direction. Adds ``holm`` and ``reject`` in place."""
     from sentinel.eval.bootstrap import holm_bonferroni
 
-    holm = holm_bonferroni({k: r["p_one_sided"] for k, r in results.items()}, alpha=alpha)
+    pv = {k: (float(r["p_one_sided"]) if np.isfinite(r.get("p_one_sided", np.nan)) else 1.0) for k, r in results.items()}
+    holm = holm_bonferroni(pv, alpha=alpha)        # NaN p -> 1 (delta review observation)
     for k, r in results.items():
         r["holm"] = bool(holm[k])
         r["reject"] = bool(holm[k]) and bool(r["ci_excludes_0_better"])

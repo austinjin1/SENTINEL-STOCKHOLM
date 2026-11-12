@@ -12,6 +12,8 @@ the registry (``--register``).
 
 from __future__ import annotations
 
+from sentinel.data.reserved import assert_no_reserved  # noqa: E402
+
 import numpy as np
 import pandas as pd
 
@@ -31,6 +33,7 @@ def main() -> int:
     run_dir = runner.run_directory("onset_counts", cfg, a.run_name)
     log = runner.make_logger(run_dir / "log.txt")
     data = runner.prepare(a, cfg, run_dir, training=True, log=log)
+    assert_no_reserved(data.sites, 'sonde_onset_counts')   # reserved new-site block
     basin = {str(k): str(v) for k, v in data.split.basin_group.items()}
     dates = pd.DatetimeIndex(data.cube.dates)
     rows = []

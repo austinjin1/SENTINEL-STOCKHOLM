@@ -13,6 +13,8 @@ bootstrap CI (site bootstrap as sensitivity). Val results are registered (split 
 
 from __future__ import annotations
 
+from sentinel.data.reserved import assert_no_reserved  # noqa: E402
+
 import numpy as np
 import pandas as pd
 
@@ -27,6 +29,9 @@ def main() -> int:
     a = ap.parse_args()
     cfg = runner.apply_overrides(runner.load_config(a.config, smoke=a.smoke), a.set)
     seed = int(a.seed if a.seed is not None else cfg.get("seed", 0))
+    from sentinel.models.sonde import gpu_budget
+
+    gpu_budget.widen()   # lead ruling 2026-11-10: GPUs 0-9 via the cap file, idle GPUs only
     gpu = runner.setup_gpu("sonde_virtual" + ("_smoke" if a.smoke else ""), prefer=a.gpu_prefer)
     from sentinel.models.sonde.features import FeatureBuilder
     from sentinel.models.sonde.virtual import VirtualGBM, VirtualLSTM, VLSTMConfig, site_kge, virtual_rows
@@ -39,6 +44,7 @@ def main() -> int:
         pass  # checked after data preparation (needs split info)
     with runner.training_run("virtual_nb", cfg, run_dir) as run:
         data = runner.prepare(a, cfg, run_dir, training=True, log=log)
+        assert_no_reserved(data.sites, 'sonde_virtual')   # reserved new-site block
         if a.register:
             runner.assert_registrable(cfg, data.split_info)
         fb = FeatureBuilder(data.cube, data.clim_mean, data.clim_std, data.static)

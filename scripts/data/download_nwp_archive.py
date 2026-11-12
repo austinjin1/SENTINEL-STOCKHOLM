@@ -194,7 +194,7 @@ def check_semantics(client: OM.OpenMeteoClient, model: str, out: Path) -> dict:
 
 
 def plan_requests(
-    sites: pd.DataFrame, reg: pd.DataFrame, models: list[str], avail: dict, end: str
+    sites: pd.DataFrame, reg: pd.DataFrame, models: list[str], avail: dict, end: str, variables=None
 ) -> list[dict]:
     r = reg.set_index("site_key")
     jobs = []
@@ -202,7 +202,7 @@ def plan_requests(
         a = avail.get(m, {})
         # variable groups sharing a start date
         groups: dict[str, list[str]] = {}
-        for v in OM.NWP_HOURLY_VARS:
+        for v in variables or OM.NWP_HOURLY_VARS:
             starts = [a.get(f"{v}_previous_day{n}") for n in (1, 7) if a.get(f"{v}_previous_day{n}")]
             if not starts:
                 continue
@@ -345,6 +345,9 @@ def main() -> int:
     ap.add_argument("--end", default=None, help="last valid day (default: today - 2 days)")
     ap.add_argument("--day-cap", type=float, default=8000)
     ap.add_argument("--no-wait", action="store_true")
+    ap.add_argument("--variables", default=",".join(OM.NWP_HOURLY_VARS),
+                    help="hourly NWP variables to fetch (subset of temperature_2m,precipitation,shortwave_radiation)")
+    ap.add_argument("--tag", default="core", help="output tag for --sites-file runs (sites_<tag>.csv, nwp_daily_<tag>)")
     a = ap.parse_args()
     raw = paths.raw("openmeteo_nwp")
     out_dir = paths.processed("nwp_archive")
@@ -360,7 +363,7 @@ def main() -> int:
         sf = Path(a.sites_file)
         sites = pd.read_parquet(sf) if sf.suffix == ".parquet" else pd.read_csv(sf, dtype=str)
         sites = sites[["site_key"]].drop_duplicates()
-        tag = "core"
+        tag = a.tag
     else:
         sites = select_pilot(a.pilot, paths.RAW / "usgs_dv" / "dv_series_catalog.parquet", reg)
         tag = "pilot"
@@ -382,7 +385,10 @@ def main() -> int:
         for m in models:
             check_semantics(client, m, raw / "lead_semantics.json")
     dl = {}
-    jobs = plan_requests(sites, reg, models, avail, end)
+    variables = a.variables.split(",")
+    if not set(variables) <= set(OM.NWP_HOURLY_VARS):
+        raise SystemExit(f"unknown variables {set(variables) - set(OM.NWP_HOURLY_VARS)}")
+    jobs = plan_requests(sites, reg, models, avail, end, variables)
     tot_w = sum(OM.call_weight(len(j["vars"]) * 7, OM.n_days(j["start"], j["end"])) for j in jobs)
     log.info(
         "plan: %d chunk requests, total weight %.0f calls (%.0f per site), ~%.1f days at %d/day",

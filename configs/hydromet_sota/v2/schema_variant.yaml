@@ -1,0 +1,23 @@
+# T-E common-schema variant (amendment §3, §9.1; lead rulings §2.4). ON HOLD: nothing in this file is run and no
+# England reading is read before the stamped T-E deviations entry. Written and pinned now because the amendment
+# requires the substitutes to be fixed before any EA number.
+status: on_hold
+schema:
+  dynamic: "11 site-cell forcing channels by the fixed variable mapping of hydromet_ea_protocol.md §3 (gridMET in the US, ERA5-Land in England) + calendar harmonics + the 4 solar channels (gso_mt/solar.py)"
+  static: "sentinel.hydromet_sota.ea_data.COMMON_STATIC: lat, lon and 40 RiverATLAS attributes (42 columns; rulings §2.4, L5)"
+  absent: [upstream_basin_channels, streamcat_attributes, vaa_statics, any_us_only_input]
+  derived_allowed: "deterministic functions of schema inputs only (solar channels, trailing means)"
+zero_shot: {fitted_on_ea: nothing, standardisation: us_train_block}
+fine_tune: {weights: all, lr: 1.0e-4, max_epochs: 20, patience: 4, batch: "half EA, half US", early_stopping: ea_val_role_groups}
+substitutes:
+  d1: "none (the static encoder takes the 42 schema statics; dynamic inputs 11 + 4 calendar + 4 solar)"
+  rtd: "none (same inputs as d1)"
+  rtd_w: "none (same inputs as d1)"
+  d2:
+    travel_time: "bounded static parameter in [0, 10] days, prior median 1 day (replaces vaa_pathtimema)"
+    upstream_source: "site-cell equilibrium temperature lagged by the travel-time parameter (replaces the basin-mean forcing)"
+  g1: "frozen causal features of the 11 site-cell channels + schema statics + calendar + solar; no VAA feature"
+  g2: "g1 + Te prior from site-cell forcing and its trailing means + DO saturation at Te + stacked predictions; no VAA feature"
+  p: "non-ws members only"
+  stacks: "same members, each in this schema"
+variants: "schema variants are logged with variant_of (closed list, rulings Q1) and are not counted"

@@ -1,0 +1,355 @@
+{
+ "file_sha256": "480c765fb3f783b2d441f6aaeec6e6d263d42b9ccf15b2515fe23f9ef1ef099e",
+ "verdict": "stamp_with_lead_rulings",
+ "lines_read": 960,
+ "summary": "Verdict: stamp this hash only together with lead rulings. One blocking gap needs a ruling sentence (B1); seven should-fix items can be closed the same way.\n\nI read all 960 lines of /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/bioassess_f_protocol.md. The sha256 matched the expected value at the start and end of the review (85,198 bytes, mode 0664, not yet stamped). I changed nothing in the repo, data root or runs root, downloaded nothing and used no GPU. Scratch scripts and one text extract of the guide PDF sit only under the m5f_review scratch directory. For protected rows I used counts only.\n\n**The blocking item (B1).** Section 8 names the comparators but fixes none of their settings: no hyperparameters, no tabular feature rule, no tuning-parity sentence. The candidate is fixed to the last constant (L575-632). The M5-X protocol did fix these (its L209 and L318-322), and RESEARCH_PLAN §15.5 item 4 leaves tuning parity to \"each protocol\". As written, comparator strength could be set after candidate development numbers exist. One paragraph or one ruling closes it; the exact text is in the finding.\n\n**1. Earlier review and lead conditions.**\n- All 6 must-fix items are resolved.\n- 17 of 18 should-fix items are resolved. Should-fix 9 is partly resolved: the eligible method-code list is deferred to G4 with no criterion.\n- Lead conditions (a), (b), (e), (f), (k), (n), (o) are met in the text. For (e) the code is not yet aligned, which L955 discloses. For (k) the F-Z ablation is inference-time masking only, which is an author choice for the lead.\n- Every row of the §15.1 and §15.2 tables points at text that says what the row claims.\n\n**2. Leakage.** I found no path for a locked, test-region or French-test label into any fit, early stopping, scaler, vocabulary, PCA basis, pool prevalence, TabPFN context, or candidate or comparator selection.\n- Region-context rows are chosen by biology eligibility only (L653-657), so label availability cannot leak through the transductive context.\n- The 2022-01-01 boundary covers the prior-365-day window of January 2023 rows.\n- One exception, on the secondary F-E track: calibration \"on development rows\" can use the test region's 2019–21 labels (S4).\n\n**3. Spent and reserved blocks.** No reuse.\n- UK rows stop at 2020-12-01, and the 8,121 M5-X X-U test samples are dated 2021 or later.\n- `reserved_test` sites, NRSA 2018-19 and 2023-24, and NLA 2022 are excluded.\n- The EA Hydrology-API allocation is a different dataset.\n- The France reservation in `sota_campaign.md` (2023–2025) is consistent; the protocol locks more.\n\n**4. Facts checked and found true.**\n- UK counts by metadata recount: 199,234 invertebrate samples, 14,030 diatom samples, 5,395 sites, 7,038 reserved sites in 16 blocks; drops 0 and 0; latest diatom sample 2020-11-30.\n- Fetch log: 60 files, 8,952,203 bytes, 0 hash or size mismatches.\n- Every SANDRE parameter, unit, fraction, support and index code of §6.3, and nomenclatures 155, 156, 414 and 446.\n- Every whitelist field and request filter exists in the two Hub'eau API schemas; the 20,000-record depth limit is documented for both APIs.\n- Licence strings match the Hub'eau conditions page and the Naïades legal page.\n- The French good-status limits match Annex 6 of the December 2023 guide.\n- Molar factors, event thresholds, Holm multipliers (4.039, 3.833, 3.707) and the power table recompute correctly.\n- GJAM result files show `fidelity_pass` FALSE in both blocks, with fit times 99.3 and 114 minutes.\n- TabPFN 2.2.1 is installed; `events.py` v1.0 has the three reused codes; the `docs/licenses.md` row exists.\n- The `ftrack.py`, `bioset_ma.py` and `fdata.py` constants match the text.\n- No French data file is on disk, and the only M5-F run is a synthetic smoke log.\n- Not checkable: which network requests were actually made. I could confirm only what is on disk.\n- Two small inaccuracies: `ftrack.locked_availability()` does not exist and is missing from the not-yet-written list (S1), and the floors pointer names the wrong table (N2).\n\n**5. Freeze, gates and UNVERIFIED items.** No rule can be chosen after test numbers. Several pre-label or development-stage points have no rule for one outcome: method codes, whitelist change, taxonomy match below 90 %, TabPFN not fitting, the \"applies\" clause, and the G6/G7 wording (S5–S7).\n\n**6. The 8 author choices.** Accept all eight. Details and the conservative alternatives are in finding N6.",
+ "findings": [
+  {
+   "id": "B1",
+   "severity": "blocking",
+   "lines": "490-523, 546-548, 557-561, 575-632, 809",
+   "claim": "Comparator hyperparameters, tabular feature construction and tuning parity are not fixed anywhere in the file, so comparator strength can be set after development numbers exist, while the candidate is fixed to the last constant.",
+   "evidence": "A search of the file for hyperparameter, tuning, default or settings wording finds only the candidate's own rule (L577). §8 items 1-9 give algorithm names and input sets only. The variant list at L557-561 covers training pool, diatom block, region descriptors, prevalence columns and auxiliary features, not settings. G5 (L809) orders only the first comparator table and does not freeze it. The M5-X protocol fixed these: its L209 says baselines get the same data and tuning budget and are never weakened, and its L318-322 fix Hellinger features of taxa in >= 10 rows, TabPFN at the 300 most prevalent, median fill, and hyperparameters from the fixed `configs/bioassess/baselines.yaml`. RESEARCH_PLAN L395 (§15.5 item 4) says 'tuning parity as in each protocol'. That config exists on disk, read-only, sha256 bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a, and has no entry for MEMLM, extra trees or the region-offset ridge. `pfn_hybrid.py` L12 and L158 already call the M5-X learner, so the fix matches the intent.",
+   "smallest_fix": "Add after L561, or as a lead ruling stamped with the file: \"**Comparator settings (fixed now).** Tabular features and hyperparameters of the comparators of items 1, 2 and 5-9 are those of the M5-X scorer: `configs/bioassess/baselines.yaml` (sha256 bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a), Hellinger features of harmonised taxa present in >= 10 training rows of the fold, missing numeric inputs filled with training-row medians. A setting with no M5-X counterpart (MEMLM members and stacking rule, the ridge penalty of the region-offset model, the TabPFN taxon cap with two assemblages, which is not below the hybrid's 200 + 100) is written in the comparator table before the first French development fit of any model. No comparator setting changes after the first candidate validation number on that track. No comparator is weakened or removed (RESEARCH_PLAN §15.5 item 4).\""
+  },
+  {
+   "id": "S1",
+   "severity": "should_fix",
+   "lines": "30-31, 86-88, 164-168, 955",
+   "claim": "The single locked-chemistry reader named in the lock rule does not exist in code and is missing from the not-yet-written list; the fetcher is also an unlisted second reader of chemistry responses.",
+   "evidence": "L164-165 names `ftrack.locked_availability()`. `ftrack.py` (439 lines) has no such function; it has only `window_counts(ops, obs, windows)` at L217, which takes data frames. A search of the repo finds the name only in the protocol. L955 lists `fevents.py`, the fetcher and extractor, and `ftestlook.py` as not yet written, and L30-31 says §15.3 is the list. The `locked_dir()` docstring at `ftrack.py` L80 still describes the store as chemistry rows dated >= LOCK_FROM, which is the v0 design. L86-88 has the fetcher read the count of each count response, and a `size=1` chemistry response also carries one analysis record.",
+   "smallest_fix": "L955: add \"`ftrack.locked_availability()` (only `window_counts` exists) and the `locked_dir()` docstring\" to the not-yet-written list. L164: after \"exactly one audited function reads chemistry in the locked store\" add \"(apart from the fetcher, which reads only the `count` field of a count response and never parses a record)\"."
+  },
+  {
+   "id": "S2",
+   "severity": "should_fix",
+   "lines": "164-166, 318, 393-398, 404-406, 411",
+   "claim": "The text does not say which label rules the pre-look availability count applies, nor whether the scored row set is the frozen mask or the scorer's own recomputation.",
+   "evidence": "Rule 5 drops empty results, rule 7 removes duplicates using the `result` field, rule 8 drops non-numeric results, and rule 10 counts '>= 6 analyses ... after rule 7'. All of these need the result field. L165-166 says only that the function returns the number of analyses and of distinct dates. L404-406 says the unlocked tabulation does not read `resultat`. Only rule 9 has a stated handling for locked rows (L397). The masks drive the 650-cluster gate, the family size, G3, and the F-T test-row set.",
+   "smallest_fix": "Add to §2.3 item 4: \"`locked_availability()` applies rules 1-8 of §6.3 inside the function and returns counts only. The scored rows of a target are the rows of the frozen availability mask whose label exists when the scorer applies rules 1-10. The number of mask rows without a label is reported and never changes the family.\""
+  },
+  {
+   "id": "S3",
+   "severity": "should_fix",
+   "lines": "82-85, 90-91, 212-216",
+   "claim": "The pairing fallback has no download route, and 'added for all rows' does not say how a row with same-station chemistry is treated.",
+   "evidence": "Step C requests chemistry only for 'the stations with at least one eligible invertebrate operation' (L82-83). The fallback uses a different, nearby chemistry station (L212-213). No further pull is described if the fallback is triggered. L215 says the fallback 'is added for all rows' without saying whether both stations' analyses are pooled. §13 item 2 (L841) lists shared station codes as unverified.",
+   "smallest_fix": "Add to L216: \"If the fallback is triggered, the fallback stations are requested in one further step-C pull under the same lock, size-check and cap rules, and the counts are redone once. A row uses its same-station analyses when it has any in the window; the fallback station is used only for a row with none. Analyses of the two stations are never pooled.\""
+  },
+  {
+   "id": "S4",
+   "severity": "should_fix",
+   "lines": "451-453, 544",
+   "claim": "F-E calibration 'on development rows only' does not exclude the test region's own 2019-21 labels, which weakens leave-region-out on the secondary F-E track.",
+   "evidence": "L246 defines development pseudo-test rows as operations dated 2019-2021 in region g. L451-452 recalibrates derived probabilities 'on development rows only'. L544 estimates the comparator's residual spread 'on development rows'. Neither says which regions. The effect is on the secondary track only and is the same for both sides.",
+   "smallest_fix": "L452: replace \"recalibrated on development rows only\" with \"recalibrated, for fold g, on the development pseudo-test rows of the other regions only\". L544: add \"(for fold g, the other regions)\"."
+  },
+  {
+   "id": "S5",
+   "severity": "should_fix",
+   "lines": "206-207, 236-237, 407-409, 508-509, 546-548, 845, 852",
+   "claim": "Five pre-label decision points have no rule for one outcome. None can see a result value, but each is left to judgement at G4 or later.",
+   "evidence": "(i) L206-207: the eligible `code_methode` list is fixed at G4 'from the SANDRE method reference and from the number of operations per code', with no criterion. (ii) L407-409: if more than 5 % of analyses fall outside the whitelist, 'the lead is told' and the whitelist 'may be changed', with no rule for the change. (iii) L236-237: a taxonomy match below 90 % gives 'the lead is told', with no consequence. (iv) §13 item 11 and L546-548: there is a rule for raising TabPFN budgets and none for TabPFN not fitting in 11 GB. (v) L508-509 and §13 item 6: I2M2 component metrics are used 'only if delivered as index results', but which index codes count is not fixed.",
+   "smallest_fix": "Add one sentence each. (i) \"A method code is eligible if its SANDRE record names a standard macroinvertebrate stream protocol of §3; an absent or unknown code stays eligible under the 'unknown' protocol token; the number of operations is never a criterion.\" (ii) \"A fraction or unit code is added to the whitelist only if its SANDRE record shows the same quantity in a unit convertible by a fixed molar factor; nothing is removed.\" (iii) \"Below 90 % the split freeze waits for a stamped ruling; the matching rules (a)-(c) are not changed after any French chemistry count is seen.\" (iv) \"If TabPFN v2 does not fit, context rows and then taxa are halved for the comparator, the hybrid and its controls together until it fits; TabPFN is never dropped.\" (v) \"The component-metric index codes are listed in `bioassess_f_codes.json` at G4 from SANDRE records.\""
+  },
+  {
+   "id": "S6",
+   "severity": "should_fix",
+   "lines": "496-498, 569-571",
+   "claim": "Whether a comparator 'applies' is decided in the freeze candidate, after development numbers exist, with no bar on using a development result as the reason.",
+   "evidence": "L569-571 says a comparator applies 'when it can be fitted for that track and target under the pools of §3', and one that cannot is listed 'not compared, with reason' in the freeze candidate, before the look. Row 1 of the decision table (L758) depends on this set. L564 protects only a comparator that is 'strongest anywhere'. MEMLM may be declared not implementable (L497-498); the timing of that declaration is only implied by 'before the first fit'.",
+   "smallest_fix": "Replace the last sentence of L569-571 with: \"A comparator applies to a track and target if it produced a development prediction for it. 'Not compared, with reason' is allowed only for a technical inability recorded in the comparator table when it first occurs and before any candidate validation number on that track. It is never based on a score.\""
+  },
+  {
+   "id": "S7",
+   "severity": "should_fix",
+   "lines": "745, 810, 811",
+   "claim": "Three development-stage rules are ambiguous and can be read after development numbers are seen. They change which configuration becomes the confirmatory candidate, but not the validity of the test.",
+   "evidence": "G6 (L810): 'more than 0.02 below the best single comparator on the selection score components for >= 4 of 6 F-A primary targets' does not define 'components', does not say what happens if the family has fewer than 6 targets, and applies an F-A count to F-T eligibility. G7 (L811): 'mean development pooled R2' does not say over which targets or tracks, nor on which seed. L745: 'Up to two further configurations per track are secondary' does not say which two.",
+   "smallest_fix": "G6: \"... below the best single comparator on (pooled R2 + r2_anomaly)/2 of the target, French development, seed 0, for at least two thirds of the final F-A primary targets\". G7: \"... on the mean over the final F-A and F-T primary targets of French development pooled R2, seed 0\". L745: \"The two next-highest eligible configurations by selection score are secondary.\""
+  },
+  {
+   "id": "N1",
+   "severity": "note",
+   "lines": "246, 557-558, 737-738",
+   "claim": "Candidate selection and comparator-variant choice use 2019-21 development labels that include the later test region. The fitted weights never see that region.",
+   "evidence": "The selection score (L737-738) is computed on the French development pseudo-test of all folds. The pseudo-test of region g is region g's own 2019-2021 operations (L246). The choice is one of at most six configurations, and the same data pick the comparator variants per target (L557-558). It is symmetric and favours neither side.",
+   "smallest_fix": "Optional: add to the F-A and F-T label wording \"configuration and comparator variants selected on 2019-21 development labels of all regions\"."
+  },
+  {
+   "id": "N2",
+   "severity": "note",
+   "lines": "382-383",
+   "claim": "The floors pointer names the wrong table.",
+   "evidence": "L382-383 says 'Floors are those of `uk.UK_TARGETS`'. That table (`uk.py` L27-40) holds 12 ±30-day targets, has total P in µg/L (factor 1000, floor 1.0), and has no entry for nitrite-N, Kjeldahl N, DO or DO saturation. The M5-F floors are in `fdata.TARGETS` (`fdata.py` L33-50). They equal the UK floors for the six F-A primary targets.",
+   "smallest_fix": "Replace with \"Floors are those of `fdata.TARGETS` (equal to `uk.UK_TARGETS` where a UK target exists; total P 0.001 mg P/L, nitrite-N 0.001, Kjeldahl N 0.01, DO 0.1 mg/L).\""
+  },
+  {
+   "id": "N3",
+   "severity": "note",
+   "lines": "306-311",
+   "claim": "The level-2 merge wording does not say that merging at level 2 joins the whole other pair.",
+   "evidence": "L307-308 says a small unit merges 'with its partner at the lowest level not yet merged'. Level 2 is written '(G1+G2, G3+G4)'. If G1+G2 is still small while G3 and G4 are each above 100 clusters, the text does not say outright that G3 and G4 are joined too. The decision is from counts only and is fixed at G4.",
+   "smallest_fix": "Add: \"A level-2 merge joins all four groups of that half into one unit, whether or not the other pair was merged at level 1.\""
+  },
+  {
+   "id": "N4",
+   "severity": "note",
+   "lines": "177-178, 183, 711-713",
+   "claim": "Use (c) of the closed list names configurations #3, #7 and #8, but #6 `ens_f` can carry #3 as its BioSet-MA member.",
+   "evidence": "L711-713 allows #3 as the `ens_f` member if it passes G7. L177 limits use (c) to #3, #7 and #8. L183 requires the transductive wording for 'a model that uses (c) or (d)', which covers #6 by reading but not by the list.",
+   "smallest_fix": "L177: \"for configurations #3, #7 and #8, for #6 when its member is #3, and ...\"."
+  },
+  {
+   "id": "N5",
+   "severity": "note",
+   "lines": "252-267, 794-795",
+   "claim": "No spent or reserved block is reused. Two one-line disclosures are missing.",
+   "evidence": "`power_f_v1.json` adds 'the pooled-R2 proxy from frozen M5 Test A' (L794-795). That is a published statistic of a spent block used for power planning only, not for training, tuning or a claim. The file is silent on `docs/plans/ea_england_allocation.md`. That allocation covers Hydrology-API sonde data (`processed/ea_wq_sonde`); M5-F uses `processed/uk_ea_ecology` up to 2020-12-31, so there is no overlap.",
+   "smallest_fix": "Optional: L795 add \"(a published CI width, used for power only)\"; §14 add \"M5-F reads no EA Hydrology-API sonde row (`ea_england_allocation.md`)\"."
+  },
+  {
+   "id": "N6",
+   "severity": "note",
+   "lines": "927-939",
+   "claim": "The eight author choices: accept all eight. Two carry a conservative option for the lead.",
+   "evidence": "(1) (a), both coordinate sets as named comparators: accept. It is stricter than a development-chosen variant and meets lead condition (a) (L525-530). (2) (g), early stopping on F-A and F-T primary columns together: accept. It is fixed a priori and uses inner-validation training-role rows only (L621-626). (3) (k), F-Z ablation by masking the region slot at inference: accept. The caveat is in the text (L648-651) and masked slots occur in training (L639-640). Conservative alternative: require every F-Z table to label it \"inference-time masking\" and to state that it cannot show the module helps. (4) (o), chunk as a fixed number of epochs from a UK timing run before any validation number: accept (L627-632). (5) Must-fix 2, a separate locked-operation inputs table: accept. Uses (a)-(d) need it, chemistry never leaves the store, and `ftrack` refuses lock keys in fits (L186, L269-270). (6) Must-fix 3, '>= 6 analyses' counts observations: accept. It matches the UK code (`bio_uk_ea.py` L150-152, where n_obs is the number of observations; `fdata.MIN_OBS_365` = 6), and a distinct-dates sensitivity is reported. It is subject to S2. (7) Should-fix 11, MEMLM reimplemented without a fidelity check: accept, labelled \"reimplemented\". It is subject to S6 and B1: members, stacking rule and any 'not implementable' call must be recorded before the first French fit. (8) G10, look budget written in the freeze candidate from measured timings: accept. Conservative addition: say that a stop at 1.5 times the budget is recorded as an abort by the guard and uses the single resume of §12.",
+   "smallest_fix": "None required. Optional wording as given under (3) and (8)."
+  }
+ ],
+ "prior_items_status": [
+  {
+   "item": "Must-fix 1: label tested against both comparator classes",
+   "status": "resolved",
+   "where": "L563-571, L758-759, L827-828",
+   "comment": "Row 1 needs a paired CI above 0 against every listed comparator; nothing is chosen at test. Residuals: the 'applies' clause (S6) and unfixed comparator settings (B1)."
+  },
+  {
+   "item": "Must-fix 2: raw archives outside the locked store",
+   "status": "resolved",
+   "where": "L118-150, L159-163",
+   "comment": "Everything lands locked; extraction is by whitelist and date; the routing field is named; bad dates stay locked. All whitelist fields exist in the API schemas."
+  },
+  {
+   "item": "Must-fix 3: open label-construction choices",
+   "status": "resolved",
+   "where": "L387-399, L404-409",
+   "comment": "Eleven rules, each with a UK counterpart; the '>= 6' rule counts observations. Residuals: which rules the pre-look count applies (S2); no rule for the whitelist change at G4 (S5)."
+  },
+  {
+   "item": "Must-fix 4: download route, cap, codes frozen too late",
+   "status": "resolved",
+   "where": "L73-104, L107-108, G1-G2 L805-806",
+   "comment": "Filtered API route, size check before each step, transient files count toward the cap, codes verified before the first chemistry request. The 20,000 limit and all codes were checked against the fetched records. Residual: the route for a fallback pull (S3)."
+  },
+  {
+   "item": "Must-fix 5: transductive uses contradicted the lock rule",
+   "status": "resolved",
+   "where": "L171-183, L519-523, L652-663, L689-691",
+   "comment": "Closed list (a)-(d), one mirror rule with seed and sort order, PCA basis on training pseudo-regions. Residual: #6 with member #3 is not in the list (N4)."
+  },
+  {
+   "item": "Must-fix 6: seed statistic undefined",
+   "status": "resolved",
+   "where": "L475-480, L751-752",
+   "comment": "Seed-mean prediction on both sides; per-seed pairing defined."
+  },
+  {
+   "item": "Should-fix 1: context allow-list",
+   "status": "resolved",
+   "where": "L598-610, L539",
+   "comment": "Closed list; `durete` and other chemistry-derived attributes excluded for everyone."
+  },
+  {
+   "item": "Should-fix 2: F-Z label wording and ens_zs pools",
+   "status": "resolved",
+   "where": "L338-339, L714-715, L731-734"
+  },
+  {
+   "item": "Should-fix 3: December 2021 diatom attachment and tie rule",
+   "status": "resolved",
+   "where": "L218-224"
+  },
+  {
+   "item": "Should-fix 4: diatom-only rows for comparators",
+   "status": "resolved",
+   "where": "L537"
+  },
+  {
+   "item": "Should-fix 5: underpowered-a-priori statement",
+   "status": "resolved",
+   "where": "L786-793",
+   "comment": "Figures recomputed: 1,435 clusters at the low end; 3,674 at the high end against 3,673 in the text, a rounding difference under 'about'."
+  },
+  {
+   "item": "Should-fix 6: multiplier formula",
+   "status": "resolved",
+   "where": "L768-771",
+   "comment": "4.039, 3.833 and 3.707 recomputed."
+  },
+  {
+   "item": "Should-fix 7: merge rule and floor on region units",
+   "status": "resolved",
+   "where": "L306-315, L766-767",
+   "comment": "Level-2 wording could be one sentence clearer (N3)."
+  },
+  {
+   "item": "Should-fix 8: pairing fallback target, 'primary targets', UK labels for replacements",
+   "status": "resolved",
+   "where": "L212-216, L415-418, G3 L807",
+   "comment": "The criterion is fixed (4 of the 6 listed F-A targets at 650 clusters). The route and the pooling rule for the fallback are missing (S3)."
+  },
+  {
+   "item": "Should-fix 9: row eligibility",
+   "status": "partly_resolved",
+   "where": "L197-210, L229-237",
+   "comment": "Supports, result type, date floor, protocols and the unmatched-taxa rule are fixed. The eligible `code_methode` list is deferred to G4 with no criterion (S5)."
+  },
+  {
+   "item": "Should-fix 10: French events",
+   "status": "resolved",
+   "where": "L424-453",
+   "comment": "Reused codes exist in `events.py` v1.0. Thresholds match Annex 6 of the fetched guide. Calibration rows need a region restriction (S4)."
+  },
+  {
+   "item": "Should-fix 11: MEMLM",
+   "status": "resolved",
+   "where": "L492-498, L949",
+   "comment": "Added as a reimplementation; the paper is still to be checked before the first fit (disclosed)."
+  },
+  {
+   "item": "Should-fix 12: fold river splits, distance report, 50 km stratum",
+   "status": "resolved",
+   "where": "L279-280, L293-305"
+  },
+  {
+   "item": "Should-fix 13: 32-dimensional embedding and ens_f member",
+   "status": "resolved",
+   "where": "L685-688, L711-713"
+  },
+  {
+   "item": "Should-fix 14: registry key and stamp wording",
+   "status": "resolved",
+   "where": "L9-13, L831"
+  },
+  {
+   "item": "Should-fix 15: cross-workstream rules, measured ECOTOX only",
+   "status": "resolved",
+   "where": "L455-461, L857-865"
+  },
+  {
+   "item": "Should-fix 16: licence register, guard is procedural",
+   "status": "resolved",
+   "where": "L184-187, L866-867",
+   "comment": "`docs/licenses.md` L49 carries the row (planned, not downloaded)."
+  },
+  {
+   "item": "Should-fix 17: UK <= 2020-12-31 window conflict",
+   "status": "resolved",
+   "where": "L252-265",
+   "comment": "All counts confirmed by a metadata-only recount: 199,234 and 14,030; drops 0 and 0."
+  },
+  {
+   "item": "Should-fix 18: TabPFN later releases",
+   "status": "resolved",
+   "where": "L550-555",
+   "comment": "`tabpfn` 2.2.1 is installed."
+  },
+  {
+   "item": "Lead condition (a): coordinate-free F-Z candidate, comparator list keeps coordinate-using variants",
+   "status": "resolved",
+   "where": "L525-530, L612-616, L708-709",
+   "comment": "Code still has lat/lon in the F-Z recipes (disclosed at L955)."
+  },
+  {
+   "item": "Lead condition (b): UK biological sample dates <= 2020-12-01",
+   "status": "resolved",
+   "where": "L252-265",
+   "comment": "`ftrack.UK_ALLOWED_TO` is still 2020-12-31 (disclosed at L955); the allowed rows are identical under both cuts by my recount."
+  },
+  {
+   "item": "Lead choice (c): UK diatoms light-microscopy only",
+   "status": "resolved",
+   "where": "L254, L847-849",
+   "comment": "No lead condition attached."
+  },
+  {
+   "item": "Lead choice (d): diatom sites in reserved 50-km blocks excluded",
+   "status": "resolved",
+   "where": "L255-257",
+   "comment": "No lead condition attached."
+  },
+  {
+   "item": "Lead condition (e): DO coherence altitude correction, constants unit-tested, shared routine",
+   "status": "resolved",
+   "where": "L664-677",
+   "comment": "The text meets the condition. Pressure factor checked: -0.031 log10 at 600 m and -0.060 at 1,150 m. Code and tests are not yet aligned (disclosed at L955)."
+  },
+  {
+   "item": "Lead condition (f): pool prevalence from training taxon lists only, offered to comparators",
+   "status": "resolved",
+   "where": "L582-592, L540",
+   "comment": "Code constants (50 km, 200 km, minimum 10) match."
+  },
+  {
+   "item": "Lead choice (g): early stopping and inner validation",
+   "status": "resolved",
+   "where": "L621-626",
+   "comment": "No lead condition attached; author choice accepted (N6)."
+  },
+  {
+   "item": "Lead choice (h): hybrid constants",
+   "status": "resolved",
+   "where": "L680-694",
+   "comment": "No lead condition attached."
+  },
+  {
+   "item": "Lead choice (i): embedding initialisation",
+   "status": "resolved",
+   "where": "L581",
+   "comment": "No lead condition attached."
+  },
+  {
+   "item": "Lead choice (j): attached diatom operation unlocked and within the pool's end date",
+   "status": "resolved",
+   "where": "L220-223",
+   "comment": "No lead condition attached."
+  },
+  {
+   "item": "Lead condition (k): no label from context; transductive use disclosed, identical for all models, with a no-region-context ablation",
+   "status": "resolved",
+   "where": "L642-651, L171-183, L519-523, L338-339",
+   "comment": "F-A and F-T have a trained ablation (#2). F-Z has inference-time masking only, with the caveat written; the lead should accept this explicitly (N6 item 3)."
+  },
+  {
+   "item": "Lead choice (l): coherence constraints by source",
+   "status": "resolved",
+   "where": "L665-670",
+   "comment": "No lead condition attached."
+  },
+  {
+   "item": "Lead choice (m): inner validation by whole 50-km blocks, 15 %",
+   "status": "resolved",
+   "where": "L621-623",
+   "comment": "No lead condition attached."
+  },
+  {
+   "item": "Lead condition (n): plausibility ranges identical for every role and model",
+   "status": "resolved",
+   "where": "L397, L352-353, L373",
+   "comment": "`fdata.PLAUSIBLE` matches rule 9."
+  },
+  {
+   "item": "Lead condition (o): resume points logged, frozen checkpoint hash-pinned",
+   "status": "resolved",
+   "where": "L627-632, G10 L814",
+   "comment": "Resumable fits are not yet in code (disclosed at L955)."
+  },
+  {
+   "item": "§15.1 and §15.2 tables point at real text",
+   "status": "resolved",
+   "where": "L873-922",
+   "comment": "Every row checked against the cited section; each says what the row claims."
+  }
+ ]
+}

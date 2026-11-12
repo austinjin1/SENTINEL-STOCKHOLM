@@ -19,7 +19,7 @@ from . import features as F
 
 WORKSTREAM = "M2-orbit"
 PLAN_REF = "RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md"
-GPU_PREFER = 1
+GPU_PREFER = None   # 2026-11-10: GPUs 0-9 open; most-free first, never another user's GPU
 # Development evaluation cells (orbit_protocol.md §6). Model selection cell first; in-lake rows mirror the
 # headline (test role x test years, in-lake). Buffer rows never scored. The seen-lake cell excludes inner
 # blocks (no model was fitted on them; review W3). TSS/turbidity are also summarised on the pooled
@@ -34,19 +34,67 @@ def runs_root() -> Path:
     return paths.ensure(paths.RUNS_ROOT / "orbit")
 
 
-def setup_gpu(name: str, poll_s: float = 30.0, log=print, min_free_mb: int = 3000) -> int:
-    """Lock one GPU through the shared lock helper (``sentinel.core.gpu.acquire_gpu``; hard cap
-    ``.gpu_locks/ALLOWED`` = GPUs 0,1 since 2026-11-08 16:00). Prefers GPU 1, waits for a free allowed GPU
-    and lets the helper set CUDA_VISIBLE_DEVICES. Each Orbit GPU job is one process <= 2 h (one seed, one
-    baseline run, one compare), so chains release the lock between jobs (CONTRIBUTING_V2)."""
+def foreign_gpus() -> set[int]:
+    """GPU indices with a compute process owned by ANOTHER Unix user (e.g. the other host user). SENTINEL jobs run as
+    this user and are arbitrated by the lock files. If nvidia-smi cannot be queried, every GPU counts as foreign
+    (fail closed)."""
+    import os
+    import subprocess
+
+    try:
+        idx = subprocess.run(["nvidia-smi", "--query-gpu=index,uuid", "--format=csv,noheader"], capture_output=True,
+                             text=True, timeout=60, check=True).stdout
+        apps = subprocess.run(["nvidia-smi", "--query-compute-apps=gpu_uuid,pid", "--format=csv,noheader"],
+                              capture_output=True, text=True, timeout=60, check=True).stdout
+    except Exception:  # noqa: BLE001
+        return set(range(64))
+    u2i = {}
+    for line in idx.splitlines():
+        if line.strip():
+            i, u = (x.strip() for x in line.split(",", 1))
+            u2i[u] = int(i)
+    me, out = os.getuid(), set()
+    for line in apps.splitlines():
+        if not line.strip():
+            continue
+        u, pid = (x.strip() for x in line.split(",", 1))
+        try:
+            uid = os.stat(f"/proc/{pid}").st_uid
+        except (FileNotFoundError, ValueError):
+            continue
+        if uid != me and u in u2i:
+            out.add(u2i[u])
+    return out
+
+
+def setup_gpu(name: str, poll_s: float = 30.0, log=print, min_free_mb: int = 8000) -> int:
+    """Lock one GPU with the shared lock helper's cap and lock files (``sentinel.core.gpu``: ``.gpu_locks/ALLOWED``,
+    0-9 since 2026-11-10). It never takes a GPU on which another user's process runs (:func:`foreign_gpus`) or with
+    less than ``min_free_mb`` MiB free (SatWQ-Net needs ~2 GB; the margin keeps clear of other users' jobs). It waits
+    for a free GPU and sets CUDA_VISIBLE_DEVICES. Each Orbit GPU job is one process <= 2 h (one seed), so parallel
+    seeds spread over the free GPUs and release them quickly."""
+    import os
+    import time
+
     from ...core import gpu as gpu_mod
 
     if gpu_mod._held:
         raise RuntimeError("a GPU is already held by this process")
-    log(f"[gpu] requesting a GPU (allowed {gpu_mod.ALLOWED}, prefer {GPU_PREFER}): {gpu_mod.status()}")
-    g = gpu_mod.acquire_gpu(name, poll_s=poll_s, prefer=GPU_PREFER, min_free_mb=min_free_mb)
-    log(f"[gpu] locked GPU {g}")
-    return g
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    log(f"[gpu] requesting a GPU (allowed {gpu_mod.ALLOWED}, min free {min_free_mb} MiB): {gpu_mod.status()}")
+    while True:
+        free, foreign = gpu_mod.free_mb(), foreign_gpus()
+        order = sorted(gpu_mod.ALLOWED, key=lambda g: -free.get(g, 0))
+        for g in order:
+            if g in foreign or free.get(g, 0) < min_free_mb:
+                continue
+            fh = gpu_mod._try_lock(g, name)
+            if fh is not None:
+                gpu_mod._held.append(fh)
+                os.environ["CUDA_VISIBLE_DEVICES"] = str(g)
+                log(f"[gpu] locked GPU {g} (foreign-occupied GPUs skipped: {sorted(foreign)})")
+                return g
+        time.sleep(poll_s)
 
 
 def load_dev(version: str = D.CACHE_VERSION, fit_scheme: str = "base"):

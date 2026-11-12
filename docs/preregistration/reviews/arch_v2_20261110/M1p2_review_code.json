@@ -1,0 +1,180 @@
+{
+  "sha256_read": "b17f3ec67af92809f2c2c2b31dca210275d7712c45d9a7a3d8e9930e788a63f4",
+  "verdict": "REVISE",
+  "summary": "The file cannot be stamped as written. Most cited code does what the entries say, but three things require the file itself to change, and several binding conditions are not implemented in the drivers.\n\nRepo root for all paths: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM. Review was read-only; no training, no GPU, no label values read.\n\n**Why the file must change**\n- **A6, line 72 is false.** It says no gage-height series exists in the daily tier. The daily index has `gage_ft_mean` at 526 train-role and 84 val-role sites, so a stamped §2d auxiliary target is dropped on a wrong ground.\n- **Item 15 is silent on block overlap.** The reference window is computed on the whole loaded cube. In the CV driver that cube includes the val block, so val-block labels enter the climatology for late-starting series, and scored val rows can sit inside their own reference window. The stamped M1-N rule puts the issue window at reference end + 42 d; no v2 code enforces it.\n- **A8 and A12 are incomplete by their own terms.** The A8 source counts are still PENDING although line 93 says they are added \"before the stamp\". The A12 timing is PENDING, and its full-rows configuration is not in the driver.\n\n**Text that does not match the code**\n- A6: the single-target references do not fit auxiliary-target models; the GBM and Chronos loops cover the 8 scored variables only.\n- B7: the two drivers do not share a date axis, so the noise sample differs between step 1 and CV; within step 1 the array is rebuilt per phase with no equality check.\n- B9: stage 2 runs with weight decay 0.01, not the 1e-5 of stage 1 (confirmed with a CPU snippet).\n- Config C4 (CMAL head) is silently ignored for SONDE-HF, so C4 would equal C1.\n- A12 and B9 line references are stale; the drivers were saved 12 s after the file.\n- Item 1: for h = 10 and 14 the summaries cover leads 1..7, not 1..h.\n\n**Parity gaps not recorded in part 1 or part 2**\n- The GBM references fit only rows with target ≤ 2019-09-30, while SONDE-HF and R-NH train through 2021-09-30. In quantile mode (the step-1 default) the WY2020–21 slice is used only for a diagnostic. This could change the step-1 number.\n- GBM early-stopping rows are drawn differently in CV and step 1.\n\n**Stamp guard:** there is none. No v2 entry point checks for a stamp row before writing predictions or registry rows.\n\n**State claims (lines 11–15) hold.** The registry has no `sonde_arch_v2/step1` or `/cv` row, and neither `v2_cv` nor `v2_step1` exists under sentinel_runs/sonde. No PARITY_LOG, FOLDS.json or gbm_timing.json exists yet.\n\n**Tests:** `tests/test_sonde_v2.py` ran on CPU with 2 threads and no bytecode written: 18 passed. They cover components only; nothing tests the drivers, the stamp rule, the block overlap, the slope clip or the derived targets.",
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "blocking",
+      "item": "Item 15 (reference-window climatology)",
+      "claim": "The reference window is computed over the whole loaded cube with no cut at the train-block end. In the CV driver the cube runs to 2023-09-30, so for series first observed after about 2019-10-01 the climatology is built partly from val-block labels and scored OOF val rows can lie inside their own reference window. The stamped M1-N rule (issue window = reference end + 42 d) is not enforced anywhere in v2 code and the file does not mention it; it also sits badly with ruling L3 (fits on train block only).",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/sonde_v2/prep.py:134-136 (`t0 = cube.dates[fin[0]]`; `inwin = (dates >= t0) & (dates < t0 + 730 d)`), prep.py:160. CV loads `prepare_v2(blocks=(\"train\", \"val\"), ...)` at scripts/train/sonde_v2_cv.py:69; sentinel/models/sonde/common.py:222-223 loads to `guard.data_end_date(blocks)`. Scored rows: cv.py:205, 239, 271 (`data.rows(v, \"val\")`); common.py:238-267 has no window exclusion. Anomaly targets use this climatology: sentinel/models/sonde/lstm.py:93-111. Stamped: docs/preregistration/m1n_protocol.md:39 and :191 (\"Issue window = reference end + 42 days\"); sonde_arch_v2_lead_rulings.md:66-68 (L3). Step 1 loads blocks=(\"train\",) (sonde_v2_step1.py:54), so the same series gets a different climatology there. Upper-bound counts from sonde_daily/index.parquet first-observation dates (no labels read), series whose window straddles 2021-09-30, train-role + val-role: temp_c_mean 86+14, do_mgl_mean 41+3, do_mgl_min 43+4, spcond 77+11, ph_median 40+2, turb_mean 23+2. Series first observed inside the val block are unscored only incidentally, via the >= 60 train-pairs rule at sentinel/models/baselines/sonde_baselines.py:77.",
+      "recommendation": "Fix one rule in code and write it into item 15 with counts of affected site-series: either cut the window at the block end for every fit, or drop every row with issue date before first observation + 730 d + 42 d from training, early stopping, baselines and scoring, for all models alike. Add a unit test. Also state how step-1 scored rows inside the window are treated."
+    },
+    {
+      "id": "F02",
+      "severity": "blocking",
+      "item": "A6 (gage height)",
+      "claim": "Text line 72 says gage height is dropped because no gage-height series exists in the daily tier on disk. That is false: the daily tier holds gage-height series at most train/val-role sites that the plan counted.",
+      "evidence": "Metadata only: /home/bcheng/STOCKHOLM/sentinel_data/processed/sonde_daily/index.parquet has variables gage_ft_max/mean/median/min; `gage_ft_mean` rows: 526 train-role, 84 val-role (519 and 84 with n_days >= 365). All 610 of those site parquet files have a `gage_ft_mean` column. Code side: sentinel/models/sonde_v2/prep.py:22-24 (AUX, V2_VARS, DERIVED) contain no gage variable. Stamped: sonde_arch_v2_amendment.md:147 (\"log discharge mean and gage height\").",
+      "recommendation": "Correct line 72. Either add gage height to V2_VARS as an auxiliary target, or record the drop as a deviation with its true reason for the lead to rule on."
+    },
+    {
+      "id": "F03",
+      "severity": "blocking",
+      "item": "A8 / A12 (PENDING numbers and full-rows condition)",
+      "claim": "The file is incomplete by its own terms: A8 source counts are PENDING although line 93 promises them before the stamp, and A12 timing is PENDING. The A12 binding condition (a full-rows configuration among the <= 5 parity configurations) is not in the driver, which hard-codes the 1.5 M cap.",
+      "evidence": "Text lines 92-93, 110-115. scripts/train/sonde_v2_cv.py:54-58: CONFIGS for gbm_nwp and pf_gbm hold only Q, Q19, LS; cv.py:227 `GBMNWPConfig(num_threads=6, max_fit_rows=1_500_000, seed=seed, **CONFIGS[arm][cname])`; cv.py:299-300 refuses any config not listed. /home/bcheng/STOCKHOLM/sentinel_runs/sonde/v2_smoke holds only rnh/ and sonde_hf/ (no gbm_timing.json). GEFS extraction still running: processed/gefs_points/reforecast has 39 monthly files (200710..201509, newest written 14:32 EST), operational has 1.",
+      "recommendation": "Add the A8 counts and A12 timing addenda before the stamp. Add a full-rows config (or the declared largest cap) to CONFIGS for both GBM arms and make max_fit_rows come from the config, not a literal."
+    },
+    {
+      "id": "F04",
+      "severity": "should_fix",
+      "item": "Stamp guard (rule 1 / L4)",
+      "claim": "There is no stamp guard. No v2 entry point checks for a stamp registry row for the deviations before producing predictions, step-1 statistics or registry rows.",
+      "evidence": "scripts/train/sonde_v2_cv.py:292-329 (`phase_run` checks only FOLDS.json and that the config is listed, then writes OOF forecasts and an `oof_written` row); scripts/train/sonde_v2_step1.py:97-231 (phases hf, gbm, eval; eval writes STEP1_RESULT.json and `sonde_arch_v2/step1` rows); sentinel/models/sonde_v2/prep.py:32-33 refuses only test blocks/roles. grep for stamp|registry in sonde_v2/*.py and sonde_v2_*.py finds no check. results/registry.jsonl: one row for the amendment (id 2921bb1ca000, experiment sonde/prereg_snapshot), 0 rows mentioning sonde_arch_v2_deviations.",
+      "recommendation": "Make `phase_run` and the step-1 phases exit unless a prereg_snapshot row exists whose recorded sha256 matches the current deviations part 1 and part 2 files. Until then the rule rests on discipline only."
+    },
+    {
+      "id": "F05",
+      "severity": "should_fix",
+      "item": "A12 / A11 (GBM fit window, parity)",
+      "claim": "The GBM references fit only rows with target date <= 2019-09-30 (inherited `fit_end`), while SONDE-HF and R-NH train on the whole train block to 2021-09-30. In quantile mode (Q, Q19, the step-1 default) the WY2020-21 slice is used only for a coverage diagnostic. The GBMs therefore never fit on operational GEFS or on Open-Meteo GFS (available from 2021-03-24), so their p1_ features are all-NaN in fit rows. Neither part 1 nor part 2 records this; it could change the step-1 number in the candidate's favour.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/sonde/gbm.py:49-50 (`fit_end = \"2019-09-30\"`, `cal_start = \"2019-10-01\"`), :59-66 `fit_cal_masks`; sentinel/models/sonde_v2/gbm_nwp.py:141 (masks), :145-147 (fit rows), :184-187 (cal rows used only for `cal_cov90` in quantile mode), :155 (`n_rows_total` counts fit-mask rows only). Networks: sentinel/models/sonde/lstm.py:196-209 (`samples` = all train-block issue dates), cv.py:147, step1.py:112. Step-1 GBM default at step1.py:153-154 is quantile mode.",
+      "recommendation": "Either fit the quantile-mode GBMs on the full train block (same rows as the networks), or record the restricted window as a deviation with its reason and let the lead rule before step 1. Log the true eligible train-block row count in the parity log."
+    },
+    {
+      "id": "F06",
+      "severity": "should_fix",
+      "item": "A6 (auxiliary targets for single-target references)",
+      "claim": "Text lines 80-81 say R-NH, GBM-NWP and PF-GBM fit a separate model for each auxiliary target. The CV driver does not: the GBM and Chronos loops cover the 8 scored variables only, and SONDE-HF OOF output covers the 5 daily maxima/minima but not the three derived heads.",
+      "evidence": "scripts/train/sonde_v2_cv.py:231 (`for v in [v for v in SCORED ...]` in run_gbm), :270 (run_chronos, SCORED only), :203 (`SCORED + AUX_REPORTED`), :47 (AUX_REPORTED has no do_amp_mgl, do_pctsat, temp_c_7dadm). R-NH gets an auxiliary target only through a manual `--target`.",
+      "recommendation": "Either add the auxiliary and derived targets to the reference loops and to the OOF writer, or change lines 80-82 to say what is actually produced."
+    },
+    {
+      "id": "F07",
+      "severity": "should_fix",
+      "item": "B7 (same noise sample)",
+      "claim": "Text line 199 says both drivers use the same date axes. They do not: step 1 loads the train block only and CV loads train + val, and the error-model draw depends on the axis length, so the noise at a given (site, date) differs between step 1 and CV. Within step 1 the array is not one shared object; each phase process rebuilds it, with no equality check, while the GEFS extraction it depends on is still running.",
+      "evidence": "scripts/train/sonde_v2_step1.py:54 (blocks=(\"train\",)) vs scripts/train/sonde_v2_cv.py:69 (blocks=(\"train\", \"val\")); /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/sonde_v2/nwp.py:189-193 (`rng.standard_normal((S, T, F))` per lead). step1.py:69 `prod = P.build(data)` runs inside `setup`, called by phase_hf (:106) and phase_gbm (:152) separately; only hashes are logged (:118, :177-181) and phase_eval does not compare them. prep.py:85-87 `load_gefs` globs whatever monthly files exist at run time.",
+      "recommendation": "Build the perfect-prog array once, save it, and have every phase load it; or assert the two parity-log hashes are equal in phase_eval. Correct line 199. Do not run step 1 until the reforecast extraction is complete."
+    },
+    {
+      "id": "F08",
+      "severity": "should_fix",
+      "item": "B9 (training budget)",
+      "claim": "Stage 2 runs with weight decay 0.01, not the 1e-5 of stage 1, because the driver seeds the checkpoint with a default-AdamW state that the trainer then loads. B9 does not record weight decay or the 30,000-sample early-stopping cap. The line reference for stage 2 is stale.",
+      "evidence": "scripts/train/sonde_v2_cv.py:191 (`torch.optim.AdamW(m.parameters(), lr=cfg.lr).state_dict()`); sentinel/models/sonde_v2/train_v2.py:101 (weight_decay=cfg.weight_decay), :108 (`opt.load_state_dict(c[\"opt\"])`), :35 (1e-5), :40 (es_max_samples 30_000). CPU check, torch 2.7.1: `before 1e-05 ... after 0.01`. Stage 2 is at cv.py:169, text line 203 cites :163. Applies equally to SONDE-HF and R-NH.",
+      "recommendation": "Pass weight_decay=cfg.weight_decay at cv.py:191 (or do not seed an optimizer state). Record weight decay and the early-stopping sample cap in B9 and fix the line reference."
+    },
+    {
+      "id": "F09",
+      "severity": "should_fix",
+      "item": "B5 / stamped config C4",
+      "claim": "The stamped SONDE-HF configuration C4 (CMAL head) is declared in the driver but ignored by the model builder and the loss. Running C4 would train a copy of C1 and label it CMAL. The file does not record this.",
+      "evidence": "scripts/train/sonde_v2_cv.py:51 (`\"C4\": {\"head\": \"cmal\"}`); sentinel/models/sonde_v2/train_v2.py:60-62 (`build_model` does not pass `cfg.head` for sonde_hf), :90-93 (loss is always pinball for sonde_hf); sentinel/models/sonde_v2/nets.py:210 (`MonotoneQuantileHead` only). Stamped: sonde_arch_v2_amendment.md:52 (\"C4 CMAL head\").",
+      "recommendation": "Implement the CMAL head for SONDE-HF, or remove C4 from CONFIGS and record the change as a deviation."
+    },
+    {
+      "id": "F10",
+      "severity": "should_fix",
+      "item": "A12 (early-stopping rows)",
+      "claim": "The early-stopping subsample is drawn differently from what the text says and differently in the two drivers. CV draws 300k (site, date) pairs before checking that a target exists, so the usable rows are the finite subset and can be far fewer. Step 1 draws up to 200k rows that have a finite h = 7 target; that is not recorded. With fewer than 100 usable rows there is no early stopping at all, and the location-scale scale model never has it.",
+      "evidence": "scripts/train/sonde_v2_cv.py:232-237 (pick, then finite mask); scripts/train/sonde_v2_step1.py:168-170 (`min(200_000, pick.size)`); sentinel/models/sonde_v2/gbm_nwp.py:159-160 (`if em.size >= 100`), :192 (scale model trained without ES). Seeds: fit cap `default_rng(cfg.seed)` at gbm_nwp.py:137 (CLI seed in CV, 0 in step 1); ES pick `default_rng(SEED + k)` at cv.py:229 and `default_rng(SEED)` at step1.py:161. Draws are identical for GBM-NWP and PF-GBM at the same fold, seed and variable order.",
+      "recommendation": "Draw the ES rows after the finite-target mask in both drivers, use one size, and record the size, seed and the under-100 behaviour in A12. Log the effective ES row count per (variable, h)."
+    },
+    {
+      "id": "F11",
+      "severity": "should_fix",
+      "item": "A8 (bias map)",
+      "claim": "The entry describes the slope clip and the fallback order correctly but leaves out three behaviours that change numbers: precipitation uses a ratio-of-means map with no clip, a pooled HUC2-month map is accepted with as few as 3 pairs, and where no map exists the forecast passes through uncorrected (source 0).",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/sonde_v2/nwp.py:117-119 (ratio branch returns before the clip at :124), :114-115 (`ok.sum() < 3` -> None), :149-151 (pooled map stored whenever not None), :133-135 (identity init, source 0), :158-166 (order: site-month, pooled, all-month). In the CV driver the fit can touch up to 7 days of val-block weather (no labels): products.py:51, 56-57.",
+      "recommendation": "Add these three behaviours to A8, and include source 0 in the pending counts. Consider a minimum pair count for the pooled map."
+    },
+    {
+      "id": "F12",
+      "severity": "note",
+      "item": "A12 / B9 (line references)",
+      "claim": "Four code references are off by six lines because the two drivers and parity.py were saved 12 s after the file.",
+      "evidence": "mtimes: file 13:25:34, sonde_v2_cv.py / sonde_v2_step1.py / parity.py 13:25:46 EST. Text 107 `sonde_v2_step1.py:147` -> cap is at :153; text 108 `sonde_v2_cv.py:221` -> :227; `sonde_v2_cv.py:227` (300k) -> :233; text 203 `sonde_v2_cv.py:163` -> :169. A11 (cv.py:102) and B14 (step1.py:110) are correct.",
+      "recommendation": "Refresh the references and record the sha256 of the two drivers in the file."
+    },
+    {
+      "id": "F13",
+      "severity": "note",
+      "item": "Item 1 (NWP features for h > 7)",
+      "claim": "For h = 10 and 14 the features are not over leads 1..h as lines 27 and 33 say; they stop at lead 7, and the 'target-day Tmean' is lead-7 Tmean.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/sonde_v2/nwp.py:259 (`hh = min(h, L)`), :269-281; tests/test_sonde_v2.py:89-90 asserts `nwp_tmean_target == 7` for h = 14.",
+      "recommendation": "Reword lines 27, 32 and 33 to 'leads 1..min(h, 7)' and 'last available lead'."
+    },
+    {
+      "id": "F14",
+      "severity": "note",
+      "item": "Item 15 (scope sentence, lines 51-53)",
+      "claim": "Three frozen paths still use all training years, so 'covers the anomaly targets, the inputs and the scoring baselines alike' is not fully true. This is the same for every model.",
+      "evidence": "sentinel/models/sonde/common.py:225-231 (sites are kept or dropped by the old training-years climatology); sentinel/models/baselines/sonde_baselines.py:54, 59-80 (damping factor and residual/change quantiles of the naive references fitted on all train-block dates); sentinel/models/sonde/lstm.py:95 (standardisation floors from all train-role sites regardless of fold). No v2 caller passes `ref_window_clim=False`.",
+      "recommendation": "State these three in item 15 so the scope sentence is exact."
+    },
+    {
+      "id": "F15",
+      "severity": "note",
+      "item": "B3 (parity log)",
+      "claim": "The parity log records but does not enforce. Nothing compares records across models, and the Chronos runner writes no record.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/sonde_v2/parity.py:20-40 (append only, writes to sentinel_runs/sonde/v2_cv/PARITY_LOG.jsonl, line 17); scripts/train/sonde_v2_cv.py:256-289 (run_chronos has no parity.record call).",
+      "recommendation": "Add a check step that fails when train-site hashes, static columns or input hashes differ between models of the same fold; add a record for Chronos."
+    },
+    {
+      "id": "F16",
+      "severity": "note",
+      "item": "A6 (loss weights, C3, elevation)",
+      "claim": "Three details are looser than the text. 'Equal weights' is per observed entry, so targets with more data weigh more. C3 gives zero weight to three of the eight scored variables, yet OOF forecasts for them would still be written. Missing elevation is treated as 0 m in DO % saturation.",
+      "evidence": "sentinel/models/sonde_v2/nets.py:134 (`loss.sum() / m.sum()`); train_v2.py:44-45, 91-92 (primary = 5 variables) vs cv.py:45-46 (SCORED = 8) and cv.py:203; prep.py:183 (`nan_to_num(elev, nan=0.0)`).",
+      "recommendation": "Say 'equal weight per observed target-day' in A6, decide what C3 reports for the three unweighted variables, and record the elevation default."
+    },
+    {
+      "id": "F17",
+      "severity": "note",
+      "item": "A13 / B2 (small wording points)",
+      "claim": "'6,040 of 6,516 registry sites' is the StreamCat table count, not the Sonde site registry. In the hourly branch the pH slot is filled from hourly pH mean but standardised with daily pH-median site statistics.",
+      "evidence": "streamcat_sites.parquet: 6,516 rows, 6,040 non-null nhd_slope, all positive; `common.site_registry()`: 6,482 sites, 6,011 with slope. sentinel/models/sonde_v2/data_v2.py:31 (`HOURLY_COLS[\"ph_median\"] = (\"ph_mean\", \"ph_prov\")`), :179.",
+      "recommendation": "Correct the denominator wording and add the pH detail to B2."
+    }
+  ],
+  "checked_ok": [
+    "sha256 of the file matches the expected value, re-checked at the end of the review.",
+    "State at writing (lines 11-15): results/registry.jsonl has 0 rows for sonde_arch_v2/step1 or /cv (only 7 gefs_pilot rows); sentinel_runs/sonde/v2_cv and v2_step1 do not exist; v2_smoke holds only rnh/ and sonde_hf/.",
+    "Item 1: gbm_nwp.py:70 is `_nwp_blocks` with prefix `p{p}_` (line 77); gbm_nwp.py:80 is `_phys_blocks` using the masked mean (81-82); `blocks_h` (119-125) gives GBM-NWP and PF-GBM the same NWP and deterministic blocks, physics added only when cfg.physics; step 1 passes the single product pp (step1.py:173).",
+    "Item 15 parameters: prep.py:106 signature `days=730, min_obs=365, window=15, min_years=2`; fallback to window mean/variance at 147-149; applied at prep.py:47-48 before slope, catchment, weather, baselines and tensors; prep.py:155-160 raises if baselines or rows already exist; test block refused at 32-33.",
+    "Item 15 scope: Chronos future climatology reads data.clim_mean (sonde/chronos.py:85, 204); GBM feature table reads the same arrays (sonde/features.py:101-104, 210-212); network anomalies read them (sonde/lstm.py:93-111).",
+    "A6 targets: 12 frozen TARGETS + 5 AUX (prep.py:22-23) + 3 DERIVED (prep.py:24) = 20; `add_derived_targets` at prep.py:163; definitions match (amp 182, % sat 183-186, 7-day mean of T max with min_periods=7 at 187).",
+    "A6 DO % saturation routine: sentinel/models/hydromet/physics.py:33-50 `do_sat_mgl` is Benson and Krause (1984) with vapour-pressure and theta pressure correction; :53 `pressure_atm_from_elevation` is the standard-atmosphere formula.",
+    "A6 Chronos: multi mode with every cube variable that has a finite climatology at the site (sonde/chronos.py:204; cv.py:267).",
+    "A8: slope clip [0.5, 1.5] at nwp.py:124; all-month fallback, source 2, at nwp.py:164-166 with min_days = 60 (line 129).",
+    "A11: cv.py:102 draws 15 % of in-fold basin groups with `default_rng(SEED + k)`, SEED = 20261110. No val-block row enters training or early stopping: network samples are `ten.st.samples(\"train\", ...)` (cv.py:147; lstm.py:196-209, targets inside the block); GBM fit rows from `data.issue_idx(\"train\", h)` and ES rows from `data.issue_idx(\"train\", 14)` (cv.py:230). Step 1 uses train-role groups only (step1.py:56-65).",
+    "A12: 1.5 M cap present in step 1 (step1.py:153) and CV (cv.py:227); 300k ES pick at cv.py:233; configs/sonde/gbm.yaml:21 is `max_fit_rows: null`; `n_rows_total_before_cap` written to the parity log (step1.py:180, cv.py:250). The frozen `es_max_rows = 400_000` (gbm.py:54) does not bind.",
+    "A13: `add_slope_static` at prep.py:199; raw slope feeds K600 at gbm_nwp.py:98-99; `sc_log10_nhd_slope` reaches every model through the `sc_` prefix (sonde/features.py:221-222; sonde/lstm.py:144-145); SC mixing uses last observed discharge (gbm_nwp.py:96-105).",
+    "B2: `load_hourly_cube` at data_v2.py:146; hour-of-day sin/cos, no solar elevation, approved values only, reserved sites excluded; hourly LSTM initialised from the daily state at C - 14 (nets.py:229-234).",
+    "B3: data_v2.py:66 builds the frozen SondeTensors; statics are lat, lon, elevation, log drainage area, every sc_ column, per-variable mean/log-sd/availability; parity log path and fields match parity.py:17, 28-36.",
+    "B4: `fdet` at data_v2.py:110 holds clear-sky SW, day length, DOY sin/cos; R-NH forecast LSTM input is `nwp_d + 32 + L + 4` (nets.py:160); GBM deterministic block at gbm_nwp.py:108-117.",
+    "B5: SONDE-HF head `MonotoneQuantileHead(hidden_f + 32, T)` at nets.py:210; R-NH head at nets.py:162, CMAL for R1 and R2 (cv.py:53).",
+    "B7: `ErrorModel` at nwp.py:173; precipitation `np.maximum(..., 0.0)` at nwp.py:199; fit on train-role sites (products.py:59, 61), issue dates <= 2019-12-31 (products.py:48, 60), seed 20261110 (products.py:48, 62). Val-block issue dates never use perfect-prog (cv.py:118-120).",
+    "B9: train_v2.py:34-42 gives lr 1e-3, batch 256, 800 steps, 30 epochs, patience 4, grad clip 1, AMP; stage 2 is lr/3, 10 epochs, patience 3 (cv.py:169); R-NH uses the same TrainConfig and code path.",
+    "B10: `prepare_v2(site_types=None)` default (prep.py:29); both drivers leave it unset.",
+    "B14: step 1 sets one product slot (step1.py:110); CV sets two (cv.py:126).",
+    "D2: Q19 exists for both GBM arms (cv.py:54-57; gbm_nwp.py:39, 179); step-1 parity name is `step1_gbm_nwp_Q` (step1.py:177).",
+    "D4: LOG_VARS additions only at prep.py:25-26; only the three v2 scripts and tests/test_sonde_v2.py import sentinel.models.sonde_v2.",
+    "Member spread absent from GBM features is covered by ruling R3 (c00 only), sonde_arch_v2_lead_rulings.md:34.",
+    "Unit tests: tests/test_sonde_v2.py, 18 passed on CPU, 2 threads, no bytecode or cache written. Coverage by entry: item 1 (test_gbm_nwp_blocks_values, test_masked_mean_products); item 15 (test_reference_window_climatology_uses_first_two_years_only); A8 (test_bias_map_recovers_linear_map_from_fit_window_only, no clip or fallback test); A13 (test_physics_features); B4/B5 (test_monotone_head_and_cmal_quantiles, test_rnh_forward_shapes_and_backward, test_sonde_hf_constraints, test_masked_mean_ignores_masked_products); B7 (test_error_model_fit_and_sample, shape and moments only); Chronos (test_chronos_cov_appends_known_future_rows). No test for A6, A11, A12, B3 parity, B9 or the drivers."
+  ],
+  "not_checked": [
+    "No driver, smoke or timing script was run (limits: no training, no GPU, 2 threads, 2 minutes). Runtime equality of feature columns, training-site sets and the perfect-prog array across models was therefore not observed; no PARITY_LOG exists to inspect.",
+    "Exact numbers of training and scored rows inside reference windows were not computed, because that needs the label cube. The counts given are upper bounds from first-observation dates in the daily index.",
+    "The Raymond K600, air2stream and SC-dilution formulas in sentinel/models/sonde_v2/physics_features.py were not opened; only their call sites were checked.",
+    "The claim that the frozen original-track code is untouched (line 53) was not verified by hash; I only saw that the frozen files were imported, not edited, by v2 code.",
+    "Whether 6,516 is the row count of processed/sites/sites.parquet was not checked.",
+    "scripts/train/sonde_v2_smoke.py and sonde_v2_gbm_timing.py were only grepped (both load train-role sites on the train block with the default reference-window climatology); their outputs were not opened.",
+    "docs/preregistration/reviews/arch_v2_20261110/M1dev_review.json was not read, to keep this review independent.",
+    "Deviations part 1 (D1-D5) was read for context only and not reviewed.",
+    "No credential file was read; no validation, test or protected label value was loaded."
+  ]
+}

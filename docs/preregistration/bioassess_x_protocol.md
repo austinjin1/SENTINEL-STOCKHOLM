@@ -43,7 +43,7 @@ NLA sampling event with the pools), M6, Fuse tiers D/W, Sim (descriptive thresho
 rows on NRSA, NLA or EA invertebrate samples. No other workstream's model code reads `uk_ea_ecology`.
 
 **Prior exposure that remains (disclosed, W-MX-10).**
-- **X-L test rows (NLA 2022):** 549 of them lie at Fuse/D2n test sites. They are used only as M5-X *test* rows,
+- **X-L test rows (NLA 2022):** 549 of them lie at Fuse/D2n test sites (corrected in amendment v11 item 4: the count is 459). They are used only as M5-X *test* rows,
   never for training. Fuse used NLA chemistry and benthic summaries as microcystin *inputs*; no workstream has
   scored lake chemistry as a target.
 - **X-U test rows (2021–26 `pool_fit` samples):** their labels were training targets in M5's
@@ -431,3 +431,168 @@ Same machinery as M5 (`bioassess_final.py` pattern):
   LightGBM head, exactly like X-L E5b and E6, and included in the derived-vs-direct Holm family of its block. X-U E2a
   (19 / 7), X-L E2a (11 / 11) and X-L E3 (11 / 11) remain descriptive only by the rule. Everything else in v8 is
   unchanged (approved by the lead).
+- **2026-11-09 v7a — single-look hardening (lead, M7-review lessons; no science change).** (1) `scoring_code_sha256`
+  hashes the full static `sentinel` import closure of the scorer, the M5-X dev/event code and `events.py` (incl.
+  `hazards.py`, `ew_scoring.py`, `early_warning.py` and the frozen M5 modules) plus the R scripts; a subprocess test
+  runs the event path and fails if any loaded module is unhashed. (2) Sealing writes a registry row with every sealed
+  file's sha256 and `check_sealed` verifies against it, refusing unlisted/missing/changed files; `--rescore-from-saved`
+  is refused once any scoring row exists; test labels needed for scoring are written into the sealed folder and
+  test-row loading is refused from sealing on (a deleted marker cannot reopen it: the registry's sealing/scoring rows
+  are checked); every listed artifact (split, pools, power, folds, selection, event calibration/dev results, TabPFN
+  weights) is verified before the claim; any event-track error is recorded as "not run" (file + registry row) and
+  never stops the primary look.
+- **2026-11-10 v7b — GPU use of the single pass (lead GPU rule update: GPUs 0–9, lock helper with --min-free-mb, never
+  a GPU another user occupies, jobs ≤ 2 h; no science change).** The pass process holds no GPU. GPU units (BioSet
+  fits, TabPFN) run in worker subprocesses of ≤ 100 min each, launched one at a time through `sentinel.core.gpu`
+  with `--min-free-mb 5000` and `SENTINEL_GPUS` narrowed to GPUs with no other user's process; workers read a
+  label-free, sha-verified bundle of the test inputs written under the open claim, refuse once the pass is sealed,
+  and write into the same sha-verified unit cache. SIGTERM of the pass is a recorded abort.
+- **2026-11-10 14:33 EST v9 — every listed comparator is fitted and compared at the test look (lead ruling of
+  2026-11-10; written before any test data are seen: no freeze file, no claim, no `bioassess_x_test` registry row
+  exists, and no test label has been read).** Until now the scorer fitted at test only the per-target comparator
+  (the strongest by development `r2_anomaly`) and RF[geography]. From this entry on:
+  1. **Comparators fitted at test.** Every §6 comparator of the block, each in its development-chosen variant per
+     (block, target) (v4.2), with seeds 0–2 where the method is stochastic. X-L (14): region mean, RF[geography],
+     nearest reference site, WA-PLS2, kNN-MAT, bio.infer, RF[community], LightGBM[community], TabPFNv2[community],
+     RF[community+geography], RF[community+context], and the three baseline ensembles of §6 item 7. X-U (17): the
+     same without the nearest reference site, plus the four UK-index models (linear and RF, each with and without
+     geography). bio.infer is included whatever its development rank (§6 item 3). The record lists each comparator
+     with its executable specification; the scorer refuses a record whose list differs from this one.
+  2. **Paired interval against each.** For every (block, target) and every listed comparator: Δ = `r2_anomaly`(C-X)
+     − `r2_anomaly`(comparator) on the seed-mean predictions, with the 95 % percentile CI of the paired
+     location-cluster bootstrap (B = 10,000, the same routine and bootstrap seed as the family test, so the same
+     resampled clusters whenever the row sets are equal). Rows: finite label and finite predictions of both models.
+  3. **Decision table.** The 12-test Holm family is unchanged (C-X vs the per-target comparator). **Row 1 needs in
+     addition: paired CI lower bound > 0 against every listed comparator of the block.** A listed comparator with
+     no finite paired estimate counts as not beaten. **Row 2 "Above, not robust" names each listed comparator that
+     is not beaten.** Rows 3–5 are unchanged. The added condition needs no multiplicity adjustment: all bounds must
+     hold together, so it can remove a SOTA label and can never add one.
+  4. **Reporting.** `results/listed_comparators.json` holds every paired estimate (Δ, CI, p, n). A listed comparator
+     whose CI lies entirely below 0 (it is above C-X) is named in the reason text of the row, whatever the label.
+  5. **Not compared, with reason — GJAM (§6 item 4).** §6 gives one ground ("cannot run within 2 CPU-hours per
+     fold"). Amendment v4 item 8, as corrected in v6, added a second ground before any GJAM development prediction
+     was scored: the fidelity check (our routine in gjam's in-sample scheme vs gjam's own `xpredMu`, Pearson
+     r ≥ 0.90 for every target, fold 0 of both blocks). **The time ground is not the ground used:** the measured
+     gjam fits took 99.3 min (X-L fold 0, 4,474 rows) and 114 min (X-U fold 0, 5,000 rows). **The ground used is
+     the failed fidelity check:** X-L r = 0.73 (TP), 0.78 (TN), 0.88 (conductivity), 0.84 (chloride), 0.78
+     (turbidity), 0.82 (pH); X-U r = 0.91 (pH), 0.89 (conductivity), 0.83 (chloride), 0.92 (ortho-P), 0.91 (NH4-N),
+     0.85 (nitrate); `fidelity_pass` FALSE in both blocks (`x_track/dev/r_out/gjam/<block>/fold00_info.txt`). As
+     v6 discloses, the corrected check was written after the first check (v4 item 8 as executed) had failed. The
+     check was run once per block and is not repeated; gjam is not tuned further. No GJAM prediction is fitted or
+     scored on test rows. **Limitation, stated in every report:** one published joint-species method could not be
+     reproduced faithfully and is not in the comparison; no claim may say that C-X beats all joint-species models.
+     The record and the scorer output carry, per block and target, the in-sample-scheme r, the out-of-sample-mode
+     r, the number of rows, and the path and sha256 of the fidelity files.
+  6. **Not compared, with reason — TRPI (§6 item 5).** Its published taxon scores were not obtained under licence
+     before the freeze. No other comparator is left out.
+  7. **What does not change.** The development selection (C-X, secondaries, comparator variants, per-target
+     comparators) and the configuration count (12 of 12). No new model is fitted on development. The freeze
+     candidate with sha256 a4b077c8…0ff7 is superseded: the development dry run is repeated with the changed
+     scorer and a new candidate is written for the pre-test review.
+- **2026-11-10 14:37 EST v10 — row 3 "Below" also fires when any listed comparator is significantly above C-X
+  (lead ruling of 2026-11-10; written before the label function was edited, before the development dry run of
+  the v9 scorer, and before any test value was read: no freeze file, no claim, no `bioassess_x_test` registry row
+  exists).** This entry changes only the label function.
+  1. **Row 3.** A target is labelled "Below" when the paired 95 % CI of C-X minus the comparator (v9 item 2) has
+     its upper bound < 0 against the per-target comparator (as before) **or against any listed comparator of the
+     block** (v9 item 1). This is checked before rows 2, 4 and 5 and before the "Not estimable" label: a target is
+     labelled "Above, not robust", "Inconclusive (underpowered)" or "Competitive" only if no listed comparator is
+     significantly above C-X. Row 1 cannot meet the new trigger, because row 1 needs every lower bound > 0.
+  2. **No finite estimate.** A listed comparator with no finite paired estimate still counts as not beaten for
+     row 1 (v9 item 3). It cannot fire the new row-3 trigger (it has no CI); the reason text of the row names it
+     as "not estimable".
+  3. **Reason.** A win needs every listed comparator beaten; a "Competitive" label next to a comparator that is
+     significantly better would mislead. The change can only make a label harsher: every label it changes becomes
+     "Below". The new trigger uses unadjusted 95 % intervals against up to 17 comparators, so "Below" can arise
+     by chance more often than for one comparator; the error is on the cautious side for any claim.
+  4. **What does not change.** The 12-test Holm family, rows 1, 2, 4 and 5, the comparator lists, the paired
+     estimates, the naming of every listed comparator that is not beaten in the reason text and in
+     `results/listed_comparators.json` (v9 items 3–4), the development selection and the configuration count.
+     In v9 item 3, "Rows 3–5 are unchanged" now holds for rows 4–5 only.
+- **2026-11-10 19:24 EST v11 — pre-test review fixes: rule comparators, chunked label-free prediction phase with
+  write-once units, pinned code snapshot, record corrections, two disclosures (lead rulings X-B1..X-B4 of
+  2026-11-10 on the pre-test review verdict `freeze_after_fixes`; written before any code named here was changed
+  or run, and before any test value was read: no freeze file, no claim, no `bioassess_x_test` registry row
+  exists, and no test label has been read).** Earlier text stays in the history; where it differs, this entry
+  governs.
+  1. **Two comparators added by rule, both blocks, no new fit (X-B3).** For each block, with C-X as selected:
+     (i) `cxr_nobioset` = C-X with BioSet removed, i.e. the equal-weight mean of C-X's baseline members;
+     (ii) `cxr_swap` = C-X with BioSet replaced by the listed single baseline (not an ensemble, not a member of
+     C-X, bio.infer and GJAM excluded as in §7 step 4) that has the highest mean development `r2_anomaly` over the
+     block's six targets on seed 0, i.e. the equal-weight mean of C-X's baseline members and that baseline.
+     Both are means of predictions that already exist on development. Both join the listed set of v9 item 1
+     (X-L 14 → 16, X-U 17 → 19) and both compete for the per-target comparator by the unchanged §6 rule
+     (strongest by development `r2_anomaly`). The scorer checks that the two specifications in the record follow
+     this rule from the record's own C-X and refuses otherwise. Where a rule comparator has the same members as
+     an already listed ensemble (X-L) it is still listed under its rule name.
+     **Reason, disclosed:** the reviewer found that no listed X-U comparator was "C-X without BioSet", and
+     checked three unlisted alternatives on development (seed 0): mean(RF[community+context], RF[index+geography])
+     0.3160, the same plus TabPFN 0.3314, the same plus LightGBM 0.3375, against C-X 0.3469 and the best listed
+     comparator 0.3247. The rule above was fixed by the lead after that check. No choice among alternatives is
+     made from development deltas: the rule names one swap member by its single-model development score, and that
+     member need not be the alternative that looked strongest in the reviewer's check. This is stated in the
+     record and in every report.
+     **Families.** The confirmatory family stays one test per block × target, C-X vs the per-target comparator
+     (12 tests, Holm); the per-target comparator is re-chosen among the enlarged list by the unchanged rule. Row 1
+     needs the paired CI lower bound > 0 against every listed comparator, now 16 and 19; row 3 fires against any of
+     them. Any Holm family formed over listed comparators (events: derived vs each comparator) grows with the
+     list. No denominator is held at its earlier size.
+  2. **Prediction phase: label-free, chunked, write-once (X-B1; replaces the single-resume rule of §9, v5 and
+     v7b).** The look has four separate commands: claim, chunk (any number), seal, score.
+     (1) *Label-free prediction phase.* The claim loads the test rows once, drops every test label inside the
+     loader and writes a hashed inputs bundle. Chunks read only that bundle and the training pools; each chunk
+     asserts, before any fit, that no test row of its block carries a finite label. No truth file exists before
+     sealing. The label loader refuses unless the seal verifies and scoring has begun.
+     (2) *Write-once units.* One unit per (block, leaf model, fold, seed) — and per event fit — each in its own
+     file with its own sha256, written under a temporary name and moved into place; an existing unit is never
+     replaced, and no whole-run manifest is rewritten. Chunks may run in any order, in parallel, on CPU or on
+     idle GPUs through the lock helper (≤ 100 min each), and may be started again any number of times before
+     sealing. Every chunk re-verifies the freeze record, the code snapshot, the data pins and the artifacts. A
+     chunk that fails or is killed leaves finished units in place and does not end the look.
+     (3) *Blind between chunks.* A chunk prints and stores unit identities, row counts and wall time only: no
+     prediction value or summary. No prediction file is opened by a person between chunks. Code and record cannot
+     change between chunks (item 3).
+     (4) *Seal once*, only when every planned unit exists and verifies: per-model prediction files are assembled
+     from the units, hashed (`SHA256SUMS`, 0444), and one `predictions_sealed` registry row is written.
+     (5) *Single-shot scoring.* Labels are loaded only after the seal verifies; all `bioassess_x_test` scoring
+     rows are appended to the registry in one locked write after the results are sealed. Scoring is not resumed:
+     if it stops before that write, `--rescore-from-saved` recomputes everything from the sealed predictions from
+     the start (recorded); once the rows exist, no scoring run can write again.
+     Each of the five points has a unit test. An event-track error is still recorded as "not run" (v7).
+  3. **Pinned code snapshot (X-B2).** Before the freeze, every pinned code and config file is copied to a
+     read-only snapshot under `sentinel_runs/bioassess_x/` (files 0444, directories 0555). The freeze record
+     lists each file with its sha256. The look runs from the snapshot; every command verifies the snapshot (exact
+     file set and every hash), not the live tree, and refuses in real mode when started from any other tree. The
+     freeze file, the candidate record and the registry stay in the live repository. Later edits of the live
+     tree neither change nor stop the look; an edit of the snapshot stops it.
+  4. **Record corrections.** (a) §2 said 549 X-L test rows lie at Fuse/D2n test sites. The count is **459** (439
+     at Fuse tier-C test sites and 20 more at D2n-only test sites; 974 X-L test rows in all); "549" was a digit
+     transposition. Counts from sample keys only. (b) `one_time_guards` and `resume_rule` in the record now name
+     the markers and registry metrics the code uses (`TEST_LOOK.json`, `PREDICTIONS_SAVED.json`,
+     `SCORING_STARTED.json`, `SCORED.json`; `look_claimed`, `predictions_sealed`). (c) The cached training design
+     (`x_track/dev/design_v1.pkl`) and frozen-key cache (`x_track/dev/frozen_keys.json`) are pinned by sha256 and
+     verified by every command. (d) Every file of the scoring code closure is listed singly in the record.
+  5. **Disclosure — the power table of §8 is optimistic.** It is a proxy from NRSA Test A. The reviewer scaled the
+     development paired CIs of C-X vs comparator to the test cluster counts: projected test SE 0.008–0.020 on X-L
+     (registered 0.006–0.010) and 0.006–0.026 on X-U (registered 0.004–0.0065); projected Holm-worst detectable
+     difference above 0.02 for all 12 targets (X-L 0.031–0.073, X-U 0.022–0.098). Most rows whose CI spans 0 are
+     therefore expected to read "Inconclusive (underpowered)". The decision table and the 0.02 threshold are not
+     changed; row 4 uses the realised CI as before.
+  6. **Disclosure and rule — runs are not bit-reproducible.** Two development dry runs of the same record
+     differed by up to 4.4e-5 in Δ, 9.7e-5 in CI ends, 1.5e-4 in per-seed Δ and 0.0016 in p (GPU fits). Rule:
+     (a) the sealed predictions of the one look are the record; they are never refitted. (b) Any rescore from the
+     same sealed predictions must reproduce every stored number within 1e-9 (absolute) and every label exactly;
+     if it does not, both result sets are kept and reported, and no label is used until the lead has ruled. (c) A
+     later refit from the snapshot (reproduction, never a second look) counts as reproducing the result when Δ and
+     CI ends agree within 2e-4, per-seed Δ within 3e-4 and p within 3e-3. (d) The result tables flag every
+     confirmatory row in which a quantity that decides the label lies within these tolerances of its threshold
+     (CI end or per-seed Δ of 0; p of its Holm threshold); the label stands and the flag is reported with it.
+     (e) A bootstrap p of 0 is reported as "< 2/B".
+  7. **Rehearsal (X-B4).** Before the freeze, one full development rehearsal runs through the new commands from
+     a snapshot: every fold of both blocks, at least two GPU chunks, a chunk killed and started again, the seal,
+     the scoring, and a rescore from saved. A dry-run-only cap on training rows and ensemble size keeps it cheap;
+     the cap is refused in real mode, and the rehearsal record says its numbers are not usable.
+  8. **What does not change.** C-X, the secondaries, every model, feature set, seed, split and fold; the
+     configuration count (12 of 12); the decision table apart from the larger listed sets; B, the bootstrap seed
+     and the metrics. No new model is fitted on development. The candidate with sha256 20a4d2e3…4680 is
+     superseded.

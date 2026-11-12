@@ -13,14 +13,15 @@ Austin Jin & Bryan Cheng · Stockholm Junior Water Prize · AI-assisted (see `RE
 
 | Goal | Component |
 |---|---|
-| Modality models (water-quality indicators + disasters) | M1 **Sonde** (in-situ sensors) · M2 **Orbit** (satellite) · M3 **Microbe** (16S/ASV) · M4 **ChemTox** (chemical structure → aquatic toxicity) · M5 **BioAssess** (macroinvertebrate/fish communities) · M6 **HydroMet** (weather + catchment) · M7 **Lite** (drone RGB+NIR) |
+| Modality models (water-quality indicators + disasters) | M1 **Sonde** (in-situ sensors) · M2 **Orbit** (satellite) · M3 **Microbe** (16S/ASV) · M4 **Toxin** (chemical structure → aquatic toxicity) · M5 **Biota** (macroinvertebrate/fish communities) · M6 **Hydro** (weather + catchment) · M7 **Lite** (drone RGB+NIR) |
 | Plug-and-play multimodal fusion | **SENTINEL-Fuse** (any subset of modalities, all targets × horizons) |
 | Simulation & insight | **SENTINEL-Sim** (physics-guided, metabolism-aware scenarios), causal-discovery claim ladder, interpretability |
-| Downstream applications | SafeSwim · ToxinWatch · KillAlert · TapRisk · BioIntegrity · MusselGuard · TroutRefuge · RiverPulse |
+| Downstream applications (**AEGIS** family) | AEGIS-Swim · AEGIS-Bloom · AEGIS-Fish · AEGIS-Tap · AEGIS-Integrity · AEGIS-Mussel · AEGIS-Trout · AEGIS-Pulse |
 | Early warning | **EW-v2** protocol + pre-registered live prospective trial |
 | Platform | **SENTINEL Console** (API + web app) |
 
 Full design, benchmarks, baselines and success criteria: [`RESEARCH_PLAN.md`](RESEARCH_PLAN.md).
+Display names (main models are `SENTINEL-<word>`, downstream applications are `AEGIS-<word>`) and their older names in code, registry keys and frozen files: [`docs/NAMES.md`](docs/NAMES.md).
 Literature and data landscape: [`LANDSCAPE_SURVEY.md`](LANDSCAPE_SURVEY.md) and [`docs/research/`](docs/research/).
 
 ## Layout

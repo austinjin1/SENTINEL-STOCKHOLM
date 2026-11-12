@@ -1,0 +1,318 @@
+{
+ "file_sha256": "fb52cd4b072fa19c8c1e19b9fe1374a0e8abb71d9492eff764f2034cb26d293b",
+ "verdicts": [
+  {
+   "id": "B1",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "All four sub-points verified in code. (1) sentinel/models/chemtox/arch_v2_guard.py L152-158 freeze_sha() only checks the file exists and returns its hash; authorise() L224-242 stores freeze_sha256 and compares it with nothing, against amendment L771-773 ('whose sha256 must match the value the lead records at the stamp'); block_dir() L127-131 puts FREEZE in a workstream-writable runs directory. (2) scored_pass() L334-355 calls authorise() first, which writes the AUTHORISED.json claim marker and builds the protected labels, and on BaseException writes ABORTED.json with a hard-coded wrote_claim False (L346-353), against L774-776. (3) verify_artifacts() L296-311 is called by none of authorise(), mark_scored() L314-316, scored_pass(), against L780-781. (4) require_authorised() L245-251 checks only that AUTHORISED.json exists: no verify_freeze(), no refusal after SCORED.json or ABORTED.json, so load_test_block() L268-279 stays open after a look or an abort, against L805 ('a rescore is refused after scoring'). Also L761-763 says load_training_pool() 'never opens ecotox_aquatic.parquet itself' while L254-265 reads A.ECOTOX. tests/test_chemtox_arch_v2.py L244-365 test only an absent FREEZE file, monkeypatch authorise() in the abort test, and have no test for (3) or (4). Mitigation verified: verify_freeze() L106-124 raises today (no docs/preregistration/chemtox_arch_v2_pins.json, only .candidate.json); no <block>/ directory, FREEZE, AUTHORISED, SCORED or protected-labels file exists; the guard pins itself, so any fix forces a lead re-pin. The amendment cites no guard hash (L147-149 'pinned at the stamp'), so the text is the stricter specification. Blocking if stamped with no ruling (false statements of fact; a second read of a sealed block is possible); closed by the ruling because no look can occur before a lead-written FREEZE and L10 already requires guard review before any look. Revision of the amendment is not required.",
+   "recommended_lead_ruling": "§8.2 items 1, 2 and 4 and the last bullet of §8.3 state REQUIRED behaviour, not the behaviour of arch_v2_guard.py at sha256 6e1ab9c17655afd197225c37d7ffb589127b7e3232fd9203b008ca3254f224fe; the word 'closed' in the §8.2 heading is not yet true. No FREEZE file for T1_test, T6a_test or T6b_test is written until the guard (i) compares sha256(FREEZE) with a value the lead recorded in a 0444 file the workstream cannot write, (ii) re-runs verify_freeze() inside require_authorised() and refuses load_test_block() once SCORED.json or ABORTED.json exists for the block, (iii) calls verify_artifacts() inside scored_pass() before mark_scored(), (iv) writes into ABORTED.json what was actually written instead of a constant, and (v) pins ecotox_aquatic.parquet and, once built, the protected-labels artefact - each with a test - and has been re-reviewed and re-pinned by the lead. An abort after AUTHORISED.json exists spends that block's look; there is no second look. A file named FREEZE not written by the lead is void, and a look taken on one voids the block (spent, no label). The re-pin may change only the guard, its tests and the pins file: the sha256 of the amendment, the split, the cluster table, the spent-id list, arch_v2.py and arch_v2_power.py must be identical before and after, the superseded pins file is kept, and the new pins sha256 is written to a registry row."
+  },
+  {
+   "id": "B2",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Amendment L612-615 calls 'no single resampling unit holds 10 % or more of a block's rows' a 'pre-declared structural criterion'. The only earlier 10 % criterion is on the largest cluster of the universe: amendment L191-192, docs/preregistration/chemtox_arch_v2_amendment_v1_unstamped.md L66, docs/plans/architecture_research/M4_architecture_plan.md L627 and L721; grep finds no per-block per-unit criterion before v2 L614. My key-only recount from the split: largest unit share T1_test 1,115/11,363 = 9.81 % (in-domain 1,115/10,368 = 10.75 %), train_pool 4,321/32,106 = 13.46 %, T6a_test 1,617/11,249 = 14.37 %, T6b_test 555/4,106 = 13.52 % (in-domain 15.25 %). The criterion is new, is met on one reading of one block only, and was written after the sweep was seen. False statement of fact used as a ground for a design choice; a ruling removes it cleanly because grounds (i) and (iii) are label-free, monotone in the tabulated sweep (L606-609) and sufficient on their own. Same finding as stats F4.",
+   "recommended_lead_ruling": "The hold-out share is 30 % of units on grounds (i) and (iii) of §6.2 only. Ground (ii) is struck and carries no weight: the only pre-declared 10 % criterion is the largest CLUSTER's share of the universe's rows (7.76 %, met); no per-block, per-unit criterion was ever pre-declared, and the one stated in ground (ii) fails for train_pool (13.46 %), T6a_test (14.37 %), T6b_test (13.52 %) and the in-domain subset of T1_test (10.75 %). No write-up may cite a '10 % of a block' criterion as met."
+  },
+  {
+   "id": "F4",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Same finding as integrity B2; see B2 evidence (amendment L612-615 against L191-192; per-block shares recounted by keys).",
+   "recommended_lead_ruling": "The hold-out share is 30 % of units on grounds (i) and (iii) of §6.2 only. Ground (ii) is struck and carries no weight: the only pre-declared 10 % criterion is the largest CLUSTER's share of the universe's rows (7.76 %, met); no per-block, per-unit criterion was ever pre-declared, and the one stated in ground (ii) fails for train_pool (13.46 %), T6a_test (14.37 %), T6b_test (13.52 %) and the in-domain subset of T1_test (10.75 %). No write-up may cite a '10 % of a block' criterion as met."
+  },
+  {
+   "id": "F1",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Amendment L83-90 and L657-660: 'pre-registered as DESCRIPTIVE by default ... a §15.1 label is available only if the realised difference exceeds the block's governing MDE'; L663-665 concedes 'at the gate none of the three is well powered for a realistic effect'; L1093-1094 calls them 'poorly-powered claim tracks'. docs/plans/architecture_research/LEAD_DECISIONS_20261110.md L4: 'A block that cannot detect a realistic gain carries no §15.1 label (descriptive only)'. The amendment keeps a label path that L4's wording excludes, and makes a block's status (descriptive or claim) depend on the realised result. Gate values confirmed in /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/arch_v2/t1t6_mde_v2.json (governing_gate_per_block). One sentence taking L4's strict reading closes it; no design element or artefact changes.",
+   "recommended_lead_ruling": "Under L4 none of T1_test, T6a_test or T6b_test as constituted (micro-RMSE, governing MDE 0.0959 / 0.1027 / 0.1033 at icc 0.5; 0.1911 / 0.2047 / 0.2044 at icc 1.0) can carry a §15.1 label: all three are descriptive only. The words 'by default' and every sentence making a label available 'if the realised difference exceeds the governing MDE' (L87-90, L657-660, §12.1 as a route to a label, §15.3) are struck. Conditions (a)-(j) are still computed and reported in full as the pre-registered descriptive reading; a result that would have met all of them is reported as 'exceeds the pre-registered MDE on an under-powered block; no SOTA label', and a result that does not is a measured null. A label on these questions needs a new, separately stamped track (lead point f)."
+  },
+  {
+   "id": "F2",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Amendment L986 defines (a) against the stronger of mmoe and gpboost_published by pool validation; L413-419 and kill rule 10 (L1025: 'A comparator missing its §4.6 reproduction tolerance cannot carry condition (a) or (b)') remove an arm that misses its reproduction check, so (a) can fall to the weaker published arm exactly when the stronger one fails a fidelity check; L375-378 as cited. Missing rule whose two readings differ in SENTINEL's favour; the stricter reading is one sentence. Under the F1 ruling it governs the descriptive reading only, but it must still be fixed before any pool fit.",
+   "recommended_lead_ruling": "Condition (a) is read against whichever of mmoe and gpboost_published has the lower pool-validation score, whatever its §4.6 status; a §4.6 miss is disclosed beside the result and never removes that arm from (a); kill rule 10 is read as 'a comparator that misses §4.6 cannot be the ONLY arm carrying (a) or (b)', never as removing a stronger arm; if neither arm yields finite predictions on the full block, no §15.1 label is available on that block."
+  },
+  {
+   "id": "F3",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Amendment L987: (b) is 'the strongest simple baseline, by pool validation, named before the look', with no enumeration of the eligible set; the ladders at L362, L442-444, L456-458, L479-480 and L992 list entries without saying which count as 'simple'. The set could be drawn after pool-validation numbers are seen. Closed by enumerating the widest set.",
+   "recommended_lead_ruling": "Condition (b) is read against the lowest pool-validation scorer among ALL entries that are neither a candidate nor a published-form arm: R1, R2, R3, xgboost_emb and xgboost_emb_dur, rf_emb and rf_emb_dur, lightgbm_noemb, readacross, the trivial, Haber and carry-forward baselines, and every matched baseline ensemble; the list is closed, and the chosen entry is named in writing before the look."
+  },
+  {
+   "id": "F5",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Internal contradiction: §12.1 heading L982 'requires ALL of' against (h) L993 'otherwise the claim is qualified and labelled not separable from publication structure' and §6.4 L642-646 'A claim failing the stratum leg is reported as qualified'. L279 and L1002-1003 name a co-primary reference_number-clustered reading with no decision rule. Two plausible readings (qualified label, or no label); the strict one is a single sentence.",
+   "recommended_lead_ruling": "Legs (a) and (b) must exclude 0 under BOTH clusterings (hold-out unit and reference_number). A candidate that passes (a)-(g), (i) and (j) and fails (h) carries no §15.1 label; it is reported as 'ahead on the full block, not separable from publication structure'. The word 'qualified' in §6.4 and §12.1 (h) names that report, not a class of label."
+  },
+  {
+   "id": "F6",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "§12.1 (c)-(d) L988-989 and §12.2 L997-1003: Holm is required but the construction of a p-value from a percentile bootstrap with B = 2,000 is not given; (d) reports per-seed CIs 'beside' the seed-mean CI without saying which interval carries (a)/(b); seed pairing between candidate and comparator and the definition of all_seeds_better are absent. Under the F1 ruling these affect the descriptive reading only, hence should_fix; if the lead keeps any label path on these blocks this becomes blocking and must be fixed in the rulings file before the stamp.",
+   "recommended_lead_ruling": "The interval that carries (a) and (b) is the seed-mean paired difference (mean over seeds 0, 1, 2 of candidate minus mean over the same seeds of the comparator, on identical rows), two-sided 95 % percentile cluster bootstrap; the Holm p-value for each leg is 2 x min(share of resamples <= 0, share >= 0) with (count + 1)/(B + 1), and B is raised to 10,000 for every interval that enters a Holm family (never lowered); seed s of the candidate is paired with seed s of the comparator; all_seeds_better is TRUE only if the point difference favours the candidate for each of seeds 0, 1 and 2 against each of the (a) and (b) comparators on the full block."
+  },
+  {
+   "id": "F7",
+   "lens": "stats",
+   "holds": "partly",
+   "severity_after_check": "should_fix",
+   "evidence": "t1t6_mde_v2.json strata[0] (T1_test) carries bootstrap_check_closed_form 0.0891 beside bootstrap_check_icc0.5_rho0.9 0.0656: the simulated check is about 26 % below the analytic gate, and the amendment does not discuss the gap. I confirmed the T1 pair; I did not re-run the simulation or re-derive the T6a/T6b pairs (0.0624 / 0.0576 as the lens states). The analytic value is the larger one and is the gate, so the gap cannot help a claim; it is a disclosure point.",
+   "recommended_lead_ruling": "The governing MDE is the analytic value of §6.2; the bootstrap check is not a gate and is never quoted as one; every write-up that quotes an MDE states both figures and that the percentile bootstrap's coverage on heavy-tailed unit sizes has not been verified."
+  },
+  {
+   "id": "F8",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "No table maps outcomes to labels (§12.1 L980-995 lists conditions only); no rule says what happens if every arm ties (RESEARCH_PLAN §15.5 saturated-track rule not cited). Under the F1 ruling the mapping is fixed by that ruling.",
+   "recommended_lead_ruling": "Outcome wording is fixed now: all of (a)-(j) met = 'exceeds the pre-registered MDE on an under-powered block; no SOTA label'; point difference in the candidate's favour with any condition unmet = 'not resolvable on this block'; point difference against the candidate = 'no gain', reported with the same prominence; a candidate behind a comparator with a CI excluding 0 = 'worse than <comparator>'. If no candidate is ahead of the (a) comparator on any block, RESEARCH_PLAN §15.5 applies and the next track must be harder or larger."
+  },
+  {
+   "id": "F9",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "Amendment L309-314: 'the headline is scoped to the bands in which the sign holds' is scoping chosen from the result; L309-311 opens T6a 720-2160 h (68 units) although docs/preregistration/reviews/arch_v2_20261110/M4_verify.json Point 1 ruled both blocks' 720-2160 h bands descriptive only, and the departure is not listed in §15. Would be blocking if a band-level label were possible; under the F1 ruling no label exists, so should_fix.",
+   "recommended_lead_ruling": "The headline of each T6 look is the full block as defined in §3, never a subset of bands chosen after the look; no band carries a §15.1 label; the sentence 'the headline is scoped to the bands in which the sign holds' is struck; per-band results are printed for all five bands beside every headline; the earlier ruling stands that the 720-2160 h and > 2160 h bands are descriptive only on both blocks."
+  },
+  {
+   "id": "F10",
+   "lens": "stats",
+   "holds": "partly",
+   "severity_after_check": "note",
+   "evidence": "L745 quotes 0.0097 where t1t6_mde_v2.json gives T1 icc 0.0 governing 0.0101 (0.0097 is T6a's full-block icc 0.0 value); confirmed. The chemprop 0.070 / 0.085 pair and the rf_emb_dur hyper-parameters were not re-checked by me.",
+   "recommended_lead_ruling": "Figures in the pinned t1t6_mde_v2.json govern wherever the text differs; rf_emb_dur uses the rf_emb configuration with the duration feature added and nothing else, written in the config file before any pool fit."
+  },
+  {
+   "id": "S1",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/m4_t1_rows.parquet exists: 2,128,975 bytes, mtime 2026-11-10 11:47:41 -0500, sha256 c303ec037abdacd0964aadd8976508070e21c9c36b2d066478dd8074cd1bdfcc, 98,709 rows, columns result_id, cas, clust, log10_conc_mol_L (schema and keys only read). By key it covers every row of the v2 split: 32,106 train_pool, 11,363 T1_test, 11,249 T6a_test, 4,106 T6b_test, so it holds the target for all 26,718 sealed rows next to a cluster id. It is named in M4_architecture_plan.md L834 but not in the amendment, whose §2.2 L166-172 records and deletes only the v1 partition file (that statement is literally true: no *t1t6_partition* file exists). Scratch copies .../scratchpad/t1t6/t1t6_counts.json and t1t6_mde.json are byte-identical to the two WITHDRAWN label-stat reports. Not a leak in a pinned artefact (the same labels are in ecotox_aquatic.parquet), so should_fix, done before the stamp under L8.",
+   "recommended_lead_ruling": "Before the stamp the lead records path, size and sha256 of m4_t1_rows.parquet (2,128,975 bytes, c303ec03...bdfcc) in the rulings file and deletes it together with scratchpad/t1t6/t1t6_counts.json, scratchpad/t1t6/t1t6_mde.json and scratchpad/m4_t1_clusters.csv; L8 applies to every labelled intermediate, not only the one §2.2 names."
+  },
+  {
+   "id": "S2",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "§14 L1031-1033 lists 'the P1 reference models R1-R3 on train_pool rows obtained through load_training_pool()' as permitted before the stamp, against rule 2 (LEAD_DECISIONS_20261110.md: no validation number on a new arm or track before the stamp; 'No validation fit meanwhile'); L1035-1036 forbids 'any fit on T1 or T6 that produces a validation number' until the stamp, while §8.2 L785-786 says the stamp itself 'clears no fit, no embedding run and no look'. Mechanically harmless so far: load_training_pool() raises without a pins file, and the registry (73,229 lines) holds 0 rows whose experiment starts with chemtox_arch_v2 and no row naming T1_test, T6a_test or T6b_test.",
+   "recommended_lead_ruling": "The clause of §14 permitting R1-R3 fits before the stamp is struck; none ran. The stamp clears no read of a sealed block and no look. Work on train_pool rows obtained through load_training_pool() (fits, pool-validation numbers, and the embedding runs the amendment specifies) begins only when the lead writes docs/preregistration/chemtox_arch_v2_pins.json, and the lead writes that file only after the guard meets the B1 ruling."
+  },
+  {
+   "id": "S3",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "§2.1 L147-149 and L154 say the three code files are 'pinned at the stamp' / 're-hashed at the stamp' and give no hash. On disk: arch_v2.py 39ecc9cc39fb1c945a843ffa8e99d38eb73c3dce378d24d8a4566550e64fe980, arch_v2_power.py 0841903004361e52d0010b8be8e2c38745195e8d0629b0dd7e7c0c01243d4f7a, arch_v2_guard.py 6e1ab9c17655afd197225c37d7ffb589127b7e3232fd9203b008ca3254f224fe; all three match SHA256SUMS_v2 and chemtox_arch_v2_pins.candidate.json. /home/bcheng/STOCKHOLM/sentinel_data/processed/ecotox/ecotox_aquatic.parquet (mode 0664, 19,849,450 bytes, sha256 beec1f81769aecad423e952c21bca2d0b3c899b2f0f40d80143fdab3cbf4fc9e, my hash) is read by load_training_pool() and by build_protected_labels() and is in no pin list. L24-25 says addenda are appended to the amendment, which would break the amendment's own pin.",
+   "recommended_lead_ruling": "The stamp record lists the sha256 of the amendment, arch_v2.py (39ecc9cc...fe980), arch_v2_power.py (08419030...d4f7a), the split, the cluster table, the spent-id list and ecotox_aquatic.parquet (beec1f81...fc9e, set 0444); the guard's hash is recorded only at the re-pin of the B1 ruling. Every addendum is a separate file with its own sha256 and registry row; nothing is appended to the stamped amendment."
+  },
+  {
+   "id": "S4",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "Header L19-23 still lists gpboost_model.py among files pinned by 'the M5 BioAssess freeze' while §11.2 L962-976 strikes that claim (L9). Internal contradiction on a statement of fact with no effect on the design.",
+   "recommended_lead_ruling": "The header's mention of gpboost_model.py under 'the M5 BioAssess freeze' is struck; §11.2 governs. The file is left unedited until every look whose import closure contains it is complete, and write-ups use the corrected citation."
+  },
+  {
+   "id": "N1",
+   "lens": "integrity",
+   "holds": "partly",
+   "severity_after_check": "note",
+   "evidence": "L47 points to §3.5 where the content is in §3.2; the icc 1.0 column is tabulated only at 30 % (L606-609 show icc 0.5 only); L745 0.0097 as F10. I did not recount the 319 chemicals shared by T1_test and T6b_test.",
+   "recommended_lead_ruling": "The pinned JSON reports govern over the prose; the count of chemicals shared by T1_test and T6b_test is stated in any cross-block statement, as §8.3 already requires."
+  },
+  {
+   "id": "N2",
+   "lens": "integrity",
+   "holds": "partly",
+   "severity_after_check": "note",
+   "evidence": "L759-761 'physically cannot obtain a sealed row' overstates: the guard controls its own readers, while ecotox_aquatic.parquet (0664) holds every sealed target and is readable directly; the docstring and L761-763 say the loader never opens that file, and it does (guard L254-265). The 232 T6a chemicals / 619 rows with no pool row were not recounted by me.",
+   "recommended_lead_ruling": "'Physically cannot' is read as 'does not through the guard'; any read of ecotox_aquatic.parquet for T1/T6 work outside load_training_pool() and build_protected_labels() is a protocol breach that voids the block concerned."
+  },
+  {
+   "id": "PRIOR BUILDER-PROVENANCE",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "Open only through S1 and S3; I confirmed the split and the cluster table agree row for row on unit and cluster (0 mismatches over 58,824 rows) and that no pinned artefact is in a temporary directory.",
+   "recommended_lead_ruling": "Closed by the S1 action and the S3 stamp record."
+  },
+  {
+   "id": "PRIOR GUARD-GAP / L10",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Open through B1 and S2; see B1.",
+   "recommended_lead_ruling": "Closed for the stamp by the B1 and S2 rulings; closed for a look only by the lead's written guard re-review."
+  },
+  {
+   "id": "PRIOR GPBOOST-FREEZE-CLAIM / L9",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "Open through S4 only.",
+   "recommended_lead_ruling": "As S4."
+  },
+  {
+   "id": "PRIOR L4 (share sweep and descriptive status)",
+   "lens": "integrity+stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Open through B2 (ground ii) and F1 (label path).",
+   "recommended_lead_ruling": "As B2 and F1."
+  },
+  {
+   "id": "PRIOR L8 (labelled scratch)",
+   "lens": "integrity",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "Open through S1.",
+   "recommended_lead_ruling": "As S1."
+  },
+  {
+   "id": "PRIOR T6B-POWER-CLAIM / Point 4",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Open through F1 only; T6b keeps its own look and Holm place (L666-670, kill rule 8 L1021-1022).",
+   "recommended_lead_ruling": "As F1; T6b_test is descriptive only, a full block with its own look, never re-described as a stratum of T6a."
+  },
+  {
+   "id": "PRIOR SHARED-REFERENCE-GATE",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Open through F5.",
+   "recommended_lead_ruling": "As F5."
+  },
+  {
+   "id": "PRIOR SEEDS / PRIMARY-METRIC-AND-CI",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "Open through F6 and F7.",
+   "recommended_lead_ruling": "As F6 and F7."
+  },
+  {
+   "id": "PRIOR T6-BASELINE-LADDER",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Open through F3 (eligible set) and F10 (rf_emb_dur configuration).",
+   "recommended_lead_ruling": "As F3 and F10."
+  },
+  {
+   "id": "PRIOR DURATION-FLOOR-AND-BANDS",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "should_fix",
+   "evidence": "Closed band verified from the split by metadata only: every train_pool and T1_test row has 24 <= duration_h <= 96, every T6a/T6b row lies outside, 9,759 rows sit at exactly 24 h. Band status open through F9.",
+   "recommended_lead_ruling": "As lead point (c) and F9."
+  },
+  {
+   "id": "PRIOR Missed 3 (reproduction tolerance)",
+   "lens": "stats",
+   "holds": "confirmed",
+   "severity_after_check": "blocking",
+   "evidence": "Open through F2.",
+   "recommended_lead_ruling": "As F2."
+  }
+ ],
+ "lead_points": [
+  {
+   "point": "(1) B1 - is the lead ruling sufficient to stamp now, or must the amendment be revised first?",
+   "ruling": "§8.2 items 1, 2 and 4 and the last bullet of §8.3 state REQUIRED behaviour, not the behaviour of arch_v2_guard.py at sha256 6e1ab9c17655afd197225c37d7ffb589127b7e3232fd9203b008ca3254f224fe; the word 'closed' in the §8.2 heading is not yet true. No FREEZE file for T1_test, T6a_test or T6b_test is written until the guard (i) compares sha256(FREEZE) with a value the lead recorded in a 0444 file the workstream cannot write, (ii) re-runs verify_freeze() inside require_authorised() and refuses load_test_block() once SCORED.json or ABORTED.json exists for the block, (iii) calls verify_artifacts() inside scored_pass() before mark_scored(), (iv) writes into ABORTED.json what was actually written instead of a constant, and (v) pins ecotox_aquatic.parquet and, once built, the protected-labels artefact - each with a test - and has been re-reviewed and re-pinned by the lead. An abort after AUTHORISED.json exists spends that block's look; there is no second look. A file named FREEZE not written by the lead is void, and a look taken on one voids the block (spent, no label). The re-pin may change only the guard, its tests and the pins file: the sha256 of the amendment, the split, the cluster table, the spent-id list, arch_v2.py and arch_v2_power.py must be identical before and after, the superseded pins file is kept, and the new pins sha256 is written to a registry row. Sequencing (stricter, recommended): the lead does not write docs/preregistration/chemtox_arch_v2_pins.json until the guard meets this ruling, so verify_freeze() keeps raising and neither a pool read nor authorise() can run on the deficient guard.",
+   "reason": "B1 holds in full, but the ruling is sufficient and a revision is not needed. The amendment cites no guard hash, so its text is the stricter specification and the code must rise to it; the false sentences concern look machinery, not the split, universe, comparators or metrics; only the lead writes FREEZE; L10 already makes guard review a precondition of any look; the guard pins itself, so a fix cannot slip in without a re-pin. The lead's draft sentence needs four additions to be complete: it should name the guard sha it speaks of, cover the false abort record and the ecotox pin, say that an abort after authorisation spends the look, and fix the re-pin procedure. One residual risk if the pins file is written with the present guard: the only mechanical barrier to a look is then a file named FREEZE in a workstream-writable directory, which is why holding the pins file until the guard is fixed is the safer order. It costs only a short delay to pool fits and matches §8.2 L785-786 as written."
+  },
+  {
+   "point": "(2) B2 - exact sentence removing any benefit from the misstatement",
+   "ruling": "The hold-out share is 30 % of units on grounds (i) and (iii) of §6.2 only. Ground (ii) is struck and carries no weight: the only pre-declared 10 % criterion is the largest CLUSTER's share of the universe's rows (7.76 %, met); no per-block, per-unit criterion was ever pre-declared, and the one stated in ground (ii) fails for train_pool (13.46 %), T6a_test (14.37 %), T6b_test (13.52 %) and the in-domain subset of T1_test (10.75 %). No write-up may cite a '10 % of a block' criterion as met.",
+   "reason": "B2 holds. The 30 % share survives without ground (ii): the grid was fixed by L4, the sweep is label-free, and grounds (i) and (iii) are monotone facts of the tabulated sweep. Striking (ii) lowers no bar and makes no choice depend on a result."
+  },
+  {
+   "point": "(3) should-fix items S1-S4",
+   "ruling": "S1: record path/size/sha256 of m4_t1_rows.parquet and delete it and the scratch copies of the withdrawn reports before the stamp. S2: strike the pre-stamp R1-R3 clause; the stamp clears no sealed read and no look; pool work starts when the lead writes the pins file. S3: stamp record carries the hashes of the amendment, arch_v2.py, arch_v2_power.py, split, cluster table, spent-id list and ecotox_aquatic.parquet (set 0444); addenda are separate hashed files. S4: strike gpboost_model.py from the header's freeze list; file stays unedited.",
+   "reason": "All four hold (see verdicts). S1 is the only one that needs an action rather than a sentence, and the action touches no pinned artefact. None requires the amendment to be rebuilt."
+  },
+  {
+   "point": "(4) / (b) the 97 unscored ADORE test partitions: stay or leave",
+   "ruling": "The rows of the 97 unscored ADORE challenge x split test partitions stay in the T1/T6 universe (4,632 rows: 3,176 train_pool, 1,456 T1_test, 0 T6a_test, 0 T6b_test). No workstream scores any of the 97 partitions, and no model fitted on train_pool is scored on any ADORE partition, before all three looks are complete. After the looks an ADORE partition may be scored only with a lead ruling, with every result_id of T1_test, T6a_test and T6b_test removed from its test rows first (those ids are spent under rule 1) and the removed count reported. At each look the scored-partition set derived from the registry must still equal the eight partitions behind the frozen spent-id list, or the look does not proceed.",
+   "reason": "Verified by keys: 105 test partitions, 8 scored (12 registry spellings), 97 unscored; the scored union is 28,265 ids, set-equal to the frozen list, and 0 of them are in any split role. 'Leave' is the strictest reading on row-independence and would not lower a bar (it removes 12.8 % of T1_test and raises its MDE). I still recommend 'stay': no held-out score has been read on these rows, so rule 1 does not make them spent and there is no leak to remove; no M4 protocol reserves any of the 97; and leaving forces a third rebuild (_v3) of a label-blind artefact after its power table has been read, with every count and gate changing. The freeze sentence gives the protection that matters (no ADORE look can spend T1 rows first, and T1's rows are never re-used for a second claim) and only adds restrictions. If the lead prefers the strictest option, 'leave' is admissible, but it must then be done now, as _v3, before the stamp."
+  },
+  {
+   "point": "(5) any validation or test number on a new arm; spent blocks outside every role",
+   "ruling": "Recorded as fact at the stamp: results/registry.jsonl (73,229 lines, 0 unparseable) holds 0 rows whose experiment starts with chemtox_arch_v2 and 0 rows whose split names T1_test, T6a_test or T6b_test; no FREEZE, AUTHORISED.json, SCORED.json, ABORTED.json or protected-labels file exists under /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/arch_v2/. The five adore_trivial_baselines rows with split '<challenge>/all' and model replicate_noise_floor (ids 50cd285b0c38, bcef2d0024ee, e09ebf4a40f4, 31ba96c50143, 5440e0c9e2f6) are label-repeatability summaries over whole ADORE challenges, not held-out scores; they spend no partition, and no such statistic is computed on a T1/T6 block before its look.",
+   "reason": "By key against the 58,824-row split (no duplicate result_id): spent ADORE ids in any role 0; prospective-block ids (11,437) in any role 0; rows of the T2 reserved classes 0; hold-out units, clusters and chemicals spanning held-out and retained blocks 0 each; parent-key families spanning 0 (two chemicals, 24 rows, have no parent key in the cluster table and sit in two units of their own, 23 rows train_pool and 1 row T6a_test). The five '/all' rows are the one thing neither lens mentioned: scored_adore_partitions() rightly ignores them (two-part split, no test role), and §6.6's statement about v2 artefacts stays true, but they are pre-existing label statistics over rows of which up to 1,504 are now in T1_test, so they are disclosed."
+  },
+  {
+   "point": "(a) T1 share 15 / 20 / 25 / 30 %",
+   "ruling": "30 % of units (609 of 2,029), seed 20261110, on grounds (i) and (iii) only; the v2 artefacts stand and no _v3 is built.",
+   "reason": "Grid fixed by L4 before the sweep; choice made from label-free counts; best gate for the primary block and for the weakest block; the cost (pool 32,106 rows, T6a gate 0.0886 to 0.1027) falls on every arm equally. Keeping the built artefacts avoids a rebuild after the power table was read."
+  },
+  {
+   "point": "(c) the [24, 96] band wording",
+   "ruling": "The training window is the closed interval 24 <= duration_h <= 96; the earlier ruling's literal '(24, 96]' is corrected to '[24, 96]'. Rows at exactly 24 h (9,759) are window rows and belong to no T6 band.",
+   "reason": "Metadata-only, verified on the split. The closed reading is also the conservative one: a half-open window would move 24 h rows, a standard test duration, into the 'extrapolation' blocks and make T6 easier."
+  },
+  {
+   "point": "(d) the 10.09 % largest unit",
+   "ruling": "Recorded as an observation, not a criterion: the largest cluster holds 7.76 % of the universe (pre-declared criterion met); the largest hold-out unit holds 10.09 % (5,938 rows: 4,321 in train_pool and 1,617 in T6a_test) and is a retained unit; the Butina cut-off stays 0.4 and the unit definition of L2 stays; no criterion on unit share is claimed as met.",
+   "reason": "Changing the cut-off or the unit after seeing its effect on power is the forking path §15.3 (iii) itself names. The unit is retained, so it limits the pool's diversity and T6a's power, not T1's."
+  },
+  {
+   "point": "(e) the mmoe / gpboost reproduction rule",
+   "ruling": "Condition (a) is read against whichever of mmoe and gpboost_published has the lower pool-validation score, whatever its §4.6 status; a §4.6 miss is disclosed beside the result and never removes that arm from (a); kill rule 10 is read as 'a comparator that misses §4.6 cannot be the ONLY arm carrying (a) or (b)', never as removing a stronger arm; if neither arm yields finite predictions on the full block, no §15.1 label is available on that block.",
+   "reason": "The stricter of the two readings; a failed fidelity check can never make (a) easier."
+  },
+  {
+   "point": "(f) descriptive-by-default, and the path to an honest powered claim",
+   "ruling": "Under L4 none of T1_test, T6a_test or T6b_test as constituted (micro-RMSE, governing MDE 0.0959 / 0.1027 / 0.1033 at icc 0.5; 0.1911 / 0.2047 / 0.2044 at icc 1.0) can carry a §15.1 label: all three are descriptive only. The words 'by default' and every sentence making a label available 'if the realised difference exceeds the governing MDE' (L87-90, L657-660, §12.1 as a route to a label, §15.3) are struck. Conditions (a)-(j) are still computed and reported in full as the pre-registered descriptive reading; a result that would have met all of them is reported as 'exceeds the pre-registered MDE on an under-powered block; no SOTA label', and a result that does not is a measured null. A label on these questions needs a new, separately stamped track (lead point f). Path: a powered confirmatory claim is sought on a NEW track with more data or a harder task (RESEARCH_PLAN §15.5; sota_campaign rule 1: future data, a new geography or a new source), opened only by its own amendment, reviewed and stamped before any pool fit, whose label-free governing MDE at icc 1.0 is at or below an effect size the workstream commits to in writing before that power table is computed. Options (i)-(iii) of §15.3 (lower icc, finer unit, tighter cut-off) are refused. The stats lens's unit-balanced estimand is not adopted by this stamp: it may be proposed only as such a separately stamped addendum, with micro-RMSE still reported with equal prominence and a point difference in the candidate's favour on micro-RMSE also required.",
+   "reason": "L4's text excludes a label on a block that cannot detect a realistic gain, and the amendment concedes that for all three. On the unit-balanced estimand: its icc 1.0 figures are consistent with the power file's own scaling (MDE x sqrt(effective n) = 1.025 in t1t6_mde_v2.json, so 1.025/sqrt(546) = 0.044, /sqrt(694) = 0.039, /sqrt(289) = 0.060 on full blocks); I did not verify the icc 0.5 figures, and the governing values on the in-domain and no-shared-reference strata would be higher. It is a change of estimand chosen after its effect on power was seen, it is neither more data nor a harder task, and even so its gate (about 0.04 to 0.06) sits inside the 0.029 to 0.070 range of effects this project has measured, so it would be borderline rather than clearly powered. The clean route is more hold-out units."
+  },
+  {
+   "point": "lens question - what the stamp unlocks",
+   "ruling": "As the S2 ruling and the sequencing sentence of point (1).",
+   "reason": "Removes the two-way statement at L785-786 against L1035-1036 in the stricter direction."
+  },
+  {
+   "point": "lens question - gpboost_model.py (§15.4 item 3)",
+   "ruling": "As S4: unedited and unsealed until every look whose import closure contains it is complete.",
+   "reason": "An edit now changes the closure hash under a running T2 queue and buys nothing."
+  },
+  {
+   "point": "lens question - condition (h) and the reference-clustered reading",
+   "ruling": "Legs (a) and (b) must exclude 0 under BOTH clusterings (hold-out unit and reference_number). A candidate that passes (a)-(g), (i) and (j) and fails (h) carries no §15.1 label; it is reported as 'ahead on the full block, not separable from publication structure'. The word 'qualified' in §6.4 and §12.1 (h) names that report, not a class of label.",
+   "reason": "Strict reading of 'requires ALL of'."
+  }
+ ],
+ "missed_blocking_issues": [],
+ "missed_non_blocking": [
+  "Five registry rows (adore_trivial_baselines, split '<challenge>/all', model replicate_noise_floor; ids 50cd285b0c38, bcef2d0024ee, e09ebf4a40f4, 31ba96c50143, 5440e0c9e2f6) are label statistics over whole ADORE challenges that include rows now in T1_test. Not a held-out score; disclosure sentence in lead point (5).",
+  "m4_t1_rows.parquet carries the target for all 26,718 sealed rows, not only T1 rows (strengthens S1; still should_fix)."
+ ],
+ "overall": "stamp_with_lead_rulings",
+ "overall_reason": "Every finding of both lenses that I could check holds; none is refuted. No pinned artefact has a leak (spent ADORE ids, prospective ids and T2 classes are absent from every split role by key; no unit, cluster, chemical or parent family spans held-out and retained rows), no number exists on any new arm, and no finding requires the split, universe, comparators or metric to change. The six findings that would block a stamp of the bare text (B1, B2/F4, F1, F2, F3, F5) are each closed by one sentence that takes the stricter reading and overrides the amendment from a separate rulings file, as was done for the hydromet, microbe and sonde amendments. Conditions: the rulings file is written, set 0444 and hash-recorded in the same snapshot row as the amendment; the labelled scratch file is recorded and deleted first (S1); and the guard's pins file is not written, or at the least no FREEZE is written, until the guard meets the B1 ruling. This is a close call rather than a clean pass: the stamped text will contain about six sentences that the rulings declare untrue or struck, and a reader of the amendment alone would be misled, so the stamped header or registry row must point to the rulings file. Revision would become necessary in two cases only: if the lead keeps a §15.1 label path on these blocks without first fixing F2, F3, F5 and F6 in the rulings file, or if the lead rules that the 97 unscored ADORE partitions leave the universe or picks a share other than 30 % (either means _v3 artefacts and a new amendment text).",
+ "not_independently_checked": [
+  "F7 bootstrap pairs for T6a_test and T6b_test",
+  "stats lens unit-balanced MDE at icc 0.5",
+  "F10 chemprop 0.070 / 0.085 pair and rf_emb_dur hyper-parameters",
+  "N1 319 shared chemicals; N2 232 chemicals / 619 rows",
+  "test suites were not run"
+ ]
+}

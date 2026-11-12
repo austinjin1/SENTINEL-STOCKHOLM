@@ -19,11 +19,19 @@ APP = "taprisk"
 APP_ID = "d4"
 EXTRA_SCORING_FILES = (
     "sentinel/models/downstream/taprisk_models.py",
+    "sentinel/models/downstream/taprisk_it2.py",
     "sentinel/models/downstream/taprisk_registry.py",
     "sentinel/models/downstream/wqp_track.py",          # huc_of_points, fit_logistic, fit_gbm
     "scripts/data/build_taprisk_links.py",
     "sentinel/data/downstream_links.py",
     "docs/preregistration/downstream_taprisk_split.json",
+    # pre-test review C4 (2026-11-10): full import closure of the test path
+    "sentinel/models/downstream/taprisk_look.py",
+    "sentinel/models/downstream/taprisk_numeric.py",
+    "sentinel/models/downstream/toxinwatch.py",
+    "sentinel/__init__.py", "sentinel/core/__init__.py", "sentinel/core/paths.py", "sentinel/core/registry.py",
+    "sentinel/core/runlog.py",
+    "sentinel/eval/__init__.py", "sentinel/models/__init__.py", "sentinel/models/downstream/__init__.py",
 )
 
 

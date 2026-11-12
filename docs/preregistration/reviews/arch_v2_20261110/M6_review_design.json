@@ -1,0 +1,291 @@
+{
+  "sha256": "a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656",
+  "hash_matches": true,
+  "findings": [
+    {
+      "id": "RTD-RECIPE",
+      "severity": "should_fix",
+      "section": "§5 l.163-172; §13 item 6",
+      "issue": "The RESEARCH_PLAN 15.1(i) comparator of every family is not fixed. 'hidden 256, dropout 0.5 [UNVERIFIED against the papers ...]' cites three sources (Rahmani 2021, Willard 2024, hydroDL) with no rule for which one governs if they differ. R-TD gets 1 configuration against D1's 3-point grid and the GBMs' 3.",
+      "evidence": "Amendment l.169-170. configs/hydromet_sota/v2/rtd.yaml (sha256 d28411d3..., written 13:19) repeats 'UNVERIFIED'. LEAD_DECISIONS_20261110.md l.137-139 'R-TD 1 fixed'. I did not check the papers (no downloads allowed), so the true values are unverified by me too.",
+      "suggested_ruling": "R-TD's hidden size and dropout are those of the top-down LSTM in Willard et al. 2024 (if not stated there, Rahmani et al. 2021), transcribed with a page/table citation in a stamped deviations entry before the first R-TD fit; no other value is run, and every label states that R-TD had one configuration against three for D1."
+    },
+    {
+      "id": "RTD-SHARE",
+      "severity": "should_fix",
+      "section": "§5 l.170-171; §12 l.401",
+      "issue": "R-TD's grab share is not defined in the amendment ('It gets D1's ... sampling'). The config written after the amendment sets it to the share of D1's selected grid point, so the comparator's only tunable is set by the candidate's inner result. That also contradicts §5 ('fitted before or together with D1') and the §12 order (references in step 2, D1 grid in step 3).",
+      "evidence": "configs/hydromet_sota/v2/rtd.yaml: 'Grab share: that of D1's selected point (--base)', 'grid: fixed: {grab_share: 0.5}', 'inherit_from_d1: [grab_share]'. scripts/train/sota_hydromet_v2_nn.py l.63 'VR.inherit_from_d1(...)'. Amendment l.162, l.401.",
+      "suggested_ruling": "R-TD's grab share is fixed at 0.5 (D1 grid point 1) before the stamp and never depends on D1's selection; rtd.yaml is corrected before its sha256 is pinned."
+    },
+    {
+      "id": "RTD-PUBFORM",
+      "severity": "should_fix",
+      "section": "§5 l.166-168; §8 G-D1a l.271-273",
+      "issue": "The published form of the top-down LSTM (sonde and USGS daily labels only, no observation operator) is fitted only if gate G-D1a fails. The gate is decided on D1 alone, whose diel head is built for grab rows. If it passes, the only 'published method' comparator is a modified variant forced to train on rows that may not help it. The GBMs get a better-of {derived, direct} rule; R-TD gets none.",
+      "evidence": "rtd.yaml: 'nograb ... variant used only if gate G-D1a fails for a track'. Amendment l.271-273 'every model's claim configuration ... is its no-grab variant' only on gate failure. Frozen hydromet_protocol.md states a re-implementation is not labelled state of the art (read earlier in this review).",
+      "suggested_ruling": "R-TD is always fitted in both label sets (3 seeds each, logged with variant_of); both forms are members of the comparator set of every family, and the no-grab form is named as the published form in any label."
+    },
+    {
+      "id": "TE-HOLD",
+      "severity": "should_fix",
+      "section": "Header l.9-11; §9.1 l.299-324",
+      "issue": "T-E rests on a living draft. The amendment lists hydromet_ea_protocol.md and hydromet_sota_protocol.md with the frozen files as 'unchanged'; both were modified after the amendment. The EA role rule is 'PROPOSED, awaiting the lead's ruling', S is not chosen, the rule is not in code, and the split file does not exist. The §9.1 'Metadata facts' (54 groups, one group 37 %, G_eff 6.4, no val-role group) describe the withdrawn draft rule.",
+      "evidence": "hydromet_ea_protocol.md sha256 01ff2f42..., mtime 13:01:23 (amendment 12:56:57), status 'DRAFT v0.1', §4 'The lead chooses S', §6 power unfilled. scripts/data/sota_hydromet_ea_build.py (sha256 1900b7b4..., 12:41) l.332 ROLE_SHARES 0.40/0.55 and l.380-385 still use eligibility_counts() from QC valid days, with no 15 % guard. docs/preregistration has no hydromet_ea_split.json.",
+      "suggested_ruling": "T-E is not cleared by this stamp: no EA fit, fine-tune or validation number is computed until a stamped deviations entry records the sha256 of hydromet_ea_protocol.md v1.0 and hydromet_ea_split.json, the chosen S, and per endpoint the metadata G, G_eff and claim/descriptive status; amendment §9.1 'Metadata facts' is superseded by that entry."
+    },
+    {
+      "id": "TE-S-MIN",
+      "severity": "should_fix",
+      "section": "§9 l.290-296; §9.1 l.311-324; EA protocol §4",
+      "issue": "Design-lens answer on S, the minimum and the power statement. Under the proposed EA rule the test cell passes the minimum by metadata for both S, but S = 0.40 passes by only 4 groups and 1.2 G_eff units, and these are upper bounds (the realised cell needs 60 valid days, finite output for every model, 10 heatwave days). The MDE line assumes US between-group variance (item 9 UNVERIFIED), ignores that the cell has 117-141 stations against about 320 in the US, and is a single-comparator value; the IUT over 4-6 comparators plus the every-seed rule has less power.",
+      "evidence": "Metadata-only reproduction (station catalogue, measures table, HydroRIVERS NEXT_DOWN; no reading loaded): /tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/ea_meta_counts.py. It matches the protocol's counts (1,687 snapped, 1,100 eligible, 309 test-capable, 55 groups, largest 130). S = 0.40: groups 25/7/23; test cell temperature 117 stations, G 19, G_eff 9.2; DO 99 stations, G 19, G_eff 10.2. S = 0.50: groups 28/10/17; temperature 141 stations, G 21, G_eff 11.2; DO 123, G 21, G_eff 12.1. MDE factor sqrt(14/G_eff): 1.23 at 9.2, 1.12 at 11.2.",
+      "suggested_ruling": "S = 0.50, chosen from metadata only; the minimum stays G >= 15 and G_eff >= 8 on each endpoint's realised paired cell and is not revisited after any EA count; the §9.1 MDE values are quoted as best-case single-comparator values under an unverified US-variance assumption."
+    },
+    {
+      "id": "TE-VALCELL",
+      "severity": "should_fix",
+      "section": "§9.1 l.303-308; §8 G-D1b",
+      "issue": "The T-E validation cell that decides whether the unseen block is spent is very small under either S, with about half of its stations in one group. The fine-tuned go/no-go is scored on the same rows that were used for fine-tune early stopping. M1's later EA draw (up to 20 % of non-M6-test groups) can shrink it further. The amendment's own remark that 'the validation go/no-go could not be run' is not resolved by the proposed rule.",
+      "evidence": "Same metadata script. Val-role groups x EA-val-block-capable stations: S = 0.40, 27 stations, G 5, G_eff 2.8 (sizes 14, 7, 4, 1, 1); S = 0.50, 46 stations, G 8, G_eff 3.1 (23, 9, 7, 3, 1). EA protocol §4 'EA val-role groups for early stopping / selection'; amendment l.303 and l.306.",
+      "suggested_ruling": "The zero-shot go/no-go is scored once, before any fine-tuning, on all EA groups that are neither M6-EA test-role nor M1-test x the EA-val block (zero-shot models fit no EA row); the fine-tuned go/no-go stays on val-role groups and is declared low-information, with G and G_eff of both cells written in the stamped T-E entry and the G-D1b rule unchanged."
+    },
+    {
+      "id": "CAP-VARIANTS",
+      "severity": "should_fix",
+      "section": "§4 l.145-158; §14 Q1",
+      "issue": "My count of counted configurations is 12 (D1 3 + 2, D2 3 + 2, DO stage 1, R-TD 1), which matches the cap. The 'variant' rule deviates from the ruling 'every configuration is counted': no-grab variants, T-E schema variants of every candidate and reference, fine-tuned variants in two modes, D3 and the control stack per track, R-EA and smoke runs all produce inner numbers and are uncounted. The D2 schema variant is an architecture change (travel time becomes a static parameter).",
+      "evidence": "LEAD_DECISIONS_20261110.md l.136 'every configuration is counted in configs_tried.jsonl'. Amendment l.154-158 'is a variant: logged with variant_of, always reported, not counted'; l.137-140 D2 substitution.",
+      "suggested_ruling": "The variant rule is accepted only in this form: hyperparameters and config sha identical apart from the declared switch (label set, schema, fine-tune cell); a configs_tried.jsonl row with variant_of before training; every variant's inner numbers reported; variants counted in a separate disclosed tally; any other change is a counted configuration against the 12."
+    },
+    {
+      "id": "CFG-PINS",
+      "severity": "should_fix",
+      "section": "§3 l.137-140; §7; §2.4 rule 4",
+      "issue": "Values that define a configuration are outside the stamped text and unpinned. common.yaml holds 'implementation constants that the amendment leaves to the code' (loss term weights, auxiliary weights, source-prior weight, diel initialisation, untimed-sample hours), and loss weights are part of a configuration by the amendment's own counting rule. No D2, stack or GBM config exists yet, so their constants could be set after D1 and R-TD inner results. schema_variant.yaml is fixed only 'before any EA number', although schema variants produce US inner numbers used for the T-E ordering first.",
+      "evidence": "configs/hydromet_sota/v2/ holds common.yaml (sha256 15ba953f...), d1.yaml (fe7da695...), rtd.yaml (d28411d3...), all written 13:19, after the amendment; no d2.yaml, pins.json or schema_variant.yaml. Amendment l.139, l.154, l.365. The train script already refuses non-smoke runs without a stamp (sota_hydromet_v2_nn.py l.66).",
+      "suggested_ruling": "Before the first non-smoke fit of any arm, one registry row pins the sha256 of every file in configs/hydromet_sota/v2/ (common, d1, rtd, d2, stack, GBM, schema_variant.yaml, pins.json); a later change to any pinned value is a counted configuration with a stamped deviations entry."
+    },
+    {
+      "id": "SCHEMA-STATICS",
+      "severity": "should_fix",
+      "section": "§3 l.133-134",
+      "issue": "The amendment says the T-E schema is 'exactly' EA protocol §3 with '39 RiverATLAS statics'. The protocol and the code have 40 RiverATLAS attributes plus lat and lon (42 columns). The stamped text would fix a wrong input set.",
+      "evidence": "hydromet_ea_protocol.md l.41 '40 RiverATLAS attributes plus lat/lon'; I counted 40 names in l.36-40. sentinel/hydromet_sota/ea_data.py l.33 COMMON_STATIC has 42 entries (sha256 27d81b93...).",
+      "suggested_ruling": "The T-E static set is sentinel.hydromet_sota.ea_data.COMMON_STATIC at ea_data.py sha256 27d81b93... (lat, lon and 40 RiverATLAS attributes); the '39' in amendment §3 is an error."
+    },
+    {
+      "id": "POOL-OPEN",
+      "severity": "should_fix",
+      "section": "§2.2 l.73-83; §2.4 l.109-112; Q3",
+      "issue": "The pool can still change after results. Tier 2 size is 'N2 <= 10,000' (not an exact number, UNVERIFIED). The one-pool clause allows a source to be added later 'unless a stamped deviation adds it for all models before any model has a validation number', which is after inner numbers, gate outcomes and grid selections exist.",
+      "evidence": "Amendment l.80-83 and l.109-112. build_report.json of processed/hydromet_sota_v2: Tier 1 already built with 3,545 fit grab stations; logger_days 0 (L-logger is empty in the current build).",
+      "suggested_ruling": "This round uses Tier 1 only (N2 = 0); the pool is pinned before the first post-stamp fit, and no label source or station is added after any inner number of any model exists; the clause 'unless a stamped deviation adds it ...' is struck."
+    },
+    {
+      "id": "GD1A-NOISE",
+      "severity": "should_fix",
+      "section": "§8 l.269-274; Q2",
+      "issue": "The 3 % threshold is below seed noise (the stated seed SD is about 5 %, so the SE of a 3-seed mean difference is about 4 %), and it is evaluated on an inner set with 5.8 effective groups. It is decided on D1 alone but sets the label set of every model. The N2 clause is 'proposed': it compares D1, trained on grab rows, with ablation (a), never trained on them and early-stopped on J_sonde alone, on J_grab, so it passes almost automatically.",
+      "evidence": "Amendment l.257 and l.271-274. Inner split from ealstm_ws_v1_s0/data_info.json and sonde_split.json (keys only): 256 inner sites in 20 groups, sizes 75, 61, 28, 27, ..., G_eff 5.8.",
+      "suggested_ruling": "One gate for all tracks: grab, logger and Oliver rows stay only if they lower the 3-seed mean J_sonde by >= 3 %; J_grab is reported only; the outcome is written to the registry before any other model's variant is fitted."
+    },
+    {
+      "id": "GBM-SELECT",
+      "severity": "should_fix",
+      "section": "§5 l.186-191; §7 l.255",
+      "issue": "The GBM selection criterion is ambiguous. The grid point is 'selected per target on the same inner rows', but §7 says J (a mean over targets, with a grab term) selects 'within the GBM grids'. The {derived, direct} choice uses 'the lower inner MSE' without naming the rows. No tie rule is given for the GBMs.",
+      "evidence": "Amendment l.186-188, l.189-191, l.255-256.",
+      "suggested_ruling": "For each GBM and primary target, the grid point and the {derived, direct} form are those with the lowest standardised inner-sonde MSE of that target (ties: earlier grid point, derived first); the instantaneous model used for N2 is selected on that variable's J_grab term; the choices are written to the registry before any validation number and both forms are reported."
+    },
+    {
+      "id": "V1-FAMILY",
+      "severity": "should_fix",
+      "section": "§9.2 l.328-329; §10 l.375-376; Q7",
+      "issue": "Three documents give three analyses of the v1 models at the joint look: the frozen protocol keeps 'the same models and family', the lever protocol adds the lever candidate to that family, and the amendment makes v1 models 'secondary and uncorrected'. Uncorrected v1 intervals could later be read as wins.",
+      "evidence": "hydromet_sota_protocol.md l.130-131 'Holm family = the frozen 7 models x 4 endpoints + the lever candidate x 4'. Amendment l.376. LEAD_DECISIONS 'v1 models are secondary members'.",
+      "suggested_ruling": "At the joint look the v1 models are analysed exactly as frozen (FREEZE_hydromet.json comparators, Holm-28, every-seed rule), reported as secondary, and carry no §15.1 label; hydromet_sota_protocol.md §8 is aligned through its deviations log before any lever validation number."
+    },
+    {
+      "id": "CLAIM-PER-TRACK",
+      "severity": "should_fix",
+      "section": "§10 l.360-376",
+      "issue": "The ruling says 'one claim model per track' and 'the arch-v2 claim model' (singular) for the joint look. The amendment allows one per family with different ordering criteria (J_sonde for T-B, J_grab for N2), so up to four claim models in four families, each at alpha 0.05. A lever model is a candidate only 'if the lever engineer supplies' inner predictions, a choice that can be made after inner results are known.",
+      "evidence": "LEAD_DECISIONS_20261110.md l.166 and l.176. Amendment l.361-362, l.365, l.375.",
+      "suggested_ruling": "The joint US look has one arch-v2 claim model, ordered by J_sonde and tested in both the T-B and N2 families; a lever model is a candidate only if its configuration is named in the registry before any arch-v2 inner number exists, and its inner predictions are then always supplied."
+    },
+    {
+      "id": "N2-P-FORM",
+      "severity": "should_fix",
+      "section": "§9.2 l.335-339",
+      "issue": "N2 is scored with hour-resolved predictions, but P and the v1 models have no hour-resolved output and use the daily mean. A comparator's hour-resolved output can also be worse than its own daily mean, so the claim model could beat a weakened form.",
+      "evidence": "Amendment l.337-339: 'Models without an hour-resolved output (v1 models, P) use their daily mean. The v1 form ... is reported for every model as secondary.'",
+      "suggested_ruling": "For N2 each comparator is scored in whichever of its two forms (hour-resolved, daily mean) has the lower RMSE on the track-N validation cell, fixed in the freeze file; P is named a daily-mean baseline in any N2 label."
+    },
+    {
+      "id": "LABEL-WORDING",
+      "severity": "should_fix",
+      "section": "§10 l.379-380; §13 item 8",
+      "issue": "The example label is 'SOTA on England zero-shot temperature mean'. R-TD is a modified re-implementation, T-B and N2 sites were scored before and motivated the design, and no novelty search exists.",
+      "evidence": "Amendment l.380. docs/novelty_checks/ has no hydromet or diel-operator file. results/registry.jsonl holds M6/test (1,785 rows) and M6N/test (117 rows) on the same site roles.",
+      "suggested_ruling": "Any label reads 'better than the re-run published top-down LSTM and the listed baselines on <track, endpoint>', names the comparators as re-implemented here, adds 'future year at previously scored sites' for T-B and N2, and uses no 'first', 'novel' or unqualified 'state of the art' wording without a dated docs/novelty_checks entry."
+    },
+    {
+      "id": "TB-GEFF",
+      "severity": "should_fix",
+      "section": "§9 l.290-296; §9.2 l.330-334",
+      "issue": "The minimum-groups rule applies to all tracks, but G_eff is not stated for any T-B or N2 endpoint. The T-B DO cells have 19 groups and are probably close to G_eff 8, so two of six claim endpoints may be descriptive by the amendment's own rule. The T-B MDE is scaled on G, not G_eff. T-B is under-powered by a factor of 3 or more against observed gaps (MDE 0.017-0.09 against about 0.006 KGE), which the amendment states.",
+      "evidence": "From keys only (model, var, site_no, basin_group, n; no metric column) of sentinel_runs/hydromet/test_looks/M6_test/score/site_metrics_test_test.parquet: Test-A cells temperature 333/330 sites, G 33/32, G_eff 12.8/12.3; DO 178/185 sites, G 22, G_eff 9.1/9.3. The T-B metadata cells are smaller for DO (155/164 sites in 19 groups, hydromet_sota_protocol.md l.132-133). T-B G_eff itself was not computed (no site list on disk).",
+      "suggested_ruling": "Before any arch-v2 validation number a stamped deviations entry states the metadata G and G_eff of each T-B and N2 endpoint; an endpoint below G 15 or G_eff 8 is declared descriptive then; a T-B or N2 result that does not reject is reported as 'not detectable at the stated MDE', never as parity."
+    },
+    {
+      "id": "TD-TIMING",
+      "severity": "should_fix",
+      "section": "§9.4 l.351-355",
+      "issue": "T-D rows lie in FINAL test-role groups. The phrase 'or for an earlier US-model freeze written by the lead' allows T-D to be scored before the joint-look freeze, so results on test-role groups could inform later model choices for T-B and N2.",
+      "evidence": "Amendment l.352-353. LEAD_DECISIONS: 'Its rows are locked at extraction and scored once with the frozen models.'",
+      "suggested_ruling": "T-D is scored once, and only with the models of the joint T-B/N2 freeze file; if it is scored earlier, that freeze is the joint-look freeze and no US model, comparator or family changes after it."
+    },
+    {
+      "id": "X1-STREAMPULSE",
+      "severity": "should_fix",
+      "section": "§2.1 l.66",
+      "issue": "SYNTHESIS C1/X1 asks M6 to register which StreamPULSE sites its DO stage reads before M1's audit. The amendment only says 'avoided entirely'. That is stricter in substance, but it is not a registration and binds no code.",
+      "evidence": "Amendment l.66 is the only StreamPULSE mention (grep). SYNTHESIS.md l.354-365 and the M6 row at l.471.",
+      "suggested_ruling": "M6's C1 registration is the empty set: no arch-v2 code reads labels_streampulse or any StreamPULSE row in this round, and a loader assertion enforces it."
+    },
+    {
+      "id": "X3-POWELL",
+      "severity": "should_fix",
+      "section": "§2.1 l.64; §6.2 l.230-231",
+      "issue": "Powell priors and the K600 weak target use 'the 160 train-role Powell sites [RV]' with no role table, no sha, and no mention of M1's 48 new-site overlaps, which SYNTHESIS X3 requires one role table to honour. X4 (sonde tier) is met in substance: the 729 M1 sites are the first role rule, and hourly and auxiliary labels are train-role x train block only.",
+      "evidence": "SYNTHESIS.md l.346 (M1: 48 new-site overlaps excluded; M6 FINAL split; Sim H-G3 117 test-role). Amendment l.64, l.66-67, l.91, l.124-125. I did not check whether any of the 160 sites is in the 729 list (no Powell site list is named in the amendment).",
+      "suggested_ruling": "Powell priors and K600 rows are used only at sites that are FINAL train-role and not in M1's 729-site list, and the sha256 of that site list is in pins.json before any D2 fit."
+    },
+    {
+      "id": "X7-CONSTANTS",
+      "severity": "should_fix",
+      "section": "§6.2 l.230-231; §13 item 7",
+      "issue": "The plan required the Raymond et al. 2012 coefficients to be checked before the amendment is stamped; the amendment defers this to 'before any DO-stage fit'. SYNTHESIS X7 asks for one shared constants module, which does not exist. G2's DO-saturation feature also uses physical constants.",
+      "evidence": "M6_architecture_plan.md §4.2 item 7 (read earlier in this review). 'ls sentinel/physics_constants*' returns no file. SYNTHESIS.md l.334 and l.484.",
+      "suggested_ruling": "No DO-stage fit and no G2 DO-saturation feature build runs before the constants are transcription-checked with a unit test and recorded, with source table, in a stamped deviations entry."
+    },
+    {
+      "id": "ROLE-SHA",
+      "severity": "should_fix",
+      "section": "§2.3-2.4 l.91-107; Q9",
+      "issue": "Role-assignment sha is only partly given. The FINAL split, lever_sites and track-N role shas are stated; the role-assignment code, the grab-station table and the pool are deferred to a pins.json that does not exist, and the code already changed once today.",
+      "evidence": "Amendment l.59 (fd4bb14f...), l.60 (62c4bf53...), l.95 (ffb41471...). hydromet_sota_lever_pins.json: sites.py 1ccf5a18... amended to ff078b2d... at 17:45Z. Current sha256: sites.py ff078b2d...9284, reserved.py 5a96f5c3...e0f2, gso_mt/grab.py 6ca6471d...d0d0, scripts/data/sota_hydromet_v2_build.py 289349f9...f981. The gso_mt files were still being edited at 13:20.",
+      "suggested_ruling": "The stamp row records the sha256 of sites.py, reserved.py, gso_mt/grab.py and sota_hydromet_v2_build.py as they stand at the stamp; the sha256 of pins.json is logged in a registry row before the first post-stamp fit, and loaders refuse any unpinned table."
+    },
+    {
+      "id": "Q8-M1DRAW",
+      "severity": "should_fix",
+      "section": "§9.1 l.306-308",
+      "issue": "'... and M1's sonde_ea_split.json exists or the lead has ruled on it' leaves an escape: M6 EA fits could run before M1's test groups are known and then include groups M1 later draws as test.",
+      "evidence": "Amendment l.306-308 and l.123-124 ('once sonde_ea_split.json exists'). Neither split file exists on disk.",
+      "suggested_ruling": "No EA fit or validation number is computed until both hydromet_ea_split.json and sonde_ea_split.json exist and their sha256 are in the stamped T-E entry."
+    },
+    {
+      "id": "A-COMPLY",
+      "severity": "note",
+      "section": "Lens A summary",
+      "issue": "Items that comply. T-E minimum: 'G >= 15 and G_eff >= 8' (basis superseded, see TE-HOLD). T-H: '6 per family' in T-E and T-B (stricter than the plan's 4). Joint look: same words as the ruling. T-D: 'No Holm family, no §15.1 label'. Arms and control: D1, D2 with kill rule, gated DO stage, D3 with references-only stack. GBM grab parity: 'every grab row that D1 uses'. Cap: 12 by my count. Gates G-D1a, G-DO, G-D1b have numeric thresholds, and G-D1b adds G1 (stricter than the plan). IUT uses both G1 and G2 (stricter than 'the better of'). Pre-stamp activity is within plan steps 1-2.",
+      "evidence": "results/registry.jsonl: 0 rows with experiment M6V2*, M6SOTA*, M6EA* or M6/test_b. configs_tried.jsonl: 97 rows, the 2 new ones are smoke rows 'M6V2/d1.g1' at 13:20. Tier 1 builds are train block only (build_report.json).",
+      "suggested_ruling": "None needed; the listed deviations are in the other findings."
+    },
+    {
+      "id": "S0-STALE",
+      "severity": "note",
+      "section": "§0 l.23-27",
+      "issue": "§0 says no architecture-v2 code, config, data table or run directory exists. That was true at 12:50 and is now false: gso_mt code, three configs, Tier 1 tables and a smoke directory exist. All are permitted pre-stamp steps.",
+      "evidence": "sentinel/hydromet_sota/gso_mt/ (9 files, 13:03-13:20); configs/hydromet_sota/v2/ (3 yaml, 13:19); sentinel_runs/hydromet/sota_v2/smoke/; processed/hydromet_sota_v2/ tables.",
+      "suggested_ruling": "The stamp row lists the arch-v2 files that exist at stamp time with their sha256 and states that the registry holds no M6V2 row."
+    },
+    {
+      "id": "SMOKE-J",
+      "severity": "note",
+      "section": "§4 l.153; §0 guarantee",
+      "issue": "A real-data smoke run evaluates J on 6 inner sites and 4 inner grab stations for a named grid point and writes best_J. It is low-information, but repeated over grid points it would give an uncounted pre-stamp ordering. The only real-data smoke so far crashed before training.",
+      "evidence": "scripts/train/sota_hydromet_v2_nn.py l.33-43 and l.106-107. smoke/d1_g1_s0/data_info.json 'synthetic: true' for the completed run; d1_g1_real.out ends in FileNotFoundError (upstream_forcing_sota.parquet).",
+      "suggested_ruling": "Real-data smoke runs before the stamp are limited to grid point 1 of each arm, and their J values are never tabulated or compared."
+    },
+    {
+      "id": "DATA-COUNTS",
+      "severity": "note",
+      "section": "§2.1 l.59, l.62",
+      "issue": "Stated counts differ from the build: hourly tables '749 sites' against 421 built, and L-logger has zero station-days in the current build, so by §2.4 it is not training data unless it is built before the first post-stamp fit.",
+      "evidence": "processed/hydromet_sota_v2/build_report.json: hourly sites 421, logger_days 0, inst_rows_without_time 4,778. sentinel_runs/hydromet/sota_v2/build_hourly.log: 421 sites.",
+      "suggested_ruling": "The pinned pool's counts in pins.json replace the [RV] counts of §2.1."
+    },
+    {
+      "id": "INNER-NOISE",
+      "severity": "note",
+      "section": "§7 l.247-248; §6.3 l.236-241; §10 step 1",
+      "issue": "All inner decisions (grid selection at seed 0, G-D1a, G-DO at 2 %, D3 weights, the claim-model ordering) rest on 20 inner groups with 5.8 effective groups; two groups hold 136 of 256 sites. D3's cross-fitted J is not like-for-like with the early-stopped J of single models. The count of 20 is correct; the frozen v1 protocol's '13 groups' is wrong.",
+      "evidence": "Inner split from ealstm_ws_v1_s0/data_info.json and sonde_split.json (keys only). hydromet_protocol.md l.61-62 '13 groups'.",
+      "suggested_ruling": "Inner decisions are reported as rule outcomes with their margins, never as evidence that one arm is better."
+    },
+    {
+      "id": "GONOGO-ALPHA",
+      "severity": "note",
+      "section": "§8 G-D1b; §10 families",
+      "issue": "The go/no-go cells are small (FINAL val-role 13 groups, track-N val 12 groups) and the US val cell was used in six earlier selection cycles; the gate is a point estimate. Four families each at alpha 0.05 give a round-wise error above 0.05, so no round-level or H-G1 statement can rest on one family.",
+      "evidence": "sonde_split.json: val-role 13 groups. hydromet_track_n_power.json: val cells 12 groups. Amendment l.331, l.375.",
+      "suggested_ruling": "Labels are scoped to one family and endpoint; no project-level claim is made from this round."
+    }
+  ],
+  "points": [
+    {
+      "point": "T-E: S, minimum and power statement",
+      "recommendation": "S = 0.50. Keep G >= 15 and G_eff >= 8 on each endpoint's realised paired cell. Treat the §9.1 MDE values as a best-case bound.",
+      "reason": "By metadata the test cell has G 21 and G_eff 11.2 (temperature) / 12.1 (DO) at S = 0.50, against G 19 and G_eff 9.2 / 10.2 at S = 0.40, which is only 1.2 above the minimum before any loss of stations. The 'at G_eff = 8' MDE line survives as the worst case for a claim endpoint, but it assumes US variance, a single comparator and US station counts. The 'T-E would be descriptive' consequence no longer holds under the proposed rule; the validation cell (G 5-8, G_eff about 3) is now the weak point."
+    },
+    {
+      "point": "Q1 Counting",
+      "recommendation": "Accept the variant rule only in restricted form: identical hyperparameters and config sha apart from the declared switch, a variant_of row before training, all inner numbers reported, a separate disclosed tally; anything else counts against the 12.",
+      "reason": "The ruling says every configuration is counted. Unrestricted variants give many uncounted fits with inner numbers, and the D2 schema variant changes the architecture."
+    },
+    {
+      "point": "Q2 G-D1a for N2",
+      "recommendation": "One gate on J_sonde for all tracks; J_grab is reported only.",
+      "reason": "On J_grab the gate compares a model trained on grab rows with one never trained on them, so it passes almost automatically. One gate also removes per-track label-set forks. The 3 % threshold is already below seed noise."
+    },
+    {
+      "point": "Q3 Tier 2",
+      "recommendation": "Tier 1 only in this round (N2 = 0); no source is added after any inner number exists.",
+      "reason": "'N2 <= 10,000' is not an exact number, the build is unverified, and adding it later is a pool choice after results. Tier 1 already has 3,545 fit stations."
+    },
+    {
+      "point": "Q4 EA split",
+      "recommendation": "Accept the lever engineer's proposed rule (eligible-station merge with the 15 % train-role guard), which is option (a), with S = 0.50. Reject option (b). Option (c) then applies per endpoint through the minimum-groups rule.",
+      "reason": "The proposed rule uses metadata only and removes the 37 % group. A per-group cap in the primary statistic would change the metric for one track after the counts were seen."
+    },
+    {
+      "point": "Q5 Minimum groups and IUT",
+      "recommendation": "Confirm G >= 15 and G_eff >= 8 as floors that are never lowered, and the IUT over both G1 and G2, plus both R-TD forms, P, and the references-only stack for D3.",
+      "reason": "The floor sits just under the weakest existing claim cell (Test-A DO, G 22, G_eff 9.1 by my key count). Requiring both GBMs is stricter than the ruling and removes a choice."
+    },
+    {
+      "point": "Q6 T-B family size",
+      "recommendation": "6.",
+      "reason": "T-H is ruled a claim endpoint inside T-B, so it belongs in the family; 6 is the stricter reading."
+    },
+    {
+      "point": "Q7 Lever protocol §8",
+      "recommendation": "The lever candidate is secondary unless chosen by §10, and is a candidate only if named in the registry before any arch-v2 inner number. v1 models are analysed as frozen (Holm-28) and reported as secondary. The lever protocol is aligned through its deviations log before any lever validation number.",
+      "reason": "Three documents currently give three analyses for the same look, and optional supply of lever predictions is a choice after results."
+    },
+    {
+      "point": "Q8 M1's EA draw",
+      "recommendation": "Confirm, without the 'or the lead rules' escape: both split files must exist before any EA fit or validation number.",
+      "reason": "M1-test groups must be excluded from every M6 EA fit; a later draw would contaminate fits already made."
+    },
+    {
+      "point": "Q9 pins.json and novelty check",
+      "recommendation": "Accept pins.json only with its sha256 logged in a registry row before the first post-stamp fit and loaders that refuse unpinned tables. The novelty check is written by someone other than the arch-v2 engineer, assigned by the lead, and dated before any novelty wording.",
+      "reason": "A pin file the author can rewrite is not a pin unless its hash is logged elsewhere. The author of the operator should not certify its novelty."
+    }
+  ],
+  "summary": "Hash matches. No blocking finding; 23 should_fix, each closable by one ruling sentence, and 6 notes. Main risks: the published-method comparator R-TD is not fixed (hyperparameters unverified, grab share inherited from D1's selection, published no-grab form run only if a gate fails); T-E rests on a draft split rule that is neither ruled nor coded, with a validation cell of about 3 effective groups; the variant rule leaves many uncounted fits; configs and constants are unpinned. T-E: choose S = 0.50 (test cell G 21, G_eff 11.2/12.1 by metadata; S = 0.40 gives 19, 9.2/10.2); keep G >= 15 and G_eff >= 8; the MDE line survives only as a best-case bound."
+}

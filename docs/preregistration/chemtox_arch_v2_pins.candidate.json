@@ -1,0 +1,77 @@
+{
+ "aux_targets": {
+  "H2": "log10_conc_mol_L",
+  "H3": "log10_conc_mol_L",
+  "H4": "log10_bcf"
+ },
+ "blocks": [
+  "T1_test",
+  "T6a_test",
+  "T6b_test"
+ ],
+ "claim_experiment": "chemtox_arch_v2_look_claim",
+ "data": {
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/adore/split_assignments.parquet": "e878bbc528c4a51d134fba20151def17dae20d30c84be4192dfa6316642f9900",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/chemtox_arch_v2/chemtox_t1t6_split_v2.parquet": "ab71aace46260980a6f011a561c2280fe0025226978508daa57f96493c5323a3",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/chemtox_arch_v2/protected_labels_v2.parquet": null,
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/chemtox_prospective/prospective.parquet": "3b2fc4398db940a26c5273f815fdfe872a08b620e1f1b36bd4a12bb38dcc54d9",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/ecotox/ecotox_aquatic.parquet": "beec1f81769aecad423e952c21bca2d0b3c899b2f0f40d80143fdab3cbf4fc9e",
+  "/home/bcheng/STOCKHOLM/sentinel_data/raw/ecotox/release_2026-09-15/results.parquet": "08d99ac56d53b22cbadc75f4cc2adea1815d633aa1dd598320c3044ee903f079",
+  "/home/bcheng/STOCKHOLM/sentinel_data/raw/ecotox/release_2026-09-15/tests.parquet": "900307da67e7a8f0706b9ac6019cc05381fedcc77cc05547cbc89c359eadf528"
+ },
+ "experiment": "chemtox_arch_v2_test",
+ "files": {
+  "configs/chemtox/arch_v2.yaml": "d59caab6f68abe6491cffe7bd144107f3db0a1ac75e143cdcdb35b044626a3ef",
+  "docs/preregistration/chemtox_arch_v2_addendum_01_rev1.md": "5612a670e018865ff634950fb468cfb53788dd2cea3ad3bd861805d27f696135",
+  "docs/preregistration/chemtox_arch_v2_amendment.md": "fb52cd4b072fa19c8c1e19b9fe1374a0e8abb71d9492eff764f2034cb26d293b",
+  "docs/preregistration/chemtox_arch_v2_lead_guard_rulings_01.md": "63b7184c6733c6ed62382c6f66b7098bdd792beb98705d0ce1d52b2424fa1a9a",
+  "docs/preregistration/chemtox_arch_v2_lead_rulings.md": "553be413bef252e5900023dc1dc983dd8f228a5825194ca70505cf6649c7f060",
+  "docs/preregistration/chemtox_arch_v2_report_template.md": "f75dec7ebf94f7e183ed032a62e299d47041ffcb599496d6949d6f3ef87fd3b1",
+  "docs/preregistration/chemtox_arch_v2_spent_adore_ids_v2.json": "3fa94b68ad96c9018737886430ae6d1efd3b1c52dc33b2d98b4857a87f5bd1d8",
+  "docs/preregistration/chemtox_t1_clusters_v2.csv": "a906aac1f9dd97577ff473981a1fce5aae1a509e3fb2dcb42f8726dea2d821f5",
+  "scripts/eval/chemtox_arch_v2_h4_report.py": "0fd6169b6698773d41a81258de8d0d4f9eb1c7bd40fcfa9197e581bc96772a2b",
+  "sentinel/models/chemtox/arch_v2.py": "39ecc9cc39fb1c945a843ffa8e99d38eb73c3dce378d24d8a4566550e64fe980",
+  "sentinel/models/chemtox/arch_v2_arms.py": "264e3bba9aa8c869a6edf76eb9172518f4625d01173a39336f3a46baca103f3e",
+  "sentinel/models/chemtox/arch_v2_build.py": "729aacf13feb7de241f1be7a1131af7a897e88af35fb90b0ad7d019d8518c4a8",
+  "sentinel/models/chemtox/arch_v2_embed.py": "595a8b02358cc1e7dfc5a0d8634e4c76ac726a5e8dfb5e415d2797a662b2e84c",
+  "sentinel/models/chemtox/arch_v2_ensemble.py": "a489609e21ab99750d62e3ebf47f0472c60e3856d6c4547ed48262982ff638cc",
+  "sentinel/models/chemtox/arch_v2_guard.py": "3260336a183d0c09b5efae6f6e2f059de32777ce7c272f7b18ccc28e3b87a667",
+  "sentinel/models/chemtox/arch_v2_h4.py": "a21e517ad47c8f7c975c094913f0d57b3af66c7d73b5e44a5a1364982e768865",
+  "sentinel/models/chemtox/arch_v2_mmoe.py": "348921c7dbcd09ff73944226353dcb8de998e411c664e72a20d5d28625e00dd8",
+  "sentinel/models/chemtox/arch_v2_power.py": "0841903004361e52d0010b8be8e2c38745195e8d0629b0dd7e7c0c01243d4f7a",
+  "sentinel/models/chemtox/arch_v2_rx.py": "886a39ca69e78863ed9d7d8846b9fc30a4dcf6cab6bddab238eea28e7e29f134",
+  "sentinel/models/chemtox/arch_v2_scorer.py": "2205246a114cc92085f48c5492cbd4354e7bb28c7dc2f1d9fa0c47b05e2be059",
+  "sentinel/models/chemtox/arch_v2_ted.py": "4da8a6dda24a450691e13b5e23edf207cec97dc94e4d71b07b4898244ff69ecf",
+  "sentinel/models/chemtox/arch_v2_timehead.py": "19f7480aa56b832f9de3904d995d02d926a1633123de9723d2a67b4527bba3fd",
+  "sentinel/models/chemtox/arch_v2_timelaw.py": "327bfcb2ccb0a533d6917a22c389f1c1d3b78213230eea9745334ab755267b47",
+  "sentinel/models/chemtox/prospective.py": "74765aea3243aa1ee7bc8ad37c13967f3edfbe670b0a4ba43d214e3bc85fac8f",
+  "tests/test_chemtox_arch_v2.py": "8a8a6f4ad8940491748f20443aa0e13be0ed232945a164ea1c682f4dded5cbe2",
+  "tests/test_chemtox_arch_v2_guard.py": "8a652e2e9d25c28923552688320dabf0b5bab0937aa667ddb50207b975f79479",
+  "tests/test_chemtox_arch_v2_power.py": "b9af9b24cf4829e7a629f5883f3d470868a95170fde79e898ffedcab2481f5b4"
+ },
+ "freeze_record": "docs/preregistration/chemtox_arch_v2_freeze_shas.json",
+ "holdout_unit_share": 0.3,
+ "prereg_experiment": "chemtox/prereg_snapshot",
+ "runs_root": "/home/bcheng/STOCKHOLM/sentinel_runs/chemtox/arch_v2",
+ "seven_exclusions": [
+  "t2_reserved_classes",
+  "spent_prospective",
+  "spent_adore",
+  "held_out_unit_chemistry",
+  "chemistry_not_in_split",
+  "same_cell_as_sealed_row",
+  "outside_24_96h_for_T6"
+ ],
+ "split_columns": [
+  "result_id",
+  "test_cas",
+  "t1_cluster",
+  "holdout_unit",
+  "duration_h",
+  "duration_band",
+  "in_adore_domain",
+  "shared_reference",
+  "block"
+ ],
+ "split_seed": 20261110
+}

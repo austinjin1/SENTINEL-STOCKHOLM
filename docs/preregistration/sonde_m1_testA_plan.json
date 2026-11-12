@@ -1,0 +1,372 @@
+{
+ "created": "2026-11-10T11:57:34-05:00",
+ "look": "original M1 track, test-role sites \u00d7 Test-A (WY2024\u201325), report-only",
+ "candidate_sha256": "7dd64f2adc7afbe52f6e4283248fa9d0767946dca6c62e28df035921de9bb4f1",
+ "jobs": {
+  "gbm_weather": {
+   "model": "gbm",
+   "config": "configs/sonde/gbm.yaml",
+   "set": [
+    "use_weather=true"
+   ],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc1_gbm_weather/model",
+   "checkpoint_sha256": "5496cc7ca788651395b451cad52304e088e7333fd46ec63680114e427c60d0e0",
+   "val_evidence_run": "cyc1_gbm_weather",
+   "args": [
+    "--weather-exclude-sources",
+    "era5_seamless"
+   ]
+  },
+  "gbm": {
+   "model": "gbm",
+   "config": "configs/sonde/gbm.yaml",
+   "set": [],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_gbm/model",
+   "checkpoint_sha256": "569d7cec7e91b66673741815b3271fbdb3a84f85fc703a518f10925a4092375b",
+   "val_evidence_run": "full_gbm",
+   "args": []
+  },
+  "lstm_s0": {
+   "model": "lstm",
+   "config": "configs/sonde/lstm.yaml",
+   "set": [],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_lstm_s0/lstm_best.pt",
+   "checkpoint_sha256": "3f4ee8a4abcd78df10690da85d9068ba9200b749b200e7a9bd8719c23d7693e9",
+   "val_evidence_run": "full_lstm_s0",
+   "args": []
+  },
+  "lstm_weather_s0": {
+   "model": "lstm",
+   "config": "configs/sonde/lstm.yaml",
+   "set": [
+    "use_weather=true",
+    "lstm.use_weather=true"
+   ],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc1_lstm_weather_s0/lstm_best.pt",
+   "checkpoint_sha256": "5c4f0fa84b9afb89461f1e0c674a3abe8e80cbbc56f94c530f1b0cbed370d8bf",
+   "val_evidence_run": "cyc1_lstm_weather_s0",
+   "args": [
+    "--weather-exclude-sources",
+    "era5_seamless"
+   ]
+  },
+  "lstm_weather_s1": {
+   "model": "lstm",
+   "config": "configs/sonde/lstm.yaml",
+   "set": [
+    "use_weather=true",
+    "lstm.use_weather=true"
+   ],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc1_lstm_weather_s1/lstm_best.pt",
+   "checkpoint_sha256": "c4bd53b17f1c0165f7630abf821c3dd23363cad44380f55ffd15c923a4b8bf4c",
+   "val_evidence_run": "cyc1_lstm_weather_s1",
+   "args": [
+    "--weather-exclude-sources",
+    "era5_seamless"
+   ]
+  },
+  "lstm_weather_s2": {
+   "model": "lstm",
+   "config": "configs/sonde/lstm.yaml",
+   "set": [
+    "use_weather=true",
+    "lstm.use_weather=true"
+   ],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/cyc1_lstm_weather_s2/lstm_best.pt",
+   "checkpoint_sha256": "e071917a44d663f641c2d9b5550d68749855dfc8f6e08a707f0f8e9e3dd8a2f5",
+   "val_evidence_run": "cyc1_lstm_weather_s2",
+   "args": [
+    "--weather-exclude-sources",
+    "era5_seamless"
+   ]
+  },
+  "chronos2_ft_multi_s0": {
+   "model": "chronos2_ft_multi",
+   "config": "configs/sonde/chronos_ft.yaml",
+   "set": [],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_chronos_ft_s0/trainer/finetuned-ckpt",
+   "checkpoint_sha256": "c71e2af621428503ff1a9fdcdb220c829f82294f6105b53e99bee05fe681761b",
+   "val_evidence_run": "full_chronos_ft_s0",
+   "args": [
+    "--max-minutes",
+    "100"
+   ]
+  },
+  "chronos2_ft_multi_s1": {
+   "model": "chronos2_ft_multi",
+   "config": "configs/sonde/chronos_ft.yaml",
+   "set": [],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_chronos_ft_s1/trainer/finetuned-ckpt",
+   "checkpoint_sha256": "d3c05e8a069730b4828246f2220c53a3e04811eb68a36e7a3be1a38c724bb817",
+   "val_evidence_run": "full_chronos_ft_s1",
+   "args": [
+    "--max-minutes",
+    "100"
+   ]
+  },
+  "chronos2_ft_multi_s2": {
+   "model": "chronos2_ft_multi",
+   "config": "configs/sonde/chronos_ft.yaml",
+   "set": [],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/full_chronos_ft_s2/trainer/finetuned-ckpt",
+   "checkpoint_sha256": "458650b622eca67a91dafd73127e27b64acbff46af16db4c2bcf281d51114e93",
+   "val_evidence_run": "full_chronos_ft_s2",
+   "args": [
+    "--max-minutes",
+    "100"
+   ]
+  },
+  "chronos2_zs_uni": {
+   "model": "chronos2_zs_uni",
+   "config": "configs/sonde/chronos_zeroshot.yaml",
+   "set": [],
+   "checkpoint": null,
+   "checkpoint_sha256": null,
+   "val_evidence_run": "full_chronos_zs",
+   "args": []
+  },
+  "chronos2_zs_multi": {
+   "model": "chronos2_zs_multi",
+   "config": "configs/sonde/chronos_zeroshot.yaml",
+   "set": [],
+   "checkpoint": null,
+   "checkpoint_sha256": null,
+   "val_evidence_run": "full_chronos_zs",
+   "args": [
+    "--max-minutes",
+    "100"
+   ]
+  },
+  "timesfm25_zs": {
+   "model": "timesfm25_zs",
+   "config": "configs/sonde/chronos_zeroshot.yaml",
+   "set": [],
+   "checkpoint": "/home/bcheng/STOCKHOLM/sentinel_runs/hf_cache/hub/models--google--timesfm-2.5-200m-pytorch/snapshots/1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+   "checkpoint_sha256": "2d037e731c6f07669ba9e6ea0337976d17eed223713dc9f7e68588893275dd33",
+   "val_evidence_run": "full_pred_timesfm25_val",
+   "args": []
+  }
+ },
+ "ensembles": {
+  "sentinel_ens3w_s0": {
+   "members": [
+    [
+     "chronos2_ft_multi",
+     "chronos2_ft_multi_s0"
+    ],
+    [
+     "lstm",
+     "lstm_weather_s0"
+    ],
+    [
+     "chronos2_zs_multi",
+     "chronos2_zs_multi"
+    ]
+   ],
+   "weights": "equal"
+  },
+  "sentinel_ens3w_s1": {
+   "members": [
+    [
+     "chronos2_ft_multi",
+     "chronos2_ft_multi_s1"
+    ],
+    [
+     "lstm",
+     "lstm_weather_s1"
+    ],
+    [
+     "chronos2_zs_multi",
+     "chronos2_zs_multi"
+    ]
+   ],
+   "weights": "equal"
+  },
+  "sentinel_ens3w_s2": {
+   "members": [
+    [
+     "chronos2_ft_multi",
+     "chronos2_ft_multi_s2"
+    ],
+    [
+     "lstm",
+     "lstm_weather_s2"
+    ],
+    [
+     "chronos2_zs_multi",
+     "chronos2_zs_multi"
+    ]
+   ],
+   "weights": "equal"
+  },
+  "baseline_ens_gbm_lstm": {
+   "members": [
+    [
+     "gbm",
+     "gbm"
+    ],
+    [
+     "lstm",
+     "lstm_s0"
+    ]
+   ],
+   "weights": "equal"
+  },
+  "control3_gbmw_lstm_zsmulti": {
+   "members": [
+    [
+     "gbm",
+     "gbm_weather"
+    ],
+    [
+     "lstm",
+     "lstm_s0"
+    ],
+    [
+     "chronos2_zs_multi",
+     "chronos2_zs_multi"
+    ]
+   ],
+   "weights": "equal"
+  },
+  "control3w_gbmw_lstmw_zsmulti": {
+   "members": [
+    [
+     "gbm",
+     "gbm_weather"
+    ],
+    [
+     "lstm",
+     "lstm_weather_s0"
+    ],
+    [
+     "chronos2_zs_multi",
+     "chronos2_zs_multi"
+    ]
+   ],
+   "weights": "equal"
+  }
+ },
+ "score": {
+  "forecasts": {
+   "gbm_weather": [
+    "gbm",
+    "gbm_weather"
+   ],
+   "lstm_s0": [
+    "lstm",
+    "lstm_s0"
+   ],
+   "chronos2_zs_uni": [
+    null,
+    "chronos2_zs_uni"
+   ],
+   "chronos2_zs_multi": [
+    null,
+    "chronos2_zs_multi"
+   ],
+   "timesfm25_zs": [
+    null,
+    "timesfm25_zs"
+   ],
+   "lstm_weather_s0": [
+    "lstm",
+    "lstm_weather_s0"
+   ],
+   "lstm_weather_s1": [
+    "lstm",
+    "lstm_weather_s1"
+   ],
+   "lstm_weather_s2": [
+    "lstm",
+    "lstm_weather_s2"
+   ],
+   "sentinel_ens3w_s0": [
+    null,
+    "sentinel_ens3w_s0"
+   ],
+   "sentinel_ens3w_s1": [
+    null,
+    "sentinel_ens3w_s1"
+   ],
+   "sentinel_ens3w_s2": [
+    null,
+    "sentinel_ens3w_s2"
+   ],
+   "baseline_ens_gbm_lstm": [
+    null,
+    "baseline_ens_gbm_lstm"
+   ],
+   "control3_gbmw_lstm_zsmulti": [
+    null,
+    "control3_gbmw_lstm_zsmulti"
+   ],
+   "control3w_gbmw_lstmw_zsmulti": [
+    null,
+    "control3w_gbmw_lstmw_zsmulti"
+   ]
+  },
+  "refs": [
+   "gbm_weather",
+   "lstm_s0",
+   "lstm_weather_s0",
+   "chronos2_zs_uni",
+   "chronos2_zs_multi",
+   "timesfm25_zs",
+   "baseline_ens_gbm_lstm",
+   "control3_gbmw_lstm_zsmulti",
+   "control3w_gbmw_lstmw_zsmulti"
+  ],
+  "candidates": [
+   "sentinel_ens3w_s0",
+   "sentinel_ens3w_s1",
+   "sentinel_ens3w_s2"
+  ],
+  "n_boot": 2000
+ },
+ "disclosure": "EW-v2 Test-A (2026-11-09) loaded and scored DO-min labels at test-role sites in WY2024-25; DO forecasting labels of this look are not blind in spirit; report-only original track.",
+ "code_files": [
+  "configs/sonde/chronos_ft.yaml",
+  "configs/sonde/chronos_zeroshot.yaml",
+  "configs/sonde/common.yaml",
+  "configs/sonde/gbm.yaml",
+  "configs/sonde/lstm.yaml",
+  "scripts/eval/sonde_ensemble.py",
+  "scripts/eval/sonde_m1_testlook.py",
+  "scripts/eval/sonde_pi_report.py",
+  "scripts/eval/sonde_predict.py",
+  "scripts/eval/sonde_score.py",
+  "sentinel/__init__.py",
+  "sentinel/core/__init__.py",
+  "sentinel/core/gpu.py",
+  "sentinel/core/paths.py",
+  "sentinel/core/registry.py",
+  "sentinel/core/runlog.py",
+  "sentinel/core/seed.py",
+  "sentinel/data/__init__.py",
+  "sentinel/data/sonde_daily.py",
+  "sentinel/data/sonde_splits.py",
+  "sentinel/data/sources/__init__.py",
+  "sentinel/data/sources/usgs_legacy.py",
+  "sentinel/eval/__init__.py",
+  "sentinel/eval/bootstrap.py",
+  "sentinel/eval/metrics.py",
+  "sentinel/eval/splits.py",
+  "sentinel/models/__init__.py",
+  "sentinel/models/baselines/__init__.py",
+  "sentinel/models/baselines/sonde_baselines.py",
+  "sentinel/models/sonde/__init__.py",
+  "sentinel/models/sonde/chronos.py",
+  "sentinel/models/sonde/common.py",
+  "sentinel/models/sonde/data.py",
+  "sentinel/models/sonde/evaluate.py",
+  "sentinel/models/sonde/features.py",
+  "sentinel/models/sonde/gbm.py",
+  "sentinel/models/sonde/gpu_budget.py",
+  "sentinel/models/sonde/guard.py",
+  "sentinel/models/sonde/lstm.py",
+  "sentinel/models/sonde/runner.py",
+  "sentinel/models/sonde/timesfm_tsfm.py"
+ ],
+ "code_sha256": "50cf8541e03191abe66210f0417e966599172751d9aafe0e505393e68e255521"
+}

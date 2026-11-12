@@ -12,6 +12,7 @@
 suppressMessages(library(gjam))
 args <- commandArgs(trailingOnly = TRUE)
 d <- args[2]; out <- args[3]; fidelity <- length(args) >= 4 && args[4] == "fidelity"
+dir.create(dirname(out), recursive = TRUE, showWarnings = FALSE)       # before the first save (fit .rds)
 set.seed(0)
 N_MAX <- 5000; N_TAXA <- 100; NG <- 2000; BURN <- 500; IT_BURN <- 200; IT <- 1000
 if (Sys.getenv("GJAM_SMOKE") == "1") { N_MAX <- 400; NG <- 300; BURN <- 100; IT_BURN <- 50; IT <- 100 }  # code smoke only

@@ -1,0 +1,195 @@
+{
+ "created": "2026-11-10",
+ "definition": "testxarchive_lake = test role (split v3) x in-lake x not buffer x sample date 2015-06-23..2023-12-31; keys only (no label value read)",
+ "split_sha256": "ffe288f2fafecada964fc8125dcd35ddd9b332d3a04f782d0298e01f097a5e32",
+ "aquacorr_qc_chip_rows": {
+  "note": "chip-bearing, image-QC-passing, de-duplicated AquaCorr rows (any target; values not read). Upper bound for each target's labelled rows; per-target counts are in orbit_split_report_dev_v4.json",
+  "all": {
+   "n_site_dates": 3790,
+   "n_rows": 3790,
+   "n_waterbodies": 693,
+   "n_blocks": 169
+  },
+  "train_years_le2021": {
+   "n_site_dates": 2909,
+   "n_rows": 2909,
+   "n_waterbodies": 628,
+   "n_blocks": 155
+  },
+  "val_years_2022_23": {
+   "n_site_dates": 881,
+   "n_rows": 881,
+   "n_waterbodies": 285,
+   "n_blocks": 82
+  },
+  "small_lake_lt1km2": {
+   "n_site_dates": 886,
+   "n_rows": 886,
+   "n_waterbodies": 320,
+   "n_blocks": 91
+  },
+  "by_year": {
+   "2015": 9,
+   "2016": 195,
+   "2017": 222,
+   "2018": 690,
+   "2019": 618,
+   "2020": 500,
+   "2021": 675,
+   "2022": 438,
+   "2023": 443
+  }
+ },
+ "aquacorr_scene_disjoint_preview": {
+  "note": "scene = (MGRS tile, sensing date). Reference = AquaCorr fit+inner rows only (WQP 2015-2023 rows not built yet); the binding count is made on dev_v5m labelled rows per target",
+  "n_fit_inner_scenes": 5351,
+  "all_rows": {
+   "n_site_dates": 3790,
+   "n_rows": 3790,
+   "n_waterbodies": 693,
+   "n_blocks": 169
+  },
+  "disjoint_from_fit_inner": {
+   "n_site_dates": 2635,
+   "n_rows": 2635,
+   "n_waterbodies": 563,
+   "n_blocks": 159
+  },
+  "frac_rows": 0.6953,
+  "frac_blocks": 0.9408,
+  "disjoint_from_fit_inner_and_val": {
+   "n_site_dates": 2402,
+   "n_rows": 2402,
+   "n_waterbodies": 535,
+   "n_blocks": 153
+  },
+  "frac_rows_incl_val": 0.6338,
+  "frac_blocks_incl_val": 0.9053
+ },
+ "wqp_hist_sample_keys": {
+  "note": "UPPER BOUND before chip extraction, same-day window and image QC: WQP sample site-dates (JRC water ok) of the four base targets in Test-S lakes. Chl-a QC-pass was ~58% in the 2024-25 build",
+  "all": {
+   "n_site_dates": 81992,
+   "n_rows": 145994,
+   "n_waterbodies": 1585,
+   "n_blocks": 311
+  },
+  "by_target": {
+   "chla": {
+    "n_site_dates": 31640,
+    "n_rows": 37901,
+    "n_waterbodies": 1154,
+    "n_blocks": 282
+   },
+   "secchi": {
+    "n_site_dates": 71059,
+    "n_rows": 71089,
+    "n_waterbodies": 1385,
+    "n_blocks": 262
+   },
+   "tss": {
+    "n_site_dates": 14887,
+    "n_rows": 14997,
+    "n_waterbodies": 545,
+    "n_blocks": 206
+   },
+   "turbidity": {
+    "n_site_dates": 21762,
+    "n_rows": 22007,
+    "n_waterbodies": 618,
+    "n_blocks": 233
+   }
+  },
+  "small_lake_lt1km2": {
+   "n_site_dates": 24540,
+   "n_rows": 38939,
+   "n_waterbodies": 911,
+   "n_blocks": 212
+  },
+  "train_years_le2021": {
+   "n_site_dates": 64197,
+   "n_rows": 113245,
+   "n_waterbodies": 1489,
+   "n_blocks": 300
+  },
+  "val_years_2022_23": {
+   "n_site_dates": 17795,
+   "n_rows": 32749,
+   "n_waterbodies": 846,
+   "n_blocks": 172
+  }
+ },
+ "trackN_colocation_wqp_hist_keys": {
+  "note": "UPPER BOUND (pre-chip, pre-QC): Test-S WQP matchup-sample site-dates that also have a same-site same-date WQP sample of the new target (TP/TN: fraction_class total). Keys only",
+  "tp": {
+   "at_any_matchup_site_date": {
+    "n_site_dates": 37060,
+    "n_rows": 37060,
+    "n_waterbodies": 1338,
+    "n_blocks": 298
+   },
+   "at_chla_site_dates": {
+    "n_site_dates": 29518,
+    "n_rows": 29518,
+    "n_waterbodies": 1131,
+    "n_blocks": 276
+   }
+  },
+  "tn": {
+   "at_any_matchup_site_date": {
+    "n_site_dates": 10162,
+    "n_rows": 10162,
+    "n_waterbodies": 452,
+    "n_blocks": 195
+   },
+   "at_chla_site_dates": {
+    "n_site_dates": 8724,
+    "n_rows": 8724,
+    "n_waterbodies": 435,
+    "n_blocks": 182
+   }
+  },
+  "doc": {
+   "at_any_matchup_site_date": {
+    "n_site_dates": 2810,
+    "n_rows": 2810,
+    "n_waterbodies": 366,
+    "n_blocks": 178
+   },
+   "at_chla_site_dates": {
+    "n_site_dates": 2304,
+    "n_rows": 2304,
+    "n_waterbodies": 328,
+    "n_blocks": 165
+   }
+  },
+  "turbidity_fnu": {
+   "at_any_matchup_site_date": {
+    "n_site_dates": 5942,
+    "n_rows": 5942,
+    "n_waterbodies": 31,
+    "n_blocks": 18
+   },
+   "at_chla_site_dates": {
+    "n_site_dates": 3478,
+    "n_rows": 3478,
+    "n_waterbodies": 23,
+    "n_blocks": 12
+   }
+  },
+  "ssc": {
+   "at_any_matchup_site_date": {
+    "n_site_dates": 1360,
+    "n_rows": 1360,
+    "n_waterbodies": 37,
+    "n_blocks": 17
+   },
+   "at_chla_site_dates": {
+    "n_site_dates": 1161,
+    "n_rows": 1161,
+    "n_waterbodies": 31,
+    "n_blocks": 12
+   }
+  }
+ }
+}

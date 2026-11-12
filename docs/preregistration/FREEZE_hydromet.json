@@ -1,0 +1,385 @@
+{
+ "status": "FROZEN",
+ "created": "2026-11-09T18:51:40+00:00",
+ "protocol": "docs/preregistration/hydromet_protocol.md (DRAFT v0.11, \u00a78)",
+ "protocol_sha256": "55ab718280401f5445a737419e224b3449d9e05ecfe9a98795558c10d4344401",
+ "candidate": {
+  "model": "ealstm_ws_full",
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "config": "configs/hydromet/lstm_ws_full.yaml",
+  "rule": "\u00a78: max over standalone EA-LSTMs of mean_endpoints min(\u0394gbm, \u0394phys) on M6/val_v4",
+  "reported_separately": "ealstm_gbmblend"
+ },
+ "split_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+ "scoring_code_sha256": "5bd7d3292a29aa9beb46cd1da5e480ca58b3856eeb909dd7fd43b0e3561fd60b",
+ "frozen_files": {
+  "configs/hydromet/baselines.yaml": "3400f80b4d15b9c61bba500d09d58d8cfaaddd6d59de5936eef3f594b9d8b30b",
+  "configs/hydromet/baselines_compact.yaml": "a5a24aa503a3c03234e9cfea9c73ba5c430946c2a2eced0f450ae2f3b861015f",
+  "configs/hydromet/baselines_gbmbag.yaml": "c2dfdef5f4b8b0fc696c3348b241060225cc9927de5df1e8bcea22c1fce50642",
+  "configs/hydromet/baselines_nogauge.yaml": "5946c533b13e0821cf51f622ba66cebb02d6b47509c3100e40b33fb300535121",
+  "configs/hydromet/baselines_ws_gbmbag.yaml": "2d2f4b527dbcfd8d2614a0d4ec550a490678335c3100bf4692ab335941e32143",
+  "configs/hydromet/baselines_ws_physics.yaml": "05c3b4d6d907d607b505b93865cddedff9d819dce9f443d26c168eb70e1271d4",
+  "configs/hydromet/common.yaml": "b3ed8a77400c1d2b6f4401107e77bae6394c6fe4948e7d2650826e2f17e8d4ae",
+  "configs/hydromet/lstm.yaml": "ab1fa59a09e1c0a67be422f5181b066fd770bcbe275dd80c02f7b34fa5da525b",
+  "configs/hydromet/lstm_compact.yaml": "7afec37b52f0efe8a2ed139e361118b7eabae3ee3ba2b0b91b294f3f777a07ea",
+  "configs/hydromet/lstm_full.yaml": "d08bfed2de0b26a480a4d95b1e8c7fb6186619b7b33db1f406e50e3b22ed08ae",
+  "configs/hydromet/lstm_nogauge.yaml": "32e4d0a0a948420f49899159d92dba500a5b8662f672e86086f464fec682bd4b",
+  "configs/hydromet/lstm_physics_do.yaml": "f71abc26afe5791babacfd9c6ec6ddb48a13c188658302d22c6d1e4a6535ce02",
+  "configs/hydromet/lstm_ws.yaml": "3aaf7c69d11bea9ac2478b3b0f8c52c5581c0b2cc9b4efc8f080b2c6bc078d24",
+  "configs/hydromet/lstm_ws_full.yaml": "6d4f843f76fe540f2a9d0ce7c04d221e975f623f246e61fdb4b53e12ec4def3f",
+  "docs/preregistration/hydromet_protocol.md": "55ab718280401f5445a737419e224b3449d9e05ecfe9a98795558c10d4344401",
+  "scripts/eval/hydromet_freeze_candidate.py": "1bd20d99c695ad41dc5cf359ae0987de7d738840a62d566fb364aea7b84b8039",
+  "scripts/eval/hydromet_make_tracks.py": "54e900dfefef535715dcf7cfebc2065ac91b066de0be53c8cba51fd276a0438c",
+  "scripts/eval/hydromet_predict.py": "a1d11f25ae8916a2efe9379b902ed944710047ef307197daded2daf1caf1af71",
+  "scripts/eval/hydromet_score.py": "8949c9b3a47352487568a87b9b3852a1f594e9a6c85ca516f022d9b2ba7c0fb8",
+  "scripts/eval/hydromet_strata.py": "921cd17cb185d8c2afa969f67ed8648de358fde1b28a9f9ee13d044e1f161a42",
+  "scripts/eval/hydromet_test_look.py": "728e9a0de63163f73607b8243589c56f814f52a2505203422175c63a13e7e0dc",
+  "scripts/eval/hydromet_track_n.py": "676e9c66b3a577b6b059733712d798f2c096e7bd4d9166f18e9fa01dfbe67658",
+  "scripts/train/hydromet_baselines.py": "5249fe1d4c6c232ef5cc53e273d678fd77f61d538dc6597895d203c2c7de800d",
+  "scripts/train/hydromet_lstm.py": "d6793cc6a6f4cabad358e770cbbb87e0e3bb915293748e75cefc40f7925ee03f",
+  "sentinel/core/registry.py": "8e1f1733a546b30189335403e3acfc61c9637301195c94f06dd17582a73605f7",
+  "sentinel/data/hydromet_upstream.py": "da844421bc97a45ef58ebf3966e0cfe0ab6baba405aa8beb7a2b01df7de65cf6",
+  "sentinel/data/sonde_splits.py": "73634db89768b6f75f07eac01d885714986d24809c61b41bc7bfdfb8df5c83a9",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/hydromet/__init__.py": "382946932fc8af7d9bef62bf91276b03e01f5629d6958d86b9a28cc24c0915cd",
+  "sentinel/models/hydromet/baselines.py": "9a3daae19a9b7fa66b5bc357f1dd475bb718fdcf208042a08f7c078d8e1eae0e",
+  "sentinel/models/hydromet/data.py": "31cfd6d977494b625cd3799acbf955677788172c30d1feac30339d6104d5c524",
+  "sentinel/models/hydromet/evaluate.py": "9abff510eff1e802384cd96bef9e35480a35c510c062d8bf52a19ae62c0512a8",
+  "sentinel/models/hydromet/features.py": "74dfd86eecab405bf5cbea79b0908b4f1690f982ac9d96ce7b372a1899d19903",
+  "sentinel/models/hydromet/guard.py": "64492f8b1620e0ebf27d6991f3fe8f7a9af02d4dc1653659c407e9ea8604d193",
+  "sentinel/models/hydromet/lstm.py": "cf602328822b73060d542c83e304b28d8a5ee779227cf8fe32a590ba9c42035c",
+  "sentinel/models/hydromet/physics.py": "6eab5a085fa7a9bedbf0b596df9398c80153ce9d8eac4cd2d9cbc741b4892333",
+  "sentinel/models/hydromet/pipeline.py": "3ff77abf2b3b4d7136ca5c383aeb928238c7e87f4023a48b53602ae7cd2066dd",
+  "sentinel/models/hydromet/runner.py": "1433c26b04fbea70622fc43b44c5b559743aeaf651e4385f33b178d69f1a1bcd",
+  "sentinel/models/hydromet/testlook.py": "98f6c9c64f43303a265e6e1a8ed6d430c51d162e049bb860012ee349b155a5d6",
+  "sentinel/models/hydromet/track_n.py": "a8fbc86dd3048cd2cdc46bd48d9a7d14c0daa31d6080b570322539f1558f3ada",
+  "sentinel/models/hydromet/tracks.py": "cce6b5824f49f8503d268e219a29da7c286c822e340e9bce30b07c874de0434c",
+  "sentinel/models/sonde/data.py": "40f0226c35aef908af08a6d9978069e18ca3abb491d405a47e14e28b6d31fecd",
+  "sentinel/models/sonde/guard.py": "d6d794f648bb56fd7692d397b155673d7885086452fec982ca9c913b8023bc02",
+  "sentinel/models/sonde/runner.py": "28a1ba006b88c114a05145406251276ddcd85dfe13cbf85f8c62328036bf5ea4"
+ },
+ "weights_sha256": {
+  "ealstm_s0": "6d3b8ac61048085b741ec95656a6491f5382c3948be044114a2e0722a7afd684",
+  "ealstm_s1": "17329fbb44c417f7cb2d48d7d4038d6b140f4e17d158f648363926df90d52c53",
+  "ealstm_s2": "5abfe19816b09f22f64f56177b47e734c20c1b151f6f79c2805c576ea29bbfcd",
+  "ealstm_physdo_s0": "77c6eec00163633f152b5f78398c450d92a114036433ed5d8acf3ba59acbd57e",
+  "ealstm_physdo_s1": "55576824e4275d29212ae7b3baf4a6c622e1db491022e94f808b0802e55b607c",
+  "ealstm_physdo_s2": "cfecd68adcc57b923344a7131794859e0d183516eda9db5c42e7ff881210f15f",
+  "ealstm_full_s0": "41c87097ad5b946fa25652fdcf4457de30e3469bc84cd233bf9f1b060637fabf",
+  "ealstm_full_s1": "c43ebe2a7be248a3acc77fe92f0f8c9d82e459b96344ba50cfa3b7bf9ee34fb5",
+  "ealstm_full_s2": "254ebe60c8a0586dd19cbc47fb8c035d91cf7d5de077904e813c2f22ea750210",
+  "ealstm_compact_s0": "eb17f928afd7523572b91086f4edd36f895e8ffacd4048a74a9be3c9dad7e70d",
+  "ealstm_compact_s1": "a4f371d670eb52d6c0f763509abbed2a2206c0aa50d9864e5fc8977f96ce4b4d",
+  "ealstm_compact_s2": "c15d1c56be7eb29b58b87b34223aecd3cab41c6770caedda2cb4e4137b674427",
+  "ealstm_ws_s0": "410c8f8a4a08ed01105baf8e462beff42d91eee3c846fc99e4ab25709e33094f",
+  "ealstm_ws_s1": "8d975c5a7c54625929491fb20d9257c0e26ad5bbbc0a7aaaf7fa57426624b3ce",
+  "ealstm_ws_s2": "67b7b03d7907de6baa12b403ab3c7f39939c965487cfa8c9addab22db1d588f5",
+  "ealstm_ws_full_s0": "54e79dfda1f7b87a3c1b73c883de6cde7665f1ffdce457c23e42d8636888cf21",
+  "ealstm_ws_full_s1": "75ff2e429b82036f9e352b3db16ac924892fa4b92c2586833e7959cc07c27535",
+  "ealstm_ws_full_s2": "ec4784c10d05951a6c3e54da42692f54d501dbd79add19bd37edb7e5239d2198",
+  "forcing_gbm_bag_s0": "0da1250fcc1faaf5e35fad43d0879e54df5f6f6eabdeb283dfe492b9d91c2498",
+  "forcing_gbm_bag_s1": "31221724cc6b19cf8497c954bc7f3ca7f9e03a2166f4b74c44fe16d7747f50ff",
+  "forcing_gbm_bag_s2": "7cd511ef169e56dd2effd829d3b3ffe7dc94a9ab2ee6ab6c9c4bfda87c339140",
+  "forcing_gbm": "c82944421f07c35385649a72fb824b3e57a46a8241445cdffa6b7c0014c9e31e",
+  "dosat_ratio[air2stream_regional]": "74caf36aa1b180a19205e4839597599f489407f7193be106e4eadf77c2faf58d",
+  "air2stream_regional_ws": "6b4c152b1a667fd571af44bbb021d35ff7137f3ef964a58158fa0ca7f7ba6fea",
+  "dosat_ratio[air2stream_regional]_ws": "33bbc4c718573c7724eae6eb8c15246dbb35d81d50dc848d9e3dfffb0644baca"
+ },
+ "artifacts": {
+  "ealstm_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s0/g0_s0/ealstm_best.pt",
+  "ealstm_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s1/g0_s1/ealstm_best.pt",
+  "ealstm_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s2/g0_s2/ealstm_best.pt",
+  "ealstm_physdo_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/physdo_v4_s0/g0_s0/ealstm_physdo_best.pt",
+  "ealstm_physdo_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/physdo_v4_s1/g0_s1/ealstm_physdo_best.pt",
+  "ealstm_physdo_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/physdo_v4_s2/g0_s2/ealstm_physdo_best.pt",
+  "ealstm_full_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/full_v4_s0/g0_s0/ealstm_full_best.pt",
+  "ealstm_full_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/full_v4_s1/g0_s1/ealstm_full_best.pt",
+  "ealstm_full_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/full_v4_s2/g0_s2/ealstm_full_best.pt",
+  "ealstm_compact_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/compact_v4_s0/g0_s0/ealstm_compact_best.pt",
+  "ealstm_compact_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/compact_v4_s1/g0_s1/ealstm_compact_best.pt",
+  "ealstm_compact_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/compact_v4_s2/g0_s2/ealstm_compact_best.pt",
+  "ealstm_ws_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_v1_s0/g0_s0/ealstm_ws_best.pt",
+  "ealstm_ws_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_v1_s1/g0_s1/ealstm_ws_best.pt",
+  "ealstm_ws_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_v1_s2/g0_s2/ealstm_ws_best.pt",
+  "ealstm_ws_full_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s0/g0_s0/ealstm_ws_full_best.pt",
+  "ealstm_ws_full_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s1/g0_s1/ealstm_ws_full_best.pt",
+  "ealstm_ws_full_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s2/g0_s2/ealstm_ws_full_best.pt",
+  "forcing_gbm_bag_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s0/models/forcing_gbm_bag_s0.pkl",
+  "forcing_gbm_bag_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s1/models/forcing_gbm_bag_s1.pkl",
+  "forcing_gbm_bag_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s2/models/forcing_gbm_bag_s2.pkl",
+  "forcing_gbm": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/base_v2/models/forcing_gbm.pkl",
+  "dosat_ratio[air2stream_regional]": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/base_v2/models/dosat_ratio[air2stream_regional].pkl",
+  "air2stream_regional_ws": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/basews_v1/models/air2stream_regional_ws.pkl",
+  "dosat_ratio[air2stream_regional]_ws": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/basews_v1/models/dosat_ratio[air2stream_regional]_ws.pkl"
+ },
+ "comparators": {
+  "temp_c_mean": {
+   "gbm": "forcing_gbm_bag",
+   "physics": "air2stream_regional_ws"
+  },
+  "temp_c_7dadm": {
+   "gbm": "forcing_gbm",
+   "physics": "air2stream_regional_ws"
+  },
+  "do_mgl_mean": {
+   "gbm": "forcing_gbm",
+   "physics": "dosat_ratio[air2stream_regional]_ws"
+  },
+  "do_mgl_min": {
+   "gbm": "forcing_gbm_bag",
+   "physics": "dosat_ratio[air2stream_regional]"
+  }
+ },
+ "looks": {
+  "M6/test": {
+   "block": "test",
+   "roles": [
+    "test"
+   ],
+   "dataset": "sonde",
+   "label_model": "ealstm_ws_full",
+   "primary_models": [
+    "ealstm",
+    "ealstm_physdo",
+    "ealstm_gbmblend",
+    "ealstm_full",
+    "ealstm_compact",
+    "ealstm_ws",
+    "ealstm_ws_full"
+   ],
+   "n_hypotheses": 28,
+   "comparators": {
+    "temp_c_mean": {
+     "gbm": "forcing_gbm_bag",
+     "physics": "air2stream_regional_ws"
+    },
+    "temp_c_7dadm": {
+     "gbm": "forcing_gbm",
+     "physics": "air2stream_regional_ws"
+    },
+    "do_mgl_mean": {
+     "gbm": "forcing_gbm",
+     "physics": "dosat_ratio[air2stream_regional]_ws"
+    },
+    "do_mgl_min": {
+     "gbm": "forcing_gbm_bag",
+     "physics": "dosat_ratio[air2stream_regional]"
+    }
+   },
+   "artifacts": {
+    "ealstm_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s0/g0_s0/ealstm_best.pt",
+    "ealstm_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s1/g0_s1/ealstm_best.pt",
+    "ealstm_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s2/g0_s2/ealstm_best.pt",
+    "ealstm_physdo_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/physdo_v4_s0/g0_s0/ealstm_physdo_best.pt",
+    "ealstm_physdo_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/physdo_v4_s1/g0_s1/ealstm_physdo_best.pt",
+    "ealstm_physdo_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/physdo_v4_s2/g0_s2/ealstm_physdo_best.pt",
+    "ealstm_full_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/full_v4_s0/g0_s0/ealstm_full_best.pt",
+    "ealstm_full_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/full_v4_s1/g0_s1/ealstm_full_best.pt",
+    "ealstm_full_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/full_v4_s2/g0_s2/ealstm_full_best.pt",
+    "ealstm_compact_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/compact_v4_s0/g0_s0/ealstm_compact_best.pt",
+    "ealstm_compact_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/compact_v4_s1/g0_s1/ealstm_compact_best.pt",
+    "ealstm_compact_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/compact_v4_s2/g0_s2/ealstm_compact_best.pt",
+    "ealstm_ws_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_v1_s0/g0_s0/ealstm_ws_best.pt",
+    "ealstm_ws_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_v1_s1/g0_s1/ealstm_ws_best.pt",
+    "ealstm_ws_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_v1_s2/g0_s2/ealstm_ws_best.pt",
+    "ealstm_ws_full_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s0/g0_s0/ealstm_ws_full_best.pt",
+    "ealstm_ws_full_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s1/g0_s1/ealstm_ws_full_best.pt",
+    "ealstm_ws_full_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s2/g0_s2/ealstm_ws_full_best.pt",
+    "forcing_gbm_bag_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s0/models/forcing_gbm_bag_s0.pkl",
+    "forcing_gbm_bag_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s1/models/forcing_gbm_bag_s1.pkl",
+    "forcing_gbm_bag_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s2/models/forcing_gbm_bag_s2.pkl",
+    "forcing_gbm": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/base_v2/models/forcing_gbm.pkl",
+    "dosat_ratio[air2stream_regional]": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/base_v2/models/dosat_ratio[air2stream_regional].pkl",
+    "air2stream_regional_ws": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/basews_v1/models/air2stream_regional_ws.pkl",
+    "dosat_ratio[air2stream_regional]_ws": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/basews_v1/models/dosat_ratio[air2stream_regional]_ws.pkl"
+   },
+   "data_snapshots": [
+    "sonde_daily",
+    "forcings_daily",
+    "hydromet_upstream_forcing",
+    "streamcat",
+    "sites"
+   ]
+  },
+  "M6N/test": {
+   "block": "test",
+   "roles": [
+    "test"
+   ],
+   "dataset": "trackn",
+   "label_model": null,
+   "sensitivity": {
+    "exclude_basin_method": "local (NLDI basin unavailable)",
+    "basins_file": "processed/hydromet_upstream_forcing/basins_trackn.parquet",
+    "experiment": "M6N/test_sens427",
+    "descriptive": true
+   },
+   "primary_models": [
+    "ealstm_ws_full",
+    "ealstm_gbmblend"
+   ],
+   "n_hypotheses": 4,
+   "comparators": {
+    "temp_c_mean": {
+     "gbm": "forcing_gbm_bag",
+     "physics": "air2stream_regional_ws"
+    },
+    "do_mgl_mean": {
+     "gbm": "forcing_gbm",
+     "physics": "dosat_ratio[air2stream_regional]_ws"
+    }
+   },
+   "artifacts": {
+    "ealstm_ws_full_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s0/g0_s0/ealstm_ws_full_best.pt",
+    "ealstm_ws_full_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s1/g0_s1/ealstm_ws_full_best.pt",
+    "ealstm_ws_full_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_ws_full_v1_s2/g0_s2/ealstm_ws_full_best.pt",
+    "ealstm_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s0/g0_s0/ealstm_best.pt",
+    "ealstm_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s1/g0_s1/ealstm_best.pt",
+    "ealstm_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/ealstm_v4_s2/g0_s2/ealstm_best.pt",
+    "forcing_gbm_bag_s0": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s0/models/forcing_gbm_bag_s0.pkl",
+    "forcing_gbm_bag_s1": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s1/models/forcing_gbm_bag_s1.pkl",
+    "forcing_gbm_bag_s2": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/gbmbag_v1_s2/models/forcing_gbm_bag_s2.pkl",
+    "forcing_gbm": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/base_v2/models/forcing_gbm.pkl",
+    "air2stream_regional_ws": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/basews_v1/models/air2stream_regional_ws.pkl",
+    "dosat_ratio[air2stream_regional]_ws": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/basews_v1/models/dosat_ratio[air2stream_regional]_ws.pkl"
+   },
+   "data_snapshots": [
+    "hydromet_wqp_national",
+    "hydromet_upstream_forcing_trackn",
+    "streamcat"
+   ]
+  }
+ },
+ "selection_score": {
+  "experiment": "M6/val_v4",
+  "score_dir": "/home/bcheng/STOCKHOLM/sentinel_runs/hydromet/score_val_v4"
+ },
+ "data_snapshots": {
+  "sonde_daily": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sonde_daily",
+   "loader_dir_rel": "sonde_daily",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sonde_daily_refresh_20261108",
+   "patterns": [
+    "index.parquet",
+    "sites/*.parquet"
+   ],
+   "n_content_files": 5501,
+   "content_sha256": "65d86584bc801f3c0847ff2bfeb61003fd8d5a2c59f22cfed86315327c01efa0",
+   "manifest": "sonde_daily",
+   "manifest_sha256": "dcd359ead043b8959a245f6cc92c6bbd7a66c1405ca49f012ba401563b696d89"
+  },
+  "forcings_daily": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/forcings_daily",
+   "loader_dir_rel": "forcings_daily",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/forcings_daily",
+   "patterns": [
+    "forcings_daily.parquet",
+    "coverage.parquet"
+   ],
+   "n_content_files": 2,
+   "content_sha256": "eac6d18929eb28c9f5c64952143ccce0328d34edcee7340e1ef6914e2027997d",
+   "manifest": "forcings_daily",
+   "manifest_sha256": "1c8e853fa8cb4b61a51c4746ac76ab5e4781b8fe17b2719979d09d7da349e987"
+  },
+  "hydromet_upstream_forcing": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_upstream_forcing",
+   "loader_dir_rel": "hydromet_upstream_forcing",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_upstream_forcing",
+   "patterns": [
+    "upstream_forcing.parquet"
+   ],
+   "n_content_files": 1,
+   "content_sha256": "7c125f1edf528be705c4c5b4c5f9aa0fc8d0499b314a64bd737bfe12fe324af9",
+   "manifest": "hydromet_upstream_forcing",
+   "manifest_sha256": "7913ed7f1f6040a62984bb007adbf1aecc387240bdd71d4a49733e47cb337c27"
+  },
+  "streamcat": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/catchment",
+   "loader_dir_rel": "catchment",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/catchment",
+   "patterns": [
+    "streamcat_sites.parquet"
+   ],
+   "n_content_files": 1,
+   "content_sha256": "76ea50c743a3012b3865e84e82740159216f4b1f6c494269612257fd8cbe8d03",
+   "manifest": "streamcat",
+   "manifest_sha256": "632059587e3ccdfbe787a1eabc2cc2322481134e526c3d3cf45ba2951454bda6"
+  },
+  "sites": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sites",
+   "loader_dir_rel": "sites",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sites",
+   "patterns": [
+    "sites.parquet"
+   ],
+   "n_content_files": 1,
+   "content_sha256": "89ea7e55e487eb0a0f84af480e7a248e99a789d67f7d3d98b688618f2fa3d5b2",
+   "manifest": "sites",
+   "manifest_sha256": "c9f245ca102201c9c395d439bfe70f0eb8c8421cc13c5176339bf6f2b12233e3"
+  },
+  "hydromet_wqp_national": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_wqp_national",
+   "loader_dir_rel": "hydromet_wqp_national",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_wqp_national",
+   "patterns": [
+    "stations.parquet",
+    "obs_daily.parquet",
+    "eligibility.parquet",
+    "streamcat_comid.parquet",
+    "station_cells.parquet",
+    "forcings.parquet"
+   ],
+   "n_content_files": 6,
+   "content_sha256": "23a8e42afdab53a8ede1c4872094838bbf5516dae999776055b04a803bc8ca1e",
+   "manifest": "hydromet_wqp_national",
+   "manifest_sha256": "62dc35a2b0a425eea9b20530ac4dc831bc3c66684d6efd1c09323b944163166c"
+  },
+  "hydromet_upstream_forcing_trackn": {
+   "loader_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_upstream_forcing",
+   "loader_dir_rel": "hydromet_upstream_forcing",
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/hydromet_upstream_forcing",
+   "patterns": [
+    "upstream_forcing_trackn.parquet"
+   ],
+   "n_content_files": 1,
+   "content_sha256": "4b672c5e800b11eb769b72b692927ac386b3d386055814cd81e1c3142ed6585e",
+   "manifest": "hydromet_upstream_forcing_trackn",
+   "manifest_sha256": "ab0954fe51ea71fad1347d7695dfe9bd136cd607af184ca55cc2ec40a1930475"
+  }
+ },
+ "sonde_promotion_note": "processed/sonde_daily -> sonde_daily_refresh_20261108 since 2026-11-08 22:08 EST; identity check compare_vs_sonde_daily.json: all sites identical through 2023-09-30, so artifacts trained before/after the promotion saw identical train/val values",
+ "sonde_identity_check": {
+  "old": "sonde_daily",
+  "new": "sonde_daily_refresh_20261108",
+  "until": "2023-09-30",
+  "n_sites_compared": 5500,
+  "only_in_old": [],
+  "only_in_new": [],
+  "n_only_in_new": 0,
+  "n_sites_differing_until": 0,
+  "differing_examples": [],
+  "identical_until": true,
+  "pooled_frac_provisional_by_wy_after_cut": {
+   "2024": 0.04421116610688914,
+   "2025": 0.08930855359607412,
+   "2026": 0.4678435623664946,
+   "2027": 0.989853648811811
+  }
+ },
+ "test_look": {
+  "command": "python -B scripts/eval/hydromet_test_look.py --look M6/test [--gpu]; then --look M6N/test",
+  "single_pass": "sentinel/models/hydromet/testlook.py (O_EXCL marker, registry refusal, claim row, sealed predictions); FREEZE = this record minus NOT_A_FREEZE/audit fields",
+  "test_b": "separate later freeze (FREEZE_hydromet_test_b.json) with its own sonde_daily pin",
+  "track_R": "separate later freeze (FREEZE_hydromet_trackR.json): same scoring_code_sha256, fold-unique keys trackr_<fold>/<model>_s<seed>, its own looks block; descriptive"
+ },
+ "authorised_by": "lead (Claude) 2026-11-09 after M6 delta re-review + line-level check PASS (REVIEW_REPORT_PRE_TRAINING.md 'M6 HydroMet \u2014 line-level check (2026-11-09)')",
+ "frozen_at": "2026-11-09T21:13:38Z",
+ "candidate_sha256": "d0de50339a34e626e8e14d3b99e1df0bb5bb1c2a0d53a4a5500876a3bc9756f7",
+ "candidate_audit_note": "no_test_data_audit and NOT_A_FREEZE dropped per builder instructions; full audit in the candidate (sha above)"
+}

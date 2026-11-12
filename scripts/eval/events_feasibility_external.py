@@ -19,6 +19,8 @@ precomputed assignment, so Orbit's cache is never written).
 
 from __future__ import annotations
 
+from sentinel.data.reserved import assert_no_reserved  # noqa: E402
+
 import json
 import sys
 from pathlib import Path
@@ -61,6 +63,7 @@ def sonde_sites() -> pd.DataFrame:
     span = idx.groupby("site_no").agg(first=("first", "min"), last=("last", "max"))
     keep = [s for s in role.index if role[s] in ("train", "val") and s in reg.index and s in span.index
             and reg.loc[s, "site_type"] in ("ST", "ST-TS", "ST-CA", "ST-DCH")]
+    assert_no_reserved(keep, "events_feasibility_external")   # reserved new-site block
     C.assert_allowed(role[keep], {"train", "val"}, "sonde site roles")
     return pd.DataFrame({"site_id": keep, "lat": pd.to_numeric(reg.loc[keep, "lat"]).to_numpy(),
                          "lon": pd.to_numeric(reg.loc[keep, "lon"]).to_numpy(), "cluster": basin.reindex(keep).to_numpy(),

@@ -89,9 +89,13 @@ def load_violations() -> pd.DataFrame:
     return v
 
 
-def labels_at(v: pd.DataFrame, T: int, label: str) -> set:
+def labels_at(v: pd.DataFrame, T: int, label: str, report_cutoff: int | None = None) -> set:
+    """Systems with a task-label health-based violation overlapping the window T+1..T+3. ``report_cutoff`` (protocol
+    §11 C6): only violations first reported by 31 Dec of that year count (fit rows of a scored origin S)."""
     lo, hi = pd.Timestamp(f"{T + 1}-01-01"), pd.Timestamp(f"{T + HORIZON}-12-31")
     m = (v["label"] == label) & v["is_health_based"].astype(bool) & (v["compl_per_begin_date"] <= hi) & (v["end"] >= lo)
+    if report_cutoff is not None:
+        m &= v["viol_first_reported_date"].notna() & (v["viol_first_reported_date"] <= pd.Timestamp(f"{report_cutoff}-12-31"))
     return set(v.loc[m, "pwsid"])
 
 
@@ -152,12 +156,14 @@ def system_features(sy: pd.DataFrame) -> pd.DataFrame:
 
 
 def build(task: str, split: dict, *, include_test: bool = False, split_sha: str | None = None,
-          with_streamcat: bool = True) -> pd.DataFrame:
-    """One row per candidate system × origin (train/val origins; + test origin only in an authorised look)."""
+          with_streamcat: bool = True, scored_origin: int | None = None) -> pd.DataFrame:
+    """One row per candidate system × origin (train/val origins; + test origin only in an authorised look).
+    ``scored_origin`` S (protocol §11 C6): labels of rows with origin < S use only violations first reported by
+    31 Dec S; rows of origin S keep uncensored labels (outcomes)."""
     if include_test:
-        from .testlook import require_authorised
+        from .taprisk_look import require_open
 
-        require_authorised(APP, split_sha)
+        require_open(split_sha)
     cfg = TASKS[task]
     roles = split["assignments"]["state_role"]
     sy = load_systems()
@@ -189,7 +195,8 @@ def build(task: str, split: dict, *, include_test: bool = False, split_sha: str 
         f = pd.concat([f, sf.loc[m]], axis=1)
         f["origin"], f["role"] = T, orole
         f["evalset"] = None if evalset is None else np.asarray(evalset)[m]
-        f["y"] = f["pwsid"].isin(labels_at(v, T, cfg["label"])).astype(float)
+        cut = scored_origin if (scored_origin is not None and T < scored_origin) else None
+        f["y"] = f["pwsid"].isin(labels_at(v, T, cfg["label"], report_cutoff=cut)).astype(float)
         f = f.merge(history_at(v, T, cfg["label"], cfg["group"]), left_on="pwsid", right_index=True, how="left")
         f[["hist_task_3y", "hist_task_10y", "hist_other_hb_3y", "hist_mr_group_3y"]] = \
             f[["hist_task_3y", "hist_task_10y", "hist_other_hb_3y", "hist_mr_group_3y"]].fillna(0.0)

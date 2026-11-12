@@ -1,0 +1,1082 @@
+{
+ "created": "2026-11-10T14:34:15-0500",
+ "rule": "surface result: depth_m <= 1.0 m, or depth unknown; a result flagged 'bottom' is never a surface result, at any depth; Secchi exempt (sentinel.data.matchups.wqp_surface_samples, unchanged). Results come from the harmonised, QC-passed wqp_discrete tables only (variable=*/); rows of _qc_rejects.parquet and _unmapped.parquet never contribute. Sample label: median of those results over (site_id, date, target, characteristic, unit). A sample without such a result is dropped (reason no_qc_passed_result or no_surface_result).",
+ "side_table_sha256": "8ed6a309cca10abdd02ffd8a1690be09ec39c9580731ba5fdf8c97a2f5853a31",
+ "split_sha256": "ffe288f2fafecada964fc8125dcd35ddd9b332d3a04f782d0298e01f097a5e32",
+ "scope": "COUNTS ONLY (rows, site-dates, water bodies, role blocks). No label value was printed or written. Binding counts: orbit_split_report_dev_v5.json (dev_v5 build) and the dev_v5m build",
+ "dev_v4_composition": {
+  "note": "AquaCorr chips + the 2024-2025 WQP table (s2_wqp_matchups); protected_cell_counts as in data.build_table",
+  "labels_as_stored": {
+   "n_rows_with_chip": 144044,
+   "by_source": {
+    "aquacorr": 117889,
+    "wqp": 26155
+   },
+   "image_qc_pass": 53747,
+   "n_rows_after_dedupe": 52753,
+   "protected_cell_counts": {
+    "testxtest_nonlake": {
+     "chla": {
+      "n": 1149,
+      "n_waterbodies": 165,
+      "n_blocks": 12,
+      "by_source": {
+       "wqp": 1149
+      }
+     },
+     "tss": {
+      "n": 578,
+      "n_waterbodies": 125,
+      "n_blocks": 13,
+      "by_source": {
+       "wqp": 578
+      }
+     },
+     "turbidity": {
+      "n": 921,
+      "n_waterbodies": 165,
+      "n_blocks": 20,
+      "by_source": {
+       "wqp": 921
+      },
+      "by_unit": {
+       "NTU": 900,
+       "FNU": 16,
+       "FNU|NTRU": 5
+      }
+     },
+     "secchi": {
+      "n": 986,
+      "n_waterbodies": 163,
+      "n_blocks": 11,
+      "by_source": {
+       "wqp": 986
+      }
+     }
+    },
+    "testxtest_lake": {
+     "chla": {
+      "n": 669,
+      "n_waterbodies": 225,
+      "n_blocks": 87,
+      "by_source": {
+       "wqp": 669
+      }
+     },
+     "tss": {
+      "n": 221,
+      "n_waterbodies": 79,
+      "n_blocks": 57,
+      "by_source": {
+       "wqp": 221
+      }
+     },
+     "turbidity": {
+      "n": 490,
+      "n_waterbodies": 98,
+      "n_blocks": 53,
+      "by_source": {
+       "wqp": 490
+      },
+      "by_unit": {
+       "NTU": 291,
+       "FNU": 187,
+       "NTRU": 11,
+       "FNU|NTRU": 1
+      }
+     },
+     "secchi": {
+      "n": 1442,
+      "n_waterbodies": 394,
+      "n_blocks": 92,
+      "by_source": {
+       "wqp": 1442
+      }
+     }
+    },
+    "testxtrain_nonlake": {
+     "chla": {
+      "n": 2034,
+      "n_waterbodies": 215,
+      "n_blocks": 29,
+      "by_source": {
+       "aquacorr": 2034
+      }
+     },
+     "tss": {
+      "n": 128,
+      "n_waterbodies": 55,
+      "n_blocks": 21,
+      "by_source": {
+       "aquacorr": 128
+      }
+     },
+     "turbidity": {
+      "n": 89,
+      "n_waterbodies": 35,
+      "n_blocks": 14,
+      "by_source": {
+       "aquacorr": 89
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 89
+      }
+     },
+     "secchi": {
+      "n": 1732,
+      "n_waterbodies": 134,
+      "n_blocks": 11,
+      "by_source": {
+       "aquacorr": 1732
+      }
+     }
+    },
+    "testxtrain_lake": {
+     "chla": {
+      "n": 2001,
+      "n_waterbodies": 510,
+      "n_blocks": 143,
+      "by_source": {
+       "aquacorr": 2001
+      }
+     },
+     "tss": {
+      "n": 79,
+      "n_waterbodies": 24,
+      "n_blocks": 23,
+      "by_source": {
+       "aquacorr": 79
+      }
+     },
+     "turbidity": {
+      "n": 36,
+      "n_waterbodies": 17,
+      "n_blocks": 15,
+      "by_source": {
+       "aquacorr": 36
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 36
+      }
+     },
+     "secchi": {
+      "n": 1725,
+      "n_waterbodies": 381,
+      "n_blocks": 88,
+      "by_source": {
+       "aquacorr": 1725
+      }
+     }
+    },
+    "testxval_nonlake": {
+     "chla": {
+      "n": 1054,
+      "n_waterbodies": 143,
+      "n_blocks": 16,
+      "by_source": {
+       "aquacorr": 1054
+      }
+     },
+     "tss": {
+      "n": 25,
+      "n_waterbodies": 16,
+      "n_blocks": 8,
+      "by_source": {
+       "aquacorr": 25
+      }
+     },
+     "turbidity": {
+      "n": 23,
+      "n_waterbodies": 15,
+      "n_blocks": 7,
+      "by_source": {
+       "aquacorr": 23
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 23
+      }
+     },
+     "secchi": {
+      "n": 915,
+      "n_waterbodies": 104,
+      "n_blocks": 9,
+      "by_source": {
+       "aquacorr": 915
+      }
+     }
+    },
+    "testxval_lake": {
+     "chla": {
+      "n": 638,
+      "n_waterbodies": 243,
+      "n_blocks": 79,
+      "by_source": {
+       "aquacorr": 638
+      }
+     },
+     "tss": {
+      "n": 13,
+      "n_waterbodies": 6,
+      "n_blocks": 6,
+      "by_source": {
+       "aquacorr": 13
+      }
+     },
+     "turbidity": {
+      "n": 13,
+      "n_waterbodies": 8,
+      "n_blocks": 6,
+      "by_source": {
+       "aquacorr": 13
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 13
+      }
+     },
+     "secchi": {
+      "n": 447,
+      "n_waterbodies": 154,
+      "n_blocks": 41,
+      "by_source": {
+       "aquacorr": 447
+      }
+     }
+    },
+    "trainxtest_nonlake": {
+     "chla": {
+      "n": 1850,
+      "n_waterbodies": 559,
+      "n_blocks": 68,
+      "by_source": {
+       "wqp": 1849,
+       "aquacorr": 1
+      }
+     },
+     "tss": {
+      "n": 1289,
+      "n_waterbodies": 462,
+      "n_blocks": 70,
+      "by_source": {
+       "wqp": 1286,
+       "aquacorr": 3
+      }
+     },
+     "turbidity": {
+      "n": 2128,
+      "n_waterbodies": 514,
+      "n_blocks": 75,
+      "by_source": {
+       "wqp": 2128
+      },
+      "by_unit": {
+       "NTU": 1828,
+       "FNU": 238,
+       "NTRU": 36,
+       "FNU|NTRU": 14,
+       "FNU|NTU": 12
+      }
+     },
+     "secchi": {
+      "n": 1641,
+      "n_waterbodies": 452,
+      "n_blocks": 47,
+      "by_source": {
+       "wqp": 1641
+      }
+     }
+    },
+    "trainxtest_lake": {
+     "chla": {
+      "n": 2647,
+      "n_waterbodies": 960,
+      "n_blocks": 295,
+      "by_source": {
+       "wqp": 2641,
+       "aquacorr": 6
+      }
+     },
+     "tss": {
+      "n": 823,
+      "n_waterbodies": 347,
+      "n_blocks": 187,
+      "by_source": {
+       "wqp": 815,
+       "aquacorr": 8
+      }
+     },
+     "turbidity": {
+      "n": 1588,
+      "n_waterbodies": 427,
+      "n_blocks": 199,
+      "by_source": {
+       "wqp": 1588
+      },
+      "by_unit": {
+       "NTU": 1225,
+       "FNU": 314,
+       "NTRU": 28,
+       "FNU|NTU": 21
+      }
+     },
+     "secchi": {
+      "n": 4943,
+      "n_waterbodies": 1407,
+      "n_blocks": 311,
+      "by_source": {
+       "wqp": 4943
+      }
+     }
+    },
+    "valxtest_nonlake": {
+     "chla": {
+      "n": 922,
+      "n_waterbodies": 202,
+      "n_blocks": 18,
+      "by_source": {
+       "wqp": 922
+      }
+     },
+     "tss": {
+      "n": 568,
+      "n_waterbodies": 155,
+      "n_blocks": 20,
+      "by_source": {
+       "wqp": 567,
+       "aquacorr": 1
+      }
+     },
+     "turbidity": {
+      "n": 1096,
+      "n_waterbodies": 202,
+      "n_blocks": 26,
+      "by_source": {
+       "wqp": 1095,
+       "aquacorr": 1
+      },
+      "by_unit": {
+       "NTU": 963,
+       "FNU": 123,
+       "NTRU": 9,
+       "NTU_or_FNU_unspecified": 1
+      }
+     },
+     "secchi": {
+      "n": 819,
+      "n_waterbodies": 148,
+      "n_blocks": 18,
+      "by_source": {
+       "wqp": 819
+      }
+     }
+    },
+    "valxtest_lake": {
+     "chla": {
+      "n": 1270,
+      "n_waterbodies": 325,
+      "n_blocks": 102,
+      "by_source": {
+       "wqp": 1270
+      }
+     },
+     "tss": {
+      "n": 351,
+      "n_waterbodies": 93,
+      "n_blocks": 61,
+      "by_source": {
+       "wqp": 349,
+       "aquacorr": 2
+      }
+     },
+     "turbidity": {
+      "n": 542,
+      "n_waterbodies": 131,
+      "n_blocks": 68,
+      "by_source": {
+       "wqp": 542
+      },
+      "by_unit": {
+       "NTU": 492,
+       "FNU": 47,
+       "NTRU": 3
+      }
+     },
+     "secchi": {
+      "n": 2020,
+      "n_waterbodies": 482,
+      "n_blocks": 105,
+      "by_source": {
+       "wqp": 2020
+      }
+     }
+    }
+   }
+  },
+  "under_the_rule": {
+   "n_rows_with_chip": 143366,
+   "by_source": {
+    "aquacorr": 117889,
+    "wqp": 25477
+   },
+   "image_qc_pass": 53263,
+   "n_rows_after_dedupe": 52269,
+   "protected_cell_counts": {
+    "testxtest_nonlake": {
+     "chla": {
+      "n": 1024,
+      "n_waterbodies": 162,
+      "n_blocks": 12,
+      "by_source": {
+       "wqp": 1024
+      }
+     },
+     "tss": {
+      "n": 564,
+      "n_waterbodies": 125,
+      "n_blocks": 13,
+      "by_source": {
+       "wqp": 564
+      }
+     },
+     "turbidity": {
+      "n": 803,
+      "n_waterbodies": 161,
+      "n_blocks": 20,
+      "by_source": {
+       "wqp": 803
+      },
+      "by_unit": {
+       "NTU": 782,
+       "FNU": 16,
+       "FNU|NTRU": 5
+      }
+     },
+     "secchi": {
+      "n": 974,
+      "n_waterbodies": 154,
+      "n_blocks": 11,
+      "by_source": {
+       "wqp": 974
+      }
+     }
+    },
+    "testxtest_lake": {
+     "chla": {
+      "n": 615,
+      "n_waterbodies": 209,
+      "n_blocks": 84,
+      "by_source": {
+       "wqp": 615
+      }
+     },
+     "tss": {
+      "n": 166,
+      "n_waterbodies": 73,
+      "n_blocks": 53,
+      "by_source": {
+       "wqp": 166
+      }
+     },
+     "turbidity": {
+      "n": 420,
+      "n_waterbodies": 86,
+      "n_blocks": 50,
+      "by_source": {
+       "wqp": 420
+      },
+      "by_unit": {
+       "NTU": 257,
+       "FNU": 152,
+       "NTRU": 10,
+       "FNU|NTRU": 1
+      }
+     },
+     "secchi": {
+      "n": 1442,
+      "n_waterbodies": 394,
+      "n_blocks": 92,
+      "by_source": {
+       "wqp": 1442
+      }
+     }
+    },
+    "testxtrain_nonlake": {
+     "chla": {
+      "n": 2034,
+      "n_waterbodies": 215,
+      "n_blocks": 29,
+      "by_source": {
+       "aquacorr": 2034
+      }
+     },
+     "tss": {
+      "n": 128,
+      "n_waterbodies": 55,
+      "n_blocks": 21,
+      "by_source": {
+       "aquacorr": 128
+      }
+     },
+     "turbidity": {
+      "n": 89,
+      "n_waterbodies": 35,
+      "n_blocks": 14,
+      "by_source": {
+       "aquacorr": 89
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 89
+      }
+     },
+     "secchi": {
+      "n": 1732,
+      "n_waterbodies": 134,
+      "n_blocks": 11,
+      "by_source": {
+       "aquacorr": 1732
+      }
+     }
+    },
+    "testxtrain_lake": {
+     "chla": {
+      "n": 2001,
+      "n_waterbodies": 510,
+      "n_blocks": 143,
+      "by_source": {
+       "aquacorr": 2001
+      }
+     },
+     "tss": {
+      "n": 79,
+      "n_waterbodies": 24,
+      "n_blocks": 23,
+      "by_source": {
+       "aquacorr": 79
+      }
+     },
+     "turbidity": {
+      "n": 36,
+      "n_waterbodies": 17,
+      "n_blocks": 15,
+      "by_source": {
+       "aquacorr": 36
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 36
+      }
+     },
+     "secchi": {
+      "n": 1725,
+      "n_waterbodies": 381,
+      "n_blocks": 88,
+      "by_source": {
+       "aquacorr": 1725
+      }
+     }
+    },
+    "testxval_nonlake": {
+     "chla": {
+      "n": 1054,
+      "n_waterbodies": 143,
+      "n_blocks": 16,
+      "by_source": {
+       "aquacorr": 1054
+      }
+     },
+     "tss": {
+      "n": 25,
+      "n_waterbodies": 16,
+      "n_blocks": 8,
+      "by_source": {
+       "aquacorr": 25
+      }
+     },
+     "turbidity": {
+      "n": 23,
+      "n_waterbodies": 15,
+      "n_blocks": 7,
+      "by_source": {
+       "aquacorr": 23
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 23
+      }
+     },
+     "secchi": {
+      "n": 915,
+      "n_waterbodies": 104,
+      "n_blocks": 9,
+      "by_source": {
+       "aquacorr": 915
+      }
+     }
+    },
+    "testxval_lake": {
+     "chla": {
+      "n": 638,
+      "n_waterbodies": 243,
+      "n_blocks": 79,
+      "by_source": {
+       "aquacorr": 638
+      }
+     },
+     "tss": {
+      "n": 13,
+      "n_waterbodies": 6,
+      "n_blocks": 6,
+      "by_source": {
+       "aquacorr": 13
+      }
+     },
+     "turbidity": {
+      "n": 13,
+      "n_waterbodies": 8,
+      "n_blocks": 6,
+      "by_source": {
+       "aquacorr": 13
+      },
+      "by_unit": {
+       "NTU_or_FNU_unspecified": 13
+      }
+     },
+     "secchi": {
+      "n": 447,
+      "n_waterbodies": 154,
+      "n_blocks": 41,
+      "by_source": {
+       "aquacorr": 447
+      }
+     }
+    },
+    "trainxtest_nonlake": {
+     "chla": {
+      "n": 1678,
+      "n_waterbodies": 532,
+      "n_blocks": 66,
+      "by_source": {
+       "wqp": 1677,
+       "aquacorr": 1
+      }
+     },
+     "tss": {
+      "n": 1264,
+      "n_waterbodies": 457,
+      "n_blocks": 69,
+      "by_source": {
+       "wqp": 1261,
+       "aquacorr": 3
+      }
+     },
+     "turbidity": {
+      "n": 2025,
+      "n_waterbodies": 507,
+      "n_blocks": 74,
+      "by_source": {
+       "wqp": 2025
+      },
+      "by_unit": {
+       "NTU": 1731,
+       "FNU": 232,
+       "NTRU": 36,
+       "FNU|NTRU": 14,
+       "FNU|NTU": 12
+      }
+     },
+     "secchi": {
+      "n": 1641,
+      "n_waterbodies": 452,
+      "n_blocks": 47,
+      "by_source": {
+       "wqp": 1641
+      }
+     }
+    },
+    "trainxtest_lake": {
+     "chla": {
+      "n": 2437,
+      "n_waterbodies": 880,
+      "n_blocks": 285,
+      "by_source": {
+       "wqp": 2431,
+       "aquacorr": 6
+      }
+     },
+     "tss": {
+      "n": 764,
+      "n_waterbodies": 325,
+      "n_blocks": 172,
+      "by_source": {
+       "wqp": 756,
+       "aquacorr": 8
+      }
+     },
+     "turbidity": {
+      "n": 1254,
+      "n_waterbodies": 374,
+      "n_blocks": 191,
+      "by_source": {
+       "wqp": 1254
+      },
+      "by_unit": {
+       "NTU": 1084,
+       "FNU": 132,
+       "NTRU": 28,
+       "FNU|NTU": 10
+      }
+     },
+     "secchi": {
+      "n": 4943,
+      "n_waterbodies": 1407,
+      "n_blocks": 311,
+      "by_source": {
+       "wqp": 4943
+      }
+     }
+    },
+    "valxtest_nonlake": {
+     "chla": {
+      "n": 831,
+      "n_waterbodies": 190,
+      "n_blocks": 18,
+      "by_source": {
+       "wqp": 831
+      }
+     },
+     "tss": {
+      "n": 525,
+      "n_waterbodies": 150,
+      "n_blocks": 20,
+      "by_source": {
+       "wqp": 524,
+       "aquacorr": 1
+      }
+     },
+     "turbidity": {
+      "n": 976,
+      "n_waterbodies": 180,
+      "n_blocks": 25,
+      "by_source": {
+       "wqp": 975,
+       "aquacorr": 1
+      },
+      "by_unit": {
+       "NTU": 916,
+       "FNU": 50,
+       "NTRU": 9,
+       "NTU_or_FNU_unspecified": 1
+      }
+     },
+     "secchi": {
+      "n": 819,
+      "n_waterbodies": 148,
+      "n_blocks": 18,
+      "by_source": {
+       "wqp": 819
+      }
+     }
+    },
+    "valxtest_lake": {
+     "chla": {
+      "n": 1224,
+      "n_waterbodies": 315,
+      "n_blocks": 99,
+      "by_source": {
+       "wqp": 1224
+      }
+     },
+     "tss": {
+      "n": 340,
+      "n_waterbodies": 90,
+      "n_blocks": 58,
+      "by_source": {
+       "wqp": 338,
+       "aquacorr": 2
+      }
+     },
+     "turbidity": {
+      "n": 505,
+      "n_waterbodies": 126,
+      "n_blocks": 65,
+      "by_source": {
+       "wqp": 505
+      },
+      "by_unit": {
+       "NTU": 455,
+       "FNU": 47,
+       "NTRU": 3
+      }
+     },
+     "secchi": {
+      "n": 2020,
+      "n_waterbodies": 482,
+      "n_blocks": 105,
+      "by_source": {
+       "wqp": 2020
+      }
+     }
+    }
+   }
+  },
+  "reference_reproduces_dev_v4_report_wqp_counts": true,
+  "reference_mismatches": {}
+ },
+ "headline_cell": {
+  "chla": {
+   "before": {
+    "n": 669,
+    "n_waterbodies": 225,
+    "n_blocks": 87
+   },
+   "after": {
+    "n": 615,
+    "n_waterbodies": 209,
+    "n_blocks": 84
+   }
+  },
+  "tss": {
+   "before": {
+    "n": 221,
+    "n_waterbodies": 79,
+    "n_blocks": 57
+   },
+   "after": {
+    "n": 166,
+    "n_waterbodies": 73,
+    "n_blocks": 53
+   }
+  },
+  "turbidity": {
+   "before": {
+    "n": 490,
+    "n_waterbodies": 98,
+    "n_blocks": 53
+   },
+   "after": {
+    "n": 420,
+    "n_waterbodies": 86,
+    "n_blocks": 50
+   }
+  },
+  "secchi": {
+   "before": {
+    "n": 1442,
+    "n_waterbodies": 394,
+    "n_blocks": 92
+   },
+   "after": {
+    "n": 1442,
+    "n_waterbodies": 394,
+    "n_blocks": 92
+   }
+  }
+ },
+ "test_s_wqp_hist_sample_keys": {
+  "note": "UPPER BOUND before the same-day scene match, chips and image QC: WQP sample site-dates (JRC water ok, M2-accepted unit, value present) of the four base targets at in-lake, non-buffer, test-role sites, 2015-06-23..2023-12-31. Keys and booleans only",
+  "all_keys_any_unit": {
+   "n_site_dates": 81992,
+   "n_waterbodies": 1585,
+   "n_blocks": 311
+  },
+  "by_target": {
+   "chla": {
+    "before": {
+     "n_site_dates": 29689,
+     "n_waterbodies": 1148,
+     "n_blocks": 282
+    },
+    "after": {
+     "n_site_dates": 25642,
+     "n_waterbodies": 1120,
+     "n_blocks": 276
+    },
+    "n_samples_dropped_no_qc_passed_result": 1445,
+    "n_samples_dropped_no_surface_result": 4177,
+    "small_lake_lt1km2": {
+     "before": {
+      "n_site_dates": 7594,
+      "n_waterbodies": 650,
+      "n_blocks": 195
+     },
+     "after": {
+      "n_site_dates": 6983,
+      "n_waterbodies": 630,
+      "n_blocks": 191
+     }
+    },
+    "train_years_le2021": {
+     "before": {
+      "n_site_dates": 23080,
+      "n_waterbodies": 1071,
+      "n_blocks": 274
+     },
+     "after": {
+      "n_site_dates": 20013,
+      "n_waterbodies": 1046,
+      "n_blocks": 269
+     }
+    },
+    "val_years_2022_23": {
+     "before": {
+      "n_site_dates": 6609,
+      "n_waterbodies": 496,
+      "n_blocks": 143
+     },
+     "after": {
+      "n_site_dates": 5629,
+      "n_waterbodies": 464,
+      "n_blocks": 141
+     }
+    }
+   },
+   "secchi": {
+    "before": {
+     "n_site_dates": 70527,
+     "n_waterbodies": 1371,
+     "n_blocks": 260
+    },
+    "after": {
+     "n_site_dates": 70505,
+     "n_waterbodies": 1371,
+     "n_blocks": 260
+    },
+    "n_samples_dropped_no_qc_passed_result": 24,
+    "n_samples_dropped_no_surface_result": 0,
+    "small_lake_lt1km2": {
+     "before": {
+      "n_site_dates": 22183,
+      "n_waterbodies": 780,
+      "n_blocks": 173
+     },
+     "after": {
+      "n_site_dates": 22175,
+      "n_waterbodies": 780,
+      "n_blocks": 173
+     }
+    },
+    "train_years_le2021": {
+     "before": {
+      "n_site_dates": 55136,
+      "n_waterbodies": 1288,
+      "n_blocks": 246
+     },
+     "after": {
+      "n_site_dates": 55118,
+      "n_waterbodies": 1288,
+      "n_blocks": 246
+     }
+    },
+    "val_years_2022_23": {
+     "before": {
+      "n_site_dates": 15391,
+      "n_waterbodies": 776,
+      "n_blocks": 147
+     },
+     "after": {
+      "n_site_dates": 15387,
+      "n_waterbodies": 776,
+      "n_blocks": 147
+     }
+    }
+   },
+   "tss": {
+    "before": {
+     "n_site_dates": 11687,
+     "n_waterbodies": 509,
+     "n_blocks": 193
+    },
+    "after": {
+     "n_site_dates": 8959,
+     "n_waterbodies": 497,
+     "n_blocks": 188
+    },
+    "n_samples_dropped_no_qc_passed_result": 116,
+    "n_samples_dropped_no_surface_result": 2577,
+    "small_lake_lt1km2": {
+     "before": {
+      "n_site_dates": 2215,
+      "n_waterbodies": 236,
+      "n_blocks": 111
+     },
+     "after": {
+      "n_site_dates": 2087,
+      "n_waterbodies": 228,
+      "n_blocks": 107
+     }
+    },
+    "train_years_le2021": {
+     "before": {
+      "n_site_dates": 9076,
+      "n_waterbodies": 436,
+      "n_blocks": 181
+     },
+     "after": {
+      "n_site_dates": 7049,
+      "n_waterbodies": 424,
+      "n_blocks": 177
+     }
+    },
+    "val_years_2022_23": {
+     "before": {
+      "n_site_dates": 2611,
+      "n_waterbodies": 225,
+      "n_blocks": 103
+     },
+     "after": {
+      "n_site_dates": 1910,
+      "n_waterbodies": 219,
+      "n_blocks": 101
+     }
+    }
+   },
+   "turbidity": {
+    "before": {
+     "n_site_dates": 20988,
+     "n_waterbodies": 614,
+     "n_blocks": 232
+    },
+    "after": {
+     "n_site_dates": 17230,
+     "n_waterbodies": 596,
+     "n_blocks": 228
+    },
+    "n_samples_dropped_no_qc_passed_result": 340,
+    "n_samples_dropped_no_surface_result": 3460,
+    "small_lake_lt1km2": {
+     "before": {
+      "n_site_dates": 3607,
+      "n_waterbodies": 342,
+      "n_blocks": 146
+     },
+     "after": {
+      "n_site_dates": 3176,
+      "n_waterbodies": 334,
+      "n_blocks": 143
+     }
+    },
+    "train_years_le2021": {
+     "before": {
+      "n_site_dates": 15770,
+      "n_waterbodies": 537,
+      "n_blocks": 216
+     },
+     "after": {
+      "n_site_dates": 12961,
+      "n_waterbodies": 522,
+      "n_blocks": 213
+     }
+    },
+    "val_years_2022_23": {
+     "before": {
+      "n_site_dates": 5218,
+      "n_waterbodies": 265,
+      "n_blocks": 111
+     },
+     "after": {
+      "n_site_dates": 4269,
+      "n_waterbodies": 248,
+      "n_blocks": 108
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,3669 @@
+{
+ "status": "candidate",
+ "prepared": "2026-11-11T16:31:56",
+ "DISCLOSURE_GJAM_FIDELITY_AMENDMENT_V6": "PROMINENT DISCLOSURE: the GJAM fidelity check pre-declared in amendment v4.8 was run first and FAILED (X-L fold 0: r = 0.43 TP, 0.52 TN, 0.54 chloride; NA for conductivity, turbidity, pH; x_track/dev/r_out/gjam/X-L/fold00_v4check_info.txt). Amendment v6, which replaces the comparison by our routine run in gjam's in-sample scheme, was written AFTER that failure was seen (but before any GJAM development prediction was scored). It can only add a comparator. Full-size v6 outcome per block is attached below; GJAM is a comparator only if v6 passed in both blocks. OUTCOME: v6 failed in both blocks, so GJAM is 'not compared, with reason' (see not_compared.gjam; amendment v9 item 5).",
+ "gjam_v6_fidelity_info": {
+  "X-L": "List of 8\n $ n_fit                      : int 4474\n $ n_taxa                     : int 100\n $ fit_minutes                : num 99.3\n $ fidelity_r_insample_mode   : Named num [1:6] 0.731 0.776 0.884 0.84 0.778 ...\n  ..- attr(*, \"names\")= chr [1:6] \"log10_tp_ug_l\" \"log10_tn_mg_l\" \"log10_cond_us_cm\" \"log10_chloride_mg_l\" ...\n $ fidelity_r_outofsample_mode: Named num [1:6] 0.43 0.52 0.655 0.539 0.538 ...\n  ..- attr(*, \"names\")= chr [1:6] \"log10_tp_ug_l\" \"log10_tn_mg_l\" \"log10_cond_us_cm\" \"log10_chloride_mg_l\" ...\n $ xpredMu_n_finite           : Named num [1:6] 4474 4474 4473 4474 4439 ...\n  ..- attr(*, \"names\")= chr [1:6] \"x1\" \"x2\" \"x3\" \"x4\" ...\n $ fidelity_pass              : logi FALSE\n $ predict_minutes            : num 0.463\n",
+  "X-U": "List of 8\n $ n_fit                      : int 5000\n $ n_taxa                     : int 100\n $ fit_minutes                : num 114\n $ fidelity_r_insample_mode   : Named num [1:6] 0.912 0.886 0.827 0.923 0.911 ...\n  ..- attr(*, \"names\")= chr [1:6] \"uk_ph\" \"uk_log10_cond25_us_cm\" \"uk_log10_chloride_mg_l\" \"uk_log10_orthop_mg_l\" ...\n $ fidelity_r_outofsample_mode: Named num [1:6] 0.374 0.57 0.494 0.516 0.431 ...\n  ..- attr(*, \"names\")= chr [1:6] \"uk_ph\" \"uk_log10_cond25_us_cm\" \"uk_log10_chloride_mg_l\" \"uk_log10_orthop_mg_l\" ...\n $ xpredMu_n_finite           : Named num [1:6] 4868 2242 2517 4791 4897 ...\n  ..- attr(*, \"names\")= chr [1:6] \"x1\" \"x2\" \"x3\" \"x4\" ...\n $ fidelity_pass              : logi FALSE\n $ predict_minutes            : num 0.778\n"
+ },
+ "protocol": "docs/preregistration/bioassess_x_protocol.md",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "n_boot": 2000,
+ "n_boot_confirmatory": 10000,
+ "alpha": 0.05,
+ "family": "C-X vs per-target comparator on r2_anomaly, 2 blocks x 6 targets = 12 tests, Holm (alpha 0.05); p = two-sided paired location-cluster bootstrap p if delta > 0 else 1. v11 item 1: the per-target comparator is re-chosen among the enlarged listed set (X-L 16, X-U 19) by the unchanged \u00a76 rule; any Holm family formed over listed comparators (events: derived vs each comparator) grows with the list; no denominator is held at its earlier size.",
+ "decision_table": [
+  "Protocol \u00a78 as amended by v9, v10 and v11; first matching row. 'Listed comparator' = every comparator in comparator_set of the block (X-L 16, X-U 19, the two rule comparators of v11 item 1 included); each is compared with C-X by the paired location-cluster bootstrap of r2_anomaly (B = 10,000, seed-mean predictions).",
+  "3* (v10, checked first) paired CI upper < 0 against ANY listed comparator -> Below",
+  "1 Holm-rejected & per-seed delta > 0 (seeds 0,1,2) & region-unit paired CI > 0 & paired CI lower > 0 against EVERY listed comparator (no finite estimate = not beaten) -> SOTA (M5-X, block, within-region)",
+  "2 Holm-rejected (row 1 not met) -> Above, not robust; the reason names each failed condition and each listed comparator not beaten",
+  "3 CI upper < 0 against the per-target comparator -> Below",
+  "4 CI includes 0 & realised Holm-worst MDE (3.71 * CI width / 3.92) > 0.02 -> Inconclusive (underpowered)",
+  "5 otherwise -> Competitive",
+  "A family delta with no finite estimate -> Not estimable (reported, never a claim)",
+  "v11 item 6d: a confirmatory row in which a label-deciding quantity lies within the reproducibility tolerance of its threshold is flagged; the label stands. 6e: a bootstrap p of 0 is reported as '< 2/B'."
+ ],
+ "power_x": {
+  "n_clusters_testA": 1901,
+  "n_clusters": {
+   "X-L": 973,
+   "X-U": 2149
+  },
+  "family_size": 12,
+  "rows": [
+   {
+    "target": "log10_tp_ug_l",
+    "metric": "r2_anomaly",
+    "testA_delta": 0.009905463474415122,
+    "testA_se": 0.005286995128737267,
+    "X-L_se": 0.007389984858480894,
+    "X-L_mde_alpha05": 0.020703672341598728,
+    "X-L_mde_holm_worst": 0.027393797951039675,
+    "X-U_se": 0.004972579794664616,
+    "X-U_mde_alpha05": 0.013931106048619607,
+    "X-U_mde_holm_worst": 0.018432763909406194
+   },
+   {
+    "target": "log10_tp_ug_l",
+    "metric": "r2",
+    "testA_delta": 0.005369636687291401,
+    "testA_se": 0.0040273620619493454,
+    "X-L_se": 0.005629311912102021,
+    "X-L_mde_alpha05": 0.01577099704109227,
+    "X-L_mde_holm_worst": 0.02086719202767123,
+    "X-U_se": 0.0037878565664256993,
+    "X-U_mde_alpha05": 0.010612002964830383,
+    "X-U_mde_holm_worst": 0.014041135325074873
+   },
+   {
+    "target": "log10_tn_mg_l",
+    "metric": "r2_anomaly",
+    "testA_delta": 0.005121538739638054,
+    "testA_se": 0.004771958846609418,
+    "X-L_se": 0.006670084379321168,
+    "X-L_mde_alpha05": 0.0186868098006724,
+    "X-L_mde_holm_worst": 0.024725212203082943,
+    "X-U_se": 0.004488172499468223,
+    "X-U_mde_alpha05": 0.012573997730851308,
+    "X-U_mde_holm_worst": 0.016637123481890163
+   },
+   {
+    "target": "log10_tn_mg_l",
+    "metric": "r2",
+    "testA_delta": 0.0106600957365659,
+    "testA_se": 0.0031145930254035496,
+    "X-L_se": 0.0043534738991824464,
+    "X-L_mde_alpha05": 0.012196628123390169,
+    "X-L_mde_holm_worst": 0.016137811736172333,
+    "X-U_se": 0.0029293695132312407,
+    "X-U_mde_alpha05": 0.008206878326659426,
+    "X-U_mde_holm_worst": 0.010858825573546272
+   },
+   {
+    "target": "log10_cond_us_cm",
+    "metric": "r2_anomaly",
+    "testA_delta": 0.011778349320118342,
+    "testA_se": 0.004886735039358867,
+    "X-L_se": 0.006830514700492108,
+    "X-L_mde_alpha05": 0.01913626901700202,
+    "X-L_mde_holm_worst": 0.025319908388195363,
+    "X-U_se": 0.004596123001232872,
+    "X-U_mde_alpha05": 0.012876430260883026,
+    "X-U_mde_holm_worst": 0.017037283196785984
+   },
+   {
+    "target": "log10_cond_us_cm",
+    "metric": "r2",
+    "testA_delta": 0.012838903485180353,
+    "testA_se": 0.0035406304141467945,
+    "X-L_se": 0.0049489747035706055,
+    "X-L_mde_alpha05": 0.013864974374338418,
+    "X-L_mde_holm_worst": 0.018345262634582454,
+    "X-U_se": 0.0033300706410838614,
+    "X-U_mde_alpha05": 0.009329476683332522,
+    "X-U_mde_holm_worst": 0.012344177160234749
+   },
+   {
+    "target": "log10_chloride_mg_l",
+    "metric": "r2_anomaly",
+    "testA_delta": 0.024915857317214574,
+    "testA_se": 0.004380548089091734,
+    "X-L_se": 0.006122983521259083,
+    "X-L_mde_alpha05": 0.01715406012390874,
+    "X-L_mde_holm_worst": 0.022697174168959826,
+    "X-U_se": 0.004120038771924642,
+    "X-U_mde_alpha05": 0.011542639721476384,
+    "X-U_mde_holm_worst": 0.015272495388001893
+   },
+   {
+    "target": "log10_chloride_mg_l",
+    "metric": "r2",
+    "testA_delta": 0.02087311349443155,
+    "testA_se": 0.00393644930045445,
+    "X-L_se": 0.0055022370965346346,
+    "X-L_mde_alpha05": 0.01541498611620425,
+    "X-L_mde_holm_worst": 0.020396140748273315,
+    "X-U_se": 0.0037023503478877885,
+    "X-U_mde_alpha05": 0.010372450006917834,
+    "X-U_mde_holm_worst": 0.013724173907826926
+   },
+   {
+    "target": "log10_turbidity_ntu",
+    "metric": "r2_anomaly",
+    "testA_delta": 0.02916017256177683,
+    "testA_se": 0.006874736149126343,
+    "X-L_se": 0.00960927612207369,
+    "X-L_mde_alpha05": 0.026921205940367555,
+    "X-L_mde_holm_worst": 0.03562044761725641,
+    "X-U_se": 0.006465898537145199,
+    "X-U_mde_alpha05": 0.018114765763484256,
+    "X-U_mde_holm_worst": 0.02396831948785468
+   },
+   {
+    "target": "log10_turbidity_ntu",
+    "metric": "r2",
+    "testA_delta": 0.01159522101898991,
+    "testA_se": 0.00520092104198583,
+    "X-L_se": 0.007269673380540756,
+    "X-L_mde_alpha05": 0.020366609483432312,
+    "X-L_mde_holm_worst": 0.026947817562581806,
+    "X-U_se": 0.004891624496957234,
+    "X-U_mde_alpha05": 0.013704302883234671,
+    "X-U_mde_holm_worst": 0.018132672216265952
+   },
+   {
+    "target": "ph_lab",
+    "metric": "r2_anomaly",
+    "testA_delta": 0.02472877587312161,
+    "testA_se": 0.005160955643957628,
+    "X-L_se": 0.007213811084642989,
+    "X-L_mde_alpha05": 0.02021010650099528,
+    "X-L_mde_holm_worst": 0.026740742652929125,
+    "X-U_se": 0.004854035824018882,
+    "X-U_mde_alpha05": 0.013598995012762103,
+    "X-U_mde_holm_worst": 0.01799333546098976
+   },
+   {
+    "target": "ph_lab",
+    "metric": "r2",
+    "testA_delta": 0.023936681744602173,
+    "testA_se": 0.004201254064540321,
+    "X-L_se": 0.0058723723339233575,
+    "X-L_mde_alpha05": 0.01645195152597523,
+    "X-L_mde_holm_worst": 0.021768188201922778,
+    "X-U_se": 0.003951407286160176,
+    "X-U_mde_alpha05": 0.011070204243650229,
+    "X-U_mde_holm_worst": 0.014647398457808049
+   }
+  ]
+ },
+ "DISCLOSURE_POWER_TABLE_OPTIMISTIC_V11": "Protocol v11 item 5: the registered power table (power_x; a proxy from NRSA Test A) is optimistic. The pre-test reviewer scaled the development paired CIs of C-X vs comparator to the test cluster counts: projected test SE 0.008-0.020 on X-L (registered 0.006-0.010) and 0.006-0.026 on X-U (registered 0.004-0.0065); projected Holm-worst detectable difference above 0.02 for all 12 targets (X-L 0.031-0.073, X-U 0.022-0.098). Most rows whose CI spans 0 are therefore expected to read 'Inconclusive (underpowered)'. The decision table and the 0.02 threshold are unchanged; row 4 uses the realised CI.",
+ "candidates": {
+  "X-L": {
+   "confirmatory": {
+    "name": "ens_c_form",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "bioset",
+       "config": "bsx_flat_geo_same"
+      },
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    }
+   },
+   "secondary": [
+    {
+     "name": "ens_top2",
+     "spec": {
+      "kind": "mean",
+      "members": [
+       {
+        "kind": "bioset",
+        "config": "bsx_flat_geo_same"
+       },
+       {
+        "kind": "baseline",
+        "name": "tabpfn_community",
+        "variant": {
+         "log10_tp_ug_l": "same",
+         "log10_tn_mg_l": "same",
+         "log10_cond_us_cm": "same",
+         "log10_chloride_mg_l": "same",
+         "log10_turbidity_ntu": "same",
+         "ph_lab": "same"
+        }
+       },
+       {
+        "kind": "baseline",
+        "name": "gbm_community",
+        "variant": {
+         "log10_tp_ug_l": "same",
+         "log10_tn_mg_l": "same",
+         "log10_cond_us_cm": "same",
+         "log10_chloride_mg_l": "same",
+         "log10_turbidity_ntu": "same",
+         "ph_lab": "same"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "name": "bsx_flat_geo_same",
+     "spec": {
+      "kind": "bioset",
+      "config": "bsx_flat_geo_same"
+     }
+    }
+   ]
+  },
+  "X-U": {
+   "confirmatory": {
+    "name": "ens_top2",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "bioset",
+       "config": "bsx_flat_geo_same"
+      },
+      {
+       "kind": "baseline",
+       "name": "rf_community_context",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "multi",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "idx_rf_geo",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    }
+   },
+   "secondary": [
+    {
+     "name": "ens_c_form",
+     "spec": {
+      "kind": "mean",
+      "members": [
+       {
+        "kind": "bioset",
+        "config": "bsx_flat_geo_same"
+       },
+       {
+        "kind": "baseline",
+        "name": "rf_community_geography",
+        "variant": {
+         "uk_ph": "same",
+         "uk_log10_cond25_us_cm": "same",
+         "uk_log10_chloride_mg_l": "same",
+         "uk_log10_orthop_mg_l": "same",
+         "uk_log10_nh4n_mg_l": "same",
+         "uk_log10_nitrate_mg_l": "same"
+        }
+       },
+       {
+        "kind": "baseline",
+        "name": "tabpfn_community",
+        "variant": {
+         "uk_ph": "same",
+         "uk_log10_cond25_us_cm": "same",
+         "uk_log10_chloride_mg_l": "multi",
+         "uk_log10_orthop_mg_l": "same",
+         "uk_log10_nh4n_mg_l": "same",
+         "uk_log10_nitrate_mg_l": "same"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "name": "bsx_flat_geo_same",
+     "spec": {
+      "kind": "bioset",
+      "config": "bsx_flat_geo_same"
+     }
+    }
+   ]
+  }
+ },
+ "comparators": {
+  "X-L": {
+   "log10_tp_ug_l": {
+    "name": "tabpfn_community",
+    "spec": {
+     "kind": "baseline",
+     "name": "tabpfn_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "dev_r2_anomaly": 0.402073904217671
+   },
+   "log10_tn_mg_l": {
+    "name": "bens_rfg_tabpfn",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "dev_r2_anomaly": 0.40064176971641274
+   },
+   "log10_cond_us_cm": {
+    "name": "tabpfn_community",
+    "spec": {
+     "kind": "baseline",
+     "name": "tabpfn_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "dev_r2_anomaly": 0.4715065460622978
+   },
+   "log10_chloride_mg_l": {
+    "name": "tabpfn_community",
+    "spec": {
+     "kind": "baseline",
+     "name": "tabpfn_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "dev_r2_anomaly": 0.3525050633056914
+   },
+   "log10_turbidity_ntu": {
+    "name": "bens_rfg_tabpfn",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "dev_r2_anomaly": 0.31813579121404245
+   },
+   "ph_lab": {
+    "name": "bens_rfg_gbm_tabpfn",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "gbm_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "dev_r2_anomaly": 0.38605857147964406
+   }
+  },
+  "X-U": {
+   "uk_ph": {
+    "name": "bens_rfg_gbm_tabpfn",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "gbm_community",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "multi",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "dev_r2_anomaly": 0.18011691221102788
+   },
+   "uk_log10_cond25_us_cm": {
+    "name": "bens_rfctx_tabpfn",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_context",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "multi",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "multi",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "dev_r2_anomaly": 0.5455668953992802
+   },
+   "uk_log10_chloride_mg_l": {
+    "name": "idx_linear_geo",
+    "spec": {
+     "kind": "baseline",
+     "name": "idx_linear_geo",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "dev_r2_anomaly": 0.35321161681066504
+   },
+   "uk_log10_orthop_mg_l": {
+    "name": "bens_rfg_gbm_tabpfn",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "gbm_community",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "multi",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "dev_r2_anomaly": 0.32251193323878014
+   },
+   "uk_log10_nh4n_mg_l": {
+    "name": "idx_linear_geo",
+    "spec": {
+     "kind": "baseline",
+     "name": "idx_linear_geo",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "dev_r2_anomaly": 0.24395967157889942
+   },
+   "uk_log10_nitrate_mg_l": {
+    "name": "bens_rfctx_tabpfn",
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_context",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "multi",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "multi",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "dev_r2_anomaly": 0.3663225710600676
+   }
+  }
+ },
+ "comparator_set": {
+  "X-L": {
+   "region_mean": {
+    "spec": {
+     "kind": "baseline",
+     "name": "region_mean",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.0,
+     "log10_tn_mg_l": 0.0,
+     "log10_cond_us_cm": 0.0,
+     "log10_chloride_mg_l": 0.0,
+     "log10_turbidity_ntu": 1.1102230246251565e-16,
+     "ph_lab": 0.0
+    },
+    "dev_mean_r2_anomaly": 1.850371707708594e-17
+   },
+   "rf_geography": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_geography",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": -0.02579716235028262,
+     "log10_tn_mg_l": 0.012636044628430154,
+     "log10_cond_us_cm": 0.09991861733875496,
+     "log10_chloride_mg_l": 0.19343869738567254,
+     "log10_turbidity_ntu": -0.002347361496272793,
+     "ph_lab": -0.014492758164094788
+    },
+    "dev_mean_r2_anomaly": 0.043892679557034575
+   },
+   "nearest_reference": {
+    "spec": {
+     "kind": "baseline",
+     "name": "nearest_reference",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": -0.19812246725174987,
+     "log10_tn_mg_l": -0.397713599961812,
+     "log10_cond_us_cm": -0.23739185273242636,
+     "log10_chloride_mg_l": -0.18145320424523503,
+     "log10_turbidity_ntu": -0.660499588576176,
+     "ph_lab": -0.784506677528586
+    },
+    "dev_mean_r2_anomaly": -0.40994789838266427
+   },
+   "rf_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "multi",
+      "log10_chloride_mg_l": "multi",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "multi"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.3263648880046188,
+     "log10_tn_mg_l": 0.3035564898841968,
+     "log10_cond_us_cm": 0.3717737477412718,
+     "log10_chloride_mg_l": 0.21926741480100986,
+     "log10_turbidity_ntu": 0.23126188991661945,
+     "ph_lab": 0.28322064458598095
+    },
+    "dev_mean_r2_anomaly": 0.289240845822283
+   },
+   "gbm_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "gbm_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.34106458917407645,
+     "log10_tn_mg_l": 0.24491663179874223,
+     "log10_cond_us_cm": 0.42116623766208516,
+     "log10_chloride_mg_l": 0.2823787112977051,
+     "log10_turbidity_ntu": 0.23338089400321127,
+     "ph_lab": 0.33835715631930907
+    },
+    "dev_mean_r2_anomaly": 0.3102107033758549
+   },
+   "rf_community_geography": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_community_geography",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "multi",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "multi"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.3045771454051418,
+     "log10_tn_mg_l": 0.3230743997315829,
+     "log10_cond_us_cm": 0.25763683540294413,
+     "log10_chloride_mg_l": 0.2763283126064524,
+     "log10_turbidity_ntu": 0.2491278110730034,
+     "ph_lab": 0.18327262294124658
+    },
+    "dev_mean_r2_anomaly": 0.26566952119339526
+   },
+   "rf_community_context": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_community_context",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "multi",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "multi"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.30387916142884797,
+     "log10_tn_mg_l": 0.32043931384325075,
+     "log10_cond_us_cm": 0.24953421557904898,
+     "log10_chloride_mg_l": 0.27154121139365195,
+     "log10_turbidity_ntu": 0.23154447212479667,
+     "ph_lab": 0.1873615027988056
+    },
+    "dev_mean_r2_anomaly": 0.2607166461947336
+   },
+   "tabpfn_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "tabpfn_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.402073904217671,
+     "log10_tn_mg_l": 0.3464128438602353,
+     "log10_cond_us_cm": 0.4715065460622978,
+     "log10_chloride_mg_l": 0.3525050633056914,
+     "log10_turbidity_ntu": 0.30108704713524714,
+     "ph_lab": 0.3300442689502897
+    },
+    "dev_mean_r2_anomaly": 0.3672716122552387
+   },
+   "wapls2": {
+    "spec": {
+     "kind": "baseline",
+     "name": "wapls2",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "multi",
+      "log10_chloride_mg_l": "multi",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "multi"
+     }
+    },
+    "class": "published community-to-chemistry method",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.09135881436880333,
+     "log10_tn_mg_l": 0.17958526470564717,
+     "log10_cond_us_cm": 0.1949259293176877,
+     "log10_chloride_mg_l": 0.13441023727106427,
+     "log10_turbidity_ntu": 0.11829177809379132,
+     "ph_lab": 0.07619330454584217
+    },
+    "dev_mean_r2_anomaly": 0.13246088805047265
+   },
+   "knn_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "knn_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "multi",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "multi"
+     }
+    },
+    "class": "published community-to-chemistry method",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.154552156811828,
+     "log10_tn_mg_l": 0.12442117096476257,
+     "log10_cond_us_cm": 0.08417029055862524,
+     "log10_chloride_mg_l": 0.044839619810384646,
+     "log10_turbidity_ntu": 0.08302456217023857,
+     "ph_lab": 0.08081927951281687
+    },
+    "dev_mean_r2_anomaly": 0.09530451330477598
+   },
+   "bioinfer": {
+    "spec": {
+     "kind": "r",
+     "method": "bioinfer"
+    },
+    "class": "published community-to-chemistry method",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": -1.8344527422982617,
+     "log10_tn_mg_l": -0.7266106706143804,
+     "log10_cond_us_cm": -0.3018602732780604,
+     "log10_chloride_mg_l": -0.5162506363419803,
+     "log10_turbidity_ntu": -1.1407888056012938,
+     "ph_lab": -2.3347443068416482
+    },
+    "dev_mean_r2_anomaly": -1.142451239162604
+   },
+   "bens_rfg_tabpfn": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "class": "baseline ensemble (protocol \u00a76 item 7)",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.38975379379864294,
+     "log10_tn_mg_l": 0.40064176971641274,
+     "log10_cond_us_cm": 0.4369894583775231,
+     "log10_chloride_mg_l": 0.3506909800611909,
+     "log10_turbidity_ntu": 0.31813579121404245,
+     "ph_lab": 0.3679577417913934
+    },
+    "dev_mean_r2_anomaly": 0.3773615891598676
+   },
+   "bens_rfg_gbm_tabpfn": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "gbm_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "class": "baseline ensemble (protocol \u00a76 item 7)",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.3906811873153462,
+     "log10_tn_mg_l": 0.37901490777500346,
+     "log10_cond_us_cm": 0.45366976647411894,
+     "log10_chloride_mg_l": 0.34168002457240587,
+     "log10_turbidity_ntu": 0.30683542959732646,
+     "ph_lab": 0.38605857147964406
+    },
+    "dev_mean_r2_anomaly": 0.37632331453564083
+   },
+   "bens_rfctx_tabpfn": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_context",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "class": "baseline ensemble (protocol \u00a76 item 7)",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.38888393538308386,
+     "log10_tn_mg_l": 0.39857123040653974,
+     "log10_cond_us_cm": 0.4340591705426978,
+     "log10_chloride_mg_l": 0.3467677791416519,
+     "log10_turbidity_ntu": 0.3089298462701685,
+     "ph_lab": 0.3715840602369749
+    },
+    "dev_mean_r2_anomaly": 0.3747993369968528
+   },
+   "cxr_nobioset": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "class": "rule comparator (protocol v11 item 1): C-X without BioSet / with BioSet replaced",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.38975379379864294,
+     "log10_tn_mg_l": 0.40064176971641274,
+     "log10_cond_us_cm": 0.4369894583775231,
+     "log10_chloride_mg_l": 0.3506909800611909,
+     "log10_turbidity_ntu": 0.31813579121404245,
+     "ph_lab": 0.3679577417913934
+    },
+    "dev_mean_r2_anomaly": 0.3773615891598676
+   },
+   "cxr_swap": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "multi",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "multi"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "gbm_community",
+       "variant": {
+        "log10_tp_ug_l": "same",
+        "log10_tn_mg_l": "same",
+        "log10_cond_us_cm": "same",
+        "log10_chloride_mg_l": "same",
+        "log10_turbidity_ntu": "same",
+        "ph_lab": "same"
+       }
+      }
+     ]
+    },
+    "class": "rule comparator (protocol v11 item 1): C-X without BioSet / with BioSet replaced",
+    "dev_r2_anomaly": {
+     "log10_tp_ug_l": 0.3906811873153462,
+     "log10_tn_mg_l": 0.37901490777500346,
+     "log10_cond_us_cm": 0.45366976647411894,
+     "log10_chloride_mg_l": 0.34168002457240587,
+     "log10_turbidity_ntu": 0.30683542959732646,
+     "ph_lab": 0.38605857147964406
+    },
+    "dev_mean_r2_anomaly": 0.37632331453564083
+   }
+  },
+  "X-U": {
+   "region_mean": {
+    "spec": {
+     "kind": "baseline",
+     "name": "region_mean",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.0,
+     "uk_log10_cond25_us_cm": 2.220446049250313e-16,
+     "uk_log10_chloride_mg_l": 0.0,
+     "uk_log10_orthop_mg_l": 1.1102230246251565e-16,
+     "uk_log10_nh4n_mg_l": 0.0,
+     "uk_log10_nitrate_mg_l": 0.0
+    },
+    "dev_mean_r2_anomaly": 5.551115123125783e-17
+   },
+   "rf_geography": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_geography",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.06936549432231565,
+     "uk_log10_cond25_us_cm": 0.3527437779415009,
+     "uk_log10_chloride_mg_l": 0.14298022332960802,
+     "uk_log10_orthop_mg_l": 0.13563891585586363,
+     "uk_log10_nh4n_mg_l": 0.07128849104663026,
+     "uk_log10_nitrate_mg_l": 0.2564870468817778
+    },
+    "dev_mean_r2_anomaly": 0.1714173248962827
+   },
+   "rf_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_community",
+     "variant": {
+      "uk_ph": "multi",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "multi",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.1377372297813073,
+     "uk_log10_cond25_us_cm": 0.4219736383110173,
+     "uk_log10_chloride_mg_l": 0.21432588235832395,
+     "uk_log10_orthop_mg_l": 0.27943595777338714,
+     "uk_log10_nh4n_mg_l": 0.21092201150472634,
+     "uk_log10_nitrate_mg_l": 0.30034243666156524
+    },
+    "dev_mean_r2_anomaly": 0.2607895260650545
+   },
+   "gbm_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "gbm_community",
+     "variant": {
+      "uk_ph": "multi",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.16962518325565856,
+     "uk_log10_cond25_us_cm": 0.4568745495614508,
+     "uk_log10_chloride_mg_l": 0.2191262653902104,
+     "uk_log10_orthop_mg_l": 0.31542853199023557,
+     "uk_log10_nh4n_mg_l": 0.23455021330728032,
+     "uk_log10_nitrate_mg_l": 0.32679091226473167
+    },
+    "dev_mean_r2_anomaly": 0.2870659426282612
+   },
+   "rf_community_geography": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_community_geography",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.1615462693603299,
+     "uk_log10_cond25_us_cm": 0.48514706641331795,
+     "uk_log10_chloride_mg_l": 0.28056393753835907,
+     "uk_log10_orthop_mg_l": 0.30271123694647883,
+     "uk_log10_nh4n_mg_l": 0.20563035271682106,
+     "uk_log10_nitrate_mg_l": 0.3249282158696001
+    },
+    "dev_mean_r2_anomaly": 0.29342117980748444
+   },
+   "rf_community_context": {
+    "spec": {
+     "kind": "baseline",
+     "name": "rf_community_context",
+     "variant": {
+      "uk_ph": "multi",
+      "uk_log10_cond25_us_cm": "multi",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.16589177699563473,
+     "uk_log10_cond25_us_cm": 0.48114102064309716,
+     "uk_log10_chloride_mg_l": 0.29514534979034956,
+     "uk_log10_orthop_mg_l": 0.2949253610851219,
+     "uk_log10_nh4n_mg_l": 0.20579249713094427,
+     "uk_log10_nitrate_mg_l": 0.3433684168039818
+    },
+    "dev_mean_r2_anomaly": 0.2977107370748549
+   },
+   "tabpfn_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "tabpfn_community",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "multi",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "machine-learning baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.1194358906150279,
+     "uk_log10_cond25_us_cm": 0.4922642601241254,
+     "uk_log10_chloride_mg_l": 0.25869822174356316,
+     "uk_log10_orthop_mg_l": 0.28302058137153285,
+     "uk_log10_nh4n_mg_l": 0.21294716471361141,
+     "uk_log10_nitrate_mg_l": 0.2948063997996502
+    },
+    "dev_mean_r2_anomaly": 0.27686208639458515
+   },
+   "wapls2": {
+    "spec": {
+     "kind": "baseline",
+     "name": "wapls2",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "published community-to-chemistry method",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.04345474768455626,
+     "uk_log10_cond25_us_cm": 0.28262974696025156,
+     "uk_log10_chloride_mg_l": 0.1618443836582567,
+     "uk_log10_orthop_mg_l": 0.21766303825789501,
+     "uk_log10_nh4n_mg_l": 0.14744849289784379,
+     "uk_log10_nitrate_mg_l": 0.16737890042445458
+    },
+    "dev_mean_r2_anomaly": 0.17006988498054298
+   },
+   "knn_community": {
+    "spec": {
+     "kind": "baseline",
+     "name": "knn_community",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "published community-to-chemistry method",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.005291887832596154,
+     "uk_log10_cond25_us_cm": 0.27645873143612754,
+     "uk_log10_chloride_mg_l": 0.1307231390026664,
+     "uk_log10_orthop_mg_l": 0.15491193595132646,
+     "uk_log10_nh4n_mg_l": 0.08381897623426282,
+     "uk_log10_nitrate_mg_l": 0.14999809175312317
+    },
+    "dev_mean_r2_anomaly": 0.13353379370168375
+   },
+   "idx_linear": {
+    "spec": {
+     "kind": "baseline",
+     "name": "idx_linear",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.05073778772244375,
+     "uk_log10_cond25_us_cm": 0.3617832777237606,
+     "uk_log10_chloride_mg_l": 0.3086553799550259,
+     "uk_log10_orthop_mg_l": 0.22830884872558066,
+     "uk_log10_nh4n_mg_l": 0.22750073270309246,
+     "uk_log10_nitrate_mg_l": 0.20055294026169002
+    },
+    "dev_mean_r2_anomaly": 0.2295898278485989
+   },
+   "idx_linear_geo": {
+    "spec": {
+     "kind": "baseline",
+     "name": "idx_linear_geo",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.058540087720700185,
+     "uk_log10_cond25_us_cm": 0.4484681145277688,
+     "uk_log10_chloride_mg_l": 0.35321161681066504,
+     "uk_log10_orthop_mg_l": 0.24165313752614337,
+     "uk_log10_nh4n_mg_l": 0.24395967157889942,
+     "uk_log10_nitrate_mg_l": 0.30184989261714756
+    },
+    "dev_mean_r2_anomaly": 0.27461375346355404
+   },
+   "idx_rf": {
+    "spec": {
+     "kind": "baseline",
+     "name": "idx_rf",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.02503344959737197,
+     "uk_log10_cond25_us_cm": 0.4239300020714776,
+     "uk_log10_chloride_mg_l": 0.32327236430868345,
+     "uk_log10_orthop_mg_l": 0.24673087756731216,
+     "uk_log10_nh4n_mg_l": 0.20554674305667686,
+     "uk_log10_nitrate_mg_l": 0.2774831212559329
+    },
+    "dev_mean_r2_anomaly": 0.2503327596429092
+   },
+   "idx_rf_geo": {
+    "spec": {
+     "kind": "baseline",
+     "name": "idx_rf_geo",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "class": "simple or practitioner baseline",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.12279639296948253,
+     "uk_log10_cond25_us_cm": 0.4623413508293418,
+     "uk_log10_chloride_mg_l": 0.34514302563983745,
+     "uk_log10_orthop_mg_l": 0.27531231541169443,
+     "uk_log10_nh4n_mg_l": 0.23457305425801112,
+     "uk_log10_nitrate_mg_l": 0.32824776358274743
+    },
+    "dev_mean_r2_anomaly": 0.2947356504485191
+   },
+   "bioinfer": {
+    "spec": {
+     "kind": "r",
+     "method": "bioinfer"
+    },
+    "class": "published community-to-chemistry method",
+    "dev_r2_anomaly": {
+     "uk_ph": -2.605261461086173,
+     "uk_log10_cond25_us_cm": -0.3705978159661958,
+     "uk_log10_chloride_mg_l": -0.22307144957555192,
+     "uk_log10_orthop_mg_l": -0.026971348176122234,
+     "uk_log10_nh4n_mg_l": -1.4837930452812587,
+     "uk_log10_nitrate_mg_l": -1.7426661960606076
+    },
+    "dev_mean_r2_anomaly": -1.0753935526909848
+   },
+   "bens_rfg_tabpfn": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "multi",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "class": "baseline ensemble (protocol \u00a76 item 7)",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.16107436084537874,
+     "uk_log10_cond25_us_cm": 0.5420730767434655,
+     "uk_log10_chloride_mg_l": 0.32157227549384004,
+     "uk_log10_orthop_mg_l": 0.31222037457525587,
+     "uk_log10_nh4n_mg_l": 0.22084785824417907,
+     "uk_log10_nitrate_mg_l": 0.3572768277059821
+    },
+    "dev_mean_r2_anomaly": 0.31917746226801685
+   },
+   "bens_rfg_gbm_tabpfn": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "gbm_community",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "multi",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "class": "baseline ensemble (protocol \u00a76 item 7)",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.18011691221102788,
+     "uk_log10_cond25_us_cm": 0.5339608087737626,
+     "uk_log10_chloride_mg_l": 0.3136880590925798,
+     "uk_log10_orthop_mg_l": 0.32251193323878014,
+     "uk_log10_nh4n_mg_l": 0.23230303549222342,
+     "uk_log10_nitrate_mg_l": 0.3656151762219477
+    },
+    "dev_mean_r2_anomaly": 0.3246993208383869
+   },
+   "bens_rfctx_tabpfn": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_context",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "multi",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "tabpfn_community",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "multi",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "class": "baseline ensemble (protocol \u00a76 item 7)",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.16652237230347589,
+     "uk_log10_cond25_us_cm": 0.5455668953992802,
+     "uk_log10_chloride_mg_l": 0.3259529503131031,
+     "uk_log10_orthop_mg_l": 0.3104059980575028,
+     "uk_log10_nh4n_mg_l": 0.22197039495493343,
+     "uk_log10_nitrate_mg_l": 0.3663225710600676
+    },
+    "dev_mean_r2_anomaly": 0.3227901970147271
+   },
+   "cxr_nobioset": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_context",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "multi",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "idx_rf_geo",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "class": "rule comparator (protocol v11 item 1): C-X without BioSet / with BioSet replaced",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.16648372771741393,
+     "uk_log10_cond25_us_cm": 0.49290038165298744,
+     "uk_log10_chloride_mg_l": 0.34205922408943434,
+     "uk_log10_orthop_mg_l": 0.30732323192045796,
+     "uk_log10_nh4n_mg_l": 0.2349272062534613,
+     "uk_log10_nitrate_mg_l": 0.3521388408768955
+    },
+    "dev_mean_r2_anomaly": 0.31597210208510845
+   },
+   "cxr_swap": {
+    "spec": {
+     "kind": "mean",
+     "members": [
+      {
+       "kind": "baseline",
+       "name": "rf_community_context",
+       "variant": {
+        "uk_ph": "multi",
+        "uk_log10_cond25_us_cm": "multi",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "idx_rf_geo",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      },
+      {
+       "kind": "baseline",
+       "name": "rf_community_geography",
+       "variant": {
+        "uk_ph": "same",
+        "uk_log10_cond25_us_cm": "same",
+        "uk_log10_chloride_mg_l": "same",
+        "uk_log10_orthop_mg_l": "same",
+        "uk_log10_nh4n_mg_l": "same",
+        "uk_log10_nitrate_mg_l": "same"
+       }
+      }
+     ]
+    },
+    "class": "rule comparator (protocol v11 item 1): C-X without BioSet / with BioSet replaced",
+    "dev_r2_anomaly": {
+     "uk_ph": 0.16998450830142708,
+     "uk_log10_cond25_us_cm": 0.4972362564385088,
+     "uk_log10_chloride_mg_l": 0.32903346809631184,
+     "uk_log10_orthop_mg_l": 0.3122356777775389,
+     "uk_log10_nh4n_mg_l": 0.22948203378901877,
+     "uk_log10_nitrate_mg_l": 0.34913853767449754
+    },
+    "dev_mean_r2_anomaly": 0.3145184136795505
+   }
+  }
+ },
+ "rule_comparators": {
+  "X-L": {
+   "rule": "protocol v11 item 1 (lead ruling X-B3): cxr_nobioset = equal-weight mean of C-X's baseline members; cxr_swap = those plus the listed single baseline (not an ensemble, not a member of C-X, bio.infer and GJAM excluded) with the highest mean development r2_anomaly over the block's six targets on seed 0. No new fit; both compete for the per-target comparator.",
+   "cx": "ens_c_form",
+   "cxr_nobioset_members": [
+    "rf_community_geography",
+    "tabpfn_community"
+   ],
+   "cxr_swap_members": [
+    "rf_community_geography",
+    "tabpfn_community",
+    "gbm_community"
+   ],
+   "swap_member": "gbm_community",
+   "swap_member_dev_mean_r2_anomaly": 0.3102107033758549,
+   "singles_ranked": [
+    [
+     "gbm_community",
+     0.3102107033758549
+    ],
+    [
+     "rf_community",
+     0.289240845822283
+    ],
+    [
+     "rf_community_context",
+     0.2607166461947336
+    ],
+    [
+     "wapls2",
+     0.13246088805047265
+    ],
+    [
+     "knn_community",
+     0.09530451330477598
+    ],
+    [
+     "rf_geography",
+     0.043892679557034575
+    ],
+    [
+     "region_mean",
+     1.850371707708594e-17
+    ],
+    [
+     "nearest_reference",
+     -0.40994789838266427
+    ]
+   ],
+   "same_members_as_listed_ensemble": {
+    "cxr_nobioset": [
+     "bens_rfg_tabpfn"
+    ],
+    "cxr_swap": [
+     "bens_rfg_gbm_tabpfn"
+    ]
+   },
+   "same_members_note": "A rule comparator with the same members as a listed baseline ensemble is the same model. It is still listed under its rule name (v11 item 1); in the development ranking it takes the ensemble's predictions bit for bit, so the tie for the per-target comparator is exact and stays with the ensemble's own name.",
+   "per_target_comparator_is_rule_comparator": {},
+   "disclosure": "The pre-test reviewer found that no listed X-U comparator was 'C-X without BioSet' and checked three unlisted alternatives on development (seed 0): mean(RF[community+context], RF[index+geography]) 0.3160, the same plus TabPFN 0.3314, the same plus LightGBM 0.3375, against C-X 0.3469 and the best listed comparator 0.3247. The rule was fixed by the lead after that check. No choice among alternatives is made from development deltas: the rule names one swap member by its single-model development score, and that member need not be the alternative that looked strongest in the reviewer's check."
+  },
+  "X-U": {
+   "rule": "protocol v11 item 1 (lead ruling X-B3): cxr_nobioset = equal-weight mean of C-X's baseline members; cxr_swap = those plus the listed single baseline (not an ensemble, not a member of C-X, bio.infer and GJAM excluded) with the highest mean development r2_anomaly over the block's six targets on seed 0. No new fit; both compete for the per-target comparator.",
+   "cx": "ens_top2",
+   "cxr_nobioset_members": [
+    "rf_community_context",
+    "idx_rf_geo"
+   ],
+   "cxr_swap_members": [
+    "rf_community_context",
+    "idx_rf_geo",
+    "rf_community_geography"
+   ],
+   "swap_member": "rf_community_geography",
+   "swap_member_dev_mean_r2_anomaly": 0.29342117980748444,
+   "singles_ranked": [
+    [
+     "rf_community_geography",
+     0.29342117980748444
+    ],
+    [
+     "gbm_community",
+     0.2870659426282612
+    ],
+    [
+     "tabpfn_community",
+     0.27686208639458515
+    ],
+    [
+     "idx_linear_geo",
+     0.27461375346355404
+    ],
+    [
+     "rf_community",
+     0.2607895260650545
+    ],
+    [
+     "idx_rf",
+     0.2503327596429092
+    ],
+    [
+     "idx_linear",
+     0.2295898278485989
+    ],
+    [
+     "rf_geography",
+     0.1714173248962827
+    ],
+    [
+     "wapls2",
+     0.17006988498054298
+    ],
+    [
+     "knn_community",
+     0.13353379370168375
+    ],
+    [
+     "region_mean",
+     5.551115123125783e-17
+    ]
+   ],
+   "same_members_as_listed_ensemble": {
+    "cxr_nobioset": [],
+    "cxr_swap": []
+   },
+   "same_members_note": "A rule comparator with the same members as a listed baseline ensemble is the same model. It is still listed under its rule name (v11 item 1); in the development ranking it takes the ensemble's predictions bit for bit, so the tie for the per-target comparator is exact and stays with the ensemble's own name.",
+   "per_target_comparator_is_rule_comparator": {},
+   "disclosure": "The pre-test reviewer found that no listed X-U comparator was 'C-X without BioSet' and checked three unlisted alternatives on development (seed 0): mean(RF[community+context], RF[index+geography]) 0.3160, the same plus TabPFN 0.3314, the same plus LightGBM 0.3375, against C-X 0.3469 and the best listed comparator 0.3247. The rule was fixed by the lead after that check. No choice among alternatives is made from development deltas: the rule names one swap member by its single-model development score, and that member need not be the alternative that looked strongest in the reviewer's check."
+  }
+ },
+ "dev_evidence": {
+  "X-L": {
+   "sentinel_mean_r2_anomaly": {
+    "bsx_flat_geo": 0.2622775668241148,
+    "bsx_flat_geo_rloss": 0.2690461536039753,
+    "bsx_flat_geo_ukpt": 0.25101710928844073,
+    "bsx_flat_geo_same": 0.2961430630675423,
+    "ens_c_form": 0.3951988232790871,
+    "ens_top2": 0.3886198387044777
+   },
+   "comparator_mean_r2_anomaly": {
+    "bens_rfctx_tabpfn": 0.3747993369968528,
+    "bens_rfg_gbm_tabpfn": 0.37632331453564083,
+    "bens_rfg_tabpfn": 0.3773615891598676,
+    "bioinfer": -1.142451239162604,
+    "gbm_community": 0.3102107033758549,
+    "knn_community": 0.09530451330477598,
+    "nearest_reference": -0.40994789838266427,
+    "region_mean": 1.850371707708594e-17,
+    "rf_community": 0.289240845822283,
+    "rf_community_context": 0.2607166461947336,
+    "rf_community_geography": 0.26566952119339526,
+    "rf_geography": 0.043892679557034575,
+    "tabpfn_community": 0.3672716122552387,
+    "wapls2": 0.13246088805047265,
+    "cxr_nobioset": 0.3773615891598676,
+    "cxr_swap": 0.37632331453564083
+   },
+   "paired_dev_vs_comparator": {
+    "ens_c_form": {
+     "log10_tp_ug_l": {
+      "diff": 0.006367550443283521,
+      "ci_low": -0.032021893459444166,
+      "ci_high": 0.05005531854922145,
+      "p_value": 0.758,
+      "a_better": true,
+      "n_groups": 414,
+      "n_boot_valid": 2000
+     },
+     "log10_tn_mg_l": {
+      "diff": 0.022364297887814577,
+      "ci_low": -0.0022835917648020426,
+      "ci_high": 0.04743011751561003,
+      "p_value": 0.073,
+      "a_better": true,
+      "n_groups": 415,
+      "n_boot_valid": 2000
+     },
+     "log10_cond_us_cm": {
+      "diff": -0.004015694350583465,
+      "ci_low": -0.06353204758985326,
+      "ci_high": 0.053951159971248566,
+      "p_value": 0.943,
+      "a_better": false,
+      "n_groups": 394,
+      "n_boot_valid": 2000
+     },
+     "log10_chloride_mg_l": {
+      "diff": 0.010362054055366277,
+      "ci_low": -0.032191127545114946,
+      "ci_high": 0.05487319394861366,
+      "p_value": 0.635,
+      "a_better": true,
+      "n_groups": 414,
+      "n_boot_valid": 2000
+     },
+     "log10_turbidity_ntu": {
+      "diff": -0.00422128873910288,
+      "ci_low": -0.03223363344309164,
+      "ci_high": 0.021825544971529533,
+      "p_value": 0.782,
+      "a_better": false,
+      "n_groups": 389,
+      "n_boot_valid": 2000
+     },
+     "ph_lab": {
+      "diff": 0.009414374381985002,
+      "ci_low": -0.018666310867308456,
+      "ci_high": 0.036042681443532086,
+      "p_value": 0.482,
+      "a_better": true,
+      "n_groups": 394,
+      "n_boot_valid": 2000
+     }
+    },
+    "ens_top2": {
+     "log10_tp_ug_l": {
+      "diff": 0.009693125782860856,
+      "ci_low": -0.02133474143252154,
+      "ci_high": 0.043647547943034805,
+      "p_value": 0.554,
+      "a_better": true,
+      "n_groups": 414,
+      "n_boot_valid": 2000
+     },
+     "log10_tn_mg_l": {
+      "diff": -0.023220976573163465,
+      "ci_low": -0.06900248796223869,
+      "ci_high": 0.016647389749740116,
+      "p_value": 0.296,
+      "a_better": false,
+      "n_groups": 415,
+      "n_boot_valid": 2000
+     },
+     "log10_cond_us_cm": {
+      "diff": 0.018302958235273725,
+      "ci_low": -0.027132180170144758,
+      "ci_high": 0.06311774332527612,
+      "p_value": 0.43,
+      "a_better": true,
+      "n_groups": 394,
+      "n_boot_valid": 2000
+     },
+     "log10_chloride_mg_l": {
+      "diff": 0.0014715510564592416,
+      "ci_low": -0.03483102625428984,
+      "ci_high": 0.03807321481715683,
+      "p_value": 0.92,
+      "a_better": true,
+      "n_groups": 414,
+      "n_boot_valid": 2000
+     },
+     "log10_turbidity_ntu": {
+      "diff": -0.022302074866139443,
+      "ci_low": -0.0718616159411778,
+      "ci_high": 0.023921637161525625,
+      "p_value": 0.315,
+      "a_better": false,
+      "n_groups": 389,
+      "n_boot_valid": 2000
+     },
+     "ph_lab": {
+      "diff": 0.016852802595815897,
+      "ci_low": -0.02068426506557968,
+      "ci_high": 0.04715887166313469,
+      "p_value": 0.322,
+      "a_better": true,
+      "n_groups": 394,
+      "n_boot_valid": 2000
+     }
+    },
+    "bsx_flat_geo_same": {
+     "log10_tp_ug_l": {
+      "diff": -0.06908479054796868,
+      "ci_low": -0.14628743685913778,
+      "ci_high": 0.007438113763204543,
+      "p_value": 0.068,
+      "a_better": false,
+      "n_groups": 414,
+      "n_boot_valid": 2000
+     },
+     "log10_tn_mg_l": {
+      "diff": -0.1269788623545991,
+      "ci_low": -0.22658688749203684,
+      "ci_high": -0.03495176614884621,
+      "p_value": 0.002,
+      "a_better": false,
+      "n_groups": 415,
+      "n_boot_valid": 2000
+     },
+     "log10_cond_us_cm": {
+      "diff": -0.07368905817941329,
+      "ci_low": -0.17407178586300248,
+      "ci_high": 0.022020257532729383,
+      "p_value": 0.149,
+      "a_better": false,
+      "n_groups": 394,
+      "n_boot_valid": 2000
+     },
+     "log10_chloride_mg_l": {
+      "diff": -0.07217265508656312,
+      "ci_low": -0.16633106107518458,
+      "ci_high": 0.014956820885431415,
+      "p_value": 0.113,
+      "a_better": false,
+      "n_groups": 414,
+      "n_boot_valid": 2000
+     },
+     "log10_turbidity_ntu": {
+      "diff": -0.12623970884612945,
+      "ci_low": -0.22311091579848308,
+      "ci_high": -0.042049170164157726,
+      "p_value": 0.002,
+      "a_better": false,
+      "n_groups": 389,
+      "n_boot_valid": 2000
+     },
+     "ph_lab": {
+      "diff": -0.08589819257583198,
+      "ci_low": -0.18749264936379506,
+      "ci_high": -0.0036862576475848556,
+      "p_value": 0.036,
+      "a_better": false,
+      "n_groups": 394,
+      "n_boot_valid": 2000
+     }
+    }
+   },
+   "n_pseudo_test": 415
+  },
+  "X-U": {
+   "sentinel_mean_r2_anomaly": {
+    "bsx_flat_geo": 0.28756908400898107,
+    "bsx_flat_geo_rloss": 0.2939692195676062,
+    "bsx_flat_geo_ukpt": 0.2737425039272912,
+    "bsx_flat_geo_same": 0.312799233390653,
+    "ens_c_form": 0.346406632522088,
+    "ens_top2": 0.34693974460260635
+   },
+   "comparator_mean_r2_anomaly": {
+    "bens_rfctx_tabpfn": 0.3227901970147271,
+    "bens_rfg_gbm_tabpfn": 0.3246993208383869,
+    "bens_rfg_tabpfn": 0.31917746226801685,
+    "bioinfer": -1.0753935526909848,
+    "gbm_community": 0.2870659426282612,
+    "idx_linear": 0.2295898278485989,
+    "idx_linear_geo": 0.27461375346355404,
+    "idx_rf": 0.2503327596429092,
+    "idx_rf_geo": 0.2947356504485191,
+    "knn_community": 0.13353379370168375,
+    "region_mean": 5.551115123125783e-17,
+    "rf_community": 0.2607895260650545,
+    "rf_community_context": 0.2977107370748549,
+    "rf_community_geography": 0.29342117980748444,
+    "rf_geography": 0.1714173248962827,
+    "tabpfn_community": 0.27686208639458515,
+    "wapls2": 0.17006988498054298,
+    "cxr_nobioset": 0.31597210208510845,
+    "cxr_swap": 0.3145184136795505
+   },
+   "paired_dev_vs_comparator": {
+    "ens_top2": {
+     "uk_ph": {
+      "diff": 0.014069133079511076,
+      "ci_low": -0.002204918608317555,
+      "ci_high": 0.03063978792278541,
+      "p_value": 0.099,
+      "a_better": true,
+      "n_groups": 1228,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_cond25_us_cm": {
+      "diff": 0.0037486629090266455,
+      "ci_low": -0.016945278694965975,
+      "ci_high": 0.022666053422760152,
+      "p_value": 0.776,
+      "a_better": true,
+      "n_groups": 1193,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_chloride_mg_l": {
+      "diff": 0.0006597778201063997,
+      "ci_low": -0.06160739289694074,
+      "ci_high": 0.07433591853214999,
+      "p_value": 0.962,
+      "a_better": true,
+      "n_groups": 197,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_orthop_mg_l": {
+      "diff": 0.019244029603251334,
+      "ci_low": 0.004193176108712701,
+      "ci_high": 0.0340313300516911,
+      "p_value": 0.006,
+      "a_better": true,
+      "n_groups": 1187,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_nh4n_mg_l": {
+      "diff": -0.001146414949847796,
+      "ci_low": -0.017088266564353364,
+      "ci_high": 0.01698913061566999,
+      "p_value": 0.915,
+      "a_better": false,
+      "n_groups": 1191,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_nitrate_mg_l": {
+      "diff": 0.03337367885487008,
+      "ci_low": 0.013673453570592973,
+      "ci_high": 0.05589477727261858,
+      "p_value": 0.0,
+      "a_better": true,
+      "n_groups": 1187,
+      "n_boot_valid": 2000
+     }
+    },
+    "ens_c_form": {
+     "uk_ph": {
+      "diff": 0.009199684644622952,
+      "ci_low": -0.002145018542593785,
+      "ci_high": 0.020443566397776988,
+      "p_value": 0.123,
+      "a_better": true,
+      "n_groups": 1228,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_cond25_us_cm": {
+      "diff": 0.02828851502320251,
+      "ci_low": 0.011754918879520865,
+      "ci_high": 0.04175901746494231,
+      "p_value": 0.001,
+      "a_better": true,
+      "n_groups": 1193,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_chloride_mg_l": {
+      "diff": -0.008503546032698317,
+      "ci_low": -0.06528424708490964,
+      "ci_high": 0.06013902653081678,
+      "p_value": 0.762,
+      "a_better": false,
+      "n_groups": 197,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_orthop_mg_l": {
+      "diff": 0.017295640128647483,
+      "ci_low": 0.009036558730801041,
+      "ci_high": 0.02462601997540221,
+      "p_value": 0.0,
+      "a_better": true,
+      "n_groups": 1187,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_nh4n_mg_l": {
+      "diff": -0.01155606647032037,
+      "ci_low": -0.02728367688107359,
+      "ci_high": 0.0068858911473067014,
+      "p_value": 0.208,
+      "a_better": false,
+      "n_groups": 1191,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_nitrate_mg_l": {
+      "diff": 0.03202596754035336,
+      "ci_low": 0.018173173490434905,
+      "ci_high": 0.046484811184434705,
+      "p_value": 0.0,
+      "a_better": true,
+      "n_groups": 1187,
+      "n_boot_valid": 2000
+     }
+    },
+    "bsx_flat_geo_same": {
+     "uk_ph": {
+      "diff": -0.033273947014926364,
+      "ci_low": -0.07156191307168643,
+      "ci_high": 0.0034227152049079914,
+      "p_value": 0.068,
+      "a_better": false,
+      "n_groups": 1228,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_cond25_us_cm": {
+      "diff": 0.001299559794061378,
+      "ci_low": -0.036457515622150806,
+      "ci_high": 0.0332057564806191,
+      "p_value": 0.994,
+      "a_better": true,
+      "n_groups": 1193,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_chloride_mg_l": {
+      "diff": -0.08012065562751303,
+      "ci_low": -0.17412472071104207,
+      "ci_high": -0.007538410906525324,
+      "p_value": 0.026,
+      "a_better": false,
+      "n_groups": 197,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_orthop_mg_l": {
+      "diff": 0.0023443147120306707,
+      "ci_low": -0.021722593131467037,
+      "ci_high": 0.022513512042831807,
+      "p_value": 0.905,
+      "a_better": true,
+      "n_groups": 1187,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_nh4n_mg_l": {
+      "diff": -0.043276773370529154,
+      "ci_low": -0.07408158997644156,
+      "ci_high": -0.015415466455966012,
+      "p_value": 0.0,
+      "a_better": false,
+      "n_groups": 1191,
+      "n_boot_valid": 2000
+     },
+     "uk_log10_nitrate_mg_l": {
+      "diff": 0.018133301552074266,
+      "ci_low": -0.018086923744600945,
+      "ci_high": 0.05524405412098002,
+      "p_value": 0.392,
+      "a_better": true,
+      "n_groups": 1187,
+      "n_boot_valid": 2000
+     }
+    }
+   },
+   "n_pseudo_test": 4788
+  }
+ },
+ "sota_expectation": {
+  "definition": "SOTA campaign (docs/plans/sota_campaign.md): expected outcome of the confirmatory candidate C-X per target on DEVELOPMENT (seed 0, paired location-cluster bootstrap B=2,000 of r2_anomaly): 'SOTA-expected' if the paired CI excludes 0 above vs BOTH the strongest published method (WA-PLS2, kNN-MAT, bio.infer, GJAM where its fidelity check passed) AND the strongest simple/practitioner baseline (region mean, RF[geography], nearest reference, UK-index regressions) AND the per-target comparator; 'negative' if below either; else 'competitive'. Development only \u2014 the label itself comes only from the single test look (\u00a78).",
+  "X-L": {
+   "log10_tp_ug_l": {
+    "published": {
+     "reference": "knn_community",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.154552156811828,
+     "delta": 0.2538892978491265,
+     "ci_low": 0.1573575447094875,
+     "ci_high": 0.371004371232223,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "region_mean",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.0,
+     "delta": 0.4084414546609545,
+     "ci_low": 0.3288227140771803,
+     "ci_high": 0.48194585874559764,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "tabpfn_community",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.402073904217671,
+     "delta": 0.006367550443283521,
+     "ci_low": -0.032021893459444166,
+     "ci_high": 0.05005531854922145,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "log10_tn_mg_l": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.17958526470564717,
+     "delta": 0.24342080289858015,
+     "ci_low": 0.14706293717536037,
+     "ci_high": 0.3571501898731681,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "rf_geography",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.012636044628430154,
+     "delta": 0.41037002297579717,
+     "ci_low": 0.2894956976516165,
+     "ci_high": 0.5310938468278839,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "bens_rfg_tabpfn",
+     "variant": [
+      "same",
+      "same"
+     ],
+     "ref_dev_r2_anomaly": 0.40064176971641274,
+     "delta": 0.022364297887814577,
+     "ci_low": -0.0022835917648020426,
+     "ci_high": 0.04743011751561003,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "log10_cond_us_cm": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "multi",
+     "ref_dev_r2_anomaly": 0.1949259293176877,
+     "delta": 0.27256492239402663,
+     "ci_low": 0.20900853108817555,
+     "ci_high": 0.34054958448241235,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "rf_geography",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.09991861733875496,
+     "delta": 0.3675722343729594,
+     "ci_low": 0.2839710651942823,
+     "ci_high": 0.451512873056856,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "tabpfn_community",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.4715065460622978,
+     "delta": -0.004015694350583465,
+     "ci_low": -0.06353204758985326,
+     "ci_high": 0.053951159971248566,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "log10_chloride_mg_l": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "multi",
+     "ref_dev_r2_anomaly": 0.13441023727106427,
+     "delta": 0.22845688008999343,
+     "ci_low": 0.1639529446077079,
+     "ci_high": 0.30358928608270996,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "rf_geography",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.19343869738567254,
+     "delta": 0.16942841997538516,
+     "ci_low": 0.08622879443706534,
+     "ci_high": 0.2514935258639496,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "tabpfn_community",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.3525050633056914,
+     "delta": 0.010362054055366277,
+     "ci_low": -0.032191127545114946,
+     "ci_high": 0.05487319394861366,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "log10_turbidity_ntu": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.11829177809379132,
+     "delta": 0.19562272438114825,
+     "ci_low": 0.104547349981191,
+     "ci_high": 0.3161170678426344,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "region_mean",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 1.1102230246251565e-16,
+     "delta": 0.31391450247493946,
+     "ci_low": 0.22382191060856915,
+     "ci_high": 0.39772994770373554,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "bens_rfg_tabpfn",
+     "variant": [
+      "same",
+      "same"
+     ],
+     "ref_dev_r2_anomaly": 0.31813579121404245,
+     "delta": -0.00422128873910288,
+     "ci_low": -0.03223363344309164,
+     "ci_high": 0.021825544971529533,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "ph_lab": {
+    "published": {
+     "reference": "knn_community",
+     "variant": "multi",
+     "ref_dev_r2_anomaly": 0.08081927951281687,
+     "delta": 0.3146536663488122,
+     "ci_low": 0.22014392183952228,
+     "ci_high": 0.409788764800448,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "region_mean",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.0,
+     "delta": 0.39547294586162907,
+     "ci_low": 0.31267035330817466,
+     "ci_high": 0.469593268425038,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "bens_rfg_gbm_tabpfn",
+     "variant": [
+      "multi",
+      "same",
+      "same"
+     ],
+     "ref_dev_r2_anomaly": 0.38605857147964406,
+     "delta": 0.009414374381985002,
+     "ci_low": -0.018666310867308456,
+     "ci_high": 0.036042681443532086,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   }
+  },
+  "X-U": {
+   "uk_ph": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.04345474768455626,
+     "delta": 0.1507312976059827,
+     "ci_low": 0.09181946796879309,
+     "ci_high": 0.2169141193298054,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "idx_rf_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.12279639296948253,
+     "delta": 0.07138965232105643,
+     "ci_low": 0.05458333526157076,
+     "ci_high": 0.09019010507505851,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "bens_rfg_gbm_tabpfn",
+     "variant": [
+      "same",
+      "multi",
+      "same"
+     ],
+     "ref_dev_r2_anomaly": 0.18011691221102788,
+     "delta": 0.014069133079511076,
+     "ci_low": -0.002204918608317555,
+     "ci_high": 0.03063978792278541,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "uk_log10_cond25_us_cm": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.28262974696025156,
+     "delta": 0.26668581134805525,
+     "ci_low": 0.20551196671024277,
+     "ci_high": 0.3389526410520591,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "idx_rf_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.4623413508293418,
+     "delta": 0.086974207478965,
+     "ci_low": 0.06840675052266297,
+     "ci_high": 0.10718712717603127,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "bens_rfctx_tabpfn",
+     "variant": [
+      "multi",
+      "same"
+     ],
+     "ref_dev_r2_anomaly": 0.5455668953992802,
+     "delta": 0.0037486629090266455,
+     "ci_low": -0.016945278694965975,
+     "ci_high": 0.022666053422760152,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "uk_log10_chloride_mg_l": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.1618443836582567,
+     "delta": 0.19202701097251473,
+     "ci_low": 0.09136423675696675,
+     "ci_high": 0.3428662354558325,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "idx_linear_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.35321161681066504,
+     "delta": 0.0006597778201063997,
+     "ci_low": -0.06160739289694074,
+     "ci_high": 0.07433591853214999,
+     "expectation": "competitive"
+    },
+    "per_target_comparator": {
+     "reference": "idx_linear_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.35321161681066504,
+     "delta": 0.0006597778201063997,
+     "ci_low": -0.06160739289694074,
+     "ci_high": 0.07433591853214999,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "uk_log10_orthop_mg_l": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.21766303825789501,
+     "delta": 0.12409292458413645,
+     "ci_low": 0.09687893485715239,
+     "ci_high": 0.15243976035459364,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "idx_rf_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.27531231541169443,
+     "delta": 0.06644364743033704,
+     "ci_low": 0.049012947635457715,
+     "ci_high": 0.08405670300168372,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "bens_rfg_gbm_tabpfn",
+     "variant": [
+      "same",
+      "same",
+      "same"
+     ],
+     "ref_dev_r2_anomaly": 0.32251193323878014,
+     "delta": 0.019244029603251334,
+     "ci_low": 0.004193176108712701,
+     "ci_high": 0.0340313300516911,
+     "expectation": "SOTA-expected"
+    },
+    "overall": "SOTA-expected"
+   },
+   "uk_log10_nh4n_mg_l": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.14744849289784379,
+     "delta": 0.09536476373120784,
+     "ci_low": 0.07402015505610181,
+     "ci_high": 0.1184891336577205,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "idx_linear_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.24395967157889942,
+     "delta": -0.001146414949847796,
+     "ci_low": -0.017088266564353364,
+     "ci_high": 0.01698913061566999,
+     "expectation": "competitive"
+    },
+    "per_target_comparator": {
+     "reference": "idx_linear_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.24395967157889942,
+     "delta": -0.001146414949847796,
+     "ci_low": -0.017088266564353364,
+     "ci_high": 0.01698913061566999,
+     "expectation": "competitive"
+    },
+    "overall": "competitive"
+   },
+   "uk_log10_nitrate_mg_l": {
+    "published": {
+     "reference": "wapls2",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.16737890042445458,
+     "delta": 0.2323173494904831,
+     "ci_low": 0.18926622138892157,
+     "ci_high": 0.27753950155360096,
+     "expectation": "SOTA-expected"
+    },
+    "simple": {
+     "reference": "idx_rf_geo",
+     "variant": "same",
+     "ref_dev_r2_anomaly": 0.32824776358274743,
+     "delta": 0.07144848633219025,
+     "ci_low": 0.05819391742665908,
+     "ci_high": 0.08516818196906185,
+     "expectation": "SOTA-expected"
+    },
+    "per_target_comparator": {
+     "reference": "bens_rfctx_tabpfn",
+     "variant": [
+      "same",
+      "same"
+     ],
+     "ref_dev_r2_anomaly": 0.3663225710600676,
+     "delta": 0.03337367885487008,
+     "ci_low": 0.013673453570592973,
+     "ci_high": 0.05589477727261858,
+     "expectation": "SOTA-expected"
+    },
+    "overall": "SOTA-expected"
+   }
+  }
+ },
+ "not_compared": {
+  "gjam": {
+   "method": "GJAM-style joint-species inverse prediction (protocol \u00a76 item 4; R package gjam)",
+   "status": "not compared, with reason: failed the pre-declared fidelity check (protocol v4.8 item 8 as corrected in v6)",
+   "ground_used": "The fidelity check failed in both blocks: the in-sample-scheme r is below 0.90 for at least one target in each block (per_target below). The ground was fixed before any GJAM development prediction was scored (v4.8 item 8; v6).",
+   "time_ground_not_used": "The 2-CPU-hour ground of \u00a76 item 4 is NOT the ground used. Measured gjam fit times: 99.3 min (X-L fold 0, 4474 rows) and 114.4 min (X-U fold 0, 5000 rows).",
+   "fidelity": {
+    "X-L": {
+     "fidelity_pass": false,
+     "criterion": "Pearson r >= 0.90 for every target (our routine in gjam's in-sample scheme vs gjam's own xpredMu, fold 0, fit rows)",
+     "fold": 0,
+     "n_fit_rows": 4474,
+     "n_taxa": 100,
+     "fit_minutes": 99.32365,
+     "per_target": {
+      "log10_tp_ug_l": {
+       "r_insample_scheme_vs_xpredMu": 0.7311942,
+       "r_outofsample_mode_vs_xpredMu": 0.4296805,
+       "n_rows_xpredMu_finite": 4474,
+       "passes_0.90": false
+      },
+      "log10_tn_mg_l": {
+       "r_insample_scheme_vs_xpredMu": 0.7756483,
+       "r_outofsample_mode_vs_xpredMu": 0.5200459,
+       "n_rows_xpredMu_finite": 4474,
+       "passes_0.90": false
+      },
+      "log10_cond_us_cm": {
+       "r_insample_scheme_vs_xpredMu": 0.8839625,
+       "r_outofsample_mode_vs_xpredMu": 0.6553479,
+       "n_rows_xpredMu_finite": 4473,
+       "passes_0.90": false
+      },
+      "log10_chloride_mg_l": {
+       "r_insample_scheme_vs_xpredMu": 0.8395583,
+       "r_outofsample_mode_vs_xpredMu": 0.5391738,
+       "n_rows_xpredMu_finite": 4474,
+       "passes_0.90": false
+      },
+      "log10_turbidity_ntu": {
+       "r_insample_scheme_vs_xpredMu": 0.7783815,
+       "r_outofsample_mode_vs_xpredMu": 0.5377708,
+       "n_rows_xpredMu_finite": 4439,
+       "passes_0.90": false
+      },
+      "ph_lab": {
+       "r_insample_scheme_vs_xpredMu": 0.8155498,
+       "r_outofsample_mode_vs_xpredMu": 0.5377503,
+       "n_rows_xpredMu_finite": 4443,
+       "passes_0.90": false
+      }
+     },
+     "files": {
+      "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/r_out/gjam/X-L/fold00_info.txt": "3eed85bf1c38609c733f9a6ebdbd6680372ff0492cf6a5f4fc547071c7c8a610",
+      "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/logs/gjam_X-L_fold00.log": "3b518909559e0c7280c1114a394f8a4fac001c658c4916f43e3aaa3006da3f2d"
+     }
+    },
+    "X-U": {
+     "fidelity_pass": false,
+     "criterion": "Pearson r >= 0.90 for every target (our routine in gjam's in-sample scheme vs gjam's own xpredMu, fold 0, fit rows)",
+     "fold": 0,
+     "n_fit_rows": 5000,
+     "n_taxa": 100,
+     "fit_minutes": 114.4027,
+     "per_target": {
+      "uk_ph": {
+       "r_insample_scheme_vs_xpredMu": 0.9116999,
+       "r_outofsample_mode_vs_xpredMu": 0.3741026,
+       "n_rows_xpredMu_finite": 4868,
+       "passes_0.90": true
+      },
+      "uk_log10_cond25_us_cm": {
+       "r_insample_scheme_vs_xpredMu": 0.8859229,
+       "r_outofsample_mode_vs_xpredMu": 0.5704555,
+       "n_rows_xpredMu_finite": 2242,
+       "passes_0.90": false
+      },
+      "uk_log10_chloride_mg_l": {
+       "r_insample_scheme_vs_xpredMu": 0.8271156,
+       "r_outofsample_mode_vs_xpredMu": 0.4937561,
+       "n_rows_xpredMu_finite": 2517,
+       "passes_0.90": false
+      },
+      "uk_log10_orthop_mg_l": {
+       "r_insample_scheme_vs_xpredMu": 0.9234179,
+       "r_outofsample_mode_vs_xpredMu": 0.515637,
+       "n_rows_xpredMu_finite": 4791,
+       "passes_0.90": true
+      },
+      "uk_log10_nh4n_mg_l": {
+       "r_insample_scheme_vs_xpredMu": 0.9108077,
+       "r_outofsample_mode_vs_xpredMu": 0.4308903,
+       "n_rows_xpredMu_finite": 4897,
+       "passes_0.90": true
+      },
+      "uk_log10_nitrate_mg_l": {
+       "r_insample_scheme_vs_xpredMu": 0.8514808,
+       "r_outofsample_mode_vs_xpredMu": 0.4337978,
+       "n_rows_xpredMu_finite": 4371,
+       "passes_0.90": false
+      }
+     },
+     "files": {
+      "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/r_out/gjam/X-U/fold00_info.txt": "635df00720f50b6afb38857af09d338a7746c58ee751628e3a3773a4e76fee8e",
+      "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/logs/gjam_X-U_fold00.log": "e99db1a2ac85991efa45a86956f0fb371383b2abf4071a446d2419e8a98c9314"
+     }
+    }
+   },
+   "first_check_v4_8": {
+    "note": "The check as first written in v4.8 item 8 was run first on X-L fold 0 and failed; v6 corrected the check after that failure was seen (disclosed in DISCLOSURE_GJAM_FIDELITY_AMENDMENT_V6).",
+    "file": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/r_out/gjam/X-L/fold00_v4check_info.txt",
+    "sha256": "6be2ca880135c5f65d38657e989af79365dae17d7979907304b2d16cbe3ef44d",
+    "text": "List of 6\n $ n_fit          : int 4474\n $ n_taxa         : int 100\n $ fit_minutes    : num 86.7\n $ fidelity_r     : Named num [1:6] 0.43 0.52 NA 0.537 NA ...\n  ..- attr(*, \"names\")= chr [1:6] \"log10_tp_ug_l\" \"log10_tn_mg_l\" \"log10_cond_us_cm\" \"log10_chloride_mg_l\" ...\n $ fidelity_pass  : logi FALSE\n $ predict_minutes: num 0.422\n"
+   },
+   "run_once_no_tuning": "The corrected check was run once, on fold 0 of each block. It is not repeated and gjam is not tuned further to pass it.",
+   "test_rows": "No GJAM prediction is fitted or scored on test rows.",
+   "limitation": "One published joint-species method (GJAM) could not be reproduced faithfully and is not in the comparison. This is stated in every report.",
+   "claim_wording": "No claim may say that C-X beats all joint-species models; GJAM is named as not compared."
+  },
+  "trpi": {
+   "method": "TRPI (UK pressure index; protocol \u00a76 item 5)",
+   "status": "not compared, with reason: TRPI is not in the EA dataset and its published taxon scores were not obtained under licence before the freeze (protocol \u00a76 item 5; v9 item 6)"
+  }
+ },
+ "reproducibility_tolerance": {
+  "delta": 0.0002,
+  "ci": 0.0002,
+  "per_seed_delta": 0.0003,
+  "p": 0.003,
+  "rescore_abs": 1e-09
+ },
+ "reproducibility_rule": "Protocol v11 item 6: runs are not bit-reproducible (two development dry runs of one record differed by up to 4.4e-5 in delta, 9.7e-5 in CI ends, 1.5e-4 in per-seed delta and 0.0016 in p). (a) The sealed predictions of the one look are the record and are never refitted. (b) A rescore from the same sealed predictions must reproduce every stored number within rescore_abs and every label exactly; otherwise both result sets are kept and no label is used until the lead has ruled. (c) A later refit from the snapshot (reproduction, never a second look) reproduces the result when delta and CI ends agree within delta / ci, per-seed delta within per_seed_delta and p within p. (d) Confirmatory rows within these tolerances of a label threshold are flagged. (e) A bootstrap p of 0 is reported as '< 2/B'.",
+ "listed_comparator_rule": "Amendments v9, v10 and v11 item 1 (written before any test data were seen): every comparator in comparator_set (X-L: 16, X-U: 19) is fitted at the look in its development-chosen variant (seeds 0-2 where stochastic) and compared with C-X; results/listed_comparators.json holds every paired estimate. The scorer refuses a record whose list differs from the protocol's or whose rule comparators do not follow from its own C-X. The confirmatory family stays 12 tests (C-X vs the per-target comparator, re-chosen among the enlarged list by the unchanged rule).",
+ "event_track": {
+  "amendment": "v8",
+  "role": "SECONDARY (never in the 12-test confirmatory family); scored in the same single M5-X look; original M5 test blocks are spent and unused",
+  "events": {
+   "X-L|E2a": {
+    "target": "log10_chloride_mg_l",
+    "shared_event_code": "E2a_lab",
+    "direct_head": false,
+    "status": "descriptive only",
+    "power_dev": {
+     "n": 414,
+     "n_pos": 11,
+     "n_clusters_pos": 11,
+     "flag": "U",
+     "flag_word": "underpowered"
+    },
+    "projection": {
+     "n_test_split": 974,
+     "dev_label_availability": 0.9975903614457832,
+     "dev_prevalence": 0.026570048309178744,
+     "projected_test_positives": 25.816867469879522
+    }
+   },
+   "X-L|E5b": {
+    "target": "log10_tp_ug_l",
+    "shared_event_code": "E5b",
+    "direct_head": true,
+    "status": "secondary",
+    "power_dev": {
+     "n": 414,
+     "n_pos": 105,
+     "n_clusters_pos": 105,
+     "flag": "F",
+     "flag_word": "feasible"
+    },
+    "projection": {
+     "n_test_split": 974,
+     "dev_label_availability": 0.9975903614457832,
+     "dev_prevalence": 0.2536231884057971,
+     "projected_test_positives": 246.43373493975906
+    }
+   },
+   "X-L|E6": {
+    "target": "ph_lab",
+    "shared_event_code": "E6_snap",
+    "direct_head": true,
+    "status": "secondary",
+    "power_dev": {
+     "n": 394,
+     "n_pos": 46,
+     "n_clusters_pos": 46,
+     "flag": "F",
+     "flag_word": "feasible"
+    },
+    "projection": {
+     "n_test_split": 974,
+     "dev_label_availability": 0.9493975903614458,
+     "dev_prevalence": 0.116751269035533,
+     "projected_test_positives": 107.96144578313253
+    }
+   },
+   "X-L|E3": {
+    "target": "log10_turbidity_ntu",
+    "shared_event_code": "E3a_turb",
+    "direct_head": false,
+    "status": "descriptive only",
+    "power_dev": {
+     "n": 389,
+     "n_pos": 11,
+     "n_clusters_pos": 11,
+     "flag": "U",
+     "flag_word": "underpowered"
+    },
+    "projection": {
+     "n_test_split": 974,
+     "dev_label_availability": 0.9373493975903614,
+     "dev_prevalence": 0.028277634961439587,
+     "projected_test_positives": 25.816867469879515
+    }
+   },
+   "X-U|E2a": {
+    "target": "uk_log10_chloride_mg_l",
+    "shared_event_code": "E2a_lab",
+    "direct_head": false,
+    "status": "descriptive only",
+    "power_dev": {
+     "n": 840,
+     "n_pos": 19,
+     "n_clusters_pos": 7,
+     "flag": "U",
+     "flag_word": "underpowered"
+    },
+    "projection": {
+     "n_test_split": 8121,
+     "dev_label_availability": 0.17543859649122806,
+     "dev_prevalence": 0.02261904761904762,
+     "projected_test_positives": 32.226190476190474
+    }
+   },
+   "X-U|E6": {
+    "target": "uk_ph",
+    "shared_event_code": "E6_snap",
+    "direct_head": true,
+    "status": "secondary",
+    "power_dev": {
+     "n": 4596,
+     "n_pos": 35,
+     "n_clusters_pos": 25,
+     "flag": "F",
+     "flag_word": "feasible"
+    },
+    "projection": {
+     "n_test_split": 8121,
+     "dev_label_availability": 0.9598997493734336,
+     "dev_prevalence": 0.007615317667536988,
+     "projected_test_positives": 59.3640350877193
+    }
+   }
+  },
+  "descriptive_only_note": "Power rule (>= 30 positives and >= 10 clusters on the development pseudo-test) governs (amendment v8a: the lead corrected an earlier instruction that conflicted with it, before any event output existed). Powered: X-L E5b, X-L E6, X-U E6 (35/25). Descriptive only: X-U E2a (19/7), X-L E2a (11/11), X-L E3 (11/11).",
+  "threshold_baselines": {
+   "X-L": {
+    "rf_geography": {
+     "kind": "baseline",
+     "name": "rf_geography",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    },
+    "tabpfn_community": {
+     "kind": "baseline",
+     "name": "tabpfn_community",
+     "variant": {
+      "log10_tp_ug_l": "same",
+      "log10_tn_mg_l": "same",
+      "log10_cond_us_cm": "same",
+      "log10_chloride_mg_l": "same",
+      "log10_turbidity_ntu": "same",
+      "ph_lab": "same"
+     }
+    }
+   },
+   "X-U": {
+    "rf_geography": {
+     "kind": "baseline",
+     "name": "rf_geography",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "same",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    },
+    "tabpfn_community": {
+     "kind": "baseline",
+     "name": "tabpfn_community",
+     "variant": {
+      "uk_ph": "same",
+      "uk_log10_cond25_us_cm": "same",
+      "uk_log10_chloride_mg_l": "multi",
+      "uk_log10_orthop_mg_l": "same",
+      "uk_log10_nh4n_mg_l": "same",
+      "uk_log10_nitrate_mg_l": "same"
+     }
+    }
+   }
+  },
+  "status": "active",
+  "events_module_sha256": "4279d2427d777405ce1cb140cab995567a8086fee5fd4776950e4de1065954ae",
+  "calibration_file": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/events/events_calibration_v1.parquet",
+  "calibration_sha256": "027f2f79983e9088b58ce270618beadce77bd4b426fbc02a75767a14687bd615",
+  "dev_results_file": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/events/events_dev_v1.json",
+  "dev_results_sha256": "716460ba81c10d256d0e03425439483ed8c634d8cd2300dede2e27ae50e5c9e9",
+  "test_block_capacity": "Test labels unread; projection = development prevalence x development label availability x test rows. The plan's power rule is re-applied on the test rows inside the look. X-L|E2a: dev 11 positives / 11 clusters (U); projected test positives \u2248 26 of 974 rows -> descriptive only | X-L|E5b: dev 105 positives / 105 clusters (F); projected test positives \u2248 246 of 974 rows -> can carry it (secondary) | X-L|E6: dev 46 positives / 46 clusters (F); projected test positives \u2248 108 of 974 rows -> can carry it (secondary) | X-L|E3: dev 11 positives / 11 clusters (U); projected test positives \u2248 26 of 974 rows -> descriptive only | X-U|E2a: dev 19 positives / 7 clusters (U); projected test positives \u2248 32 of 8121 rows -> descriptive only | X-U|E6: dev 35 positives / 25 clusters (F); projected test positives \u2248 59 of 8121 rows -> can carry it (secondary)"
+ },
+ "n_configurations_tried": {
+  "X-L": 6,
+  "X-U": 6,
+  "total": 12,
+  "cap": 12,
+  "rule": "counted per (configuration, block); amendment v4.9"
+ },
+ "selection_note": "Selected by the pre-registered rule (highest mean development r2_anomaly over the block's 6 targets, seed 0) among the SENTINEL configurations of amendment v4.9; development = NLA 2017 LOEO (X-L) and UK 2016-20 leave-one-area-out (X-U) pseudo-tests on training-pool rows only. Comparators: strongest of all \u00a76 comparators per (block, target) by development r2_anomaly, each in its chosen variant. Amendments v9/v10 change the scorer and the label rule only: no model was fitted or selected on development after them. Amendment v11 adds the two rule comparators (means of existing development predictions) and restructures the look; C-X, the secondaries, every model, feature set, seed, split and fold are unchanged and no model was fitted on development for it.",
+ "sha256": {
+  "configs/bioassess/baselines.yaml": "bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a",
+  "configs/bioassess/bioset.yaml": "e7ceb31d0755d0a1e9a357279833da445cb4b96d9d712a403412c9f000730806",
+  "docs/preregistration/bioassess_x_protocol.md": "d5ba296dd1cc6c088212327ee789592b162d0edd8bf6dbab2ece564f33e7d4d1",
+  "docs/preregistration/downstream_d2n_microcystin_split.json": "0d9eb684285155c7d73a8454b3b211aea626e5bb6b1bc809970d55ded4176295",
+  "docs/preregistration/fuse_tier_c_split.json": "e2fd5de9da4079091445c0635f8ccf1febe7c878a7dc7a3beb679ad0b68e3f37",
+  "scripts/eval/bioassess_x_bioinfer.R": "e5efd92b10ae45273ca7fcdbc77ccbc1dd97b124788a4fa7dca13ad41c9d39ea",
+  "scripts/eval/bioassess_x_dev.py": "5fa2d0de98c9e6fc7112c399ff2ef22d02aab47664f2e5a81cbcf92e12c64482",
+  "scripts/eval/bioassess_x_events.py": "ddf21181223067d24449da5c5225f8824b60f720b41497f838f9361c541295f5",
+  "scripts/eval/bioassess_x_final.py": "a0ae056314c703f664492f0c62a790772449ab8bb9b69f440a742fda8f65c672",
+  "scripts/eval/bioassess_x_freeze_candidate.py": "6ad132c1cfa6c93d7c3179bb73c3d887f021d0b06f4e8837c4ffaa4c24b76848",
+  "scripts/eval/bioassess_x_gjam.R": "801fde5b1f07f827c9b74eb7d3d012f95a2b7fc02e35e9ce963510b202c56955",
+  "scripts/eval/bioassess_x_select.py": "6135a76bf4d3ee2b08a95d335115187b051e39298ff1a481427125f6efc98ea1",
+  "scripts/train/bioassess_x_bioset.py": "2cb73a56d740b64e441d294aa2399f6471972b3d2d57db27c052e199f3269271",
+  "sentinel/__init__.py": "c56348c43d5fc13068b63471b47901b374fbff7db2ae6c4051f9ae65555d7071",
+  "sentinel/core/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/core/gpu.py": "a2c79b40f3a7a7d32f761a3a09bc6831a9eab00324b75201f006aa0abf9ee77d",
+  "sentinel/core/paths.py": "9bbe6f726dfdd9d3879331de3b976c5780bb0bb27814fb48fd9171b8a6de20f3",
+  "sentinel/core/registry.py": "8e1f1733a546b30189335403e3acfc61c9637301195c94f06dd17582a73605f7",
+  "sentinel/core/runlog.py": "e31ef200946e35b5919691f1352c811eefdf35ad0a4232ec94280f69af087720",
+  "sentinel/core/seed.py": "b4dc8bd4e26e39755e364df6927e61f3b1ac412a8d1eb7a9da279c38aa1a75f7",
+  "sentinel/data/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/data/sources/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/data/sources/hydrolakes.py": "99254a125eed97cc68163a3e4689f7de23fbf973c072ce966e8bafe90a8cef73",
+  "sentinel/eval/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/early_warning.py": "7bf7ba245a87584303e200bebfb837b9040eba63d8c8f4146e92fe1274675560",
+  "sentinel/eval/events.py": "4279d2427d777405ce1cb140cab995567a8086fee5fd4776950e4de1065954ae",
+  "sentinel/eval/ew_scoring.py": "2e477d1ed5124ee309e46cc8c2f3b0a11929c2aa900dd3e723aac106d14b6b7e",
+  "sentinel/eval/hazards.py": "fb31fc04dd8012489b0c826b244a38e3cde4cc2b3a0fbac309924123814f0e61",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/events/__init__.py": "d6ba3df24edbc31dc75f87c1e4bc852b7e34b67fdfe517477c97eff3d017bdbe",
+  "sentinel/events/bioassess_x.py": "f3129d00ea698e4361561cae9a097abec0cf698b5247001817aa8b1a93954a32",
+  "sentinel/models/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/models/bioassess/__init__.py": "1e4cb0ebf1c09ed203811b85e4e1f763fe51444377ca0f824ff1e767d5dc9bae",
+  "sentinel/models/bioassess/baselines.py": "07611b77e723e6d679f11319490628b0b735ead7f72750655e5cc42ffd52b38a",
+  "sentinel/models/bioassess/bioset.py": "909c8ca3851093464bb7d1c6e494e6684ff8ca7037ed7e5682f8a7eb577154d1",
+  "sentinel/models/bioassess/cv.py": "4acd3010291554b1766f3c2cba78ac978b493ef70efa6b923d42752e3f595ee9",
+  "sentinel/models/bioassess/data.py": "a09d9e9daeccaa1508555d9943e0613c76f404103f84c1028930c0b79d122853",
+  "sentinel/models/bioassess/evaluate.py": "a2071dfa1bf37a2b428404d54db0728f512febe57f79eff0cf90a21a36df96d8",
+  "sentinel/models/bioassess/features.py": "73840717838093739ff39fa23bb7df5650768cc25b3d817c097065c023e404dc",
+  "sentinel/models/bioassess/pretrain.py": "ed7002a4fbe684256892ade1fbe0bf1fca4ebab48e23f802c4cce1b025e20be8",
+  "sentinel/models/bioassess/splits.py": "01348a865a87f2065dead08b639a314432b7eb7ec2b4c78ff14f9f8a8833da5a",
+  "sentinel/models/bioassess/uk.py": "b88ef9dc60626c77a222bcc35f58c3fe5c5c3da73b7e3587c333f5ecda2f0029",
+  "sentinel/models/bioassess/xbioset.py": "637a385287aaa0bd0d061559db3e1a3ca59cc8201b48f20cd6d2f970add981b0",
+  "sentinel/models/bioassess/xdata.py": "b25a5079ebd0bd5e12d5d25b44d7f26a7e2d1043e6b195fb38045396c184f821",
+  "sentinel/models/bioassess/xdev.py": "85fd05f9d670b3483b0f669ed07da6ca756ff740215d969243f456d11a0abe89",
+  "sentinel/models/bioassess/xtestlook.py": "929e8ff0bdbf8570fbad2a40b2fa765aba2686d34679c318c50c455ca61e2d47",
+  "sentinel/models/bioassess/xtrack.py": "9492791fcca75dd1937d96fbb72850edd92a50bd4eb6bf816a9ed4a0d910996e",
+  "sentinel/models/chemtox/__init__.py": "1a8ee0efbce68705f18440f25632d287f753044c4dd1d1e542c4d812bfb7c888",
+  "sentinel/models/chemtox/evaluate.py": "697a2ace62b8686047919321b762dd5dfff3944ab7af6fcc94f75a1c88ccb2f5",
+  "sentinel/models/chemtox/features.py": "873dc040521521925bb4c2d26ff5a110b78663331e4ff8d09267770bfa4fdee5",
+  "sentinel/models/chemtox/tabpfn_model.py": "d91bfdbf44087a95ac03f5efc7d47e11426ea5a0bc0e9b2a16d5e602cdea657f",
+  "sentinel/models/orbit/__init__.py": "94dece41f71b0853817f5c8ba9ea90efc458f60fc829591eb3171c700f61173a",
+  "sentinel/models/orbit/split.py": "0f2604b1ef45a124b3702a3f394d7394a3e9757bf28c5a32a9fdc9f3386cfc6c",
+  "tests/test_bioassess_models.py": "d00ad33c37fed78407ff4e511120b3967d455f300851cd1d0ce3390d1c39b28a",
+  "tests/test_bioassess_x_dev.py": "82b7c869bba105a119e28a756c91c3fc9ffa1758ccb029fd10171c4571da8a11",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/splits_x_v1.parquet": "18a35ef3ba9ddd87a5be2e8c4ff1a18d29bea8869318f940b150b1306feee459",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/splits_x_v1.json": "29e9dd79555e78175d9ff6116209403e6737fc252bc819cec694abea82282d6b",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/pools_x_v1.json": "b50235ed82a9e14e608f1686a16ed9fcb60ac6dd574b2247a9c4d1cf7b496d61",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/power_x_v1.json": "80d5471586635b398bc95fedd5bd1ccd2889d0c74bb4cd69bb7b90adbf301b53",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/folds_dev_v1.json": "b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/selection_x_v1.json": "9e8aec0ef9c03bbbd808e833893fab39df6cae0c4d244fc115ab5b51550d58b2",
+  "/home/bcheng/.cache/tabpfn/tabpfn-v2-regressor.ckpt": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736"
+ },
+ "data_sha256": {
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_streams/visits.parquet": "cbf1e2270b90b9cea744ca7fc5853326a629e01afb18a295265b000fb2e83a22",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_streams/benthic_counts.parquet": "a33e114dc3a06adac8e74b9fa660559cb7d0c7467ec7ad1a53eac4a885d5e114",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_streams/chemistry_wide.parquet": "3febe1023fb9706085360cda3e767c12f6594ae87cd9bae82baf87f16040164c",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_streams/chemistry_long.parquet": "5b7df8edf2feb9fce2dbbf9cdb4f44913bde3cfb156bce166eb277a2e42c3a79",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_lakes/visits.parquet": "9bcc86e35607bea27ecf9e6301c89b581e9da94042ce543b3271e80f334cb7af",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_lakes/benthic_counts.parquet": "274db14e8fc44424701bb80937d3824ad521c38443e07f92d34c043bb84b21bf",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_lakes/chemistry_wide.parquet": "5ab7c9d6228c558b3e30f6f632905c87b65220a737be0e1fd83b25239ecaee54",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/nars_lakes/chemistry_long.parquet": "09c5580e671d918ec064bcc22b96bcb9b818eff373a020b9f451ad24e46f506e",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/taxonomy_harmonised/taxon_map.parquet": "bff231fc5746555e04895ee5e694fdd9e302d70c3cd058c601789ac57756a885",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/uk_ea_ecology/sites.parquet": "6aff21ce7df9a8a84bcbeaac71e5d0bfe86b37ba3216e242652e419c1fe21afe",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/uk_ea_ecology/samples_invertebrate.parquet": "e3886df0ad601867cee889aa7ea03e90424889ffc8de798d9f98ef32f048e4bf",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/uk_ea_ecology/counts_invertebrate.parquet": "4bc7fd40b68613c39651891270a0f6350e31fc3d6bb73b40a8a6aea9d4bfb663",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/uk_ea_ecology/chemistry_matched_wide_pm30d_invertebrate.parquet": "54ab13e997b38d65b513802db2f8cb0d78acf9658d8344de9f5e435485f87bda",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/fuse_tier_c/rows.parquet": "06cbb5f8a704d1ddcea10a2f1a52c0458bade4de180ffbb3ec1c914de00e5e45",
+  "/home/bcheng/STOCKHOLM/sentinel_data/processed/s2_wqp_matchups_hist/samples.parquet": "0f774139ae53ba24d2d0c73f90bbeef3980b8203dc3e8a0dfe3c5e0e8d931684"
+ },
+ "tabpfn_checkpoint": {
+  "path": "/home/bcheng/.cache/tabpfn/tabpfn-v2-regressor.ckpt",
+  "sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736"
+ },
+ "package_versions": {
+  "tabpfn": "2.2.1",
+  "torch": "2.7.1+cu118",
+  "scikit-learn": "1.9.1",
+  "lightgbm": "4.7.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.17.1",
+  "joblib": "1.6.0",
+  "pyarrow": "26.0.0",
+  "PyYAML": "6.0.3"
+ },
+ "r_package_versions": {
+  "bio.infer": "1.3.6",
+  "gjam": "2.7",
+  "R": "R version 4.3.3 (2024-02-29)"
+ },
+ "scoring_code_sha256": "16f39015092a4dbf4be35dfbb89c6bbf29fcb0960573ad64cdb091988b75e1cb",
+ "scoring_code_files": [
+  "scripts/eval/bioassess_x_dev.py",
+  "scripts/eval/bioassess_x_final.py",
+  "sentinel/__init__.py",
+  "sentinel/core/__init__.py",
+  "sentinel/core/gpu.py",
+  "sentinel/core/paths.py",
+  "sentinel/core/registry.py",
+  "sentinel/core/runlog.py",
+  "sentinel/core/seed.py",
+  "sentinel/data/__init__.py",
+  "sentinel/data/sources/__init__.py",
+  "sentinel/data/sources/hydrolakes.py",
+  "sentinel/eval/__init__.py",
+  "sentinel/eval/bootstrap.py",
+  "sentinel/eval/early_warning.py",
+  "sentinel/eval/events.py",
+  "sentinel/eval/ew_scoring.py",
+  "sentinel/eval/hazards.py",
+  "sentinel/eval/metrics.py",
+  "sentinel/eval/splits.py",
+  "sentinel/events/__init__.py",
+  "sentinel/events/bioassess_x.py",
+  "sentinel/models/__init__.py",
+  "sentinel/models/bioassess/__init__.py",
+  "sentinel/models/bioassess/baselines.py",
+  "sentinel/models/bioassess/bioset.py",
+  "sentinel/models/bioassess/cv.py",
+  "sentinel/models/bioassess/data.py",
+  "sentinel/models/bioassess/evaluate.py",
+  "sentinel/models/bioassess/features.py",
+  "sentinel/models/bioassess/pretrain.py",
+  "sentinel/models/bioassess/splits.py",
+  "sentinel/models/bioassess/uk.py",
+  "sentinel/models/bioassess/xbioset.py",
+  "sentinel/models/bioassess/xdata.py",
+  "sentinel/models/bioassess/xdev.py",
+  "sentinel/models/bioassess/xtestlook.py",
+  "sentinel/models/bioassess/xtrack.py",
+  "sentinel/models/chemtox/__init__.py",
+  "sentinel/models/chemtox/evaluate.py",
+  "sentinel/models/chemtox/features.py",
+  "sentinel/models/chemtox/tabpfn_model.py",
+  "sentinel/models/orbit/__init__.py",
+  "sentinel/models/orbit/split.py",
+  "scripts/eval/bioassess_x_bioinfer.R",
+  "scripts/eval/bioassess_x_gjam.R"
+ ],
+ "code_snapshot": {
+  "dir": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess_x/code_179746238432ac31",
+  "tree_sha256": "179746238432ac31f68cf882063b573073cc2e6ab3b6041c4af397116d3ce1d4",
+  "files": {
+   "configs/bioassess/baselines.yaml": "bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a",
+   "configs/bioassess/bioset.yaml": "e7ceb31d0755d0a1e9a357279833da445cb4b96d9d712a403412c9f000730806",
+   "docs/preregistration/bioassess_x_protocol.md": "d5ba296dd1cc6c088212327ee789592b162d0edd8bf6dbab2ece564f33e7d4d1",
+   "docs/preregistration/downstream_d2n_microcystin_split.json": "0d9eb684285155c7d73a8454b3b211aea626e5bb6b1bc809970d55ded4176295",
+   "docs/preregistration/fuse_tier_c_split.json": "e2fd5de9da4079091445c0635f8ccf1febe7c878a7dc7a3beb679ad0b68e3f37",
+   "scripts/eval/bioassess_x_bioinfer.R": "e5efd92b10ae45273ca7fcdbc77ccbc1dd97b124788a4fa7dca13ad41c9d39ea",
+   "scripts/eval/bioassess_x_dev.py": "5fa2d0de98c9e6fc7112c399ff2ef22d02aab47664f2e5a81cbcf92e12c64482",
+   "scripts/eval/bioassess_x_events.py": "ddf21181223067d24449da5c5225f8824b60f720b41497f838f9361c541295f5",
+   "scripts/eval/bioassess_x_final.py": "a0ae056314c703f664492f0c62a790772449ab8bb9b69f440a742fda8f65c672",
+   "scripts/eval/bioassess_x_freeze_candidate.py": "6ad132c1cfa6c93d7c3179bb73c3d887f021d0b06f4e8837c4ffaa4c24b76848",
+   "scripts/eval/bioassess_x_gjam.R": "801fde5b1f07f827c9b74eb7d3d012f95a2b7fc02e35e9ce963510b202c56955",
+   "scripts/eval/bioassess_x_select.py": "6135a76bf4d3ee2b08a95d335115187b051e39298ff1a481427125f6efc98ea1",
+   "scripts/train/bioassess_x_bioset.py": "2cb73a56d740b64e441d294aa2399f6471972b3d2d57db27c052e199f3269271",
+   "sentinel/__init__.py": "c56348c43d5fc13068b63471b47901b374fbff7db2ae6c4051f9ae65555d7071",
+   "sentinel/core/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+   "sentinel/core/gpu.py": "a2c79b40f3a7a7d32f761a3a09bc6831a9eab00324b75201f006aa0abf9ee77d",
+   "sentinel/core/paths.py": "9bbe6f726dfdd9d3879331de3b976c5780bb0bb27814fb48fd9171b8a6de20f3",
+   "sentinel/core/registry.py": "8e1f1733a546b30189335403e3acfc61c9637301195c94f06dd17582a73605f7",
+   "sentinel/core/runlog.py": "e31ef200946e35b5919691f1352c811eefdf35ad0a4232ec94280f69af087720",
+   "sentinel/core/seed.py": "b4dc8bd4e26e39755e364df6927e61f3b1ac412a8d1eb7a9da279c38aa1a75f7",
+   "sentinel/data/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+   "sentinel/data/sources/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+   "sentinel/data/sources/hydrolakes.py": "99254a125eed97cc68163a3e4689f7de23fbf973c072ce966e8bafe90a8cef73",
+   "sentinel/eval/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+   "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+   "sentinel/eval/early_warning.py": "7bf7ba245a87584303e200bebfb837b9040eba63d8c8f4146e92fe1274675560",
+   "sentinel/eval/events.py": "4279d2427d777405ce1cb140cab995567a8086fee5fd4776950e4de1065954ae",
+   "sentinel/eval/ew_scoring.py": "2e477d1ed5124ee309e46cc8c2f3b0a11929c2aa900dd3e723aac106d14b6b7e",
+   "sentinel/eval/hazards.py": "fb31fc04dd8012489b0c826b244a38e3cde4cc2b3a0fbac309924123814f0e61",
+   "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+   "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+   "sentinel/events/__init__.py": "d6ba3df24edbc31dc75f87c1e4bc852b7e34b67fdfe517477c97eff3d017bdbe",
+   "sentinel/events/bioassess_x.py": "f3129d00ea698e4361561cae9a097abec0cf698b5247001817aa8b1a93954a32",
+   "sentinel/models/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+   "sentinel/models/bioassess/__init__.py": "1e4cb0ebf1c09ed203811b85e4e1f763fe51444377ca0f824ff1e767d5dc9bae",
+   "sentinel/models/bioassess/baselines.py": "07611b77e723e6d679f11319490628b0b735ead7f72750655e5cc42ffd52b38a",
+   "sentinel/models/bioassess/bioset.py": "909c8ca3851093464bb7d1c6e494e6684ff8ca7037ed7e5682f8a7eb577154d1",
+   "sentinel/models/bioassess/cv.py": "4acd3010291554b1766f3c2cba78ac978b493ef70efa6b923d42752e3f595ee9",
+   "sentinel/models/bioassess/data.py": "a09d9e9daeccaa1508555d9943e0613c76f404103f84c1028930c0b79d122853",
+   "sentinel/models/bioassess/evaluate.py": "a2071dfa1bf37a2b428404d54db0728f512febe57f79eff0cf90a21a36df96d8",
+   "sentinel/models/bioassess/features.py": "73840717838093739ff39fa23bb7df5650768cc25b3d817c097065c023e404dc",
+   "sentinel/models/bioassess/pretrain.py": "ed7002a4fbe684256892ade1fbe0bf1fca4ebab48e23f802c4cce1b025e20be8",
+   "sentinel/models/bioassess/splits.py": "01348a865a87f2065dead08b639a314432b7eb7ec2b4c78ff14f9f8a8833da5a",
+   "sentinel/models/bioassess/uk.py": "b88ef9dc60626c77a222bcc35f58c3fe5c5c3da73b7e3587c333f5ecda2f0029",
+   "sentinel/models/bioassess/xbioset.py": "637a385287aaa0bd0d061559db3e1a3ca59cc8201b48f20cd6d2f970add981b0",
+   "sentinel/models/bioassess/xdata.py": "b25a5079ebd0bd5e12d5d25b44d7f26a7e2d1043e6b195fb38045396c184f821",
+   "sentinel/models/bioassess/xdev.py": "85fd05f9d670b3483b0f669ed07da6ca756ff740215d969243f456d11a0abe89",
+   "sentinel/models/bioassess/xtestlook.py": "929e8ff0bdbf8570fbad2a40b2fa765aba2686d34679c318c50c455ca61e2d47",
+   "sentinel/models/bioassess/xtrack.py": "9492791fcca75dd1937d96fbb72850edd92a50bd4eb6bf816a9ed4a0d910996e",
+   "sentinel/models/chemtox/__init__.py": "1a8ee0efbce68705f18440f25632d287f753044c4dd1d1e542c4d812bfb7c888",
+   "sentinel/models/chemtox/evaluate.py": "697a2ace62b8686047919321b762dd5dfff3944ab7af6fcc94f75a1c88ccb2f5",
+   "sentinel/models/chemtox/features.py": "873dc040521521925bb4c2d26ff5a110b78663331e4ff8d09267770bfa4fdee5",
+   "sentinel/models/chemtox/tabpfn_model.py": "d91bfdbf44087a95ac03f5efc7d47e11426ea5a0bc0e9b2a16d5e602cdea657f",
+   "sentinel/models/orbit/__init__.py": "94dece41f71b0853817f5c8ba9ea90efc458f60fc829591eb3171c700f61173a",
+   "sentinel/models/orbit/split.py": "0f2604b1ef45a124b3702a3f394d7394a3e9757bf28c5a32a9fdc9f3386cfc6c",
+   "tests/test_bioassess_models.py": "d00ad33c37fed78407ff4e511120b3967d455f300851cd1d0ce3390d1c39b28a",
+   "tests/test_bioassess_x_dev.py": "82b7c869bba105a119e28a756c91c3fc9ffa1758ccb029fd10171c4571da8a11"
+  },
+  "marker_sha256": "cfc800370e5049f342c74326e4dd6ae40935fcd6b77293558f310bf8f7aeba05",
+  "live_root": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM"
+ },
+ "artifacts": {
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/splits_x_v1.parquet": "18a35ef3ba9ddd87a5be2e8c4ff1a18d29bea8869318f940b150b1306feee459",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/splits_x_v1.json": "29e9dd79555e78175d9ff6116209403e6737fc252bc819cec694abea82282d6b",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/pools_x_v1.json": "b50235ed82a9e14e608f1686a16ed9fcb60ac6dd574b2247a9c4d1cf7b496d61",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/power_x_v1.json": "80d5471586635b398bc95fedd5bd1ccd2889d0c74bb4cd69bb7b90adbf301b53",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/folds_dev_v1.json": "b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/selection_x_v1.json": "9e8aec0ef9c03bbbd808e833893fab39df6cae0c4d244fc115ab5b51550d58b2",
+  "/home/bcheng/.cache/tabpfn/tabpfn-v2-regressor.ckpt": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/design_v1.pkl": "df4e142c79a09ea9510c064fbdcb8470fa91d7d91690abd97d0dbcbddd4aad7d",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/frozen_keys.json": "a6eb6b2077120c51ba1e4fc1496defea6e437ddbaf3083f6a99b2c7b931e559e",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/r_out/gjam/X-L/fold00_v4check_info.txt": "6be2ca880135c5f65d38657e989af79365dae17d7979907304b2d16cbe3ef44d",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/r_out/gjam/X-L/fold00_info.txt": "3eed85bf1c38609c733f9a6ebdbd6680372ff0492cf6a5f4fc547071c7c8a610",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/logs/gjam_X-L_fold00.log": "3b518909559e0c7280c1114a394f8a4fac001c658c4916f43e3aaa3006da3f2d",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/r_out/gjam/X-U/fold00_info.txt": "635df00720f50b6afb38857af09d338a7746c58ee751628e3a3773a4e76fee8e",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/logs/gjam_X-U_fold00.log": "e99db1a2ac85991efa45a86956f0fb371383b2abf4071a446d2419e8a98c9314",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/events/events_calibration_v1.parquet": "027f2f79983e9088b58ce270618beadce77bd4b426fbc02a75767a14687bd615",
+  "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/events/events_dev_v1.json": "716460ba81c10d256d0e03425439483ed8c634d8cd2300dede2e27ae50e5c9e9"
+ },
+ "data_snapshots": {
+  "nars_streams": {
+   "manifest": "nars_streams",
+   "manifest_sha256": "f822a0a31fb5446f9d176675b8265f7f304510b538a6417920076c8e8d3f73bc",
+   "loader_dir_rel": "nars_streams",
+   "files": [
+    "visits.parquet",
+    "benthic_counts.parquet",
+    "chemistry_wide.parquet",
+    "chemistry_long.parquet"
+   ],
+   "content_sha256": "c7b5228f291fbe7d47c804d6e2fa3513b2b8e78a4676c9194f974c0b7ec31153"
+  },
+  "nars_lakes": {
+   "manifest": "nars_lakes",
+   "manifest_sha256": "f17207a00d40ad3f66896471230c5358e1e8cddc173752798c5a5041ce3974f8",
+   "loader_dir_rel": "nars_lakes",
+   "files": [
+    "visits.parquet",
+    "benthic_counts.parquet",
+    "chemistry_wide.parquet",
+    "chemistry_long.parquet"
+   ],
+   "content_sha256": "c0dd7a3fbdd72ccba590e1db3d2232e2e39291aaaa1b11f98bed92bb64088159"
+  },
+  "uk_ea_ecology": {
+   "manifest": "uk_ea_ecology",
+   "manifest_sha256": "a57ce279d91136c7bcb6ef97bafb705733b7ca554eb679f88b4036b0ae0db1b3",
+   "loader_dir_rel": "uk_ea_ecology",
+   "files": [
+    "sites.parquet",
+    "samples_invertebrate.parquet",
+    "counts_invertebrate.parquet",
+    "chemistry_matched_wide_pm30d_invertebrate.parquet"
+   ],
+   "content_sha256": "528921a266f85caf4bc8d463bc8482faf0241c365b181225fcf185873b507b92"
+  },
+  "taxonomy_harmonised": {
+   "manifest": "taxonomy_harmonised",
+   "manifest_sha256": "eb4d6af915a0e1151cc83294daeaf2ff93a58c3cf4bbc651da1e43087e31886a",
+   "loader_dir_rel": "taxonomy_harmonised",
+   "files": [
+    "taxon_map.parquet"
+   ],
+   "content_sha256": "6bc36301a98b151a8b91349ddcaa91afa422112e71c612994c130a6bf9f93cef"
+  },
+  "fuse_tier_c": {
+   "manifest": "fuse_tier_c",
+   "manifest_sha256": "58dc6dcacae39f4fa140d6157e7a988a0720a673a54e2f93ce9f7a4dfba615c6",
+   "loader_dir_rel": "fuse_tier_c",
+   "files": [
+    "rows.parquet"
+   ],
+   "content_sha256": "dfdcaa6ae40ef73a9f3c0c0325597c3814cf5d9136a5565e17792fb525fb0c4e"
+  },
+  "s2_wqp_matchups_hist": {
+   "manifest": "s2_wqp_matchups",
+   "manifest_sha256": "d80dcd4c9c1c1cc26b6204d409a76fcf8ac9fe1461fe96804e70a023d82431a6",
+   "loader_dir_rel": "s2_wqp_matchups_hist",
+   "files": [
+    "samples.parquet"
+   ],
+   "content_sha256": "e5abafaa127426b3671092ec97f689eafa6b1f552b393732aa64d66dca4d844a"
+  }
+ },
+ "freeze_procedure": "After the independent pre-test review, the LEAD writes docs/preregistration/bioassess_x_freeze.json = this record with status 'frozen', frozen_at and candidate_sha256 = sha256 of this file. The scorer accepts only that file (xtestlook.load_freeze) and never this candidate. The look is started from the code snapshot in code_snapshot.dir (python -B <dir>/scripts/eval/bioassess_x_final.py); every command verifies the snapshot's exact file set and hashes and refuses in real mode from any other tree. The freeze file, this candidate and the registry stay in the live repository (v11 item 3).",
+ "resume_rule": "Protocol v11 item 2 (replaces the single-resume rule of \u00a79, v5 and v7b). Four commands: claim, chunk, seal, score. Prediction phase: label-free; one write-once unit per (block, leaf model, fold, seed) and per event fit, each with its own file and sha256; chunks may run in any order, in parallel, and be started again any number of times before sealing; each chunk re-verifies the freeze record, the code snapshot, the data pins and the artifacts; a failed or killed chunk leaves finished units in place and does not end the look. The seal is written once, when every planned unit exists and verifies. Scoring is single-shot and is not resumed: if it stops before the one locked registry write, --rescore-from-saved recomputes everything from the sealed predictions (recorded; agreement within rescore_abs required where the stopped run left results); once the scoring rows exist, no scoring run can write again.",
+ "one_time_guards": {
+  "look_dir": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/test_look",
+  "markers": {
+   "claim": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/test_look/TEST_LOOK.json",
+   "sealed": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/test_look/PREDICTIONS_SAVED.json",
+   "scoring_started": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/test_look/SCORING_STARTED.json",
+   "scored": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/test_look/SCORED.json"
+  },
+  "registry_experiment": "bioassess_x_test",
+  "registry_metrics": {
+   "claim": "look_claimed",
+   "sealed": "predictions_sealed"
+  },
+  "result_experiment": "bioassess_x_test",
+  "outputs": "sealed mode 0444 + SHA256SUMS"
+ },
+ "test_rows_note": "test rows are loaded with the design rules of xdata (NLA: first visit with benthic taxa; UK: >= 3 harmonised taxa); the numbers loaded vs in the split table are recorded in pass_info.json. Correction (v11 item 4a): 459 of the 974 X-L test rows lie at Fuse/D2n test sites (439 Fuse tier-C, 20 more D2n-only), not 549 as \u00a72 said; counts from sample keys only.",
+ "rehearsal": {
+  "file": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess_x/rehearsal_v11.json",
+  "sha256": "300a9757c2097b94408024a566508e8bc9e29579372a06ddfa6a643f7b3a1256",
+  "summary": {
+   "NOTE": "REHEARSAL \u2014 numbers not usable (training rows capped at 300 per source and fold, reduced ensembles and epochs; protocol v11 item 7). No test row and no test label is touched: development folds, the candidate record, a run-local look directory and a scratch registry.",
+   "protocol": "docs/preregistration/bioassess_x_protocol.md v11 item 7 (lead ruling X-B4)",
+   "run_dir": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_final_dryrun_dev_20261111T141649",
+   "rehearsal_cap": 300,
+   "max_folds": null,
+   "folds": {
+    "X-L": 9,
+    "X-U": 19
+   },
+   "n_units": 1046,
+   "code_snapshot": null,
+   "chunks": [
+    {
+     "tag": "g1",
+     "what": "GPU chunk: queued on the shared GPU lock, ran on GPU 1 (another agent held the other permitted GPU); ended 5 with one unit locked by the parallel smoke chunk",
+     "units_fitted": 140,
+     "last_line": "exit 5",
+     "started": "Wed 11 Nov 2026 02:18:15 PM EST"
+    },
+    {
+     "tag": "c1",
+     "what": "CPU chunk, 6 threads, KILLED by PID (SIGKILL) mid-chunk",
+     "units_fitted": 137,
+     "last_line": "exit 137",
+     "started": "Wed 11 Nov 2026 02:18:42 PM EST"
+    },
+    {
+     "tag": "c2",
+     "what": "CPU chunk, 6 threads: resume of the killed chunk, no unit refitted",
+     "units_fitted": 741,
+     "last_line": "exit 0",
+     "started": "Wed 11 Nov 2026 02:21:20 PM EST"
+    },
+    {
+     "tag": "c3",
+     "what": "CPU chunk with --cpu-smoke (dry run only): fitted GPU-kind units on the CPU in parallel with the GPU chunk",
+     "units_fitted": 28,
+     "last_line": "exit 0",
+     "started": "Wed 11 Nov 2026 02:22:48 PM EST"
+    }
+   ],
+   "pass_info": {
+    "record_sha256": "d34ea7ec7986cc6ecb3af032974261ec271b34cf7e9cbdc5669372396814af38",
+    "dry_run": true,
+    "code": "pinned snapshot",
+    "code_tree": "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess_x/code_179746238432ac31",
+    "authorised_by": "dry-run (development data)",
+    "rescore_from_saved": true,
+    "earlier_stopped_results": [
+     "/home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_final_dryrun_dev_20261111T141649/results_aborted_1"
+    ],
+    "folds": {
+     "X-L": 9,
+     "X-U": 19
+    },
+    "rows_scored": {
+     "X-L": 415,
+     "X-U": 4788
+    },
+    "test_rows_loaded": {},
+    "max_folds": null,
+    "rehearsal": {
+     "NOTE": "REHEARSAL \u2014 numbers not usable (training rows capped, reduced ensembles and epochs)",
+     "max_training_rows_per_source": 300,
+     "rf_n_estimators": 30,
+     "gbm_n_estimators": 60,
+     "tabpfn_n_estimators": 2,
+     "bioset_max_epochs": 3,
+     "bioset_patience": 2
+    },
+    "listed_comparators": {
+     "X-L": 16,
+     "X-U": 19
+    },
+    "not_compared": {
+     "gjam": "not compared, with reason: failed the pre-declared fidelity check (protocol v4.8 item 8 as corrected in v6)",
+     "trpi": "not compared, with reason: TRPI is not in the EA dataset and its published taxon scores were not obtained under licence before the freeze (protocol \u00a76 item 5; v9 item 6)"
+    },
+    "reproducibility_tolerance": {
+     "delta": 0.0002,
+     "ci": 0.0002,
+     "per_seed_delta": 0.0003,
+     "p": 0.003,
+     "rescore_abs": 1e-09
+    },
+    "unit_wall_seconds": {
+     "X-L|bioinfer|cpu": {
+      "n": 9,
+      "mean_s": 63.86,
+      "max_s": 69.28,
+      "sum_s": 574.8
+     },
+     "X-L|bsx_flat_geo_same|cpu": {
+      "n": 27,
+      "mean_s": 14.28,
+      "max_s": 16.26,
+      "sum_s": 385.6
+     },
+     "X-L|event_clim:E2a|cpu": {
+      "n": 9,
+      "mean_s": 0.11,
+      "max_s": 0.18,
+      "sum_s": 1.0
+     },
+     "X-L|event_clim:E3|cpu": {
+      "n": 9,
+      "mean_s": 0.09,
+      "max_s": 0.1,
+      "sum_s": 0.8
+     },
+     "X-L|event_clim:E5b|cpu": {
+      "n": 9,
+      "mean_s": 0.09,
+      "max_s": 0.11,
+      "sum_s": 0.8
+     },
+     "X-L|event_clim:E6|cpu": {
+      "n": 9,
+      "mean_s": 0.09,
+      "max_s": 0.12,
+      "sum_s": 0.8
+     },
+     "X-L|event_direct:E5b|cpu": {
+      "n": 27,
+      "mean_s": 0.22,
+      "max_s": 0.28,
+      "sum_s": 5.9
+     },
+     "X-L|event_direct:E6|cpu": {
+      "n": 27,
+      "mean_s": 0.21,
+      "max_s": 0.26,
+      "sum_s": 5.6
+     },
+     "X-L|gbm_community|cpu": {
+      "n": 27,
+      "mean_s": 0.66,
+      "max_s": 0.8,
+      "sum_s": 17.7
+     },
+     "X-L|knn_community|cpu": {
+      "n": 9,
+      "mean_s": 0.21,
+      "max_s": 0.26,
+      "sum_s": 1.9
+     },
+     "X-L|nearest_reference|cpu": {
+      "n": 9,
+      "mean_s": 0.11,
+      "max_s": 0.12,
+      "sum_s": 1.0
+     },
+     "X-L|region_mean|cpu": {
+      "n": 9,
+      "mean_s": 0.09,
+      "max_s": 0.12,
+      "sum_s": 0.8
+     },
+     "X-L|rf_community_context|cpu": {
+      "n": 27,
+      "mean_s": 1.22,
+      "max_s": 6.1,
+      "sum_s": 32.9
+     },
+     "X-L|rf_community_geography|cpu": {
+      "n": 27,
+      "mean_s": 1.13,
+      "max_s": 5.8,
+      "sum_s": 30.4
+     },
+     "X-L|rf_community|cpu": {
+      "n": 27,
+      "mean_s": 0.96,
+      "max_s": 1.15,
+      "sum_s": 26.0
+     },
+     "X-L|rf_geography|cpu": {
+      "n": 27,
+      "mean_s": 0.79,
+      "max_s": 0.88,
+      "sum_s": 21.3
+     },
+     "X-L|tabpfn_community|cpu": {
+      "n": 1,
+      "mean_s": 1003.73,
+      "max_s": 1003.73,
+      "sum_s": 1003.7
+     },
+     "X-L|tabpfn_community|cuda": {
+      "n": 26,
+      "mean_s": 8.72,
+      "max_s": 18.61,
+      "sum_s": 226.8
+     },
+     "X-L|wapls2|cpu": {
+      "n": 9,
+      "mean_s": 0.19,
+      "max_s": 0.21,
+      "sum_s": 1.7
+     },
+     "X-U|bioinfer|cpu": {
+      "n": 19,
+      "mean_s": 11.94,
+      "max_s": 19.88,
+      "sum_s": 226.9
+     },
+     "X-U|bsx_flat_geo_same|cuda": {
+      "n": 57,
+      "mean_s": 2.45,
+      "max_s": 4.15,
+      "sum_s": 139.9
+     },
+     "X-U|event_clim:E2a|cpu": {
+      "n": 19,
+      "mean_s": 0.1,
+      "max_s": 0.12,
+      "sum_s": 1.8
+     },
+     "X-U|event_clim:E6|cpu": {
+      "n": 19,
+      "mean_s": 0.08,
+      "max_s": 0.11,
+      "sum_s": 1.5
+     },
+     "X-U|event_direct:E6|cpu": {
+      "n": 57,
+      "mean_s": 0.11,
+      "max_s": 0.42,
+      "sum_s": 6.2
+     },
+     "X-U|gbm_community|cpu": {
+      "n": 57,
+      "mean_s": 0.42,
+      "max_s": 0.71,
+      "sum_s": 23.9
+     },
+     "X-U|idx_linear_geo|cpu": {
+      "n": 19,
+      "mean_s": 0.19,
+      "max_s": 0.25,
+      "sum_s": 3.6
+     },
+     "X-U|idx_linear|cpu": {
+      "n": 19,
+      "mean_s": 0.15,
+      "max_s": 0.18,
+      "sum_s": 2.8
+     },
+     "X-U|idx_rf_geo|cpu": {
+      "n": 57,
+      "mean_s": 0.85,
+      "max_s": 1.0,
+      "sum_s": 48.5
+     },
+     "X-U|idx_rf|cpu": {
+      "n": 57,
+      "mean_s": 0.79,
+      "max_s": 0.93,
+      "sum_s": 45.0
+     },
+     "X-U|knn_community|cpu": {
+      "n": 19,
+      "mean_s": 0.15,
+      "max_s": 0.2,
+      "sum_s": 2.8
+     },
+     "X-U|region_mean|cpu": {
+      "n": 19,
+      "mean_s": 0.1,
+      "max_s": 0.11,
+      "sum_s": 1.9
+     },
+     "X-U|rf_community_context|cpu": {
+      "n": 57,
+      "mean_s": 1.03,
+      "max_s": 1.64,
+      "sum_s": 58.4
+     },
+     "X-U|rf_community_geography|cpu": {
+      "n": 57,
+      "mean_s": 0.87,
+      "max_s": 1.22,
+      "sum_s": 49.4
+     },
+     "X-U|rf_community|cpu": {
+      "n": 57,
+      "mean_s": 1.02,
+      "max_s": 1.55,
+      "sum_s": 58.3
+     },
+     "X-U|rf_geography|cpu": {
+      "n": 57,
+      "mean_s": 0.82,
+      "max_s": 1.06,
+      "sum_s": 46.6
+     },
+     "X-U|tabpfn_community|cuda": {
+      "n": 57,
+      "mean_s": 4.15,
+      "max_s": 4.99,
+      "sum_s": 236.4
+     },
+     "X-U|wapls2|cpu": {
+      "n": 19,
+      "mean_s": 0.13,
+      "max_s": 0.18,
+      "sum_s": 2.4
+     }
+    },
+    "finished": "2026-11-11T16:27:09.199683"
+   },
+   "commands_exercised": [
+    "--dry-run-dev --rehearsal-cap 300 (claim; label-free inputs; unit plan)",
+    "--chunk --only gpu (queued on the shared GPU lock; ran beside the CPU chunks)",
+    "--chunk --only cpu (killed by PID, then started again: no unit refitted)",
+    "--chunk --cpu-smoke (GPU-kind units on the CPU, in parallel with the GPU chunk)",
+    "--seal",
+    "--score (killed once before the registry write)",
+    "--rescore-from-saved",
+    "--verify-scored"
+   ],
+   "finished": "Wed 11 Nov 2026 04:30:59 PM EST",
+   "scoring": {
+    "seal": "141 prediction files, SHA256SUMS 28e6188b91cc1c15176e527ae9bacdddfad040ac49d9477f2c884cf03be4d555, one predictions_sealed row, PREDICTIONS_SAVED.json (14:47)",
+    "score_killed": "--score started 14:47:02 and killed by PID 12 s later, before the registry write; the abort is recorded and its partial folder kept (results_aborted_1)",
+    "rescore_from_saved": "--rescore-from-saved recomputed everything from the sealed predictions: 12 confirmatory rows, 569 registry rows in one locked append, SCORED.json at 16:27:09, results SHA256SUMS 20c6387278978f8340f92f957ca5367475a33cfa568e08cc5f8cd9a0fca4faaf; wall time 1 h 40 min on 5 CPU workers (B = 10,000 against 16 + 19 listed comparators x 12 targets)",
+    "verify_scored": "started 16:27 and stopped by hand to free the CPU: it repeats the whole bootstrap and is not part of ruling X-B4. Its logic is covered by the unit test test_x_look_point5_rescore_must_reproduce_and_sealed_predictions_must_verify.",
+    "seal_refusal_seen": "an earlier rehearsal (13:00, same code path) refused to seal with '190 of 1046 planned units do not exist yet' while units were missing (v11 item 2.4)."
+   },
+   "defects_found_and_fixed": [
+    "A unit whose fit raised killed the whole chunk and every later chunk failed on the same unit, so the look could not reach the seal (seen on bio.infer with a capped training set). Fixed: the chunk records the failing unit, writes nothing for it, goes on to the next one and ends with exit 6 naming it; a later chunk fits it again, and nothing unfitted can be sealed. Unit-tested.",
+    "The rehearsal cap starved bio.infer's R code (mlsolve could not build its coefficient matrix). Fixed: the R methods get R_CAP_FACTOR = 3 times the cap in the dry run (they are not the expensive unit), the cap itself is still refused in real mode. Unit-tested."
+   ],
+   "for_the_real_pass": {
+    "per_unit_wall_seconds": "in pass_info.unit_wall_seconds (rehearsal sizes: a lower bound for the real pass)",
+    "observations": [
+     "GPU units (BioSet, TabPFN) 2-9 s each at the cap on an idle GPU; the one TabPFN unit fitted on the CPU by the --cpu-smoke chunk took 1,004 s, so GPU units belong on GPUs.",
+     "bio.infer is the slowest CPU unit: 64 s per X-L fold at 900 rows per source, 12 s per X-U fold; at full size (4,514 rows) it was 150-330 s per fold in the 13:00 rehearsal.",
+     "The whole prediction phase took 28 min with one GPU chunk and one CPU chunk at the cap; the scoring step took 1 h 40 min by itself and is the item to schedule, not the fits.",
+     "The GPU chunk queues on the shared sentinel GPU lock and starts when a permitted GPU frees; it does not take a GPU another job holds."
+    ]
+   }
+  }
+ }
+}

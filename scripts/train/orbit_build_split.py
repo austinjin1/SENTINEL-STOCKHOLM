@@ -56,13 +56,13 @@ def main() -> int:
     d = D.write_cache(df, pix, info, a.version)
     rep = {k: info[k] for k in ("buffer_excluded_rows", "cells_all_rows", "split_distance_km", "targets_by_cell", "n_rows_final",
                                 "image_qc_pass", "n_rows_with_chip", "by_source", "access", "split_file",
-                                "protected_cell_counts")}
+                                "protected_cell_counts", "wqp_depth_rule")}
     rp = paths.REPO_ROOT / "docs" / "preregistration" / f"orbit_split_report_{a.version}.json"
     rp.write_text(json.dumps(rep, indent=1, default=str) + "\n")
     write_manifest(f"orbit_{a.version}", files=[d / "table.parquet", d / "pixels.npz", d / "info.json"],
                    sources=["manifest:s2_chips_aquacorr"] + [f"manifest:{n}" for n in D.WQP_MATCHUP_SETS
                                                                 if (paths.PROCESSED / n / "samples.parquet").exists()] + ["manifest:hydrolakes",
-                            "manifest:aquacorr_global"],
+                            "manifest:aquacorr_global", "manifest:orbit_wqp_surface"],
                    description="SENTINEL-Orbit development matchup table (train/val roles x train/val years only; "
                                "protected rows never written) + per-chip water-pixel cache",
                    license="derived: AquaCorr CC-BY-4.0, WQP public, Copernicus Sentinel data, JRC GSW, HydroLAKES CC-BY-4.0",

@@ -448,14 +448,11 @@ def hash_ids(ids) -> str:
 
 
 # ------------------------------------------------------------------------------------------------- test design
-def load_test_rows(S: pd.DataFrame, block: str):
-    """The block's frozen TEST rows (tokens + labels) as a BioDesign. Called ONLY by the one-time scorer in its
-    authorised test mode, after the fixed marker has been claimed (``scripts/eval/bioassess_x_final.py``)."""
+def _load_test(S: pd.DataFrame, block: str):
+    """(samples, tokens, labels, n rows in the split) of the block's frozen TEST rows, keyed ``source:id``.
+    Private: the only callers are the two guarded loaders below (protocol amendment v11 item 2)."""
     from sentinel.models.bioassess import xdata
-    from sentinel.models.bioassess import xtestlook as XL
-    from sentinel.models.bioassess.data import BioDesign
 
-    XL.require_open_claim()                  # single-look guard: only under an open, unscored claim of this freeze
     T = S[(S["block"] == block) & (S["role"] == "test")]
     keys = set(zip(T["source"], T["id"].astype(str)))
     src, loader = {"X-L": ("nla", xdata._nla), "X-U": ("uk", xdata._uk)}[block]
@@ -467,11 +464,35 @@ def load_test_rows(S: pd.DataFrame, block: str):
     tok = tok.assign(visit_id=src + ":" + tok["visit_id"].astype(str))
     s.index, y.index = key, key
     s.index.name = "visit_id"
-    for c in set(TARGET_NAMES) | set(X.UK_PRIMARY) | set(SHARED.values()):
-        if c not in y:
-            y[c] = np.nan
-    return BioDesign(s, tok[[c for c in xdata.TOKEN_COLS if c in tok.columns]], y.reindex(s.index),
-                     {"n_test_rows_loaded": int(len(s)), "n_test_rows_split": int(len(T))})
+    return s, tok[[c for c in xdata.TOKEN_COLS if c in tok.columns]], y.reindex(s.index), int(len(T))
+
+
+def load_test_inputs(S: pd.DataFrame, block: str, *, root=None, registry_path=None):
+    """The block's frozen TEST rows WITHOUT labels (samples + taxa; every label column NaN) as a BioDesign.
+    Prediction phase only: needs the open, unsealed claim (``xtestlook.require_open_claim``). The labels the
+    processed tables carry are dropped here, inside the loader, and never leave it."""
+    from sentinel.models.bioassess import xtestlook as XL
+    from sentinel.models.bioassess.data import BioDesign
+
+    XL.require_open_claim(root, registry_path)
+    s, tok, y, n = _load_test(S, block)
+    del y
+    cols = sorted(set(TARGET_NAMES) | set(X.UK_PRIMARY) | set(SHARED.values()))
+    return BioDesign(s, tok, pd.DataFrame(np.nan, index=s.index, columns=cols),
+                     {"n_test_rows_loaded": int(len(s)), "n_test_rows_split": n})
+
+
+def load_test_labels(S: pd.DataFrame, block: str, *, root=None, registry_path=None) -> pd.DataFrame:
+    """The block's TEST labels (block targets, keyed ``source:id``). Scoring phase only: refused unless the sealed
+    predictions verify and this process opened the scoring phase (``xtestlook.require_scoring``)."""
+    from sentinel.models.bioassess import xtestlook as XL
+
+    XL.require_scoring(root, registry_path)
+    s, _, y, _ = _load_test(S, block)
+    out = pd.DataFrame(index=s.index)
+    for t in TARGETS[block]:
+        out[t] = y[t].to_numpy(float) if t in y else np.nan
+    return out
 
 
 def combine(D, Dt):

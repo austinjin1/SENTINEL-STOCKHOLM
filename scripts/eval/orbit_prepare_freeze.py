@@ -49,6 +49,8 @@ def main() -> int:
     ap.add_argument("--track-u-baselines", default=None)
     ap.add_argument("--events-artifact", required=True, help="events_orbit_<version>.pkl (scripts/eval/events_orbit.py)")
     ap.add_argument("--track-u-events-artifact", default=None)
+    ap.add_argument("--conformal-artifact", default=None, help="conformal_orbit_<version>.json (§5b, secondary)")
+    ap.add_argument("--track-u-conformal-artifact", default=None)
     ap.add_argument("--event-selection-note", required=True)
     ap.add_argument("--dryrun-dir", default=None, help="test_looks_dryrun/<label> of the val dry run (recorded)")
     ap.add_argument("--selection-note", required=True, help="which val result selected this configuration")
@@ -61,11 +63,14 @@ def main() -> int:
     weights = {p.parent.name: sha(p) for p in ck}
     weights["fitted_baselines"] = sha(fb)
     weights["events_orbit"] = sha(Path(a.events_artifact))
+    if a.conformal_artifact:
+        weights["conformal_orbit"] = sha(Path(a.conformal_artifact))
     body = {"created": dt.datetime.now().isoformat(timespec="seconds"), "status": "CANDIDATE",
             "split_sha256": SP.split_sha256(), "data_version": a.version,
             "data_manifest_sha256": hashlib.sha256(man.read_bytes()).hexdigest(),
             "satwq_checkpoints": [str(p) for p in ck], "fitted_baselines": str(fb), "blend_with": a.blend_with,
             "events_artifact": str(Path(a.events_artifact).resolve()),
+            "conformal_artifact": str(Path(a.conformal_artifact).resolve()) if a.conformal_artifact else None,
             "event_track": {"protocol": "orbit_protocol.md §12", "primary_event": "E4a", "tiers": ["E4a_t12", "E4a_t50"],
                             "descriptive": ["E3a_tss", "E3a_turb"], "primary_route": "derived",
                             "challenger_route": "direct", "note": a.event_selection_note,
@@ -86,10 +91,14 @@ def main() -> int:
         weights["fitted_baselines_track_u"] = sha(fu)
         if a.track_u_events_artifact:
             weights["events_orbit_track_u"] = sha(Path(a.track_u_events_artifact))
+        if a.track_u_conformal_artifact:
+            weights["conformal_orbit_track_u"] = sha(Path(a.track_u_conformal_artifact))
         tf = paths.REPO_ROOT / "docs" / "preregistration" / "orbit_track_u.json"
         body["track_u"] = {"satwq_checkpoints": [str(p) for p in cu], "fitted_baselines": str(fu),
                            "events_artifact": (str(Path(a.track_u_events_artifact).resolve())
                                                if a.track_u_events_artifact else None),
+                           "conformal_artifact": (str(Path(a.track_u_conformal_artifact).resolve())
+                                                  if a.track_u_conformal_artifact else None),
                            "track_file_sha256": hashlib.sha256(tf.read_bytes()).hexdigest()}
     body["weights_sha256"] = weights
     print("[freeze] hashing source data for content pins (a few minutes)...", flush=True)

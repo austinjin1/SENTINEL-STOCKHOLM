@@ -1,0 +1,856 @@
+{
+ "created": "2026-11-10T13:42:07-0500",
+ "rule": "surface result: depth_m <= 1.0 m, or depth unknown; a result flagged 'bottom' is never a surface result, at any depth; Secchi exempt (sentinel.data.matchups.wqp_surface_samples, unchanged). Results come from the harmonised, QC-passed wqp_discrete tables only (variable=*/); rows of _qc_rejects.parquet and _unmapped.parquet never contribute. Sample label: median of those results over (site_id, date, target, characteristic, unit). A sample without such a result is dropped (reason no_qc_passed_result or no_surface_result).",
+ "scope": "base-target samples at JRC-water sites of each built matchup table (sample level; before the same-day scene match, chips and image QC). COUNTS ONLY: no label value was printed or written",
+ "rulings": {
+  "depth_rule": "lead ruling 2026-11-10 on the WQP depth finding (option A)",
+  "sidecar_exclusion": "lead ruling 2026-11-10 13:21 EST: approved as written (labels from the harmonised, QC-passed tables only; the unchanged function's bottom-flag behaviour is the rule; the ambiguous 'Chlorophyll' rows stay out)"
+ },
+ "split_sha256": "ffe288f2fafecada964fc8125dcd35ddd9b332d3a04f782d0298e01f097a5e32",
+ "side_table": {
+  "n_samples": 12289657,
+  "n_no_qc_passed_result": 620469,
+  "n_no_surface_result": 278039,
+  "n_kept": 11391149,
+  "n_kept_with_fewer_results": 662050,
+  "n_kept_non_secchi": 9206383,
+  "n_kept_non_secchi_depth_known": 4177613,
+  "by_target": {
+   "chla": {
+    "n_samples": 2523065,
+    "n_no_qc_passed_result": 173112,
+    "n_no_surface_result": 110043,
+    "n_kept": 2239910,
+    "n_kept_with_fewer_results": 151319,
+    "n_kept_depth_known": 1407815
+   },
+   "microcystin": {
+    "n_samples": 128520,
+    "n_no_qc_passed_result": 11194,
+    "n_no_surface_result": 1853,
+    "n_kept": 115473,
+    "n_kept_with_fewer_results": 3352,
+    "n_kept_depth_known": 63870
+   },
+   "phycocyanin": {
+    "n_samples": 10643,
+    "n_no_qc_passed_result": 3339,
+    "n_no_surface_result": 364,
+    "n_kept": 6940,
+    "n_kept_with_fewer_results": 970,
+    "n_kept_depth_known": 3427
+   },
+   "secchi": {
+    "n_samples": 2209525,
+    "n_no_qc_passed_result": 24759,
+    "n_no_surface_result": 0,
+    "n_kept": 2184766,
+    "n_kept_with_fewer_results": 38465,
+    "n_kept_depth_known": 1223299
+   },
+   "ssc": {
+    "n_samples": 474050,
+    "n_no_qc_passed_result": 15674,
+    "n_no_surface_result": 4848,
+    "n_kept": 453528,
+    "n_kept_with_fewer_results": 8493,
+    "n_kept_depth_known": 25530
+   },
+   "tss": {
+    "n_samples": 3051925,
+    "n_no_qc_passed_result": 167315,
+    "n_no_surface_result": 62606,
+    "n_kept": 2822004,
+    "n_kept_with_fewer_results": 209784,
+    "n_kept_depth_known": 1147388
+   },
+   "turbidity": {
+    "n_samples": 3891929,
+    "n_no_qc_passed_result": 225076,
+    "n_no_surface_result": 98325,
+    "n_kept": 3568528,
+    "n_kept_with_fewer_results": 249667,
+    "n_kept_depth_known": 1529583
+   }
+  },
+  "sidecars_left_out": [
+   "_qc_rejects.parquet",
+   "_unmapped.parquet"
+  ],
+  "result_rows_by_file": {
+   "wqp_discrete/_qc_rejects.parquet": 1440242,
+   "wqp_discrete/_unmapped.parquet": 798346,
+   "wqp_discrete/variable=chla/data.parquet": 1274507,
+   "wqp_discrete/variable=chla_corrected/data.parquet": 1024268,
+   "wqp_discrete/variable=chla_uncorrected/data.parquet": 539839,
+   "wqp_discrete/variable=microcystin_la/data.parquet": 11099,
+   "wqp_discrete/variable=microcystin_lr/data.parquet": 14491,
+   "wqp_discrete/variable=microcystin_rr/data.parquet": 11836,
+   "wqp_discrete/variable=microcystin_yr/data.parquet": 11164,
+   "wqp_discrete/variable=microcystins/data.parquet": 70892,
+   "wqp_discrete/variable=microcystins_dissolved/data.parquet": 1872,
+   "wqp_discrete/variable=phycocyanin/data.parquet": 19814,
+   "wqp_discrete/variable=secchi/data.parquet": 2415901,
+   "wqp_discrete/variable=ssc/data.parquet": 674441,
+   "wqp_discrete/variable=tss/data.parquet": 3281222,
+   "wqp_discrete/variable=turbidity_fnu/data.parquet": 496902,
+   "wqp_discrete/variable=turbidity_ntru/data.parquet": 217572,
+   "wqp_discrete/variable=turbidity_ntu/data.parquet": 4100182
+  },
+  "n_result_rows_sidecar": 2238588,
+  "results_flagged_bottom": {
+   "chla": {
+    "n_results_flagged_bottom": 36410,
+    "n_flagged_bottom_depth_le_1m": 1283,
+    "n_flagged_bottom_depth_unknown": 4046
+   },
+   "tss": {
+    "n_results_flagged_bottom": 43446,
+    "n_flagged_bottom_depth_le_1m": 1231,
+    "n_flagged_bottom_depth_unknown": 11511
+   },
+   "turbidity": {
+    "n_results_flagged_bottom": 31771,
+    "n_flagged_bottom_depth_le_1m": 2962,
+    "n_flagged_bottom_depth_unknown": 5160
+   }
+  },
+  "reproduces_built_tables": {
+   "s2_wqp_matchups": {
+    "n_samples": 782182,
+    "n_key_missing": 0,
+    "n_value_differs": 0,
+    "n_results_differs": 0
+   },
+   "s2_wqp_matchups_hist": {
+    "n_samples": 3991446,
+    "n_key_missing": 0,
+    "n_value_differs": 0,
+    "n_results_differs": 0
+   }
+  },
+  "side_table_sha256": "8ed6a309cca10abdd02ffd8a1690be09ec39c9580731ba5fdf8c97a2f5853a31",
+  "matchups_py_sha256": "e8d7ec66a29d2b7df075b1b2c83f26366edc05ea9d47f6e3686192dd23682810"
+ },
+ "input_sha256": {
+  "wqp_discrete/_qc_rejects.parquet": "74f0e7546fa3ef4314318f9fbba94affeb54583852e7d401d10ca1c753934698",
+  "wqp_discrete/_unmapped.parquet": "a9dcfa3a6be7043d24ce09dcbd1c75937579ca5a996ec5f999adff6b3ccb0af8",
+  "wqp_discrete/variable=chla/data.parquet": "10298ab2f92cd14ba47a31739c8ccc594ab9d9a8d55480cbc15e9e3c76e496e5",
+  "wqp_discrete/variable=chla_corrected/data.parquet": "9417648b9d266ce92999fb001f16cfeb9565c3ec382aff386ac19fc29e6a4c2b",
+  "wqp_discrete/variable=chla_uncorrected/data.parquet": "b24a63e32295395f505e01a4c239736d6efe17003d9352b6d910df3801944d6e",
+  "wqp_discrete/variable=microcystin_la/data.parquet": "29cca10b2fed119a479a340d721f141a1367b99f452acbc6421110a48461c37a",
+  "wqp_discrete/variable=microcystin_lr/data.parquet": "aabbb5148921fd5734618a43fe868a1f37086320b7f1c771566dfa40a54a19e3",
+  "wqp_discrete/variable=microcystin_rr/data.parquet": "b8bd4506a155c1baf87e3951d573c63b65d7ef7ad52cbc0528ba17694042a50b",
+  "wqp_discrete/variable=microcystin_yr/data.parquet": "ec2d9fcd12ea3dfc88f24ab39a0fd889f353c738c5d4425e03ebaeeef8a42f1c",
+  "wqp_discrete/variable=microcystins/data.parquet": "52a85719df78ba295195525b0d493b8a87b5fd759bf1c005fde9ec4deaede277",
+  "wqp_discrete/variable=microcystins_dissolved/data.parquet": "d76e2fd4e3f9c188932aacd9a953dbc67ea9e4546993b81439feee083df613e0",
+  "wqp_discrete/variable=phycocyanin/data.parquet": "1d2d2d6d96b803e51dba88ba5d14f04f65c1a61574072183c1232057b95e617e",
+  "wqp_discrete/variable=secchi/data.parquet": "26eeec00f1dca68ccf3397d4c52bbce050473f8ccfbfb4ce796cc8198b8662dd",
+  "wqp_discrete/variable=ssc/data.parquet": "606521170462cf35cd68e35c0e6befff2e02da9622f7584c249406a8dd2624eb",
+  "wqp_discrete/variable=tss/data.parquet": "98a6effa6f248667fb64ed72c7320ffad87d1a9484e9ce8bf9d2f1a885b51d0b",
+  "wqp_discrete/variable=turbidity_fnu/data.parquet": "22e840524b8eaecf5077f67400b25d30586c34d63b435a3ef1cc8849808ed543",
+  "wqp_discrete/variable=turbidity_ntru/data.parquet": "2c854730e253f29e0827349e469097a13ee70bca7357a1a26325d2646c1e20a1",
+  "wqp_discrete/variable=turbidity_ntu/data.parquet": "b3ed6f90b02f2c6c0393ab45adaa1abdc73d40bbb946b05b843a2d7759738c0f"
+ },
+ "tables": {
+  "s2_wqp_matchups": {
+   "n_key_missing": 0,
+   "by_target_role": {
+    "chla/test": {
+     "n_samples": 25769,
+     "n_dropped": 2485,
+     "n_dropped_no_qc_passed_result": 573,
+     "n_dropped_no_surface_result": 1912,
+     "n_kept_with_fewer_results": 2734,
+     "n_kept_depth_known": 18865,
+     "n_with_label_before": 25565,
+     "n_with_label_after": 23077
+    },
+    "chla/train": {
+     "n_samples": 61125,
+     "n_dropped": 5552,
+     "n_dropped_no_qc_passed_result": 2804,
+     "n_dropped_no_surface_result": 2748,
+     "n_kept_with_fewer_results": 3009,
+     "n_kept_depth_known": 37509,
+     "n_with_label_before": 59688,
+     "n_with_label_after": 54258
+    },
+    "chla/val": {
+     "n_samples": 33169,
+     "n_dropped": 2404,
+     "n_dropped_no_qc_passed_result": 1260,
+     "n_dropped_no_surface_result": 1144,
+     "n_kept_with_fewer_results": 1491,
+     "n_kept_depth_known": 24507,
+     "n_with_label_before": 32770,
+     "n_with_label_after": 30357
+    },
+    "secchi/test": {
+     "n_samples": 24644,
+     "n_dropped": 257,
+     "n_dropped_no_qc_passed_result": 257,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 263,
+     "n_kept_depth_known": 12402,
+     "n_with_label_before": 24414,
+     "n_with_label_after": 24240
+    },
+    "secchi/train": {
+     "n_samples": 56318,
+     "n_dropped": 577,
+     "n_dropped_no_qc_passed_result": 577,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 1649,
+     "n_kept_depth_known": 22987,
+     "n_with_label_before": 55243,
+     "n_with_label_after": 55181
+    },
+    "secchi/val": {
+     "n_samples": 26512,
+     "n_dropped": 224,
+     "n_dropped_no_qc_passed_result": 224,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 344,
+     "n_kept_depth_known": 12101,
+     "n_with_label_before": 26072,
+     "n_with_label_after": 26054
+    },
+    "tss/test": {
+     "n_samples": 12564,
+     "n_dropped": 1506,
+     "n_dropped_no_qc_passed_result": 126,
+     "n_dropped_no_surface_result": 1380,
+     "n_kept_with_fewer_results": 2563,
+     "n_kept_depth_known": 8288,
+     "n_with_label_before": 11740,
+     "n_with_label_after": 10434
+    },
+    "tss/train": {
+     "n_samples": 27778,
+     "n_dropped": 1538,
+     "n_dropped_no_qc_passed_result": 470,
+     "n_dropped_no_surface_result": 1068,
+     "n_kept_with_fewer_results": 3131,
+     "n_kept_depth_known": 13475,
+     "n_with_label_before": 25277,
+     "n_with_label_after": 23956
+    },
+    "tss/val": {
+     "n_samples": 13084,
+     "n_dropped": 890,
+     "n_dropped_no_qc_passed_result": 98,
+     "n_dropped_no_surface_result": 792,
+     "n_kept_with_fewer_results": 1260,
+     "n_kept_depth_known": 7688,
+     "n_with_label_before": 11713,
+     "n_with_label_after": 10862
+    },
+    "turbidity/test": {
+     "n_samples": 21437,
+     "n_dropped": 2333,
+     "n_dropped_no_qc_passed_result": 297,
+     "n_dropped_no_surface_result": 2036,
+     "n_kept_with_fewer_results": 4270,
+     "n_kept_depth_known": 12561,
+     "n_with_label_before": 21360,
+     "n_with_label_after": 19049
+    },
+    "turbidity/train": {
+     "n_samples": 49131,
+     "n_dropped": 5204,
+     "n_dropped_no_qc_passed_result": 2893,
+     "n_dropped_no_surface_result": 2311,
+     "n_kept_with_fewer_results": 5242,
+     "n_kept_depth_known": 23038,
+     "n_with_label_before": 48504,
+     "n_with_label_after": 43567
+    },
+    "turbidity/val": {
+     "n_samples": 21346,
+     "n_dropped": 2054,
+     "n_dropped_no_qc_passed_result": 531,
+     "n_dropped_no_surface_result": 1523,
+     "n_kept_with_fewer_results": 4057,
+     "n_kept_depth_known": 14614,
+     "n_with_label_before": 21037,
+     "n_with_label_after": 19143
+    }
+   },
+   "by_target_role_tblock": {
+    "chla/testxtest": {
+     "n_samples": 25769,
+     "n_dropped": 2485,
+     "n_dropped_no_qc_passed_result": 573,
+     "n_dropped_no_surface_result": 1912,
+     "n_kept_with_fewer_results": 2734,
+     "n_kept_depth_known": 18865,
+     "n_with_label_before": 25565,
+     "n_with_label_after": 23077
+    },
+    "chla/trainxtest": {
+     "n_samples": 61125,
+     "n_dropped": 5552,
+     "n_dropped_no_qc_passed_result": 2804,
+     "n_dropped_no_surface_result": 2748,
+     "n_kept_with_fewer_results": 3009,
+     "n_kept_depth_known": 37509,
+     "n_with_label_before": 59688,
+     "n_with_label_after": 54258
+    },
+    "chla/valxtest": {
+     "n_samples": 33169,
+     "n_dropped": 2404,
+     "n_dropped_no_qc_passed_result": 1260,
+     "n_dropped_no_surface_result": 1144,
+     "n_kept_with_fewer_results": 1491,
+     "n_kept_depth_known": 24507,
+     "n_with_label_before": 32770,
+     "n_with_label_after": 30357
+    },
+    "secchi/testxtest": {
+     "n_samples": 24644,
+     "n_dropped": 257,
+     "n_dropped_no_qc_passed_result": 257,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 263,
+     "n_kept_depth_known": 12402,
+     "n_with_label_before": 24414,
+     "n_with_label_after": 24240
+    },
+    "secchi/trainxtest": {
+     "n_samples": 56318,
+     "n_dropped": 577,
+     "n_dropped_no_qc_passed_result": 577,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 1649,
+     "n_kept_depth_known": 22987,
+     "n_with_label_before": 55243,
+     "n_with_label_after": 55181
+    },
+    "secchi/valxtest": {
+     "n_samples": 26512,
+     "n_dropped": 224,
+     "n_dropped_no_qc_passed_result": 224,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 344,
+     "n_kept_depth_known": 12101,
+     "n_with_label_before": 26072,
+     "n_with_label_after": 26054
+    },
+    "tss/testxtest": {
+     "n_samples": 12564,
+     "n_dropped": 1506,
+     "n_dropped_no_qc_passed_result": 126,
+     "n_dropped_no_surface_result": 1380,
+     "n_kept_with_fewer_results": 2563,
+     "n_kept_depth_known": 8288,
+     "n_with_label_before": 11740,
+     "n_with_label_after": 10434
+    },
+    "tss/trainxtest": {
+     "n_samples": 27778,
+     "n_dropped": 1538,
+     "n_dropped_no_qc_passed_result": 470,
+     "n_dropped_no_surface_result": 1068,
+     "n_kept_with_fewer_results": 3131,
+     "n_kept_depth_known": 13475,
+     "n_with_label_before": 25277,
+     "n_with_label_after": 23956
+    },
+    "tss/valxtest": {
+     "n_samples": 13084,
+     "n_dropped": 890,
+     "n_dropped_no_qc_passed_result": 98,
+     "n_dropped_no_surface_result": 792,
+     "n_kept_with_fewer_results": 1260,
+     "n_kept_depth_known": 7688,
+     "n_with_label_before": 11713,
+     "n_with_label_after": 10862
+    },
+    "turbidity/testxtest": {
+     "n_samples": 21437,
+     "n_dropped": 2333,
+     "n_dropped_no_qc_passed_result": 297,
+     "n_dropped_no_surface_result": 2036,
+     "n_kept_with_fewer_results": 4270,
+     "n_kept_depth_known": 12561,
+     "n_with_label_before": 21360,
+     "n_with_label_after": 19049
+    },
+    "turbidity/trainxtest": {
+     "n_samples": 49131,
+     "n_dropped": 5204,
+     "n_dropped_no_qc_passed_result": 2893,
+     "n_dropped_no_surface_result": 2311,
+     "n_kept_with_fewer_results": 5242,
+     "n_kept_depth_known": 23038,
+     "n_with_label_before": 48504,
+     "n_with_label_after": 43567
+    },
+    "turbidity/valxtest": {
+     "n_samples": 21346,
+     "n_dropped": 2054,
+     "n_dropped_no_qc_passed_result": 531,
+     "n_dropped_no_surface_result": 1523,
+     "n_kept_with_fewer_results": 4057,
+     "n_kept_depth_known": 14614,
+     "n_with_label_before": 21037,
+     "n_with_label_after": 19143
+    }
+   },
+   "by_target": {
+    "chla": {
+     "n_samples": 120063,
+     "n_dropped": 10441,
+     "n_dropped_no_qc_passed_result": 4637,
+     "n_dropped_no_surface_result": 5804,
+     "n_kept_with_fewer_results": 7234,
+     "n_kept_depth_known": 80881,
+     "n_with_label_before": 118023,
+     "n_with_label_after": 107692
+    },
+    "secchi": {
+     "n_samples": 107474,
+     "n_dropped": 1058,
+     "n_dropped_no_qc_passed_result": 1058,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 2256,
+     "n_kept_depth_known": 47490,
+     "n_with_label_before": 105729,
+     "n_with_label_after": 105475
+    },
+    "tss": {
+     "n_samples": 53426,
+     "n_dropped": 3934,
+     "n_dropped_no_qc_passed_result": 694,
+     "n_dropped_no_surface_result": 3240,
+     "n_kept_with_fewer_results": 6954,
+     "n_kept_depth_known": 29451,
+     "n_with_label_before": 48730,
+     "n_with_label_after": 45252
+    },
+    "turbidity": {
+     "n_samples": 91914,
+     "n_dropped": 9591,
+     "n_dropped_no_qc_passed_result": 3721,
+     "n_dropped_no_surface_result": 5870,
+     "n_kept_with_fewer_results": 13569,
+     "n_kept_depth_known": 50213,
+     "n_with_label_before": 90901,
+     "n_with_label_after": 81759
+    }
+   }
+  },
+  "s2_wqp_matchups_hist": {
+   "n_key_missing": 0,
+   "by_target_role": {
+    "chla/test": {
+     "n_samples": 113204,
+     "n_dropped": 14076,
+     "n_dropped_no_qc_passed_result": 4414,
+     "n_dropped_no_surface_result": 9662,
+     "n_kept_with_fewer_results": 8234,
+     "n_kept_depth_known": 74795,
+     "n_with_label_before": 110320,
+     "n_with_label_after": 96788
+    },
+    "chla/train": {
+     "n_samples": 314066,
+     "n_dropped": 33643,
+     "n_dropped_no_qc_passed_result": 19375,
+     "n_dropped_no_surface_result": 14268,
+     "n_kept_with_fewer_results": 19332,
+     "n_kept_depth_known": 181471,
+     "n_with_label_before": 300959,
+     "n_with_label_after": 268370
+    },
+    "chla/val": {
+     "n_samples": 148563,
+     "n_dropped": 12745,
+     "n_dropped_no_qc_passed_result": 6522,
+     "n_dropped_no_surface_result": 6223,
+     "n_kept_with_fewer_results": 6800,
+     "n_kept_depth_known": 109474,
+     "n_with_label_before": 145804,
+     "n_with_label_after": 133989
+    },
+    "secchi/test": {
+     "n_samples": 128854,
+     "n_dropped": 529,
+     "n_dropped_no_qc_passed_result": 529,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 2142,
+     "n_kept_depth_known": 68780,
+     "n_with_label_before": 127841,
+     "n_with_label_after": 127789
+    },
+    "secchi/train": {
+     "n_samples": 312719,
+     "n_dropped": 2495,
+     "n_dropped_no_qc_passed_result": 2495,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 6007,
+     "n_kept_depth_known": 148316,
+     "n_with_label_before": 309758,
+     "n_with_label_after": 308712
+    },
+    "secchi/val": {
+     "n_samples": 142613,
+     "n_dropped": 935,
+     "n_dropped_no_qc_passed_result": 935,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 1546,
+     "n_kept_depth_known": 67380,
+     "n_with_label_before": 140901,
+     "n_with_label_after": 140783
+    },
+    "tss/test": {
+     "n_samples": 58973,
+     "n_dropped": 5931,
+     "n_dropped_no_qc_passed_result": 1073,
+     "n_dropped_no_surface_result": 4858,
+     "n_kept_with_fewer_results": 8734,
+     "n_kept_depth_known": 35464,
+     "n_with_label_before": 53726,
+     "n_with_label_after": 49773
+    },
+    "tss/train": {
+     "n_samples": 164759,
+     "n_dropped": 8503,
+     "n_dropped_no_qc_passed_result": 3337,
+     "n_dropped_no_surface_result": 5166,
+     "n_kept_with_fewer_results": 19663,
+     "n_kept_depth_known": 78466,
+     "n_with_label_before": 149424,
+     "n_with_label_after": 142915
+    },
+    "tss/val": {
+     "n_samples": 67166,
+     "n_dropped": 5023,
+     "n_dropped_no_qc_passed_result": 1013,
+     "n_dropped_no_surface_result": 4010,
+     "n_kept_with_fewer_results": 5755,
+     "n_kept_depth_known": 38398,
+     "n_with_label_before": 59916,
+     "n_with_label_after": 56118
+    },
+    "turbidity/test": {
+     "n_samples": 100254,
+     "n_dropped": 11143,
+     "n_dropped_no_qc_passed_result": 2877,
+     "n_dropped_no_surface_result": 8266,
+     "n_kept_with_fewer_results": 15464,
+     "n_kept_depth_known": 55410,
+     "n_with_label_before": 99321,
+     "n_with_label_after": 88708
+    },
+    "turbidity/train": {
+     "n_samples": 266333,
+     "n_dropped": 20915,
+     "n_dropped_no_qc_passed_result": 12845,
+     "n_dropped_no_surface_result": 8070,
+     "n_kept_with_fewer_results": 32309,
+     "n_kept_depth_known": 115940,
+     "n_with_label_before": 263530,
+     "n_with_label_after": 243696
+    },
+    "turbidity/val": {
+     "n_samples": 104356,
+     "n_dropped": 9812,
+     "n_dropped_no_qc_passed_result": 4040,
+     "n_dropped_no_surface_result": 5772,
+     "n_kept_with_fewer_results": 21914,
+     "n_kept_depth_known": 66662,
+     "n_with_label_before": 102359,
+     "n_with_label_after": 93725
+    }
+   },
+   "by_target_role_tblock": {
+    "chla/testxtrain": {
+     "n_samples": 82112,
+     "n_dropped": 11129,
+     "n_dropped_no_qc_passed_result": 3802,
+     "n_dropped_no_surface_result": 7327,
+     "n_kept_with_fewer_results": 5424,
+     "n_kept_depth_known": 51579,
+     "n_with_label_before": 79688,
+     "n_with_label_after": 69071
+    },
+    "chla/testxval": {
+     "n_samples": 31092,
+     "n_dropped": 2947,
+     "n_dropped_no_qc_passed_result": 612,
+     "n_dropped_no_surface_result": 2335,
+     "n_kept_with_fewer_results": 2810,
+     "n_kept_depth_known": 23216,
+     "n_with_label_before": 30632,
+     "n_with_label_after": 27717
+    },
+    "chla/trainxtrain": {
+     "n_samples": 234336,
+     "n_dropped": 26505,
+     "n_dropped_no_qc_passed_result": 15409,
+     "n_dropped_no_surface_result": 11096,
+     "n_kept_with_fewer_results": 15540,
+     "n_kept_depth_known": 130263,
+     "n_with_label_before": 224664,
+     "n_with_label_after": 198995
+    },
+    "chla/trainxval": {
+     "n_samples": 79730,
+     "n_dropped": 7138,
+     "n_dropped_no_qc_passed_result": 3966,
+     "n_dropped_no_surface_result": 3172,
+     "n_kept_with_fewer_results": 3792,
+     "n_kept_depth_known": 51208,
+     "n_with_label_before": 76295,
+     "n_with_label_after": 69375
+    },
+    "chla/valxtrain": {
+     "n_samples": 105306,
+     "n_dropped": 9566,
+     "n_dropped_no_qc_passed_result": 5182,
+     "n_dropped_no_surface_result": 4384,
+     "n_kept_with_fewer_results": 4971,
+     "n_kept_depth_known": 75456,
+     "n_with_label_before": 103387,
+     "n_with_label_after": 94419
+    },
+    "chla/valxval": {
+     "n_samples": 43257,
+     "n_dropped": 3179,
+     "n_dropped_no_qc_passed_result": 1340,
+     "n_dropped_no_surface_result": 1839,
+     "n_kept_with_fewer_results": 1829,
+     "n_kept_depth_known": 34018,
+     "n_with_label_before": 42417,
+     "n_with_label_after": 39570
+    },
+    "secchi/testxtrain": {
+     "n_samples": 97787,
+     "n_dropped": 452,
+     "n_dropped_no_qc_passed_result": 452,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 1959,
+     "n_kept_depth_known": 54082,
+     "n_with_label_before": 96959,
+     "n_with_label_after": 96918
+    },
+    "secchi/testxval": {
+     "n_samples": 31067,
+     "n_dropped": 77,
+     "n_dropped_no_qc_passed_result": 77,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 183,
+     "n_kept_depth_known": 14698,
+     "n_with_label_before": 30882,
+     "n_with_label_after": 30871
+    },
+    "secchi/trainxtrain": {
+     "n_samples": 241923,
+     "n_dropped": 1990,
+     "n_dropped_no_qc_passed_result": 1990,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 4816,
+     "n_kept_depth_known": 121740,
+     "n_with_label_before": 239656,
+     "n_with_label_after": 238704
+    },
+    "secchi/trainxval": {
+     "n_samples": 70796,
+     "n_dropped": 505,
+     "n_dropped_no_qc_passed_result": 505,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 1191,
+     "n_kept_depth_known": 26576,
+     "n_with_label_before": 70102,
+     "n_with_label_after": 70008
+    },
+    "secchi/valxtrain": {
+     "n_samples": 107672,
+     "n_dropped": 595,
+     "n_dropped_no_qc_passed_result": 595,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 1261,
+     "n_kept_depth_known": 53427,
+     "n_with_label_before": 106445,
+     "n_with_label_after": 106349
+    },
+    "secchi/valxval": {
+     "n_samples": 34941,
+     "n_dropped": 340,
+     "n_dropped_no_qc_passed_result": 340,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 285,
+     "n_kept_depth_known": 13953,
+     "n_with_label_before": 34456,
+     "n_with_label_after": 34434
+    },
+    "tss/testxtrain": {
+     "n_samples": 45168,
+     "n_dropped": 4532,
+     "n_dropped_no_qc_passed_result": 961,
+     "n_dropped_no_surface_result": 3571,
+     "n_kept_with_fewer_results": 6326,
+     "n_kept_depth_known": 26489,
+     "n_with_label_before": 40998,
+     "n_with_label_after": 38108
+    },
+    "tss/testxval": {
+     "n_samples": 13805,
+     "n_dropped": 1399,
+     "n_dropped_no_qc_passed_result": 112,
+     "n_dropped_no_surface_result": 1287,
+     "n_kept_with_fewer_results": 2408,
+     "n_kept_depth_known": 8975,
+     "n_with_label_before": 12728,
+     "n_with_label_after": 11665
+    },
+    "tss/trainxtrain": {
+     "n_samples": 128765,
+     "n_dropped": 6650,
+     "n_dropped_no_qc_passed_result": 2563,
+     "n_dropped_no_surface_result": 4087,
+     "n_kept_with_fewer_results": 15491,
+     "n_kept_depth_known": 59886,
+     "n_with_label_before": 116770,
+     "n_with_label_after": 111802
+    },
+    "tss/trainxval": {
+     "n_samples": 35994,
+     "n_dropped": 1853,
+     "n_dropped_no_qc_passed_result": 774,
+     "n_dropped_no_surface_result": 1079,
+     "n_kept_with_fewer_results": 4172,
+     "n_kept_depth_known": 18580,
+     "n_with_label_before": 32654,
+     "n_with_label_after": 31113
+    },
+    "tss/valxtrain": {
+     "n_samples": 50205,
+     "n_dropped": 3649,
+     "n_dropped_no_qc_passed_result": 819,
+     "n_dropped_no_surface_result": 2830,
+     "n_kept_with_fewer_results": 4172,
+     "n_kept_depth_known": 27676,
+     "n_with_label_before": 44765,
+     "n_with_label_after": 42110
+    },
+    "tss/valxval": {
+     "n_samples": 16961,
+     "n_dropped": 1374,
+     "n_dropped_no_qc_passed_result": 194,
+     "n_dropped_no_surface_result": 1180,
+     "n_kept_with_fewer_results": 1583,
+     "n_kept_depth_known": 10722,
+     "n_with_label_before": 15151,
+     "n_with_label_after": 14008
+    },
+    "turbidity/testxtrain": {
+     "n_samples": 74083,
+     "n_dropped": 8466,
+     "n_dropped_no_qc_passed_result": 2338,
+     "n_dropped_no_surface_result": 6128,
+     "n_kept_with_fewer_results": 11152,
+     "n_kept_depth_known": 39535,
+     "n_with_label_before": 73398,
+     "n_with_label_after": 65345
+    },
+    "turbidity/testxval": {
+     "n_samples": 26171,
+     "n_dropped": 2677,
+     "n_dropped_no_qc_passed_result": 539,
+     "n_dropped_no_surface_result": 2138,
+     "n_kept_with_fewer_results": 4312,
+     "n_kept_depth_known": 15875,
+     "n_with_label_before": 25923,
+     "n_with_label_after": 23363
+    },
+    "turbidity/trainxtrain": {
+     "n_samples": 203338,
+     "n_dropped": 16326,
+     "n_dropped_no_qc_passed_result": 10233,
+     "n_dropped_no_surface_result": 6093,
+     "n_kept_with_fewer_results": 25547,
+     "n_kept_depth_known": 86439,
+     "n_with_label_before": 201593,
+     "n_with_label_after": 186012
+    },
+    "turbidity/trainxval": {
+     "n_samples": 62995,
+     "n_dropped": 4589,
+     "n_dropped_no_qc_passed_result": 2612,
+     "n_dropped_no_surface_result": 1977,
+     "n_kept_with_fewer_results": 6762,
+     "n_kept_depth_known": 29501,
+     "n_with_label_before": 61937,
+     "n_with_label_after": 57684
+    },
+    "turbidity/valxtrain": {
+     "n_samples": 76291,
+     "n_dropped": 6714,
+     "n_dropped_no_qc_passed_result": 2925,
+     "n_dropped_no_surface_result": 3789,
+     "n_kept_with_fewer_results": 17639,
+     "n_kept_depth_known": 47212,
+     "n_with_label_before": 75238,
+     "n_with_label_after": 69302
+    },
+    "turbidity/valxval": {
+     "n_samples": 28065,
+     "n_dropped": 3098,
+     "n_dropped_no_qc_passed_result": 1115,
+     "n_dropped_no_surface_result": 1983,
+     "n_kept_with_fewer_results": 4275,
+     "n_kept_depth_known": 19450,
+     "n_with_label_before": 27121,
+     "n_with_label_after": 24423
+    }
+   },
+   "by_target": {
+    "chla": {
+     "n_samples": 575833,
+     "n_dropped": 60464,
+     "n_dropped_no_qc_passed_result": 30311,
+     "n_dropped_no_surface_result": 30153,
+     "n_kept_with_fewer_results": 34366,
+     "n_kept_depth_known": 365740,
+     "n_with_label_before": 557083,
+     "n_with_label_after": 499147
+    },
+    "secchi": {
+     "n_samples": 584186,
+     "n_dropped": 3959,
+     "n_dropped_no_qc_passed_result": 3959,
+     "n_dropped_no_surface_result": 0,
+     "n_kept_with_fewer_results": 9695,
+     "n_kept_depth_known": 284476,
+     "n_with_label_before": 578500,
+     "n_with_label_after": 577284
+    },
+    "tss": {
+     "n_samples": 290898,
+     "n_dropped": 19457,
+     "n_dropped_no_qc_passed_result": 5423,
+     "n_dropped_no_surface_result": 14034,
+     "n_kept_with_fewer_results": 34152,
+     "n_kept_depth_known": 152328,
+     "n_with_label_before": 263066,
+     "n_with_label_after": 248806
+    },
+    "turbidity": {
+     "n_samples": 470943,
+     "n_dropped": 41870,
+     "n_dropped_no_qc_passed_result": 19762,
+     "n_dropped_no_surface_result": 22108,
+     "n_kept_with_fewer_results": 69687,
+     "n_kept_depth_known": 238012,
+     "n_with_label_before": 465210,
+     "n_with_label_after": 426129
+    }
+   }
+  },
+  "s2_wqp_matchups_2026": "not built yet"
+ }
+}

@@ -26,6 +26,9 @@ def main() -> int:
     a = ap.parse_args()
     cfg = runner.apply_overrides(runner.load_config(a.config, smoke=a.smoke), a.set)
     modes = a.modes.split(",") if a.modes else list(cfg.get("modes", ["uni"]))
+    from sentinel.models.sonde import gpu_budget
+
+    gpu_budget.widen()   # lead ruling 2026-11-10: GPUs 0-9 via the cap file, idle GPUs only
     gpu = runner.setup_gpu("sonde_chronos_zs" + ("_smoke" if a.smoke else ""), prefer=a.gpu_prefer)
     from sentinel.models.sonde.chronos import ChronosConfig, ChronosForecaster, load_pipeline
 

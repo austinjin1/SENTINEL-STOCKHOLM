@@ -1,0 +1,157 @@
+{
+  "sha256": "b9326d49aca711f0ceeec1362c21883030a94f83dd6971a2db15cba1babc9a9e",
+  "hash_matches": true,
+  "findings": [
+    {
+      "id": "ST-1-SPENT-ADORE",
+      "severity": "blocking",
+      "section": "\"What is NOT in scope\" (l.21-26) and §3 item 3 (l.107-111); the four-way partition table (l.117-122)",
+      "issue": "The spent ADORE test blocks are NOT subtracted. Only the 11,437 prospective result_ids are removed, so rows that M4 already scored once on ADORE's test partitions sit in both the new training pool and the new primary test block. The file's own sentence \"No spent block — the ADORE t-F2F occurrence test or the prospective set — is re-scored, re-trained on or re-claimed\" is false as the split stands, and a §15.1 claim on T1 would be a second claim on already-scored rows (sota_campaign rule 1; RESEARCH_PLAN §15.5 amendment items 1 and 7).",
+      "evidence": "Join of /home/bcheng/STOCKHOLM/sentinel_data/processed/adore/split_assignments.parquet (ECOTOX result_id keys; role/assignment='test') to the sealed label-free split /home/bcheng/STOCKHOLM/sentinel_data/processed/chemtox_arch_v2/chemtox_t1t6_split_v1.parquet, keys only: t-F2F/split_occurrence test = 4,133 ids (matches chemtox_test_plan.md §1 'n = 4133'); of these 913 are in T1_test and 2,859 in train_pool. Union of the four scored partitions (t-F2F/occurrence, t-F2F/scaffold-murcko 4,326, t-C2C/occurrence 1,038, a-CA2F-diff/occurrence 3,576) = 11,157 ids: 2,465 are in T1_test (23.4 % of 10,548) and 8,008 in train_pool (13.4 % of 59,729); 0 in T6a_test/T6b_test. All four partitions are spent: results/registry.jsonl holds experiment 'adore_chemtox_test' with splits t-F2F/split_occurrence/test (63 rows), t-F2F/split_scaffold-murcko/test (54), t-C2C/split_occurrence/test (54), a-CA2F-diff/split_occurrence/test (54). Builder /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/arch_v2/build_t1t6_split.py lines 55-64 subtract only the prospective ids.",
+      "suggested_ruling": "No stamp and no fit on T1 or T6 until the builder also subtracts, as an assertion, the union of every scored ADORE test partition (t-F2F×split_occurrence, t-F2F×split_scaffold-murcko, t-C2C×split_occurrence, a-CA2F-diff×split_occurrence; 11,157 result_ids) exactly as it subtracts the 11,437 prospective ids, and the split, cluster file, counts and MDEs are rebuilt and re-hashed as _v1b/_v2 with the old version preserved; the amendment's \"no spent block\" sentence is corrected in the same dated addendum."
+    },
+    {
+      "id": "ST-2-MDE-ROW-INDEPENDENT",
+      "severity": "blocking",
+      "section": "§6 (l.276-308), §12.1 condition (f) (l.513), §7.2 attribution rule (l.361-365)",
+      "issue": "The MDE table is computed with synthetic errors drawn independently per ROW, so it scales with row count, not with the declared resampling unit. §6's claim that \"85,746 rows from 11k (chemical, species) pairs are never treated as independent\" is false for these numbers, and the binding gate of condition (f) — and the A1 attribution test, which a small MDE makes easier to pass — is an order of magnitude too lax. Real errors on a held-out chemical cluster are overwhelmingly cluster-specific, which is the premise of the track.",
+      "evidence": "sentinel/models/chemtox/unseen_taxa.py lines 672-679: eA/eB are rng.normal(0, rmse_level, len(y)) per row; y cancels in the RMSE, and cluster resampling then recovers row-level variance. Normal approximation 1.96·1.2·sqrt(1−0.9²)/sqrt(n_rows) gives 0.0100 / 0.0090 / 0.0209 vs the file's 0.0097 / 0.0085 / 0.0197 (T1/T6a/T6b); the same formula on n_units gives 0.0474 / 0.0268 / 0.0532. Re-running the pinned helper with the target set to zeros (label-free; /tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/mdechk.py) reproduces 0.0088 / 0.0083 / 0.0185, and adding a within-unit error component gives T1 0.0864 (icc 0.5) and 0.1716 (icc 1.0), T6a 0.0343 / 0.0696, T6b 0.0443 / 0.0847 — 4× to 18× the declared gates. T1_test is also unit-heavy-tailed: largest cluster 791 rows (7.5 % of the block), top-5 clusters 24.2 %, 116 singletons of 468.",
+      "suggested_ruling": "The author recomputes the MDE with a within-unit error component (report icc = 0.5 and 1.0) before the stamp; until then condition (f) and the §7.2 A1 attribution test are gated at the unit-level ρ=0 value (≥ 0.05 T1, ≥ 0.03 T6a, ≥ 0.06 T6b), the sentences \"better powered than T2's best\" and \"better powered than any block M4 has ever scored\" are struck, and T6b carries no §15.1 label unless the corrected MDE supports it."
+    },
+    {
+      "id": "ST-3-TESTBLOCK-LABEL-SUMMARIES",
+      "severity": "blocking",
+      "section": "§3 partition table columns \"SD(target)\" and \"Replicate floor\" (l.117-122), §6 l.286-289 and l.310-316, §13 l.560-561",
+      "issue": "Label values of all three sealed blocks were read pre-stamp and label-derived statistics of them are printed in the amendment, contradicting the file's own §13 (\"no read of T1_test, T6a_test or T6b_test beyond the row counts in §3\"), §6 (\"no label of any future test row informed any number\"), and LEAD_DECISIONS rule 1 (\"power from counts/metadata only\"). A labelled copy of the whole universe, including the 26,017 reserved rows, also exists unsealed and is the frame the MDE script consumes.",
+      "evidence": "build_t1t6_split.py line 152 computes sd_target from log10_conc_mol_L for every block, lines 186-193 compute each test block's replicate floor; t1t6_counts.json records T1_test sd_target 1.7415 / replicate_floor 0.4954, T6a 1.6806 / 0.4083, T6b 1.7678 / 0.4578 — the figures in the §3 table. t1t6_mde.json also carries sd_target per block and stratum. The labelled partition file (columns include log10_conc_mol_L, 85,746 rows, sha256 9ef801b86207aac55bf872acfa5a2705e7158198d9a52c4d1c142c64e7736c31, recorded in t1t6_counts.json but not in §2's artefact table) is present at mode 0664 in /tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/t1t6/chemtox_t1t6_partition.parquet and is read by compute_t1t6_mde.py line 22. The published split /home/bcheng/.../processed/chemtox_arch_v2/chemtox_t1t6_split_v1.parquet is genuinely label-free (5 columns, 85,746 rows), and the MDE values themselves are reproducible with zeroed labels, so the leak is confined to these aggregates.",
+      "suggested_ruling": "The lead records this as a disclosed pre-stamp deviation: the author states in the dated addendum which design choices (cutoff 0.4, 15 % block, duration bands, T6a/T6b status) were fixed before those statistics existed, the three test blocks' SD and replicate floors are struck from the claim machinery (only the training-pool floor 0.504 may be cited as an absolute bound), and the labelled partition copy is deleted or sealed 0444 inside the run directory with its hash listed in §2 before the stamp."
+    },
+    {
+      "id": "ST-4-SEEDS",
+      "severity": "should_fix",
+      "section": "§7.1 l.340-341, §12.1 condition (d) (l.511)",
+      "issue": "Condition (d) requires only that all_seeds_better be *reported*, not that it hold — weaker than RESEARCH_PLAN §15.1(iii) and than this workstream's frozen T2 protocol. Seed ids are unstated, seed parity for stochastic comparators is not in the parity statement, and §14.4's \"seed variance in CIs\" is not implemented (how the 3 seeds enter the paired bootstrap is undefined).",
+      "evidence": "Amendment l.511 \"≥ 3 seeds, with all_seeds_better reported\"; frozen docs/preregistration/chemtox_unseen_taxa_plan.md §6 (l.519-521) \"Seeds 0, 1, 2 for every stochastic model; a claim requires the gain in all seeds (§15.1 iii)\"; chemtox_test_plan.md §2 rule 3 same. §4.1 parity (l.147-155) lists rows, features and auxiliary targets but not seeds; M2's analogous lead ruling (LEAD_DECISIONS l.45-46) required seed parity explicitly.",
+      "suggested_ruling": "Condition (d) reads: seeds 0, 1, 2 for every stochastic entry including comparators and ensemble members, all_seeds_better must be TRUE for any §15.1 label, the reported point estimate is the seed-mean, and the paired bootstrap is run per seed with the per-seed CIs reported beside the seed-mean CI."
+    },
+    {
+      "id": "ST-5-PRIMARY-METRIC-AND-CI",
+      "severity": "should_fix",
+      "section": "§6, §7.1 l.338-342, §12.1 (a)-(b) (l.508-509)",
+      "issue": "The primary metric is never defined, and neither is the interval. \"RMSE\" appears only in the selection rule and the MDE; micro vs macro (by chemical, by species) weighting, the units, the secondary-metric list, the CI level, sidedness and the bootstrap interval method are all absent from a confirmatory design, leaving the choice open after the look.",
+      "evidence": "grep for 'micro|macro|primary metric' in the amendment returns no definition (only l.342 and l.494 mention RMSE in passing); §12.1 (a) says 'paired CI (cluster bootstrap, 2,000 resamples, unit = the block's resampling unit)' with no level or sidedness. The frozen T2 protocol fixes all of it: chemtox_unseen_taxa_plan.md l.495-499 'Primary metric per block: micro-RMSE ... in log10(mol/L)', 'percentile intervals', 'paired bootstrap on identical rows ... two-sided'.",
+      "suggested_ruling": "The primary metric is micro-RMSE in log10(mol/L) on the block's rows, as in the frozen T2 protocol §6; macro-RMSE by chemical and by species, MAE, R², bias and % within 1 log unit are reported, never claimed; every CI is a two-sided 95 % percentile cluster bootstrap, B = 2,000, paired on identical rows."
+    },
+    {
+      "id": "ST-6-FAMILY-AND-CLAIM-MODEL",
+      "severity": "should_fix",
+      "section": "§12.1 condition (c) (l.510), §7.1 l.338-341, §8 l.388-393",
+      "issue": "The Holm family is not enumerated and there is no claim-model rule: every entry's frozen winner is scored on the sealed block, so the number of hypotheses is decided after the look. Multiplicity across the three blocks is also uncontrolled although the blocks are dependent (T1_test and T6b_test are built from the same held-out clusters and share 232 of T6b's 278 chemicals), so three correlated looks each offer a label.",
+      "evidence": "Amendment l.510 '(c) Holm correction across the candidate family within that block' with no m; l.340 'One winner per entry (the lowest mean; ties broken by worst fold) is carried into the freeze' — 22 entries on T1, 16 on T6. Chemical overlap computed from the label-free split: |T1_test ∩ T6b_test test_cas| = 232 of 278 T6b chemicals. Compare the frozen T2 protocol l.503-508, which enumerates the family (four named references plus a surrogate family) and requires Holm across block × reference pairs for any cross-block statement; and M6's ruling (LEAD_DECISIONS l.179-181) 'one claim model per track, chosen by a rule written in the amendment that uses inner-CV or validation data only'.",
+      "suggested_ruling": "Before the stamp the amendment names one claim model per block, chosen by pool validation only, and enumerates the Holm family as (claim model + the other candidate entries) × (the (a) and (b) comparator legs) with m fixed in writing; T1 is the only primary block, T6a and T6b labels are secondary and any statement spanning blocks needs Holm across the block × comparator pairs."
+    },
+    {
+      "id": "ST-7-R5-NOT-PAIRABLE",
+      "severity": "should_fix",
+      "section": "§4.2 R5 (l.164), §4.2 closing rule (l.194-196), §4.3 (l.187), §12.2 item 3 (l.525-527)",
+      "issue": "TRIDENT is designated the strongest published method for condition (a) but is never fitted: the comparison is a read of its released 10×10-CV per-SMILES errors over intersecting SMILES. Those errors come from the authors' own splits and rows, so there is no paired per-row difference to block-bootstrap, no input/row parity (§4.1 cannot hold), and §4.2's rule \"decided by validation on the pool\" cannot be applied to an entry that produces no pool predictions. RESEARCH_PLAN §15.1(i) allows a re-run on our split or the published benchmark split, not a third construction.",
+      "evidence": "Amendment l.164 'via its released per-SMILES 10×10-CV errors, never by re-running TRIDENT'; l.229 'r5_trident_released_errors 1 (no fit — a read of the released file over the intersecting SMILES)'; l.194-196 'Which comparator is \"strongest published\" is decided by validation on the pool, inside the frozen block, before the look'; §4.1 l.147-149 requires identical rows for every mandatory comparator. Licence entry verified: docs/licenses.md l.47 (Zenodo 10260621, CC BY 4.0).",
+      "suggested_ruling": "Condition (a) is read only against a published method re-run here at full parity on the block's own rows (MMoE or gpboost_published, whichever leads pool validation, fixed in writing before the look). The TRIDENT released-error comparison is descriptive context, reported with its row-set and training-overlap caveat, and can never satisfy (a) or carry a SOTA label."
+    },
+    {
+      "id": "ST-8-SHARED-REFERENCE-STRATUM",
+      "severity": "should_fix",
+      "section": "§3 l.128-133, §12.1 conditions (f) and (h) (l.513, l.515)",
+      "issue": "74.4 % of T1_test rows come from publications that also contributed training rows — three to four times T2's 16-29 % — yet the \"no shared reference\" stratum only has to be *reported*; the frozen T2 protocol requires the point difference to keep its sign on that stratum. Condition (f)'s \"for that block and stratum\" is ambiguous about whether the stratum gates the claim.",
+      "evidence": "Amendment l.130-133 (74.4 % T1, 53.8 % T6a, 30.9 % T6b; verified in t1t6_counts.json shared_reference_row_share 0.7443 / 0.5382 / 0.3087, no_shared_reference_rows 2,697 / 6,031 / 1,666); frozen chemtox_unseen_taxa_plan.md l.517-519 condition (f) 'the point estimate keeps its sign on the block's parent_novel stratum, on the \"no shared reference\" stratum, and under the reference-clustered CI'.",
+      "suggested_ruling": "Condition (f) is split: the difference must exceed the corrected primary MDE on the full block AND keep its sign on the no-shared-reference stratum (T2 condition (f)); a claim failing the stratum leg is reported as qualified, labelled \"not separable from publication structure\", and the stratum's own MDE is quoted beside it."
+    },
+    {
+      "id": "ST-9-COMPARATOR-ROW-SETS",
+      "severity": "should_fix",
+      "section": "§4.3 (l.170-192), §12.1 (a),(b),(g) (l.508-514)",
+      "issue": "Several comparators cannot score every row of a block and no evaluation row set is pre-registered, so the subset each comparison is read on can be chosen after the look. R5 only covers intersecting SMILES; Haber's rule (C×t constant) is undefined at duration 0 and degenerate near it; nearest-observed-duration carry-forward has no same-chemical anchor on T1/T6b, whose clusters are held out; readacross \"widens\" by construction. \"Beats\" in condition (g) is also undefined (point difference or CI).",
+      "evidence": "Amendment l.188-192 and l.229; label-free split counts: T6a_test has 2 rows at duration_h = 0 and 339 below 1 h, T6b 1 and 85; T1_test and T6b_test share 0 chemicals with train_pool (cluster hold-out verified), so a carry-forward baseline has no in-pool duration for those chemicals. The frozen T2 protocol pre-registers the analogous subset ('on the surrogate-available subset as well as on the full endpoint', chemtox_unseen_taxa_plan.md l.516-517).",
+      "suggested_ruling": "For each comparator the amendment states, before the stamp, the rows it is evaluated on and the fallback for rows it cannot score; the confirmatory comparison is always read on the full block with the unscoreable comparator's rows imputed by its declared fallback, any intersection-only comparison is secondary and labelled, and condition (g) requires a point difference in the candidate's favour against every parity comparator."
+    },
+    {
+      "id": "ST-10-T6-BAND-COMPOSITION",
+      "severity": "should_fix",
+      "section": "§1 l.44-48, §3 l.124-126 and l.135-139, §6 l.283, §7.2/§11 claim wording (l.490-492)",
+      "issue": "The T6 claim is motivated by week-long exposures and a 274× range, but the blocks are dominated by near-window and short durations and the far tail is thin, and no per-band power or per-band reporting is pre-registered. A block-level win could be driven entirely by rows at 0.25×-1.75× the training window and still be presented as duration extrapolation.",
+      "evidence": "Counts from the label-free split: T6a_test 13,059 rows = 4,522 below 24 h, 3,893 in 96-168 h (1,529 of them ≤ 120 h), 4,252 in 168-720 h, 343 in 720-2160 h, 49 above 2,160 h; T6b_test 2,410 = 964 / 608 / 769 / 50 / 19. cluster×band groups are unbalanced (T6a 1,463 groups, median 2 rows, max 439). The MDE table (§6) has rows only for \"all\" and \"no shared reference\" — no band is powered. Amendment l.126 'maximum 26,298 h' and l.137 'reach 274× beyond 96 h' (T6b's maximum is 8,035.5 h, i.e. 84×, per t1t6_counts.json).",
+      "suggested_ruling": "Per-band results (the §6 bands) are a pre-registered deliverable of every T6 look; the headline claim is scoped to the bands in which the sign holds, bands with fewer than 50 resampling units (720-2160 h and > 2160 h on both blocks) are descriptive only, and no write-up may cite the 274× range unless the > 720 h strata are reported beside it."
+    },
+    {
+      "id": "ST-11-T6-BASELINE-LADDER",
+      "severity": "should_fix",
+      "section": "§5.3 (l.233-237) and §5.4 (l.239-243)",
+      "issue": "T6's comparator ladder is weaker than T1's: no re-tuned rf entry (so the \"strongest simple baseline\" rests on one tuned tree family) and no per-species or per-chemical mean. RESEARCH_PLAN §14.3 requires the trivial-context rung in every table and §15.5 item 4 forbids baselines being removed or under-tuned.",
+      "evidence": "§5.1 T1 searched entries include both xgboost_emb and rf_emb and §5.2 includes trivial_per_species_mean and trivial_per_chemical_mean; §5.3 T6 lists only xgboost_emb_dur among tuned simple baselines and §5.4's fixed list has trivial_global_mean only. RESEARCH_PLAN §14.3 baseline ladder; §15.5 amendment item 4.",
+      "suggested_ruling": "T6's fixed list gains trivial_per_species_mean, trivial_per_chemical_mean and a per-species×duration-band mean (all free), and rf_emb_dur is added either as a searched entry inside the 128 cap or as a fixed entry; condition (b) on T6 is read against whichever simple baseline leads pool validation, named before the look."
+    },
+    {
+      "id": "ST-12-OPEN-CHOICES",
+      "severity": "should_fix",
+      "section": "§4.2 R1 (l.160), §10.2 (l.466-470), §12.2 item 3 (l.525-527)",
+      "issue": "Three confirmatory paths still carry an unresolved \"or\": the embedding source (MolFormer-XL or ChemBERTa-2, with a Chemeleon fallback) has no precedence rule and no cap accounting if more than one is tried; R1 is \"LightGBM/XGBoost\"; kill rule 3 says condition (a) falls back to \"mmoe or gpboost_published\".",
+      "evidence": "l.466-470 'MolFormer-XL ... with ChemBERTa-2 as the alternative; neither is used until its weight licence is verified'; l.160 'LightGBM/XGBoost with monotone_constraints'; l.526 'the strongest remaining published comparator (mmoe or gpboost_published)'. Caps in §5 count one configuration budget per entry, so a second embedding source would silently double entries 3, 4, 5, 10 and 11.",
+      "suggested_ruling": "Precedence is fixed now: MolFormer-XL if cleared, else ChemBERTa-2, else the Chemeleon fallback — one source only, recorded with its licence date before any fit; trying a second source is a new entry whose 32 (T1) / 16 (T6) configurations count against the declared 544. R1's library is fixed to one of LightGBM or XGBoost in the same addendum, and the kill-rule-3 fallback is resolved by pool validation under §4.2, not by choice."
+    },
+    {
+      "id": "ST-13-BAND-EDGES-AND-ZERO-DURATION",
+      "severity": "note",
+      "section": "§6 l.283, §3 l.113-116",
+      "issue": "The declared bands are right-closed in the code, so the band written \"< 24\" actually means ≤ 24 h and \"24-96\" means (24, 96]; a 24-h row (in-window, and 13,890 pool rows are exactly 24 h) therefore falls in the band labelled \"lt24\". There is also no duration-validity filter: rows with duration_h = 0 enter T6a/T6b.",
+      "evidence": "compute_t1t6_mde.py lines 28-30 BAND_EDGES = [-0.001, 24.0, 96.0, ...] with pandas default right-closed cut; reproduced on the label-free split: train_pool 13,890 and T1_test 2,459 rows fall in the 'lt24' band and are all exactly 24 h; T6a has 2 rows and T6b 1 row at duration_h = 0.",
+      "suggested_ruling": "The addendum states the band intervals as half-open (0,24], (24,96], (96,168], (168,720], (720,2160], (2160,∞) and either drops duration_h = 0 rows from both T6 blocks with a counted assertion or declares how each comparator and the composition layer treat t = 0."
+    },
+    {
+      "id": "ST-14-REPLICATE-FLOOR-AS-CLAIM-FLOOR",
+      "severity": "note",
+      "section": "§6 l.310-316",
+      "issue": "The frozen T2 artefacts contain a stricter reading of the same floor than the amendment adopts, and the difference is two orders of magnitude; whichever is right, the two must not be cited side by side in the paper.",
+      "evidence": "Amendment l.310-316 uses the MDE alone and declares no practically-relevant threshold (citing W-D-7). The pinned helper's own docstring (sentinel/models/chemtox/unseen_taxa.py l.660-661) says 'The protocol forbids resting a claim on a difference below it, or below the block's replicate floor, whichever is larger', and the frozen chemtox_unseen_taxa_plan.md table (l.278-282) has a 'Floor for a claim' column of 0.649 / 0.437 / 0.402 (the replicate floors), although its §6 text (l.526-531) says the floor is not a difference threshold.",
+      "suggested_ruling": "The lead states once, bindingly, that the corrected MDE is the only difference gate and the replicate floor is reported only as an absolute-RMSE context, and that the T2 table's 'Floor for a claim' column and the helper docstring are superseded for T1/T6; the same sentence is quoted in any write-up that compares T1/T6 with T2."
+    },
+    {
+      "id": "ST-15-SAME-POOL-TWO-BUDGETS",
+      "severity": "note",
+      "section": "§5.6 (l.251-257)",
+      "issue": "The stated reason for counting shared entries twice is wrong: both tracks search on the same train_pool block, with different fold structures, not on different training pools. The arithmetic (384+11+128+9+12 = 544 across 38 entries) is correct, but the honest statement is that 512 searched configurations are developed on the same 59,729 rows.",
+      "evidence": "Amendment l.253-256 'counted once per track because each track is a separate fit on a different training pool'; §7.1 (l.324-336) defines both T1's 4 cluster-group folds and T6's 3 duration-band folds inside the same train_pool; t1t6_counts.json train_pool rows 59,729 is the only pool block.",
+      "suggested_ruling": "The addendum replaces that clause with 'both tracks search inside the same 59,729-row pool under different fold structures; shared entries are counted once per track because each track selects its own winner', and the registry carries the total 544 unchanged."
+    },
+    {
+      "id": "ST-16-VERIFIED",
+      "severity": "note",
+      "section": "§2, §3, §5.6, §9, §10.2, §13",
+      "issue": "Recorded for the stamp: what checked out against the repo, so a later reader need not redo it.",
+      "evidence": "Amendment sha256 b9326d49…a9e matches the author's value. All eight §2 hashes reproduce (cluster CSV a6e33634…, split parquet 005f7957…, builder 6fb9ed52…, counts 1c443fed…, MDE c38a147d…, MDE script 2c171c0a…, H4 JSON 3ceead2f…, H4 script 0659b5f7…); cluster CSV and split are 0444. Counts reproduce from t1t6_counts.json and the label-free split: 2,603 clusters / 2,067 singletons, largest cluster 4,577 rows = 5.34 %, 3,895 chemicals, 490 held-out clusters, 85,746 rows, 59,729 / 10,548 / 13,059 / 2,410, T1 = 15.01 % of 70,277 in-window rows, out-of-window 18.04 %, 5,486 below 24 h / 9,983 above 96 h, 416 distinct durations, max 26,298 h; blocks are row-disjoint and T1_test/T6b_test share no chemical with train_pool. The class exclusion is a genuine superset of T2's reserved rows: T2 blocks are defined by class ∈ BLOCK_CLASSES (unseen_taxa.py l.107), so the 1,358 class-NA usable rows cannot be T2 test rows. 544 = 384+11+128+9+12 and 38 = 22+16 are correct. H4: 17,418 rows / 672 chemicals / 479 species, value column bcf1_mean, 588 / 456 overlap, per h4_bcf_join_qc.json. Licences entered in docs/licenses.md l.47-48 (TRIDENT CC BY 4.0 cleared; EnviroTox not cleared → T5 blocked). The MDE numbers are reproducible with the target zeroed, so they are target-blind as claimed. registry.jsonl holds no T1/T6/arch_v2 row and no arch-v2 fit code or embedding run exists (sentinel/models/chemtox/ unchanged since 11-09; runs/chemtox/arch_v2 holds only scripts and reports).",
+      "suggested_ruling": "Record this verification list in the rulings file so the stamp states which counts were independently reproduced and which were not (the per-block SD and replicate floors, see ST-3, are label-derived and are not endorsed)."
+    }
+  ],
+  "points": [
+    {
+      "point": "The disclosed T6 extrapolation asymmetry: selection folds can extrapolate at most 2x, the test blocks up to 274x; the alternative (long-tail rows in the pool) was rejected.",
+      "recommendation": "Accept the design as disclosed, but bind it: T6 stays secondary, per-band results are a mandatory deliverable of the look, far bands (> 720 h: 392 rows T6a, 69 T6b; > 2,160 h: 49 and 19) are descriptive only, and the write-up may not quote the 274x range without the far-band numbers beside it. Also require the shape claim to be stated as a pre-declared monotonicity/slope prediction before the look, since selection cannot test it.",
+      "reason": "Putting long-tail rows into the pool would indeed destroy the regime the track exists to test, so rejecting that option is right. The residual risk is not the asymmetry itself but that a near-boundary win (3,893 of 13,059 T6a rows sit in 96-168 h, 4,522 below 24 h) gets reported as long-range extrapolation; per-band reporting closes it at no cost."
+    },
+    {
+      "point": "The 544-configuration total versus the caps (384 searched T1 + 11 fixed + 128 searched T6 + 9 fixed + 12 ablations, across 38 entries).",
+      "recommendation": "Accept 544 as the cap, with three additions: the 12 ablations are named as outside the searched caps but inside the declared total; any second embedding source is a new entry with its own 32/16 configurations against the total (ST-12); and screen-then-refit, timed smokes and failed fits all count, with the realised count reconciled in the write-up as §5.6 promises.",
+      "reason": "The arithmetic is right and matches the lead's 384/128 searched caps and 'every configuration counted'. The only leakage routes are the undeclared embedding-source choice and the screen/refit pattern that the ADORE phase used (chemtox_test_plan.md §2: screen on folds 0-2, re-run the top five), which is not covered by the current wording."
+    },
+    {
+      "point": "T5 (cross-source transfer) blocked on the EnviroTox licence.",
+      "recommendation": "Confirm blocked as written. The licence finding is verifiable in docs/licenses.md l.48 and no download exists; require only that no write-up claims cross-source or curation-pipeline generalisation, and that T5 stays listed as blocked (not dropped) in RESULTS.md.",
+      "reason": "Recording a blocked track rather than quietly dropping it is the conservative outcome and matches sota_campaign rule 3 ('every track is reported'). Nothing about T1/T6 depends on it."
+    },
+    {
+      "point": "The only 'ruling requested'-style line in the file (REACH/ECHA, l.465) and the T6b status question.",
+      "recommendation": "REACH/ECHA: restate the standing ruling (untouched unless docs/licenses.md clears it) - no action. T6b: keep it a full block with its own look as the file fixes, but state that its §15.1 label is available only if the corrected unit-level MDE (ST-2) is cleared; otherwise it is reported as a measured null, never re-described as a stratum of T6a.",
+      "reason": "Plan §7.2 said an underpowered T6b 'is reported as a stratum of T6a, never as a separate claim', while the amendment's kill rule 8 fixes it as a full block. The amendment's version is stricter against post-hoc demotion, so keep it, but tie the label to the corrected power rather than to the row-level MDE of 0.0197."
+    }
+  ],
+  "summary": "Hash matches (b9326d49…a9e); all eight §2 artefact hashes and nearly every count reproduce. Three blocking problems. (1) Spent ADORE test rows were never subtracted: 2,465 already-scored rows sit in T1_test (913 from the primary t-F2F/occurrence block) and 8,008 in train_pool, contradicting the file's own \"no spent block\" sentence and campaign rule 1. (2) The MDE is computed with row-independent errors, so the binding gates (0.0097/0.0085/0.0197) are 4-18x too lax and §6's pseudo-replication claim is false. (3) Per-block SD(target) and replicate floors are label-derived summaries of the sealed blocks, and a labelled copy sits unsealed in scratch. Plus twelve weaker items: undefined primary metric, seed rule below §15.1, unenumerated Holm family, non-pairable TRIDENT comparison."
+}

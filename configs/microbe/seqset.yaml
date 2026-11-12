@@ -23,4 +23,6 @@ candidates:
   seqset_dnabert: {}
   seqset_kmer: {encoder: kmer5}
   seqset_id: {seq_mode: id, encoder: null}
-  seqset_kmer_v4: {encoder: kmer5_v4}   # cycle-5 candidate (protocol §10.6, not yet run): k-mers of the harmonised V4 window
+  seqset_kmer_v4: {encoder: kmer5_v4}   # cycle-5 candidate (protocol §10.6): k-mers of the harmonised V4 window
+  seqset_kmer_v4_150: {encoder: kmer5_v4_150}   # cycle-6 control (§10.8): V4 first 150 bp, no pretraining
+  seqset_kmer_v4_150_emp: {encoder: kmer5_v4_150, table_norm: pretrain, init_state: "microbe/pretrain/emp_v4_150_seed0.pt"}   # cycle 6: EMP-pretrained encoder

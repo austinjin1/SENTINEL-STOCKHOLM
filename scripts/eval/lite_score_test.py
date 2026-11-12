@@ -127,7 +127,11 @@ def predict_role(freeze: dict, ev: pd.DataFrame, tr: pd.DataFrame, cname: str, d
     trs = tr.drop_duplicates("site_id")
     out["gt10km_from_train"] = nearest_distance_km(ev["lat"], ev["lon"], trs["lat"], trs["lon"]) > 10.0
     # review W8: water bodies with no Lite-safe teacher row within 5 km (coordinates only)
+    if T.sha_file(Path(freeze["teacher_manifest"])) != freeze["teacher_manifest_sha256"]:
+        raise G.ProtectedDataError("teacher manifest sha256 differs from the freeze")
     man = json.loads(Path(freeze["teacher_manifest"]).read_text())
+    if G.artifact_sha256(man["seen_points"]) != man["seen_points_sha256"]:
+        raise G.ProtectedDataError("teacher seen_points sha mismatch")
     seen = pd.read_parquet(man["seen_points"]).drop_duplicates(["lat", "lon"])
     dk = pd.Series(nearest_distance_km(ev["lat"], ev["lon"], seen["lat"], seen["lon"]), index=ev.index)
     out["teacher_gt5km_wb"] = (dk.groupby(ev["water_body"]).transform("min") > 5.0).to_numpy()
@@ -203,9 +207,8 @@ def predict_role(freeze: dict, ev: pd.DataFrame, tr: pd.DataFrame, cname: str, d
     if freeze.get("events"):
         try:
             preds.update(event_predictions(freeze, ev, tr, inp, loaded["primary"], preds))
-        except Exception as e:
-            not_run["events"] = repr(e)
-            raise
+        except Exception as e:   # D2: a secondary-track failure never burns the look; H1/H2/H-G6 still complete
+            not_run["events"] = f"not run: {e!r}"
     out = pd.concat([out.reset_index(drop=True), pd.DataFrame(preds)], axis=1)
     return out, not_run
 
@@ -245,9 +248,10 @@ def event_predictions(freeze: dict, ev: pd.DataFrame, tr: pd.DataFrame, inp, pri
 
 
 def score_events(df: pd.DataFrame, confirmatory: bool, n_boot: int) -> dict:
-    """E4a (lakes): state metrics per route (frozen-calibrated P); derived vs direct and vs each comparator
-    (paired ΔBrier/ΔAUPRC, water-body bootstrap). Inferential (Holm over the workstream's inferential events = E4a
-    only) on Test-A; descriptive otherwise. Tiers and E3: descriptive (raw route-i P)."""
+    """E4a (lakes), DESCRIPTIVE ONLY (protocol §13 v1.7): state metrics per route (frozen-calibrated P) with CIs and
+    the four paired comparisons derived − {climatology, band-ratio, direct, GBM} (ΔBrier / ΔAUPRC with CIs). No
+    decision boolean and no claim depends on E4a. Tiers and E3: descriptive (raw route-(i) P). ``confirmatory`` is
+    only recorded (Test-A vs Test-B)."""
     from sentinel.events import lite as EL
 
     ev = EL.EV()
@@ -265,14 +269,6 @@ def score_events(df: pd.DataFrame, confirmatory: bool, n_boot: int) -> dict:
                                                          df.loc[pop, f"evcal__{c}__E4a"].to_numpy(), groups=g,
                                                          n_boot=n_boot)
     res["E4a"]["power_flag"] = ev.power_flag(res["E4a"]["n_pos"], res["E4a"]["n_wb_pos"])
-    if confirmatory:   # §13: derived vs direct; Holm over the inferential events (E4a only -> alpha 0.05); CI rule
-        dvd = res["E4a"]["derived_vs_direct"]
-        res["E4a"]["preregistered_test"] = {
-            "derived_better_brier": bool(dvd["delta_brier"]["ci_high"] < 0),
-            "derived_better_auprc": bool(dvd["delta_auprc"]["ci_low"] > 0),
-            "direct_better_brier": bool(dvd["delta_brier"]["ci_low"] > 0),
-            "direct_better_auprc": bool(dvd["delta_auprc"]["ci_high"] < 0),
-            "family": "Holm over inferential event tracks = {E4a}; decision = 95% CI excludes 0"}
     desc = {}
     for code in EL.E4A["tiers"]:
         yt = EL.labels(df["y_chla"], code)
@@ -502,8 +498,7 @@ def registry_rows(results: dict) -> list[dict]:
                         rows.append(dict(experiment="lite_test_events", model="lite_E4a_derived", metric=f"{k}_vs_{c}",
                                          value=float(d["diff"]), ci_low=d["ci_low"], ci_high=d["ci_high"], split=role,
                                          n=int(e4[f"derived_vs_{c}"]["n"]), target="E4a", is_baseline=False,
-                                         extra={"p_value": d.get("p_value"),
-                                                "preregistered": c == "direct" and role == "test"}))
+                                         extra={"p_value": d.get("p_value"), "descriptive": True}))
     conf = results["H_G6"]
     rows.append(dict(experiment="lite_test_verdicts", model="lite_" + CARRIER, metric="H_G6", value=float(conf["H_G6"]),
                      split="test", n=None, target=None, is_baseline=False, extra=conf))
@@ -532,6 +527,9 @@ def main(argv=None) -> int:
     if a.dry_run_val:
         freeze = json.loads(Path(a.candidate).read_text())
         freeze["_sha256"] = T.sha_file(a.candidate)
+        T.check_packages(freeze)                       # the dry run exercises the same pre-claim checks
+        T.verify_data_pins(freeze)
+        T.verify_artifacts(freeze)
         roles, confirm_role = ("val",), "val"
         n_boot = 20 if a.smoke else int(freeze["n_boot"])
         out_dir = R.run_directory("dryrun_test_scoring", smoke=True)
@@ -542,42 +540,56 @@ def main(argv=None) -> int:
             raise SystemExit("--smoke/--candidate are dry-run options; test mode reads only FREEZE_lite.json")
         if not a.allow_test:
             raise SystemExit("test mode needs --allow-test (after the lead's authorisation)")
-        freeze = T.load_frozen()                       # C2: FREEZE_FILE only, status FROZEN, authorised
-        T.verify_data_pins(freeze)                     # C3: before the claim
+        freeze = T.load_frozen()                       # C2 + W-b: FREEZE_FILE only, FROZEN, authorised, packages
+        T.verify_data_pins(freeze)                     # C3 + W-a: before the claim, frozen == live loader paths
+        T.verify_artifacts(freeze)                     # D2: every hashed artifact and run dir, before the claim
         roles, confirm_role = ("test", "test_time"), "test"
         n_boot = int(freeze["n_boot"])                 # W3: from the freeze
         out_dir = T.look_dir()
         if a.rescore_from_saved:
-            pdir = T.check_sealed()
+            pdir = T.check_sealed(freeze)              # D1: registry anchor, this freeze, no prior scoring rows
             results = score_all(pdir, freeze, roles, confirm_role, n_boot)
             R.write_json(out_dir / "test_results.json", results)
             flush_registry(registry_rows(results), out_dir, freeze)
             T.mark_scored({"H_G6": results["H_G6"], "rescored_from_saved": True})
             print(json.dumps(results["H_G6"], indent=1))
             return 0
+        if freeze.get("device", "cpu") != "cpu":      # E2: refused before the claim
+            raise SystemExit("the frozen device must be cpu (GPU budget 0/1 shared; review W3)")
         T.claim(freeze)                                # C1
         pdir = T.pred_dir()
         pdir.mkdir(parents=True, exist_ok=True)
     device = freeze.get("device", "cpu")
     if device != "cpu":
         raise SystemExit("the frozen device must be cpu (GPU budget 0/1 shared; review W3)")
-    if a.dry_run_val:
-        ev_all = D.role_frame(split, roles, training=True)
-    else:
-        ev_all = D.role_frame(split, roles, allow_test=True, training=False, freeze_file=G.FREEZE_FILE)
-    tr = D.role_frame(split, ("train",), training=True)
     not_run = {}
-    for role in roles:
-        ev = ev_all[ev_all["role"] == role].reset_index(drop=True)
-        cname = f"eval_{role}"
-        if a.smoke:
-            ev, cname = ev.head(150).reset_index(drop=True), f"smoke_{role}"
-        dfp, nr = predict_role(freeze, ev, tr, cname, device)
-        not_run.update({f"{role}/{k}": v for k, v in nr.items()})
-        dfp.to_parquet(pdir / f"pred_{role}.parquet", index=False)     # C5: every model and baseline, per row
-    R.write_json(pdir / "not_run.json", not_run)
-    if not a.dry_run_val:
-        T.seal_predictions()
+    import signal
+
+    def _term(signum, frame):                          # E2: SIGTERM -> exception, so the abort marker is written
+        raise SystemExit(f"terminated by signal {signum}")
+
+    signal.signal(signal.SIGTERM, _term)
+    try:   # phase 1 (claimed look): any crash before sealing is recorded (ABORTED.json + registry row), then raised
+        if a.dry_run_val:
+            ev_all = D.role_frame(split, roles, training=True)
+        else:
+            ev_all = D.role_frame(split, roles, allow_test=True, training=False, freeze_file=G.FREEZE_FILE)
+        tr = D.role_frame(split, ("train",), training=True)
+        for role in roles:
+            ev = ev_all[ev_all["role"] == role].reset_index(drop=True)
+            cname = f"eval_{role}"
+            if a.smoke:
+                ev, cname = ev.head(150).reset_index(drop=True), f"smoke_{role}"
+            dfp, nr = predict_role(freeze, ev, tr, cname, device)
+            not_run.update({f"{role}/{k}": v for k, v in nr.items()})
+            dfp.to_parquet(pdir / f"pred_{role}.parquet", index=False)     # C5: every model and baseline, per row
+        R.write_json(pdir / "not_run.json", not_run)
+        if not a.dry_run_val:
+            T.seal_predictions(freeze)                 # D1: + lite_test_sealed registry anchor; closes test access
+    except BaseException as e:                         # E2: also KeyboardInterrupt / SystemExit (SIGTERM)
+        if not a.dry_run_val:
+            T.mark_aborted(freeze, repr(e))
+        raise
     results = score_all(pdir, freeze, roles, confirm_role, n_boot)
     R.write_json(out_dir / ("test_results.json" if not a.dry_run_val else "dryrun_results.json"), results)
     if not a.dry_run_val:

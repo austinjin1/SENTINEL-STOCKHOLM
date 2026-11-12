@@ -14,6 +14,8 @@ and with onsets, observed site-years; E7 also on the coldwater-eligible populati
 
 from __future__ import annotations
 
+from sentinel.data.reserved import assert_no_reserved  # noqa: E402
+
 import sys
 from pathlib import Path
 
@@ -43,6 +45,7 @@ def main() -> int:
     have = {p.stem for p in common.SITE_DIR.glob("*.parquet")}
     sites = sorted(s for r in ("train", "val") for s in split.sites(r)
                    if s in have and s in reg.index and reg.loc[s, "site_type"] in STREAM_TYPES)
+    assert_no_reserved(sites, "events_feasibility_sonde")   # reserved new-site block (sentinel.data.reserved)
     C.assert_allowed([split.site_role[s] for s in sites], {"train", "val"}, "sonde site roles")
     data = common.prepare_data(split, info, sites, blocks=("train", "val"),
                                variables=list(dict.fromkeys(TARGETS + EXTRA_VARS)))

@@ -1,0 +1,112 @@
+{
+ "track_file": {
+  "path": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/orbit_track_u.json",
+  "sha256": "953948b7f0251057728adfc4d9a75065e1d0324c9ec3536eb6dae99ae957b2cf"
+ },
+ "version": "dev_v5",
+ "u_test": {
+  "chla": {
+   "n": 582,
+   "n_waterbodies": 180,
+   "n_blocks": 68,
+   "by_region": {
+    "02": 158,
+    "06": 37,
+    "09": 261,
+    "18": 126
+   },
+   "by_main_role": {
+    "train": 306,
+    "test": 190,
+    "val": 86
+   }
+  },
+  "tss": {
+   "n": 131,
+   "n_waterbodies": 48,
+   "n_blocks": 34,
+   "by_region": {
+    "02": 72,
+    "06": 30,
+    "09": 25,
+    "18": 4
+   },
+   "by_main_role": {
+    "train": 70,
+    "test": 50,
+    "val": 11
+   }
+  },
+  "turbidity": {
+   "n": 254,
+   "n_waterbodies": 66,
+   "n_blocks": 40,
+   "by_region": {
+    "02": 68,
+    "06": 39,
+    "09": 79,
+    "18": 68
+   },
+   "by_main_role": {
+    "train": 144,
+    "test": 102,
+    "val": 8
+   }
+  },
+  "secchi": {
+   "n": 876,
+   "n_waterbodies": 264,
+   "n_blocks": 70,
+   "by_region": {
+    "02": 106,
+    "06": 42,
+    "09": 728
+   },
+   "by_main_role": {
+    "train": 482,
+    "val": 222,
+    "test": 172
+   }
+  },
+  "turbidity_fnu": {
+   "n": 47,
+   "n_waterbodies": 10,
+   "n_blocks": 6,
+   "by_region": {
+    "02": 36,
+    "09": 9,
+    "18": 2
+   },
+   "by_main_role": {
+    "train": 46,
+    "val": 1
+   }
+  }
+ },
+ "u_fit": {
+  "n_fit_rows_base": 21236,
+  "n_fit_rows_track_u": 15749,
+  "n_inner_rows_track_u": 5030,
+  "targets": {
+   "chla": 6348,
+   "tss": 2885,
+   "turbidity": 4758,
+   "secchi": 11451
+  }
+ },
+ "track_E_projected": {
+  "ge20": {
+   "val_fraction": 0.2761627906976744,
+   "projected_headline_n": 169.84011627906978
+  },
+  "ge50": {
+   "val_fraction": 0.07703488372093023,
+   "projected_headline_n": 47.37645348837209
+  },
+  "ge56.85": {
+   "val_fraction": 0.061046511627906974,
+   "projected_headline_n": 37.54360465116279
+  },
+  "headline_chla_n": 615
+ }
+}

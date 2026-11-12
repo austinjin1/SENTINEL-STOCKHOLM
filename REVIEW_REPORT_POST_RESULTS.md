@@ -947,3 +947,495 @@ Replace the whole entry (header line through "Next:") with:
     - The pre-specified pooled Test-A ∪ Test-B H1 analysis (pass `test_ab`, not before 2027-06-30) is labelled secondary in every report. Its Test-A part is already unblinded.
     - The live-trial amendment (provisional-input variant; H2's confirmatory route) must be frozen in a dated public commit before 2026-12-01. It must state that Test-A results were known and must not re-tune thresholds from them.
 ```
+
+## M6 HydroMet — post-results review (2026-11-09)
+
+**Review mode:** post-results · **Date:** 2026-11-09 · **Reviewer:** independent reviewer, Autonomous Review Skill (fresh context; did not do the work)
+**Scope:** the single test looks `M6/test` and `M6N/test`, plus the pre-declared descriptive re-score `M6N/test_sens427`. This covers:
+- the look dirs `sentinel_runs/hydromet/test_looks/{M6_test,M6N_test}/`: markers, sealed `predictions/` and `SHA256SUMS`, `score/`, `log.txt`;
+- the logs `sentinel_runs/hydromet/logs/test_look_{M6,M6N}_test_20261109.log`;
+- the registry experiments `M6/test` (1,785 rows), `M6N/test` (117) and `M6N/test_sens427` (116);
+- the write-ups: `docs/preregistration/hydromet_test_results.md`, the RESULTS.md entry "2026-11-09 — M6 HydroMet TEST", `docs/model_cards/hydromet.md` and `docs/handoff/M6-hydromet.md`.
+
+I also read:
+- `FREEZE_hydromet.json` and the archive `freeze_archives/hydromet_freeze_20261109T161338.tar.gz`;
+- the registry row `hydromet/prereg_snapshot`;
+- `hydromet_protocol.md` §2, §5–§8 and §10–§12;
+- RESEARCH_PLAN §15.1–§15.2 and §15.5;
+- the code `scripts/eval/hydromet_test_look.py`, `sentinel/models/hydromet/{testlook,guard,evaluate,pipeline}.py` and `scripts/eval/hydromet_track_n.py` (score path).
+
+**What I did**
+- **Hashes.**
+  - Extracted the archive into scratch. All **46/46** `frozen_files` are byte-identical across three copies: archive, working tree and the freeze record.
+  - `FREEZE_hydromet.json` (sha `dd8b4376…`) and the candidate record (`d0de5033…` = `candidate_sha256`) also match the archive. The archive sha is `138dae5e…`, as stated in the handoff.
+  - `guard.scoring_code_sha256()` now returns `5bd7d329…`, which equals the freeze.
+  - `testlook.verify_data_pins` re-run now: all 5 `M6/test` pins and all 3 `M6N/test` pins match.
+  - All 25 frozen artifacts re-hashed: they equal `weights_sha256`.
+  - All 37 sealed npz headers carry `artifact_sha256 == weights_sha256[model]`, `freeze_sha256 = dd8b4376…` and `block = test`.
+- **Sealing.** `sha256sum -c SHA256SUMS`: 25/25 (`M6_test`) and 12/12 (`M6N_test`) OK. The sha of each `SHA256SUMS` equals `PREDICTIONS_SAVED.json`. Neither folder holds a file outside `SHA256SUMS`, and all npz files are 0444.
+- **Earlier test access.** I parsed every M6/hydromet registry row and every hydromet `data_info.json` (88) under `sentinel_runs`, plus every track-N log line that reports station roles.
+- **Independent recompute** (CPU, ≤ 6 threads; scripts in `/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/m6rev/scripts/`):
+  - **Per-site metrics, `M6/test`** (`recompute_m6.py`). From the sealed npz plus raw `sonde_daily` (approved values only, all-model common mask, ≥ 60 days), with my own seed ensembles and blends, I recomputed per-site KGE and RMSE of all 36 models for `temp_c_mean` and `do_mgl_mean`. Result: 333 / 178 sites, identical n, max |ΔKGE| 4e-7 against `site_metrics_test_test.parquet`.
+  - **Per-station metrics, `M6N/test`** (`recompute_m6n.py`). From the sealed npz plus `obs_daily.parquet` (≥ 8 days): 3,014 / 2,724 stations, identical n, max |ΔRMSE| 1e-6.
+  - **Statistics** (`stats_m6.py`). My own basin-group bootstrap (different RNG), my own Holm and my own every-seed check, over all 28 + 4 + 4 hypotheses. Every Δ agrees exactly. CIs agree to ≤ 0.009 (bootstrap noise) and p to ≤ 0.12 at p > 0.3. Holm decisions, every-seed flags and `won` are identical in all three families.
+- **Not done:** I did not re-run a look, create or modify a marker, edit a frozen file, open `keys.env` or use git. The only file I edited is this report.
+
+### Summary
+
+**Overall status: 🟡 PASS WITH CONCERNS.**
+- Both looks are clean, single, verified before the claim, and fully traceable.
+- The decision rule was applied exactly as frozen, and the label **"competitive"** (H-G1 not met for M6) is correct.
+- Four write-up statements must be corrected before any number leaves the repository:
+  - the track-S low-DO sentence (W1);
+  - the scope of the blend's DO result (W2);
+  - the track-N temperature label (W3);
+  - the sensitivity wording (W4).
+- Several protocol-required items are missing (W5–W6), and the model card and handoff contain stale or misleading text (W7–W8). None of these changes a number or the label.
+
+**Integrity: clean.**
+- **Order of events (UTC):**
+
+  | Time | Event |
+  |---|---|
+  | 21:13:38 | Freeze `frozen_at` (file and archive mtime 16:13 EST) |
+  | 21:13:48 | `prereg_snapshot` row (48 files) |
+  | 21:13:55 | Wrapper start |
+  | 21:14:09 | `M6/test` `TEST_LOOK.json` and `look_claimed` row |
+  | 21:21:32 | Predictions sealed |
+  | 21:32:45 | `SCORED.json` and last `M6/test` row |
+  | 21:33:07 | `M6N/test` claimed |
+  | 22:15:20 | `M6N/test` sealed |
+  | 22:18:26 | `M6N/test` rows |
+  | 22:19:57–22:20:03 | `test_sens427` rows |
+  | 22:20:03 | `SCORED.json` |
+
+- The driver runs `load_freeze` (split and code hash) and `verify_data_pins` before `claim`. `predict_artifacts` calls `guard.verify_weights` per artifact. The scorer refuses files whose `artifact_sha256` or `freeze_sha256` differ. These checks raise on failure and are not logged on success (O2). My re-verification above confirms that they hold now.
+- **Counts:**
+  - One claim row per look.
+  - `M6/test`: 1 claim + 1,784 rows = 1,785.
+  - `M6N/test`: 1 + 116 = 117.
+  - `M6N/test_sens427`: 116, with no claim row (same look).
+  - No `look_aborted` or `look_resumed` row, no `ABORTED*`, no `log_resume*`, no `log_rescore*`. One start/end per log, `exit 0`, and `log.txt` equals the wrapper log minus its 2–3 wrapper lines.
+- **No earlier test access:**
+  - No M6 registry row with a test block or test role exists before 21:14:09Z.
+  - The only hydromet `data_info.json` files with a non-empty `access.protected` are the five under `test_looks/M6_test/`, all with `look: M6/test`.
+  - Every other track-N log reports `{'val': 1365}`, `{'train': 6244}` or train+val only.
+  - The four val rehearsals (`full_logs/rehearsal_*`) used val-role sites or stations × the val block.
+- Comparators in the freeze equal `score_val_v4/comparators.json` (mtime 05:00 EST, val selection).
+- The sens427 exclusion set (`basins_trackn.parquet`, mtime 06:14 EST, before the freeze) has 427 stations with method `local (NLDI basin unavailable)`. 87 of them are test-role, as logged. After the ≥ 8-day rule, 62 scored stations per endpoint are removed (3,014→2,952 and 2,724→2,662).
+
+**Decision rule: applied exactly as frozen.**
+- **`M6/test`:**
+  - 28 hypotheses (7 models × 4 endpoints, all `tested`, 22–33 groups, all ≥ `MIN_TEST_GROUPS = 3`).
+  - p_IUT = max of the two two-sided group-bootstrap p values. Holm over 28 at α 0.05: the smallest p_IUT is 0.029 (> 0.0018), so 0 rejections.
+  - Every-seed vs GBM holds for no hypothesis.
+  - `won` = 0, and `label_model_won` = [F, F, F, F] for `ealstm_ws_full`.
+- **§15.1 for `ealstm_ws_full`:** all four Δgbm CIs include 0 (−0.006 [−0.020, 0.003], +0.004 [−0.007, 0.018], −0.000 [−0.020, 0.035], +0.013 [−0.018, 0.046]). "Competitive" is therefore the correct label, not "negative". SOTA is excluded by (ii)–(iii) and by the pre-declared published-method caveat (§8).
+- **`M6N/test`:**
+  - Holm over 4. Sorted p_IUT: 0.000 (`ealstm_ws_full` temp; rejects at 0.0125), then 0.026 (blend temp; exceeds 0.0167, so Holm stops), 0.038, 0.476.
+  - `won` needs both CI_high < 0, every seed better and a Holm rejection, so 0 are won.
+  - Sensitivity: same decisions.
+- **Units and signs are correct throughout:**
+  - KGE Δ = model − comparator, positive = better.
+  - Track-N RMSE Δ = model − comparator, negative = better, in °C and mg/L.
+  - The write-ups label "(worse)" correctly.
+
+**Traceability: every number checked matches the registry and the sealed outputs.** I checked:
+- all of hydromet_test_results.md §1–§3: tables, per-seed Δ, RMSE and KGE medians, the Holm walk-through, the sensitivity numbers;
+- the RESULTS entry;
+- the handoff's test numbers.
+
+The one mismatch is O1 (a comparator mislabel; the number itself is correct).
+
+### Warnings (should fix before any number leaves the repository)
+
+**W1 — The track-S low-DO statement is mis-scoped in all four documents.**
+- `M6S/val_v2` is a **validation** analysis of the cycle 1–4 models only: `ealstm`, `physdo`, `full`, `compact`, `gbmblend`, plus GBM and physics.
+- The frozen label model `ealstm_ws_full` (and `ealstm_ws`) was **never evaluated** for low-DO detection, and nothing was evaluated on test (protocol §11 lists the val cell and track R only).
+- The registered pooled CSI values for DO-min < 5 mg/L are 0.000–0.033, and the baselines are in that range too (`forcing_gbm` 0.033).
+- "No M6 model detects low DO (CSI ≤ 0.03)" and "the val-era finding stands" therefore over-generalise in two ways: across models, and from val to test. The failure must still be stated, but scoped. Replacement text is given below.
+
+**W2 — The blend's track-N DO result needs scoping (risk of overclaim).**
+- The frozen DO-mean GBM comparator is `forcing_gbm` (1.351 mg/L). The blend's own GBM member `forcing_gbm_bag` has a lower median RMSE on this cell (1.336, registered).
+- My descriptive paired group bootstrap of blend vs `forcing_gbm_bag` (not a frozen comparison) gives −0.020 [−0.037, +0.017] mg/L, with 2 of 3 seeds worse (+0.015, −0.012, +0.008).
+- The every-seed "yes" vs `forcing_gbm` rests on a seed-0 margin of −0.0006 mg/L, and it fails in the sens427 re-score (seed 0: +0.002).
+- "The GBM blend is better than the GBM on DO" must therefore read "lower median RMSE than the frozen GBM comparator `forcing_gbm`, not Holm-significant, not robust to the per-seed rule in the sensitivity re-score, and not lower than the bagged GBM it contains".
+
+**W3 — The track-N temperature result is a §15.1 "negative" and should be named as such.**
+- `ealstm_ws_full` is worse than the GBM with CI excluding 0: +0.161 [0.095, 0.246] °C median RMSE; every seed worse (+0.19, +0.26, +0.21).
+- The write-ups state this as "worse" (good), but the track-N headline needs the label, because it is the only Holm "rejection" in either family.
+- The rejection exists only because the frozen IUT uses **two-sided** p values, so a significant wrong-direction difference enters Holm.
+  - In the registry, the rows of this hypothesis carry `holm_reject: true` in both `M6N/test` and `M6N/test_sens427`. Any downstream consumer (paper, console, fusion) must not read `holm_reject` without the sign of Δ.
+  - Using two-sided p also relaxed the next Holm threshold (α/3 instead of α/4). This changed no decision: with one-sided p, blend DO ≈ 0.019 > 0.0125, and `M6/test` has no rejection either way.
+  - As frozen, this is valid. Disclose it.
+
+**W4 — "Unchanged" or "changes little" for sens427 is slightly too strong.** Every Δ and CI moves ≤ 0.005, and the Holm decisions are identical. But the blend's DO every-seed rule flips from met to not met. State this.
+
+**W5 — Missing items the protocol requires next to the result:**
+- **Configurations tried.** Protocol §8 ("both counts are reported") and RESEARCH_PLAN §15.5(2) require the counts next to the final claim: 6 val improvement cycles, 8 val-scored EA-LSTM variants plus the capped `ealstm_v3`, the EA-LSTM inner grid, and the GBM 3-point grid × 5 variants. They appear only in the val_v4 line.
+- **Track-N power statement.** Protocol §12 says it is "stated with every track-N result". The test-cell group count (38 / 36) is in the table, but the pre-declared power framing is not.
+- **Track-N secondaries (§12):**
+  - per-station bias (registered; not reported);
+  - new-region stations alone (not produced by the look).
+  - For the lead's information, descriptive figures computed from the sealed `site_metrics_test.parquet` (unregistered; 4 basin groups, so not interpretable as evidence):
+    - temperature, 921 stations: `ealstm_ws_full` 1.97 vs `forcing_gbm_bag` 1.85 °C;
+    - DO, 810 stations: 1.32 vs `forcing_gbm` 1.40 mg/L.
+  - Sonde-region stations alone: temperature 2.01 vs 1.84 °C; DO 1.35 vs 1.33 mg/L.
+- **§7 secondaries on test.** They are registered but not summarised:
+  - physics-DO head vs EA-LSTM: +0.009 [−0.022, 0.027] and −0.003 [−0.024, 0.012];
+  - `ealstm_ws` vs `ealstm` (the upstream-forcing lever): −0.001 / +0.001 / −0.003 / −0.015, all CIs include 0;
+  - site-resampling sensitivity (`*_site` columns);
+  - secondary targets.
+
+  The pre-registered static-input ablation (W4 of the pre-training review) was **not** carried to test: its artifacts are not in the freeze. Disclose it as val-only.
+
+**W6 — The test write-up should say plainly that the val-era gains did not replicate.**
+- Six val cycles selected `ealstm_ws_full` partly because upstream forcings added +0.012/+0.019 KGE on val temperature.
+- On test, `ealstm_ws` − `ealstm` ≈ 0 on every endpoint, and the candidate's val Δgbm (+0.002 / −0.002 / −0.016 / +0.011) became −0.006 / +0.004 / −0.000 / +0.013.
+- This is the expected selection effect. It belongs next to the label.
+- Relatedly, "competitive is largely a power outcome" should not suggest that more power would flip the label. On temperature mean, the candidate's point estimate favours the GBM, and 4 of the 5 other standalone EA-LSTMs are significantly worse than it.
+
+**W7 — The model card is stale and incomplete for a "tested v1.0.0" card:**
+- the frozen model `ealstm_ws_full` (and `ealstm_ws`) is missing from the variants list;
+- upstream-basin forcings are missing from Inputs, Manifests and the baseline ladder (`forcing_gbm_ws_bag`, the `_ws` physics members);
+- "Evaluation cell" describes val only;
+- the test path names `hydromet_predict.py` instead of the single-pass `hydromet_test_look.py`;
+- "Registry" lists only `val_v1`/`val_v2`;
+- the low-DO limitation has the W1 scoping problem.
+
+**W8 — Handoff:**
+- "The upstream-forcing lever helped the LSTM … yet on test the gap to the GBM stayed inside the CI" implies the lever worked on test. It did not (W6).
+- The "Registered" and "Next steps 1" blocks still name `ealstm_ws` as candidate and the freeze as pending.
+- The low-DO line has the W1 problem.
+
+### Observations
+- **O1.** hydromet_test_results.md §1, "DO mean: 1.00 vs 0.97 mg/L": 0.97 is `forcing_gbm_bag` (0.968). The frozen DO-mean GBM comparator is `forcing_gbm` (0.980). Say "1.00 vs 0.98 mg/L (`forcing_gbm`)".
+- **O2.** Freeze, pin and weight verification is not logged on success. The evidence is the marker's freeze and code sha, the claim's position after the checks in the driver, and my re-verification. For future looks, log one line per check (this needs code outside the 46 hashed files, or a later freeze).
+- **O3.** `basins_trackn.parquet`, which defines the sens427 exclusion set, is not covered by a data pin. Its mtime predates the freeze and the counts match the protocol (427 / 87), so this is a documentation gap only.
+- **O4.** `hydromet_protocol.md` and `hydromet_freeze_candidate.json` are 0664. The lead may `chmod 0444` the 46 frozen files until the track-R freeze (contents and hash unchanged).
+- **O5.** The physics/process family consists of simple regional baselines: air2stream without discharge, transferred by k-nearest donors, and DO_sat × monthly ratio. "Beats physics" should read "beats the pre-registered simple physics/process baselines".
+- **O6.** The M6N registry rows do not carry the every-seed flags; they are only in `primary_test.csv`.
+
+### Integrity verdict
+- Fabrication detected: **No.** Every number traces to the sealed predictions, and I reproduced it from raw observations plus the sealed npz.
+- Data leakage detected: **No.** There was no earlier test access, and protected data were loaded only under the open claim of this freeze.
+- All results traceable to code: **Yes.**
+- Statistical claims valid: **Yes.** They are as frozen. Two-sided-p caveat: W3. Scoping corrections: W1, W2 and W4.
+- Frozen files byte-identical to the archive (needed for the track-R freeze): **Yes, 46/46.** Code hash `5bd7d329…`.
+
+### Exact replacement text
+
+**R1 — RESULTS.md: replace the whole bullet that starts "**2026-11-09 — M6 HydroMet TEST**" with:**
+
+> - **2026-11-09 — M6 HydroMet TEST (single looks under `FREEZE_hydromet.json`; `M6/test` 1,785 rows, `M6N/test` 117, `M6N/test_sens427` 116; write-up `docs/preregistration/hydromet_test_results.md`; post-results review PASS WITH CONCERNS). §15.1 label for `ealstm_ws_full`: COMPETITIVE; M6 H-G1 not met.** Primary (test-role sites × WY2024–25, Holm over 28, 0 won, 0 Holm rejections): Δ median KGE vs best GBM −0.006 [−0.020, 0.003] (temp mean, 33 groups), +0.004 [−0.007, 0.018] (7-DADMax), −0.000 [−0.020, 0.035] (DO mean, 22 groups), +0.013 [−0.018, 0.046] (DO min); vs the pre-registered simple physics/process baselines +0.017 [0.006, 0.033], +0.014 [0.004, 0.031], +0.090 [0.054, 0.142], +0.071 [0.038, 0.104] (all CI > 0); every-seed rule met vs physics on all four, vs GBM on none; p_IUT 0.19 / 0.36 / 0.95 / 0.40. Four other standalone EA-LSTMs are below the GBM on temperature mean with CI excluding 0 (−0.011 to −0.026); the blend is level with the GBM. The val-era gains did not replicate: upstream forcings (`ealstm_ws` − `ealstm`) Δ −0.001 / +0.001 / −0.003 / −0.015 on test (all CIs include 0) after +0.012 / +0.019 on val temperature; selection over 6 val cycles (8 val-scored EA-LSTM variants + `ealstm_v3`; GBM 3-point grid × 5 variants; see the cycle-6 line) applies. **Track N (unsensed WQP stations, test cell 3,014 / 2,724 stations in 38 / 36 basin groups as in the pre-declared power check; Holm over 4, 0 won): `ealstm_ws_full` is WORSE than the GBM on temperature — §15.1 "negative" on track N — median per-station RMSE +0.161 °C [0.095, 0.246], every seed worse; this is the family's only Holm rejection and it arises because the frozen IUT uses two-sided p (wrong direction; registry `holm_reject: true` must not be read without the sign).** It is level with the GBM on DO (−0.012 [−0.063, 0.051] mg/L). `ealstm_gbmblend` has a lower DO median RMSE than the frozen GBM comparator `forcing_gbm` (−0.035 [−0.068, −0.002] mg/L, p_IUT 0.038, not Holm-significant, not won), but not than the bagged GBM it contains (1.316 vs 1.336 mg/L), and its every-seed margin (seed 0: −0.0006 mg/L) fails in the sensitivity re-score; on temperature it is worse than the GBM (+0.047 [0.005, 0.079]). All models beat the basin-forced physics members. Pre-declared sensitivity excluding the 87 test-role local-basin stations (62 scored stations per endpoint): Δ and CIs move ≤ 0.005 and Holm decisions are unchanged (`ealstm_ws_full` temp +0.157 [0.092, 0.240]; blend DO −0.033 [−0.066, −0.003], every-seed rule no longer met). Low-DO detection was not evaluated on test and was never evaluated for `ealstm_ws_full`: on val (`M6S/val_v2`, cycle 1–4 models and baselines) pooled CSI for daily-minimum DO < 5 mg/L was ≤ 0.033 for every model including the GBMs. Not reported on test: the pre-registered no-gauge static ablation (artifacts not frozen; val-only).
+
+**R2 — hydromet_test_results.md.**
+
+(a) In §1, replace "DO mean: 1.00 vs 0.97 mg/L." with:
+
+> DO mean: 1.00 vs 0.98 mg/L (`forcing_gbm`, the frozen DO-mean comparator).
+
+(b) In §1, replace "As pre-declared (§8), the test cell was expected to be underpowered for the val-sized gaps; a "SOTA" label was excluded in advance." with:
+
+> As pre-declared (§8), the test cell was expected to be underpowered for the val-sized gaps, and a "SOTA" label was excluded in advance. More power would not be expected to change the label: on temperature mean, the candidate's point estimate favours the GBM, and four other standalone EA-LSTMs are significantly worse than it. The val-era gains did not replicate. On test, upstream forcings (`ealstm_ws` vs `ealstm`) give Δ −0.001 [−0.009, 0.010] / +0.001 [−0.014, 0.015] / −0.003 [−0.020, 0.014] / −0.015 [−0.031, 0.007], against +0.012 / +0.019 on val temperature. The candidate's val Δgbm (+0.002 / −0.002 / −0.016 / +0.011) became −0.006 / +0.004 / −0.000 / +0.013. The candidate was selected over 6 val cycles: 8 val-scored EA-LSTM variants plus the capped `ealstm_v3`, a 4-point EA-LSTM inner grid, and the GBM 3-point inner grid × 5 variants (RESULTS.md, cycle-6 line). "Physics" here means the pre-registered simple physics/process baselines: an air2stream-type model without discharge, transferred by k-nearest donors, and DO_sat × the monthly ratio.
+
+(c) In §2, insert this paragraph directly before the table:
+
+> Power (pre-declared, protocol §12): the test cell holds 3,014 / 2,724 stations in 38 / 36 basin groups, about 3× the val cell's 12 groups. Track N adds stations, not groups, for selection.
+
+(d) In §2, replace the paragraph that starts "Median per-station RMSE: temperature" with:
+
+> Median per-station RMSE: temperature `ealstm_ws_full` 2.01 °C [1.86, 2.18] vs `forcing_gbm_bag` 1.84 [1.74, 2.01] (KGE 0.812 vs 0.839); DO `ealstm_gbmblend` 1.32 mg/L vs `forcing_gbm` 1.35 (KGE 0.635 vs 0.615). Median per-station bias: temperature `ealstm_ws_full` +0.19 °C [−0.19, 0.42], `forcing_gbm_bag` +0.22 [0.03, 0.34]; DO `ealstm_ws_full` −0.31 mg/L [−0.50, −0.08], `ealstm_gbmblend` −0.37, `forcing_gbm` −0.37.
+>
+> **Track-N temperature is a §15.1 "negative" result for `ealstm_ws_full`:** it is worse than the GBM with CI excluding 0, and every seed is worse (+0.19, +0.26, +0.21 °C). This is the only Holm rejection in this family, and it is in the unfavourable direction. It arises because the frozen intersection–union test uses two-sided p values. The registry rows of this hypothesis carry `holm_reject: true` and must not be read without the sign of Δ. Using two-sided p changed no decision.
+>
+> The blend's DO result is narrow:
+> - Its median RMSE is lower than that of the frozen comparator `forcing_gbm` (CI below 0; every seed lower, but seed 0 by only 0.0006 mg/L).
+> - p_IUT = 0.038 does not survive Holm. After the first rejection (p < 0.001 ≤ 0.0125), the next p_IUT, 0.026 (blend temperature), exceeds 0.05/3 = 0.0167, so Holm stops. The result is not won.
+> - It is not lower than the bagged GBM the blend contains (`forcing_gbm_bag` 1.336 vs blend 1.316 mg/L; not a frozen comparison).
+> - Its every-seed margin fails in the sensitivity re-score.
+>
+> The new-region-only secondary of §12 was not produced by the look. It is not reported here (4 basin groups).
+
+(e) In §2, replace the paragraph that starts "**Pre-declared sensitivity (`M6N/test_sens427`, descriptive):**" with:
+
+> **Pre-declared sensitivity (`M6N/test_sens427`, descriptive).** This re-score excludes the 87 test-role stations whose basin fell back to the local delineation (of the 427 overall), which removes 62 scored stations per endpoint. Every Δ and CI moves by ≤ 0.005, and the Holm decisions are unchanged: `ealstm_ws_full` temp Δgbm +0.157 [0.092, 0.240], DO −0.011 [−0.061, 0.045]; blend temp +0.047 [0.004, 0.077], DO −0.033 [−0.066, −0.003]. One thing does change: the blend's DO every-seed rule vs `forcing_gbm` is no longer met (seed 0: +0.002 mg/L).
+
+(f) In §3, replace bullets 2 and 3 ("Track N: …" and "Unchanged from validation …") with:
+
+> - Track N: at unsensed reaches the candidate is **worse than the GBM on temperature (§15.1 "negative" on track N;** +0.16 °C median RMSE, CI excludes 0, every seed worse) and level on DO. The GBM blend has a lower DO median RMSE than the frozen GBM comparator (−0.035 mg/L, CI excludes 0), but it is not Holm-significant, not robust in the sensitivity re-score, and not lower than its own bagged GBM. 0 of 4 won.
+> - Low-DO detection was **not evaluated on test**, and it was never evaluated for `ealstm_ws_full`. On validation (track S, `M6S/val_v2`; cycle 1–4 models and baselines), pooled CSI for daily-minimum DO < 5 mg/L was ≤ 0.033 for every model, including the GBMs: no evaluated model detects low DO.
+> - §7 secondaries on test (registered, descriptive):
+>   - physics-DO head vs `ealstm`: +0.009 [−0.022, 0.027] (DO mean) and −0.003 [−0.024, 0.012] (DO min);
+>   - upstream forcings, `ealstm_ws` vs `ealstm`: all CIs include 0 (see §1).
+>
+>   The pre-registered no-gauge static ablation was not carried to test, because its artifacts are not in the freeze. It is val-only (`M6/val_v2`).
+
+**R3 — docs/model_cards/hydromet.md.**
+
+(a) In the front matter, replace the first two sentences of `limitations` ("Test result (2026-11-09): … (track S).") with:
+
+> Test result (2026-11-09): "competitive". The model is level with the GBM baseline at unseen basin groups and better than the pre-registered simple physics/process baselines. At unsensed WQP stations (track N) it is worse than the GBM on temperature (a §15.1 "negative" on that track) and level on DO. Val-era gains from upstream forcings did not replicate on test. Low-DO detection was never evaluated for this model: on validation, the earlier variants and the GBM baselines all had CSI ≤ 0.033 for daily-minimum DO < 5 mg/L (track S).
+
+(b) In Model details → Variants, add these bullets:
+
+>   - `ealstm_ws` (v0.10): the same EA-LSTM with 11 upstream-basin-averaged gridMET channels (`ws_*`, NLDI/NHDPlus V2 basin of the StreamCat COMID; `processed/hydromet_upstream_forcing`) appended to the site-cell forcings (`configs/hydromet/lstm_ws.yaml`).
+>   - **`ealstm_ws_full` (v0.11; the frozen, tested model):** `ealstm_ws` refitted on all train-role sites for each seed's inner-selected epoch count (`configs/hydromet/lstm_ws_full.yaml`).
+
+(c) In Baseline ladder, add this bullet:
+
+>   - Upstream-forcing parity: `forcing_gbm_ws_bag` (3-seed bag), `air2stream_regional_ws`, `air2water_{linear,mohseni}_ws` and `dosat_ratio[air2stream_regional]_ws`, driven by basin-mean forcings.
+
+(d) In Inputs, add this bullet:
+
+> - From v0.10: basin-mean gridMET forcings over the site's total upstream drainage basin (observed weather only).
+
+(e) Replace "**Manifests:** `sonde_daily`, `forcings_daily`, `streamcat`." with:
+
+> **Manifests:** `sonde_daily` (pinned to `sonde_daily_refresh_20261108`), `forcings_daily`, `hydromet_upstream_forcing`, `streamcat`, `sites`; for track N: `hydromet_wqp_national` and `hydromet_upstream_forcing_trackn` (data pins in `FREEZE_hydromet.json`).
+
+(f) Replace the "Evaluation cell" bullet with:
+
+> **Evaluation cells:**
+> - Selection: val-role sites (unseen basin groups) × WY2022–2023, with a 42-day embargo, approved values only, identical cells for every model.
+> - Test (single look, 2026-11-09): test-role sites × WY2024–2025 (`M6/test`), and test-role unsensed WQP stations × WY2024–2025 (`M6N/test`).
+
+(g) Replace the "Test-role sites and test blocks" bullet with:
+
+> **Test-role sites and test blocks:** only through the single-pass guard `scripts/eval/hydromet_test_look.py` (`sentinel/models/hydromet/testlook.py`). It verifies the freeze, code hash and data pins before an O_EXCL claim, seals the predictions, and scores each look once. Both Test-A looks are spent.
+
+(h) Replace the "**Registry:**" bullet with:
+
+> **Registry:**
+> - Selection (val, selection-affected): `M6/val_v1`–`v4`, `M6S/val_v2`, `M6N/val_v1`, `M6N/inregion_val_v1`, `M6N/val_v2`.
+> - Test: `M6/test`, `M6N/test`, `M6N/test_sens427`.
+> - Configurations tried: `$SENTINEL_RUNS/hydromet/configs_tried.jsonl`.
+
+(i) In Limitations, replace the bullet "Low-DO events are not detected by any M6 model (track S); warm extremes are under-predicted (cold bias)." with:
+
+> - Low-DO detection has not been evaluated for this model or on test. On validation, every evaluated model (earlier EA-LSTM variants and the GBMs) had CSI ≤ 0.033 for daily-minimum DO < 5 mg/L (track S). On validation, warm extremes are under-predicted (cold bias).
+
+(j) In Limitations, replace the bullet about the GBM blend with:
+
+> - At unsensed WQP stations (track N) the frozen model is worse than the GBM on water temperature and level on DO. The GBM blend had a lower DO RMSE than the frozen GBM comparator (CI excludes 0). That gain was not Holm-significant, not robust to the per-seed rule in the sensitivity re-score, and not present against the bagged GBM the blend contains.
+
+**R4 — docs/handoff/M6-hydromet.md.**
+
+(a) In §1, replace the sentence that starts "The upstream-forcing lever helped the LSTM" with:
+
+> The upstream-forcing lever helped the LSTM on val (+0.012–0.019 KGE on temperature) but did **not** replicate on test (`ealstm_ws` − `ealstm` −0.001 / +0.001 / −0.003 / −0.015, all CIs include 0). Treat val-cycle gains of this size as selection noise when ranking levers.
+
+(b) In the DO bullet, replace "no model detects DO-min < 5 mg/L (CSI ≤ 0.03, track S)" with:
+
+> on val no evaluated model (cycle 1–4 EA-LSTMs and the GBMs; `ealstm_ws_full` was never evaluated) detects DO-min < 5 mg/L (CSI ≤ 0.033, `M6S/val_v2`)
+
+(c) In "Registered", replace "Freeze candidate (protocol §8): `ealstm_ws` … Re-evaluate after cycle 6 (`ealstm_ws_full`, val_v4)." with:
+
+> Frozen and tested: `ealstm_ws_full` (cycle 6, `M6/val_v4`); see TEST RESULTS above.
+
+(d) Mark "Next steps" item 1 as done: "Done: FREEZE_hydromet.json written 2026-11-09 21:13Z; `M6/test` and `M6N/test` scored once."
+
+### Checklist summary
+
+| Category | Items checked | Passed | Failed | N/A |
+|---|---|---|---|---|
+| Single-look integrity (claims, seals, markers, registry, timing) | 9 | 9 | 0 | 0 |
+| Freeze verification (code hash, 46 files, pins, weights, npz provenance) | 6 | 6 | 0 | 0 |
+| Data leakage / earlier test access | 4 | 4 | 0 | 0 |
+| Decision rule (Holm 28/4, IUT, every-seed, MIN_TEST_GROUPS, label model, §15.1) | 7 | 7 | 0 | 0 |
+| Result authenticity (independent recompute of metrics and statistics) | 5 | 5 | 0 | 0 |
+| Fair reporting / completeness | 9 | 4 | 5 (W1–W5) | 0 |
+| Documentation currency (card, handoff) | 2 | 0 | 2 (W7–W8) | 0 |
+
+---
+
+## M7 Lite — post-results review (2026-11-09)
+
+**Review mode:** post-results · **Date:** 2026-11-09 · **Reviewer:** independent reviewer, Autonomous Review Skill.
+It was read-only on every test output, ran nothing again, edited no frozen file and did not use git.
+
+**Scope:** the single look `lite/test`, original 4-state track:
+- `FREEZE_lite.json`, the archive `freeze_archives/lite_freeze_20261109T170530.tar.gz` and the registry row
+  `lite/prereg_snapshot`;
+- the markers, `predictions/` and `test_results.json` in `sentinel_runs/lite/test_look/`;
+- the log `lite/logs/lite_test_look_20261109.log`;
+- the `lite_test*` registry rows;
+- the write-ups: `docs/preregistration/lite_test_results.md`, the RESULTS.md entry, the "Test results" section of
+  `docs/model_cards/lite.md`, and the handoff;
+- protocol v1.7 §3, §7, §8a and §13, against which they were checked.
+
+### What I did
+- **Freeze and code.**
+  - `FREEZE_lite.json` (sha `a066b57a…`, 0444, mtime 22:05:18Z) is status FROZEN, with `authorised_by/at`.
+  - It differs from the reviewed candidate (`415ad36f…` = `candidate_sha256`) only in `status`, `authorised_*`,
+    `scoring_code_sha256`, `candidate_sha256` and `recovery_note_F1`. The F1 note is the text my E-patch check
+    proposed.
+  - The archive sha `c5bf623f…` matches its `.sha256`. All 82 files in it are byte-identical to the working tree: the
+    80 hashed files plus the freeze and the candidate.
+  - `guard.scoring_code_sha256()` now = `a7a8be82…` (80 files) = the freeze. **No hashed file has changed since the
+    freeze.**
+  - `verify_data_pins` re-run now: 7/7 match.
+- **One claim, one seal, one score, in order.**
+  - `TEST_LOOK.json` is dated 22:05:53Z (pid 1560213, host comet). The registry has exactly one `lite_test_claim`
+    (22:05:53Z), one `lite_test_sealed` (22:24:03Z), no `lite_test_aborted`, and one flush of scoring rows at
+    22:30:44–46Z:
+
+    | Experiment | Rows |
+    |---|---|
+    | `lite_test` | 238 |
+    | `lite_test_h1` | 12 |
+    | `lite_test_h1_deployable` | 12 |
+    | `lite_test_h2` | 6 |
+    | `lite_test_events` | 36 |
+    | `lite_test_verdicts` | 1 |
+
+  - `SCORED.json` is dated 22:30:46Z.
+  - The pre-claim checks ran: the log starts at 22:05:35Z, and the claim is 18 s later, which is the time hashing
+    takes. The code order is fixed by the frozen hash.
+  - `sha256sum` of the 3 sealed files equals `SHA256SUMS`. The sha of `SHA256SUMS` (`d4559783…`) equals both
+    `PREDICTIONS_SAVED.json` and the `lite_test_sealed` registry anchor. Both name freeze `a066b57a…`. There are no
+    unlisted files.
+- **No earlier test access.**
+  - No M7 registry row has a test split before 22:05Z.
+  - The only test chip caches were created *after* the claim: `eval_test_*` at 17:05:58 EST = 22:05:58Z and
+    `eval_test_time_*` at 22:17:17Z.
+  - The log shows exactly one pass: 2 roles × the model list, then scoring, exit 0, ending 22:30:47Z.
+- **Decision logic re-derived from `test_results.json` against §8a.**
+  - H1 (Holm-6): every one-sided p ≥ 0.32, so Holm rejects nothing and no `reject` is true. The composite is false.
+  - H1-deployable: the same.
+  - H2: every p ≥ 0.74, and per-seed Secchi is −0.12 / +2.00 / −3.34, so the every-seed rule fails. False.
+  - H-G6 = budgets (true) ∧ H1-dep (false) ∧ H2 (false) ∧ gap (true) = **false**.
+  - The §15.1 label rule gives "negative" because a baseline is significantly better on Secchi: carrier vs GBM-RGBN
+    +10.8 [+3.1, +15.3]; vs GBM+context +15.4 [+7.1, +20.3].
+  - The families are confirmatory for `test` only. All 15 Test-B family rows are registered as
+    `confirmatory: false`, and 0 rows have `reject: true`.
+  - E4a: there is no decision key in the scorer output or the registry. The 36 event rows carry no
+    confirmatory/preregistered field.
+- **Traceability.**
+  - All 238 `lite_test` rows equal `test_results.json` (value and both CI ends; 0 mismatches). All 30 family rows
+    equal their comparisons.
+  - Independently, from `pred_test.parquet` with my own MdSA, 100·(exp(median |ln p/y|) − 1), I reproduced to 3 dp:
+    the ensemble, seed 1, INT8, no-KD, band-ratio, GBM, GBM+context and train-median MdSA for all three targets.
+    Examples: ensemble Secchi 54.446, GBM 44.233.
+  - My own water-body bootstrap (B = 2000, different RNG) agrees with the frozen code:
+
+    | Comparison | Mine | Frozen code |
+    |---|---|---|
+    | Ensemble − GBM, Secchi | +10.21 [+4.71, +14.44] | [+4.45, +14.21] |
+    | H2 Secchi | +1.55 [−1.78, +3.62] | [−1.74, +3.50] |
+    | Turbidity vs GBM | +38.6 [−9.5, +82.9] | [−9.2, +79.7] |
+
+    Groups: 387 / 44.
+  - I checked every number in `lite_test_results.md`, the RESULTS.md entry and the model-card test section against
+    `test_results.json`. All the scores, CIs, Δs, robustness values, red-edge values, slices, ablations, E4a values and
+    Test-B values match, except the omissions and wording issues listed below.
+
+### Findings
+No critical issue. The negative result is reported plainly in all four documents: H-G6 FALSE, label "negative",
+Secchi +10.2 [+4.4, +14.2], H2 not replicated and glint failing. E4a is called descriptive everywhere, and the stale
+`"confirmatory": true` is explained in the write-up, RESULTS.md and the handoff. Test-B is kept descriptive.
+
+The corrections below are reporting completeness and wording. Each gives exact replacement text, with numbers from
+`test_results.json`.
+
+- **🟡 P1. The future-year slice for turbidity and TSS rests on 8 and 3 chips but is printed like the others.**
+  `test ∩ NAIP 2022–23` has Secchi 148 chips / 98 water bodies, turbidity **8 / 6** and TSS **3 / 2**. The scorer's
+  ≥ 10 guard applies to the whole slice, not per target. In `lite_test_results.md` §"Secondary slices", replace
+  the two rows
+  `| Turbidity, future years (small n) | 110.0 | 102.1 | 42.8 | 14.1 |` and
+  `| TSS, future years (small n) | 32.8 | 39.8 | 25.4 | 71.5 |`
+  with:
+  `| Turbidity, future years (n = 8 chips / 6 water bodies; not interpretable) | 110.0 | 102.1 | 42.8 | 14.1 |`
+  `| TSS, future years (n = 3 chips / 2 water bodies; not interpretable) | 32.8 | 39.8 | 25.4 | 71.5 |`
+  and change the Secchi future-years label to `Secchi, future years (Test-A ∩ NAIP 2022–23; n = 148 / 98)`.
+- **🟡 P2. The H2 per-seed values for turbidity and TSS are marked "not reported", but they were computed.** In the
+  H2 table, replace `| Turbidity | +12.3 [−15.5, +52.6] | not reported |` with
+  `| Turbidity | +12.3 [−15.5, +52.6] | +40.1 / +18.4 / −10.5 |`, and `| TSS | +7.0 [−8.6, +26.7] | not reported |`
+  with `| TSS | +7.0 [−8.6, +26.7] | +8.0 / +6.3 / −3.0 |`.
+- **🟡 P3. The "every applicable baseline vs the carrier" table is incomplete.** Its "—" cells were computed, and TSS
+  is missing. Replace the table with:
+
+  | Target | GBM-RGBN + context | Location kNN | Location/season GBM | Train median |
+  |---|---|---|---|---|
+  | Secchi | +15.4 [+7.1, +20.3] | +5.0 [−4.9, +13.5] | +0.7 [−10.5, +9.6] | −11.7 [−26.1, −5.5] |
+  | Turbidity | +36.2 [+3.0, +101.5] | −57.9 [−124.2, +42.1] | −29.6 [−99.1, +53.1] | −33.4 [−62.5, +56.2] |
+  | TSS | +14.1 [−12.8, +66.8] | −5.3 [−95.9, +59.7] | −36.8 [−72.6, +14.4] | −36.2 [−93.3, +14.0] |
+- **🟡 P4. Secondaries required by the protocol are missing from the write-up.** All of them are in
+  `test_results.json`.
+  - §3 / D1 requires lake-only turbidity and TSS as secondary, and results by site class.
+  - §1 / §15.3 lists the chl-a trophic-class soft threshold.
+
+  Add after "Test-A scores":
+
+  > **Lake/reservoir-only turbidity and TSS (secondary, deviation D1; turbidity n = 58 / 26 water bodies, TSS
+  > 62 / 30).** MdSA [95% CI]:
+  > - ensemble: turbidity 124.3 [63.0, 227.6], TSS 69.3 [42.0, 116.7];
+  > - INT8: 116.9 [59.3, 231.6], 66.6 [40.1, 111.4];
+  > - band-ratio: 121.8 [85.7, 268.8], 69.0 [53.8, 118.2];
+  > - GBM-RGBN: 87.2 [63.2, 229.5], 69.5 [45.0, 97.4];
+  > - GBM + context: 91.9 [62.7, 196.3], 54.6 [44.9, 99.9].
+  >
+  > **Secchi, all site classes (secondary):** ensemble 55.8, GBM-RGBN 45.2 (n = 1,094).
+  >
+  > **By site class (point MdSA):** the non-lake classes are small. Secchi river/stream (n = 21): ensemble 146.3,
+  > GBM 124.8. Turbidity estuary/coastal (n = 13): ensemble 155.9, GBM 80.8. Turbidity river/stream (n = 21):
+  > ensemble 126.0, GBM 105.6. TSS river/stream (n = 29): ensemble 105.9, GBM 125.6.
+  >
+  > **Chl-a trophic class (soft threshold §15.3, balanced accuracy, lakes, n = 271).** Ensemble 0.334
+  > [0.282, 0.389] vs band-ratio 0.311 [0.267, 0.356]. That is above on the point estimate only; there is no paired
+  > test and the CIs overlap. GBM-RGBN is 0.381 [0.319, 0.451] and GBM + context 0.446.
+- **🟡 P5. The red-edge wording covers Test-A only and overstates the result.**
+  - In §"Red-edge gap", replace "The S2 teacher with red-edge is about 10–13 points better on Secchi than the 4-band
+    student on the same chips." with:
+    "On Secchi the S2 teacher with red-edge is better than the 4-band student on the same chips by 10–13 points on
+    Test-A (n = 321) and 21–22 points on Test-B (n = 247). For TSS the teacher is also better. For turbidity the
+    result is mixed (Test-B: the teacher is worse, 177.1 vs 161.6). These are descriptive point values with no CI,
+    and turbidity/TSS n on Test-A is small (25 / 19)."
+  - In "Interpretation", replace "S2 with red-edge is clearly more informative than NAIP RGBN on the same water."
+    with "S2 with red-edge is more informative than NAIP RGBN for Secchi on the same water (descriptive, no CI). For
+    turbidity and TSS the comparison is small-n and mixed."
+- **🟡 P6. "CI excludes 0, in every seed" implies per-seed CIs that do not exist.** In "Interpretation", replace
+  "GBM-RGBN is better by about 10 MdSA points on Secchi (CI excludes 0, in every seed)." with "GBM-RGBN is better by
+  about 10 MdSA points on Secchi. The ensemble CI excludes 0, and the point difference favours GBM in each of the 3
+  seeds (+8.9 / +10.0 / +7.1)."
+- **🟡 P7. The model card is stale.**
+  - In `docs/model_cards/lite.md`, line 10, replace "`docs/preregistration/lite_protocol.md` v1.3 (deviation D1 and
+    the W8 teacher result in §3/§5/§11; national track §12)" with "`docs/preregistration/lite_protocol.md` v1.7
+    (frozen 2026-11-09; deviation D1, the W8 teacher result, §8a decision rules, §13 E4a descriptive-only; national
+    track §12)".
+  - In its source list, "experiments `lite_val`, `lite_val_compare`, `lite_export`, `lite_robustness_val`,
+    `lite_val_national`", add "`lite_test`, `lite_test_h1`, `lite_test_h1_deployable`, `lite_test_h2`,
+    `lite_test_events`, `lite_test_verdicts`".
+
+### Observations
+- 🟢 The Test-B Δ table shows comparisons that favour the student, such as vs band-ratio on turbidity, but not the
+  ensemble vs GBM-RGBN on turbidity or TSS, where GBM is better (116.3 / 54.5 vs 138.8 / 98.4 in the scores table).
+  Suggested addition under the Test-B Δ table: "Against GBM-RGBN, the ensemble is worse on Test-B turbidity and TSS
+  (scores above); no Test-B Δ carries a claim."
+- 🟢 The W8 sentence "no sign that teacher proximity drove anything" is fair but weak evidence, because H2 is null
+  overall. Better: "H2 restricted to water bodies with no teacher row within 5 km is also null (Secchi +0.3
+  [−4.0, +3.0])."
+- 🟢 The "Val → test" attribution to selection optimism and distribution shift is phrased as "consistent with", which
+  is acceptable.
+- 🟢 The frozen code computes the future-year slice per target without a per-target n floor. That cannot be changed
+  now; P1 handles it in reporting. For the national freeze, add a per-target n ≥ 10 rule.
+
+### Integrity verdict
+- Fabrication detected: **No.** Every number checked traces to `test_results.json` and the registry. Key MdSA values
+  and paired CIs were reproduced independently from the sealed predictions.
+- Data leakage detected: **No.**
+  - There was no test access before the claim.
+  - The teacher overlap is 0 within 2 km for Test-A and Test-B, and the sensitivity slice is reported.
+  - The code, data pins and artifacts are unchanged since the freeze.
+- All results traceable to code: **Yes.** The single scorer at code hash `a7a8be82…` produced everything: one claim,
+  one seal (with a registry anchor), one score.
+- Statistical claims valid: **Yes.** The §8a decision rules were applied exactly. The negative/null conclusions are
+  correct and plainly stated. P1 (small-n slices) and P5 (red-edge wording) need the corrections above before the
+  numbers are reused.
+
+**Verdict: 🟡 PASS WITH CONCERNS.**
+- The single look is clean and valid. The headline is final: H-G6 FALSE, label "negative", H2 not replicated, glint
+  fails.
+- Apply P1–P7 (text-only edits to non-frozen write-ups; no re-run) before the M7 numbers enter the paper or the
+  Console.
+- No frozen file may be edited. A second look at Test-A is not allowed (§15.5 item 1).

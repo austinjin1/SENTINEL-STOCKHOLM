@@ -77,3 +77,16 @@ docs/model_cards/fuse.md.
 
 ## 2026-11-08 23:30 — lead notice: sonde snapshot promotion (EW-v2 final chain)
 `processed/sonde_daily` and `processed/sonde_hourly` are symlinks that now point to `sonde_daily_refresh_20261108` / `sonde_hourly_refresh_20261108` (USGS IV refresh adding WY2024–25 approvals). Identity check: all 5,500 daily and 749 hourly sites identical through 2023-09-30, so train/val are unchanged (`compare_vs_sonde_{daily,hourly}.json` in the new dirs). New manifest shas: daily `dcd359ea…`, hourly `74bdc126…` (superseded `f7ee51ee…`, `0893f730…`). If your manifests/records pin the old sha, re-pin with a dated note; WY2024–25 rows are test-role for EW-v2 — do not use them for selection.
+
+
+## Note from M1 (2026-11-10, lead ruling): reserved USGS new-site block — shared exclusion helper
+- 729 USGS sites (`docs/preregistration/sonde_newsites_list.json`, sha `6200a77c…`) are RESERVED as the EW-v3-N / M1-N
+  unseen test block. Never train, tune, select, plot or compute target statistics on them.
+- Copies exist in the shared tiers `processed/sonde_daily` (422 files), `sonde_hourly` (27) and `raw/usgs_iv{,_refresh_20261108}`.
+  - The 27 + 21 raw IV directories are now **mode 000** (lock record `raw/usgs_iv*/RESERVED_NEWSITES_LOCK.jsonl`).
+  - `sonde_daily` / `sonde_hourly` are untouched: frozen scorers content-hash them.
+- Shared helper `sentinel/data/reserved.py`:
+  - `exclude_reserved` (drop) and `assert_no_reserved` (refuse), hash-pinned list;
+  - `assert_preclaim_clean` (pre-claim audit).
+- Tests: `tests/test_reserved_loaders.py`.
+- **Edited by M1:** `sentinel/data/fuse_tier_w.py` (sonde features never read for reserved sites), `sentinel/data/fuse_tier_wp1.py` (reserved sites dropped from the site list) and `scripts/eval/fuse_wp1_power.py` (reserved sites skipped). **Tier W / WP1 rebuilds can differ if a reserved site was present; regenerate and re-check before any Fuse freeze.** NEON tiers (`neon_sonde_*`, NEON site codes) cannot contain reserved USGS sites and were not edited.

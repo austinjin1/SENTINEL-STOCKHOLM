@@ -1,6 +1,6 @@
 # SENTINEL-Lite (M7) — Pre-registration protocol
 
-**Status:** v1.5, 2026-11-09 (v1.4 and v1.3 earlier the same week; v1.2 2026-10-24). The split (§3) was frozen and hashed **before any model was fitted or selected**
+**Status:** v1.7, 2026-11-09 (v1.6/v1.5/v1.4 earlier the same day; v1.3 2026-11-08; v1.2 2026-10-24). The split (§3) was frozen and hashed **before any model was fitted or selected**
 (splits v1 and v2 were superseded before any non-smoke fit, after the pre-training review; §11).
 The test roles are scored once, after `docs/preregistration/FREEZE_lite.json` is written (§8); that file does
 not exist yet. This file is part of the hashed scoring code (`sentinel/models/lite/guard.py::frozen_files`), so
@@ -175,6 +175,27 @@ moderate glint (25%), haze (10 DN) and ±5% gain.
 - Scoring reads the sealed predictions only. Registry rows are written after every block is scored, then
   `SCORED.json`. Crash recovery: `--rescore-from-saved`.
 - B (2000), seeds and device (CPU) come from the freeze, not the command line.
+- **v1.6, delta re-review:**
+  - Pre-claim checks:
+    - every hashed artifact and run dir (`testlook.verify_artifacts`). A freeze lacking the primary, no-KD or INT8
+      model is refused.
+    - the data pins, both frozen and recomputed through the live loader paths, so a different `SENTINEL_DATA` /
+      `SENTINEL_RUNS` is refused;
+    - the package versions recorded in the freeze. Run in `/home/bcheng/miniconda3/envs/sentinel2`.
+  - Sealing writes an append-only `lite_test_sealed` registry row (SHA256SUMS sha + freeze sha) and permanently
+    closes test-row access.
+  - `--rescore-from-saved` requires all of the following:
+    - no scoring registry row;
+    - the claim marker, PREDICTIONS_SAVED and the registry anchor all name the current freeze;
+    - no unlisted file.
+  - A crash after the claim and before sealing writes `ABORTED.json` and a `lite_test_aborted` row; the look stays
+    spent.
+  - An event-track error after the claim is recorded as "not run" and never stops H1/H2/H-G6.
+- **v1.7, line-level review:**
+  - The device check runs before the claim.
+  - Any `BaseException` after the claim, including SIGTERM (converted) and Ctrl-C, writes ABORTED.
+  - Test rows load only in the process recorded in the claim marker (pid + host).
+  - An existing `eval_test*` chip cache is refused before the claim.
 
 **Paired tests.**
 - Water-body cluster bootstrap, B = 2000, the same resampling as `sentinel.eval.bootstrap`.
@@ -282,6 +303,12 @@ NAIP acquisition time-of-day unknown (±1 d window).
   counts before any model was fitted (v1.1, review W12); the lead will amend the plan. The earlier text quoted
   lake-only counts 59 / 68 (from an intermediate split build); the frozen split's counts are 58 / 62.
 
+- 2026-11-09 v1.7 (before any test access; line-level review): E4a descriptive only (the v1.6 endpoint was chosen
+  after val and is withdrawn); CPU device check before the claim; SIGTERM / Ctrl-C write ABORTED; the claim is bound
+  to the claiming process (pid + host); a pre-existing `eval_test*` chip cache is refused.
+- 2026-11-09 v1.6 (before any test access; delta re-review): single-look hardening; the E4a primary endpoint is
+  ΔBrier vs climatology; E4a counts corrected to 85 / 42 (lake population); W-d / W-f disclosures; events.py
+  import closure added to the code hash.
 - 2026-11-09 v1.5 (before any test access): event track §13 (E4a derived primary / direct challenger; E3
   descriptive), lead decision; event code added to the scoring-code hash deliberately.
 - 2026-11-09 v1.4 (before any test access; pre-test review FAIL → fixes): single-look guard; decision rules and
@@ -341,7 +368,12 @@ selection, and H1/H2/H-G6 are unchanged. Everything here is **secondary**, score
 
 - **(B) output:** "is this water body in a bloom / plume in this image" (state, not onset; NAIP revisit is
   multi-year).
-- **E4a algal bloom** (chl-a > 20 µg/L; lakes/reservoirs; val 104 positives / 43 water bodies → feasible):
+- **E4a algal bloom** (chl-a > 20 µg/L; lakes/reservoirs). Val counts from the code's lake population: **329 chips,
+  85 positives, 42 water bodies with positives** → feasible.
+  - v1.5 quoted 104 / 43, from event_layer_plan §3. That planning count used **all site classes** and the plan's own
+    water-body count.
+  - The pre-registered E4a population is lakes/reservoirs (as chl-a in §3). The numbers in this section are the
+    code's (delta review W-e).
   - Route (i), derived, **primary**: P(chl > 20) from each seed's Gaussian(μ, σ) in log10 via
     `events.exceedance_probability`, equal-weight average over seeds 0–2.
   - Route (ii), direct, challenger, 1 event configuration: an L2 logistic head (C = 1, fixed, not tuned) on the
@@ -354,9 +386,23 @@ selection, and H1/H2/H-G6 are unchanged. Everything here is **secondary**, score
     frozen. Val metrics use water-body cross-fitted calibration.
   - Metrics: `events.state_metrics` (AUPRC, Brier, BSS, ECE, water-body CIs) and `events.compare_routes` (paired
     ΔBrier/ΔAUPRC, derived − X).
-  - **Pre-registered test (Test-A):** derived vs direct, ΔBrier and ΔAUPRC. Holm runs across the workstream's
-    inferential events, and E4a is the only one. Comparisons against comparators are secondary; Test-B is
-    descriptive.
+  - **v1.7 (line-level review E1): E4a is DESCRIPTIVE ONLY.**
+    - Every route (derived, direct, band-ratio, GBM, climatology) is reported with its AUPRC / Brier CIs. The four
+      paired comparisons derived − {climatology, band-ratio, direct, GBM} are reported with their ΔBrier / ΔAUPRC
+      CIs.
+    - The scorer computes **no decision boolean**, and **no claim** depends on E4a. That covers H1, H2, H-G6, the
+      §15.1 label and any event claim.
+    - The v1.6 primary endpoint (ΔBrier derived − climatology) was chosen after the val results were seen. It is
+      **withdrawn**.
+    - The v1.5 derived-vs-direct test was under-specified, and is also not a confirmatory test.
+    - Any future inferential E4a claim needs a new, unseen test block.
+  - **Disclosure (W-d):** the direct head is fitted on embeddings of train chips whose chl-a labels the student itself
+    was trained on (in-sample features). Platt on val corrects calibration, not discrimination, so derived vs direct
+    is tilted towards "derived". On val they tie (ΔBrier −0.001 [−0.008, +0.005]). A cross-fitted head was not
+    built (it would need retrained students).
+  - **Disclosure (W-f):** code parity for the KD training path between the kd03 primary (2026-11-08) and the RGB-only
+    ablation (2026-11-09) is not proven. Bit-identity was shown for the no-KD path only. The RGB-only vs RGBN
+    secondary carries this caveat.
   - Sensitivity tiers 12 µg/L and ≥ 50 µg/L: derived route, descriptive.
 - **E3 sediment plume** (snapshot: TSS > 80 mg/L, turbidity > 50 NTU): **descriptive only** on the original track
   (val 11 / 3 and 4 / 2 → underpowered), derived route only. Inferential E3 is **national-track only** (turbidity on

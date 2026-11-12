@@ -103,7 +103,7 @@ per family, the published baselines re-tuned with the same budget):
 | Change | Where | Literature it follows |
 |---|---|---|
 | LightGBM and CatBoost added to the tree families | `gbdt.py` | the standard GBDT alternatives to the published XGBoost/RF |
-| **GPBoost**: boosted trees + **grouped random effects on the taxonomy** (species ⊂ genus ⊂ group) | `gpboost_model.py` | Zubrod et al. 2024 *Environ. Int.* 186:108607; Yuan et al. 2026 *ETC* 45(9) — both select GPBoost for cross-species toxicity; shrinkage up the hierarchy is the structurally correct answer to our cross-taxa collapse |
+| **GPBoost**: boosted trees + **grouped random effects on the taxonomy** (species ⊂ genus ⊂ group) | `gpboost_model.py` | Zubrod et al. 2024 *Environ. Int.* 186:108607 ("Bio-QSARs 2.0: Unlocking a new level of predictive power for machine learning-based ecotoxicity predictions by exploiting chemical and biological information"); Yuan et al. 2026 *ETC* 45(9) — both select GPBoost for cross-species toxicity; shrinkage up the hierarchy is the structurally correct answer to our cross-taxa collapse |
 | **Frozen CheMeleon fingerprints** as features (not fine-tuning) | `chemeleon_fp.py` | Ben Hicham et al. arXiv:2604.16123 — a tabular model on frozen CheMeleon wins 86% of 58 tasks while *fine-tuned* CheMeleon wins 41%, which is why our phase-1 fine-tune made things worse |
 | Full 216-descriptor RDKit block and a chemical block limited to the properties RDKit can compute | `features.py`, `data.py` | the prospective set has no experimental water solubility or melting point for new chemicals |
 | **k-NN read-across**, distance-gated, tuned with the same budget | `readacross.py` | the regulatory comparator any structure-based claim must beat; it was missing from the phase-1 tables |
@@ -280,3 +280,42 @@ ADORE CC BY 4.0 (Schür et al., *Sci Data* 2023). Published baseline: Gasser et 
 *Environ. Sci.: Adv.* 3:1124–1138 (2024), DOI 10.1039/D4VA00072B. Chemprop MIT; CheMeleon weights
 from Zenodo record 15460715 (cite DOI 10.48550/arXiv.2506.15792); TabPFN v2 weights under the
 Prior Labs Licence 1.1; ChemBERTa-2 and MoLFormer-XL as released on Hugging Face.
+
+## M4 unseen-taxa track — the published GPBoost comparator is an ADAPTED estimator (plan A3.0/A3.5/A4.2)
+
+Required disclosure for **every** claim-condition-(b) comparison on the unseen-taxa track.
+
+The published cross-species comparator (`gpboost_published_chan`, and the `gpboost` candidate and
+`gpboost_published` likewise) uses hyper-parameters taken **verbatim** from the authors' released
+models — Zubrod, Galic, Vaugeois & Dreier, "Bio-QSARs 2.0: Unlocking a new level of predictive power for machine learning-based ecotoxicity predictions by exploiting chemical and biological information", *Environment International*
+**186**:108607 (2024), DOI 10.1016/j.envint.2024.108607, PMID 38593686;
+`github.com/syngenta/bio-qsar`, files `Fish_without_DEB.json` (sha256 `1b17db4c5f18abbd…`) and
+`Invertebrate_without_DEB.json` (`770ecd0d1ed31360…`); manifest `chemtox_published_gpboost`.
+Values: `objective` regression, `num_iterations` 1000, `learning_rate` 0.01, `max_depth` −1,
+`min_data_in_leaf` 10, `feature_fraction`/`bagging_fraction` 1/1, `num_leaves` 64 (fish) / 32
+(invertebrate), `lambda_l2` 1 / 10. The paper itself is paywalled, so the released models are the
+source; nothing was tuned or invented by us.
+
+**It is nonetheless a weakened form of the authors' model, in three respects — and every one of
+them biases in our candidate's favour:**
+
+1. **Grouping** is reduced to `rank_phylum` (3 levels); the authors grouped species ⊂ genus ⊂ group.
+   This track drops the trait block, so the pool has no species/genus key (plan §1.1, A3.0).
+2. **Library version**: gpboost 1.8.0 here against the authors' 1.2.1.
+3. **The authors' species one-hot fixed effects are absent** — 10 in the fish model, 13 in the
+   invertebrate model — because plan §1.1 forbids species-rank inputs.
+
+So `_without_DEB` means **DEB-trait-free, not taxon-free**: it is the correct choice between the two
+released forms (neither carries a DEB/Add-my-Pet parameter, matching §1.1's trait drop), but the
+published estimator is not taxon-free and "trait-free" would overstate the match.
+
+**Selection breadth** is reported beside (b): the published GPBoost comparator is selected as the
+best of **6** configurations (2 released forms × 3 channel settings), while `rf_published_chan` and
+`xgboost_published_chan` are each the best of **3**. The direction is conservative — a wider choice
+makes the published bar harder to beat — but it is stated rather than left implicit.
+
+The `gpboost` **candidate** carries adaptation 1 identically, so it gains no advantage from it.
+
+**Known citation defect, not fixed:** `sentinel/models/chemtox/gpboost_model.py:11` carries an
+incorrect short title for this article. That file is covered by an existing freeze and is left
+untouched; the correct title is the one above.

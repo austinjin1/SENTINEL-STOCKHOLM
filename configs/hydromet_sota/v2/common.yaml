@@ -1,0 +1,30 @@
+# M6 architecture v2 — common training recipe of the neural arms (D1 GSO-MT, D2 ThermOx-T, R-TD).
+# Source: docs/preregistration/hydromet_arch_v2_amendment.md §7. One recipe for candidates and the published-method
+# reference, so that a difference is not due to the training protocol.
+train:
+  seq_len: 365
+  predict_last: 90
+  batch_size: 256
+  lr: 5.0e-4
+  weight_decay: 1.0e-4
+  steps_per_epoch: 200
+  max_epochs: 60
+  patience: 6
+  min_delta: 1.0e-4
+  grad_clip: 1.0
+  grab_weight_cap_obs: 400      # station weight ∝ sqrt(min(rows, 400))
+job_minutes: 100                # per GPU job; the next job resumes from the per-epoch checkpoint (limit 110 min)
+seeds: [0, 1, 2]
+# Implementation constants that the amendment leaves to the code (fixed here before any fit; never tuned):
+implementation_constants:
+  dense_term_weights: {T_mean: 1.0, T_7dadm: 1.0, DO_mean: 1.0, DO_min: 1.0, T_max: 0.5, T_min: 0.5, DO_max: 0.5, hour_T: 0.5, hour_DO: 0.5}
+  aux_weights: {logq: 0.5, sc: 0.25, turb: 0.25, no3: 0.25}
+  sigma_src_prior: {family: half-normal, scale: 0.5, weight: 0.01}
+  dense_site_sampling: target_share          # as the frozen reference recipe
+  grab_same_visit_span_h: 2.0
+  grab_logger_min_distinct_hours: 20
+  grab_time_000000_is_missing: true
+  untimed_mixture_hours: [8, 17]
+  diel_init: {peak_hour: 15, softplus_amp_bias: -2.0, kappa_logit_bias: -1.0}
+  label_scales: "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites"
+  inner_grab_station_cap_days: 30

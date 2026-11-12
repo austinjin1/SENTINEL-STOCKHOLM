@@ -19,6 +19,8 @@ used by Fuse development code.
 
 from __future__ import annotations
 
+from .reserved import is_reserved
+
 import json
 
 import numpy as np
@@ -108,7 +110,7 @@ def build_tier_w(log=lambda *a: print(*a, flush=True)) -> pd.DataFrame:
         blk = pd.DataFrame(index=dates)
         f = sdir / f"{no}.parquet"
         feats = []
-        if f.exists():
+        if f.exists() and not is_reserved(no):     # reserved new-site block: its sonde values are never read
             raw = pd.read_parquet(f)
             raw.index = pd.to_datetime(raw["date"]) if "date" in raw.columns else pd.to_datetime(raw.index)
             for v in SONDE_VARS:

@@ -1,0 +1,51 @@
+{
+ "status": "FROZEN by the campaign lead — one single test look of D4 (AEGIS-Tap) is authorised by this file",
+ "app": "taprisk",
+ "authorised_by": "campaign lead, SENTINEL v2 (AI-assisted, acting for Bryan Cheng)",
+ "authorised_at": "2026-11-11T13:11:53-05:00",
+ "frozen": true,
+ "candidate_record_sha256": "2bff8c924159ee7c90cc1687159ccbfe129c625dc9908732efcfc5577f7c8a1d",
+ "candidate_record_file": "docs/preregistration/FREEZE_CANDIDATE_downstream_taprisk.json",
+ "split_file": "docs/preregistration/downstream_taprisk_split.json",
+ "split_sha256": "a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298",
+ "scoring_code_sha256": "1623ccbd8c6af8ad01404f62258935bb1913c5659ca8dfe0060a98ebd86ff0c3",
+ "registry_scoring_code_sha256": "f63ed306fb0082e4f9b3788e7c81626702ddd013db6f469b79cc8f2ac1d13e99",
+ "data_pins": {
+  "file": "docs/preregistration/downstream_taprisk_data_pins.json",
+  "sha256": "55bb6ddfe0e6c5cda7b8a2b63cb5359fc4e3036434612e49cfb1cd49d750c45b",
+  "n_files": 24,
+  "verified_before_claim": true
+ },
+ "paths": {
+  "runs_root": "/home/bcheng/STOCKHOLM/sentinel_runs",
+  "data_root": "/home/bcheng/STOCKHOLM/sentinel_data"
+ },
+ "environment": {
+  "pip_freeze_noeditable_sha256": "19a9cedf1a9621b921757ba4325ad098ea1d930e1ac34286e1d7b65fadba4c67",
+  "note": "E2: the pin excludes the editable install line, so repo commits do not move it; repo code is covered by the import-closure hash"
+ },
+ "what_is_authorised": [
+  "Exactly ONE run of `python -B scripts/train/downstream_taprisk_test.py --allow-test`, on the test blocks named in the candidate record (test_known and test_new, T = 2019, window 2020-2022), with D4a primary and D4b secondary.",
+  "No second look. A rescore, a re-run, a repair of a failed look and any further reading of a test row each need a NEW lead freeze file written after this one; this file authorises none of them.",
+  "No change of any kind to the frozen state: the split, the 12 scoring files, the 30 import-closure files, the 24 data pins, the pinned folders, the two path roots and the python environment are what this file pins. The look refuses to run if any of them differs."
+ ],
+ "claim_rule": "D4a: stack beats pennino_rf, pennino_rf_hist, pennino_rf_hist_rich and the strongest simple baseline on both test sets, paired HUC8 AUROC, Holm over 8, per-seed paired point estimate > 0 in each of 3 seeds; otherwise competitive",
+ "state_cluster_rule": "W1/W-d: a SEPARATE Holm over the 4 D4a test_new primary comparisons (m = 4) under a state-cluster bootstrap, each also subject to the per-seed rule; the HUC8 Holm (m = 8) stays primary and both must pass",
+ "seed_rule": "per-seed paired point estimate > 0 in each of 3 seeds; only the GBM seed varies (RF level-0 and meta-learner use seed 0)",
+ "label_rule": "The look can earn at most what the claim rule gives. If the D4a claim is not met on both test sets under the HUC8 Holm over 8 AND the separate state-cluster Holm over 4, with the per-seed point estimate positive in each of the 3 seeds, the result is reported as competitive. No qualifier, no target-scoped label and no re-reading of the rule after the numbers are seen. A failed claim is written up as a failed claim.",
+ "expected_label_on_validation": "competitive (no qualifier on validation)",
+ "deviations_carried": [
+  "Pennino reproduction sensitivity 0.813 vs 0.758 (+0.055, outside +-0.05, favourable to the incumbent; specificity 0.815 exact) - diagnosed in protocol §10 (§15.4)",
+  "units and system attributes from the 2026 SDWIS snapshot (survivorship of systems that switched source or were consolidated) (W2)",
+  "C5/C6 corrections re-run as it2c (no new configurations); numeric track added on user requirement 2026-11-10 (secondary, descriptive)"
+ ],
+ "lead_notes": [
+  "E1-E4 and the environment pin were re-checked by the downstream workstream on 2026-11-11 13:08-13:12 EST and by the lead before this file was written: the candidate record is regenerated last and no hashed input is newer than it; the environment pin excludes the editable install line; no marker-only state is reachable; a rescore re-runs the whole frozen-state check. The guard tests pass (7 passed, 8 deselected).",
+  "Known behaviour, accepted and not a reason to stop: if the write of the `test_claim` registry row itself fails, the outer handler calls `abort()` a second time, which raises FileExistsError, masks the original traceback and leaves a second `test_aborted` row. It fails CLOSED — the look stays closed and a second attempt is refused. A second `test_aborted` row is therefore expected in that case and is not a second look.",
+  "The dry run on validation is byte-identical between two runs after the lead's ruling of 2026-11-10 14:25 EST (forest PREDICTION single-threaded; fitting unchanged): predictions 804e7a4b0f945dc7095c351f17fac6a8669f20d8ef02371fe7572dc51f18764f, results c4add9e73dc34833097f525406baf29cb35839962cd2adcc5dd6d09565ce3c8e, claim_met_on_val false.",
+  "The look directory did not exist when this file was written, the registry held no claim, sealed, aborted or scoring row for the look, and none of the 366 taprisk rows had a test split.",
+  "Write-ups go to docs/preregistration/downstream_taprisk_test_results.md, never into the frozen protocol."
+ ],
+ "written": "2026-11-11T13:11:53-05:00",
+ "written_by": "lead"
+}

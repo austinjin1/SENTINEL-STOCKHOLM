@@ -1,0 +1,151 @@
+{
+ "sha256_start": "65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048",
+ "sha256_end": "65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048",
+ "verdict": "stamp_with_lead_rulings",
+ "findings": [
+  {
+   "id": "F1",
+   "severity": "ruling_needed",
+   "where": "sentinel/hydromet_sota/gso_mt/runner.py:96-116 (_stamp_rows), :118-135 (deviations_status); docs/preregistration/hydromet_arch_v2_deviations.md:290-295 (§8.1)",
+   "what": "The guard implements all four conditions of §8.1, but 'lead-written' is not checked positively. A stamp row is any registry row of workstream M6-hydromet whose experiment ends in '/prereg_snapshot', that has an id and a sha256 map, and whose code.script does not contain 'sota_hydromet_v2'. The engineer (same Unix user) can satisfy the guard without the lead: one registry row from any other script name or an interactive session, plus chmod 0444.",
+   "evidence": "Probe on temporary registry copies (registry_path=..., real registry never written): deviations_status returned a registry_id for a row (A) without a code field, (B) with code.script '/tmp/anything.py', (C) with script '-', (E) with experiment 'anything/prereg_snapshot'. Refused: (D) script containing 'sota_hydromet_v2', (F) stale deviations sha, (G) missing amendment sha. After acceptance the only remaining barrier was the 0444 mode. tests/test_hydromet_sota_v2_guard.py:55 uses a script-less row as the 'lead' row. The registry shows other agents writing '/prereg_snapshot' rows of M6-hydromet from script '-' (extra.written_by 'M6 lever engineer'), and the lead's row b37a0319964c carries extra.written_by='lead', extra.stamp='arch_v2'.",
+   "proposed_ruling": "Stamp may proceed. Ruling: (1) the lead's stamp row carries extra.written_by='lead' and extra.stamp='arch_v2' and its id is written in LEAD_DECISIONS; (2) before the first non-smoke run _stamp_rows also requires extra.written_by == 'lead' (runner.py is not pinned, so no pin change is needed) and the experiment 'hydromet_arch_v2/prereg_snapshot' exactly; (3) every run record and registry row stores deviations_registry_id and deviations_sha256 (assert_released already returns them); (4) any M6-hydromet '/prereg_snapshot' row that names the deviations file and is not in LEAD_DECISIONS is an integrity incident and voids the runs released by it. A marker cannot be made unforgeable under one Unix user; the audit of row ids is the real control."
+  },
+  {
+   "id": "F2",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/hydromet_arch_v2_deviations.md:18, :341-342 (§9.8), :346-348 (§10); sentinel/hydromet_sota/gso_mt/runner.py; scripts/train/sota_hydromet_v2_nn.py; sentinel/hydromet_sota/thermox/nets.py; results/registry.jsonl row afc1fbaebe0d",
+   "what": "The code tree moved after the entry was written (19:12 EST) and while it was under review, including the file that holds the guard. Three dated statements of the entry are stale at stamp time, and one registry row of this round appeared before the stamp.",
+   "evidence": "runner.py: mtime 19:19:35 -> 19:30:35 (sha 7c9acf4d...c16b) -> 19:37:42 (sha 922deb47...0848, 444 lines); trainer.py 19:19:35; sota_hydromet_v2_nn.py 19:19:35 -> 19:39:30 (sha a0455e08...8a6c); thermox/nets.py created, 19:29:43 (sha 5e554c31...85d5); tests/test_hydromet_sota_v2_thermox.py 19:37:42; scripts/eval/sota_hydromet_v2_d2_kill_rule.py created 19:30:47 and removed before 19:40. §9.8 says the D2 nets and the D2 kill-rule smoke are 'not written yet': both exist (smoke dirs d2_g1_s0, d2_g2_s0; sota_v2/d2/kill_rule.json, decision key 'all_days'). §10 says '105 collected, 104 passed, 1 skipped' at 19:08: not reproducible on the present tree. My runs: 19:30 EST 1 FAILED (test_every_non_smoke_entry_point_calls_the_release_guard: AssertionError sota_hydromet_v2_d2_kill_rule.py); 19:38 and 19:41 EST 125 passed, 0 failed, 0 skipped (exit 0). Registry row afc1fbaebe0d, experiment M6V2/decisions_v1, metric d2_kill_rule_s_per_step, split 'train-only smoke (at most 50 train-role locations; no validation number)', 2026-11-11T00:41:38Z, script sota_hydromet_v2_nn.py. The guard logic itself (_stamp_rows, deviations_status, assert_released) is the same text in all three states of runner.py I read. The repository is not a git repository, so no commit fixes any of these states.",
+   "proposed_ruling": "The statements are dated ('at the time of writing') and release nothing, so a lead note is enough; no edit of the entry is required. Ruling: (1) at stamp time the lead re-runs the test command and records the result and the sha256 of runner.py, trainer.py, nets.py, thermox/nets.py and the five drivers in LEAD_DECISIONS (or in the stamp row's extra); (2) the engineer stops editing arch-v2 code from the stamp until the code pin of decision 4 exists; (3) §9.8 and §10 are corrected in entry 2 (D2 entry), not by editing entry 1 after the stamp."
+  },
+  {
+   "id": "F3",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/hydromet_arch_v2_deviations.md:134-137 (§2.1 'Not pinned by file'), :356 (§11.4); sentinel/core/registry.py:50-66",
+   "what": "§2.1 is consistent with the letter of rulings §2.3 (its pin list names none of runner/nets/trainer/criterion/gbm_ref/gates/stack/drivers), but nothing ties a released run to a state of that code. Inner numbers of references and D1 are compared (G-D1a, selection, stack weights), so a change to trainer, criterion or nets between a reference fit and a D1 fit is invisible.",
+   "evidence": "grep over runner, trainer, drivers and stack: no per-file code hash is written to config.json, data_info.json, train_info.json or the registry row. Registry rows and TrainingRun records carry code.package_hash (16 hex over every .py of the whole sentinel package) and the script path, not the script's hash; the package hash changes with any workstream's edit (several agents are editing now), so equality across compared runs cannot be required with it. The stamp value from assert_released is only logged as 12 characters of the amendment sha. Not a git repository. The unpinned code changed three times in 25 minutes during this review (F2).",
+   "proposed_ruling": "Accept §2.1 as consistent with §2.3, and add without blocking: before the first non-smoke fit the engineer writes a second read-only pin record (for example configs/hydromet_sota/v2/pins_code.json, registry row M6V2/pins_v1 with a new metric name) with the sha256 of gso_mt/{runner,nets,trainer,criterion,gbm_ref,gates}.py, stack/*.py, thermox/nets.py and the five drivers; every non-smoke entry point verifies it and writes its sha256 to the run record and the registry row; the inner evaluation and the stack refuse to combine runs with different code-pin sha256 unless a stamped line names the change and says which runs are repeated. The lead writes the sha256 of that record in LEAD_DECISIONS (it is not in the stamped entry, so it does not get the L10 condition (iv); that is acceptable because it only tightens)."
+  },
+  {
+   "id": "F4",
+   "severity": "ruling_needed",
+   "where": "sentinel/hydromet_sota/gso_mt/runner.py:317-343 (load_config); scripts/train/sota_hydromet_v2_nn.py:40,62; sota_hydromet_v2_gbm.py:51,64; sota_hydromet_v2_physics.py:66,76; sota_hydromet_v2_stack.py:34,43",
+   "what": "A non-smoke run accepts any YAML path through --config. verify_pins checks that the pinned files are unchanged; it does not check that the file the run uses is one of them. A copy of d1.yaml with another grid outside configs/hydromet_sota/v2/ passes the guard and writes to the same run directory and registry experiment.",
+   "evidence": "load_config reads Path(path) with no resolve()/is_relative_to(CFG_DIR) check and merges CFG_DIR/common.yaml; the nn driver requires --config and passes it through; gbm/physics/stack take 'a.config or CFG_DIR/...'. The GBM driver asserts grid, te_prior and stack targets against code constants, not the LightGBM settings. The path is stored in config.json (_config_file), so it is detectable afterwards, not prevented.",
+   "proposed_ruling": "Before the first non-smoke fit: load_config (smoke=False) refuses a path whose resolved location is not a pinned file of configs/hydromet_sota/v2/, with a test. Until then no released run is started with --config outside that directory; the lead checks _config_file of every run record at the first gate."
+  },
+  {
+   "id": "F5",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/hydromet_arch_v2_deviations.md:297-305 (§8.2); sentinel/hydromet_sota/gso_mt/data.py:186-198 (verify_pins), :200-216 (pin_change_stamped); sentinel/hydromet_sota/gso_mt/runner.py:160-168",
+   "what": "PIN CHANGE route. Sound: exact full-line match, valid only when deviations_status().released, no route for the 20 labels under processed/, docs/ and runs/ (tables, split, role tables) nor for the pool fingerprints. Holes: (a) the original pin and every earlier PIN CHANGE sha stay valid, so a file can be switched back and forth between stamped states; (b) the entry says the change 'is listed in the run record (changed_under_stamp)': verify_pins returns that key, assert_released drops it, and no run record or registry row stores it; (c) the route covers the role and guard modules themselves (sentinel/hydromet_sota/sites.py, both reserved.py, gso_mt/data.py which holds verify_pins and scan_cube) and, through the label configs/hydromet_sota/v2/pins.json#values, the content-pinned COMMON_STATIC (the T-E static set of the rulings); (d) a changed d1.yaml or gbm.yaml grid after inner numbers exist is a tuning freedom unless counted; (e) the route inherits F1; (f) pin_change_stamped calls deviations_status() without registry_path.",
+   "evidence": "grep 'changed_under_stamp' over sentinel/hydromet_sota and the drivers: one hit, data.py:198. 18 of 38 labels start with sentinel/, scripts/ or configs/. No line starting with 'PIN CHANGE:' with a real sha is in the entry (lines 13 and 301 hold the template with angle brackets), so the route is inert at this stamp.",
+   "proposed_ruling": "Accept with conditions: (1) for each label the last PIN CHANGE line wins; the original pin and earlier lines become invalid; (2) changed_under_stamp, deviations sha256 and stamp row id are written to every run record and registry row before the first PIN CHANGE line is stamped; (3) each PIN CHANGE line counts as one configuration (rulings §2.3) and the entry that carries it says which finished runs are repeated; a change to a D1, GBM, P or stack config after any inner number of that arm exists counts against the cap of 12; (4) a line for sites.py, either reserved.py, gso_mt/data.py, constants.py or pins.json#values needs the lead to read the diff and say so in the entry; (5) F1 ruling in force."
+  },
+  {
+   "id": "F6",
+   "severity": "note",
+   "where": "sentinel/hydromet_sota/gso_mt/runner.py:184-198 (arm_release_token, assert_arm_released); docs/preregistration/hydromet_arch_v2_deviations.md:307-309 (§8.3)",
+   "what": "The D2 token is matched as a substring of the whole file, not as a full line, and assert_arm_released does not check the stamp itself (it relies on assert_released having run first; the nn driver calls both in that order). Only arm == 'd2' is covered. GBM, P and stack drivers do not call it; the stack driver refuses any absent member except D2.",
+   "evidence": "runner.py: 'tok not in DEVIATIONS.read_text()'. The entry holds the token only with '<sha256>' as placeholder (lines 13, 308), which matches no real sha. thermox/nets.py now exists (5e554c31...85d5), so the 'file missing' variant of the token is not reachable.",
+   "proposed_ruling": "With the D2 entry: match the token as a full line in the released state (same function as PIN CHANGE). No action for this stamp."
+  },
+  {
+   "id": "F7",
+   "severity": "ruling_needed",
+   "where": "results/registry.jsonl row afc1fbaebe0d; sentinel/hydromet_sota/gso_mt/runner.py:216-262 (record_d2_kill_rule); docs/preregistration/hydromet_arch_v2_deviations.md:337-339 (§9.7)",
+   "what": "A registry row of experiment M6V2/decisions_v1 was written before the stamp, from a smoke run, through a path that does not pass the release guard. The entry describes M6V2/decisions_v1 as 'selections, gate outcomes, variant_of' and says smoke runs are never registered (nn driver docstring) / refused by the inner-result logger.",
+   "evidence": "Row afc1fbaebe0d (2026-11-11T00:41:38Z; metric d2_kill_rule_s_per_step; split 'train-only smoke (at most 50 train-role locations; no validation number)'); value not read. The amendment (§8, line 266; line 399) and ruling L6 allow the train-only kill-rule smoke before the stamp; neither says its outcome goes to the registry. It is a timing, not a score, and it is not a validation, test-block or England row.",
+   "proposed_ruling": "Lead states that row afc1fbaebe0d is an allowed train-only timing record, that it releases nothing, and that kill_rule.json (nets sha 5e554c31...85d5) is re-measured if thermox/nets.py changes before the D2 entry (resolve_d2_diel already enforces this). The D2 entry lists the row."
+  },
+  {
+   "id": "F8",
+   "severity": "note",
+   "where": "docs/preregistration/hydromet_arch_v2_deviations.md:127-128 (§2.1); docs/preregistration/hydromet_arch_v2_lead_rulings.md §2.3 PIN",
+   "what": "Rulings §2.3 list 'the sonde-tier site list' among the things pins.json holds by sha256. pins.json has no file pin for it; the entry says it is enforced through the pool fingerprint (site list and groups are fingerprint parts). verify_pins alone does not re-check it; load_v2_train(require_pins=True) does.",
+   "evidence": "pins.json: 38 file labels, none is a sonde-tier site list; pool and pool_nograb fingerprints have a 'sites' part; info.site_tables is recorded but not verified by verify_pins. I did not recompute the fingerprint (it needs label arrays).",
+   "proposed_ruling": "Lead accepts the fingerprint as the pin of the site list, in words, in LEAD_DECISIONS. Every non-smoke entry point that reads the pool must go through load_v2_train(require_pins=True)."
+  },
+  {
+   "id": "F9",
+   "severity": "note",
+   "where": "sentinel/hydromet_sota/gso_mt/runner.py:138-148; configs/hydromet_sota/v2/*.yaml",
+   "what": "Small: the docstring of assert_released says 'Three conditions' and implements four; the nine pinned YAML files are mode 664 (a change is caught by verify_pins, so this is tidiness only); only pins.json is 0444.",
+   "evidence": "ls: pins.json 444, all YAML 664; code read.",
+   "proposed_ruling": "None needed. Optional: chmod 0444 on the pinned configs at stamp time."
+  },
+  {
+   "id": "F10",
+   "severity": "ruling_needed",
+   "where": "docs/preregistration/hydromet_arch_v2_deviations.md:167-180 (§3 N2), :352-353 (§11.1)",
+   "what": "N2: the tables reproduce exactly from metadata, and 'descriptive, p = 1' follows from the stamped rule. Two things for the lead: (a) the 'Expected' column uses a proxy block chosen by the engineer (>= 8 sample days in the role table's 'test' block, WY2024-2025); with the 'val' block as proxy the T endpoint would pass (G 38, G_eff 8.32, 3,303 stations) and DO would still fail (36 / 7.97 / 3,048). The entry's own first column (any eligibility row) fails for both (7.94, 7.90), and all 5,046 test-role stations give 7.996. The choice removes a claim and lowers no bar. (b) G-D1b for N2.",
+   "evidence": "Recomputed from sonde_split.json, sites.parquet, hydromet_track_n_stations.json, eligibility.parquet, stations.parquet (hashes equal to the entry's): every cell of both tables equal to 2 decimals. Stamped text: Q5 'G >= 15 and G_eff >= 8 per endpoint are floors and are never lowered'; Q6 'An endpoint that fails the minimum stays in its family with p = 1'; §2.2 'An endpoint below the minimum is descriptive and keeps p = 1 in its family'; amendment §9 'The check is made twice: from metadata before the freeze ... and on the realised cell inside the look'. G-D1b: amendment §8 '... on at least 3 of the 4 primary endpoints of that cell (N2: on both endpoints)'; rulings §2.2 'The 3-of-4 rule of §8 (N2: both endpoints) is applied against every member of the track's comparator set, P and both R-TD forms included. ... A no-go is final for the track.' No stamped text exempts a descriptive endpoint from G-D1b; gates.g_d1b implements it without exemption.",
+   "proposed_ruling": "Confirm: both N2 endpoints are descriptive with p = 1 in the family of 2; the realised-cell check still runs and can only confirm or add a failure, never promote an endpoint that failed on metadata; G-D1b for N2 stays as written (both endpoints, every comparator, no-go final for the track); a go on N2 allows the descriptive N2 table of the frozen model only. Record that the metadata status was fixed with the entry's first column (any eligibility row), so the proxy block does not matter."
+  },
+  {
+   "id": "F11",
+   "severity": "note",
+   "where": "docs/preregistration/hydromet_arch_v2_deviations.md:313-320 (§9.1); sentinel/hydromet_sota/gso_mt/data.py:273-327, :393, :462; sentinel/hydromet_sota/data.py:93-196; sentinel/models/sonde/data.py:57-94",
+   "what": "scan_cube substitution. It tightens: the parquet scan is filtered to [start, end], a reserved-site assertion is added, a row outside the window raises ProtectedDataError, and the frozen reindex/provenance logic is repeated. The attribute is restored in a finally block. load_lever_train and the frozen module call load_cube by module global at call time, so both are covered; the loaders are single-threaded. Remaining weaknesses: equality with the frozen reader is tested on a synthetic two-file site directory only; the patch is process-global while active (not thread-safe in principle); the run record does not say which reader was used.",
+   "evidence": "Code read; tests test_scan_cube_equals_the_frozen_reader_and_never_materialises_a_later_row, test_cube_scan_filter_replaces_the_frozen_name_for_one_call_only, test_scan_cube_refuses_reserved_sites pass. Equality on the real site tables was NOT checked by me: the frozen reader materialises validation and test-block rows.",
+   "proposed_ruling": "Accept. Conditions: the run record names the reader ('scan_cube'); the pool fingerprint check stays mandatory for every non-smoke run (it pins the output of the reader); a cube_loader parameter in the lever loader is asked for only when the lever loader is next changed for another reason."
+  },
+  {
+   "id": "F12",
+   "severity": "note",
+   "where": "docs/preregistration/hydromet_arch_v2_deviations.md:321-342 (§9.2-9.7); configs/hydromet_sota/v2/*.yaml; gso_mt/gates.py; gso_mt/criterion.py; stack/build.py; scripts/train/sota_hydromet_v2_{physics,gbm,stack}.py",
+   "what": "§9 items 2-7: no change, weakening or contradiction of the stamped texts found, and no choice that favours the candidate. P and the GBMs get per-target selection on inner rows (more freedom than D1 has; as ruled in §2.2). G-D1a has no tolerance (rel >= 0.03 on 3-seed means). The stack refuses any absent member except D2 and an incomplete seed set; 'fewer than 200 common inner rows -> not stacked' is a new rule, and for a reference stack a missing endpoint is a no-go in g_d1b (conservative). Comparator set in gates.py holds R-TD and R-TD-W in both label forms, G1, G2, P and both reference stacks. One thing to state: §9.2 gives P one model and no seeds; the every-seed rule then compares each claim seed with that one model (stated in the entry).",
+   "evidence": "Code and configs read; W_SONDE, W_GRAB, GRAB_CAP = 0.8, 0.2, 30; d1.yaml grid g1 192/0.5, g2 192/0.25, g3 128/0.5; gbm.yaml grid (3000,0.5),(3000,0.25),(1000,0.5); rtd.yaml hidden 100, 1 layer, dropout 0.5, static_noise 0.5, grab_share 0.5 fixed, ablation 'published' without grab; rtd_w.yaml hidden 570, 4 layers, dropout 2.216e-05.",
+   "proposed_ruling": "None needed."
+  }
+ ],
+ "decisions": {
+  "1_N2": {
+   "recommendation": "Confirm 'descriptive, p = 1' for both N2 endpoints; keep gate G-D1b for N2 exactly as stamped (both endpoints, against every comparator, no-go final for the track).",
+   "reason": "Q5, Q6, rulings §2.2 and amendment §9 give this result mechanically (G_eff 7.94 and 7.90 on all stations with the variable; floors are never lowered; the family of 2 is never shrunk). The stamped G-D1b text has no exemption for descriptive endpoints, and dropping it would lower a bar after the metadata were seen. The realised-cell check cannot promote an endpoint."
+  },
+  "2_pin_change": {
+   "recommendation": "Accept with conditions (F5): last line wins and earlier states become invalid; changed_under_stamp, deviations sha256 and stamp row id in every run record and registry row; each line is a counted configuration and names the runs that are repeated; lines for sites.py, the reserved modules, gso_mt/data.py, constants.py and pins.json#values need the lead's read of the diff; F1 ruling in force.",
+   "reason": "Without a route the D2 entry or a lever edit of sites.py blocks every entry point; the route is line-exact, works only in the stamped state and has no path for tables, split, role tables or pool fingerprints. As coded it lets a file alternate between stamped states, covers the guard and role modules, and does not record the change in any run record although the entry says so."
+  },
+  "3_scan_cube": {
+   "recommendation": "Accept the run-time substitution; no lever-loader parameter needed now.",
+   "reason": "It only tightens (filter inside the scan, reserved-site assertion, error on a later row), is restored in a finally block, covers every load_cube call of the lever loader, and its output is pinned by the pool fingerprint. Conditions: reader named in the run record; fingerprint check mandatory. Real-data equality with the frozen reader was not checked by me."
+  },
+  "4_pin_code": {
+   "recommendation": "Yes: pin driver, trainer, net, criterion, gates, GBM and stack code by file in a second read-only pin record before the first non-smoke fit, verified by every entry point and written to every run record; this does not need a new entry before the stamp.",
+   "reason": "§2.1 is consistent with the letter of rulings §2.3, but no run record carries a usable code hash (only a whole-package hash that changes with any workstream's edit), there is no git history, and the unpinned code, including the guard's own file, changed three times during this review. References and D1 are compared on inner numbers; they must be shown to share one code state."
+  }
+ },
+ "checks_run": [
+  "sha256 of the entry at 19:25, 19:26, 19:30, 19:37, 19:40, 19:42 EST and at the end: equal to the expected value each time; mode 664, mtime 19:12:38 EST (not yet read-only, as expected before the stamp)",
+  "Item 1 completeness: L3 (a)-(f) all present (§1 constants, §2 pins + licences, §3 G/G_eff, §4 joint look, §5 lever rows + declarations, §6 L5 corrections); L11 quoted (§7) with transcription and page/table citations (§7.1); guard extension L10 (§8.1); nothing assigned to entry 1 found missing. The MDE restatement of the rulings belongs to the T-E split entry, not entry 1. Earlier reviews (M6_review_design, M6_review_integrity, M6_verify) scanned for items assigned to a deviations entry: all are covered or belong to later entries (T-E, D2)",
+  "pins.json: sha256 84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9, mode 0444, 38 file pins (16 processed/, 9 configs/, 8 sentinel/, 3 docs/, 1 runs/, 1 scripts/), 2 content values, pool and pool_nograb fingerprints; matches §2.1",
+  "Registry row 4a3779d5f227: experiment M6V2/pins_v1, extra.pins_sha256 equal to the file's sha256, script sota_hydromet_v2_pins.py, 2026-11-11T00:06:36Z (metadata only)",
+  "Hashes named in the entry: amendment a65e6eb5...e656 (0444), rulings b144974a...79b0 (0444), constants.py fc668307...12a7, licenses.md, the five §3 inputs, stamp row b37a0319964c, lever snapshot 71bdf660366f: all equal",
+  "docs/licenses.md: the 9 rows of §2.2 exist at lines 54-62; USGS NWIS row lists M6",
+  "rtd.yaml and rtd_w.yaml against §7.1 and L11: equal (hidden 100 / 1 layer / dropout 0.5 / static_noise 0.5; hidden 570 / 4 layers / dropout 2.216e-05; grab_share 0.5 fixed; 'published' ablation without grab); nets.py applies dropout between LSTM layers when layers > 1",
+  "Constants module against the §1 table: every row equal (more than 8 constants: GSC, FAO-56 terms, Magnus terms, psychrometric, wind-function, sigma, emissivity, rho*c_p and others)",
+  "Tests (CPU, 4 threads, CUDA_VISIBLE_DEVICES empty): 19:30 EST 1 failed (guard static test, new kill-rule script without assert_released); 19:38 EST and 19:41 EST 125 passed, 0 failed, 0 skipped. The entry's 105/104/1 at 19:08 could not be reproduced because the tree changed",
+  "Guard: code read in three states of runner.py; four conditions implemented; probe with temporary registry files through registry_path (cases A-G); real registry never written; real state now: deviations_status released False, 0 rows naming the file; stamp_status True (b37a0319964c)",
+  "PIN CHANGE and D2 RELEASED: code read; labels of pins.json sorted by route eligibility (18 with a route, 20 without); no real PIN CHANGE or D2 RELEASED line in the entry",
+  "scan_cube: code of scan_cube, cube_scan_filter, load_v2_train, load_lever_train and the frozen reader read; synthetic tests pass",
+  "§3: all cells of both tables recomputed from metadata only; sensitivity runs (all test stations, val-block proxy, >= 1 day, wq_end >= 2026-09-30)",
+  "§9 items 2-7 against amendment §5-§9 and rulings §2.2, Q2, Q5-Q7, L11: gates.py, criterion.py, stack/build.py, physics/gbm/stack drivers, five YAML files read",
+  "Registry counts by experiment and split only (value never read), at 19:43 EST, 73,421 rows: M6V2/pins_v1 1 (pin record); M6V2/decisions_v1 1 (train-only smoke, row afc1fbaebe0d, written 19:41:38 EST during the review); M6V2/inner_v1 0; M6SOTA/inner_v1 16 (train-role inner groups x train block); M6EA* 0; M6/test_b 0. No validation, test-block or England row",
+  "Run directories under sentinel_runs/hydromet/sota_v2: only smoke/ (names only) and d2/kill_rule.json (keys decision, nets_sha256, registry_id, written_utc read; timing values not used)"
+ ],
+ "not_checked": [
+  "Source documents of the constants (FAO-56, the cited papers) and of the R-TD / R-TD-W recipes (Rahmani et al. 2021; Willard Table S6): no network and no PDF on disk was opened; only the internal consistency entry <-> module <-> YAML <-> L11 was checked",
+  "Equality of scan_cube with the frozen reader on the real site tables (the frozen reader materialises protected rows)",
+  "Recomputation of the pool fingerprints and of info.site_tables / lever_pins_crosscheck in pins.json (needs loading label arrays); I checked only that the file hashes and the registry row agree",
+  "scoring_code_sha256() = 5bd7d329...fd60b (§10): not recomputed",
+  "The entry's test statement for the 19:08 tree (105 collected / 104 passed / 1 skipped): not reproducible",
+  "The engineer's and the lever engineer's declarations about which inner numbers were read (§5): cannot be verified from disk; only the count (16) and the timestamps (all 16 lever rows precede the pin record) were checked",
+  "Smoke timings, VRAM figures and the kill-rule timing values",
+  "Whether GBM, P and stack run records store pins_sha256 (the nn driver does, in data_info.json): not traced to the end",
+  "thermox/nets.py (D2 network) and the D2 config: outside this entry's release; not reviewed",
+  "Any code state after 19:43 EST: the engineer agent was still editing arch-v2 files"
+ ]
+}

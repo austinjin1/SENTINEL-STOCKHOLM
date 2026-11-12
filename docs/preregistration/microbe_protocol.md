@@ -511,3 +511,34 @@ B output is pre-registered in `docs/preregistration/events_microbe_protocol.md` 
 - Metrics: paired ΔBrier / ΔAUPRC with domain- and site-cluster CIs.
 - It runs after the permutation nulls, once `sentinel/eval/events.py` exists, and before the freeze candidate.
   It changes nothing in §1–§9.
+
+### 10.8 SOTA campaign (lead-approved 2026-11-10): configuration cap; cycle 6 EMP pretraining (declared before running)
+- **Cap.** The SOTA plan (`docs/handoff/M3-microbe.md`, approved 2026-11-10) allows ≤ 8 further SENTINEL
+  configurations on the current tracks, numbered in run notes:
+  - #1–2: cycle 5, `seqset_kmer_v4` on `lodo` and `lodo_x001`;
+  - #3–5: cycle 6 below;
+  - #6–8: in reserve (one cross-fitted stacking configuration and one V4-window DNA-LM configuration, each
+    declared before it runs; one spare).
+- **Cycle 6, one change: encoder initialisation from label-free EMP pretraining.**
+  - **Corpus.** `emp_freshwater` (EMP R1 Deblur-150, Water (non-saline)) after the lead's exclusion rule. Excluded:
+    every sample within 10 km of any of the 34 NEON aquatic sites (development, holdout and reserve sites alike),
+    any sample without coordinates, and any sample dated ≥ 2024. Manifest:
+    `docs/preregistration/microbe_emp_exclusion.json` (excluded ids, reasons, sha256 of the included id list).
+    No NEON community, no label and no NEON site enters pretraining. The pretraining is therefore identical for
+    every fold, with no transductive use of held-out domains.
+  - **Tokens.** The 5-mer profile of the first 150 bp of the harmonised V4 window. For NEON:
+    `interim/microbe_seqemb/kmer5_v4_150.npy`; EMP reads are exactly this window.
+  - **Objective.** Masked-token reconstruction (15% of each sample's tokens; their standardised k-mer vector
+    zeroed; MSE reconstruction from the community context, with abundance features visible). Early stopping on 5%
+    of the pretraining samples. One seed (0). Implemented in `seqset.pretrain_seqset` and
+    `scripts/train/microbe_emp_pretrain.py`.
+  - **Fine-tuning.** `seqset_kmer_v4_150_emp` = SeqSet initialised from the pretrained `proj` / `ab` / `blocks` /
+    `ln` weights, with the table standardised by the pretraining statistics. Everything else is as `seqset_kmer`
+    (same optimiser, early stopping, seeds 0–2).
+  - **Configs and parity:**
+    - #3: the no-pretraining control `seqset_kmer_v4_150` (`lodo`);
+    - #4: `seqset_kmer_v4_150_emp` (`lodo`);
+    - #5: `seqset_kmer_v4_150_emp` on `lodo_x001`, run only if #4 beats #3 on mean dev-LODO R² (rule fixed now).
+    - The tables (V4-XGB, genus RF/XGB, tuned) remain the comparators; pretraining is unavailable to them, and this
+      is reported as an asymmetry.
+  - **GPU.** GPUs 0/1 through the lock helper, each job ≤ 2 h. Budget ≤ 8 GPU-h for cycles 5–6.

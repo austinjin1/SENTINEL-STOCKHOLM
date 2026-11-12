@@ -1,0 +1,330 @@
+{
+  "verdicts": [
+    {
+      "id": "STRAY-ABORT",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with F-ABORT-MARKER. `ls -la /home/bcheng/STOCKHOLM/sentinel_runs/orbit/test_looks/M2_test/` at 19:35 UTC 2026-11-10: only ABORTED.json (0444, 88 bytes, 2026-11-09 17:26:57 EST); no TEST_LOOK.json; no FREEZE_orbit*.json in docs/preregistration; registry (73,107 lines) has 0 M2 claim, seal or abort rows. sentinel/models/orbit/testlook.py claim() l.166-183 checks registry rows and the O_EXCL claim marker only, not an existing ABORTED.json; open_claims l.213 treats ABORTED.json as closed, so a real run would claim, be refused protected rows and mark_aborted (l.222-229) would spend the look with no prediction. Origin confirmed: tests/test_orbit_testlook.py (edited 14:27 EST) now has a regression test at l.276-292 naming this failure. LEAD_DECISIONS_20261110.md l.382-391 already orders removal after the test fix; the marker is still present. Automated chains 6b-9 never claim the real look. Not a defect of the amendment text.",
+      "ruling_text": "Before FREEZE_orbit.json is written the lead moves sentinel_runs/orbit/test_looks/M2_test/ABORTED.json (sha efa31da5...5a32) out of the look folder and records the removal with date and reason; the pre-test review of each look (M2/test, M2U/test, M2S/test) confirms by listing that its look folder is empty or absent; the M2S/test claim refuses to start if its look folder holds any file; and no test may write under the real runs root."
+    },
+    {
+      "id": "F-M7-SCORED",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Mechanism confirmed. scripts/eval/lite_score_test.py l.187-203 builds OrbitTeacher (S2-input SatWQ-Net) predictions `teacher_s2_imgonly`; l.427-438 scores them against y_{t} for sentinel/models/lite/data.py REG_TARGETS = (secchi, turbidity, tss), l.29; chl-a is not scored. /home/bcheng/STOCKHOLM/sentinel_runs/lite/test_look/ holds TEST_LOOK.json, PREDICTIONS_SAVED.json, SCORED.json (2026-11-09 17:05-17:30); registry has 6 rows of model lite_teacher_s2_imgonly in lite_test. scripts/eval/national_lite_score_test.py l.176-190 repeats the step; no national look folder exists yet. The teacher itself was trained on the M2 fit cell only (scripts/train/lite_teacher_litesafe.py l.95-97: PL.load_dev, masks fit and inner), so there is no training leak. The figure of up to 106 site-dates (67 + 39) is the reviewer's keys-only count; I did not re-run it. So §0 l.24 ('a block no model has been scored on'), l.34 ('any evaluation of any model on a Test-S row' does not exist) and sota_campaign.md l.109 ('before any result on them') are wrong for Secchi, TSS and turbidity on those rows; H1-S (chl-a) is untouched. At most about 3% of the 3,790 AquaCorr site-dates, so power is not changed materially. M4 precedent (lead ruling L1): spent rows leave the block.",
+      "ruling_text": "§0 l.24 and l.34-36 are corrected: on 2026-11-09 M7's sealed lite/test look scored a Sentinel-2-input SatWQ-Net (the Lite-safe teacher, trained on the M2 fit cell only) against Secchi, TSS and turbidity labels on up to 106 site-dates of M2 test-role lakes dated <= 2023; every Test-S row that matches an M7 look row (same M2 water body, S2 sensing date within 1 day) leaves every Test-S cell by a keys-only list fixed and hashed before any dev_v5m build, with its count appended; no M2 v2 code or decision reads any M7 look file; conflict C2 applies to M2 as written for M7; and until M2S/test is sealed no workstream, the M7 national look included, scores a Sentinel-2-input model on a row of an M2 test-role water body dated <= 2023-12-31."
+    },
+    {
+      "id": "DISCLOSURES",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with F-DISCLOSE. Amendment l.34-36 says 'no scorer reads them'. scripts/eval/orbit_test.py l.139-141 calls D.build_table(allow_test=True) and extracts pixels of every protected row, Test-S included; the cells it predicts and scores (l.145-153) are 2024-2026 only. `grep -n 'allow_test\\|naip_teacher' orbit_arch_v2_amendment.md`: 0 hits. The teacher store exists (processed/s2_chips/naip_teacher); the count of 242 chips in Test-S lakes is the author's and the leakage reviewer's keys-only figure, not re-run by me.",
+      "ruling_text": "Recorded in place of 'no scorer reads them': orbit_test.py holds every protected row, Test-S included, in memory inside the M2/test claim, and the M2 teacher store holds imagery-only v1 predictions on chips of Test-S lakes (242 by the author's keys-only count); M2/test and M2U/test write, log, seal and score nothing from a test-role row dated <= 2023-12-31, which the pre-test review confirms by reading the code; and no teacher prediction and no other workstream's chip of a test-role water body is joined to a label or read by any v2 arm or comparator outside the open M2S/test claim."
+    },
+    {
+      "id": "F-SCENE-REF",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.122: reference set = fit-cell and inner-cell rows only; l.128: val scenes 'no role in the rule'. scripts/data/orbitv2_testS_keycounts.py l.108-109 builds the reference from train x <=2021 and val-role rows only, so train-role 2022-23 rows are in neither. docs/preregistration/orbit_testS_keycounts_20261110.json reproduces 2,635/3,790 (69.5%) and 159/169 (94.1%) for fit+inner and 63.4% / 90.5% with val added. The reviewer's 58.1% / 89.3% for all non-protected rows (below the 60% threshold, so the roles would swap) was not re-run by me; the direction is certain because every added scene can only lower the fraction. Val rows drive selection, the kill criterion, conformal offsets and the MDE inputs.",
+      "ruling_text": "The §1.6 reference set is the scene keys of every chip read in fitting, early stopping, selection, calibration or pretraining of any arm or comparator: all non-protected, non-buffer dev_v5m rows of every role and year, their context chips, and the SSL manifest chips if that initialisation is inherited; the 60% and 80% thresholds are unchanged; every label says 'scene-disjoint' or 'scenes shared with training'; and when all rows are primary a §15.1 label also needs the scene-disjoint point estimate to favour the arm against every claim comparator."
+    },
+    {
+      "id": "F-LOADER-V2",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with TESTLOOK-IMPORT (and notes N-PINS, N-COUNTS-IN-MEMORY). `ls sentinel/models/orbit_v2/`: __init__.py, chipfeat.py, lakeset.py, stamp.py, train.py only; no targets, context or devm module; configs/orbit_v2 is empty; no scripts/*/orbitv2_* except the keycount script. sentinel/models/orbit/testlook.py l.37 LOOKS = (\"M2/test\", \"M2U/test\") and l.67 refuse any other look, so 'imported, never copied' (amendment l.446) cannot hold for the claim, look folder and freeze loader. scripts/train/orbit_tracks.py l.56-58 concatenates D.aquacorr_rows and D.wqp_rows directly (protected values in memory, counts out). v1 DATA_PIN_SPECS and the candidate data_pins (7 keys) have no pin for wqp_discrete, the context stores or processed/orbit_wqp_surface.",
+      "ruling_text": "No dev_v5m build reads a new-target value column until the orbit_v2 targets, context and devm modules have passed an independent leakage review; the builder assigns split roles from keys first and loads value columns only for non-protected keys; the development context cache is built from an allow-list of train-role and val-role chip ids; a test asserts that no protected row or chip id is in any dev_v5m artefact; for M2S/test only look-agnostic helpers of v1 testlook.py are imported, while the look list, look folder, claim, open-claim check, freeze loader and protected-row loader are re-implemented in sentinel/models/orbit_v2 with no run-time patching of a v1 module and with every v1 guard test mirrored; and the M2S pins cover every file the protected loader reads, including wqp_discrete/variable=*, the context chip stores and processed/orbit_wqp_surface."
+    },
+    {
+      "id": "F-SAME-LAKES",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with OPEN-4. Amendment l.143-145 allows later count-determined addenda; l.376-378 lets 'any gated arm that was funded and run before the Test-S freeze' join v2 selection; l.391 makes A2 depend on a later funding decision; tie order l.379 covers A0, c3, c2, c1 only. Running chains (ps at 19:30 UTC: chain6b, chain7, chain8, chain9) put the headline freeze ahead of all v2 work, so v2 is developed after per-lake v1 results on the same test-role lakes exist. No sentence commits the project to run M2S/test whatever the headline outcome.",
+      "ruling_text": "M2S/test is run for v1 and v2 whatever the M2/test outcome; from the moment M2/test or M2U/test is claimed, no per-row prediction, label, per-lake or per-block result of those looks is used in any v2 design, funding, selection, calibration or addendum decision; v2 selection, the kill criterion and every status rule are applied by registered code with no discretion; an arm whose addendum is stamped after the M2/test claim cannot enter the v2 selection for M2S/test (Test-C only); and the tie order of any added arm is fixed in its addendum."
+    },
+    {
+      "id": "F-CTX-ROLE",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.296-299: non-lake members are 'chips centred within 100 m of the row's point' and 'Chips come from any existing chip store'; no same-role condition. `ls /home/bcheng/STOCKHOLM/sentinel_data/processed/s2_chips/`: aquacorr, mc_benchmark, naip_teacher, wqp. The s2_chips/wqp store is still growing (WQP 2015-2023 build, pid 1419333, running 26 h). No context builder exists, so no affected-row count is possible yet.",
+      "ruling_text": "A context chip must have the same frozen-rule water body and the same split role as its row (non-lake rows: same 200-km block, not in-lake, not buffer-excluded); the context stores are s2_chips/aquacorr and s2_chips/wqp only, content-pinned at the first dev_v5m build; naip_teacher, mc_benchmark and any store or chip added after that pin are excluded."
+    },
+    {
+      "id": "CMP-2",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with F-OLS-INSAMPLE. Amendment l.201-203: OLS 'fitted on the fit cell' on the validation-selected MDN_B's predicted log chl-a and log Secchi, that is, on in-sample predictions; l.362-364 gives the GBM stacking member out-of-fold predictions (5 folds grouped by role block). l.166-167 says this chain 'may well be the best available' for TP and TN, so the handicap falls on a likely binding comparator.",
+      "ruling_text": "The trophic-chain OLS is fitted on out-of-fold predictions (the 5 role-block-grouped folds of §3.5) of the validation-selected chl-a and Secchi members; a second chain built on the GBM's out-of-fold predictions is also a member; and the member with the lower validation MdSA on the target's selection cell is comparator 5."
+    },
+    {
+      "id": "F-JOIN-100M",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.182-183: 'the nearest WQP station within 100 m on the same date', with no water-body or role condition. The join code does not exist (orbit_v2 has no targets module), so no count of affected rows can be made. Expected to be rare, but the rule as written lets a station of another water body or role give its value to a row.",
+      "ruling_text": "The 100 m join of §2.4 is made only to a WQP station whose frozen-rule water body and split role equal the row's, decided from keys before any value is loaded; otherwise the row carries no value for that target."
+    },
+    {
+      "id": "F-RULINGS-PIN",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with note STAMP-GATE. sentinel/models/orbit_v2/stamp.py l.21-22 and l.39-58: the gate opens on a registry row of experiment orbit/prereg_snapshot whose extra.sha256 maps the amendment path only; no rulings file is checked. Amendment l.448: the freeze candidate records 'this file's sha256' only. `grep -c '\"experiment\": *\"orbit/prereg_snapshot\"' results/registry.jsonl` = 0. Precedent: the sonde/prereg_snapshot row maps both the amendment and the rulings file.",
+      "ruling_text": "The orbit/prereg_snapshot row and the Test-S freeze candidate record the sha256 of both the amendment and the lead-rulings file (extra.sha256 maps both paths), both files are set 0444, and orbit_v2.stamp.require_stamp checks both hashes before any validation number."
+    },
+    {
+      "id": "CMP-1",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.373 and l.484 make the MDN_B + GBM average 'descriptive only, no claim role'. docs/plans/architecture_research/M2_architecture_plan.md l.93: avg(MDN_B, GBM) 49.7 against MDN_B 52.6 and GBM 56.3 on dev_v4 validation chl-a, so the strongest known simple baseline is left out with its result in view. RESEARCH_PLAN §15.1(i) requires the strongest simple baseline. The v1 chains also score SatWQ+GBM blends (run folder compare_satwq_v4_noaug+gbm; chain7 selects among plain and +gbm).",
+      "ruling_text": "For every base and Track N target, the equal-weight average in log10 space of the validation-selected MDN_B family member and the validation-selected GBM family member is an additional claim comparator in the intersection-union tests of H1-S, H2-S, Track N and the small-lake family, for v1 and v2 alike, and in the per-seed-unit rule; its predictions are sealed with the other comparators; and no label is issued for an arm that does not beat it."
+    },
+    {
+      "id": "GATE-1",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with POWER-KNN. Registry orbit_power_dev_v4, chl-a: MDE80 against location kNN 33.705 at 87 blocks (10.266 MDN_B, 14.298 GBM). The §1.5 table (l.104-110) omits kNN. By the file's own sqrt(87/B) scaling: about 24.2 at 169 blocks and 18.7 at 282; <= 10 needs about 988 blocks, while the small-lake stratum has at most 91 (AquaCorr) or 212 (WQP upper bound) blocks. So the §1.7 gate cannot be met as written, and the §2.6 gate (> 15 against any of five comparators) is likely decided by the noisiest weak comparator. This invites a re-reading once numbers exist.",
+      "ruling_text": "The gates of §1.7 and §2.6 are read as written: the largest MDE80 over every scored arm and every claim comparator (location kNN and the MDN_B + GBM average included) decides, and no gate, threshold or comparator list is re-read once any dev_v5m validation prediction exists; the lead records that on the registered dev_v4 numbers the small-lake stratum is expected to be descriptive; and if it is confirmatory, Holm runs over both arms' hypotheses together and a label for a target needs every comparator hypothesis of that target rejected plus the per-seed-unit rule."
+    },
+    {
+      "id": "GATE-2",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with POWER-SCRIPT and MDE-SPEC. scripts/train/orbit_power.py: l.41 TEST_CELL = \"testxtest_lake\" hard-coded; l.67 --track choices headline or U only; l.96-97 block_draws seeds 0 and 1; l.99 joint power at 1.96; l.108 mde80 = 2.80 * se (unadjusted alpha 0.05). The file is in orbit_freeze_candidate.json frozen_files, so it cannot be edited under amendment l.431-432, and unedited it cannot compute Test-S, a stratum, the scene-disjoint subset or a Track N target. Amendment l.114-116, l.136-138, l.210-214 do not fix which arm's predictions, which validation rows, the simulation settings or alpha, and '<= 3' (l.474) lets a descriptive declaration shrink the Track N Holm divisor.",
+      "ruling_text": "Each status-setting MDE is computed once, by a new script scripts/train/orbitv2_power.py outside the v1 globs that calls orbit_power.block_draws unchanged (n_sim 2,000, seeds 0 and 1), on the validation rows of the same target and stratum in the comparator selection cell, with the role-block count of the primary cell fixed by §1.6, as (z(1 - alpha/2) + 0.84) standard errors at the smallest Holm alpha of the hypothesis's family; the maximum over every scored arm and every claim comparator governs; the Holm divisors stay 6 for H2-S and 3 for Track N whatever is declared descriptive; the script's sha256 is registered before the first validation number of any new arm; and the result is a dated addendum written before the Test-S freeze candidate."
+    },
+    {
+      "id": "SEED-1",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with SEED-RULE. Amendment l.265-271: the per-seed rule moves to seed units, with 'the comparator' singular and no statement that all 3 units must pass, on which cell, or what happens to a failed network; l.271 calls v1 'single networks, 5 seeds, as frozen', but docs/preregistration/orbit_freeze_candidate.json holds 3 checkpoints (satwq_v4_noaug_s0..s2) and no FREEZE_orbit.json exists. Plan l.87-97: 2 of 3 single seeds failed the rule on dev_v4 validation, which is the stated motive. Reviewer grep: no per-seed code in orbit_test.py or testlook.py (not re-run by me).",
+      "ruling_text": "For v2 the per-seed rule means that each of the 3 pre-declared seed units (network seeds 0-2, 100-102, 200-202), taken alone, has a lower MdSA than every claim comparator in its full form on the endpoint's primary cell, for every endpoint on which a label is sought; for v1 it means every frozen single network, with the seed count recorded in FREEZE_orbit.json; no network or unit is replaced or added (a failed run is re-run with the same seed and configuration only, and a diverged network is kept and reported); the Test-S module seals per-unit and per-network predictions before scoring; and every v2 label carries the sentence 'the per-seed rule was applied to 3-network seed units; k of 9 single networks individually beat every comparator'."
+    },
+    {
+      "id": "STAT-1",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "sentinel/models/orbit/evaluate.py l.14 N_BOOT = 2000 and l.47-55 paired_mdsa: `p = min(1.0, 2 * min(np.mean(d <= 0), np.mean(d >= 0)))`, which can be exactly 0 and so passes any Holm threshold (0.05/6 included). Amendment l.461-467 and l.472-475 do not define the p-value, do not say Holm is step-down, and for H2-S and Track N do not restate the bootstrap unit, the largest-p rule over comparators (five for Track N), the direction condition or the per-seed-unit rule.",
+      "ruling_text": "In every Test-S family the per-comparison p-value is the two-sided paired role-block bootstrap p-value of evaluate.paired_mdsa with the +1 correction (B = 2,000, seed 0); a hypothesis's p-value is the largest over all its claim comparators (all of §2.5 for Track N) and counts only if every point difference favours the arm; Holm is step-down with monotone adjusted p-values; and the per-seed-unit rule applies to H2-S, Track N and small lakes exactly as to H1-S."
+    },
+    {
+      "id": "STAT-4",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with H2S-POWER. Amendment table l.74-75: Test-S dev_v4 holds 92 TSS rows (at most 23 + 6 blocks) and 49 turbidity rows (at most 15 + 6 blocks); §1.5 gives power for chl-a only; l.472 keeps Secchi, TSS and turbidity-NTU confirmatory with no power rule, while Track N has one (§2.6). The WQP rows may add blocks, count unknown. Reviewers differ on scope (TSS and NTU only, or all three targets); the stricter reading covers all three with both conditions.",
+      "ruling_text": "Secchi, TSS and turbidity-NTU are each confirmatory in H2-S only if the target's primary Test-S cell holds at least 30 role blocks and its binding MDE80 is at most 15 MdSA points against every claim comparator; otherwise the target is pre-declared descriptive in the freeze candidate; the H2-S Holm divisor stays 6 either way; and the turbidity endpoint uses NTU-class rows only."
+    },
+    {
+      "id": "CMP-3",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §2.5 l.195-203 lists five references, none a published retrieval method for TP, TN or DOC; MDN_B was published for chl-a and TSS. `grep -n -i 'novelty\\|literature' orbit_arch_v2_amendment.md`: no check is referenced for Track N. RESEARCH_PLAN §15.1(i) requires the strongest published method, re-run when code exists.",
+      "ruling_text": "Before the Test-S freeze a dated literature check in docs/novelty_checks lists published Sentinel-2 or Landsat retrieval methods for lake TP, TN and DOC; a reproducible one not covered by §2.5 is added as a comparator by dated addendum before any Track N validation number of the arm; otherwise any Track N label reads 'better than every retrained reference of arch-v2 §2.5; no published method was re-run' and the words 'state of the art' are not used for TP, TN or DOC."
+    },
+    {
+      "id": "CMP-4",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.303-305: A1 gets a token per context date with q_d (angles, AOT, glint, processing baseline) and delta-t for up to K = 6 dates; l.359-361: the GBM gets only per-band median and IQR over those chips; l.365: MDN_B gets '12-band + context median + ring'. Lead rule 3 (LEAD_DECISIONS l.19-20) asks for the same inputs.",
+      "ruling_text": "The GBM family gains a member with per-context-date features for the same K = 6 dates in the same order (12 band water medians, q_d and delta-t per slot, missing slots NaN), fitted and selected under the same rules as the other members."
+    },
+    {
+      "id": "CMP-5",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.475 is the whole specification: 'E4a, derived route, E-H1/E-H2 of protocol §12 on testxarchive_lake; v2's event artifact is refitted with the same specification'. It does not say that the event comparators are refitted under §3.5 parity, how two arms are corrected, or to which cell the §12.4 power rule applies. Protocol §12 was written for one arm with no multiplicity correction.",
+      "ruling_text": "At M2S/test the event comparators of protocol §12.3 are refitted on dev_v5m from the arch-v2 §3.5 families (the direct GBM classifier also receives the ring and context summaries); E-H1 and E-H2 are each tested with Holm over the 2 arms; and the protocol §12.4 power rule is applied to the primary cell fixed by §1.6."
+    },
+    {
+      "id": "OPEN-1",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with INIT-A0 and note N-CHAINS. Amendment l.247-250 fixes the shared initialisation 'at the moment the first A0 network starts training', a moment the author chooses while chain8 (§6a seed-variance round) and chain9 (SSL) results arrive; l.274-276 defines A0 from 'the frozen headline configuration', which does not exist: orbit_freeze_candidate.json is status CANDIDATE on dev_v4, sentinel_runs/orbit/cache holds dev_v4 only, and chains 7, 8 and 9 (all running, read from sentinel_runs/orbit/logs) can each regenerate the candidate.",
+      "ruling_text": "No A0 or A1 network (synthetic or train-only smoke tests excepted) starts before the v1 dev_v5 selection under protocol §6, §6a and §11.6 is registered and written into a regenerated v1 freeze candidate that has passed its independent review; A0 and A1 take the architecture, training recipe and initialisation named in that candidate, recorded by its sha256 in every run configuration; a chain9 SSL initialisation is inherited only if it is in that candidate; and nothing later changes either arm."
+    },
+    {
+      "id": "KILL-REF",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.384-386 refers to 'v1 (as frozen for the headline, dev_v5)'. No FREEZE_orbit.json exists; no dev_v5 cache or run folder exists; chain7_freeze_v5.sh selects the lowest validation chl-a MdSA among satwq_v5_{noaug,base}{,+gbm}, so the frozen v1 may be a SatWQ + GBM blend, and chain8 and chain9 can change it again. The reference could therefore be fixed after A1's validation numbers are known.",
+      "ruling_text": "The kill criterion compares A1's 3-unit ensemble with the reported v1 model recorded in FREEZE_orbit.json (its seed ensemble, with the GBM blend if frozen so) on common valxval_lake rows; if it is first computed against a v1 candidate and the frozen v1 differs, it is recomputed and the stricter outcome stands."
+    },
+    {
+      "id": "OPEN-2",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.288 says 'about 0.3 M parameters ... Every value below is fixed now', but the MLP widths (l.304, l.312), the form of W (l.318) and the set-transformer width are not written. `ls -la configs/orbit_v2`: empty. sentinel/models/orbit_v2/lakeset.py (12:55 EST) carries defaults in code (d = 64, n_layers 3, n_heads 4, k 5, dropout 0.1) that no hash pins. configs_tried.jsonl has 235 rows, as stated. Caps A0 1 + A1 3 are filled by A0, c1, c2, c3.",
+      "ruling_text": "The complete configuration files of A0, c1, c2 and c3 (every width, depth, loss weight and the seed list) are written to configs/orbit_v2 and their sha256 registered before any non-smoke training run of a new arm; any later change that alters a prediction is a new configuration, and because the caps (A0 1, A1 3) are filled, none is allowed; a failed run is re-run unchanged or reported as failed."
+    },
+    {
+      "id": "OPEN-3",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.176-177: AquaCorr doc_value and acdom440_value 'are also used after a unit check'; no tolerance, data subset or outcome rule appears in §2.4 or §4. DOC is a confirmatory Track N target, and a check that reads values is not allowed on protected rows.",
+      "ruling_text": "AquaCorr doc_value and acdom440_value are used only if AquaCorr's metadata state the unit explicitly (mg/L as C; 1/m at 440 nm); the check reads metadata and fit-cell rows only, its outcome is written to the dev_v5m split report before any Track N validation number, and if it fails the AquaCorr values are used neither for fitting nor for scoring."
+    },
+    {
+      "id": "WORD-1",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.57-58 says the block 'addresses the power problem'; the §1.5 table gives MDE80 of about 7.4 (MDN_B) and 10.3 (GBM) at 169 blocks, while the registered v1 validation gains are -4.37 and -8.02 (orbit_power_dev_v4), and kNN is omitted (GATE-1). Plan l.627-633 puts v1's joint power at about 0.25-0.35. The look carries five families (§6.2-§6.3) and nothing requires reports to state that.",
+      "ruling_text": "Every Test-S label is written in full as 'unseen lakes, archive years 2015-2023' with 'scene-disjoint' or 'scenes shared with training' as fixed by §1.6; every report states the number of confirmatory families and hypotheses in the look; and an endpoint whose binding MDE80 exceeds the arm's validation gain against any claim comparator is called under-powered in the freeze candidate and in the report."
+    },
+    {
+      "id": "FROZEN-SET",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Live call of guard.frozen_files() at 19:33 UTC returns 45 files (43 at review time, plus sentinel/models/orbit/wqp_surface.py and scripts/train/orbit_build_wqp_surface.py, both created 13:24 EST inside the globs); orbit_freeze_candidate.json lists 35. Amendment l.428-432 names four globs only. New since the reviews: six hashed files have mtimes after the amendment (12:34:02 EST): sentinel/models/orbit/data.py 13:06, scripts/train/orbit_build_split.py 13:06, wqp_surface.py 13:24, orbit_build_wqp_surface.py 13:24, docs/preregistration/orbit_protocol.md 13:27 (sha256 now 70225c35...6c556), sentinel/models/orbit/testlook.py 14:25. These are v1 work under lead rulings (WQP label rule; abort-marker fix), so l.8-9 ('is not edited') and l.431-432 ('No file hashed by the v1 freeze is edited') are true only if read as 'by v2 work'.",
+      "ruling_text": "'File hashed by the v1 freeze' means every file returned by guard.frozen_files() (45 on 2026-11-10) as recorded in the lead-written FREEZE_orbit.json; the protocol this file amends is orbit_protocol.md as hashed there (v0.4 with the 2026-11-10 13:27 change-log entry); v2 work edits none of these files and overwrites no artefact pinned in the v1 candidate; an edit before the v1 freeze is v1 work made under a lead ruling and regenerates the candidate; and any edit after M2/test is sealed to a file that v1 inference imports needs a registered check, before the Test-S freeze, that v1's validation-cell predictions are reproduced exactly."
+    },
+    {
+      "id": "PARITY-LETTER",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "LEAD_DECISIONS_20261110.md l.44-46: 'every learned comparator gets the same 3-init averaging, and the GBM gets 3-seed bagging'. Amendment l.346-353: MDN_B 10 initialisations with two read-outs as members, GBM 3-seed bags with a 9-seed bag for the selected member, each seed unit compared with the full comparator. This is at least as strict for the candidate, but it differs from the letter of the ruling.",
+      "ruling_text": "§3.5 as written replaces the words 'same 3-init averaging' of LEAD_DECISIONS: MDN_B has 10 initialisations with both read-outs as family members, each GBM member is a 3-seed bag and the selected one a 9-seed bag, each seed unit is compared with the full comparator, and no comparator ensemble may be reduced later."
+    },
+    {
+      "id": "COMPUTE-DISK",
+      "verdict": "partly",
+      "final_severity": "should_fix",
+      "evidence": "`grep -n -i 'disk\\|60 GB' orbit_arch_v2_amendment.md`: 0 hits; §3.1 l.254-256 covers GPU, 2 h and 6 threads only. LEAD rule 5 (disk floor 60 GB, CPU jobs sequential per workstream) binds every workstream whether restated or not, so the gap is smaller than reported. What is open is the cap: sota_campaign.md gives M2 'as already built', while dev_v5m adds a context index, per-pixel distance maps, ring vectors and large comparator families. `df -h /` at 19:36 UTC: 175 GB free (95% used).",
+      "ruling_text": "LEAD rule 5 binds M2 in full: before each dev_v5m, context-cache or comparator build `df -h /` must show at least 60 GB free after the projected size, otherwise stop and report; all derived dev_v5m artefacts together stay under 10 GB; M2 CPU jobs run one at a time with at most 6 threads; and no imagery is downloaded."
+    },
+    {
+      "id": "REF-ORDER",
+      "verdict": "partly",
+      "final_severity": "should_fix",
+      "evidence": "The amendment has no order sentence (§3.5 states parity only); lead rule 3 ('built before or with the candidate', LEAD_DECISIONS l.19-20) binds anyway, so this is a missing restatement, not a conflict. A sentence is still needed because the order must be checkable from registry timestamps.",
+      "ruling_text": "The comparator families of §3.5 and §2.5 are fitted on dev_v5m and their validation rows registered before, or in the same batch as, the first validation number of the arm they face."
+    }
+  ],
+  "points": [
+    {
+      "point": "1. Scene-disjointness reference set (§1.6)",
+      "ruling": "Change. Reference set = scene keys of every chip read in fitting, early stopping, selection, calibration or pretraining of any arm or comparator (all non-protected, non-buffer dev_v5m rows, their context chips, SSL manifest chips if inherited). Thresholds 60% / 80% unchanged. Labels say 'scene-disjoint' or 'scenes shared with training'. If all rows are primary, a label also needs the scene-disjoint estimate to favour the arm against every claim comparator.",
+      "reason": "Reviewers differ (fit + inner + val, or every row read). The widest set is the stricter one and can be computed from keys. Val rows drive selection, the kill criterion and conformal offsets, so their scenes are not independent of the model. The narrow set is what makes the preview pass 60%."
+    },
+    {
+      "point": "2. Binding MDE after the stamp (§1.7, §2.6)",
+      "ruling": "Accept 'rule now, status later' only with the GATE-1 and GATE-2 rulings: new script outside the v1 globs with a registered hash, Holm-adjusted alpha, maximum over arms and all claim comparators, Holm divisors fixed, thresholds final, computed once.",
+      "reason": "orbit_power.py is v1-hashed and cannot compute these cells; as written the arm, rows, alpha and comparator scope are free after validation predictions exist."
+    },
+    {
+      "point": "3. Context date limit and two-sided context (§3.4 item 3)",
+      "ruling": "Confirm <= 2023-12-31 and two-sided context. Add: a context chip has the same water body and split role as its row; stores are s2_chips/aquacorr and s2_chips/wqp only, pinned at the first dev_v5m build; every A1 or v2 result, event results included, carries the sentence 'retrospective reconstruction with two-sided image context; not a nowcast'.",
+      "reason": "The limit keeps headline-year imagery out. The role and store conditions close the cross-role path for non-lake rows and the open 'any existing chip store'. The scope sentence stops a nowcasting reading."
+    },
+    {
+      "point": "4. Parity reading (§3.5)",
+      "ruling": "Confirm as written; it replaces the lead's words 'same 3-init averaging'; no comparator ensemble is reduced later; the MDN_B + GBM average becomes a claim comparator (CMP-1).",
+      "reason": "The reading is stricter than the lead's minimum. The average is the strongest simple baseline already seen on validation (49.7 against 52.6 and 56.3), so §15.1(i) needs it."
+    },
+    {
+      "point": "5. Multi-target-by-stacking GBM member (§3.5)",
+      "ruling": "Confirm. Out-of-fold features from the fit cell only, folds grouped by role block, every member counted. The trophic-chain OLS uses the same out-of-fold rule (CMP-2).",
+      "reason": "It gives the GBM the candidate's auxiliary targets, as lead rule 3 requires, and can only strengthen the reference. The OLS as written is fitted on in-sample predictions."
+    },
+    {
+      "point": "6. Track N arm when v2 = A0, or when A1 fails (§2.7)",
+      "ruling": "Confirm the default. The A1 configuration scored on Track N is chosen by validation chl-a only, never by a Track N validation number; it is not a third arm in H1-S or H2-S; the per-seed-unit rule applies to it; if A1 fails its kill criterion no SENTINEL claim is made on Track N.",
+      "reason": "The arm is fixed by a rule with no fork. The additions close the two remaining choices (selection by a Track N number, an extra arm in the base families)."
+    },
+    {
+      "point": "7. Shared initialisation fixed when A0 starts (§3.1)",
+      "ruling": "Change. No A0 or A1 network starts before the v1 dev_v5 selection is registered and written into a regenerated, independently reviewed v1 freeze candidate; both arms take the recipe and initialisation named there, recorded by its sha256; nothing later changes either arm.",
+      "reason": "Reviewers offered a lead-set clock time or an event. The event is stricter: it removes the author's control of the moment and makes §3.1 agree with §3.3, which already defines A0 from the frozen headline configuration. It only delays v2 training, so it can be carried out."
+    },
+    {
+      "point": "8. aCDOM(440) head (§3.4 item 8)",
+      "ruling": "Accept the default: fine-tuning auxiliary head only, GLORIA pretraining unchanged, dropped before any training if the fit cell holds fewer than 200 values, descriptive.",
+      "reason": "Changing pretraining would change the initialisation shared with A0 and v1 and break the attribution. The drop rule is a count rule."
+    },
+    {
+      "point": "9. H2-S family with small TSS and NTU counts (§6.3)",
+      "ruling": "Change. Secchi, TSS and turbidity-NTU are each confirmatory only with at least 30 role blocks in the primary cell and a binding MDE80 of at most 15 points against every claim comparator; otherwise pre-declared descriptive. Holm divisor stays 6. NTU-class rows only.",
+      "reason": "Reviewers differ on scope; the union is stricter. dev_v4 Test-S holds 92 TSS and 49 turbidity rows in under 30 blocks, where a cluster bootstrap is unreliable. A fixed divisor removes any gain from declaring a target descriptive."
+    },
+    {
+      "point": "10. Chl-a method-class covariate (§4 item 4)",
+      "ruling": "Confirm: not adopted. Adding it later needs its own stamped addendum before any validation number.",
+      "reason": "No model receives it, so parity holds without further rules."
+    },
+    {
+      "point": "11. Code separation (§5)",
+      "ruling": "Confirm, with these conditions: v2 guard and loaders independently reviewed before any dev_v5m build reads a new-target value; look-specific parts re-implemented in orbit_v2 with no run-time patching of v1 modules; tests use a temporary runs root; the claim refuses a non-empty look folder; per-unit and per-network predictions are sealed; the power script is new code with a registered hash; 'hashed by v1' means guard.frozen_files().",
+      "reason": "Separation protects the v1 candidate. But the hashed set is 45 files, not four globs, the v1 look list is hard-coded, and orbit_power.py cannot be reused unedited. The conditions are the union of the three reviewers' and are all feasible."
+    },
+    {
+      "point": "12. Early stopping on the four base targets; a-priori ranges (§3.4 item 9, §2.1)",
+      "ruling": "Confirm. Ranges are fixed now and never revised after any value is seen; out-of-range values are set missing and counted per target.",
+      "reason": "New-target labels then cannot move the stopping point of the base-target claims, and the criterion matches v1 and A0."
+    },
+    {
+      "point": "G1. Track G draft: Test-S interaction (G-A1 item 5)",
+      "ruling": "Accept. Archive-year G1-G5 rows of test-role lakes are counted by key, never used for training or tuning in either build order, and left unused once M2S/test is sealed.",
+      "reason": "It keeps Test-S fixed whichever of Track G and M2S/test is built first. Track G is a draft and not funded, so this binds only at its own stamp."
+    },
+    {
+      "point": "G2. Track G draft: v2 = c1 (G-A2 against G-A4)",
+      "ruling": "c2 is the single Track-G configuration whenever v2 is an A1 configuration; c1 is not refitted or scored on Track G; G-A4 is reworded to match; reports state that c2 was not the selected v2.",
+      "reason": "G-A4 gives the cap of 1 to the frozen v2 while G-A2 makes c2 primary and also reports c1, which is two configurations. A coordinate model cannot be the transfer candidate outside the US."
+    },
+    {
+      "point": "G3. Track G draft: data version name",
+      "ruling": "The name is fixed in the funding ruling; until then the texts say 'the Track-G data version'. In the same step orbit_track_g.md is updated: GPU and seed wording, and its §3 surface rule is replaced by the project-wide WQP label rule where WQP rows are used.",
+      "reason": "dev_v6 may be taken by then. The draft's surface rule ('no depth with a surface/epilimnion code') differs from the lead's rule of 2026-11-10 13:21-13:27 EST."
+    }
+  ],
+  "missed": [
+    {
+      "severity": "should_fix",
+      "section": "§2.4 l.179-181 (also §2.6 preview and §4 item 1)",
+      "issue": "The label rule for the new targets cannot be carried out as cited and conflicts with the lead's project-wide WQP rule, which was made after the amendment was written (13:21-13:27 EST against a file mtime of 12:34:02 EST). The text says 'As sentinel.data.matchups.wqp_surface_samples'. That function drops every row whose variable is not in WQP_TARGETS, and TP, TN, DOC and aCDOM are not in it. It also reads WQX depth fields, not depth_m, which is the defect the lead ruled on. The amendment's wording ('depth <= 1 m, or unspecified and not flagged bottom') keeps a result at <= 1 m that is flagged bottom; the lead's rule drops a bottom-flagged result at any depth. Sidecar exclusion and the grouping keys are not stated. M2's reader wqp_surface.py covers base-target samples of built matchup tables only.",
+      "evidence": "sentinel/data/matchups.py l.532-545 (WQP_TARGETS: chla, tss, ssc, turbidity, secchi, microcystin, phycocyanin) and l.591-636 (`df = df[df[\"target\"].notna()]`; depth from result_depth / activity_depth / activity_top_depth). LEAD_DECISIONS_20261110.md l.200-217 (one rule, project-wide; shared module not edited; M2's reader is sentinel/models/orbit/wqp_surface.py). docs/preregistration/orbit_wqp_depth_rule_counts_20261110.json (counts only): bottom-flagged results at depth <= 1 m for base targets: chla 1,283, tss 1,231, turbidity 2,962. No reviewer finding mentions the depth rule.",
+      "suggested_ruling": "§2.4 l.179-181 is replaced: new-target labels are read by M2-owned code in sentinel/models/orbit_v2 from the harmonised, QC-passed tables wqp_discrete/variable=*/ only (never a sidecar), with depth_m passed as the result depth, under the lead's rule of 2026-11-10 word for word (surface = depth_m <= 1.0 m or unknown; a result flagged bottom is dropped at any depth; replicate median per site, local date, target, characteristic and unit); the same reader serves every role; the shared module is not edited; and the counts by target and role (protected roles: counts only) are appended before any Track N validation number."
+    },
+    {
+      "severity": "should_fix",
+      "section": "§3.2 l.271; §3.3 l.274-280; §3.6 l.380-381; §6.2",
+      "issue": "The frozen v1 may be a SatWQ + GBM blend, while the amendment treats v1 as plain single networks. Then 'A0 - v1 is the effect of the seed unit and EMA' (l.279-280) is false, because the difference also contains the removal of the blend; 'v1 keeps its own definition (single networks, 5 seeds)' does not say how the per-seed rule works for a blended model; and the seed count is not 5 in the only candidate that exists. KILL-REF covers the kill reference only.",
+      "evidence": "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/logs/chain7_freeze_v5.sh selects the lowest validation chl-a MdSA among satwq_v5_{noaug,base}{,+gbm} (blend_with gbm_imagery_context); chain6b runs orbit_compare and orbit_power on the +gbm labels; chain8 and chain9 re-apply the §6 rule over plain and +gbm configurations. Run folder compare_satwq_v4_noaug+gbm exists; configs_tried.jsonl holds 'satwq_v4_noaug+gbm'. Amendment l.251 forbids a blend for the new arms and l.275 anticipates 'the plain network of the frozen headline configuration, no blend'. orbit_freeze_candidate.json: 3 checkpoints, blend_with None (dev_v4).",
+      "suggested_ruling": "If the v1 recorded in FREEZE_orbit.json is a SatWQ + GBM blend, the statement 'A0 - v1 is the effect of the seed unit and EMA' is not used; A0 is then also compared, descriptively, with the unblended v1 seed ensemble; the v1 per-seed rule at every look applies to each frozen single network combined with the frozen blend exactly as FREEZE_orbit.json defines the reported model; and the v1 seed count is the one recorded there."
+    },
+    {
+      "severity": "should_fix",
+      "section": "Header l.8-9; §5 l.431-432 and l.438-439",
+      "issue": "Files inside the v1 hash set were created or edited after the amendment was written, under lead rulings: the protocol the amendment amends changed at 13:27 EST, and the WQP side table that now decides which WQP samples are labels has no pin in the v1 pin list. The amendment pins neither the protocol version it amends nor that table.",
+      "evidence": "mtimes after 12:34:02 EST among guard.frozen_files(): data.py 13:06, orbit_build_split.py 13:06, wqp_surface.py 13:24, orbit_build_wqp_surface.py 13:24, orbit_protocol.md 13:27, testlook.py 14:25. orbit_freeze_candidate.json data_pins has 7 keys (wqp_matchups, aquacorr_tables, chips_wqp, chips_aquacorr, hydrolakes, wbd_huc12, gloria_srf), none for processed/orbit_wqp_surface (side_table_sha256 8ed6a309...3a31 in orbit_wqp_depth_rule_counts_20261110.json).",
+      "suggested_ruling": "Covered by the FROZEN-SET and F-LOADER-V2 sentences above (protocol version = the one hashed in FREEZE_orbit.json; M2S pins include processed/orbit_wqp_surface); no further sentence is needed if both are written."
+    },
+    {
+      "severity": "note",
+      "section": "§1.4 l.86-96; §1.5 l.101-110",
+      "issue": "The WQP counts in the file predate the lead's WQP ruling and are looser upper bounds than they look. They were counted from samples.parquet of a build that used the defective loader (sidecar rows read as results, no depth rule), and the lead has declared the dev_v4 protected counts superseded. The AquaCorr counts that anchor the design (2,639 chl-a rows, 143 to 169 blocks) are not affected. No threshold depends on the WQP upper bounds.",
+      "evidence": "docs/preregistration/orbit_wqp_depth_rule_counts_20261110.json (counts only): s2_wqp_matchups_hist chl-a, test role: 113,204 samples, 14,076 dropped by the rule (about 12%); headline chl-a testxtest: 25,769 samples, 2,485 dropped. LEAD_DECISIONS l.215-217. Arithmetic of the file re-checked and correct: row sums of the §1.4 table, 2,909 + 881 = 3,790, 69.5% and 94.1%, the sqrt(87/B) table, 93% / 28% / 7%.",
+      "suggested_ruling": "Every binding count and every count rule of this amendment is evaluated on dev_v5m built under the lead's WQP rule; no threshold, floor or gate is changed because of a recount."
+    },
+    {
+      "severity": "note",
+      "section": "§1.4 l.86-91, l.94-96; §1.5 rows 200 and 282",
+      "issue": "The realised WQP part of Test-S will be far below the stated upper bounds, so the 200-block and 282-block rows of the power table should not be read as likely. The chip selection of the running build is label-blind and role-blind, and its cap does not bind, so membership is not open to choice.",
+      "evidence": "/home/bcheng/STOCKHOLM/sentinel_data/processed/s2_wqp_matchups_hist/build.log: 'full chips requested: 149637' for all roles and site classes (tier 1 lakes 73,464), below --max-chips 150000; scripts/data/build_s2_wqp_matchups.py l.123-129 orders requests by target name, site class and time offset only (no label value, no split role). The build is still running (pid 1419333), so the final count is not known.",
+      "suggested_ruling": "Test-S WQP membership is the set realised by the 2015-2023 build as launched on 2026-11-09 (same arguments); no later build or top-up adds a chip of a test-role water body dated <= 2023-12-31."
+    },
+    {
+      "severity": "note",
+      "section": "§2.4 l.185-187 against §3.5 l.366-367",
+      "issue": "Censored values are handled unequally. The candidate and the MDN_B joint head use the interval likelihood; the GBM and the OLS are fitted with the substitution DL / sqrt(2). Scoring uses quantified rows only, so the effect is probably small, but §2.4 is headed 'applied identically to every model' and lead rule 3 asks for the same labels.",
+      "evidence": "Amendment l.185-187 and l.367. No count of censored fit-cell rows per target exists yet (dev_v5m not built), so the size of the effect cannot be checked.",
+      "suggested_ruling": "For TP, TN and DOC each GBM and OLS reference is fitted both with the DL / sqrt(2) substitution and on quantified rows only; both are family members and the one with the lower validation MdSA on the target's selection cell is used."
+    },
+    {
+      "severity": "note",
+      "section": "§1.6 l.121",
+      "issue": "The scene key is (MGRS tile, sensing date). Two adjacent tiles of the same datatake share the same atmosphere and viewing geometry, so a Test-S row can be counted as scene-disjoint while a training lake in the neighbouring tile was imaged in the same pass. Sen2Cor works per tile, so the tile key is defensible; a datatake key would be stricter.",
+      "evidence": "Amendment l.121; the STAC item id also carries the relative orbit and datatake time, so a datatake key can be computed from keys only. Not counted: the keys-only script uses the tile key.",
+      "suggested_ruling": "The dev_v5m split report also gives, with no role in the rule, the §1.6 counts with the scene key replaced by (sensing date, relative orbit), and the look reports that subset as an added sensitivity."
+    }
+  ],
+  "recommendation": "stamp_with_rulings",
+  "reason": "Hash verified three times, last 19:36 UTC: 5001373da42652926c6ea4a84028ac46628aa0e6d8b6e99380244417aeb8df8a. No blocking defect: no protected label was read by M2 v2 work, no validation number exists for any new arm (registry and run folders checked), and all design counts reproduce. All 39 reviewer findings hold and each closes with one binding sentence, as do three missed items (WQP label rule for new targets, possible v1 blend, post-amendment v1 edits). Conditions: rulings written in full, both hashes in the snapshot row, stamp before FREEZE_orbit.json, stray abort marker removed, M7 overlap excluded by keys."
+}

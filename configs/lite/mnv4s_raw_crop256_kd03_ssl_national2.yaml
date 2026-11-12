@@ -1,0 +1,13 @@
+# national-2 + levers 2+3: SSL encoder init + full 256-px context (declared 2026-11-10 before any SSL result)
+name: mnv4s_raw_crop256_kd03_ssl_national2
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+lr_backbone: 5.0e-4
+epochs: 40
+kd_weight: 0.3
+kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+crop: 0
+ssl_init: lite_ssl/simsiam_v1/ssl_encoder.pt

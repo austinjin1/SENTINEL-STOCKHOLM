@@ -1,0 +1,2857 @@
+{
+ "version": "ew_v2_live_v1",
+ "schema": "ew_v2_live_issue/2",
+ "created": "2026-11-09T18:19:56-05:00",
+ "split_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+ "trial": {
+  "issue_start": "2026-12-01",
+  "issue_end": "2028-09-30",
+  "live_block": [
+   "2026-10-01",
+   "2028-09-30"
+  ],
+  "issue_time_utc": "12:00 (cron with CRON_TZ=UTC)",
+  "on_time_deadline_utc": "23:59",
+  "data_through": "issue calendar day minus 1 (d = D - 1); forecast windows (d, d + L]",
+  "leads": [
+   1,
+   3,
+   7
+  ],
+  "primary_lead": 3,
+  "labels": "Approved values only (provisional = missing), frozen hazards.py rules",
+  "looks": {
+   "prov_interim": {
+    "earliest": "2027-10-15",
+    "issues": [
+     "2026-12-01",
+     "2027-09-30"
+    ],
+    "content": "operational metrics, realised alarm rates, provisional onset counts; no probabilistic skill metric"
+   },
+   "count_only": {
+    "earliest": "2028-06-30",
+    "issues": [
+     "2026-12-01",
+     "2027-09-30"
+    ],
+    "approval_cutoff": "2028-06-30",
+    "content": "evaluable H1 onsets + basin groups only"
+   },
+   "final_wy2027": {
+    "earliest": "2028-06-30",
+    "issues": [
+     "2026-12-01",
+     "2027-09-30"
+    ],
+    "targets_end": "2027-09-30",
+    "approval_cutoff": "2028-06-30",
+    "runs_if": "count_only: H1 meets the power rule"
+   },
+   "final_pooled": {
+    "earliest": "2029-06-30",
+    "issues": [
+     "2026-12-01",
+     "2028-09-30"
+    ],
+    "targets_end": "2028-09-30",
+    "approval_cutoff": "2029-06-30",
+    "runs_if": "count_only: H1 underpowered on WY2027"
+   }
+  }
+ },
+ "models": {
+  "H1_hypoxia": {
+   "calibration": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/ew_live_variant_cal_nosubdaily/event_calibration.json",
+   "calibration_sha256": "942440b3697c325918e03ae8b641cb9afa0680c2a637702f3e665daa8fa8351d",
+   "cube_variables": [
+    "temp_c_mean",
+    "do_mgl_mean",
+    "do_mgl_min",
+    "spcond_uscm_mean",
+    "ph_mean",
+    "ph_median",
+    "turb_fnu_mean",
+    "turb_fnu_median",
+    "no3no2_mgl_mean",
+    "chl_ugl_mean",
+    "fdom_qse_mean",
+    "discharge_cfs_mean"
+   ],
+   "chloride": false,
+   "feature_cfg": {
+    "use_weather": true,
+    "weather_vars": [
+     "cl_mgl_4dmean",
+     "cl_mgl_max",
+     "no3no2_mgl_mean"
+    ],
+    "use_subdaily": false
+   },
+   "selected_method": "stack"
+  },
+  "H4_nitrate": {
+   "calibration": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/ew_live_variant_cal_nosubdaily/event_calibration.json",
+   "calibration_sha256": "942440b3697c325918e03ae8b641cb9afa0680c2a637702f3e665daa8fa8351d",
+   "cube_variables": [
+    "temp_c_mean",
+    "do_mgl_mean",
+    "do_mgl_min",
+    "spcond_uscm_mean",
+    "ph_mean",
+    "ph_median",
+    "turb_fnu_mean",
+    "turb_fnu_median",
+    "no3no2_mgl_mean",
+    "chl_ugl_mean",
+    "fdom_qse_mean",
+    "discharge_cfs_mean"
+   ],
+   "chloride": false,
+   "feature_cfg": {
+    "use_weather": true,
+    "weather_vars": [
+     "cl_mgl_4dmean",
+     "cl_mgl_max",
+     "no3no2_mgl_mean"
+    ],
+    "use_subdaily": false
+   },
+   "selected_method": "stack"
+  },
+  "H2_chloride": {
+   "calibration": "/home/bcheng/STOCKHOLM/sentinel_runs/sonde/ew_v2_cand_bag5_wxrunoff/event_calibration.json",
+   "calibration_sha256": "3c243c1b98f1fea5f741915a9f9c54477e4c84658de661e391ba17be34d0aa6e",
+   "cube_variables": [
+    "temp_c_mean",
+    "do_mgl_mean",
+    "do_mgl_min",
+    "spcond_uscm_mean",
+    "ph_mean",
+    "ph_median",
+    "turb_fnu_mean",
+    "turb_fnu_median",
+    "no3no2_mgl_mean",
+    "chl_ugl_mean",
+    "fdom_qse_mean",
+    "discharge_cfs_mean"
+   ],
+   "chloride": true,
+   "feature_cfg": {
+    "use_weather": true,
+    "weather_vars": [
+     "cl_mgl_4dmean",
+     "cl_mgl_max",
+     "no3no2_mgl_mean"
+    ],
+    "use_subdaily": true
+   },
+   "selected_method": "stack"
+  }
+ },
+ "sites": {
+  "H1_hypoxia": [
+   {
+    "site_no": "01021050",
+    "role": "train",
+    "basin_group": "0105"
+   },
+   {
+    "site_no": "01388000",
+    "role": "train",
+    "basin_group": "0202"
+   },
+   {
+    "site_no": "01389005",
+    "role": "train",
+    "basin_group": "0202"
+   },
+   {
+    "site_no": "01400500",
+    "role": "train",
+    "basin_group": "0202"
+   },
+   {
+    "site_no": "01402000",
+    "role": "train",
+    "basin_group": "0202"
+   },
+   {
+    "site_no": "01427510",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01433005",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01433500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01438500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01454700",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01458500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01463500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "014670261",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01467200",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01473500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01474500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01475530",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01477050",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01480065",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01481000",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01481500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01484080",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01484085",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01484272",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01484525",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01540500",
+    "role": "test",
+    "basin_group": "0205"
+   },
+   {
+    "site_no": "01542500",
+    "role": "test",
+    "basin_group": "0205"
+   },
+   {
+    "site_no": "01544500",
+    "role": "test",
+    "basin_group": "0205"
+   },
+   {
+    "site_no": "01549700",
+    "role": "test",
+    "basin_group": "0205"
+   },
+   {
+    "site_no": "01608500",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01611500",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01632900",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01645704",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01645762",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01646000",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01646305",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01646500",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01648010",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01649190",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01649500",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01650800",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01654000",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01654500",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01656903",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01668000",
+    "role": "train",
+    "basin_group": "0208"
+   },
+   {
+    "site_no": "01673000",
+    "role": "train",
+    "basin_group": "0208"
+   },
+   {
+    "site_no": "02035000",
+    "role": "train",
+    "basin_group": "0208"
+   },
+   {
+    "site_no": "02054750",
+    "role": "train",
+    "basin_group": "0301"
+   },
+   {
+    "site_no": "0205551614",
+    "role": "train",
+    "basin_group": "0301"
+   },
+   {
+    "site_no": "02079500",
+    "role": "train",
+    "basin_group": "0301"
+   },
+   {
+    "site_no": "0208062765",
+    "role": "train",
+    "basin_group": "0301"
+   },
+   {
+    "site_no": "02081094",
+    "role": "train",
+    "basin_group": "0301"
+   },
+   {
+    "site_no": "0208114150",
+    "role": "train",
+    "basin_group": "0301"
+   },
+   {
+    "site_no": "02101726",
+    "role": "test",
+    "basin_group": "0303"
+   },
+   {
+    "site_no": "02110400",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02110500",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02110550",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02110701",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02110704",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02110777",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02110802",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02110815",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "0212378405",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "0212880025",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02129375",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02135000",
+    "role": "train",
+    "basin_group": "0304"
+   },
+   {
+    "site_no": "02138520",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02141500",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "0214196125",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "0214244102",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "0214264790",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "0214267602",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02145910",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02147310",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "021474095",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02147505",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02147801",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02156500",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02160991",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02162035",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02167600",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02167716",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02168504",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02169000",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02171500",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02171645",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02171920",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02172002",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02172050",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "021720677",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "0217206935",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "0217206962",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "021720698",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "021720709",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "021720825",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "021720869",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02198840",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "02198920",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "02198950",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "02198955",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "021989715",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "021989773",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "021989792",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "021989793",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "0219897945",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "0219897993",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "022035975",
+    "role": "test",
+    "basin_group": "0306"
+   },
+   {
+    "site_no": "02203603",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02203655",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02203831",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02203863",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02203873",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02203900",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02203950",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02203960",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02204037",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02207135",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02207160",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02208450",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02208493",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02217643",
+    "role": "train",
+    "basin_group": "0307"
+   },
+   {
+    "site_no": "02239501",
+    "role": "train",
+    "basin_group": "0308"
+   },
+   {
+    "site_no": "02264000",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02264051",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02264100",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02266200",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02266495",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02301500",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02304000",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02304517",
+    "role": "train",
+    "basin_group": "0305"
+   },
+   {
+    "site_no": "02313700",
+    "role": "test",
+    "basin_group": "0311"
+   },
+   {
+    "site_no": "02318500",
+    "role": "test",
+    "basin_group": "0311"
+   },
+   {
+    "site_no": "02336120",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336152",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "023362095",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336240",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336300",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336313",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336340",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336360",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336410",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336526",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02336728",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02337170",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "023432415",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02343805",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02344630",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02344673",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02356000",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02357150",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02358000",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02359170",
+    "role": "test",
+    "basin_group": "0313"
+   },
+   {
+    "site_no": "02388985",
+    "role": "train",
+    "basin_group": "0315"
+   },
+   {
+    "site_no": "02394682",
+    "role": "train",
+    "basin_group": "0315"
+   },
+   {
+    "site_no": "02397530",
+    "role": "train",
+    "basin_group": "0315"
+   },
+   {
+    "site_no": "02423160",
+    "role": "train",
+    "basin_group": "0315"
+   },
+   {
+    "site_no": "02423397",
+    "role": "train",
+    "basin_group": "0315"
+   },
+   {
+    "site_no": "02423496",
+    "role": "train",
+    "basin_group": "0315"
+   },
+   {
+    "site_no": "02455980",
+    "role": "train",
+    "basin_group": "0316"
+   },
+   {
+    "site_no": "02457595",
+    "role": "train",
+    "basin_group": "0316"
+   },
+   {
+    "site_no": "02458450",
+    "role": "train",
+    "basin_group": "0316"
+   },
+   {
+    "site_no": "03007800",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03034000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03036000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03049640",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03056000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03058000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03061000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03067510",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03072655",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03073000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03077100",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03081000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03083500",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03085002",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03098600",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03099500",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03105500",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03106000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03179000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03183500",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03185400",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03216070",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03219500",
+    "role": "test",
+    "basin_group": "0506"
+   },
+   {
+    "site_no": "03220510",
+    "role": "test",
+    "basin_group": "0506"
+   },
+   {
+    "site_no": "03228039",
+    "role": "test",
+    "basin_group": "0506"
+   },
+   {
+    "site_no": "03228300",
+    "role": "test",
+    "basin_group": "0506"
+   },
+   {
+    "site_no": "03254520",
+    "role": "train",
+    "basin_group": "0510"
+   },
+   {
+    "site_no": "03275500",
+    "role": "test",
+    "basin_group": "0508"
+   },
+   {
+    "site_no": "03277200",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "03290500",
+    "role": "train",
+    "basin_group": "0510"
+   },
+   {
+    "site_no": "03292474",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03292480",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03292500",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03293000",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03293500",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03293510",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03293530",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03297800",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03297900",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03298000",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03298150",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03298200",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03298250",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03298300",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03301940",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03302000",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03302030",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03302050",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03321500",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03353200",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03374100",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03378500",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03428180",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03430200",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03431083",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03431091",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03431514",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03432100",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "0343233905",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "034324146",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03433500",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03447687",
+    "role": "train",
+    "basin_group": "0601"
+   },
+   {
+    "site_no": "0344878100",
+    "role": "train",
+    "basin_group": "0601"
+   },
+   {
+    "site_no": "03451200",
+    "role": "train",
+    "basin_group": "0601"
+   },
+   {
+    "site_no": "03451500",
+    "role": "train",
+    "basin_group": "0601"
+   },
+   {
+    "site_no": "03512000",
+    "role": "train",
+    "basin_group": "0601"
+   },
+   {
+    "site_no": "04024000",
+    "role": "val",
+    "basin_group": "0401"
+   },
+   {
+    "site_no": "04027000",
+    "role": "val",
+    "basin_group": "0401"
+   },
+   {
+    "site_no": "040851385",
+    "role": "train",
+    "basin_group": "0403"
+   },
+   {
+    "site_no": "04118564",
+    "role": "test",
+    "basin_group": "0405"
+   },
+   {
+    "site_no": "04121650",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04121660",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04121680",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04121944",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04121970",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04124000",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04124200",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04125460",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04125550",
+    "role": "test",
+    "basin_group": "0406"
+   },
+   {
+    "site_no": "04136000",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04136500",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04136900",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04137005",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04137020",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04137025",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04137030",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04137500",
+    "role": "train",
+    "basin_group": "0407"
+   },
+   {
+    "site_no": "04157005",
+    "role": "train",
+    "basin_group": "0408"
+   },
+   {
+    "site_no": "04161820",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "04165500",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "04166100",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "04166500",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "04167625",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "04168400",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "04183500",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "04213152",
+    "role": "test",
+    "basin_group": "0412"
+   },
+   {
+    "site_no": "04213500",
+    "role": "test",
+    "basin_group": "0412"
+   },
+   {
+    "site_no": "04231600",
+    "role": "val",
+    "basin_group": "0413"
+   },
+   {
+    "site_no": "05051522",
+    "role": "train",
+    "basin_group": "0902"
+   },
+   {
+    "site_no": "05054000",
+    "role": "train",
+    "basin_group": "0902"
+   },
+   {
+    "site_no": "05062130",
+    "role": "train",
+    "basin_group": "0902"
+   },
+   {
+    "site_no": "05082500",
+    "role": "train",
+    "basin_group": "0902"
+   },
+   {
+    "site_no": "05406457",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05435943",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05515500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05517500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05518000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05524500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05537980",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05538010",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05543010",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05553700",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05576100",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05576195",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05599490",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06454100",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06461500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06465500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06711565",
+    "role": "train",
+    "basin_group": "1019"
+   },
+   {
+    "site_no": "06796500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06800500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06805000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06805500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06818000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06856600",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06887000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06887500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06888990",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06892350",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06892518",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06893100",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06893820",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06894000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06934500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "07020850",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "07048600",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07049691",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07053450",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07054501",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07054527",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07060000",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07061270",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07061290",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07075270",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07076000",
+    "role": "test",
+    "basin_group": "1101"
+   },
+   {
+    "site_no": "07099400",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "07109500",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "07143672",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "07144100",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "07144780",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "07263296",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "08181800",
+    "role": "train",
+    "basin_group": "1210"
+   },
+   {
+    "site_no": "08211200",
+    "role": "train",
+    "basin_group": "1211"
+   },
+   {
+    "site_no": "09041400",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "09095500",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "09406000",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "10129900",
+    "role": "test",
+    "basin_group": "1602"
+   },
+   {
+    "site_no": "10133650",
+    "role": "test",
+    "basin_group": "1602"
+   },
+   {
+    "site_no": "10133800",
+    "role": "test",
+    "basin_group": "1602"
+   },
+   {
+    "site_no": "10133980",
+    "role": "test",
+    "basin_group": "1602"
+   },
+   {
+    "site_no": "11044000",
+    "role": "val",
+    "basin_group": "1807"
+   },
+   {
+    "site_no": "11126000",
+    "role": "train",
+    "basin_group": "1806"
+   },
+   {
+    "site_no": "11128500",
+    "role": "train",
+    "basin_group": "1806"
+   },
+   {
+    "site_no": "11273400",
+    "role": "train",
+    "basin_group": "1804"
+   },
+   {
+    "site_no": "11461500",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11462500",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11463000",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11463682",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11463980",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11465240",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11467000",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11507501",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11509370",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11509500",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "11510700",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "12100490",
+    "role": "train",
+    "basin_group": "1711"
+   },
+   {
+    "site_no": "12101100",
+    "role": "train",
+    "basin_group": "1711"
+   },
+   {
+    "site_no": "12101102",
+    "role": "train",
+    "basin_group": "1711"
+   },
+   {
+    "site_no": "14151000",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14158100",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14159500",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14162200",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14162500",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14163900",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14164550",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14181500",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14182500",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14183020",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14202650",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14202980",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14203500",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14206241",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14206694",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14206950",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14207200",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14209710",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14210000",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14211010",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14211720",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "14309000",
+    "role": "val",
+    "basin_group": "1710"
+   },
+   {
+    "site_no": "14316460",
+    "role": "val",
+    "basin_group": "1710"
+   },
+   {
+    "site_no": "14317450",
+    "role": "val",
+    "basin_group": "1710"
+   },
+   {
+    "site_no": "15008000",
+    "role": "val",
+    "basin_group": "1901"
+   },
+   {
+    "site_no": "15015595",
+    "role": "val",
+    "basin_group": "1901"
+   },
+   {
+    "site_no": "375350097262800",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "395339083130100",
+    "role": "test",
+    "basin_group": "0506"
+   },
+   {
+    "site_no": "411402080492400",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "411955088280601",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "420451121510000",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "420741121554001",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "420853121505500",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "420853121505501",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "421015121471800",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "421401121480900",
+    "role": "train",
+    "basin_group": "1801"
+   },
+   {
+    "site_no": "452731123092100",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "453030122560101",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "453040123065201",
+    "role": "train",
+    "basin_group": "1701"
+   },
+   {
+    "site_no": "50048565",
+    "role": "test",
+    "basin_group": "2101"
+   }
+  ],
+  "H4_nitrate": [
+   {
+    "site_no": "01389005",
+    "role": "train",
+    "basin_group": "0202"
+   },
+   {
+    "site_no": "01579550",
+    "role": "test",
+    "basin_group": "0205"
+   },
+   {
+    "site_no": "01646500",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "03275500",
+    "role": "test",
+    "basin_group": "0508"
+   },
+   {
+    "site_no": "03290500",
+    "role": "train",
+    "basin_group": "0510"
+   },
+   {
+    "site_no": "03336890",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03339000",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03346500",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03353200",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03374100",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03378500",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "03612600",
+    "role": "test",
+    "basin_group": "0511"
+   },
+   {
+    "site_no": "05412500",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05446500",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05447500",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05464420",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05464475",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05465500",
+    "role": "test",
+    "basin_group": "0704"
+   },
+   {
+    "site_no": "05482000",
+    "role": "val",
+    "basin_group": "0710"
+   },
+   {
+    "site_no": "05482300",
+    "role": "val",
+    "basin_group": "0710"
+   },
+   {
+    "site_no": "05482500",
+    "role": "val",
+    "basin_group": "0710"
+   },
+   {
+    "site_no": "05484000",
+    "role": "val",
+    "basin_group": "0710"
+   },
+   {
+    "site_no": "05484500",
+    "role": "val",
+    "basin_group": "0710"
+   },
+   {
+    "site_no": "05515500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05517500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05518000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05524500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05537980",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05543010",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05576100",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05576195",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05586300",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05595000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "05599490",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06478513",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06808500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06817000",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06892350",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06899900",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06900050",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "06934500",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "07020850",
+    "role": "train",
+    "basin_group": "0712"
+   },
+   {
+    "site_no": "07374000",
+    "role": "val",
+    "basin_group": "0803"
+   }
+  ],
+  "H2_chloride": [
+   {
+    "site_no": "01104370",
+    "role": "val",
+    "basin_group": "0109"
+   },
+   {
+    "site_no": "01104410",
+    "role": "val",
+    "basin_group": "0109"
+   },
+   {
+    "site_no": "01104430",
+    "role": "val",
+    "basin_group": "0109"
+   },
+   {
+    "site_no": "01104453",
+    "role": "val",
+    "basin_group": "0109"
+   },
+   {
+    "site_no": "01465500",
+    "role": "train",
+    "basin_group": "0204"
+   },
+   {
+    "site_no": "01648010",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01649190",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01649500",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "01650800",
+    "role": "test",
+    "basin_group": "0207"
+   },
+   {
+    "site_no": "02232400",
+    "role": "train",
+    "basin_group": "0308"
+   },
+   {
+    "site_no": "03073000",
+    "role": "val",
+    "basin_group": "0501"
+   },
+   {
+    "site_no": "04166500",
+    "role": "test",
+    "basin_group": "0409"
+   },
+   {
+    "site_no": "05288705",
+    "role": "test",
+    "basin_group": "0701"
+   },
+   {
+    "site_no": "05289800",
+    "role": "test",
+    "basin_group": "0701"
+   },
+   {
+    "site_no": "07144780",
+    "role": "train",
+    "basin_group": "1102"
+   },
+   {
+    "site_no": "08086290",
+    "role": "test",
+    "basin_group": "1206"
+   },
+   {
+    "site_no": "08364000",
+    "role": "val",
+    "basin_group": "1302"
+   },
+   {
+    "site_no": "09071750",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "09095500",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "09171100",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "09180000",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "09258980",
+    "role": "train",
+    "basin_group": "1401"
+   },
+   {
+    "site_no": "09534550",
+    "role": "test",
+    "basin_group": "1503"
+   },
+   {
+    "site_no": "11074000",
+    "role": "val",
+    "basin_group": "1807"
+   },
+   {
+    "site_no": "394220106431500",
+    "role": "train",
+    "basin_group": "1401"
+   }
+  ]
+ },
+ "n_sites": {
+  "H1_hypoxia": 379,
+  "H4_nitrate": 43,
+  "H2_chloride": 25
+ },
+ "n_sites_by_role": {
+  "H1_hypoxia": {
+   "train": 220,
+   "test": 126,
+   "val": 33
+  },
+  "H4_nitrate": {
+   "train": 21,
+   "test": 16,
+   "val": 6
+  },
+  "H2_chloride": {
+   "train": 9,
+   "test": 9,
+   "val": 7
+  }
+ },
+ "fetch": {
+  "source": "USGS Water Data OGC API, collection 'daily'",
+  "lookback_days": 45,
+  "batch_sites": 20,
+  "weather": "gridMET bulk current-year netCDF, frozen nearest cells (raw/gridmet/site_cells.parquet)"
+ },
+ "data_pins": {
+  "sonde_daily_content_sha256": {
+   "content_sha256": "65d86584bc801f3c0847ff2bfeb61003fd8d5a2c59f22cfed86315327c01efa0",
+   "n_content_files": 5501,
+   "resolved_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sonde_daily_refresh_20261108"
+  },
+  "sonde_daily_dir": "/home/bcheng/STOCKHOLM/sentinel_data/processed/sonde_daily_refresh_20261108",
+  "sonde_daily_site_sha256": {
+   "01021050": "83143fd359c707d17dea7631bae2361c83a0c15622b46b978d0fb207a476a415",
+   "01104370": "8e1e2a687b6bb48f66d5ba41b34164f90a11878f3d27c03ba2a113f4da433b51",
+   "01104410": "82fbacc6d0818e0ad272c4645f29e8e7da06b3d1778e530195ba08a941d4153d",
+   "01104430": "c4c3cd49dfa1720a46aaf6113d261c51c31411cfe94c3748ba33268add50314e",
+   "01104453": "a306415c24859e8bfd354c640dbde9c625a744aec608c1c3c7c7d02648d65af1",
+   "01388000": "76259bf6600bbbb75043efeed581da1459b3443f469e7b60cedb03ed387baebc",
+   "01389005": "be55d5a8e75d21c94a75a0082de8e3735b34c8fdcaf0ca10ad0a4add2483c5d6",
+   "01400500": "0bf33dd826dc8cca384c8b1d0527d4d180a69a0c5d5107976e62c07a143e781d",
+   "01402000": "19a35e5c10b1b1b19bf2596e210b8eb393fa7acf78e33eda8d9c86e2f2d62581",
+   "01427510": "1d9943a176ae1b6905fc8938889e878b2f3e485eee50f4d1d0658f9f34eee4c1",
+   "01433005": "4b59b86ac002bdda0e3d794e187afd80136305c820312d2613a18900ecb71482",
+   "01433500": "3fc21cf6c804c949ff01433dcf1601694ab92592cfd69938846de45dab58a777",
+   "01438500": "c9268d1d850c969eb42286782ae12ff31e2a0af0d3cddc412fa34592b6c01a9b",
+   "01454700": "57cfdceac3f07f90555690a03bd29d965d8e9edbed93dbd80e4898c20215f4f7",
+   "01458500": "459a3097bd2fbfd50e3e56789a4d80e7c20e6e684a085730ac2c64b7ff92192a",
+   "01463500": "3372788c937459c6495ce2eb4a79e398107b3fc52a004da755808854af77e4b7",
+   "01465500": "284bbc7af8aab8779f9ed35455e2f5f3ab81a562e9286336cd72628905c0c411",
+   "014670261": "96f5a9511f694317cf6665f412dfb3438734d2bc6c187d92af70b18c7a267f62",
+   "01467200": "203ae4ef019d5dd196cdb14cca232ca16002cc6a3270e62d4da09b8bdf6f3d63",
+   "01473500": "97bd74f340ce9a0a9a971ed4ac1048154df0dcc0502476119d449becd920ccfb",
+   "01474500": "efe287fc79ef9724cf9ca3ac881ca52663deacf3430eb2a87d1393ce8727cc53",
+   "01475530": "6bb961e4839e0472b254b1d6666d42000e811de88907996a44c34cece3aad8de",
+   "01477050": "f8e43c033abf9028db7ad1d9431d473166d8bf0a7acb48cb8af98399021600fe",
+   "01480065": "a2f763d6282c6a19664a137bdb1aa85878593b348f99972c832aec92932525e9",
+   "01481000": "9394a3e711fb97742746dd122a40ee009940cb520d7533598d797de4cc901472",
+   "01481500": "015e50bd65b0394028b15e182fe93c0d15bf211d484151c0ca1c7615078c5053",
+   "01484080": "3c05cc91932cf10dd4c5d5d2e98d61465a8513dbb37c13fb067ac5c35082cfb3",
+   "01484085": "3300c7c905d7838ad659d1fa807f25bd0514562a774b55fe5721587076a27095",
+   "01484272": "d7e09ded1cdbe12517a8deca089b40cf4e7c1719fc5c1e6d24e3fed6f6559936",
+   "01484525": "ecf4e2c90126f9e30b9d4d4eed4208b93afa708be01a28a836ff6422c7160c6d",
+   "01540500": "1e78b8fb29f07db913f2af66ed708f39ea20aa4d0db41957225a21b3f132d318",
+   "01542500": "5a4fdfa2d275a482778b42d067cd19e4c25908b07d4867bf5f7f4ee61d05d6cb",
+   "01544500": "02c9cbc3e1aee104783f402d3ece5d2d275c50b49878c363c1c135f2f57bba62",
+   "01549700": "f1b50fb20257def469d7697ee5af460b4ff69824412ba7180a81b3fd5517ef19",
+   "01579550": "a55b754474059618a8e789a6b82a444770e8d03b24097f924f05aaa34edb5060",
+   "01608500": "9d031e7fa59619e54618b2d4546d052fbbbb66eba0a5d0085ae4fa3494f7c988",
+   "01611500": "57af51b9c4e4b298511d0781e3059c57a219ce759b15b0a666fc40a3465e17c6",
+   "01632900": "e66106ff70a7346f7e7577b55da06b2cffbf6ce1aadfb292e3501683e99aa4d2",
+   "01645704": "384b400efc451b38322cb3ecd34eb47a9f61db93649d8803bed7ad81ecbf7ba0",
+   "01645762": "59d663a553ddd19af05c84f82c7e6286e00fbe381e5f3b4048807e9c8bcc37f1",
+   "01646000": "3acf2cc96e5f85285fb986092e0bec72cb504b651338030daefc46d8edaa9eea",
+   "01646305": "537a5e4de53b543029a8c3e3b6f802f9b20171009a43fe5f4f5b130c73998864",
+   "01646500": "ff9f318445391faeb67edb131bd9fcab9190f75e46d88203ae1d1ced22a2c167",
+   "01648010": "0019a709b2e76983e1f9e977d9acdf7a8f5c8d37355031b86d405e021277544c",
+   "01649190": "042ca30cd6ffababd770a6767042d767c4932da148ef699df4a8df5328b2d710",
+   "01649500": "4b5495a879ef0c80f4c3f38317950cd92ec4f06643a6f7e9a9e4220848c9e545",
+   "01650800": "08d1d538d455d413b0b6e98b77a76c6e92c4938fc16b19cbebd8ac06bbf30317",
+   "01654000": "fb8fe67329f32cbf35e6359d72a7423c4b15063b3d2c6d6968c9564ea047881f",
+   "01654500": "95ebc799c3a25ff0236285296d322cdd5d91fd87f26d085cae59f3ecdfc91895",
+   "01656903": "9952eefd29e1d64e77bc337947531923df80cfa98d8e939f3d3c88c9aa730b9b",
+   "01668000": "8b2113ab353f37fcec038ec0eeeedf9703a2c072c12ab74ead6902b8dc8443b7",
+   "01673000": "88eff8844e6ac8dfa0b7106924ef7c6a9cae101f520d75fe25a6db834e302fb0",
+   "02035000": "8aecbbd2916294c3b31a4f44369636069337572e0dc0376a609ef22cfdcb093a",
+   "02054750": "d124343e449c48d45247c357dca192b09c40592d34b993da4075cde164ac7066",
+   "0205551614": "31ece99a141c473b5ab5b002af9674951dd5bdcb9ae49939842b79576110e288",
+   "02079500": "6d96a00be8e69957a8945925b39928879997f03753e38ec05625959ea636fcea",
+   "0208062765": "0c9da9fc3ea66f37bc362662947fe3e17e7e535f99334eb77aa131e3feb0e9c4",
+   "02081094": "80402b22ec55223b97a3e17b1950c0fa30e64202a0422949fdd990bd0f16715b",
+   "0208114150": "2203239cbd23ecb190a0b515c7926bb9cb66f73bda38f05f5ec7e3e07c35291a",
+   "02101726": "6d90c527145b71ac3b8f9eb3eed7eee7b044464eaf0a05a8ad505f691509f0db",
+   "02110400": "d65773bfe6b605fc7832af08c8c5a1a6e4a8e7dec3b6b61dc4abd25a2d9842a7",
+   "02110500": "2acbf3b754f41d8ae1ee9ac1aceb82071512e44b0ced82200c5c6ccf30caac78",
+   "02110550": "f204be4a527536dc604d2cd2ae1bd52de28f25cd010b617b87308bbac76415d9",
+   "02110701": "049c5d806fc1a297263205c10b3be80d380461bfc2e05c9387c503572ef9dad7",
+   "02110704": "bd8d3234f1450717234ddea032792405a6c6211f1a800470907939aa86406d76",
+   "02110777": "4b28e13da79b9cac36fc7b9d20c78bc8e42bcda2c71a7ce6f1c8835cb38c1171",
+   "02110802": "408c58160c164a38419919012a8418481fd180cab0cb1e6e3c25ee93bc8a0330",
+   "02110815": "cac8bc78d2b79f8c6e579f682612e158394cce094082ca91058340d299ab92d0",
+   "0212378405": "43b13a748e779f35ef38675c509b3ddbed2566b86820046b72ee7d78807b4d84",
+   "0212880025": "5357a1e18dff6172eba2ab77d1add8f3a194eb29f2584e33660f00e7a1adb1d7",
+   "02129375": "c28c7420d5425c21ed5cfe9aa0e0229d8d1172ab7833c0139d62b7886c980191",
+   "02135000": "b39b67b18ca7f45e47d2a183695ff664caae9f0c9b24f432e8528e68fd872cd5",
+   "02138520": "ae989c048a2548222c5d312f17b7085ff3121f72440d08d39ee03dcc71076fe7",
+   "02141500": "1e5dafd31ee2e8e91ecd3341520b33ae6e34648e18a5e3b4ea920f5a833bd67b",
+   "0214196125": "4cc624b3d38280edffe8e09d22c482894a5757b6224712668ba7090f96705f2a",
+   "0214244102": "97ee1cf9a2423e49940a01bdb5c78634537caf92fa544afd21a77537097d30a2",
+   "0214264790": "60714675ab4f829c4c9b1c8bb6cd9dfc58c33aa8dd60cb889a8a320e440e5ef9",
+   "0214267602": "c89e87bee51deeda0368064bda1e3b612831947999f08abafdf2c3b2c3342a8d",
+   "02145910": "1466986929b39c19e76500d22f05598155d766c3a25701f1ec81885233330c9a",
+   "02147310": "a2b15a321f6488efab33826ca487695349ad6c55fdca449f90334ce22df992ab",
+   "021474095": "4db6666d3dc329899057b5c56602a872557d82c9aebb19a9feecbaa4970691d1",
+   "02147505": "b854a7a4a269bb94ff02e312451d0ec72dd2d56c8d014161539f1733a47784ff",
+   "02147801": "02f040ce6b36c9c5241860e84f283c4ec2880cf06fc63a4fe3b5f42007d23369",
+   "02156500": "0e9c954f9b677a02b0d034c57b477d99693d5d09aedf76059531227a5c93d14b",
+   "02160991": "7defee15c5fcf07a7b9001b596d9aca75beccc0c4bb5b35dc94a60d9e1bd1597",
+   "02162035": "54a59597c09cb8e2095b2b1c7f46445198905158809fa3e344ad84989e26d766",
+   "02167600": "1028ce8bb9842ccae4fea492f12ab2bcdf517125ec51b8922d611b3f89b32354",
+   "02167716": "ebc68dcc3e2f9cecd513e9ba442b51ae612e147e2ba47822ed6693d4f89f9f2a",
+   "02168504": "a4d89c9faa61525c1113fe790f7ae9688e96a1a836d8ffedf8e4d159239da4a8",
+   "02169000": "10c21723717c3a688ba8f5e915acc955472f8f9b8015cb574f331ce8d970db99",
+   "02171500": "05d4e7d934cb95277054828f1793a1ef64346c0b60ede1be56680699310121e2",
+   "02171645": "7ecebe3779e27805abe6dd66cbb84d9cd1c65de0e9c037925f0c3e57fcba4b57",
+   "02171920": "fd6d776f48faa17d097757bdb16d60462df353ee95f038c66fc00eefc12eec44",
+   "02172002": "6c0eaa4756fa4968e40a9a2f365e91009dbee3b8a400ca77bb410726256acf80",
+   "02172050": "a6121619b9d5b1598d8b88db85161ab6b46f5880c88aff800b91d62d01b6f8e6",
+   "021720677": "53ed228fbf00590a7a5f350ca7bc7036f08f191201c79dbb4fd24f2d85f3f1d4",
+   "0217206935": "17324cdd4e2a97388c0ab252da0312b5799a06d07c25de501dcad5f6de8c8310",
+   "0217206962": "cb954ea4009fbb767c910efecfabb173f62c71a2d4e9245ac0a3133906965f13",
+   "021720698": "0b17ec8343a0d1bd2d77ca06686ceb6fff3bc0ecb8ea2acf96ab23850f83f739",
+   "021720709": "8b193eab1f3b2db3440aa33414f0d511890477626c2915a6d61b8e94793cf6b2",
+   "021720825": "84f6d5cd8cf6b7821b6524c83acfa97c397beaccc8d2c353a3de819d740f27ed",
+   "021720869": "45b0cd70a0f9036b28de8bb517f85eae2f1041aa34c823f404e020200990dcb1",
+   "02198840": "fae6f37f20b383e19fba48501788ea5ea777a51fad27a824e71abea1be22f9fb",
+   "02198920": "a055d39ad4c57e80abd292f4dbda1811e926b7dcace3d031c029796fcce83e97",
+   "02198950": "55ee17f5d2d135b3714e7cc258c9f8cd38bcbc6b48fcceb482bdd72a4e0b2e9d",
+   "02198955": "62c8b4c74cf8f7e94d7f7e33a4b4dd1f9e614bd90f236e30a97bc7a5d5012a37",
+   "021989715": "e9c0c263b9e8b2e855a1ad3c66f5d9043ab8e34c5de434aa0c0a11cfe39dcbc9",
+   "021989773": "a30a817e93bbaf83a84911838e6fd22a1eae7e160da1b65bd7cfad572451c650",
+   "021989792": "093495b75e569f320f6a04d21c22202e79101368150b7e6ec330c213e545ae83",
+   "021989793": "434776f0db546e0761c41c6ad65e70cb6f2c42116eae91e168d61b89b2a2790b",
+   "0219897945": "29b0de4d8a9092cb7529d0d0d8d5dbd4691432b1daea4bccad5bc283939b7502",
+   "0219897993": "341cead4cc7f4ed2c8d75a139a95226afca49b27643a8e9167faba75d13fff00",
+   "022035975": "46734fa60a82946e059cf5370a01f6195977f68228752d546a809357ad600982",
+   "02203603": "08e5f07295afddb528512f2ddeb49e08c57b1c2a6dfa9a1cf2885efd5a81ab39",
+   "02203655": "065f4dae9ce332298b719be4b47b681e044b3b2ee134cbba02c22b07c14dbe37",
+   "02203831": "28afdfde103a45f4131fea72917e944078a061174e9f6b1817a6b0e041af83e9",
+   "02203863": "6cf8af10927c85ac8164addc2cc044b2151af85051ce6a2c9b5c7463d02a6e32",
+   "02203873": "e18532d69480ad3fbaf43128d87e046a7a0c3333dca8c9e800dd521085f6dac9",
+   "02203900": "9305c1672857ffd4a4342540683190cf1251313b759d414993e499117fe2e5f6",
+   "02203950": "08df4c48ade3eb8ad95ba4bb4a81b0e3fd469318f9d7677d00986756ce52cd5c",
+   "02203960": "de57c5ba851bbfd13d12fa762927dc9b8b37ce7d468cb06060976b91eb34214e",
+   "02204037": "c7b21da54191bfa592b3c87ebcb8cdee2c720584e7945834e46749ec4a67d084",
+   "02207135": "c4713d7cee7a9ef5a63471bed045bbdc1d843a4e72bae596a7b7367e8d26239a",
+   "02207160": "ae2b6f8719e78067a790c6035390d2d016f4962db89190f9cd1241d91e66f9e8",
+   "02208450": "8e93ac05831bfed8b213881decb98be7ab537e1652e276332077c4fdcc74a94d",
+   "02208493": "855bf178115eaec4cf021fbfdd54108ee841dea17a003496809e6c1321b74000",
+   "02217643": "d171ce3b6df09a21c9cd54c2bf93557d514ddf1f2bb0b621f53e272248918ffd",
+   "02232400": "8cb7e80d8775e8a2b79717f0a1c1e9f9e757d06acb5a926394a9e1618f2fdc72",
+   "02239501": "0858504f38fb2c930c7f0feeb7ae70cfa85b4ccc15b06b54f776fbee1f1dba6f",
+   "02264000": "c859b7b0f0153c928b02587c2c6a7f1556e6410a228c05faf458ba8827be5165",
+   "02264051": "94c5360d45fcb1787f23fefdf8baa7f80839af758ee39d9eed3c36703c9eab05",
+   "02264100": "a97bc1aa4ef93f3c55ae13a3fd589e4ee40213ab1f434ac0399d88f215218a0a",
+   "02266200": "dcb3b44e18d087200291a611454ebab518a0e919c798cf936b754da716a97ede",
+   "02266495": "973fe0ea3af49695536865ddeb3b920ca474687b48057a7b4976fd6cdeb703c9",
+   "02301500": "022c1ec502323e930b782b8c40215c25c0a5635fd3b6fc901a80cdf8c0a8de95",
+   "02304000": "86c5a2003b8b5246854fde5f707eccd4a5bfe0e17bac02f14b6002d23f524655",
+   "02304517": "0bcbd34e6ba9337eb2cf3796efbd4caae54ebad53b670a54ca024d9fb1620665",
+   "02313700": "d8c5570d488ffe50e0f9eb0cb290f653a5a3e5e0207ed876c68bd34993f84268",
+   "02318500": "92ea0b2d8adc64e1efd92ddf96c4717cf5a56f4f99a7705d3f1fde622f0888bc",
+   "02336120": "3b42b4c8fab3f392fb46ee6156316932c90831e79bac3d82fe493b5db19ba7dc",
+   "02336152": "8118a25f8488d8928b78111f11d6d7dd6174a7b15fffa346603e06053ab5f1f9",
+   "023362095": "df6a4706262ad20160a1c8db462c6e2e88b103a7bb9e09e621fbc7f9313c06bc",
+   "02336240": "0149c3d09eb4a8aeae3ddd68eb1db189a1aba9c85cbcb2272cb3237156438d66",
+   "02336300": "d3ea64a0e24ffb68042737c9cff5003530585a88e2eae10a44f87b881a388453",
+   "02336313": "23b4cd068962d059a0ad107bc0fa8db1cc093f46eb6d42425d230101ae40bc7c",
+   "02336340": "56b5208572e528a9f18ee55b4e57e93e272f128de3aca8bfb4dbd85c63e13329",
+   "02336360": "b0cd9916a75794b303a39ecc9829a7c4525b4e8ee6072182a982e5dc724371ce",
+   "02336410": "15e6fe56652199d76861255bbe55723e7dd302219585c311cb2ff6aa8a0189e6",
+   "02336526": "990738a92f8953cb98c2fc272155323a654241ba6f88b788b4386c03075ad32b",
+   "02336728": "90904afefa7fc63045e2b649f07656fd6b4b865f353d3ed176558ced57afb78a",
+   "02337170": "1e10c1ee6a8f8ccfb801f4810a735ac6871e37029cb67cd8f6c8f7581f1e40be",
+   "023432415": "c5bc2456f8e9b1655dc96892d2cbb3bf8b6075c5b1effaf8b6fcaad7eb95ee9c",
+   "02343805": "88e03ec3e439a5934820ea202b2062621c98b6b3bbb69c95ee5d0762e8abc11d",
+   "02344630": "2382dc885ada9d517860ba24637645cd830a6094c02893993d435137bdacef93",
+   "02344673": "725a5aa762d51db8f3ec0217f81075ee89d48318476c3465771443bb00db163f",
+   "02356000": "a7b006e1dd9f6107c4c208263453efabf0f3c743160551dc6ce89376c43ff5bc",
+   "02357150": "4ccbc02c255f1c9d7ab6d7caf4d7ff0d43b5bd2688b6cb0833e33615f1aa5f43",
+   "02358000": "bf12ae10adefb5f8f414ee9b5b9a081ecebcd8d106f5e1489361e0b218f54bc8",
+   "02359170": "1e33b8cb2f27a9da49f1df7a3cec597eefa8f349255382ca5c0caee30ce46a83",
+   "02388985": "75ad6fd54c5c29613e6b7772c259ff74f395845776c881919b68d3f6d2c63d0c",
+   "02394682": "6dd1b852defe1645a99c2a2e7483730cb9c74c97e37b1c075d5855de030b95c9",
+   "02397530": "97e36fbb594bc40f464cc6fd844b87f607c6fa3d38b92a2a961845071d255fc8",
+   "02423160": "4599d2d7b3c1479b0b520b744c4a93a2d97218b0c7cdd3f6be06ee43a6c39b2e",
+   "02423397": "b1213d68901af47552c3d935e394a2716b5d8c3091a4cef7ce496e9916b9606f",
+   "02423496": "54f3197bfcdf00705c4eef6237cf83f895fb7c5aabd192ee54aa0fe8764b4c04",
+   "02455980": "9d2da4abd161495659c64866faa4f4ff15d00a1ec0066576c47058817cef977b",
+   "02457595": "200a7686bad9cea7a38665a5b92cff2a639984cac2839e86e514166f1aee9b27",
+   "02458450": "b20db41550475a4f43473cd92879a80e57578c59da017219ab6a9828d32a3a9f",
+   "03007800": "c0cc57c79e7d00c4a450379b9b461140906c6dca21ddf4081d4d5d79d65be85e",
+   "03034000": "ed1ec0f596d92e3a0a505a611f407e4bb71626630b6565d06ca65c2ed8295138",
+   "03036000": "4027df4edba402902b9f950865589e9980f214c8e44a51fb4377841eb8abc8c9",
+   "03049640": "8a2a83d69b36f4e86bee297f21229fbf73fc0290d4449dca7682f13b75bedec2",
+   "03056000": "48dda12b3f2fbfdd53f3d5bf6587461d910138cb6cf42c5e7d1f42539dfee524",
+   "03058000": "9272eccde06857eb75224ab0f41dadeed29148df6378faa8e6ccfdbd6e6d5537",
+   "03061000": "419195b8220c7785241190268c85b2aeb6f554dfd16ab3eccba822e01e48c88e",
+   "03067510": "8ce884350e785908d82e729bb0c004854810632aa241d086bdd5bcfb9de73f83",
+   "03072655": "53ef2d65b6fa56e442cc7c0c187b67fe9c3db58d7e914c1629c70e9e72174df9",
+   "03073000": "012fc1f9c5b3223a72dedc7af4c7eee9860cafc153cc2c6052d9080c2ee8886c",
+   "03077100": "4a5366bb7e9674da95d0cf0aa984feea3fb805d35125b6c30266f381286318cc",
+   "03081000": "7c0f64002635ea3fe195a207ace72f98e6ff84174a056ae8c827ce1293b4c77f",
+   "03083500": "bad4658a1cf9610264eb24bce1debd0a6fc3d86cf9c86d97b00679ba89f96154",
+   "03085002": "5958c017e2cc6abd8000d834186ca849a07622a72b2004b3cce534b56ffee640",
+   "03098600": "09df4806f5d0bf82f63ce9c9e4c3104ae2ce368de7c934a1ddef68231c0d4a2d",
+   "03099500": "116f3e6c6bc5893b64343eab8d132bc1ebbb20cbddf8e3e487cd05a072857fb8",
+   "03105500": "62c3e698f8da9baad88ec3278a877bcc7a6746797c7bf7e013b745268543ec75",
+   "03106000": "d5460ab4cabd62d1bae476b4624790b506b1a501144d16d97701cf2735f85d91",
+   "03179000": "1d6d6a78ccbbad3a6372331ec93633b4c4d424344b1a62953b3be4a121e65fde",
+   "03183500": "2a8610f2183babaada744bc9901d09ce89b13f984451ab077cf3defcf81ec7a8",
+   "03185400": "0a45cf0ae405e8cb8c5b323764b70c59437d4a104f12599c47446fa40a01f355",
+   "03216070": "490180c50074e555aa825fc170b8b3642a2214d128f7da9ced4371145e6b8e5c",
+   "03219500": "0c125f23d8ddfc71987ccc917dc0194c3f4c881e3479cea19437fda0ca680e53",
+   "03220510": "8e4f15b47a0629eefe3b58b70e866374888cb8a9469db37378430eb55ffc07d4",
+   "03228039": "7ad83101257735a5a32190c8ca1952adf387cec5dbe223f696786755dc19d310",
+   "03228300": "06dcc0005b78d589ea70fef37c3e2a2b1c7e3a4b4753a8e3c70a6ec135d0c481",
+   "03254520": "5b3681bb42890f2aeae112e0f2146d5575888fd9662f356916fc6a0945cc8007",
+   "03275500": "702fd462bdc13e56a3316afa9201bec833a87d82b8364bcd9d8d77bcdd61334d",
+   "03277200": "78bc20763d9d4431ffe598d398e41dee83b8a8299f750ab5e8e7b08f751aa40b",
+   "03290500": "5956d5176c9ca5de91f20558b5a1b7b38ad6ba55cd38127e06e909a36ac19fde",
+   "03292474": "d7530a55131c2bd66d08bd15fd250865ccda7a05a6338a24b610bd44b893c8c2",
+   "03292480": "05ef4ec1b0736b398fcce102ec6583fba7453bea885252dc65cf379e335436d4",
+   "03292500": "92f2ee580d6cd865bd63979ef17ccb8747f613ef2dd89ace17e93d39c610ac1d",
+   "03293000": "f70219220dedaff8e1da73e0c8590c1d1869668f83792b54832fb29c59dd2661",
+   "03293500": "de03ada2063acd77005d221ce6fd27668bb27e14a882a46a4513461f256c531d",
+   "03293510": "5f6d53050b05a94a1e6cac8cf84367a25457a4c31871c78c0b25dd9c0d0483cc",
+   "03293530": "d57f308a7ff1f4feae73d3ccc4fa9a2e7163e9a9c1a1232678aef6d721c9ef40",
+   "03297800": "00021af0263df78b06b36970edbeb625de7ae905b7095c3a79691f1a79d7dcb2",
+   "03297900": "4f91f6a299a839178c49be966b080a29df972c9e53befa186803e42f6baf9399",
+   "03298000": "d3215bfcf8d79125820a669d4795343f4764113e8f09ffc4de09f6c530938262",
+   "03298150": "41f946a4a65251eb9e8d37429534bb7a9f8a8a64538fd35ed7defe7cd528bc20",
+   "03298200": "14df92b41fb65c6d94e4b0878904355751ea27861706248518e062d8c95d6d3c",
+   "03298250": "1942f343329f258b00699617768c63635c498f66a6908fdfd07c472bd85df52c",
+   "03298300": "eef052bb805a8db38c7efb297e7335ea5a51036ac5b6c0f0ae5e17bbb3805396",
+   "03301940": "2f160af92f2a45e5e4776dca08aa934417d48fb77ff92eaa4f3eddc546e54500",
+   "03302000": "48bf3c441c81c670b4ff17647f4edb28e9b7fb79bc852f0d0e54348e2899410a",
+   "03302030": "6d41732e5220901a8158fcf10ff0aaa9642c9a981f33e2f29777998c984a5867",
+   "03302050": "6fb4aa8cec71352063e2312fdaf9e977405e64a58eb291389176fa6bb2758f67",
+   "03321500": "c37c742bfc9766aafd5603727e8c1c0809ad0db326a9838266178296f1acc829",
+   "03336890": "b1a3271ce8522cf1a356738439b8f48011988da24beb5a642310b2d07e8a74dc",
+   "03339000": "6eaaa96d5e824bad987f71b97af478d8c37e228ec01bf29b3f2e18ed61fa532e",
+   "03346500": "1da0b830b781632d6f293dd3af951fafb7da2f74a7e3a0bfc3266a068ccf5a84",
+   "03353200": "fa90f2e21afa74faacc84f6882e9df4120ddd1efd1807279d7031e4c6cdadc6a",
+   "03374100": "83f1e357feeb7b4ae894ae48f4f7016ce68c4a28145b68e4b299641977894f97",
+   "03378500": "621c5464cd3b5650d54ef9fc8ca6b5cc6f6834ea7737b7d9bc35c016d5d85316",
+   "03428180": "fffee725ac44a6c3240cdfccb15a5684ca1a86ad10899b5257950a4c1cf5c399",
+   "03430200": "f4866fa8d7f25666d2b162064a3ab210ca519eef892cefc8c352caa52712fb09",
+   "03431083": "bb401c8fab0b6c0ab25e73f909f3f8491c82dfbd09c3edf7499d111a3ce0d60c",
+   "03431091": "52fb2a0082b3ae52e3656c750d37045714cbc9d1f13c34a96887b32c6a529ac4",
+   "03431514": "02aedf798c2beb05f5870aa6cddbd9da6055867350e03fb4361d883411887ced",
+   "03432100": "b36e8287b93a5823af2362b9a93c1df0ad0e2909879a8670621b64d36c830dc9",
+   "0343233905": "ee04d18b04f0b0bc9879a0ccc00db3a167ff6377553077da0af13f69616a47cf",
+   "034324146": "a9f60b3ada0f7da924787423595ac19fde299696342527d65037be7e220fb37d",
+   "03433500": "8392eadee7671721632f75ef19477bfab29445c19b66cb0e144ffdb1c7be8d86",
+   "03447687": "16edcd4d433dcb5cfe305814f4cadfb5e0e1ee25ad2ddca20f9c38aff2652a8b",
+   "0344878100": "caf33d9c751f73a8c09db376d0d7aa2560364034032fe06c370e1397d3481a55",
+   "03451200": "1aad6e5f84069eead9898731fb143d075b4d5b071975acfa21475a7b69bc7d44",
+   "03451500": "17f225e36546690b8fc5938d6ef58b9209a65f077da0f37c3967481b6e9afea8",
+   "03512000": "dc6b7c52b4bc4407a663afa2615869c5025abb7b213d9062e64888195be0b594",
+   "03612600": "230a6a2d7ce3d23ec98f1557709a974c9ff1876fd00d2ee94b125e7263dc3497",
+   "04024000": "d29028ef7a571e99624340104af39d969de98580c57417c0d4fc0e858d8b7375",
+   "04027000": "71e3b0d6bcd89138fd14cea7c7c426fa7aee33253ab1c369c7ece3c4c64d114b",
+   "040851385": "70443268d171ae3ef3f910f59ada1a0a38bbc50443425f7b9e61d6c4580c2796",
+   "04118564": "6c2b23d4623c6796311f81308140493a02430ef09cd45d30e3a27bc12d314791",
+   "04121650": "17a1f6729b49be04896b0a0c291ea642bce3ca3ea21596250d58bfd03041ada7",
+   "04121660": "3783c4a1807cfc4cfd96b44f359a8e2ef770336a1bed2ffcd64f29cd5cf72a3c",
+   "04121680": "8837738fa228cf2c5d9fb4c7667f358e3e163b753e395c4081ba2770b21aeb21",
+   "04121944": "9c9f33709941cfcfc4e440773bb2cd0e659aa851443f4395412962b008d670b2",
+   "04121970": "abe6ddafead42cbcfc4545c9b8b4a309f0ff7578bfe0b48dc036b579434e59a1",
+   "04124000": "22ff7dc45b8205856f6c7cc8dab44662de673af50c2684cac481a70ad932c348",
+   "04124200": "cda38b477a4158a81de54a5526a4c6caa98cc00244d35a2997474d3bf01c302e",
+   "04125460": "c93d0a2f44921abedb5aeb9897a3741e98426f856b63ba9f1b7899128363accf",
+   "04125550": "a1ad10d84d4534a874f16bbe11b8ecf5a6c2e85f03aaf5201bdf189d57a93185",
+   "04136000": "d2e5a29670f3cbfb77819d67656c9a7111968ab11ac3008b075e618a9c9bb220",
+   "04136500": "1ffeace0bf649de7108b66515e5e2425a2904629b2218384863574ad653367d8",
+   "04136900": "d447502726ef25245f096e74f204848b446f0c656674e0cbfe3b51e83a491fd9",
+   "04137005": "c616bee39a45416f5a8001856576defae1203bae1f65816c921ab928b6173cc9",
+   "04137020": "05b686403c32e260e4c01f0358c727cc389b1ae20e48cf685a0146bfecb9571c",
+   "04137025": "314a013eb0def7a8195762576a44574a80357e61b2b9b6853ed37b498e02dc4d",
+   "04137030": "479108a9c2f3738a8ce73e21c1a01ee297b56d5f060ddce50c2c1d1337ba5e29",
+   "04137500": "f7706acbc80cea9d63accab8fe70d4470243e939c433ad36d2060c97acafbe20",
+   "04157005": "f35e6ba069b2bb3c259f2b4aba4d083b73cda75d3cbeacde16088b8aee2aac45",
+   "04161820": "0ccd5ff368f3a99df242e3e79bf9d2dcd0ea8223f8a912ff96f486464758e936",
+   "04165500": "c95c12ec0049bf47ce1076f41366f480d7ff9b05f0599a8e1792fa66bd14d760",
+   "04166100": "2ad586680fce1739f4ce9c3356d3df7f731b298f280003b038f6a6bef1a28529",
+   "04166500": "5d8af9416f35d698a9a22ee08fe118580791de02fdd5dfbc176141f67cc8a9a8",
+   "04167625": "d215a73d0f234c8c5a7141cc2e86e1eebb20c1e7a52ba3495ce48351a950ad56",
+   "04168400": "42594a6f38db1da07cb32649a5d521bd1d84e94837bd151512aa057b944ec145",
+   "04183500": "3a779e793abd49b4e3c8ebc881cdacb5f1361ab113f89f00910653b3782c27cd",
+   "04213152": "0a96f35a068505cd2b7628a16d358b442b20709cc1f3f7fd8d096eeb6f19aa53",
+   "04213500": "7255ed0720cc83a613c1295df3e417c60f1c2a3e1b2b848062752cb6aaa5385e",
+   "04231600": "382590df727205d159731ee5de5631fc636551878340ebdf18b98897dfb9c654",
+   "05051522": "7e7787ec11c371b0d9f5346f4f07193efa2934f9ae6581d3a25bd9dd07da63be",
+   "05054000": "7834770eb05bdd724320d940788f4fa4cbbbe0cab59433b2bec6ce6e10fdb346",
+   "05062130": "9efde4a03a8522d64984154c517c791bf5d4da7eccb5bb3791da3a1d7b81d95c",
+   "05082500": "6a959af7fc51d14402fd0ffeebe940595472402c628b2ba90cfc4eef25829d0e",
+   "05288705": "7a2df4e3288eceafcaed580f2a09a7b5d900f158eb121f2ee12e70010f616964",
+   "05289800": "fbebd3792121c475745ff00e78d383ec4c62072c04a021a5f5f297f313648cc9",
+   "05406457": "f2fc2e47dd9da8ae3ba78b1064c74ad2e44da009c917765f0a82d6c09ee68878",
+   "05412500": "a11d4d4f240f3fb75b55f69b762fc9f1f274e9330db8b69397306ceade623c11",
+   "05435943": "a77358f9cd2f99b1aec91246576e3dfb61f912d6549ebafdf5fd8962fa1ae3cd",
+   "05446500": "0d4d57a67a9f01566bbaa3a98e90b60f8dd119084cf9140990f1ac1f9265a987",
+   "05447500": "41d5cb1855a685de33e99eb1bd740047d7be06951e5e123432a1ba9500cdca62",
+   "05464420": "b130d57ea9e7daf6b3fcdd49c948671bdd6337d93d98a26758ff0cd750b25667",
+   "05464475": "11e3c0769ae89fe22d035e1272ae8615e60bcfcc5c051a7b4f60208134e8eec3",
+   "05465500": "eb5ed7b299c3b2ce2d45c3424f8e78b088d97493ea87f5f0ddefdad349e7987b",
+   "05482000": "781054a206aea82c7292222a122f1dae69dda5aed156063a4055697a6f4593d2",
+   "05482300": "949ed11ca3600cc73228c1f0b6ee55b906bd5b1f6db1f7d7cebee22b99143874",
+   "05482500": "0601b6f8e813a6869b2bb835e4ba1009dd0bf805c9e8cdc1951937c2604efe2b",
+   "05484000": "0f72c691ff98ede836cf469b9313988299f08cb5acf01f9f62ae51c10c71b207",
+   "05484500": "650c80bfd985dccb904c60be6e7b960b0a721d77961fc08a14dcbd0331ffe913",
+   "05515500": "b1a0d181d1bf95bd437089a15e3e6df394f26af4d128cdaa65d76567944def8f",
+   "05517500": "58034d202a9acec91740eded26cddb700a05b47a2142efe9c4ac19e897aa8f6a",
+   "05518000": "13af87c485160dd96b3207e61859cce7490b730c03ac52710fb7e82c9e722734",
+   "05524500": "7bc216768ce9962fda831105fbb16f2f950e784fce2ec365bb740a15e50b64ab",
+   "05537980": "fb0d23f246850a04ded13e9a27710ab836f4cc2754b4b0c2904e7f4659872cba",
+   "05538010": "97c4e4ea10e52b4fc9ff5feaec0f4e2a2ce4093fc4bf75e29f8bf940ef9c108e",
+   "05543010": "a6a3576ab65d3b19acd8a736388919b889be476ea8f2b6a7ccef18e8a23ccf7e",
+   "05553700": "d8486ee4fde9d0970502eea1e72c45f432b2fcb59bc8d0a77a8016411489354d",
+   "05576100": "885d9631d0508318dd6af81b3270265b3ba847b1167d73b83f35369f206fc2bd",
+   "05576195": "4b7d24a2b1a4b90e6c6db4f6bb1b9b40032c3c2db726aaaf8dcab88a1068f194",
+   "05586300": "b8e106ecceab22dbb947c654bed410ff0d2651343078bc8784aec5413722754e",
+   "05595000": "dcfad7e19b16b39989d640449f3e9bd42c44c424a95ff184049bb02e1e88a962",
+   "05599490": "cbf668cdb6c46a951304acfe137fc0aa8c4fbce2ff552f6092443d1ab5e3e2f4",
+   "06454100": "0ca907628f4f4141a1907de9836260b6653bf65bb18761e332170aad471d95b8",
+   "06461500": "151d4985b3cf1e9520dd18ed5fb2fb9cf135483be8a24adfb9bcd16d8b08fb1c",
+   "06465500": "2ad0c1b705e7aceddcabb6b12ef8834c72b4156ac8dd0bb6316a6810d98402d2",
+   "06478513": "8595d3f5e1a1cf2e99082ae014054b82e8f9694e284319fcdba19a933149de2c",
+   "06711565": "c236e3522def3dc2d6649c2248fb3bcebbe2bda1654e41e4b583983470e8c6a5",
+   "06796500": "eccb601c5bad40b5ccb669bf1d2c7d4731d94240465b0a8a7399e2cd40310f67",
+   "06800500": "595db24816b12259fcec8cece3288f80177784acfb9cf8bd6a0d8ab0289320ae",
+   "06805000": "5360c6b47e6ca9e6bbab7d5d143b10311e9c4be51f5cf7132a0d157501d37859",
+   "06805500": "7a9104a0598fe7658992de21a12b6ec490f3c483205b7fa096308423ceb9fe13",
+   "06808500": "08007f56d671d0ad448404903770f213d42d51b0eb525ab938b0deb15cbd7a4e",
+   "06817000": "218bf0a0b5acc7314f4954641b4b9273f4cc2f97afb114ca7b916ccc93244905",
+   "06818000": "01e5d4aa5efacaba802680ac8c6767744bdd8e2bed9813d7c832c25e42c0db48",
+   "06856600": "da54a69a2a3a5b22c8b627443dd9d177f9bbe714916d5ce4c1d34a34d6c7473c",
+   "06887000": "60d4e658c2c4066823ef3fcd7c7a8bbb1ede7a21f64af749cbd068b35ded3aa0",
+   "06887500": "d56e7050f3b5f7ac211388d27005d0ce6eee580698c64cc2d8e881018e36e6e7",
+   "06888990": "fe4eec4c5b13296d96112609b00c45e64430601aba01ab6f81477320877f605f",
+   "06892350": "84f2768793ff9f25c5398e8855c0789d300c602c5549e289bf25f5ff85a67f85",
+   "06892518": "d083932ddb73ee287e7209000ecd087e7a305d5b1e1c2968a7dfdbd33c81ac85",
+   "06893100": "9b55efd50f860b9b85388cd5e64ddab4b1ee2f9e05285894b98554dd966db474",
+   "06893820": "dbd0047be2638ca30274ee5293cfe7ee31232e800c1ddbff39a02502c756afbc",
+   "06894000": "e6bc586e5eaece6b69276770152a7e37dc9cf91f11e1f81a92cb9a27f9c5aa9a",
+   "06899900": "bd2a3f70f4ae4534b2c64602c3fecd43dddd9d80ee225c109f19d38ef43e68c5",
+   "06900050": "241736ecc6ee0dc1dfea7c9b877ee2a11d50d84a4b271208033a057047f0070c",
+   "06934500": "dd0fc46db9b8e83e923dc1af0a64ee7b68d2ae4922bc62a24656f5243fe558a8",
+   "07020850": "8b4500c963459f686a08c1b917c7afe7bc2337c1b89827512faae10349cf94b6",
+   "07048600": "dc0780af0e6cee23952c54b8163fe43132ee6dea9f3ea5257e750a530d6be501",
+   "07049691": "4a271786913a3ab2432f2c0ec8965184d688bee0f0586bbec8eeef06b793d036",
+   "07053450": "9c791a8c302087b2771fb7cdd0e23652a7292741d77f585f8f82d7d685623af8",
+   "07054501": "d4283de9fd9de285c6e05869b10f860ca15583ebfef8f82861824e1fc4f6623c",
+   "07054527": "c48ac301a0a7d5e8b3f5929dd2625858827bfec5ac2acc2c0c952576acb428e0",
+   "07060000": "21124c2e5052ac71cd4b2e5c23c4f18fe2d55cbc7b87377f4eaeef3456678966",
+   "07061270": "436c4461d44c23d2eb94401efc7f7578a9ad1b90bb2a1edb87d286709dc10884",
+   "07061290": "61176f68ab44af8bac67b020473712e9cc82994ea578fb4ede60f10e9e0547db",
+   "07075270": "62330939e43bc28e2e598c3421c325cd6c8faafd4fab85a92d7b538f9d081c17",
+   "07076000": "53c5b458e7fd2243758e6b2593f381d340dc390e38e5b5aa44fb1050db5796ad",
+   "07099400": "c38dcb84df5d5b9311d1892f9084b1bfeb054f96eefded37e47a91eb9d125534",
+   "07109500": "0333738a44d3c48c4e911fe6204d946dd7b58b9059e0539887ec0a1f0ab00ae7",
+   "07143672": "a04d73cb28498783e8e91c6b8020271e35e3771482c9580acd5d7f9eee14ce21",
+   "07144100": "6ba60857be86554fbd8bfe403153d6ed84badc37d3a928cdb050b603deb0dafa",
+   "07144780": "4e7a7fd70e29d946aa1b903bf5e6b6ff5278783966c728cdfe010f7afb44eae3",
+   "07263296": "b9378f1d99f254c279780073b37935146f1aad854a16ad0160381ed380f26b6a",
+   "07374000": "1884462c0b9e02b14c2e83e0ada259bab6fe50da1b2eb10da3fb726809374100",
+   "08086290": "d5c117a9737c554ed8202397e9ec40b34cd90d4018e423baf0594d2d9a913c75",
+   "08181800": "238bf69c3e353bb66b20e97d5ae972f95ab2ceb1d69e64250a17d8b81ac76087",
+   "08211200": "24fbc67b6b317a6376848c080e8c721ad1ece032902a17d537a822d5d2132fe0",
+   "08364000": "bad297446a6a88a3c6f3b92dcb8be7181449143de9eaaef5d6a8153d49dcb983",
+   "09041400": "ce607bb08a12896db73590ea55d5af110a68e1fd3059ec64ceaec42e6e1fbb1b",
+   "09071750": "bc410d5afa8f8e8563ec9815605e8824e377b552ef2614f431a1dbed88a34961",
+   "09095500": "563aa74b349c63409fc68dde3bf1744d76e84aa09fd52d2b9d5f4aeb0d25cb85",
+   "09171100": "66e8f93e6deb9e4415e728ca4ef623ce1ef16646466a115070486719030d5750",
+   "09180000": "c89e11e6ff1fc5539a421ebb0049fe546eb8fd92de005a4b695543607f7e1abd",
+   "09258980": "f824e5f9f211d3363d62e74318acab2a617396eacda5099e955ef0df5546f8d4",
+   "09406000": "2a0d6225ebda5b7552d3294737154b5a2d06670d886ff3bc2db0e7892037619f",
+   "09534550": "c0d3291d0464f6cc7950ae2bdab4c6e1668f9b99e7ea02406327b18a0a8bedcf",
+   "10129900": "9f43827a4c2f961a5831d7895d3099155e5f38e15694a6e2e0f5d2ab609b730a",
+   "10133650": "95f8b8b2fd29308c42ba60d2207359f19971fbc41fe603fecd57e04947168dc2",
+   "10133800": "d914bdd33dfe5156b46bce997bbd663b8562b1d30c4c9e0c5b2b3034ab07133a",
+   "10133980": "99c888a0b68a882a3f015a456604ef88fef4721c4ea173dad7e40b7ea9a552c6",
+   "11044000": "ca5a4e2486d5a60cbca9f829d24ab7023b2cf1c41c1262c2ebf460983c8dbcea",
+   "11074000": "9bb2a8977c0ed4ac9ec2a6d19526a2be460fdb26cf044fe617ca59a6e82ae104",
+   "11126000": "f13dca767bc7a317a7561f85140f68264644776ff103627ae736b2357171a507",
+   "11128500": "0afc658bbb16e3b7a2eb01d9b19486cc4163c94a58d1e1ab6e298a5200fee137",
+   "11273400": "da076c653e6c0dea3a908da65cdb09c9e42d0964c6c8ec3fcb82925ceb0b4b3e",
+   "11461500": "c63d7aeeab2db8da7ee0727ac6975ba1697811e1e48bc5d0024bab1f35187aaf",
+   "11462500": "172b25b6503a671c377e5c96763583f7dd2f7b776cb7ccba851bf265e17bf4d5",
+   "11463000": "9bde85452e02e70c776b96f9f2e561e0c91a5fa44cafa88d5a98f7cf56ba22ba",
+   "11463682": "af34acede51da5b8ba7f0414ea897153f2e3d8526caf76e1a287f1694faeb778",
+   "11463980": "54e0f381d923ad8e63aa34980006dfb97c003c602e64fdb2585f65f7dc6050b4",
+   "11465240": "61ac71797541825520d53dcf3b8dcb49d5b2283e58114390024d3225ab4b45cc",
+   "11467000": "5cee1d9af5cffa3cfda33ba5362ee2f5d48da452602a362bc1e3cf035c112687",
+   "11507501": "ab8153d1366e1d8df3a917b69e9831277e8ba0fd41b80a53a53bca8b3ee9e88a",
+   "11509370": "1fd4335bacb0cef80e2606b2cc871398233362c1d048f64b99e195bc84f509cf",
+   "11509500": "0e65fd44761bee2b89fd05c5ff07735d4ad942c7b12d7a51acc1a82e73495eb7",
+   "11510700": "46038ab2a6ad19e15cdb4a731b8b7f7f07b40fc343664a5f75cc5dbf2d244f86",
+   "12100490": "8b259b44e59a3ac7de4175c9547720b0d20efcd718cb8b037b03142a6b08796a",
+   "12101100": "496d4e60d890c84364e440690295f8c6542fbcab4affa9086815e69fc797ca23",
+   "12101102": "191a9b08572cae9702559999b5536516b19297abaf39961220c3467d2d86dbfe",
+   "14151000": "2279123a95d97e69ec4f35e48ec0424695385de57bb2f3fd289663996fce43f2",
+   "14158100": "5e51478c92342bf62ecf57ddeefa9e227553af90e66d2019f4a2a9400c41824a",
+   "14159500": "6b8f702a6459e97c870cd31f267abe0d6c9e2685ff5877c3c3c57cff9654e2bb",
+   "14162200": "c3a9512feb9c1244c79437207ec46013756fbd67d1c4c109bdbd1f225e984406",
+   "14162500": "26ccb2b2183a0659b2d00bb520ca6192aae6fb0e9ea7e45fe9c63abfba919b3f",
+   "14163900": "93c959854886cbdbaf46fd741512ea65ef9e64091517b946e554e6380ad51b2c",
+   "14164550": "a51d1a312ceefd3253437a53204d873ed3d0d10437d1dfdb551681bf7b94192a",
+   "14181500": "3db755fe020f7770c8380e64cb9da85bc5ba5f64eceea04cbb779496e6560be2",
+   "14182500": "957b48d58211218e99ad01c68081871304acd4386e6c7627644950cd04bd1f01",
+   "14183020": "79d129a0166f61151679f125c24d7c2c48234b51877425887d0eb9c00c0912b9",
+   "14202650": "4bb52749e90475f98455db38356e338f43658cde2319bc81ff7fdb680ffd058b",
+   "14202980": "a5f8c20c40100de417c1fa24c8266dc0d80b9f61910e6350e86b95e04dc1006f",
+   "14203500": "5df7a23ba76fc195cc5a9fb9e477f75ac241c8e3abb47a04da495c1cde3f8541",
+   "14206241": "e70e728622ebaa53f24d842c675e948c058f69bc89d8f04a4556f77f9db57920",
+   "14206694": "fe216af80b5066c1e970ed21b072c570139c4ab68ac170123c2e4138bb32c610",
+   "14206950": "799fb35ab1f8cdac6bea7c9aaf22eff162a43534c84755a83d0414ea0fd480e9",
+   "14207200": "29b76b68c5b236e3954375a379ff94197cf771e245a6738c211a6c4687af7c67",
+   "14209710": "b2885fe9480ce5522f2a16b49d3494311c10b7b0243bc8f9730bc6837b6e460e",
+   "14210000": "0c4339d97340acab513dd4ace1a91ebf50e0d4e5515999d35301dff7820bc2b9",
+   "14211010": "8f7bc493e99ad875065811220f6b53b7e1566b79c504248ed88a05789df9f4c5",
+   "14211720": "147a98cc8231c6fea582734f5275eefab2f80d021f2c5cf33b02f3b5b7f0bccb",
+   "14309000": "d5625d4b48c01bf39775e767081ab391789447747bf6f33ac6c3c8e4154add63",
+   "14316460": "25e350d72394cb8a9c40d2b40196c0a648ec00485a9ee5b7785bc5f1b4781606",
+   "14317450": "c4fe256860d046c925dd0061314ccebf190c32deb11384a50a31f31dd95e7efc",
+   "15008000": "0ec0090f0acd79ad774cd6c03fd224532fef5f8826f4d35f58965516117bca98",
+   "15015595": "23d2b82a50a357cc07059d4356a70c1f49b8019d3a79ef445765769ba1d4932a",
+   "375350097262800": "5bc47d084d66cbdaa6d83ac3d479080ebbff96f0c26ee5edb85550c190025f15",
+   "394220106431500": "f1cd457ecaaae3ada396cf31ff78169cef233083e802fc433153c9c6a557dd0e",
+   "395339083130100": "f8b5d12b193796cdb54afa67b856c4130c41c00b6ab2d0c9f6e26ca8361d6c8c",
+   "411402080492400": "4dbc506739f1a3edb93b38ea5aeee4848b6d23fc58181e3a23e35f468045b2cd",
+   "411955088280601": "4b0de90422cf3a4a16e1a9358845ba1edc031b1ef238053d8783d5b96763800a",
+   "420451121510000": "89fae4cbb205a16715000e1838ce97e7c8f412b5b32ccf1fae7f2abea62e6f1e",
+   "420741121554001": "0e0d9b2dd3d2bcdaea34b3acd1c2a95269702422b0ed96a28ae0a7c185a12c7f",
+   "420853121505500": "bd29ec5c5a11f31229b75b391a62fae4d7a2f1f9ddaa2744bf1f04e11311d7d9",
+   "420853121505501": "cb7a1dcfb019943999cda8bd169cd1ebe511a767e7608084c96f001d107ae0e7",
+   "421015121471800": "c692691af5ff7a8f4bc7ee1ef7ebb716ce23ecf02283fee92ed5531e2f8e2367",
+   "421401121480900": "0c78637aa131c19a3bad74055d06d76792f6dd98faa803c31c1e148874947efc",
+   "452731123092100": "9d843528e1f2ffa56dc1648f1b13fe64af2b9289180e009a2cc03f31f0f9bc35",
+   "453030122560101": "9e59d412ce0967baa3ab08b96ba77a9ca6e13314873c6276d981bc1a72107e2c",
+   "453040123065201": "7ba9f62b01f0f002f789b327d2146c64dc8280cd0fcd1604e87cd1911050d7fc",
+   "50048565": "8e48c6c534c4bb33e7e1f58fed5ee708840dd3e44486006838db06aa939cdbc1"
+  },
+  "chloride_regressions_sha256": "9d2cc7dab61e370d141c40f9a6f2ffb70a4117a7541890b197747170355042d8",
+  "sites_parquet_sha256": "0e2800716c4447ff53094f7100f045d3d0f1d81046da7accf216ca3978fd3a44",
+  "gridmet_site_cells_sha256": "97eaed0ec7c7c3b7247dc7021729d3a33bb3cd8c89468c5c68007267893ea7b2",
+  "split_file_sha256": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80"
+ }
+}

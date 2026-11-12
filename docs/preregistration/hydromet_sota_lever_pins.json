@@ -1,0 +1,37 @@
+{
+ "what": "M6 SOTA lever role assignment: code and outputs pinned before any lever-1 / C2b fit (architecture-plan data-hygiene rule 4)",
+ "written_utc": "2026-11-10T17:33:11+00:00",
+ "outputs": {
+  "lever_sites.parquet": "62c4bf53c1df74adf009867d78ab5ed9789397a3b7ea90b61b342b2296acabf0",
+  "wqp_train_obs.parquet": "346fb06ac30db19d1dbb9010e349f678cf3a85481003c02e25123051cb0111ab",
+  "lever_sites_report.json": "a0e56941328acc2e74f217f1bfee890b5bfb9fab0791ff56cd31ed92df6b07f0"
+ },
+ "code": {
+  "sentinel/hydromet_sota/sites.py": "1ccf5a181ccf30742382fb6ca9e1ba55b0c326f862229128ba5022d6093b9690",
+  "sentinel/hydromet_sota/reserved.py": "5a96f5c3dfccc7c6a86c3e33ce9b7a3b112b65eff291094c5c01914cf653e0f2",
+  "scripts/data/sota_hydromet_build_lever_data.py": "7b25c64ab69b143ab1b1cfc3b89920e14857bd8286ec35ca8fe19a5f8d4bb7ae"
+ },
+ "inputs": {
+  "sonde_split.json": "fd4bb14fe7304d05310e286e9aced22675fd6d07aa4dcac6415ed039a1e06a80",
+  "hydromet_track_n_stations.json": "ffb41471c9a75dcbebedf083f273cfa41aae3ffeb7dabe7fd420c5f23120e2d0",
+  "sonde_newsites_list.json": "6200a77cbdb0bb7963e6373a962374a764a6577bd7b945a42530a2b2e4e8b720"
+ },
+ "manifest_hydromet_sota": "9d451b8b58bd5433f5720cd193370fde43fdb2c5cba5ba4fd6c62f22a0607be8",
+ "note": "C2a seed 0 started at 12:20 EST before this pin; it uses only FINAL train-role sites (no lever pool).",
+ "code_amendments": [
+  {
+   "utc": "2026-11-10T17:45:03+00:00",
+   "why": "lead request (tests/test_reserved_loaders.py): shared sentinel.data.reserved helper used in the pool builder and as a guard in sites.train_block_days; behaviour-neutral (dry re-run: identical pool, identical weak-label rows, identical excluded counts 416/2715 and 0/6244)",
+   "code": {
+    "sentinel/hydromet_sota/sites.py": "ff078b2d2165484c575fafda69ec49157bb95c99d748b56ddfbe3ecd2e959284",
+    "scripts/data/sota_hydromet_build_lever_data.py": "063b387f5cc4c7d61f3d22bea3173f94161d392521621e7fe0766ba32c003759",
+    "sentinel/hydromet_sota/runner.py": "751d2c71c4e2153db4a1202b9422e542ceceeb6089acdaa1478e38dd7b1015b8"
+   },
+   "outputs_unchanged": {
+    "lever_sites.parquet": "62c4bf53c1df74adf009867d78ab5ed9789397a3b7ea90b61b342b2296acabf0",
+    "wqp_train_obs.parquet": "346fb06ac30db19d1dbb9010e349f678cf3a85481003c02e25123051cb0111ab",
+    "lever_sites_report.json": "a0e56941328acc2e74f217f1bfee890b5bfb9fab0791ff56cd31ed92df6b07f0"
+   }
+  }
+ ]
+}

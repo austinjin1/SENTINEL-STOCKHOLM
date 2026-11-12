@@ -1,0 +1,339 @@
+{
+  "sha256": "a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656",
+  "verdicts": [
+    {
+      "id": "EA-SPLIT-CODE-VS-TEXT",
+      "verdict": "partly",
+      "final_severity": "should_fix",
+      "evidence": "Merges TE-HOLD. Stale part: scripts/data/sota_hydromet_ea_build.py (sha c4a44a31...480a, mtime 14:28) now implements the eligible-only rule (l.381 eligibility, SALT 'M6-EA-2026-11-10:', VAL_SHARE 0.15, 15 % guard), step_split refuses without --i-have-the-lead-ruling, and the daily step exits while hydromet_ea_split.json is missing. Still true: the amendment stamps T-E on a rule that is only PROPOSED in a living DRAFT (hydromet_ea_protocol.md l.58 'PROPOSED rule, awaiting the lead's ruling'; file sha changed three times today: 01ff2f42 -> 137059dc -> cc60763f at 14:31). Amendment l.9-11 calls that file 'unchanged'. §9.1 metadata facts (1,687 stations / 54 groups / G_eff 6.4) describe the old all-station grouping, not the proposed 55-group eligible rule. No hydromet_ea_split.json, no sonde_ea_split.json in docs/preregistration (ls, 14:35 EST). processed/ea_wq_sonde holds 5 metadata tables, no readings table.",
+      "ruling_text": "T-E is stamped by reference and held: no EA reading is QC-summarised, aggregated, fitted or scored until a stamped entry in the deviations file records the sha256 of hydromet_ea_protocol.md v1.0 and of hydromet_ea_split.json, S = 0.50, and per endpoint the metadata G, G_eff and status; the 'Metadata facts' of §9.1 are superseded by that entry; the split writer is run once, by the lead."
+    },
+    {
+      "id": "EA-INELIGIBLE-STATIONS",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "hydromet_ea_protocol.md l.74-75: ineligible stations 'are never used by any model in any role (not for fitting, selection, scoring or merging groups)'. Writer core (ea_build.py l.421) lists eligible stations only; 864 of 1,964 catalogue stations get no status (1,964 - 1,100; reviewer computed 366-409 of them flow-connected to test-role stations; not re-run by me). ea_allocation for M1 draws from M6 non-test groups, so an unlisted station next to an M6 test reach is open to M1 and to any later M6 consumer.",
+      "ruling_text": "The frozen EA split gives a status to all 1,964 catalogue stations and lists the HydroBASINS L7 units of each group; an ineligible station takes the role of the eligible station it is flow-connected to, otherwise that of its L7 unit's group, otherwise 'reserved'; ineligible stations never supply M6 rows; a station with test or reserved status is closed to M1 and to every other workstream for all years."
+    },
+    {
+      "id": "EA-M1-EXCLUSION-NOT-ENFORCED",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges Q8-M1DRAW. Amendment l.123-124 promises the EA loader drops 'once sonde_ea_split.json exists, every M1-test group'; §9.1 allows a fit when the file exists 'or the lead has ruled on it'. grep for sonde_ea_split / M1 in sentinel/hydromet_sota/ea_data.py (sha 93ec6927...4094, 14:30): 0 code hits; l.13 is a docstring only. So the filter is text only, and the 'or' clause lets M6 fit on groups M1 later draws as M1-test.",
+      "ruling_text": "Both hydromet_ea_split.json and sonde_ea_split.json must exist with verified sha256 before any EA fit or EA validation number; the EA loader refuses to run without both and drops every M1-test group for all years; the order is M6 split freeze, then M1 draw, then the first M6 EA fit; the words 'or the lead has ruled on it' in §9.1 are struck; if M1 draws no group, M1's file still exists and records the empty set."
+    },
+    {
+      "id": "EA-CLAIM-STATUS-DEFERRED",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges TE-S-MIN. Amendment §9.1 l.320-324: claim status 'fixed in a stamped entry of the deviations file after the split freeze and before any EA number' with S open (§14 Q4). Reviewer-computed metadata G_eff (not re-run by me): S=0.40 temp 9.2 / DO 10.2; S=0.50 11.2 / 12.1; 19 vs 21 test groups, 117 vs 141 test-capable stations (EA protocol l.70-71, same numbers). Both pass G >= 15, G_eff >= 8 on metadata, S=0.40 with little margin. MDE lines assume US between-group variance (stated unverified).",
+      "ruling_text": "S = 0.50, chosen from metadata only; the minimum G >= 15 and G_eff >= 8 is applied per endpoint mechanically by frozen code, on metadata before the split freeze and on the realised paired cell inside the look before any score is computed; S, the thresholds and the endpoint list never change after the split freeze; the deviations entry records counts only; the MDE values of §9.1 are best-case single-comparator values under an unverified variance assumption and are not a power claim."
+    },
+    {
+      "id": "HOURLY-BUILD-READS-PROTECTED-DATES",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Verified from parquet footers (timestamps only, no values): of the 421 source files of hourly_train.npz, 380 hold rows >= 2021-10-01, 366 >= 2023-10-01, 330 >= 2025-10-01; the pre-fix step_hourly read each whole file and masked in memory, against amendment §2.4 rule 2 ('row filter at read time', 'No US row dated >= 2023-10-01 is read by arch-v2 code before a look'). All 421 sites are FINAL train-role, both reserved assertions pass, the saved table ends 2021-09-30, so nothing protected was persisted or scored. Since fixed in code: scripts/data/sota_hydromet_v2_build.py (sha cffc0f8e...1ce9, 14:32) now passes filters=[time_utc >= lo, < hi] and raises on any row outside; hourly_train.npz rebuilt 14:32:58, build_report.json hourly.read_filter_utc = 2007-10-01 .. 2021-10-01, 421 sites. No pins.json yet.",
+      "ruling_text": "Recorded as a pre-stamp incident: before 14:32 EST on 2026-11-10 the hourly build loaded rows dated after the train block into memory at 366 train-role sites (330 including WY2026 dates), computed nothing from them and saved none; from the stamp on, every arch-v2 reader of a US label table applies a date filter inside the file scan, and hourly_train.npz as rebuilt with that filter is the table that is pinned."
+    },
+    {
+      "id": "V1-TESTB-FAMILY",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges V1-FAMILY. LEAD_DECISIONS l.173: v1 models are secondary members of the joint look, no earlier v1 test_b. Frozen hydromet_protocol.md keeps v1's own family and comparators; hydromet_sota_protocol.md l.131-132 (sha d25d19d7...) still defines 'the frozen 7 models x 4 endpoints + the lever candidate x 4' in a single M6/test_b look. Amendment §10 l.372-376 says only 'v1 models ... secondary and uncorrected'; it does not say how the frozen v1 analysis is carried, nor record the separate-to-joint change as a deviation. No FREEZE_hydromet_test_b.json exists.",
+      "ruling_text": "In the joint look the v1 models are analysed exactly as frozen (same models, Holm family, comparators and every-seed rule, read from looks.test_b of FREEZE_hydromet_test_b.json) and reported as secondary with no new label; the arch-v2 families are additional; the change from a separate to a joint look is recorded as a dated deviation in a new file; §8 of the lever protocol is aligned through its own deviations log before any lever validation number."
+    },
+    {
+      "id": "GUARD-COVERAGE",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "sentinel/models/hydromet/guard.py: FROZEN_GLOBS cover neither sentinel/hydromet_sota/ nor scripts/*/sota_hydromet_*; frozen_files() = 46 and scoring_code_sha256() = 5bd7d3292a29...fd60b (re-computed, matches the amendment), so no arch-v2 file is hashed by any look guard. FREEZE_NAMES has no T-E entry. Amendment §11/§12 promise a hardened look but name no code-hash mechanism for arch-v2 code.",
+      "ruling_text": "Each look freeze records a sha256 over the import closure of all arch-v2 and lever files used at the look, checked at look time by new guard code that wraps and does not edit the frozen guard; T-E gets its own freeze file and access check before any EA-test row is downloaded; no arch-v2 file is placed under the frozen globs."
+    },
+    {
+      "id": "N2-NEW-STATIONS",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §9.2: 'a station first sampled in WY2026 gets its role by the frozen rule from metadata before its values are read'. The frozen role rule (hydromet_track_n_stations.json, 12,768 keys) was drawn against v1 training locations; the arch-v2 pool adds 3,545 fit stations and 421 hourly sites, and the text names no flow or COMID check of new stations against that pool. Text finding only; a data check would need WY2026 station keys, which I did not open.",
+      "ruling_text": "Before any WY2026 value of a station new to track N is read, its COMID and 500 km flow connection are checked against every pinned arch-v2 training location; a connected station is excluded from N2 and the exclusions are logged as counts."
+    },
+    {
+      "id": "PIN-AND-STAMP-GATES",
+      "verdict": "partly",
+      "final_severity": "should_fix",
+      "evidence": "Merges ROLE-SHA and CFG-PINS. Stale: there is no stamp.json; runner.stamp_status() (runner.py sha 05687358...7cad) reads the registry. Still true: (a) the gate accepts any M6-hydromet row ending '/prereg_snapshot' whose extra.sha256 names the amendment, with no check of who wrote it and no rulings-file sha; (b) gso_mt/data.py PINNED = 5 tables only, lever_sites.parquet and the role tables are read unpinned, require_pins=False skips the check; (c) only scripts/train/sota_hydromet_v2_nn.py calls assert_stamped / verify_pins; gbm_ref.py has 0 hits for stamp or pins; (d) no pins.json, schema_variant.yaml, d2/stack/GBM config exists; (e) d1.yaml carries dropout 0.4 and common.yaml an implementation_constants block that are not in §6.1.",
+      "ruling_text": "pins.json holds the sha256 of every pool table, lever_sites.parquet, the FINAL split, the track-N role table, sites.py, both reserved modules, gso_mt/grab.py, gso_mt/data.py, the v2 build script and every file in configs/hydromet_sota/v2/ (D2, stack, GBM and schema_variant included); it is written once, set 0444 and its sha entered in a registry row before the first post-stamp fit; every non-smoke entry point (neural, GBM, P, stack, evaluation) calls verify_pins and assert_stamped; the stamp row is written by the lead only and names the sha256 of the rulings file; any later change to a pinned value is a counted configuration and needs a stamped deviation."
+    },
+    {
+      "id": "POWELL-K600-ROWS",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges X3-POWELL. Amendment l.64 lists Powell fitting rows 'none', l.66 reserves Powell val/test-role sites (37 / 117), yet §6.2 l.224-231 uses hydraulic-geometry priors 'at the 160 train-role Powell sites' and 'K600 from Powell rows of H confidence only, weight 0.1'. SYNTHESIS reuse table requires a shared Powell role table honouring three reservations and names 48 new-site overlaps; no such table exists in docs/preregistration; grep 'powell' in arch-v2 code and configs: 0 files.",
+      "ruling_text": "Powell priors and K600 rows are read only at FINAL train-role, non-inner sites that are neither in M1's 729-site list nor among the 48 new-site overlaps, for dates up to 2021-09-30, from a table in the pinned pool, and only after the shared Powell role table (X3) exists with M6's use entered in it; otherwise the DO stage runs without K600 rows."
+    },
+    {
+      "id": "X7-CONSTANTS",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Raised by both lenses; merged. M6_architecture_plan.md l.403: Raymond et al. 2012 coefficients 'must be transcription-checked against the paper before the amendment is stamped'; SYNTHESIS l.334-336 (Proposal X7): the constants module 'must exist before any amendment that uses these constants is stamped'. find sentinel -iname '*constant*': 0 files. Amendment §6.2 l.229-231 and §13 defer the check to 'before any DO-stage fit'. Scope is wider than the DO stage: G2's equilibrium-temperature and DO-saturation features, the FAO-56 solar channels and D2's temperature stage use physical constants in execution step 2-3. Not blocking because X7 is a proposal with no lead ruling in LEAD_DECISIONS and the amendment stamps no numeric constant; the lead must replace the plan's wording explicitly.",
+      "ruling_text": "No fit and no feature build that uses a physical constant (reaeration, DO saturation, equilibrium temperature, solar geometry) runs before the constants sit in a shared module with a source per value and a unit test, recorded in a stamped deviations entry; this replaces the plan's 'before the amendment is stamped'; the R-TD hyperparameters are checked the same way before the first R-TD fit."
+    },
+    {
+      "id": "LICENCE-ROWS",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "docs/licenses.md (49 lines, mtime 14:25): grep -c gives 0 for Oliver, HydroSHEDS, RiverATLAS, HydroRIVERS, HydroBASINS, UWWTR, Open-Meteo, ERA5, gridMET, StreamCat, NHDPlus, Powell, Hydrology; the Water Quality Portal row (l.16) lists M2, D1, D2, Fuse and not M6.",
+      "ruling_text": "Before the first post-stamp fit, docs/licenses.md has a row for every source the arch-v2 round reads (WQP with M6 added, the EA sonde archive, HydroATLAS products, UWWTR table, ERA5-Land / Open-Meteo, gridMET, StreamCat, NHDPlus VAA, Powell estimates) with licence, citation and redistribution status; a source without a row is not read."
+    },
+    {
+      "id": "RTD-RECIPE",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §5 l.163-172: R-TD 'hidden 256, dropout 0.5 [UNVERIFIED against the papers; transcription-checked before the first fit...]'; configs/hydromet_sota/v2/rtd.yaml (sha 19b66c15...) repeats the note. The paper is not named as the binding source, so the 'published' recipe is open until someone picks a value.",
+      "ruling_text": "R-TD's hidden size and dropout are those of Willard et al. 2024, or of Rahmani et al. 2021 where that paper gives none, transcribed with page and table citation in a stamped deviations entry before the first R-TD fit; no other value is run; every label states that R-TD had one configuration."
+    },
+    {
+      "id": "RTD-SHARE",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "runner.inherit_from_d1() (runner.py l.171-185) reads ROOT/d1/selection.json and raises if it is missing, so R-TD could only be fitted after D1's selection, against §5 l.161-162 (references 'before or together with D1') and §12 (references step 2, D1 step 3); a reference whose setting follows the candidate's selection is tuned for the candidate. rtd.yaml was changed at 14:31 to 'grab_share: null', stating the value is OPEN and ruled at the stamp; the function is still in runner.py and still called at sota_hydromet_v2_nn.py l.66.",
+      "ruling_text": "R-TD's grab share is fixed at 0.5 and never depends on D1's selection; inherit_from_d1 is removed before rtd.yaml is pinned."
+    },
+    {
+      "id": "RTD-PUBFORM",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "rtd.yaml: ablation 'nograb ... the published label set (sonde + USGS daily labels only)'; amendment §4/§8 use the no-grab variant only if gate G-D1a fails. The published model was trained without grab rows and without the observation operator, so the comparator the text calls 'the published top-down LSTM' is run in its published form only conditionally.",
+      "ruling_text": "R-TD is always fitted in both label sets (with and without grab rows, 3 seeds each, the second logged as variant_of); both forms are comparators in every family; the no-grab form is named the published form."
+    },
+    {
+      "id": "TE-VALCELL",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §9.1: validation cell 'EA val-role groups x EA-val block', also used for early stopping of the fine-tune. Reviewer-computed size (not re-run): S=0.40 27 stations in 5 groups, G_eff 2.8; S=0.50 46 stations in 8 groups, G_eff 3.1; far below the project minimum of 15 / 8. The zero-shot go/no-go and the fine-tune early stopping share that cell.",
+      "ruling_text": "The zero-shot go/no-go is scored once, before any fine-tuning, on all EA groups that are neither M6-EA test-role nor M1-test, in the EA-val block; the fine-tuned go/no-go on val-role groups is declared low-information; G and G_eff of both cells are written in the stamped T-E entry; gate G-D1b is unchanged."
+    },
+    {
+      "id": "CAP-VARIANTS",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §4 l.143-158: variant/counting rule '(proposed; see §14 Q1)'; variants (no-grab label set, EA schema, fine-tune) are outside the 12-configuration cap with no closed list and no bar on choosing between parent and variant after a number exists. Cap arithmetic itself is right (3+2+3+2+1+1 = 12; 12 + 8 = 20).",
+      "ruling_text": "A variant is outside the cap only if it differs from its parent by one switch of a closed list (label set, static schema, fine-tune cell), has identical hyperparameters and config sha apart from that switch, and has a variant_of registry row before it trains; all its inner numbers are reported, variants are tallied separately in every table, and no choice between a parent and its variant is made after a validation number exists; anything else counts against the 12."
+    },
+    {
+      "id": "SCHEMA-STATICS",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.133-140: '39 RiverATLAS statics'. sentinel/hydromet_sota/ea_data.py COMMON_STATIC (l.33-39, sha 93ec6927...4094): lat, lon + 40 RiverATLAS columns (42 entries). No schema_variant.yaml exists.",
+      "ruling_text": "The T-E static set is ea_data.COMMON_STATIC as in the file pinned in pins.json (lat, lon and 40 RiverATLAS attributes); the figure 39 in §3 is an error."
+    },
+    {
+      "id": "POOL-OPEN",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment l.76-83: Tier 2 'N2 <= 10,000' UNVERIFIED; l.109-112: a source may be added 'unless a stamped deviation adds it for all models before any model has a validation number'. Inner numbers come before validation numbers, so the pool could change after inner selection results are seen. build_report.json: Tier 1 only is built (fit 3,545; inner 358).",
+      "ruling_text": "The training pool is Tier 1 only (Tier 2 is not used in this round); it is pinned before the first post-stamp fit; no source or station is added after any inner number exists; the clause 'unless a stamped deviation adds it ...' in §2.4 is struck."
+    },
+    {
+      "id": "GD1A-NOISE",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §8 l.266-281: G-D1a threshold 3 % while 'seed SD of the reference's J_sonde is ~ 5 %'; for N2 the gate is proposed on J_grab (§14 Q2), a second criterion on a smaller cell (30 sample-day cap) and a per-track choice of label set.",
+      "ruling_text": "G-D1a is one gate, on the 3-seed mean of J_sonde, with one outcome for all tracks; J_grab is reported and decides nothing; the outcome is written to the registry before any other model's variant is fitted."
+    },
+    {
+      "id": "GBM-SELECT",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §5 l.179-191: 'For each primary target the reference uses whichever of {derived, direct} has the lower inner MSE', 'selected per target on the same inner rows'; §7 says J selects 'the grid point within ... the GBM grids'. Two selection criteria for the same model, tie rule and row set (sonde vs grab) not stated. gbm_ref.py selects per primary target over form x grid by inner MSE and the hour-resolved output by capped inner grab MSE.",
+      "ruling_text": "For each GBM and primary target the grid point and form with the lowest standardised inner-sonde MSE is used (ties: the earlier grid point, derived before direct); the instantaneous model for N2 is chosen by that variable's term of J_grab; the choices are written to the registry before any validation number; both forms are reported."
+    },
+    {
+      "id": "CLAIM-PER-TRACK",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "LEAD_DECISIONS l.179-181: 'one claim model per track'. Amendment §10 l.360-380: ordering by 'J_sonde for T-B and both T-E modes, J_grab for N2' and 'One claim model per family', which allows different claim models for T-B and N2 in the same look; the lever candidate enters 'only if the lever engineer supplies, before the track's validation scoring' its inner predictions, an optional step after results. Registry now holds 2 lever M6SOTA/inner_v1 rows (keys only inspected).",
+      "ruling_text": "There is one arch-v2 claim model for the joint US look, ordered by J_sonde, and it is tested in both the T-B and the N2 family; a lever model is a claim candidate only if it is named in the registry before any arch-v2 inner number exists, and then its inner predictions are always supplied."
+    },
+    {
+      "id": "N2-P-FORM",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §9.2: 'Models without an hour-resolved output (v1 models, P) use their daily mean' on instantaneous N2 rows; the claim model is scored with its hour-resolved output. The comparison then rewards the time-of-day term, not the model, and P (refitted on daily rows, §5 l.192-194) uses no grab rows.",
+      "ruling_text": "On N2 the claim model must beat each comparator in every form that comparator has (hour-resolved and daily mean) and is itself also scored with its daily mean; P is named a daily-mean baseline in every N2 table."
+    },
+    {
+      "id": "LABEL-WORDING",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §10 label example 'SOTA on England zero-shot temperature mean'. Comparators are re-implementations (R-TD hyperparameters unverified); T-B sites were scored in Test-A; ls docs/novelty_checks: 23 files, 0 for M6 / hydromet / diel.",
+      "ruling_text": "A label reads 'better than the re-run published top-down LSTM and the listed baselines on <track, endpoint>', names the comparators as re-implemented here, says 'future year at previously scored sites' for T-B and N2, and uses 'first', 'novel' or unqualified 'state of the art' only with a dated entry in docs/novelty_checks."
+    },
+    {
+      "id": "TB-GEFF",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §9.2 power lines give 317 / 315 / 155 / 164 sites in 33 / 31 / 19 / 19 groups and no G_eff, although §9 requires G >= 15 and G_eff >= 8 per endpoint. Reviewer computed G_eff 9.1 for the Test-A DO cell (G 22); not re-run by me. The DO endpoints sit near the floor.",
+      "ruling_text": "Before any arch-v2 validation number, a stamped deviations entry gives the metadata G and G_eff of every T-B and N2 endpoint; an endpoint below the minimum is descriptive and keeps p = 1 in its family; a non-rejection is reported as 'not detectable at the stated MDE'."
+    },
+    {
+      "id": "TD-TIMING",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment §9.4 l.351-355: T-D may be scored 'for an earlier US-model freeze written by the lead'. LEAD_DECISIONS l.175: T-D 'secondary and descriptive only'. An earlier freeze would give a second set of frozen US models and a test-like number before the joint look.",
+      "ruling_text": "T-D is scored once, with the models of the joint T-B/N2 freeze only; the clause 'or for an earlier US-model freeze written by the lead' in §9.4 is struck."
+    },
+    {
+      "id": "X1-STREAMPULSE",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merges the note STREAMPULSE-X1. SYNTHESIS C1 and §4.1 M6 row: the amendment must add 'the StreamPULSE registration of C1' (which StreamPULSE sites the DO stage reads, before M1's audit). Amendment l.66 says only 'StreamPULSE ... avoided entirely'; no registration entry and no loader check. grep -ril streampulse over arch-v2 code and configs: 0 files.",
+      "ruling_text": "M6's C1 registration is the empty set: no arch-v2 code reads any StreamPULSE row in this round, the D2 DO stage included, and the pool loader asserts it."
+    }
+  ],
+  "points": [
+    {
+      "point": "Q1 counting and variant rule",
+      "ruling": "Accept only as a closed list: label set, static schema, fine-tune cell; same hyperparameters and config sha apart from the switch; variant_of row before training; separate tally; no parent-versus-variant choice after a validation number. Smoke rows stay uncounted and are refused by log_inner.",
+      "reason": "An open variant rule lets configurations escape the cap of 12 and rule 5 of sota_campaign. Three M6V2/d1.g1 smoke rows already sit in configs_tried.jsonl (101 rows), so the tally must be explicit."
+    },
+    {
+      "point": "Q2 G-D1a clause for N2 on J_grab",
+      "ruling": "Rejected. One gate on the 3-seed mean of J_sonde for all tracks; J_grab is reported only.",
+      "reason": "Integrity reviewer accepted either; design reviewer showed a 3 % threshold under about 5 % seed SD. A second criterion on a smaller capped cell adds a per-track fork. The single gate is the stricter option and can be carried out."
+    },
+    {
+      "point": "Q3 Tier 2 pool",
+      "ruling": "Tier 1 only in this round; pool pinned before the first post-stamp fit; the late-addition clause of §2.4 is struck.",
+      "reason": "Tier 2 size is UNVERIFIED and not built; adding rows after inner numbers is a choice after results."
+    },
+    {
+      "point": "Q4 England split rule",
+      "ruling": "Adopt the eligible-only rule of EA protocol §4 with S = 0.50, the 15 % guard and the hash order as written; add the all-station status table; reject any per-group cap variant; write the hybas_l7-not-null condition and the group-id rule into the protocol before v1.0.",
+      "reason": "Rule uses metadata and geometry only. S = 0.50 gives the larger test cell (reviewer: G_eff 11.2 / 12.1 against 9.2 / 10.2) without touching a value. A cap would be a second tunable."
+    },
+    {
+      "point": "Q5 minimum groups and comparator set",
+      "ruling": "G >= 15 and G_eff >= 8 stay as floors and are never lowered; the IUT is over both R-TD forms, G1, G2 and P (plus the references-only stack for D3), every seed.",
+      "reason": "The lead's text says 'the better of G1/G2'; requiring both is at least as strict and avoids a post-hoc choice of which is better."
+    },
+    {
+      "point": "Q6 Holm family size",
+      "ruling": "T-B family of 6 as written in the amendment; T-E zero-shot 6, fine-tuned 6, N2 2; no endpoint is removed after the stamp; a failed-minimum endpoint stays with p = 1.",
+      "reason": "The plan said 4; six is the larger correction and matches the amendment's endpoint list."
+    },
+    {
+      "point": "Q7 lever candidate and v1 models",
+      "ruling": "Lever models are secondary unless named as claim candidate in the registry before any arch-v2 inner number; v1 models are analysed as frozen and secondary; lever protocol §8 is aligned through its deviations log before any lever validation number.",
+      "reason": "Lever inner rows already exist (2 M6SOTA/inner_v1 rows, 13:27 EST), so an optional late entry would be a choice after results."
+    },
+    {
+      "point": "Q8 order with M1's England draw",
+      "ruling": "Both split files must exist with verified sha before any EA fit; order M6 freeze, M1 draw, first M6 EA fit; loader-enforced; the escape clause is struck; an empty M1 draw is recorded as a file with the empty set.",
+      "reason": "Stricter of the two reviewer positions; the empty-set file keeps it executable if M1 drops its England arm."
+    },
+    {
+      "point": "Q9 pins and stamp mechanics",
+      "ruling": "pins.json covers tables, role files, code and all v2 configs; written once, 0444, sha in the registry; the stamp row is written by the lead and names the rulings-file sha; all non-smoke entry points are gated.",
+      "reason": "Today only 5 tables are pinned, gbm_ref.py is ungated and the stamp gate accepts any M6-hydromet prereg_snapshot row."
+    },
+    {
+      "point": "T-E: value of S",
+      "ruling": "S = 0.50.",
+      "reason": "Chosen from metadata only; larger test cell and margin over the G_eff floor; no label value involved."
+    },
+    {
+      "point": "T-E: minimum (G, G_eff)",
+      "ruling": "G >= 15 and G_eff >= 8 per endpoint, checked on metadata before the split freeze and on the realised paired cell inside the look before any score; a failing endpoint is descriptive with p = 1.",
+      "reason": "Same floor as the US tracks; the realised cell can be smaller than metadata after QC, so the check must run again inside the look without changing thresholds."
+    },
+    {
+      "point": "T-E: power statement",
+      "ruling": "The MDE values of §9.1 are best-case, single-comparator bounds under an unverified variance assumption; the deviations entry restates MDE with the frozen G_eff; no claim of adequate power is made.",
+      "reason": "The amendment's metadata facts refer to the superseded 54-group grouping, and the IUT over five comparators lowers power below the single-test MDE."
+    },
+    {
+      "point": "England split: label-free and reproducible?",
+      "ruling": "Label-free: yes on current evidence. Reproducible: not yet; before the freeze the HydroRIVERS and HydroBASINS layers and the UWWTR table are sha-pinned in the split file, writer and reader hash the same core, and a synthetic-split test shows the loader accepts the writer's output.",
+      "reason": "Inputs are catalogue metadata and geometry; no readings table exists on disk and the daily step is blocked. But the writer pins 3 parquet files only, and ea_data.load_split hashes 4 keys while the writer hashes 7."
+    },
+    {
+      "point": "England split: cross-role flow connections",
+      "ruling": "Accept the grouping for eligible stations; require the all-station status table so that ineligible stations connected to a test group are closed.",
+      "reason": "Reviewer found 0 cross-role flow pairs among eligible stations (not re-run by me) but 864 stations have no status."
+    },
+    {
+      "point": "England split: interaction with ea_england_allocation.md and X4",
+      "ruling": "M6's split file lists L7 units per group and the status of all stations so M1 can compute its draw; M1 draws only after M6's freeze. X4 is met in substance through the shared sonde_split.json; M6 records the sha of its sonde-tier site list in pins.json.",
+      "reason": "M1's allocation is defined on M6 non-test groups; without L7 units and ineligible-station status M1 cannot respect M6's reservations. No separate X4 table exists, so the pin is the checkable substitute."
+    },
+    {
+      "point": "Disclosed change 1: selection by point MSE at inner stations instead of NLL",
+      "ruling": "Accepted. Weights 0.8 / 0.2 and the 30 sample-day cap are fixed; claim ordering uses J_sonde only; the same code and rows score every model, lever models included.",
+      "reason": "Parity holds because GBMs and P have no likelihood and J_sonde equals the lever criterion. The open part was the weight and the J_grab ordering for N2, closed by the ruling."
+    },
+    {
+      "point": "Disclosed change 2: GBM reference uses the better of derived and direct outputs",
+      "ruling": "Accepted. Selection per target on standardised inner-sonde MSE with a fixed tie rule, written to the registry before any validation number; both forms reported.",
+      "reason": "It strengthens the comparator. The only risk was an unstated row set and tie rule, and a selection after validation numbers."
+    },
+    {
+      "point": "Guarantee until the stamp (§0)",
+      "ruling": "Stands, with the hourly-build incident recorded; §0 counts are superseded by the stamp row, which records current counts (configs_tried 101 rows, 3 arch-v2 smoke rows, 2 lever inner rows, no M6V2 / M6EA / test_b registry row).",
+      "reason": "I found no arch-v2 or EA validation number and the frozen code hash is unchanged, but §0's counts are stale and one build broke rule 2 of §2.4 in memory."
+    }
+  ],
+  "missed": [
+    {
+      "severity": "should_fix",
+      "section": "§9.1 / EA split writer and reader",
+      "issue": "The split writer and the loader do not agree, so the split is not ready to freeze: the loader hashes a 4-key core, the writer a 7-key core, and the writer pins only three parquet files although the protocol says the UWWTR table sha is pinned in the split file. The preview step defaults to S = 0.40.",
+      "evidence": "sentinel/hydromet_sota/ea_data.py l.48 core = (rule, role_of_group, station_group, station_role); scripts/data/sota_hydromet_ea_build.py l.421 core = rule, salt, share_test, share_val, role_of_group, station_group, station_role; l.435 pins = stations.parquet, measures.parquet, stations_geo.parquet; hydromet_ea_protocol.md l.93-95. A writer-produced file would raise 'hash mismatch' (fail-closed, untested). Eligibility also requires hybas_l7 not null (l.381), which the protocol does not state.",
+      "suggested_ruling": "Before the split freeze, writer and readers hash the same canonical core including salt, share_test and share_val, shown by a test on a synthetic split; the split file pins the HydroRIVERS and HydroBASINS layers and the UWWTR table by sha256; the hash check is never loosened to make a frozen file load."
+    },
+    {
+      "severity": "should_fix",
+      "section": "§10 comparators",
+      "issue": "Comparator weaker than the promise: v1 frozen models and lever models are scored in the same T-B/N2 look but stand outside the IUT, so a label could be issued on an endpoint where a co-scored project model is better.",
+      "evidence": "Amendment l.372-376 'All other arms, ablations, v1 models, lever models and R-EA are secondary and uncorrected'; LEAD_DECISIONS l.173 (v1 secondary members of the joint look); lead consistency rule: beat every listed applicable comparator at the test look.",
+      "suggested_ruling": "On T-B and N2 no label is issued for an endpoint where the claim model's point estimate is not better than that of every v1 frozen model and every lever model scored in the same look; this is an added necessary condition outside the Holm families, and tables show these models side by side."
+    },
+    {
+      "severity": "should_fix",
+      "section": "§8 G-D1b",
+      "issue": "The go/no-go compares against R-TD, G1 and G2 on 3 of 4 primary endpoints only; P and the heatwave endpoints, which are in the IUT and the Holm family, are not in it.",
+      "evidence": "Amendment §8 l.266-281 (G-D1b; 'P and heatwave endpoints not in the go/no-go'); §10 IUT over {R-TD, G1, G2, P}.",
+      "suggested_ruling": "G-D1b compares the candidate with every member of the track's IUT set on the validation cell; a no-go on that rule is final for the track."
+    },
+    {
+      "severity": "note",
+      "section": "header l.9-11, §0",
+      "issue": "Living files named as 'unchanged' are changing during review: EA protocol, lever protocol and several arch-v2 code files changed after the first-stage review, some during this verification.",
+      "evidence": "sha256 at 14:35 EST: hydromet_ea_protocol.md cc60763f...6304 (reviewers saw 01ff2f42...); hydromet_sota_protocol.md d25d19d7...81ac (reviewers saw 78159a59...); sota_hydromet_ea_build.py c4a44a31...480a; sota_hydromet_v2_build.py cffc0f8e...1ce9; ea_data.py 93ec6927...4094; gso_mt/runner.py 05687358...7cad; rtd.yaml 19b66c15.... Amendment itself unchanged (0664, mtime 12:56:57).",
+      "suggested_ruling": "The rulings file cites the sha256 of every living file it relies on; 'unchanged' in the header applies to hydromet_protocol.md, FREEZE_hydromet.json and the 46 hashed files only."
+    },
+    {
+      "severity": "note",
+      "section": "§0, §7",
+      "issue": "Lever inner results exist on the same criterion and inner rows as J_sonde while arch-v2 configs are not yet pinned.",
+      "evidence": "results/registry.jsonl: 2 rows M6SOTA/inner_v1 (13:27:20 EST), keys only inspected; configs_tried.jsonl: sota_C1a, sota_C1b at 13:49:48; no pins.json. Amendment §0: 'Lever results: none read by me'.",
+      "suggested_ruling": "The stamp row records the count of lever inner rows at stamp time, and the arch-v2 engineer declares in the deviations file whether any lever inner number was read before the v2 configs were pinned."
+    },
+    {
+      "severity": "note",
+      "section": "§2, §9.1, §0",
+      "issue": "Numbers that do not match their sources.",
+      "evidence": "l.71 '12,771 track-N stations' against 12,768 keys in hydromet_track_n_stations.json (3 excluded before roles for no StreamCat); l.318 '359 in 41 groups' against EA protocol l.103 '399 in 207 ERA5-Land cells and 41 groups'; l.133-140 '39' statics against 40 in COMMON_STATIC; §0 'configs_tried 95 rows' against 101 now; build_report fit rows 256,636 T / 231,089 DO against l.73-75 256,628 / 230,992.",
+      "suggested_ruling": "The counts of the pinned files and of the stamped T-E entry are the binding ones; the figures 12,771, 359, 39 and the Tier 1 row counts in the amendment are superseded by them."
+    },
+    {
+      "severity": "note",
+      "section": "§5, §6.1 configs",
+      "issue": "Config values outside the stamped text: D1's LSTM dropout and an implementation_constants block are set in YAML only.",
+      "evidence": "configs/hydromet_sota/v2/d1.yaml net: dropout 0.4 (not in §6.1); common.yaml implementation_constants; both unpinned (no pins.json).",
+      "suggested_ruling": "Covered by the pins ruling: the YAML values as pinned are part of the configuration, and a change after pinning is a counted configuration."
+    }
+  ],
+  "recommendation": "stamp_with_rulings",
+  "reason": "Hash matches. No finding needs the author to edit the file: all 35 reviewer findings (27 after merging) and three missed items close with binding ruling sentences. No arch-v2 or EA validation number exists; frozen code hash is unchanged (46 files). The one data-path breach (hourly build loading post-train dates in memory) persisted nothing and is fixed in code. T-E must be stamped by reference only and held until EA protocol v1.0 and both split files are stamped; the physical-constants check must be moved by explicit ruling."
+}

@@ -1,0 +1,25 @@
+{
+ "zenodo_record": 18668846,
+ "file": "water_chem.csv",
+ "columns": [
+  "",
+  "Alkalinity_combined",
+  "Alkalinity_grans",
+  "Alkalinity",
+  "Ammonia_N_unionised",
+  "Ammoniacal_N",
+  "DOC",
+  "Chloride",
+  "Conductivity",
+  "Nitrate_N",
+  "Nitrite_N",
+  "TN_oxidised",
+  "Orthophosphate",
+  "DO",
+  "DO_sat",
+  "TP",
+  "SiO2",
+  "Water_temp",
+  "pH"
+ ]
+}

@@ -17,6 +17,8 @@ modification time or size changes.
 
 from __future__ import annotations
 
+from ..data.reserved import is_reserved
+
 import functools
 import os
 import re
@@ -310,6 +312,7 @@ def daily_index(s: Settings) -> pd.DataFrame | None:
             return None
         df = pd.read_parquet(p)
         df["site_no"] = df["site_no"].astype(str)
+        df = df[~df["site_no"].map(is_reserved)]          # reserved new-site block (sentinel.data.reserved)
         return df.drop_duplicates(["site_no", "var"], keep="last").reset_index(drop=True)
 
     return _cached(("daily_index", str(p)), _stamp(p), build)
@@ -325,7 +328,8 @@ def hourly_files(s: Settings) -> dict[str, Path]:
     out = {}
     with os.scandir(d) as it:
         for e in it:
-            if e.is_file() and e.name.endswith(".parquet") and SITE_ID_RE.match(e.name[:-8]):
+            if e.is_file() and e.name.endswith(".parquet") and SITE_ID_RE.match(e.name[:-8]) \
+                    and not is_reserved(e.name[:-8]):     # reserved new-site block
                 out[e.name[:-8]] = Path(e.path)
     return out
 
@@ -575,6 +579,8 @@ def filter_sites(
 
 
 def site_record(s: Settings, site_id: str) -> dict:
+    if is_reserved(site_id):
+        raise DataUnavailable(f"site {site_id} is reserved (held-out evaluation block)")
     df, meta = sites_table(s)
     hit = df[df["id"] == site_id] if not df.empty else df
     if hit.empty:
@@ -665,6 +671,8 @@ def observations(
 ) -> Observations:
     if tier not in TIERS:
         raise BadRequest(f"tier must be one of {TIERS}")
+    if is_reserved(site_id):                           # reserved new-site block: never served
+        raise DataUnavailable(f"site {site_id} is reserved (held-out evaluation block)")
     if tier == "daily":
         path = daily_sites_dir(s) / f"{site_id}.parquet"
         if not path.exists():

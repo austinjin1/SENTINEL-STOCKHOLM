@@ -1,0 +1,504 @@
+{
+ "status": "CANDIDATE \u2014 not frozen; independent pre-test review, then the lead writes FREEZE_downstream_taprisk.json",
+ "prepared": "2026-11-10T15:20:01",
+ "app": "taprisk",
+ "split_file": "docs/preregistration/downstream_taprisk_split.json",
+ "split_sha256": "a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298",
+ "scoring_code_sha256": "1623ccbd8c6af8ad01404f62258935bb1913c5659ca8dfe0060a98ebd86ff0c3",
+ "scoring_files": {
+  "docs/preregistration/downstream_taprisk.md": "ae7133b436a3b57b2afe71250101c4712962568654b74d6d09302a4e05f7dd2e",
+  "docs/preregistration/downstream_taprisk_data_pins.json": "55bb6ddfe0e6c5cda7b8a2b63cb5359fc4e3036434612e49cfb1cd49d750c45b",
+  "scripts/train/downstream_taprisk.py": "fc7540f43bdcddf1d7528221443308538e7159ca3f8b30b5bc1e5581913b62ec",
+  "scripts/train/downstream_taprisk_test.py": "5538cf797e5ec8f3945322f0b87c295c0e8312d4e587eaa63c145fe8d68b81ef",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/downstream/common.py": "f26d66f2ee2d990bb83c7359da4f1f880a4eb6d1b4c7da442c16fd792ddef519",
+  "sentinel/models/downstream/crossfit.py": "3560dd8a13d4a087cc6d31b7bb1c7be2a6009888563b7d375603307a98917f3a",
+  "sentinel/models/downstream/taprisk.py": "f14af93705a2efe0522ab9a0ef668d8c934f75e81beb30668343285636cbcc8e",
+  "sentinel/models/downstream/testlook.py": "9babf2cd7f0f2816b829272bd7504204cda045440930b1a9bec2412f6e3e8f8d",
+  "sentinel/models/downstream/weather.py": "85b0858c98309c6440967296828d91badd981cc42fb505177631f3e3bcfb810d"
+ },
+ "registry_scoring_code_sha256": "f63ed306fb0082e4f9b3788e7c81626702ddd013db6f469b79cc8f2ac1d13e99",
+ "registry_scoring_files": {
+  "docs/preregistration/downstream_taprisk.md": "ae7133b436a3b57b2afe71250101c4712962568654b74d6d09302a4e05f7dd2e",
+  "docs/preregistration/downstream_taprisk_data_pins.json": "55bb6ddfe0e6c5cda7b8a2b63cb5359fc4e3036434612e49cfb1cd49d750c45b",
+  "docs/preregistration/downstream_taprisk_split.json": "a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298",
+  "scripts/data/build_taprisk_links.py": "9392fd5956a4bb72318980a301754d0b0d504a6625a99fa25d4bc7045271d880",
+  "scripts/train/downstream_taprisk.py": "fc7540f43bdcddf1d7528221443308538e7159ca3f8b30b5bc1e5581913b62ec",
+  "scripts/train/downstream_taprisk_test.py": "5538cf797e5ec8f3945322f0b87c295c0e8312d4e587eaa63c145fe8d68b81ef",
+  "sentinel/__init__.py": "c56348c43d5fc13068b63471b47901b374fbff7db2ae6c4051f9ae65555d7071",
+  "sentinel/core/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/core/paths.py": "9bbe6f726dfdd9d3879331de3b976c5780bb0bb27814fb48fd9171b8a6de20f3",
+  "sentinel/core/registry.py": "8e1f1733a546b30189335403e3acfc61c9637301195c94f06dd17582a73605f7",
+  "sentinel/core/runlog.py": "e31ef200946e35b5919691f1352c811eefdf35ad0a4232ec94280f69af087720",
+  "sentinel/data/downstream_links.py": "7e4d2904f250b4180e62d9629660c49ca72935e5b4f2a7158765ed7f711b9b98",
+  "sentinel/eval/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/eval/bootstrap.py": "024404c6f2def9efbef19fa42715acf9b5209efd114e11755c43929eb6948e68",
+  "sentinel/eval/metrics.py": "02882bad06cedbec6dbac9c6f4b2c49920a0eb6d64bab8a0bddf4ba6fd1dd89d",
+  "sentinel/eval/splits.py": "e94122c909a2ae9afa8b04c9165d50fed95d94f830e72cc7cd65b1208f7dbb95",
+  "sentinel/models/__init__.py": "f22e86820ef1289b477789d882178801a63d8e336e74ac17bfaa27a0ef4ed8c0",
+  "sentinel/models/downstream/__init__.py": "a23af4f5eadfbb55ef36bc25509d780b781d4376045267898f5dd73b50287a4d",
+  "sentinel/models/downstream/common.py": "f26d66f2ee2d990bb83c7359da4f1f880a4eb6d1b4c7da442c16fd792ddef519",
+  "sentinel/models/downstream/crossfit.py": "3560dd8a13d4a087cc6d31b7bb1c7be2a6009888563b7d375603307a98917f3a",
+  "sentinel/models/downstream/taprisk.py": "f14af93705a2efe0522ab9a0ef668d8c934f75e81beb30668343285636cbcc8e",
+  "sentinel/models/downstream/taprisk_it2.py": "c34f48e651643852046ed378b451923734c3a18fe18770d709c6cce70b07fa02",
+  "sentinel/models/downstream/taprisk_look.py": "492fef4b378e70dd2a12a6f781601a5858dc1adff4570fd801afcba6cddb652a",
+  "sentinel/models/downstream/taprisk_models.py": "4e83d100632073cedd9447e5bdfc8dc642f8a9cb2381529515bfe28dad1b528e",
+  "sentinel/models/downstream/taprisk_numeric.py": "348853157e7e4426c00ff67a1e8e846fd635418304011ced9fe68bf640734e76",
+  "sentinel/models/downstream/taprisk_registry.py": "a606c871ce9d2669f92d39e5eb8154648dfb6b2a794f5fac3e10cf0d7d0f14b7",
+  "sentinel/models/downstream/testlook.py": "9babf2cd7f0f2816b829272bd7504204cda045440930b1a9bec2412f6e3e8f8d",
+  "sentinel/models/downstream/toxinwatch.py": "75e3bd9ffbe5bdaa75a54bb94e8ec0f7ae06d74d68f9fa59b1067d65da6c2f85",
+  "sentinel/models/downstream/weather.py": "85b0858c98309c6440967296828d91badd981cc42fb505177631f3e3bcfb810d",
+  "sentinel/models/downstream/wqp_track.py": "88b339d19a946f3ad1f095ce5a0d33e4cc011b0878a27b660469fa4367e6bec4"
+ },
+ "data_pins": {
+  "file": "docs/preregistration/downstream_taprisk_data_pins.json",
+  "sha256": "55bb6ddfe0e6c5cda7b8a2b63cb5359fc4e3036434612e49cfb1cd49d750c45b",
+  "n_files": 24,
+  "verified_before_claim": true
+ },
+ "data_manifests": [
+  "labels_sdwis",
+  "labels_cws_boundaries",
+  "taprisk_catchment",
+  "wqp_discrete",
+  "wbd_huc12"
+ ],
+ "configs_tried": 50,
+ "configs_note": "50 entries; 42 distinct configurations; 6 corrected it2 re-fits (C5/C6/W3); 48 fitted variants",
+ "selected": {
+  "model": "stack_rf_gbm: level-0 gbm_rich (LightGBM 15 leaves, min_child 20, phase-1 n_estimators, 3 seeds) + balanced RF x10 on rich features; level-1 L2 logistic on logits; meta fitted on 5 state-grouped inner folds",
+  "fit_rows": "train + val rows (origins 2010, 2013, 2016)",
+  "selection": "it2c (corrected) rule re-applied: see evidence"
+ },
+ "test_block": "test_known (train+val states x T=2019) and test_new (test states x T=2019), window 2020-2022; D4a primary, D4b secondary",
+ "comparators": {
+  "incumbent": "pennino_rf (Pennino-form balanced RF, StreamCat top-k)",
+  "incumbent_plus": [
+   "pennino_rf_hist",
+   "pennino_rf_hist_rich"
+  ],
+  "strongest_simple": {
+   "d4a": "known location_knn25 / new persistence",
+   "d4b": "persistence"
+  }
+ },
+ "claim_rule": "D4a: stack beats pennino_rf, pennino_rf_hist, pennino_rf_hist_rich and the strongest simple baseline on both test sets, paired HUC8 AUROC, Holm over 8, per-seed paired point estimate > 0 in each of 3 seeds; otherwise competitive",
+ "expected_label": "competitive (no qualifier on validation)",
+ "counts_toward_HG4_beats_incumbent": "only if the claim is met",
+ "test_scoring_path": {
+  "script": "scripts/train/downstream_taprisk_test.py",
+  "sha256": "5538cf797e5ec8f3945322f0b87c295c0e8312d4e587eaa63c145fe8d68b81ef",
+  "run_with": "default SENTINEL_RUNS / SENTINEL_DATA",
+  "dry_run_on_val": {
+   "results": "/home/bcheng/STOCKHOLM/sentinel_runs/downstream/taprisk/testpath_dryrun/results.json",
+   "sha256": "c4add9e73dc34833097f525406baf29cb35839962cd2adcc5dd6d09565ce3c8e",
+   "claim_met_on_val": false
+  }
+ },
+ "environment": {
+  "pip_freeze_noeditable_sha256": "19a9cedf1a9621b921757ba4325ad098ea1d930e1ac34286e1d7b65fadba4c67",
+  "note": "E2: the pin excludes the editable install line, so repo commits do not move it; repo code is covered by the import-closure hash"
+ },
+ "results_file": "docs/preregistration/downstream_taprisk_test_results.md (write-ups never go in the frozen protocol)",
+ "paths": {
+  "runs_root": "/home/bcheng/STOCKHOLM/sentinel_runs",
+  "data_root": "/home/bcheng/STOCKHOLM/sentinel_data"
+ },
+ "seed_rule": "per-seed paired point estimate > 0 in each of 3 seeds; only the GBM seed varies (RF level-0 and meta-learner use seed 0)",
+ "state_cluster_rule": "W1/W-d: a SEPARATE Holm over the 4 D4a test_new primary comparisons (m = 4) under a state-cluster bootstrap, each also subject to the per-seed rule; the HUC8 Holm (m = 8) stays primary and both must pass",
+ "parity": "pennino_rf_hist_rich and the stack's RF level-0 get lat/lon like the stack's GBM (W3); parity RF top-k untuned (all features)",
+ "label_rule": "fit-row labels censored at the scored origin (violations first reported <= 31 Dec 2019 in the look) (C6)",
+ "frozen_n_estimators": {
+  "d4a_gw_nitrate": 88,
+  "d4b_sw_dbp": 75
+ },
+ "deviations": [
+  "Pennino reproduction sensitivity 0.813 vs 0.758 (+0.055, outside +-0.05, favourable to the incumbent; specificity 0.815 exact) - diagnosed in protocol \u00a710 (\u00a715.4)",
+  "units and system attributes from the 2026 SDWIS snapshot (survivorship of systems that switched source or were consolidated) (W2)",
+  "C5/C6 corrections re-run as it2c (no new configurations); numeric track added on user requirement 2026-11-10 (secondary, descriptive)"
+ ],
+ "numeric_track": {
+  "definition": "log10 system-mean HAA5, TOC, bromide (UCMR4) with 90 % quantile-GBM prediction intervals; secondary, descriptive, never in claim_met or H-G4; no measured nitrate concentrations exist in the SDWIS extract",
+  "deviations": [
+   "feature_cols omits the rh_/sp_ rich features that \u00a711 mentions",
+   "HAA5 collection dates run to 2021-12-13, not 2018-2020",
+   "log floors (HAA5 1, TOC 500, bromide 10 ug/L) chosen after the first validation run",
+   "TOC 90 % PI coverage 0.526 [0.459, 0.595] - under-covered",
+   "UCMR values filtered to in-scope systems before aggregation (W-b fix)"
+  ]
+ },
+ "dry_run_reproducibility": {
+  "requirement": "lead, D4 delta review: the --dry-run-on-val predictions must be byte-identical between runs",
+  "met": true,
+  "lead_ruling": "2026-11-10 14:25 EST: make forest PREDICTION single-threaded; fitting stays as it is; two dry runs on validation must give byte-identical prediction files and every validation AUROC must equal the previous dry run bit for bit",
+  "change": "prediction only: taprisk_models.BalancedRF.predict and the pennino_rf_reg forest in taprisk_numeric.fit_predict set n_jobs=1 on the fitted forests before predicting. Fitting unchanged (threaded): a library-behaviour diagnostic on random arrays showed threaded fits identical tree by tree and identical to a single-threaded fit (classifier and regressor). No configuration, feature, seed, label, split or selection changed; nothing re-selected.",
+  "statement": "Two dry runs on validation with the changed code (run3 14:37-14:58, run4 14:59-15:18 local) give byte-identical predictions.parquet, results.json and printed logs. Against the last run before the change (run2 13:14 local, threaded prediction): all 176 AUROC leaves (points, CI bounds, valid-bootstrap counts) bit-identical, as is every AUPRC value, paired difference, CI, p-value, Holm decision, per-seed difference and claim flag; 9 of 1,580 result leaves differ by at most 4.4e-16 (8 pennino_rf_reg RMSE/R2 values or CI bounds of the secondary numeric track, 1 pennino_rf Brier CI bound) - the family of values that already differed between the two pre-change runs; 30 of 35 prediction columns bit-identical, 5 forest-derived columns differ by at most 2.2e-15 (tree summation order changed from thread-arrival order to tree order).",
+  "prediction_files": {
+   "run3_single_threaded": {
+    "sha256": "804e7a4b0f945dc7095c351f17fac6a8669f20d8ef02371fe7572dc51f18764f",
+    "bytes": 4211599
+   },
+   "run4_single_threaded": {
+    "sha256": "804e7a4b0f945dc7095c351f17fac6a8669f20d8ef02371fe7572dc51f18764f",
+    "bytes": 4211599
+   },
+   "run2_threaded_before_change": {
+    "sha256": "39ea40f89e98102c34d11b136a474920c6c5a785f8fd4b75bea0ce7f6fa25a33",
+    "bytes": 4211626
+   }
+  },
+  "results_files": {
+   "run3_single_threaded": {
+    "sha256": "c4add9e73dc34833097f525406baf29cb35839962cd2adcc5dd6d09565ce3c8e",
+    "bytes": 56939
+   },
+   "run4_single_threaded": {
+    "sha256": "c4add9e73dc34833097f525406baf29cb35839962cd2adcc5dd6d09565ce3c8e",
+    "bytes": 56939
+   },
+   "run2_threaded_before_change": {
+    "sha256": "9d48472c54cbac0a0f304c567f1bd07e173dc579bd1e890d65096cbed5c33fc8",
+    "bytes": 56939
+   }
+  },
+  "run3_vs_run4": {
+   "predictions_byte_identical": true,
+   "results_byte_identical": true,
+   "result_leaves_differing": 0
+  },
+  "run2_vs_run3": {
+   "n_result_leaves": 1580,
+   "n_auroc_leaves": 176,
+   "auroc_leaves_differing": 0,
+   "result_leaves_differing": [
+    {
+     "leaf": "/numeric/numeric_log10_bromide/models/pennino_rf_reg/r2_ci[0]",
+     "dry6": 0.00883366843856953,
+     "dry7": 0.008833668438569536,
+     "abs_diff": 5.204170427930421e-18
+    },
+    {
+     "leaf": "/numeric/numeric_log10_haa5/models/pennino_rf_reg/r2_ci[0]",
+     "dry6": -0.08957476999173285,
+     "dry7": -0.08957476999173306,
+     "abs_diff": 2.0816681711721685e-16
+    },
+    {
+     "leaf": "/numeric/numeric_log10_haa5/models/pennino_rf_reg/r2_ci[1]",
+     "dry6": 0.13445105052107514,
+     "dry7": 0.13445105052107525,
+     "abs_diff": 1.1102230246251565e-16
+    },
+    {
+     "leaf": "/numeric/numeric_log10_toc/models/pennino_rf_reg/r2",
+     "dry6": 0.12352228565356771,
+     "dry7": 0.12352228565356727,
+     "abs_diff": 4.440892098500626e-16
+    },
+    {
+     "leaf": "/numeric/numeric_log10_toc/models/pennino_rf_reg/r2_ci[0]",
+     "dry6": 0.04958952451669711,
+     "dry7": 0.04958952451669689,
+     "abs_diff": 2.220446049250313e-16
+    },
+    {
+     "leaf": "/numeric/numeric_log10_toc/models/pennino_rf_reg/r2_ci[1]",
+     "dry6": 0.1710959651893078,
+     "dry7": 0.1710959651893076,
+     "abs_diff": 2.220446049250313e-16
+    },
+    {
+     "leaf": "/numeric/numeric_log10_toc/models/pennino_rf_reg/rmse",
+     "dry6": 0.3684987552919749,
+     "dry7": 0.368498755291975,
+     "abs_diff": 1.1102230246251565e-16
+    },
+    {
+     "leaf": "/numeric/numeric_log10_toc/models/pennino_rf_reg/rmse_ci[1]",
+     "dry6": 0.38708055386900414,
+     "dry7": 0.3870805538690042,
+     "abs_diff": 5.551115123125783e-17
+    },
+    {
+     "leaf": "/sets/dryrun_val_new_d4b_sw_dbp/scores/pennino_rf/brier_ci[1]",
+     "dry6": 0.278947405612505,
+     "dry7": 0.2789474056125049,
+     "abs_diff": 5.551115123125783e-17
+    }
+   ],
+   "prediction_columns_identical": 30,
+   "prediction_columns_differing": {
+    "s_pennino_rf": {
+     "rows_differing": 328,
+     "max_abs_diff": 2.220446049250313e-16,
+     "rows_with_rank_change": 109
+    },
+    "s_pennino_rf_hist": {
+     "rows_differing": 11,
+     "max_abs_diff": 1.1102230246251565e-16,
+     "rows_with_rank_change": 1
+    },
+    "s_pennino_rf_hist_rich": {
+     "rows_differing": 1,
+     "max_abs_diff": 5.551115123125783e-17,
+     "rows_with_rank_change": 4
+    },
+    "s_stack_rf_gbm_seed2": {
+     "rows_differing": 1,
+     "max_abs_diff": 2.7755575615628914e-17,
+     "rows_with_rank_change": 0
+    },
+    "pennino_rf_reg": {
+     "rows_differing": 708,
+     "max_abs_diff": 2.220446049250313e-15,
+     "rows_with_rank_change": 0
+    }
+   }
+  },
+  "history": "candidate 6c07115a (13:27 local) recorded met=False with threaded prediction (run1 vs run2: <= 2.7e-15 in 8 forest-derived columns)"
+ },
+ "evidence_registry_rows": [
+  {
+   "registry_id": "6c878a9225c7",
+   "experiment": "taprisk/d4a_gw_nitrate/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf",
+   "split": "val_known_origin2016",
+   "value": 0.024542221676520537,
+   "ci": [
+    0.016240697568924524,
+    0.0342380613131813
+   ]
+  },
+  {
+   "registry_id": "b250da138396",
+   "experiment": "taprisk/d4a_gw_nitrate/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist",
+   "split": "val_known_origin2016",
+   "value": 0.010033378751627797,
+   "ci": [
+    0.005597111073472383,
+    0.01551294835728988
+   ]
+  },
+  {
+   "registry_id": "d8f6d4ae3494",
+   "experiment": "taprisk/d4a_gw_nitrate/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist_rich",
+   "split": "val_known_origin2016",
+   "value": 0.010397037749480864,
+   "ci": [
+    0.005422105038550529,
+    0.01656864401407825
+   ]
+  },
+  {
+   "registry_id": "6c35d418b633",
+   "experiment": "taprisk/d4a_gw_nitrate/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_location_knn25",
+   "split": "val_known_origin2016",
+   "value": 0.11273372089520084,
+   "ci": [
+    0.08165581837337464,
+    0.14714709395955336
+   ]
+  },
+  {
+   "registry_id": "809ee42521d7",
+   "experiment": "taprisk/d4a_gw_nitrate/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc",
+   "split": "val_known_origin2016",
+   "value": 0.9593914119064144,
+   "ci": [
+    null,
+    null
+   ]
+  },
+  {
+   "registry_id": "5dc0ed9a0d11",
+   "experiment": "taprisk/d4a_gw_nitrate/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf",
+   "split": "val_new_origin2016",
+   "value": 0.08224832415772254,
+   "ci": [
+    0.041294568422940964,
+    0.13157564629730714
+   ]
+  },
+  {
+   "registry_id": "d8255e42299a",
+   "experiment": "taprisk/d4a_gw_nitrate/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist",
+   "split": "val_new_origin2016",
+   "value": -0.0037246990018460213,
+   "ci": [
+    -0.02786974152904851,
+    0.02001770371133642
+   ]
+  },
+  {
+   "registry_id": "76c01c97e04f",
+   "experiment": "taprisk/d4a_gw_nitrate/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist_rich",
+   "split": "val_new_origin2016",
+   "value": 0.00506972919695714,
+   "ci": [
+    -0.005635706483816044,
+    0.015296851361802095
+   ]
+  },
+  {
+   "registry_id": "7e65726c2505",
+   "experiment": "taprisk/d4a_gw_nitrate/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_persistence",
+   "split": "val_new_origin2016",
+   "value": 0.12816177391512695,
+   "ci": [
+    0.05853800183745477,
+    0.2021149048394103
+   ]
+  },
+  {
+   "registry_id": "3848ba2e39b2",
+   "experiment": "taprisk/d4a_gw_nitrate/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc",
+   "split": "val_new_origin2016",
+   "value": 0.890562462222077,
+   "ci": [
+    null,
+    null
+   ]
+  },
+  {
+   "registry_id": "95133d25c4a1",
+   "experiment": "taprisk/d4b_sw_dbp/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf",
+   "split": "val_known_origin2016",
+   "value": 0.018944902921187223,
+   "ci": [
+    0.009270894785227218,
+    0.029809319181448857
+   ]
+  },
+  {
+   "registry_id": "a9e892811c20",
+   "experiment": "taprisk/d4b_sw_dbp/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist",
+   "split": "val_known_origin2016",
+   "value": 0.004505671676167444,
+   "ci": [
+    0.00040599380416631026,
+    0.009042281077406714
+   ]
+  },
+  {
+   "registry_id": "0c0256f042d3",
+   "experiment": "taprisk/d4b_sw_dbp/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist_rich",
+   "split": "val_known_origin2016",
+   "value": 0.003270013392102644,
+   "ci": [
+    0.00025638415419974023,
+    0.00676743489251005
+   ]
+  },
+  {
+   "registry_id": "938dcc0ad8d7",
+   "experiment": "taprisk/d4b_sw_dbp/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_persistence",
+   "split": "val_known_origin2016",
+   "value": 0.0289736560068502,
+   "ci": [
+    0.01590876345650304,
+    0.042649406835118045
+   ]
+  },
+  {
+   "registry_id": "1df4ae092461",
+   "experiment": "taprisk/d4b_sw_dbp/val_known@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc",
+   "split": "val_known_origin2016",
+   "value": 0.8202142736409617,
+   "ci": [
+    null,
+    null
+   ]
+  },
+  {
+   "registry_id": "5945f14b1bad",
+   "experiment": "taprisk/d4b_sw_dbp/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf",
+   "split": "val_new_origin2016",
+   "value": 0.15352293426063912,
+   "ci": [
+    0.08339740779041159,
+    0.21437888619285173
+   ]
+  },
+  {
+   "registry_id": "529c17f39aad",
+   "experiment": "taprisk/d4b_sw_dbp/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist",
+   "split": "val_new_origin2016",
+   "value": 0.008369211238063667,
+   "ci": [
+    -0.0041736205380202614,
+    0.024486742349231296
+   ]
+  },
+  {
+   "registry_id": "3aca5512c1a8",
+   "experiment": "taprisk/d4b_sw_dbp/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_pennino_rf_hist_rich",
+   "split": "val_new_origin2016",
+   "value": -0.0034428989347021766,
+   "ci": [
+    -0.015205138545976956,
+    0.010255188304731279
+   ]
+  },
+  {
+   "registry_id": "aa95ce32e850",
+   "experiment": "taprisk/d4b_sw_dbp/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc_diff_vs_persistence",
+   "split": "val_new_origin2016",
+   "value": 0.04163906827841257,
+   "ci": [
+    0.00961546066358937,
+    0.0757567745458296
+   ]
+  },
+  {
+   "registry_id": "92d6f825b0a2",
+   "experiment": "taprisk/d4b_sw_dbp/val_new@it2c",
+   "model": "stack_rf_gbm",
+   "metric": "auroc",
+   "split": "val_new_origin2016",
+   "value": 0.7876028039962466,
+   "ci": [
+    null,
+    null
+   ]
+  }
+ ]
+}

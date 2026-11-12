@@ -15,8 +15,9 @@ the hashed glob `scripts/eval/hydromet_*.py`, so it is not used.) The primary `M
 candidate under review are unchanged.
 
 ## 1. Honest prior (stated first)
-On the original val cell (`M6S/val_v2`, track S), **no M6 model detects low DO**: critical success index for
-daily-minimum DO < 5 mg/L ≤ 0.03 for every model and comparator (255 observed exceedance days), and every model is
+On the original val cell (`M6S/val_v2`, track S; cycle 1–4 EA-LSTMs and the GBM/physics baselines — `ealstm_ws_full`
+was never evaluated, and nothing was evaluated on test), **no evaluated model detects low DO**: pooled critical success
+index for daily-minimum DO < 5 mg/L ≤ 0.033 for every evaluated model and comparator (255 observed exceedance days), and every model is
 1.2–2.7 °C too cold on days above the training 90th percentile. The event track is therefore expected to show weak
 hypoxia detection; any skill must beat climatology and the thresholded GBM/physics comparators to count.
 

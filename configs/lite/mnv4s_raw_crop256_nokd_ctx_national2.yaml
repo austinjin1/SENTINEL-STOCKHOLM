@@ -1,0 +1,14 @@
+# national-2 H2 comparator of config 6 (NOT a selection candidate): context-FiLM crop256 without distillation, same seeds and data
+name: mnv4s_raw_crop256_nokd_ctx_national2
+backbone: mnv4s
+dec_ch: 48
+input_mode: raw
+batch: 32
+lr: 1.0e-3
+lr_backbone: 5.0e-4
+epochs: 40
+kd_weight: 0.0
+crop: 0
+film: true
+film_source: scene
+context_film: true

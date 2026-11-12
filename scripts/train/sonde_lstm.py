@@ -19,6 +19,9 @@ def main() -> int:
     a = ap.parse_args()
     cfg = runner.apply_overrides(runner.load_config(a.config, smoke=a.smoke), a.set)
     seeds = [a.seed] if a.seed is not None else list(cfg.get("seeds", [0]))
+    from sentinel.models.sonde import gpu_budget
+
+    gpu_budget.widen()   # lead ruling 2026-11-10: GPUs 0-9 via the cap file, idle GPUs only
     gpu = runner.setup_gpu("sonde_lstm" + ("_smoke" if a.smoke else ""), prefer=a.gpu_prefer)
     from sentinel.models.sonde.lstm import LSTMConfig, SondeLSTM  # after CUDA_VISIBLE_DEVICES is set
 

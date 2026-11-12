@@ -107,3 +107,110 @@ Links + StreamCat done (`taprisk_catchment` manifest + datasheet). Reproduction:
 the GBM beats the plain Pennino-form RF clearly (D4a both sets; D4b new states) but not the pre-registered
 history-augmented RF on all sets → **competitive**; 34 configurations. Decision pending with the lead: (a) spend
 the D4 test block on the phase-1 GBM (expected "competitive"), or (b) further pre-registered iterations, or (c) D7.
+
+## 2026-11-09 late: D8 closed, D4 candidate ready
+- D8: it2 decomposition not kept → final negative report (protocol §6b; RESULTS.md). No test look.
+- D4: it2 done (40 configs); rule selected `stack_rf_gbm` (no qualifier; expected "competitive"). Test path
+  `scripts/train/downstream_taprisk_test.py` (dry run reproduces val exactly), pins
+  `docs/preregistration/downstream_taprisk_data_pins.json`, candidate record
+  `docs/preregistration/FREEZE_CANDIDATE_downstream_taprisk.json` (incl. `registry_scoring_code_sha256` for D4 files
+  outside common.scoring_files — verified by the test script before the claim). Awaiting independent pre-test review
+  → lead FREEZE → single look. Write-ups only in `downstream_taprisk_test_results.md`.
+- Next after the D4 look: D7 TroutRefuge.
+
+## D7 TroutRefuge (started 2026-11-09; validation only; new files only)
+Protocol `docs/preregistration/downstream_troutrefuge.md` (written before code; config cap 40; hardened guard spec §6;
+E7 overlay §5; write-ups → `downstream_troutrefuge_test_results.md`). Split frozen `587caeca…`; power OK (val new
+locations 201 / 806). Pending lead decision: MAST/MSST/MWST (project-excluded StreamCat metrics) as a comparator-only
+thermal incumbent — default fallback is an observed air–water thermal rule. Next: phase-1 models, D7-only hardened guard
+module `troutrefuge_guard.py`, E7 overlay feasibility (sonde sites ≤ 5 km of NRSA fish sites).
+D4 candidate under independent pre-test review — do not touch D4 hashed files.
+- 2026-11-09: MAST approved as comparator score only → `scripts/data/fetch_mast_d7.py` → `processed/d7_mast` (manifest +
+  `docs/datasheets/d7_mast.md`, D7-only restricted use); `troutrefuge.assert_no_modelled_temperature` + tests; both thermal
+  incumbents (MAST, air–water) in the claim family (Holm over 5). Add `processed/d7_mast` to the D7 data pins at candidate time.
+
+- **Phase 1 + 1b done 2026-11-10 (validation only; 36 of 40 configurations; runs `troutrefuge/phase1`, `phase1b`).**
+  Primary challenger (inner CV) = LightGBM. Val new locations (n 806, 201 pos): LightGBM 0.9515; RF occupancy incumbent
+  0.9441 (Δ **+0.0074 [−0.0027, +0.0188]**, p 0.16 — tie; paired MDE 0.050); feature-matched RF 0.9475 (Δ +0.004, n.s.);
+  MSST rule 0.9219 (Δ +0.030 [+0.012, +0.047]); MAST rule 0.883 (Δ +0.066); air–water rule 0.850 (Δ +0.102);
+  location kNN 0.901 (Δ +0.051). Holm over six: thermal rules + simple rejected; **RF incumbent and parity RF not** →
+  **"competitive" on validation; D7 does not currently count as "beats incumbent" for H-G4.**
+- **Comparator correction (protocol §8, 2026-11-10):** MAST = mean *annual* stream temperature (not "August");
+  the faithful thermal incumbent is MSST (mean summer). `msst_rule` added (comparator score only, same `d7_mast`
+  restrictions); claim family is now six. Needs the lead's confirmation (approval named MAST only).
+- **Numeric track (Jul–Aug field temperature, val new locations):** quantile LightGBM RMSE 2.96 °C, R² 0.69; MSST 3.23 /
+  0.62 (paired −0.38 °C [−0.54, −0.22]); air–water 4.00 / 0.43; 90 % PI coverage 0.797 uncalibrated → 0.935 with
+  pre-registered CQR (width 8.7 → 11.9 °C; slightly conservative).
+- **Open:** (1) decision on the RF tie — freeze as "competitive", or pre-register a harder track (saturation directive);
+  (2) `troutrefuge_guard.py` (to be derived from the D4 look module once that passes review); (3) E7 overlay feasibility.
+
+## Note from M1 (2026-11-10, lead ruling): reserved USGS new-site block — shared exclusion helper
+- 729 USGS sites (`docs/preregistration/sonde_newsites_list.json`, sha `6200a77c…`) are RESERVED as the EW-v3-N / M1-N
+  unseen test block. Never train, tune, select, plot or compute target statistics on them.
+- Copies exist in the shared tiers `processed/sonde_daily` (422 files), `sonde_hourly` (27) and `raw/usgs_iv{,_refresh_20261108}`.
+  - The 27 + 21 raw IV directories are now **mode 000** (lock record `raw/usgs_iv*/RESERVED_NEWSITES_LOCK.jsonl`).
+  - `sonde_daily` / `sonde_hourly` are untouched: frozen scorers content-hash them.
+- Shared helper `sentinel/data/reserved.py`:
+  - `exclude_reserved` (drop) and `assert_no_reserved` (refuse), hash-pinned list;
+  - `assert_preclaim_clean` (pre-claim audit).
+- Tests: `tests/test_reserved_loaders.py`.
+- **Edited by M1:** `sentinel/models/downstream/killalert.py`. `iowa_gauges` (index-driven) now drops reserved sites and `_gauge_anoms` refuses them. **D3 KillAlert gauge candidates can change if a reserved site was among them; re-check your candidate list before any freeze.** The Platform loader `sentinel/platform/data_access.py` now hides and refuses reserved sites (daily index, hourly files, observations, site_record).
+
+## 2026-11-10: D4 pre-test review (FAIL) corrections — awaiting delta review
+- Audit of the five completed looks: exactly one look each (`docs/preregistration/downstream_test_look_audit_2026-11-09.md`).
+- D4 fixes in D4-owned files only (shared testlook/common/wqp_track untouched): hardened look `taprisk_look.py`;
+  test script rewritten (pre-claim checks, registry claim/seal/abort, hard-coded n_estimators, state-cluster rule, numeric
+  track); C5 dated formal enforcement; C6 censored fit labels (`taprisk.build(scored_origin=)`); W3 lat/lon parity;
+  closure files + AST closure test; pins regenerated (24 files, folder check); it2c re-run → rule again `stack_rf_gbm`
+  (competitive expected); numeric track (UCMR4 HAA5/TOC/bromide, quantile GBM 90 % PI) validated (`numeric_val_v2`).
+- Tests: `tests/test_downstream_taprisk_look.py` (P1, P4, P5, P6/P6d, P7c, P8b, wrong process, unlisted file, e2e score),
+  `tests/test_downstream_taprisk_closure.py`.
+- After the delta review: lead writes FREEZE (status FROZEN, authorised_by/at, candidate sha, `paths` copied from the
+  candidate), prereg snapshot + archive, then one `--allow-test` in `sentinel2` with default paths.
+- Then: D7 phase 1 (MAST comparator approved; numeric temperature track only if a measured temperature label fits).
+
+## 2026-11-10 (18:30 UTC): D4 delta-review fixes done — candidate regenerated, awaiting the lead's FREEZE
+- Delta review 🟡 (E1–E4, W-a–W-e) — all fixed or recorded, in D4-owned files only. 5 of the 30 hashed files changed
+  vs the reviewed 11:49 candidate (`taprisk_look.py`, `downstream_taprisk_test.py`, `taprisk_numeric.py`, D4 pins,
+  D4 protocol); `taprisk_models.py`, the split and all shared files unchanged. Diffs vs the reviewer's copy:
+  scratchpad `ds/d4_delta_diffs/`.
+- **E2:** environment pin = sha of `pip freeze --exclude-editable` (`taprisk_look.env_pin()` = `19a9cedf…`); it no
+  longer moves with git HEAD.
+- Candidate `FREEZE_CANDIDATE_downstream_taprisk.json` regenerated last (13:27:27 local), sha `6c07115a…`; closure hash
+  `21920777…`, common hash `8a9c72ef…`, split `a4a1fc7b…`, pins `a14685a0…`, protocol `5c55bfaa…`, test script `5538cf79…`.
+- **Dry run on validation is NOT byte-identical between runs** (threaded sklearn forest prediction; ≤ 2.7e-15 in the
+  8 forest-derived columns, 27 other columns bit-identical, all AUROC values bit-identical; protocol last-but-one
+  bullet + candidate `dry_run_reproducibility`). Lead decides: accept, or make forest prediction single-threaded
+  (hashed change → delta review + two dry runs + new candidate). Do not change it without that decision.
+- Tests: 83 pass across the 7 downstream guard/D4/D7 test files (20 D4 tests).
+- **Caveat for the five completed apps:** their pins hold the HEAD-dependent `pip_freeze_sha256` (`c3ba836b…`); the
+  shared `TL.pip_freeze_sha()` is now `75aa6588…` (only the editable-install commit id differs), so
+  `TL.verify_data` refuses → a `--rescore-from-saved` on those five is refused until the lead decides how to handle
+  it (the pins files are FREEZE-hashed; not editable).
+- Do NOT commit, write a FREEZE file, or run `--allow-test`: the lead does the first two and authorises the third.
+
+## 2026-11-10 (20:25 UTC): D4 single-threaded forest prediction — new candidate `2bff8c92…`; D7 transfer-track design note
+Supersedes the candidate hashes and the "NOT byte-identical" bullet of the 18:30 UTC section above.
+- **Lead ruling 14:25 EST:** forest *prediction* single-threaded; fitting unchanged. Done in
+  `taprisk_models.BalancedRF.predict` (+4 lines) and `taprisk_numeric.fit_predict` (+1 line): `set_params(n_jobs=1)`
+  before predicting. Fitting was shown not to be a source of non-identity (library diagnostic on random arrays,
+  scratchpad `diag/rf_fit_determinism.py`).
+- **Two dry runs on validation are byte-identical:** predictions sha `804e7a4b…764f`, results.json `c4add9e7…3c8e`,
+  logs identical. Against the last threaded run: all 176 AUROC leaves bit-identical (also every AUPRC, paired
+  difference, CI, p-value, Holm decision, claim flag); 9 of 1,580 leaves differ by ≤ 4.4e-16 (8 `pennino_rf_reg`
+  RMSE/R² values or bounds, 1 `pennino_rf` Brier bound). Comparison: scratchpad `ds/d4_st_compare.json`.
+- **Candidate regenerated last (15:20:01 local), sha `2bff8c924159…8a1d`**; closure hash `f63ed306…`, common hash
+  `1623ccbd…`, split `a4a1fc7b…` (unchanged), pins `55bb6ddf…` (timestamp only; 24 file hashes unchanged), protocol
+  `ae7133b4…` (+21 lines, append-only), env pin `19a9cedf…` and test script `5538cf79…` (unchanged).
+  4 of 30 hashed files changed against candidate `6c07115a…` (diffs: scratchpad `ds/d4_delta_diffs_b/`); 6 of 30
+  against the reviewed 11:49 candidate (`ds/d4_delta_diffs_cumulative_vs_1149/`).
+- Tests: 85 pass (7 downstream guard/D4/D7 files; 22 D4 tests, two new for single-threaded prediction).
+- Still: do NOT commit, write a FREEZE file, or run `--allow-test`. The lead runs the delta review, writes the FREEZE
+  and authorises the one look. If a hashed file is touched again, regenerate pins, then the candidate, last.
+- **D7:** MSST approved by the lead as an added comparator (score only, `d7_mast` restrictions); MAST stays; family of
+  six, Holm; recorded in `downstream_troutrefuge.md` §8. **No D7 freeze candidate yet.** Counts-only design note for a
+  pre-registered ecoregion-transfer track: `docs/preregistration/downstream_troutrefuge_ecoregion_transfer_design.md`
+  (9 `ag_eco9` blocks; fit outside the block on earlier cycles, score the later cycle inside it; primary = pooled AUROC
+  of out-of-ecoregion predictions with a within-ecoregion guard; HUC4 bootstrap; same six comparators; Bonferroni over
+  the two tracks recommended). It is a proposal: nothing in the transfer track is run until the lead approves it
+  (four decisions listed in its §11). Both tracks are then frozen together and looked at in one event.

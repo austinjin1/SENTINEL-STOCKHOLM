@@ -1,0 +1,14 @@
+# D1 GSO-MT (amendment §6.1): grid of 3 at seed 0, 2 ablations on the selected point. Counted configurations: 5.
+arm: d1
+model: gso_mt
+variables: [T, DO]
+data: {grab: true}
+net: {static: film, heads: diel, static_emb: 32, static_hidden: 128, static_noise: 0.5, attr_dropout: 0.1, dropout: 0.4}
+grid:
+  g1: {net: {hidden: 192}, grab_share: 0.5}
+  g2: {net: {hidden: 192}, grab_share: 0.25}
+  g3: {net: {hidden: 128}, grab_share: 0.5}
+# Ablations and variants reuse the selected point's hyperparameters (--base <point>); nothing is re-selected.
+ablations:
+  abl_nograb: {data: {grab: false}, grab_share: 0.0}      # (a) L-sonde + L-usgs only; criterion J_sonde alone
+  abl_indep: {net: {heads: indep}}                         # (b) independent heads; grab rows use the mean head

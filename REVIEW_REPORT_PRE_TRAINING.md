@@ -5289,3 +5289,2492 @@ got the same value. Protocol `3a13670f…`. Newest frozen-file edit: 11:24:23. C
 
 The lead may then write `FREEZE_hydromet.json` from the candidate, minus `NOT_A_FREEZE` and the audit fields, and
 authorise `M6/test`, then `M6N/test`.
+
+## M6 HydroMet — line-level check (2026-11-09)
+
+**Scope:** the D1–D5 fixes of the delta re-review.
+- Diff `scratchpad/pre_delta2/delta2.diff` (640 lines).
+- The baseline snapshot `pre_delta2/old/` hashes to `f519bb35…`, which is the code of the delta re-review. A `cmp`
+  of all 46 frozen files plus the tests against that snapshot shows that exactly the 8 files in the diff changed,
+  and nothing else.
+- Current `scoring_code_sha256` **`5bd7d329…`** (46 files), protocol **`55ab7182…`**. The candidate
+  (`status: CANDIDATE`, 13:52) was written after the last code edit (13:51:32).
+- The rehearsals ran after the last code edit: M6 at 13:56, M6N at 14:02–14:15.
+
+**Safety:** no FREEZE file exists, `sentinel_runs/hydromet/test_looks/` does not exist, and the registry has 0
+`M6*/test` rows, both before and after this check. All probes used a sandboxed RUNS_ROOT, `FREEZE_DIR` and registry:
+`/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/rev_m6_delta/probe2.py`.
+
+**Verdict: 🟢 PASS. The lead may freeze.** `FREEZE_hydromet.json` = the current candidate record, with:
+- `NOT_A_FREEZE` and the audit fields removed;
+- `status: "FROZEN"` and `authorised_by` added;
+- `frozen_files` **kept** (the track-R builder needs it).
+
+Then authorise `M6/test`, then `M6N/test`. The items below (L1–L4) are low-severity hardening and do not block. If
+any of them is applied, the code hash changes: regenerate the candidate, `verify`, and re-run the `M6/test`
+rehearsal before freezing. No further review is needed for that.
+
+### Checked
+1. **D1 freeze authenticity: fixed** (`guard.py:63-80`; `hydromet_test_look.py:176-177`). The following are all
+   refused:
+   - the candidate record at its own path;
+   - the track-R rehearsal record;
+   - the candidate copied into the freeze directory as `FREEZE_hydromet.json` with its `NOT_A_FREEZE` key kept;
+   - a symlink `FREEZE_hydromet.json` → candidate;
+   - any file name other than the three canonical names, or any other directory.
+
+   A properly formed sandbox freeze (`status FROZEN`, `authorised_by`) loads. The CLI test
+   (`test_test_look_cli_refuses_candidate_as_freeze`) exits at the name check, before any claim.
+2. **D2 claim scope and abort: fixed for cross-look and cross-dataset access** (`testlook.py:163-176`).
+   - With an `M6/test` claim open, track-N stations and the `test_b` block are refused.
+   - An exception in predict or seal writes `ABORTED.json` plus a registry row, which closes the claim
+     (`hydromet_test_look.py:194-203`).
+   - Residual (L2): within an open claim's dataset, only the **protected** items are matched. So under an open
+     `M6/test` claim, train- and val-role sites × test block and test-role sites × val block are also authorised
+     (probes Q2b–Q2d).
+   - The CLIs still refuse all of these, and the look driver never requests them, so this is reachable only from
+     custom code during the claim's lifetime.
+3. **`--resume-aborted` cannot yield a second look in the supported flow.**
+   - Scoring runs only after sealing.
+   - `abort` refuses once `PREDICTIONS_SAVED.json` exists (probe Q3a).
+   - `resume_aborted` refuses unless `ABORTED.json` exists **and** neither PREDICTIONS_SAVED nor SCORED exists, the
+     claim's freeze sha matches, and fewer than 2 prior resumes exist (Q3b; test `test_abort_closes_claim_and_logged_resume`).
+   - Every abort and resume writes a registry row, so `claim` stays refused afterwards (Q4).
+   - A resume only re-predicts with the same frozen artifacts, family, comparators and verified pins.
+     Unsealed predictions carry no outcome.
+   - Residual (L1): `resume_aborted` does not itself check for test output. A deliberate hand-deletion of the 0444
+     `PREDICTIONS_SAVED.json` plus a hand-written `ABORTED.json` allows a resume even when `score/` and score
+     registry rows exist (Q3c). This is tampering that leaves the first look's rows in the registry.
+   - Hardening: refuse a resume if `score/` or any `SHA256SUMS` exists, or if the registry holds any row of the look
+     other than `look_claimed`, `look_aborted` or `look_resumed`.
+4. **D3 sealed folder: fixed** (`testlook.py:245-256`). Extra files, including files in nested folders, are refused
+   (Q5 and test). Missing files are refused too.
+5. **D4 track R: fixed** (`hydromet_freeze_candidate.py:199-255`; protocol §10).
+   - `TRACK_R_MODELS = [ealstm, ealstm_gbmblend]` (Holm 8). The `ealstm_full` runs are removed from the builder,
+     so the family no longer depends on which artifacts exist.
+   - The pins are copied from the primary `FREEZE_hydromet.json`.
+   - The builder refuses if any of the 46 per-file hashes, or the code hash, differs from the primary.
+   - Without a primary FREEZE it refuses, except `--allow-partial`. That path writes `partial_rehearsal_only`,
+     which D1 refuses as a freeze.
+6. **D5 / sens427.**
+   - The figures are correct. I recomputed them from `basins_trackn.parquet`: 427 stations, ratio median 0.230,
+     5th–95th percentile 0.00075 to 9.6e5.
+   - Minor wording (L4): 416 have a ratio outside [0.5, 2] and **11 have an undefined ratio** (a missing area), not
+     "all outside".
+   - **The sens427 path cannot change the confirmatory rows** (`hydromet_test_look.py:98-109`):
+     - it runs after `score_track_n` has computed and registered the `M6N/test` family;
+     - it uses copies (`data.subset` builds a new object; `a[keep]` copies), a separate output folder and a
+       separate experiment, `M6N/test_sens427`, which `registry_rows("M6N/test")` does not count;
+     - it does not alter the returned `prim` or the SCORED summary.
+   - The alignment fix is verified on the rehearsal:
+     - the sensitivity per-station metrics equal the primary's for every kept station (33,426 rows, max |ΔRMSE| = 0);
+     - 0 flagged stations leak into the sensitivity run;
+     - 69 flagged val stations, 49 of them scored, are excluded.
+   - Residuals (L3):
+     - if the sensitivity re-score crashes, SCORED is not written, and `--rescore-from-saved` would register the
+       confirmatory `M6N/test` rows a second time (identical values, but duplicate rows). Run it after `mark_scored`
+       or in try/except;
+     - its registry rows carry `holm_reject`/`won` without a `descriptive` flag. Add one;
+     - `basins_trackn.parquet`, which defines the excluded set, is not pinned. This matters only for the
+       descriptive run.
+7. **Rehearsals and verify.**
+   - `M6/test` on val equals `M6/val_v4`: 28/28 rows, max |Δ| 2.4e-7, p identical.
+   - `M6N/test` on val gives 4 hypotheses, plus the sensitivity check above.
+   - `verify` PASS, re-run by me: code hash, per-file hashes, protocol, 7 pins, 25 artifacts, look blocks
+     (`dataset` sonde/trackn, Holm 28/4).
+8. **Tests:** `tests/test_hydromet*.py` give **77 passed** (`sentinel2` env, CPU).
+
+### Remaining (non-blocking)
+- **L1:** `resume_aborted` should refuse when any test output exists (item 3).
+- **L2:** match all requested roles and blocks, not only the protected ones, to the claimed cell (item 2).
+- **L3:** sens427 crash ordering, `descriptive` flag, basins pin (item 6).
+- **L4:** wording in protocol §12 (416 + 11 undefined).
+
+### Constraints from here on
+- No edit to any of the 46 frozen files until track R's look; this includes the protocol.
+- `FREEZE_hydromet.json` must keep `frozen_files` and `data_snapshots` exactly as in the candidate.
+- `M6/test` runs before `M6N/test`. Track R stays descriptive, with Holm 8, under `FREEZE_hydromet_trackR.json`.
+- test_b gets its own freeze and a later `sonde_daily` pin.
+
+---
+
+## M7 Lite — delta re-review (2026-11-09)
+
+**Mode:** delta pre-test review of the regenerated candidate, against my pre-test review above (C1–C5, W1–W10).
+**Reviewer:** independent agent. It was read-only except for this section. It wrote no FREEZE file, loaded no
+test-role row and did not use git. The adversarial single-look tests ran on a monkey-patched scratch `RUNS_ROOT`
+and registry, not on the real ones.
+
+**Scope:**
+- `FREEZE_lite_candidate.json`, created 13:58:01;
+- `lite_protocol.md` v1.5 (§8a, §12, §13);
+- `sentinel/models/lite/{testlook,guard,evaluate}.py`;
+- `scripts/eval/{lite_score_test,lite_freeze_candidate,events_lite,lite_teacher_overlap_wb}.py`;
+- `sentinel/events/lite.py`, and `sentinel/eval/events.py` v1.0 (sha `4279d242…`);
+- the final dry run `smoke/dryrun_test_scoring_20261109-135812`;
+- the run dirs, the registry, TRAINING_LOG and the handoff.
+
+**Current scoring-code hash:** `3c424b89…`, 77 files. It equals the candidate's `scoring_code_sha256_at_candidate`.
+**Tests:** `tests/test_lite.py` passes 29/29 in the `sentinel2` env. The base env lacks `pyproj` and `lightgbm`; see
+W-b.
+
+**Status: 🟡 PASS WITH CONCERNS, with conditions. The lead may NOT freeze this candidate (`3c424b89…`) as it
+stands.**
+- The science is now clean, and C2–C5 and W1–W10 are fixed and verified.
+- Three small code gaps (D1–D3) remain in the single-look and hash machinery. Each is a fix of an hour or two, with
+  no retraining and no new val results.
+- Any fix changes the scoring-code hash, so all three must be made before `FREEZE_lite.json` is written.
+
+The lead **may freeze** after all of the following:
+1. D1–D3 are fixed, and preferably W-a and W-b too;
+2. `lite_freeze_candidate.py` is re-run;
+3. a new `--dry-run-val` is run (CPU, ≤ 6 threads);
+4. a reviewer confirms the diff only. No further science review is needed.
+
+### Verified (fixed)
+- **C2. The candidate never unlocks test.**
+  - `guard.check_access(("test",), allow_test=True, freeze_file=FREEZE_lite_candidate.json)` is refused by path
+    (guard.py:131-132).
+  - With no path given, it is refused because `FREEZE_lite.json` does not exist.
+  - A candidate copied to `FREEZE_lite.json` would fail `validate_frozen`: status ≠ FROZEN, "CANDIDATE" in the
+    status, no `authorised_by/at`, and code hash `PENDING` (testlook.py:68-77).
+- **C1. The basic single look holds.** Sandbox results:
+  - a second claim is refused (registry `lite_test_claim` row);
+  - a claim after deleting `TEST_LOOK.json` is refused (registry);
+  - sealing twice is refused;
+  - tampering with one sealed file is detected by `check_sealed`.
+
+  Registry rows other than the claim row are buffered and flushed only after `score_all` (lite_score_test.py:581-585).
+  Protected roles load only under an open claim of the same freeze sha (guard.py:133-137).
+- **C3. Data pins.**
+  - All 7 pins verify against disk (`verify_data_pins`).
+  - I recomputed them all with `compute_data_pins(split)`: identical file lists and content shas.
+  - I recomputed `scene_stats` and `labels` independently with `sha256sum`: `b5171d5b…` and `d9ca8756…`, as frozen.
+  - They are verified before the claim (lite_score_test.py:545-558).
+- **Weights.** All 22 `weights_sha256` entries match the files on disk. They cover:
+  - 6 torch model groups;
+  - INT8 and FP32 ONNX;
+  - the export report;
+  - the 3 event artifacts.
+
+  The teacher manifest (`85122e29…`) matches. No `pool.json` exists in any frozen run. `events.py` sha =
+  `4279d242…` = frozen.
+- **C4. Decision logic matches §8a.**
+  - `compare_one_sided` reads P(d ≥ 0) for MdSA, which is the correct tail (evaluate.py:165).
+  - `holm_with_ci` sets reject = Holm ∧ CI excluding 0 on the better side (evaluate.py:172-181).
+  - H1 is a Holm-6 family. Its composite is Secchi-vs-both ∧ (turbidity-vs-both ∨ TSS-vs-both), and the per-seed
+    sign rule applies (lite_score_test.py:328-343).
+  - H1-deployable is the INT8 carrier with its own Holm-6.
+  - H2 is a Holm-3 family with the every-seed rule, comparing seed i to seed i (346-355).
+  - H-G6 = hashed budgets ∧ H1-deployable (with seed rule) ∧ H2 (every seed) ∧ red-edge gap (446-455).
+  - The §15.1 label follows §8a (391-403).
+  - Families are confirmatory only for `role == "test"`. Test-B rows are registered as `confirmatory: False`.
+  - The dry run behaves as expected: on val, only Secchi vs band-ratio is rejected. The gbm/turbidity p1 = 0.03 with
+    the CI including 0 is now **not** rejected. H-G6 is false and the label is "negative".
+- **C5. One pass collects everything.**
+  - The ONNX INT8 and FP32 files are hash-checked before inference and scored on the 128 crop. On val, ONNX FP32 =
+    torch seed 0 (max |Δ| 4.8e-7).
+  - Every model, every baseline (now including loc_season_gbm), the robustness grid, the teacher and the events are
+    written to one sealed parquet per role (416 columns on val).
+  - All §8a secondaries are computed from the sealed file: INT8 Δ, RGB-only, GLORIA, robust clean and at 25% glint,
+    all-baseline paired comparisons, lake-only CIs, slices, and H2 for `teacher_gt5km`.
+  - Nothing is "not run".
+- **W1. The H2 comparator: code parity is proven, which is stronger than asked.**
+  - The rerun `student_mnv4s_raw_crop128_rerun_20261109-104748` (current code, GPU 0, logged in TRAINING_LOG:15111)
+    has **bit-identical weights** to the 2026-10-24 no-KD run: max |Δw| = 0 for all 3 seeds. Its val predictions are
+    identical too.
+  - So the no-KD training path did not change between 2026-10-24 and now, and therefore not at the kd03 training time
+    either.
+  - The frozen `nokd` model is the rerun.
+- **W2–W4.**
+  - The correct one-sided tail: see C4.
+  - B and the device come from the freeze; a non-CPU device is refused.
+  - `pool.json` is hashed if present, and the teacher manifest sha is checked against the freeze.
+- **W5. The code hash covers the teacher stack, `paths`, `registry` and `gpu`.** National files are excluded
+  (`NATIONAL_EXCLUDE`) and none is imported by the scorer (checked via `sys.modules`). Package versions are recorded.
+  But see D3.
+- **W8. Teacher overlap.**
+  - The teacher is unchanged: the same Lite-safe manifest, with 2,394 matchup and 27 GLORIA rows dropped.
+  - `overlap_wb_level.json` gives 0 water bodies within 2 km for val, Test-A and Test-B. The minimum site distances
+    are 2.008, 2.006 and 2.028 km.
+  - Test-A: 85/420 water bodies have a teacher row 2–5 km away; 7/31 flowing water bodies have one within 5 km.
+  - My independent val recompute from my first review matches: 151 sites at 2–5 km, and 20 flowing sites within
+    5 km.
+  - The `teacher_gt5km_wb` slice and the restricted H2 are in the pass.
+- **W6/W7/W9/W10.**
+  - All secondaries and all-baseline comparisons are present.
+  - §12 drops "Test-A ∪ Test-N".
+  - The counts are reconciled to 16: candidate, model card and `selection.json` (`n_configurations` = 16).
+  - The partial run 221015 is logged (TRAINING_LOG:15024).
+  - The dry-run claim is corrected.
+- **Event track (§13).**
+  - Chl-a never entered S: `lite_select.py:21` has `TARGETS = (secchi, turbidity, tss)`.
+  - `events_lite.py` reads train and val only (`role_frame(..., training=True)` + `assert_no_protected`).
+  - Heads are fitted on train chips (994 / 173 positive). Comparator residual SDs come from train 5-fold water-body
+    CV. Climatology uses train sites only, both at val and at test time.
+  - Platt is fitted on val lake chips (329 / 85 positive) and frozen. Val metrics are cross-fitted by water body.
+    There is no test leakage.
+  - The track sits outside the H1/H2 families: separate dicts, experiment `lite_test_events`, no Holm coupling.
+  - One registered event run exists (18 rows, 18:57Z).
+
+### Remaining issues: must fix before the freeze
+- **🔴 D1. Scoring can be re-run after the look, and the seal has no durable anchor.** Sandbox results:
+  - after deleting `SCORED.json`, `check_sealed` passes again. `--rescore-from-saved` (lite_score_test.py:550-557)
+    re-scores and flushes a second set of registry rows, with **no registry check** and **no check that the sealed
+    predictions belong to the current freeze**.
+  - So a changed scoring rule plus a newly written `FREEZE_lite.json` could re-score the same sealed test predictions.
+    That is a forking path.
+  - `open_claim` (testlook.py:186-191) becomes true again, which **re-opens test-row access** for any caller of
+    `role_frame(..., allow_test=True)`.
+  - Deleting `SHA256SUMS` and `PREDICTIONS_SAVED.json`, then re-sealing, is undetected: the seal hash is in no
+    append-only record.
+  - Files outside `SHA256SUMS` are accepted (M6 refuses them).
+
+  **Fix:**
+  - (a) `seal_predictions` writes a `lite_test_sealed` registry row with the `SHA256SUMS` sha and the freeze sha.
+    `check_sealed` requires it to match.
+  - (b) `--rescore-from-saved` refuses if the registry holds any `lite_test*` row other than `lite_test_claim` and
+    `lite_test_sealed`. It also requires the marker's `freeze_sha256` to equal the current freeze's.
+  - (c) `open_claim` is false once predictions are sealed. Nothing needs test rows after sealing.
+  - (d) Refuse files that are not listed in `SHA256SUMS`.
+
+  M6 (`hydromet/testlook.py`, `hydromet_test_look.py:184-186`) shares (a)–(c). Tell its owner.
+- **🔴 D2. A secondary failure or a missing artifact can burn the look after the claim.**
+  - The event track re-raises its exception after the claim (lite_score_test.py:203-208). A secondary-track error
+    therefore kills the whole look before sealing, and H1/H2/H-G6 would never be computed.
+  - A missing run dir is silently skipped as "not run" (139-141). A missing `nokd` would silently drop H2. A missing
+    `primary` crashes after the claim (168).
+  - Every weights, ONNX, event-artifact and export-report hash is checked lazily, after the claim (101, 159, 224, 447).
+
+  **Fix:**
+  - add a pre-claim `verify_artifacts(freeze)` that checks:
+    - every `weights_sha256` entry;
+    - that every run dir exists;
+    - the `events.py` sha;
+    - the teacher manifest, checkpoints and `seen_points` shas;
+    - the export report.
+  - refuse a freeze whose `not_run` names a model used by H1, H2 or H-G6;
+  - after the claim, record event-track errors as `not_run`, as the red-edge gap already does, instead of re-raising;
+  - add M6's abort marker and registry row for a crash before sealing.
+- **🔴 D3. The code hash misses the dependencies of the event module.**
+  - `sentinel/eval/events.py` imports `ew_scoring` and `hazards` at module level (events.py:37-38), and with them
+    `early_warning`. None of the three is hashed.
+  - `test_scoring_hash_covers_scorer_import_closure` (tests/test_lite.py:412) misses them because it never imports
+    `sentinel.events.lite` or calls `EL.EV()`.
+  - `events.py` takes thresholds and onset rules from `hazards.HAZARDS` at import time, so pinning `events.py` alone
+    does not pin its behaviour.
+
+  **Fix:** add the three files to `SHARED_CODE`, and make the closure test import `sentinel.events.lite`, call
+  `EV()`, and import `testlook`.
+
+### Warnings (fix in the same patch if possible)
+- **🟡 W-a. Data pins are checked by fixed paths, not by the paths the loader reads.** `verify_data_pins`
+  (testlook.py:137-150) hashes the frozen absolute paths. The loaders read `paths.PROCESSED` and `RUNS_ROOT`, which
+  `SENTINEL_DATA` / `SENTINEL_RUNS` can override. A look run with a different env would read unpinned data and still
+  pass.
+
+  **Fix:** also compare `compute_data_pins(split)` (file lists + shas, through the live loader paths) with the frozen
+  block.
+- **🟡 W-b. Package versions are recorded but never checked.** The freeze's `packages` describe the `sentinel2` env.
+  The default `python` (base) has a different numpy, pandas, timm and scikit-learn, and no lightgbm or onnxruntime.
+
+  **Fix:** have `load_frozen` compare `G.package_versions()` with `freeze["packages"]`, and state the env in the run
+  command.
+- **🟡 W-c. The E4a pre-registered test is under-specified.**
+  - It reports 4 booleans: ΔBrier and ΔAUPRC, each in both directions.
+  - It names no primary endpoint and no multiplicity within E4a. "Holm over {E4a}" is vacuous for 2 endpoints.
+
+  **Fix:** before the freeze, designate ΔBrier as primary (or apply Holm over the 2), and state the direction rule in
+  §13.
+- **🟡 W-d. The direct route's head is fitted on in-sample training embeddings.** Route (ii) fits its head on the
+  embeddings of train chips, whose chl-a labels the student itself was trained on. Platt on val fixes calibration, not
+  discrimination. Derived vs direct is therefore tilted towards "derived".
+
+  **Fix:** state this in §13 and the model card. The cleaner fix is a water-body cross-fitted head. On val they tie:
+  ΔBrier −0.0012 [−0.0079, +0.0053].
+- **🟡 W-e. Event counts disagree.** §13 says "val 104 positives / 43 water bodies". The code's lake population gives
+  85 / 42 (dry run, `val_event_metrics.json`). Correct the text.
+- **🟡 W-f. RGB-ablation code parity is not shown.** The RGB ablation (current code) is compared with the kd03
+  primary (code of 2026-11-08 15:29). Parity is proven for the no-KD path only (W1), not for the KD path.
+
+  **Fix (optional, about 3 GPU-min on GPU 0/1):** retrain kd03 seed 0 under the current code and compare it bitwise.
+  Otherwise state the caveat for this secondary.
+
+### Observations
+- 🟢 Deleting both the registry and the marker defeats any file-based guard; that is out of scope. Commit the registry
+  and archive the code, weights and predictions (`freeze_archives/`) when the freeze is written and after the look.
+- 🟢 `predict_role` reads `seen_points` from the teacher manifest (line 130) before the manifest sha check (186), and
+  never checks the `seen_points` sha. This affects only the `teacher_gt5km_wb` slice. Fold it into D2.
+- 🟢 `holm_bonferroni` with a NaN p sorts unpredictably. Treat NaN as 1.
+- 🟢 The label's "negative" rule is Secchi-only, as §8a says. The novelty check is a file-existence test, and a human
+  re-check is still required before any wording.
+- 🟢 Teacher proximity is concentrated in Test-B rivers: 158 chips in 6 flowing water bodies within 5 km. The slice
+  covers it; mention it next to the Test-B results.
+- 🟢 National-track selection continues after Test-A is seen. Dropping Test-A ∪ Test-N removes the claim path, but
+  state it in the national write-up.
+
+### Answers to the coordinator's checks
+| Check | Result |
+|---|---|
+| 1. Single look (C1/C2) | Candidate refused. Re-claim after deleting the marker is refused. Single-file tamper is detected. **Open:** D1 (SCORED deletion re-opens rescoring and test access; a consistent re-seal is undetected). |
+| 2. Data pins (C3) | Verified before the claim; all 7 recomputed and identical. W-a: the loader-path check is missing. |
+| 3. Decision logic (C4) | Correct tail; Holm ∧ CI; composite H1, H1-deployable, H2 every-seed, H-G6, §15.1 label; Test-A only. Matches §8a. |
+| 4. One pass (C5) | Yes. INT8/FP32 ONNX hash-checked and scored; every model and baseline sealed. **Open:** D2 (a failure can burn the look after the claim). |
+| 5. W1 | Closed. The rerun is frozen and bit-identical to the Oct-24 no-KD run. |
+| 6. W5 hash scope | Teacher stack, closure and national exclusion are OK. **Open:** D3 (event-module dependencies unhashed). |
+| 7. Event track | No chl-a in selection; train/val only; cross-fitted Platt on val; outside H1/H2. W-c (endpoint) and W-d (head fairness). |
+| 8. Teacher overlap | 0 water bodies ≤ 2 km for val, test and test_time. The 2–5 km sensitivity slice and the restricted H2 are present. The teacher was not retrained (same Lite-safe manifest). |
+
+### Gate
+- **Do not freeze candidate `3c424b89…`.**
+- Fix D1–D3, preferably with W-a, W-b, W-c and W-e (protocol text) in the same patch, since each changes the hash.
+- Regenerate the candidate, re-run `--dry-run-val`, and get a diff-only confirmation.
+- Then the lead may write `FREEZE_lite.json` (status FROZEN, `authorised_by/at`) and authorise one
+  `python -B scripts/eval/lite_score_test.py --allow-test`, in the `sentinel2` env.
+
+---
+
+## M7 Lite — line-level check (2026-11-09)
+
+**Mode:** line-level check of the delta patch against my delta re-review above (D1–D3, W-a, W-b, W-c, W-e).
+**Reviewer:** independent agent. It was read-only except for this section. It wrote no FREEZE file, loaded no
+test-role row and did not use git. The attacks ran against a monkey-patched scratch `RUNS_ROOT` and registry.
+
+**Inputs:**
+- patch `review/m7_delta_patch_20261109.diff` (sha `d60f5cc7…`);
+- regenerated candidate (sha `f2800bdf…`; code hash `a2ea05a4…`, 80 files);
+- dry run `smoke/dryrun_test_scoring_20261109-161807`.
+
+**Patch integrity.** I rebuilt the diff from `pre_delta_snapshot/` against the working tree, and its +/− lines are
+byte-identical to the supplied diff. `events_lite.py`, `sentinel/events/lite.py` and `lite_freeze_candidate.py` are
+unchanged. The current code hash equals the candidate's (`a2ea05a4…`, 80 files). `tests/test_lite.py` passes 31/31
+in `sentinel2`. The dry run started after the last code edit (16:16:25) and after the candidate (16:17:47). It records
+the candidate's sha, shows nothing "not run", and the H1/H2/H-G6 verdicts are unchanged.
+
+**Status: 🟡 PASS WITH CONCERNS. Every engineering fix from the previous section is verified. The lead may NOT
+freeze candidate `a2ea05a4…`.**
+
+Two small items remain, both of which change the code hash:
+- **E1:** a science decision on E4a;
+- **E2:** two-line ordering and exception fixes.
+
+The lead **may freeze** after all of the following:
+1. E1 and E2 are made, and preferably E3;
+2. the candidate is regenerated;
+3. the val dry run is repeated;
+4. a reviewer checks the diff. No further full review is needed.
+
+### Verified fixed
+- **D1. Seal, claim and rescore.** Sandbox attacks against the patched `testlook.py`:
+
+  | Attack | Result |
+  |---|---|
+  | Second claim | refused (registry) |
+  | `open_claim` after sealing | false |
+  | `open_claim` after also deleting `PREDICTIONS_SAVED.json` / `SCORED.json` | still false: the `lite_test_sealed` row persists |
+  | Re-seal after deleting `SHA256SUMS` and `PREDICTIONS_SAVED.json` | refused |
+  | Consistent hand re-seal (tampered file, rewritten `SHA256SUMS` and `PREDICTIONS_SAVED.json`) | refused: "SHA256SUMS differs from the registry anchor" |
+  | File injected at the top level | refused |
+  | File injected in a sub-directory | refused |
+  | `check_sealed` under another freeze sha | refused |
+  | Rescore after one scoring row exists | refused |
+  | A second `lite_test_sealed` row | refused (stops the look, does not forge it) |
+
+  Deleting the registry itself is out of scope (see the earlier observation).
+- **D2. Pre-claim artifact checks.** `verify_artifacts` runs before the claim (lite_score_test.py:553). It:
+  - requires `primary`, `nokd` and `deployable_int8_seed0`;
+  - requires every torch run dir to exist;
+  - requires an **exact** two-way match between `weights_sha256` and the artifacts the pass loads: model seeds,
+    `pool.json`, ONNX, export report and the 3 event files;
+  - checks the shas of `events.py`, the teacher manifest, its 5 checkpoints and `seen_points`.
+
+  `predict_role` re-checks the manifest and `seen_points` before use. On the candidate, `verify_artifacts` gives
+  22 artifacts and OK. Event-track errors after the claim become "not run" (lite_score_test.py:210-211). Crashes
+  before sealing write `ABORTED.json` and a `lite_test_aborted` row, and `open_claim` is then false (tested).
+
+  Remaining data inputs: the chips, scene stats, train cache, S2 store and labels are covered by the data pins. The
+  split is covered by its sha, the code by the code hash, and the baselines are refitted. One gap: a **pre-existing**
+  `eval_test*` chip cache would be loaded unverified (E3b).
+- **D3. Code hash.** `ew_scoring.py`, `hazards.py` and `early_warning.py` are in `SHARED_CODE`. The closure test now
+  imports `testlook` and `sentinel.events.lite` and calls `EV()`. My own import of the scorer, the Orbit teacher,
+  `satwq`, `registry`, `testlook` and `EL.EV()` leaves **0** repo modules outside the hash.
+- **W-a. Data paths.**
+  - `SENTINEL_DATA` pointing at a symlinked copy of the same data is refused: "data pin 'naip_chips' differs from
+    what the loaders read now". The check is by path string, which is deliberately conservative.
+  - `SENTINEL_RUNS` pointing elsewhere is refused: the pinned train cache is missing there.
+- **W-b. Package versions.** `check_packages` in the base env is refused (onnxruntime None, pandas 2.2.3,
+  pyarrow 22.0.0, …). In `sentinel2` it passes. The dry run now runs the same three pre-claim checks.
+- **W-e. Event counts.** §13 now gives 329 / 85 / 42 for the lake population, which matches `val_event_metrics.json`
+  and the dry run. The 104 / 43 figure is explained as the plan's all-class count.
+- **W-d and W-f** are disclosed in §13 and the model card.
+
+### Remaining issues: must fix before the freeze
+- **🔴 E1 (science). E4a must become descriptive-only. The v1.6 "primary endpoint" should not stand.**
+  - v1.5 pre-declared derived vs direct.
+  - v1.6 replaces it, after the val results were known, with ΔBrier(derived − climatology). The protocol itself says
+    it was chosen because it "was the clearest val contrast".
+  - The chosen comparator is the **weakest** of the four:
+
+    | Comparator | val ΔBrier, derived − X (frozen calibrators) |
+    |---|---|
+    | climatology | −0.017 [−0.034, +0.004] |
+    | band-ratio | −0.012 [−0.034, +0.006] |
+    | direct | −0.002 [−0.009, +0.004] |
+    | GBM-RGBN | +0.002 [−0.018, +0.017] |
+
+  My judgement: **disclosure is not enough.**
+  - The test p-value for one endpoint fixed before test access is technically valid. But the endpoint was picked
+    from 4 comparators × 2 metrics on val, in the direction most likely to "win". Calling it "pre-registered" or
+    "primary" misstates how it was chosen.
+  - "Beats location climatology" is not a meaningful success criterion. §15.1 would require beating the strongest
+    simple baseline, GBM, which ties on val.
+  - The original v1.5 contrast, derived vs direct, is tilted by W-d (in-sample head). It is therefore not a clean
+    confirmatory test either.
+
+  **Fix:**
+  - Declare E4a **secondary / descriptive only**. Report every route's AUPRC, Brier, BSS and ECE, and all four
+    paired ΔBrier and ΔAUPRC with CIs. Use no "pre-registered test", "primary endpoint" or decision boolean, and let
+    no claim depend on E4a.
+  - Keep the v1.5 → v1.6 history in §11 as a disclosed post-val change, now resolved by the downgrade.
+  - In code:
+    - replace the `primary_endpoint` block (lite_score_test.py:270-278) with a descriptive record, with no
+      `derived_better`;
+    - remove the stale `"preregistered": c == "direct" and role == "test"` registry flag (lite_score_test.py:509).
+      It currently contradicts v1.6 and would mark derived-vs-direct test rows as pre-registered.
+
+  H1, H2 and H-G6 are unaffected.
+- **🔴 E2. The claim can leak in two places.**
+  - (a) The device check (lite_score_test.py:568-570) runs **after** `T.claim` and outside the `try`. A freeze with a
+    non-CPU device would burn the look and leave the claim open, with no `ABORTED` marker.
+  - (b) The abort handler catches `Exception` only (line 589). A `KeyboardInterrupt`, `SystemExit` or SIGTERM after
+    the claim leaves no `ABORTED.json`. In the sandbox (A8), `open_claim` then stays **true** indefinitely. A re-claim
+    is refused, but test rows remain loadable by any `role_frame(..., allow_test=True)` caller under that freeze.
+
+  **Fix:** move the device check before `claim`, and catch `BaseException` as M6 does.
+
+### Should fix in the same patch
+- **🟡 E3a. Test access is not tied to the claiming process.** An OOM or SIGKILL cannot be caught by any handler, so
+  after one the claim stays open. **Fix:** have `open_claim` also require the marker's `pid` and `host` (already
+  recorded) to equal the current process. Then only the claiming process can ever load test rows. This is one line.
+- **🟡 E3b. A pre-existing test chip cache is used unverified.** `cached_chips` would silently load an existing
+  `$SENTINEL_RUNS/lite/cache/eval_test_*.npy` / `eval_test_time_*.npy`. None exists today. **Fix:** have
+  `verify_artifacts` refuse if any is present before the claim.
+- 🟢 A crash midway through `flush_registry` would leave partial scoring rows, and rescoring is then (correctly)
+  refused. If it happens, report it to the lead; it does not need code.
+
+### Gate
+- **Do not freeze `a2ea05a4…`.**
+- Make E1 (protocol §13 + §11, the model card, lite_score_test.py:270-278 and :509) and E2, preferably with E3a/E3b.
+- Re-run `lite_freeze_candidate.py` and `--dry-run-val` in `sentinel2`, then get a diff-only reviewer check of these
+  few lines.
+- The lead may then write `FREEZE_lite.json` (status FROZEN, `authorised_by/at`) and authorise the single
+  `--allow-test` run in `sentinel2`.
+
+No retraining or new val result is needed for any of this.
+
+---
+
+## M7 Lite — E-patch check (2026-11-09)
+
+**Mode:** line check of the E-patch against my line-level check above (E1, E2, E3a, E3b).
+**Reviewer:** independent agent. It was read-only except for this section. It wrote no FREEZE file, loaded no
+test-role row and did not use git. All runs used scratch paths or the `sentinel2` env.
+
+**Inputs:**
+- patch `review/m7_e_patch_20261109.diff` (sha `91c52ad5…`, 6 files);
+- candidate (sha `415ad36f…`; code hash `a7a8be82…`, 80 files);
+- dry run `smoke/dryrun_test_scoring_20261109-163940`.
+
+**Status: 🟢 PASS, with one operational note (F1). The lead MAY freeze candidate `a7a8be82…`.**
+
+### Verified
+- **The diff matches the files.** I rebuilt it from `review/pre_e_snapshot/` against the working tree, in the same
+  file order. Its 102 +/− lines are byte-identical to the supplied diff, and no other hashed file changed.
+- **The hash is current.** `guard.scoring_code_sha256()` = `a7a8be82821edabc…` (80 files) = the candidate's
+  `scoring_code_sha256_at_candidate`.
+  - In `sentinel2`: `check_packages` OK; 7/7 data pins OK; `verify_artifacts` OK (22 artifacts);
+    `tests/test_lite.py` 32/32.
+  - The dry run started after the last code edit (16:37:53) and after the candidate (16:39:20). It records the
+    candidate's sha (`415ad36f…`), shows nothing "not run", and gives H-G6 false and label "negative", as before.
+- **E1. E4a feeds no decision.**
+  - The `primary_endpoint` block is gone.
+  - The event registry rows carry `"descriptive": True`, and the stale `preregistered` flag is gone.
+  - `h_g6()` reads only the budgets, `families` and `red_edge_gap`. The §15.1 label reads only `secondary_comparisons`
+    of the regression targets and the `h1` seed rule. `grep` finds `events` / `E4a` only in `event_predictions`,
+    `score_events`, `score_all` (which stores the result) and `registry_rows`.
+  - In the dry-run output, the only booleans under `E4a` are `confirmatory` (a role label; see O1) and the
+    point-sign `a_better` fields from `events.compare_routes`. Nothing downstream reads either.
+  - Protocol §13 v1.7 and the model card withdraw v1.6, state "descriptive only, no claim", and say that a future
+    inferential E4a claim needs a new, unseen test block. That resolves my science objection.
+- **E2. The device check and SIGTERM.**
+  - Device: the real `main(["--allow-test"])`, with a freeze specifying `device: "cuda"` (freeze loading and the
+    pre-claim checks stubbed, paths redirected to scratch), exits *before* the claim: no look dir, 0 registry rows.
+  - SIGTERM: the real `main` was blocked inside phase 1 after the claim (`open_claim` = True), then sent SIGTERM from
+    outside. It exited with `SystemExit('terminated by signal 15')`. It wrote `ABORTED.json` (freeze sha F1), and the
+    registry got `lite_test_claim` then `lite_test_aborted`.
+  - The handler catches `BaseException`.
+- **E3a. Test access is bound to the claiming process.** `open_claim` requires the marker's pid and host to equal the
+  current process (tested). A SIGKILL or OOM, or a SIGTERM in the few lines between `claim` and the handler being
+  installed, therefore leaves no loadable test access.
+- **E3b. Pre-existing test caches are refused.** `verify_artifacts` refuses any pre-existing
+  `cache/eval_test*` file, which also covers `eval_test_time*` (tested). None exists today.
+
+### Operational note (not blocking)
+- **🟡 F1. The cache check blocks crash recovery after sealing.**
+  - The real look itself creates `cache/eval_test_<key>.npy` and `eval_test_time_<key>.npy`: `predict_role` calls
+    `cached_chips(ev, "eval_test")`.
+  - `main` runs `verify_artifacts` *before* the `--rescore-from-saved` branch (lite_score_test.py:545 vs :549).
+  - So if the scoring phase crashes after sealing, the documented recovery path is refused. Reproduced in the
+    sandbox: the claim and seal succeeded, and the rescore then failed with "pre-existing test chip cache(s)".
+  - Integrity is unaffected: rescoring stays anchored to the sealed registry row, the freeze sha and the absence of
+    scoring rows.
+
+  **Choose one:**
+  - (a) Freeze now, and record in `FREEZE_lite.json` (not hashed code) the instruction: "if scoring crashes after
+    `lite_test_sealed`, delete `$SENTINEL_RUNS/lite/cache/eval_test*.npy` (derived from pinned shards) and run
+    `--rescore-from-saved`; report it as a deviation".
+  - (b) Skip the cache check on the rescore path (one line), then regenerate the candidate and repeat the dry run.
+    That needs only a diff check.
+
+  Either is acceptable.
+
+### Observations
+- 🟢 O1. `score_events` still stores `confirmatory: True/False` in the E4a record, now only a Test-A/Test-B role
+  label. Nothing reads it. A rename would be cleaner, but is not worth a re-hash.
+- 🟢 O2. A crash midway through `flush_registry` would leave partial scoring rows and block rescoring (by design). If
+  it happens, report it to the lead.
+- 🟢 The earlier observation still applies: commit the registry and archive the code, weights and sealed predictions
+  in `freeze_archives/` when the freeze is written and after the look.
+
+### Gate
+**The lead may freeze.**
+1. Write `FREEZE_lite.json` from candidate `a7a8be82…` (sha `415ad36f…` at review time), with status `FROZEN`,
+   `authorised_by` / `authorised_at` and `scoring_code_sha256 = a7a8be82821edabc28621f07b6c6e0a2ecf259a3ed84f914ab3448a3fb7bf9ff`
+   (re-check that it is still current at write time). Include the F1 instruction if option (a) is taken.
+2. Authorise exactly one `python -B scripts/eval/lite_score_test.py --allow-test` under
+   `/home/bcheng/miniconda3/envs/sentinel2` (CPU).
+3. Do not edit any hashed file between the freeze and the look. The national track must not touch `SHARED_CODE`
+   files, including `sentinel/eval/{events,hazards,ew_scoring,early_warning}.py`.
+
+
+## D4 TapRisk — pre-test review (2026-11-09)
+
+**Mode:** pre-test gate for `docs/preregistration/FREEZE_CANDIDATE_downstream_taprisk.json` (prepared 16:51:57;
+split `a4a1fc7b…`, common scoring hash `4d8c8ff6…`, D4 registry hash `87abeb1e…`).
+**Reviewer:** independent agent, fresh context; `review` skill in pre-test mode.
+**Safety:** no FREEZE file was written and no test look was run. No test-role row was built: every probe on real
+data used `include_test=False` and train + val states only. Single-look attacks ran on a scratch copy of the repo with
+its own registry and `SENTINEL_RUNS`, and `predict()` was replaced by a synthetic frame. Afterwards the real registry
+still has 208 `taprisk/*` rows and 0 test-split rows, `$SENTINEL_RUNS/downstream/taprisk/test_look/` does not exist,
+and `FREEZE_downstream_taprisk.json` does not exist. CPU only, ≤ 6 threads, `sentinel2` env. Probes:
+`/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/rev_d4/{probe,leak_probe,cluster_probe,enf_ablation}.py`
+(outputs `*.out` next to them).
+
+### Verdict: 🔴 FAIL. The lead may NOT freeze this candidate.
+
+The science is mostly sound and the bookkeeping matches:
+- hashes reproduce;
+- the shared code is untouched;
+- 40 configurations are accounted for;
+- the it2 rule was written before the it2 code and applied as written;
+- the dry run reproduces validation exactly.
+
+Two things block the freeze:
+1. **The single look is not enforced.** It is the marker-only guard of the five 2026-11-08 looks, without any of the
+   fixes that later reviews made mandatory for M6 and M7:
+   - there is no registry seal at the claim;
+   - the candidate file is accepted as a freeze;
+   - there is no abort handling;
+   - test access stays open after scoring;
+   - tampered predictions can be rescored.
+   Every one of these attacks succeeded in the sandbox.
+2. **Two look-ahead leaks reach the primary comparisons:**
+   - an it2 rich feature counts enforcement actions dated after the decision date;
+   - the labels of the test-fit rows use violations first reported after the test decision date.
+   Both favour the challenger over the comparators that lack them.
+
+All the fixes are cheap and can be made before any test row is read. Fixing C5 changes the it2 features, so it2 must
+be re-run on validation (same 6 configurations, logged as a correction) and the rule re-applied.
+
+### Verified (evidence)
+- **Hashes.** In `sentinel2`:
+  - `common.scoring_code_sha256("taprisk")` = `4d8c8ff6…`; `taprisk_registry.scoring_code_sha256()` = `87abeb1e…`;
+  - the split sha = `a4a1fc7b…`; the test script = `38097723…`; the dry-run `results.json` = `5ff20339…`;
+  - every per-file sha in both candidate maps matches the disk.
+- **Shared code unchanged.** For all five `FREEZE_downstream_*.json` records, the recomputed `scoring_code_sha256`
+  and every per-file sha equal the record. `common.py`, `testlook.py`, `wqp_track.py`, `weather.py` and `crossfit.py`
+  are unchanged.
+- **Data and environment pins before the claim.** `TL.verify_data("taprisk")` passes: 15 files, and the pip-freeze
+  sha `e1cfeeda…` equals the candidate's. It runs at `downstream_taprisk_test.py:160`, before `authorise` (`:166`).
+  The base `python` (no lightgbm, different freeze) would be refused before the claim.
+- **Configurations: 40.**
+  - `configs_tried.jsonl` has 40 `taprisk` entries:
+    - phase 1: 4 learned models × 4 configurations × 2 tasks = 32;
+    - `ens_gbm_rfhist`: 2;
+    - it2: 3 × 2 = 6.
+  - Registry experiments agree: 32 rows per phase-1 set, 4 per it1_ens set, 15 per it2 set.
+  - No other D4 run directory or registry experiment exists.
+- **it2 ordering.** There is no git and no `taprisk/prereg_snapshot` row, but the implementing agent's session transcript
+  (`…/subagents/agent-a13a11b4ed2a6a688.jsonl`) gives the order:
+  - the it2 spec was appended to the protocol at 21:07:38Z;
+  - `taprisk_it2.py` was first written at 21:08:25Z;
+  - the first it2 config was logged at 16:09:15 local (21:09:15Z).
+
+  So the spec preceded the code.
+- **Selection rule applied as written.** No candidate qualifies; D4a is the decision task. Mean D4a validation AUROC:
+
+  | Candidate | Mean D4a val AUROC | Min margin |
+  |---|---|---|
+  | `stack_rf_gbm` | **0.9217** | −0.0075 |
+  | `gbm_rich` | 0.9166 | −0.0198 |
+  | `gbm_phase1` | 0.9129 | −0.0261 |
+
+  So the stack is the correct choice. The frozen settings match `phase1_results.json`:
+  - D4a: Pennino RF top-50, history RF top-50, GBM 15 leaves / min_child 20 with 88 trees;
+  - D4b: top-k all / all, GBM 15 / 20 with 75 trees;
+  - simple baselines: known = kNN25 and new = persistence (D4a); persistence for both D4b sets.
+- **Dry run = validation.** All 10 model AUROCs on all four sets are identical to `it2_*/it2_results.json`, to 6
+  decimals. The Holm family has m = 8 and `claim_met` is false; the evidence rows equal the registry rows.
+- **Statistics as pre-registered.**
+  - Primary family = stack vs {`pennino_rf`, `pennino_rf_hist`, `pennino_rf_hist_rich`, strongest simple} × {known,
+    new}, D4a only; Holm over 8 (`downstream_taprisk_test.py:141-143`).
+  - `claim_met` also requires per-seed Δ > 0 in each of the 3 seeds (`testlook.claim_met`, `deterministic=False`).
+  - D4b is scored secondary only (`primary = {}` for D4b, `:130`), and no claim attaches to it.
+  - p = 2·min tail (B = 2,000), and HUC8 is the bootstrap unit, as in protocol §4/§7.
+  - This matches §15.1 (i)–(iv), with the incumbent re-implemented on our split.
+- **Split and test rows.**
+  - Roles come from system counts only (`taprisk.state_roles`).
+  - The reproduction uses train + val states only.
+  - `build()` builds origin-2019 rows only after `require_authorised` (`taprisk.py:157-160`).
+  - The test fit uses role ∈ {train, val} only (`downstream_taprisk_test.py:71`).
+  - The stack's inner folds are `GroupKFold(5)` by `state_code`, so a system's rows (all origins) never straddle folds.
+  - No test-state or 2019-origin row enters fitting or selection.
+- **Label/feature timing (the parts that are clean).**
+  - Violation-history features cut on `viol_first_reported_date ≤ 31 Dec T` (`taprisk.py:101`; `taprisk_it2.py:31`).
+  - No validation positive (T = 2013 or 2016, either task) rests only on violations that began before the decision date
+    (0 straddling-only positives), so the 90-day end imputation creates no label/feature overlap.
+  - Ambient medians use samples dated ≤ T.
+- **Incumbent reproduction (sens 0.813 vs 0.758, +0.055).** The diagnosis is adequate:
+  - the per-rep sensitivity SD is 0.021 (10 reps, 253 positives), and specificity reproduces exactly (0.815);
+  - the deviation makes the incumbent *stronger*, which is conservative for the challenger;
+  - the curated StreamCat set (184 metrics) includes Pennino's nitrogen inputs (N surplus, NANI, fertiliser, manure,
+    CBNF) and census density.
+
+  `pennino_rf` remains a fair stand-in. Record the out-of-tolerance reproduction and its diagnosis as a deviation in
+  the FREEZE record (§15.4).
+- **pytest.** `tests/test_downstream_taprisk_testpath.py` gives 4 passed. These tests cover only "no FREEZE",
+  "mode flags" and "builder refuses", none of the attacks below.
+
+### Single-look attacks (scratch copy, synthetic predictions)
+
+| # | Attack | Result | Required |
+|---|---|---|---|
+| P1 | Candidate copied verbatim to `FREEZE_downstream_taprisk.json` (`status: "CANDIDATE — not frozen"`), then `--allow-test` | **accepted, look ran, 136 test rows** | refused |
+| P2 | Second `--allow-test` after a completed look | refused (registry rows) | refused ✅ |
+| P3 | Delete all markers after a completed look, re-run | refused (registry rows) | refused ✅ |
+| P4 | `require_authorised` after `SCORED.json` | **passes**: test rows still buildable | refused |
+| P5 | Delete `SCORED.json`, `--rescore-from-saved` | **accepted; registry test rows 136 → 272** | refused |
+| P6 | `KeyboardInterrupt` after the claim, before predictions | marker only; **no ABORTED marker, 0 registry rows; test access stays open** | claim closed and sealed |
+| P6d | …then delete `TEST_LOOK.json` and re-run `--allow-test` | **second look ran** | refused |
+| P7b | Tamper `predictions.parquet`, rescore | refused (sha) | refused ✅ |
+| P7c | Tamper predictions and rewrite `PREDICTIONS_SAVED.json` with the new sha, rescore | **accepted** (stack AUROC = 1.0 in the rescored results) | refused |
+| P8a | Edit hashed `taprisk_models.py` | refused before the claim (no marker) | ✅ |
+| P8b | Edit `sentinel/core/registry.py` | **both hashes unchanged** | refused |
+
+P6d could also be done without deleting anything, by pointing `SENTINEL_RUNS` elsewhere: the marker lives under
+`RUNS_ROOT` and nothing reaches the registry until scoring.
+
+### Critical issues (must fix before the freeze)
+`testlook.py` and `common.py` are FREEZE-hashed by the five spent looks and must not change. All fixes below therefore
+go into D4-owned files: the test script, `taprisk.py`, `taprisk_registry.py` and `taprisk_it2.py`. The fixes follow the
+M6/M7 precedent.
+
+- **🔴 C1. No registry seal at the claim, and no abort handling** (`downstream_taprisk_test.py:164-180`;
+  `testlook.py:123-133`). Between `TL.authorise` and the first `log_test_metric` inside `score()`, the look is protected
+  only by `TEST_LOOK.json`. That window includes the whole refit (≈ 10 balanced-RF×10 fits plus 8 GBMs per task) and `save_predictions`.
+  A crash, Ctrl-C or OOM in it, followed by deleting the marker (or using another `SENTINEL_RUNS`), allows a second
+  look (P6d). Nothing records the abort.
+  **Fix:**
+  - immediately after `TL.authorise`, write a claim row via `TL.log_test_metric(app="taprisk",
+    experiment="test_look_claim", model="claim", metric="claimed", value=1.0, split="test_claim", extra={freeze_sha,
+    marker record})`. `registry_test_rows` then refuses any later claim, whatever happens to the markers;
+  - wrap predict → save → score → `mark_scored` in `try/except BaseException`. The handler writes `ABORTED.json`
+    (O_EXCL) and a `test_aborted` registry row, then re-raises.
+- **🔴 C2. The candidate is accepted as a freeze** (P1; `downstream_taprisk_test.py:148-151`, `common.check_roles:167-174`).
+  The checks compare only the split sha and the two code hashes, and a verbatim copy of the candidate carries both.
+  **Fix:** in `verify_registry_hash` (pre-claim), refuse unless all of these hold:
+  - `status` starts with `FROZEN`;
+  - `frozen` / `authorised_by` / `authorised_at` are present;
+  - `candidate_record_sha256` equals the sha of `FREEZE_CANDIDATE_downstream_taprisk.json`;
+  - the FREEZE text differs from the candidate text.
+
+  Also refuse any record whose `status` contains `CANDIDATE`. Add a pytest that copies the candidate as the FREEZE
+  and expects refusal before any marker exists.
+- **🔴 C3. Sealing, rescoring and test access are not closed** (P4, P5, P7c; `testlook.py:149-156, 168-196`;
+  `taprisk.py:157-160`).
+  - After `save_predictions`, write a `test_predictions_sealed` registry row carrying the predictions sha256, the
+    freeze sha and the row count.
+  - `--rescore-from-saved` must:
+    - require that row and match the file sha to the **registry** value, not to the marker;
+    - refuse if any `taprisk/test_look` scoring row already exists (a partial-scoring crash goes to the lead, as M7 E2/🟢).
+  - In `taprisk.build(include_test=True)` (and in the test script before `predict`), refuse if `SCORED.json`,
+    `ABORTED.json` or a sealed/scored registry row exists. Also require the marker's `pid`/`host` to equal the current
+    process (M7 E3a), so test rows are reachable only inside the claiming process and access closes at sealing.
+- **🔴 C4. The code hash misses part of the import closure** (P8b; `taprisk_registry.py:20-28`). The test path imports
+  these unhashed files, which decide where markers live and how registry rows are written:
+  - `sentinel/__init__.py`, `sentinel/core/__init__.py`, `sentinel/core/paths.py` (RUNS_ROOT, REPO_ROOT, registry
+    path) and `sentinel/core/registry.py` (registry writes);
+  - `sentinel/eval/__init__.py`, `sentinel/models/__init__.py` and `sentinel/models/downstream/__init__.py`;
+  - `sentinel/models/downstream/toxinwatch.py`, which is statically reachable via `wqp_track.py:565`.
+
+  The `core` files are mode 0444 but owner-writable. **Fix:**
+  - add them to `EXTRA_SCORING_FILES`;
+  - add a pytest that walks the AST/import closure of `downstream_taprisk_test.py` and fails if any repo module is
+    outside `taprisk_registry.scoring_files()`;
+  - have `taprisk.build(include_test=True)` also verify the registry hash, not just the common hash.
+- **🔴 C5. Enforcement look-ahead in an it2 rich feature** (`taprisk_it2.py:43`; source
+  `sentinel/data/sources/downstream_drinking_water.py:277-296`).
+  - `rh_task_enf_formal_5y` sums `n_enf_formal`, which is the count of **all** formal enforcement actions on a
+    violation up to the 2026 snapshot. It has no date filter.
+  - At T = 2016, 722 of 1,279 D4a violations feeding the feature (56 %) have a last enforcement after 31 Dec 2016;
+    for D4b it is 1,610 of 3,316. So actions taken during the label window, which are typical when a violation
+    persists, are counted as known on 1 January T+1.
+  - This breaks the it2 spec ("all features known on 1 January T+1", protocol §10).
+  - It enters `gbm_rich`, the stack and `pennino_rf_hist_rich`, but not `pennino_rf` / `pennino_rf_hist`, which are
+    two of the four primary comparators.
+  - Size (gbm_rich, 3 seeds, train → val; the "as built" column reproduces it2 exactly). Columns are known / new:
+
+    | Task | As built | Clean lower bound | Feature removed |
+    |---|---|---|---|
+    | D4a | 0.9621 / 0.8711 | 0.9625 / 0.8713 | 0.9616 / 0.8701 |
+    | D4b | 0.8390 / 0.7756 | 0.8380 / 0.7761 | 0.8398 / 0.7754 |
+
+    (The clean lower bound drops violations with any enforcement after T.) The impact on validation is ≤ 0.001
+    AUROC, so the leak is real but small. It is still a look-ahead inside the frozen model, and removing it is cheap.
+
+  **Fix:**
+  - rebuild per-violation formal-action counts with `ENFORCEMENT_DATE ≤ 31 Dec T` from the violation×enforcement scan,
+    or drop the feature;
+  - log the change as a correction to it2 (not a new configuration);
+  - re-run `--it2` for both tasks, re-apply the written rule, regenerate the dry run and the candidate.
+
+  Re-check the other per-violation fields (`public_notification_tier`, `viol_measure_mgl`) for revision after T; they
+  look static.
+- **🔴 C6. Fit-row labels use violations reported after the decision date of the scored origin** (`taprisk.py:92-95`;
+  `downstream_taprisk_test.py:70-73`).
+  - `labels_at` has no `viol_first_reported_date` cut. In the test fit, the origin-2016 rows (window 2017–19) include
+    26 of 218 D4a positives and 41 of 542 D4b positives whose qualifying violations were **all first reported after
+    1 Jan 2020**, the test decision date.
+  - The validation analogue is worse: 43 of 154 and 133 of 527 origin-2013 positives were first reported after
+    1 Jan 2017.
+  - `test_known` contains the same systems as the fit rows. Models with location, the stack's GBM (lat/lon) and kNN25
+    (which finds the system's own rows at distance 0), can therefore read post-decision information. The Pennino-form
+    RFs, which have no location, cannot.
+  - This tilts a primary comparison on `test_known`.
+
+  **Fix:**
+  - pre-register and implement label censoring for fit rows: a violation counts toward a fit-row label only if
+    `viol_first_reported_date ≤ 31 Dec` of the scored origin (2019 in the look; 2016 in the dry run, and in it2 if it
+    is re-run for C5);
+  - apply it to every model and baseline;
+  - leave test labels uncensored (they are outcomes);
+  - document the change in the protocol before the FREEZE.
+- **🔴 C7. A model input is read after the claim without verification** (`downstream_taprisk_test.py:51-53, 78`).
+  `_gbm_n` reads `$SENTINEL_RUNS/…/phase1_<task>/phase1_results.json` inside `predict()`, after the claim. That file
+  is neither pinned nor hashed: an edit changes the frozen GBM size, and a missing file burns the look. **Fix:**
+  hard-code `n_estimators` (88 for D4a, 75 for D4b) in `FROZEN` and in the FREEZE record, or put the two files' sha256
+  in the FREEZE and verify them before `authorise`.
+
+### Warnings (should fix or disclose in the FREEZE)
+- **🟡 W1. Cluster unit for unseen states.** HUC8 is pre-registered, but `test_new` generalises over 19 states.
+  State-cluster bootstrap on the saved validation predictions widens the CIs:
+  - D4a `val_new` stack − `pennino_rf`: [0.040, 0.129] by HUC8 vs [0.036, 0.176] by state;
+  - stack − persistence: p 0.001 by HUC8 vs 0.015 by state. At p = 0.015 this comparison would not survive Holm over 8.
+
+  **Recommend:** pre-declare, before the freeze, that the D4a `test_new` comparisons must also be Holm-rejected under a
+  state-cluster bootstrap (stricter), or at least that they are reported.
+- **🟡 W2. 2026-snapshot unit definition and attributes.**
+  - Units are chosen by the 2026 `primary_source_code` and SAB v3 presence. A GW system that switched to purchased
+    water, or was consolidated, after nitrate violations is dropped from every origin (survivorship).
+  - Source proxies and system attributes are 2026 values (disclosed).
+  - Validation AUROCs of the source proxies are 0.43–0.55, so there is little label signal and leakage looks small.
+  - Disclose the survivorship explicitly in the protocol and the test results.
+- **🟡 W3. Comparator parity is partial.** `pennino_rf_hist_rich` gets the rich features but not lat/lon, while the
+  stack's GBM gets lat/lon (protocol §3 says "learners only"). The parity RF's top-k is not tuned (all features).
+  Acceptable and now fixed in code (`COMPS`, `FROZEN`), but state both in the FREEZE. They interact with C6.
+- **🟡 W4. Seed rule scope.** Only the GBM seed varies. The RF level-0 and the meta-learner use seed 0 in every
+  "seed" (`downstream_taprisk_test.py:81-87, 108-110`). State this reading in the FREEZE `seed_rule`.
+- **🟡 W5. Provenance.**
+  - `taprisk_it2.py` was edited at 16:17:46, after the D4a it2 run (results 16:17:07) and 22 s into the D4b run. The
+    transcript shows the edit only added `include_test` / `split_sha` parameters, and the current code reproduces all
+    four it2 sets exactly, so there is no impact.
+  - The test-look spec was appended at 21:17:46Z, after the D4a it2 results were read (21:17:17Z). Its content follows
+    mechanically from the pre-registered rule, and I found no discretionary choice favouring the stack.
+  - There are no `taprisk/prereg_snapshot` rows yet. At freeze, the lead should take the snapshot + `prereg_archive`
+    as for the five earlier apps, and cite the transcript timestamps above as ordering evidence.
+- **🟡 W6. `wqp_discrete` is read as a directory** (`taprisk.py:123`). An extra file dropped into a pinned partition
+  (`variable=no3/…`) would be read but not pinned. Pre-claim: refuse any file under the three partitions other than
+  the pinned `data.parquet`.
+- **🟢 W7.** RESULTS.md (2026-11-09 entry) says "frozen candidate"; it should say "freeze candidate".
+- **🟢 W8.** In `T2.select`, `gbm_phase1`'s per-seed check is skipped (`per_seed_diff=None` → `seeds_ok` stays True).
+  This is irrelevant here (no Holm qualifier), but note it.
+- **🟢 W9.** D4a `val_new` is underpowered (41 positives; MDE ≈ 0.11) and `test_new` will be similar. The expected
+  label "competitive" is appropriate and stated in advance.
+
+### Gate
+- **Do not freeze `4d8c8ff6…` / `87abeb1e…`.**
+- Make C1–C4 and C7 in the D4-owned files, with pytest refusal tests for P1, P4–P7 and P8b.
+- Make C5 and C6, which are science fixes (pre-register them in the protocol first). Then:
+  - re-run `--it2` for both tasks on validation;
+  - re-apply the written selection rule;
+  - re-run `--dry-run-on-val` in `sentinel2`;
+  - regenerate the pins (if needed) and the candidate.
+- Get a short delta review: the attack table must show every row "refused", and a diff check of C5/C6.
+- The lead may then write `FREEZE_downstream_taprisk.json` (status FROZEN, `authorised_by/at`,
+  `candidate_record_sha256`, prereg snapshot + archive) and authorise one `--allow-test` run in `sentinel2`.
+
+No test row has been read, so the D4 test block is still unspent.
+
+## M4 unseen-taxa — amendment A3 review (2026-11-09)
+
+**Scope.** The draft "Amendment A3 (draft, 2026-11-09)" in `docs/handoff/chemtox.md` (lines 433-535)
+and the new runner `scripts/eval/chemtox_unseen_select.py`, against the frozen plan
+`docs/preregistration/chemtox_unseen_taxa_plan.md` (sha256 `48553f19ac3674b5…`, verified unchanged)
+and the pinned modules `unseen_taxa.py` (`cf1493c6…`) and `unseen_taxa_guard.py` (`e3721450…`)
+(both verified against `docs/preregistration/chemtox_unseen_taxa_pins.json`). Nothing was fitted and
+no test row was read for this review; only `training_pool.parquet` was opened. The pinned files were
+not edited.
+
+**Verdicts.** A3.1 **APPROVE WITH CHANGES**. A3.2 **APPROVE WITH CHANGES** for `gpboost` /
+`gpboost_published_chan`; **REJECT as drafted** for `readacross`. Re-freeze procedure **APPROVE**
+(move the v6 caveat into the plan; dated amendment + `prereg_snapshot_v7` before any affected fit).
+**No grouping-dependent entry may be unlocked yet** — `--allow-grouping-dependent` stays off until
+C-A3-1…C-A3-5 below are made. Three new criticals in the runner are *not* part of A3 but block the
+`_chan` entries and therefore claim condition (d2).
+
+### What I verified (independently reproduced)
+
+1. **A3.1's measurement is exact.** Re-running `unseen_taxa.validation_splits` on the frozen pool
+   (60,575 rows) reproduces the handoff table to the row: train 676 / 8,378 / 11,523 / 24,505 for
+   Actinopterygii / Malacostraca / Branchiopoda / Maxillopoda; distinct `class` values 10 / 10 / 10 / 11;
+   taxon groups crustaceans 653 + algae 17 + fish 6, fish 7,200 + crust 1,145 + algae 33,
+   fish 10,042 + crust 1,455 + algae 26, fish 19,156 + crust 5,299 + algae 50. The same numbers appear
+   in the live `xgboost.log`. Nothing in the code path restricts training to fish: the plain `rf` /
+   `xgboost` entries already train on all pool classes, so "multitaxa" has no distinct meaning here.
+2. **Aliasing changes no comparator's training rows.** The four `*_multitaxa*` names are in the
+   runner's `BLOCKED` tuple, have never been fitted, and have no training-row rule; `rf` and `xgboost`
+   are unaffected by the aliasing. Stronger point in A3's favour than the draft makes: the alternative
+   reading (branch (a), "multitaxa = extra ADORE rows from the other challenges",
+   `cycle.adore_other_taxa_rows`) is **forbidden by the frozen plan** — §5.1's heading requires every
+   mandatory comparator to be "trained on exactly the same rows as every candidate", and §3 pins the
+   training pool by sha256. A distinct multitaxa training set would break both. Aliasing (or outright
+   dropping) is the only admissible reading, and aliasing is the more conservative of the two.
+3. **The inventory arithmetic is right.** 31 − 4 = 27 entries; 608 − 4×32 = 480 searched;
+   17 mandatory comparators = 2 + 5 + 5 + 1 + 4; 27 − 17 = 10 = 7 candidates + 3 trivial. The runner's
+   `SEARCHED` holds exactly the 15 searched entries (15×32 = 480).
+4. **Reducing 21 → 17 does not itself weaken the gate.** The dropped entries are numerically identical
+   to entries that remain, so `best_baseline` and "best channel-matched comparator" are maxima over an
+   unchanged set of values, and §6's Holm family is defined by *references* (four) and by the surrogate
+   family, not by comparator count. The gate weakens only through the duplicate-entry defect in §C-A3-4
+   below, which is a runner bug, not a consequence of aliasing.
+5. **No below-class grouping or feature can reach any estimator today.** Entry by entry:
+   `rf`/`xgboost`/`lightgbm`/`catboost`/`chemeleon_lightgbm` never touch the raw frame (`xgb.py`,
+   `gbdt.py` contain no `train_rows` use) and see only `ChannelBuilder`'s matrix, which is guarded by
+   `assert_no_trait_columns` + `assert_no_class_or_lower` at fit *and* inside `ChannelBuilder.fit`;
+   the `*_resid_*` wrappers add only `SurrogateFeatures` (pool-side chemical statistics; its one
+   below-class read, `latin_name` for `surr_n_pool_taxa`, is a pool-side count already disclosed in
+   plan §1.4.2); `gpboost` / `gpboost_published_chan` have `group_columns` force-overwritten to
+   `("rank_phylum",)` in `build_model`; `readacross` cannot run at all (see C-A3-1); `chemprop` cannot
+   even be sampled (see W-A3-3). `add_grouping_columns` creates no `tax_gs`/`tax_genus`, and
+   `grep -rn "tax_gs" scripts/eval/chemtox_unseen_select.py` finds only docstring references to the
+   removed defect. I confirm the defect is gone from live code.
+6. **Nothing grouping-dependent was ever fitted, with the bad keys or otherwise.** The registry
+   (`results/registry.jsonl`) holds no `gpboost*` or `readacross` row for `chemtox_unseen_taxa_select`;
+   the only run directory, `$SENTINEL_RUNS/chemtox/unseen_taxa/stage2_select/`, contains only
+   `xgboost.log`, `queue.log`, `phase2_queue.log` (empty); there is no `AUTHORISED.json` or
+   `SCORED.json` under `chemtox/unseen_taxa/`, so no test block has been read. The only GPBoost fit
+   ever made on this track is the v6 admissibility check, whose registry `extra.determinism` records
+   `group_columns: ["rank_phylum"]`, `fold: Malacostraca`, `n_train: 8378` — i.e. the admitted key, not
+   the forbidden ones. The `scratchpad/m4/gpbdiag/*` GPBoost artefacts are the **closed prospective**
+   track (ADORE CV fold 0, `gpboost_multitaxa`), not this one.
+7. **`rank_phylum` is as the caveat describes**: exactly 3 levels on the pool (Chordata 42,608 /
+   Arthropoda 17,805 / Other 162 = algae). Worth stating in the plan *why* this is admissible as a
+   grouping key although the same information was rejected as a one-hot feature (delta review D-2):
+   GPBoost maps a level unseen in training to a sentinel and predicts the random effect's grand mean
+   (`gpboost_model.UNSEEN`, `predict_var=False`), so `Mollusca` on the mollusc block contributes a
+   shrinkage fallback, not a seed-dependent weight on an always-zero input. That asymmetry is the
+   whole argument and it is currently only implicit.
+8. **The re-freeze facts in the draft check out**: data hashes unchanged (`649dc7d1…`, `7e915fbe…`),
+   no FREEZE file, no claim marker, no test row read.
+
+### Critical — must be fixed before `--allow-grouping-dependent`
+
+- **🔴 C-A3-1. `readacross` does not degenerate — it crashes.** A3.2 states that with no species column
+  "every row falls to the `group`/`global` neighbour pool, i.e. the plain chemical-similarity kNN
+  §5.1.5 already describes". That is false in code: `ReadAcrossKNN.fit` reads
+  `self.rows_[SPECIES_COL]` (`readacross.py:105`) **unconditionally**, before and regardless of
+  `match_species`. I ran it on 3 pool rows: `KeyError('tax_gs')`. So the entry is not "degenerate",
+  it is unrunnable, and the amendment as written would have the lead approve a comparator behaviour
+  that has never executed. Fix: give the track an explicit adapter — either a track-local subclass
+  that pins the widening level to `"global"`, or a constant placeholder species key (the
+  `to_model_schema` `__dropped__` pattern) **plus** `match_species=False` pinned in the entry — and
+  state in the plan which was chosen. Then re-assert §5.1.5's counter expectation
+  (`widening_ == {species:0, group:0, global:N, fallback_mean:k}`) in a test.
+- **🔴 C-A3-2. Supplying `tax_group` revives the "group" level inside the selection folds, where it
+  cannot fire at test time.** Every validation fold's held-out class shares its taxon group with
+  training rows (Actinopterygii→fish present; Malacostraca / Branchiopoda / Maxillopoda→crustaceans
+  present, 1,145-5,299 rows), so with `match_species=True` (15 of the 32 sampled `readacross`
+  configurations) selection would score read-across on a group-matched neighbour pool. On a test block
+  `taxon_group ∈ {insects, molluscs, amphibians}` (`unseen_taxa.HELD_OUT_GROUPS`) matches no pool row,
+  so the level cannot fire. That inverts §1.4.4's own honest-analogue principle ("a fold's surrogate
+  coverage is what test-time coverage will be") and contradicts §5.1.5. Fix: pin `match_species=False`
+  for this track so selection and test both run the plain chemical-similarity kNN; I checked that
+  pinning costs no budget (all 32 draws stay distinct).
+- **🔴 C-A3-3. The recorded `gpboost` configuration misreports the grouping.** `build_model` copies the
+  parameter dict before overwriting `group_columns`, so `cfg["params"]` — which is what
+  `run_entry` writes into `<entry>.json` and what `registry.log_result` stores as `config.params` —
+  still carries the sampled value. All four sampled values are forbidden keys
+  (`('tax_gs',)`, `('tax_gs','tax_genus')`, `('tax_gs','tax_genus','tax_group')`,
+  `('tax_gs','tax_family','tax_group')`). The audit trail would therefore assert that species/genus
+  grouping was used in a fit that actually used `rank_phylum` — the worst possible direction for a
+  provenance record. Fix: drop `group_columns` from the track's sampled space (a track-local GPBoost
+  space), or rewrite `cfg["params"]["group_columns"]` before the fit and the record; and assert
+  `tuple(model.inner_.group_columns_) == ("rank_phylum",)` after each fit. (I checked the override does
+  not shrink the budget: 32 sampled configurations remain 32 distinct after it.)
+- **🔴 C-A3-4. Three "distinct" mandatory comparators are exact duplicates, and the published
+  cross-species comparator is bit-identical to the candidate.** `sample_entry` uses one fixed seed
+  (`20261109`) and keys only on `meta["base"]`, so for the same base space the configuration list
+  *and* the channel draws are identical. Measured, 32/32 identical configurations:
+  `rf_chan` ≡ `rf_published_chan`; `xgboost_chan` ≡ `xgboost_published_chan`;
+  **`gpboost` (candidate) ≡ `gpboost_published_chan` (mandatory comparator)**. Consequences: of the five
+  channel-matched comparators A3.1 relies on for (d2), only two are distinct; and claim conditions (b)
+  and (d2) would compare the GPBoost candidate against itself, which is not a comparison. This is also
+  where the plan is internally inconsistent — §1.4.3 describes `rf_published_chan` /
+  `xgboost_published_chan` / `gpboost_published_chan` as "the published configurations likewise",
+  i.e. **fixed** published hyper-parameters with the channels added, while the §1.4.4 inventory counts
+  them as 32-configuration searches. A3 renumbers that inventory and must therefore settle it. Fix
+  (recommended, and consistent with §1.4.3 and with §5.1.1/§5.1.3): the three `*_published_chan`
+  entries take the **published fixed** hyper-parameters, with the channel setting as the only varied
+  dimension (4 settings each, counted as 4 not 32); the inventory becomes 480 − 3×32 + 3×4 = 396
+  searched + 12 fixed, or keep 32 each but with per-entry seeds and say so. Either way the number
+  reported with a claim must be the number of **distinct** configurations.
+- **🔴 C-A3-5. 11 of every `_chan` entry's 32 configurations are not channel-matched.**
+  `CHANNEL_CHOICES` includes `()`, and the draws are `{(): 11, ('higher_rank',): 8,
+  ('surrogate',): 6, ('surrogate','higher_rank'): 7}` for every `_chan` entry. If the selected
+  configuration for `rf_chan` is one of those 11, the "channel-matched comparator" that (d2) tests
+  against *is* channel-free `rf`, and (d2) becomes vacuous — exactly the C-M4P-1 failure mode §1.4.3
+  exists to prevent. Plan §1.4.4's "channels ∈ {none, surrogate, higher_rank, both}" is written for the
+  *candidates*. Fix: for the `_chan` entries sample channels over the three non-empty settings, or
+  require the selected configuration to carry a non-empty channel set; state the rule in the plan.
+
+### Required changes to the A3 text itself
+
+- **🟡 T1. (d2) is misstated.** A3.1 says (d2) "is evaluated on the plain `_chan` vs non-`_chan` pair".
+  (d2) in §6 is *candidate vs each channel-matched comparator*; the `_chan` vs non-`_chan` contrast is a
+  useful diagnostic of what the channel is worth, not the claim condition. Reword: "(d2) remains
+  evaluated as written — the candidate against each channel-matched comparator (`rf_chan`,
+  `xgboost_chan`, `rf_published_chan`, `xgboost_published_chan`, `gpboost_published_chan`). The
+  `_chan` vs non-`_chan` difference is reported beside it as the measured value of the channels."
+- **🟡 T2. `tax_group` is not "above class rank for any held-out class".** For insects the group label is
+  one-to-one with `Insecta` and for amphibians with `Amphibia` — the same proxy structure delta review
+  D-2 rejected for `rank_subphylum=Hexapoda`. It is admissible here only because (i) it is a
+  `TRAIT_PREFIXES` member and so is deleted from every feature matrix by `TaxonBlindBuilder`, (ii) it is
+  never a GPBoost grouping column, and (iii) its test-block values match no training level. Say that,
+  and keep its sole use to read-across's widening level (§5.1.5). Do not state the stronger claim.
+- **🟡 T3. State the aliases explicitly and show them.** List the four names in the plan as "alias of
+  `rf` / `xgboost`; identical rows, configuration and numbers; not evaluated as independent
+  comparators", and print them in every comparator table as `= rf` / `= xgboost` rather than omitting
+  them, so the 21 → 17 change is auditable from the output rather than from the amendment alone.
+- **🟡 T4. Record why `tax_gs` must never be created** as a protocol invariant with a refusal test, not
+  only as a resolved defect: `chemprop`'s `ConditionEncoder` keys a **species embedding** on `tax_gs`
+  (`chemprop_model.py:52,70`), and `readacross` and `GROUP_COLUMNS_DEFAULT` both want it. The absence
+  of the column is what currently makes a below-class channel impossible, so "`tax_gs`/`tax_genus` are
+  not created" belongs in the plan text with a test that fails if any track adapter adds them.
+- **🟡 T5. Disclose the GPBoost adaptation symmetrically.** `gpboost` the *candidate* is adapted in
+  exactly the same way as `gpboost_published`/`gpboost_published_chan` (both grouped on `rank_phylum`
+  only). The plan must say the candidate is not advantaged by the adaptation, and the model card must
+  carry the ADAPTED label for all three.
+
+### Warnings
+
+- **🟡 W-A3-1. `add_grouping_columns` re-opens chemprop's taxon-routing path.** `ChempropTox._task_index`
+  reads `tax_group`; before A3's adapter the column did not exist on this track (so a `multitask=True`
+  configuration would have failed loudly), and A3 now supplies it. The runner never calls
+  `unseen_taxa.assert_taxon_agnostic`, which plan §5.2 names as the enforcement mechanism for C-M4U-4.
+  Add the call in `build_model` (or `run_entry`) for every entry and keep `multitask` out of the sampled
+  space before chemprop is ever fitted.
+- **🟡 W-A3-2. A smoke-run row is in the append-only registry.** `chemtox_unseen_taxa_select` /
+  `xgboost` / `rmse` = 1.7684981530358008 (2026-11-09T22:35:56Z) carries
+  `split = "unseen_taxa/validation_rotation"` but `extra.n_configurations = 1`,
+  `extra.folds = ["Maxillopoda"]`, and its artefact path is a session scratchpad under `/tmp` that will
+  not survive. `rmse` and `rmse_worst_fold` are equal because one fold ran. Supersede both rows with a
+  corrected entry once the real 32×4 run finishes, and gate `--log-registry` on the full budget and all
+  four folds (`len(folds) == 4 and budget == CYC.DEFAULT_BUDGET`) so a single-fold number can never be
+  logged under the rotation's split name.
+- **🟡 W-A3-3. The `chemprop` entry cannot be sampled.** `CYC.sample("chemprop")` raises
+  `KeyError('chemprop')` — the chemprop space lives in `chemtox/spaces.py`, not `cycle.SPACES`. The
+  entry is counted in A3's 480/27 inventory, so either wire it up or declare it blocked like the
+  multitaxa four; an inventory that includes an unrunnable entry is a count that will drift.
+- **🟢 W-A3-4.** `evaluate as E` is imported and unused in the runner; `--smoke` only skips the
+  `TrainingRun`/registry write, which is fine, but the flag name invites the mistake in W-A3-2.
+
+### Answers to the two procedural questions
+
+- **Should the v6 caveat move from the registry notes into the plan text at re-freeze? Yes — APPROVE.**
+  `verify_freeze()` pins the plan, the two parquet files, `unseen_taxa.py` and the guard; it does **not**
+  pin registry notes, and a registry note is not visible to anyone reading the protocol. The caveat
+  changes what a mandatory comparator *is* (an ADAPTED estimator, and the admitted grouping variable),
+  which is precisely the class of statement §5.1/§1.4.3 must carry. Put it in §5.1(3) and §1.4.2, with
+  the asymmetry argument from item 7 above.
+- **Is the right procedure a dated amendment plus `prereg_snapshot_v7` before any affected entry is
+  fitted? Yes — APPROVE**, with three additions: (i) copy the current pins to
+  `chemtox_unseen_taxa_pins.v6.json` before `make_pins()` overwrites them, since the v6 ordering
+  evidence otherwise survives only in the registry row's `extra.sha256`; (ii) the v7 row must state
+  which entries were already fitted under v6 (`xgboost`, and `rf` if it completes first) and that A3
+  changes neither their rows nor their configurations, so they need no re-run; (iii) re-freeze after the
+  in-flight `xgboost`/`rf` runs finish, so no single run spans two plan hashes — the running job
+  recorded `plan_sha256 = 48553f19…` at start and `verify_freeze()` would refuse a restart afterwards.
+
+### Gate
+
+**`--allow-grouping-dependent` stays off.** Unlock only after:
+
+1. C-A3-1 and C-A3-2 (read-across adapter + `match_species` pinned; counters tested) — then `readacross`
+   may be unlocked.
+2. C-A3-3 and C-A3-4 (grouping recorded truthfully; `gpboost_published_chan` made genuinely distinct
+   from the `gpboost` candidate) — then `gpboost` and `gpboost_published_chan` may be unlocked.
+3. C-A3-5 and T1-T5 written into the plan, `make_pins()` regenerated, `prereg_snapshot_v7` logged, and
+   a short delta review confirming only the four aliases, the grouping rule and the comparator-count
+   change moved — no rule, fold, feature or datum.
+
+The grouping-independent entries may continue meanwhile; A3 does not affect them. One more count to
+correct while the inventory is being rewritten: the draft (and the runner's `GROUPING_DEPENDENT`
+docstring) says "the nine grouping-independent entries continue", but `SEARCHED` holds 15 entries, of
+which 3 are grouping-dependent — so 12, or 11 runnable once `chemprop` is counted as blocked
+(W-A3-3). Fix the figure in the amendment rather than carrying a third inconsistent count.
+
+No test row has been read and no claim marker exists, so the three blocks are still unspent.
+
+## EW-v2 live trial — pre-test review (2026-11-09)
+
+**Mode:** pre-test gate for amendment L1 (`docs/preregistration/ew_v2_live_amendment.md`, mtime 18:00), config
+`configs/live/ew_v2_live.json` (sha `a6467a31…`, 0444), `scripts/live/*` (current import-closure code hash
+`1f565eed…`, 53 files), `tests/test_live.py` and `sentinel_runs/live/ew_v2/dryrun/`.
+**Reviewer:** independent agent, fresh context; `review` skill in pre-test mode.
+**Safety:** no FREEZE file was written, live mode was not run, nothing was committed, no cron was installed, and
+`keys.env` was not read (no fetch was run: `fetch_usgs.py` / `build_series_map.py` read the key). The replay and an
+end-to-end dry issue were re-run with `SENTINEL_RUNS` pointed at the scratchpad
+(`/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/runs/`), so the real dry-run tree
+still holds 1 hash-log row and its two original replay files. Guard and hash-chain probes:
+`/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/livegd/probe.py`. CPU only,
+≤ 6 threads, niced, `sentinel2` env. **`scripts/live/score_live.py` does not exist yet: the scorer is still to be
+reviewed.** Only its specification (amendment §9) is reviewed here.
+
+### Verdict: 🔴 FAIL. The lead may NOT freeze the amendment as it stands.
+
+The science behind the amendment is honest:
+- Test-A knowledge is disclosed, and its numbers match the post-results review.
+- No threshold, Platt map, stack, site or hazard was tuned on Test-A.
+- The provisional-input variant demonstrably predates Test-A.
+- The replay reproduces calibration exactly on the current code and config.
+
+Three defects block the freeze. Each must be fixed in code or text that the freeze will hash, and each is cheap:
+1. **C-L1.** The issue times cannot be proven as designed.
+2. **C-L2.** The pre-specified extension rule cannot be executed without a mid-trial re-freeze.
+3. **C-L3.** The frozen series map silently drops replacement sensor series, while the amendment says they fall back.
+
+There are 3 weeks left before 2026-12-01. Fix, re-run the replay and the dry issue on the final code, run a short delta
+review, then freeze.
+
+### Verified (evidence)
+- **Frozen EW-v2 is untouched.**
+  - `guard.scoring_code_sha256(FREEZE_ew.scoring_code_files)` = `c110bcff…` (match). All 22 files are 0444, as is
+    `FREEZE_ew.json`.
+  - The calibration `3c243c1b…` matches `thresholds_sha256`.
+  - `ew_v2_protocol.md` = `0d5c8f2e…`, identical to `git show cef72b6:` and to the copy inside the OSF tarball.
+  - `git diff` against cef72b6 is empty for the protocol and FREEZE_ew.
+- **Test-A independence of the H1/H4 live variant (`ew_live_variant_cal_nosubdaily`).**
+  - **Timing.**
+    - File mtimes are 2026-11-08 19:26–19:42 EST.
+    - The registry holds 402 `ew_v2_val_oof` rows at 2026-11-09T00:44Z (19:44 EST), whose `config_hash 89f6ef25…`
+      equals the file's `config_hash`.
+    - The public commit cef72b6 (pushed 10:03 EST, before the 12:05 Test-A marker) contains three records of the run:
+      - the TRAINING_LOG entry (overrides `use_subdaily=false`, H1/H4);
+      - protocol v0.3 §5, which discloses the "9th calibrate run … 2026-11-08 19:25";
+      - the handoff, which quotes the H1 stack val-OOF BSS of 0.0213 [−0.010, 0.041]. The current file's
+        `event_scores.csv` gives 0.021286 [−0.0103, 0.0408].
+  - **Fitting.** Calibrate used blocks (train, val) only, according to the log.
+  - **Method choice.** The pre-existing rule (`sonde_ew_freeze_candidate.py:59`, non-baseline and non-q methods)
+    applied to h = 3 val-OOF BSS gives:
+    - H1: stack 0.0213 > mono 0.0139;
+    - H4: stack 0.0035 > mono −0.0054;
+    - so **stack for both**, as configured.
+  - **Gap.** The SHA-256 of the variant file (`942440b3…`) itself appears in no pre-Test-A public record. The binding
+    rests on the config hash, the registry rows and the matching metric. This is adequate, but §0 should say so (W-L12).
+- **Test-A independence of the H2 window change (decision 2).**
+  - **Source of the numbers.** `power_projection.py` reads only train/val-role live sites (`:39`) and dates up to
+    2023-09-30 (`:40`). `build_cube` also asserts that no value from WY2022–26 enters beyond the val window used.
+  - **Output.** `power_projection.json` gives H2 Dec–Mar share 0.081 and Jul–Sep 0.61. The registry rows
+    `ew_v2_live/power` (22:56Z) carry train/val splits only.
+  - **No Test-A information.** Test-A H2 onset months appear in no review or result that I found.
+  - **Practical effect.** Both windows are hopeless for confirmation: winter < 1 onset, whole trial 4–9, against a
+    threshold of 50. The change therefore cannot affect any confirmatory outcome. It is legitimate and harmless; say
+    so in §0.
+- **Decision 3 (all roles) and the site rule.**
+  - Both are mechanical metadata rules (`build_live_config.py:53–59`). Test-role inclusion is all-or-none and follows
+    RESEARCH_PLAN §5.1 ("Test-C live"), so no site was selected on Test-A performance.
+  - Counts reproduce: 379/43/25 sites, 220/33/126 by role for H1, with 51/10/13 basin groups.
+- **§0 numbers.** All match REVIEW_REPORT_POST_RESULTS "EW-v2 Test-A":
+  - 43/11, 9/3 and 9/2 onsets / basin groups;
+  - BSS +0.013, −0.015 and +0.019;
+  - 1.99 alarm-days per 30 d;
+  - POD 0.86 vs placebo 0.33 and climatology 0.49;
+  - the < 4 mg/L tier at −0.002 on 56 onsets.
+- **§8 numbers.** All match `power_projection.json`: rates 0.161/0.148, 0.189/0.146 and 0.425/0.191, and projections
+  48.9–53.3, 5.2–6.7 and 3.9–8.6.
+- **Replay reproduced on the current code (`1f565eed…`) and config (`a6467a31…`).**
+  - The existing replay files were produced with superseded code (`e59510b1…`) and config (`aa354131…`). `issue.py`
+    and `live_data.py` changed at 17:49, after the 17:47 replay. The config was rebuilt at 17:59.
+  - I re-ran the replay. All 9 hazard × lead cells match exactly (n_mine = n_stored = n_matched). Maximum |Δp| over
+    all methods:
+
+    | Hazard | L1 | L3 | L7 |
+    |---|---|---|---|
+    | H1 | 8.1e-7 | 3.9e-6 | 9.2e-9 |
+    | H4 | 2e-11 | 1.7e-10 | 6.2e-10 |
+    | H2 | 1.5e-13 | 4.3e-12 | 5.3e-12 |
+
+    There are 0 non-finite mismatches. The amendment's "≤ 4 × 10⁻⁶" holds, and the float32 chloride fix holds
+    (H2 ≤ 5e-12, against 0.0096 in the pre-fix replay).
+  - The end-to-end dry issue on the current code (`--mode dryrun --date 2026-11-08 --window-source snapshot`) wrote
+    5,033 rows and chained row 0, and `on_time = False` is correctly flagged for a past day.
+- **Series map (dry run, train/val).** 3,843 keys, of which 84 have more than one series. The lowest agreement is 0.947,
+  and none is below 0.9. The rule reads only the pre-trial window 2026-10-01..11-07 and is outcome-free.
+- **Guards** (probe; no live run):
+  - a missing freeze record is refused;
+  - a missing or mismatched series map is refused;
+  - a config mismatch is refused;
+  - the code hash is checked in `load_freeze_live`, and calibration plus every artifact are checked at every issue
+    (`live_common.py:150–167`, `issue.py:136–139`);
+  - the snapshot site files are checked against per-site pins;
+  - future days are refused, and past days are refused without `--late`;
+  - a second row for the same day is refused under `flock`.
+- **Tests.** `pytest tests/test_live.py` passes 6/6.
+- **USGS dependency.** Inputs, the series map and the planned labels all use the OGC API (`USGS_OGC_BASE`). The
+  training block comes from the local pinned snapshot. The legacy slowdown (11-16) and shutdown (2027-02-22) therefore
+  do not affect issuing.
+  - Volume is about 20 requests per day, far below the keyed limit.
+  - In the dry fetch, about 98 % of day-d values had `last_modified` ≤ 11:00 UTC on D. A 12:00 UTC issue is
+    feasible, but with a thin margin.
+
+### Critical issues (must fix before the freeze)
+
+**C-L1 — Issue times cannot be proven, and a deleted day is indistinguishable from a failed day.**
+- **Where:**
+  - amendment `:137–147` (§5.5–5.6), `:195` (sensitivity a), `:285`;
+  - `live_common.py:181–211`;
+  - `verify_hashlog.py:124`;
+  - `run_daily.sh:13–22`.
+- **What I showed in the probe:**
+  - **Rewriting the unpublished tail is undetectable.** I truncated the last row and appended a different row for the
+    same date with any `issued_utc`; `verify_chain` returned `[]`.
+  - **Deleting the tail is undetectable.** `verify_chain` again returned `[]`.
+- **What follows:**
+  - **Weekly anchoring is too slow.** Any day can be re-made or dropped for up to 7 days after it is issued. That is
+    longer than the h = 3 window, and provisional outcomes are public within about 1 day. Because the models are
+    frozen and deterministic, re-making a day gains little. **Deleting** the days on which the stack missed an onset
+    or raised false alarms, and calling them "failed", directly inflates BSS. With about 50 onsets, a handful of
+    deleted days matters.
+  - **Failures leave no public trace.** `run_daily.sh` aborts under `set -e` without writing anything, so failures
+    cannot be "counted and reported" in a verifiable way.
+  - **The git timestamp proves nothing.** `--git` uses the committer date (`%cI`), which is self-asserted
+    (`GIT_COMMITTER_DATE`, rebase, force-push). It does not prove when anything was published.
+- **Fix:**
+  1. **Log every scheduled day.** `run_daily.sh` (trap on EXIT) appends a chained row for every scheduled day,
+     including failures, recording the status (`issued` / `failed`), the failing stage and the exception class.
+  2. **Anchor each row at once, independently.** Within the same cron run, give each new row an independent
+     timestamp, for example:
+     - OpenTimestamps (`ots stamp` on the log; commit the `.ots`);
+     - the row hash posted as a comment on a dedicated public GitHub issue (server time, with visible edit history);
+     - an owner-cron push to a protected branch with force-push disabled, archiving GitHub's server-side push record
+       (`gh api repos/<o>/<r>/activity`) weekly.
+  3. **Define the primary population** as on-time issues whose row carries independent public evidence dated
+     ≤ D 23:59 UTC. Every other issued row goes into a sensitivity analysis. A day with no row of either kind counts as
+     missing and is reported as such.
+  4. **Verify the right timestamp.** `verify_hashlog.py` checks that independent evidence, not `%cI`.
+  5. **Update §5.5/§13** to match.
+
+**C-L2 — The extension rule (§8) cannot run under this freeze, and it is under-specified.**
+- **Where:**
+  - amendment `:220–226`;
+  - config `trial.issue_end = 2027-09-30` (`build_live_config.py:72`);
+  - `issue.py:327–328` refuses outside the window;
+  - `LIVE_BLOCK` is hard-coded (`live_common.py:43`) and used for the window and labels (`issue.py:57, 264`).
+- **The contradiction.** The rule says issuing "continues (it is never stopped in between) through 2028-09-30". The
+  frozen code refuses every issue from 2027-10-01. Continuing would need a new config, new code and a new freeze record
+  on about 2027-10-01. By then the authors will have seen 10 months of public provisional outcomes, and the interim look
+  opens 2 weeks later.
+- **Also undefined:**
+  - whether 2027-10-01..11-30 issues belong to the pooled population;
+  - the WY2028 approval cut-off (2029-06-30 is only implied);
+  - whether the 42-day block embargo cuts issues around 2027-10-01;
+  - how H2/H4 enter the pooled look (pooled, or p = 1);
+  - what happens if H1 is powered on WY2027 alone: is WY2028 issuing then simply unused?
+- **Fix:**
+  1. **Freeze the whole span now.** Use `issue_end = 2028-09-30` and issue continuously from 2026-12-01.
+  2. **Move the block definitions into the config.** Make `LIVE_BLOCK` config-driven, or add a second block `live2`.
+  3. **Define both looks in §7–§8:**
+     - **WY2027 look:** issues 2026-12-01..2027-09-30, cut-off 2028-06-30.
+     - **Pooled look:** issues 2026-12-01..2028-09-30 with no gap, cut-off 2029-06-30, no embargo inside the trial.
+       All three hazards are pooled under Holm with m = 3 and the same power rule.
+     - Which look is confirmatory is decided only by the count-only H1 rule.
+  4. **Test the extended span.** Add a test that builds a synthetic cube running past 2027-09-30 through `make_data`,
+     `issue_rows` and `score_rows` without error.
+
+**C-L3 — The series map drops replacement series for mapped keys, contrary to the amendment.**
+- **The claim.** Amendment `:101–102` says "Series that appear later fall back to the frozen `splice_site` rule, and
+  this is logged."
+- **The code.** `live_data.py:79` keeps a row only if `mapped.isna() | mapped == ts_id`.
+  - If a mapped sonde's `time_series_id` changes (sensor replacement or relocation; likely somewhere among about 400
+    sites over 10–22 months), every new row is dropped.
+  - The site silently becomes unforecastable for that variable.
+  - Nothing is logged except an aggregate `n_dropped_rows`, which mixes these drops with the intended ones.
+  - This costs power rather than adding bias, but the frozen amendment would misdescribe the frozen code.
+- **Fix:** in `apply_series_map`, if the mapped series has no record in the fetch window (or in its last 7 days):
+  1. keep all series for that key, so `splice_site` decides;
+  2. list those keys in the manifest;
+  3. add a unit test.
+
+  Use the same frozen map and fallback for building the Approved labels (§6), and say so.
+
+### Warnings (fix before the freeze where the fix is code; otherwise state in the amendment)
+- **W-L1 — Pinned inputs are not verified at issue.** `chloride_regressions_sha256` and `sites_parquet_sha256` are
+  pinned in the config but never checked. `issue.py:80` (`common.chloride_regressions()`, the H2 inputs) and `:93`
+  (`site_registry()`, static features) read whatever `processed/` currently holds. Also, `live_data.py:102–103`
+  returns `None` for a pinned site file that is **missing**, so a moved snapshot gives a valid-looking issue with 0
+  rows.
+  - Fix: verify both SHA-256s at every issue, and refuse when a pinned file is missing.
+- **W-L2 — The Python environment is not pinned.** No numpy, pandas, scipy or lightgbm version is pinned. Over 10–22
+  months a `conda update` could shift predictions.
+  - Fix: put a `conda list --export` SHA-256 in the freeze record and check it at every issue, or at least record it
+    in each manifest.
+- **W-L3 — The amendment is hashed but is meant to be edited later.** §11.4 says to put the commit hash into §12 of the
+  hashed amendment, which changes its hash.
+  - Fix: keep post-freeze deviations in a separate `ew_v2_live_deviations.md`, and chmod 0444 the amendment at freeze.
+  - Add the freeze-record SHA-256 to every hash-log row.
+  - Make `load_freeze_live` refuse `<…>` placeholders, and drop the `public_record` field, since a commit cannot
+    contain its own hash.
+- **W-L4 — Crashes are not atomic.** `issue.py:338–351` writes `issue.parquet` with mode 0444 before the manifest.
+  - A crash in between blocks a same-day rerun, because `to_parquet` cannot overwrite a 0444 file. The day is then
+    lost unless someone deletes files by hand.
+  - A crash after the manifest but before the hash row leaves an orphan that `verify_hashlog.py` does not detect.
+  - Fix: write to a temporary directory and rename it, and make `verify_hashlog` list issue directories that have no
+    row.
+- **W-L5 — Time zone.** `0 12 * * *` runs at 12:00 local time (EST = 17:00 UTC), not at the 12:00 UTC the amendment
+  states.
+  - Fix: set `CRON_TZ=UTC`.
+  - State that on-time means ≤ 23:59 UTC. Inputs are capped at d, so a later run within the day gains nothing.
+- **W-L6 — Unknown OGC qualifiers pass unmasked.** They are counted but not masked (`live_data.py:58–59`), and the OGC
+  vocabulary may change during the trial.
+  - Fix: pre-specify the rule now, for example "unknown → masked and reported".
+  - State in §5 that a failed gridMET fetch means the issue goes ahead with NaN weather (`run_daily.sh:21`).
+- **W-L7 — Power to detect skill, not just onset counts.** My rough estimate:
+  - **Method.** I take the Test-A H1 SE (≈ 0.011 at 43 onsets) and scale it by √n. Holm with the two near-certain
+    p = 1 hazards needs p ≤ 0.0167.
+  - **Power at the Test-A effect (+0.013):** about 0.19 with 50 onsets (WY2027) and about 0.30 with 80 (pooled).
+  - **Power at the variant's val-OOF effect (+0.021):** about 0.50 and 0.71.
+  - **H2 and H4:** they cannot reach 50 onsets even over 2 years (upper bound about 10–18).
+  - **Consequence.** The trial can support at best a confirmatory **H1-only** claim, with low to moderate power. The
+    amendment should state this, labelled as using the disclosed Test-A estimate for power only. It should also state
+    that a non-rejection is not evidence of no skill. The "upper bound" wording in §8 should become "full-coverage
+    projection": rates can differ, and evaluable onsets are at most raw onsets.
+- **W-L8 — The interim look effectively unblinds WY2027.** Provisional DO labels are close to the Approved ones, so a
+  provisional-label skill look in October 2027 largely reveals the WY2027 result before the "single confirmatory look".
+  Because the extension rule is count-only and mechanical, no rule depends on the interim, but nothing fences it in
+  practice.
+  - Fix: restrict the interim to operational and alarm-rate metrics plus provisional onset counts (no BSS or DM), or
+    commit to reporting the final look whatever the interim shows.
+  - After the interim, allow only operational code fixes, each of which must pass the replay identity check.
+  - Give §9.1 per-look time gates: `prov_interim` ≥ 2027-10-15, `count_only` ≥ 2028-06-30, `final` ≥ the relevant
+    cut-off. As written, "refuse before the cut-off" would block the interim.
+  - `count_only` must read only key columns, never `p`.
+- **W-L9 — Scoring details that must be fixed in the amendment, not left to the scorer.** Public provisional outcomes
+  will be visible before `FREEZE_ew_live_score.json` exists.
+  - Rows where any method has non-finite `p`: drop them for all methods, or fail?
+  - The label data path: OGC `daily` Approved values, `ogc_long`, `clean_long`, the frozen map with the C-L3 fallback,
+    `hazard_labels`.
+  - A pre-scorer identity check that OGC-built Approved labels equal the legacy-snapshot labels on train/val-role
+    sites for WY2022–23 (can be done any time; no outcome data).
+  - The `--late` and partial-day rules.
+  - Define "permanent gridMET" for sensitivity (d) by the `gridmet_status` flag. Note that H1 uses no weather, so (d)
+    is a USGS-only audit for H1.
+- **W-L10 — The replay does not cover the new issue-time row rule.** It validates the scores of the frozen rows, but
+  `issue_rows` (`issue.py:104–126`) is new code. I checked by reading that its refractory and event-day conditions match
+  `hazards.issue_labels`.
+  - Fix: add a val-block test showing that `issue_rows(t)` ⊇ the frozen `event_rows` at t, restricted to rows where d is
+    observed.
+- **W-L11 — §10 cites dry-run evidence from superseded code and config.**
+  - Fix: re-run the replay and the dry issue on the final post-fix code, and cite their code and config hashes in §10.
+    I reproduced the replay on `1f565eed…`/`a6467a31…`, but C-L1 to C-L3 change the code again.
+- **W-L12 — §0 disclosures.**
+  - State that the variant file's SHA-256 is bound to the pre-Test-A run through the registry `config_hash`,
+    TRAINING_LOG and the val-OOF metric in cef72b6, not through a published hash.
+  - Note that the H2 window change cannot affect any confirmatory outcome.
+  - List the departures from RESEARCH_PLAN §11 (line 270: OSF, per-season analysis dates, external challenge scoring).
+  - Chmod 0444 the variant calibration directory (currently 0664) and mirror it publicly with the issue files, so
+    third parties can recompute forecasts.
+- **W-L13 — Protect the issuing code from later changes.** Any later edit to a file in the issue closure (for example,
+  the M1 agent touching `live_common.py` for the scorer) makes live issuing refuse, and every refused day is lost.
+  - Fix: keep `score_live.py` and its helpers outside the closure, and add a CI check that the closure hash is
+    unchanged.
+
+### Observations
+- H2 and H4 issue rows are few (dry run: 7 and 19 rows per lead from 16 and 27 train/val sites in November). The H4
+  stack's val-OOF BSS is 0.0035 [−0.69, 0.99], which is noise; the H4 logistic baseline is higher (0.0134).
+- The dry-run H1 L3 alarm rate (3/213, about 0.4 per 30 d on one day) is uninformative about the budget.
+- `n_weather_nan` counts only `precip_sum` columns, so it is 0 by construction for H1.
+
+### Answers to the brief
+1. **Test-A independence.**
+   - Pass for thresholds, Platt maps, stacks, sites, hazards and models.
+   - The variant was calibrated 11-08 19:25–19:42, before Test-A (12:05 on 11-09), with public corroboration in cef72b6.
+   - The H2 widening used train/val only, and it is inconsequential for confirmation.
+2. **Prospective integrity.**
+   - The chain detects edits to and insertions into *published* rows only.
+   - The live guard checks config, series map, code, calibration, artifacts and snapshot sites at every issue
+     (pass), but not the regressions or `sites.parquet` (W-L1).
+   - Provisional inputs vs Approved labels is clean, with the cut-off at 2028-06-30.
+   - **Weekly pushes plus committer dates do not prove issue times (C-L1).**
+3. **Scoring plan.**
+   - The endpoint, power rule and Holm family m = 3 are unchanged from EW-v2.
+   - The extension rule is count-only in intent but not executable as frozen (C-L2).
+   - The interim needs fencing (W-L8).
+   - The gridMET sensitivity is fine as a descriptive analysis (W-L9).
+   - **A confirmatory claim is possible only for H1, most likely only after WY2028, with roughly 20–70 % power (W-L7).**
+4. **Pipeline.**
+   - The replay reproduces in 9/9 cells (≤ 3.9e-6) on the current code, and the float32 chloride replication is
+     confirmed.
+   - The series-map rule is sound pre-trial, but its fallback is broken (C-L3).
+   - Tests pass 6/6.
+5. **Operations.**
+   - The legacy USGS changes do not affect the pipeline, which uses OGC only.
+   - A missed day costs all methods equally, so it does not favour the model as long as failures are publicly logged
+     (C-L1).
+   - API or vocabulary changes are covered by dated deviations, but the unknown-qualifier rule (W-L6), atomicity (W-L4)
+     and pinned-input checks (W-L1) should be fixed first.
+
+### Gate
+**The lead may not freeze yet.** Freeze after:
+1. C-L1 to C-L3 are fixed in code and text, and W-L1, W-L3, W-L4, W-L5 and W-L6 are fixed in code.
+2. The amendment states W-L7, W-L8 and W-L9.
+3. The replay and the dry issue are re-run on the final code, and §10 cites the new hashes.
+4. A short delta review confirms that only these items moved. No model, threshold, Platt map, site or hazard may
+   change.
+
+## M4 unseen-taxa — A3 delta check (2026-11-09)
+
+**Scope.** Amendment A3 as applied: plan `48553f19…` → **`40fdb79621f0a2dd…`** (verified on disk),
+diff `$SENTINEL_RUNS/chemtox/unseen_taxa/a3_plan.diff`, runner
+`scripts/eval/chemtox_unseen_select.py` (`2edccfba…`), tests `tests/test_chemtox_unseen_select.py`,
+registry `prereg_snapshot_v7`. I re-ran the suite myself (**34 passed**, 17 in each of the two
+unseen-taxa files) and re-derived every count. No model was fitted for selection, no number was
+logged, and no test row was read (no `AUTHORISED.json`/`SCORED.json` under
+`chemtox/unseen_taxa/`; the runner still never imports `load_test_block`).
+
+**Verdict: the five blockers, the five text items and the four warnings are genuinely fixed in
+code**, with three documentation items left (D1–D3 below). **A3.5 APPROVE WITH CHANGES** — the
+hyper-parameter sourcing is sound and verbatim-correct, but "trait-free" overstates the match in one
+respect that must be disclosed. **`--allow-grouping-dependent` MAY BE UNLOCKED** for `readacross`,
+`gpboost` and `gpboost_published_chan`, under the two conditions in the Gate.
+
+**Freeze mechanics.** Diff is **append-only** (additions from line 613 only; nothing above it
+changed). Pins regenerated (`plan_sha256 40fdb796…`), v6 pins preserved as
+`chemtox_unseen_taxa_pins.v6.json` with the old plan hash, both 0444. Data hashes unchanged
+(`649dc7d1…`, `7e915fbe…`); `unseen_taxa.py` and the guard are byte-identical to the pins I checked
+this morning, so **the pinned code was not edited** — every fix lives in the unpinned runner plus a
+new test file. `prereg_snapshot_v7` records plan/module/guard/pins/runner/tests hashes, the old plan
+hash, `fitted_under_v6: [xgboost, rf]`, `need_rerun_after_a3: []`, the alias map, the admitted and
+forbidden columns, and the published-GPBoost provenance.
+
+### The five blockers
+
+- **✅ C-A3-1 (read-across crashed).** `readacross.py` is **not** edited (correct — it is shared with
+  the closed track). New `TrackReadAcross` supplies a constant placeholder species key and pins
+  `match_species=False`. `tests/test_chemtox_unseen_select.py::test_track_readacross_degenerates_to_global_knn`
+  fits it on the Actinopterygii fold and asserts `widening_ == {species: 0, group: 0, global: 50}` —
+  it passes, so the entry now executes, which it never did before. `run_entry` additionally raises if
+  `species` or `group` is non-zero on any fold, so the §5.1.5 behaviour is enforced at run time and
+  not only in a test.
+- **✅ C-A3-2 (group level alive in folds).** `match_species` is pinned off in the wrapper's
+  constructor, so a configuration that sampled `True` still runs with it off
+  (`test_track_readacross_pins_match_species_off`), and the run-time assertion above is the backstop.
+  The `tax_group` column is still supplied but is now unused by read-across and is excluded from the
+  GPBoost grouping, which is the state T2 asked for.
+- **✅ C-A3-3 (grouping misreported).** `GPBOOST_SPACE_TRACK` drops `group_columns` from the sampled
+  space; I confirmed none of the 32 `gpboost` draws contains it or any forbidden key. `run_entry` now
+  records `effective_params` — what the fit used — and writes `group_columns: ["rank_phylum"]` into
+  it after asserting `tuple(model.inner_.group_columns_) == ("rank_phylum",)`. The audit trail can now
+  only ever show the admitted key.
+- **✅ C-A3-4 (duplicate comparators).** Re-measured across all 15 entries, configuration by
+  configuration: the **only** cross-entry duplicates are `lightgbm` ↔ `lightgbm_resid_ice` ↔
+  `lightgbm_resid_surrogate` (32/32 each), which are three *candidates* with different estimators —
+  A3.3 declares this deliberately as a controlled residual ablation, and I agree. **No comparator
+  shares a single configuration with any candidate or with another comparator.** `rf_published_chan`
+  and `xgboost_published_chan` are now 3 configurations of the published fixed parameters
+  (`PUBLISHED_PARAMS`, inherited from the closed track's `PUBLISHED_FALLBACK`), and
+  `gpboost_published_chan` is 6 fixed configurations; `rf_chan`/`xgboost_chan` carry per-entry seed
+  offsets (11, 12).
+- **✅ C-A3-5 (channel-free "channel-matched" comparators).** `CHANNEL_CHOICES_MATCHED` excludes `()`;
+  measured empty-channel draws across all five matched entries: **0**. Candidates keep all four
+  settings (`test_candidates_may_still_draw_no_channel`).
+
+### Text items and warnings
+
+- **✅ T1** (d2) restated as *candidate vs each channel-matched comparator*, with the `_chan` vs
+  non-`_chan` difference demoted to a reported diagnostic. **✅ T2** `tax_group` is now described
+  exactly as the review required, in the plan and in the adapter comment. **✅ T4** invariant plus
+  `assert_no_forbidden_columns` (called on the adapter's output) and two tests;
+  `FORBIDDEN_COLUMNS` correctly extends to `tax_family`/`tax_species`. **✅ T5** symmetric ADAPTED
+  labelling for all three GPBoost entries.
+- **◐ T3 (aliases printed).** The plan now promises "Every comparator table prints them as `= rf` /
+  `= xgboost`". `ALIASES` exists and is carried in the `prereg_snapshot_v7` extra (good), but the
+  runner never emits it: `run_entry` reads `meta.get("alias_of")`, and no `SEARCHED` entry defines
+  that key, so the field is always `null` and `summary_index.json` contains no alias rows. Nothing
+  can be *wrong* in a number because of this (the aliases are never fitted), but the plan asserts an
+  output behaviour the code does not yet produce. See D3.
+- **✅ W-A3-1** `U.assert_taxon_agnostic(base, params)` is called in `build_model` for **every** entry
+  — verified live: `build_model("chemprop", {"multitask": True}, 0)` raises `TaxonHoldoutError` — and
+  `sample_entry` pins `multitask=False` on every chemprop draw. **✅ W-A3-3** chemprop now samples
+  from `spaces.sample` (32 draws). **✅ W-A3-4** the unused `evaluate` import is gone.
+- **✅ W-A3-2** `--log-registry` is refused unless the run is the full budget over all four folds, and
+  the bogus row was superseded properly: `6c49b7b94c2f`/`6a23615fb292` supersede
+  `9f275e63e4a7`/`bc90a6ee00c8` (the 1-configuration, 1-fold, `/tmp`-artefact pair) and carry the real
+  full-run values with a durable artefact path. One cosmetic consequence in D2.
+
+### A3.5 — the published GPBoost configuration
+
+**Verified independently, not taken on trust.** I re-downloaded both model files from
+`raw.githubusercontent.com/syngenta/bio-qsar/main/` and hashed the streams:
+`Fish_without_DEB.json` → `1b17db4c5f18abbde659b67f2dd24c28bb52685923dda38f1da0e3d7d6d8499d`,
+`Invertebrate_without_DEB.json` → `770ecd0d1ed313603ff7f41759ffdb9b31108879853c23214652e8d3e0ec7502`
+— **both match the plan's recorded sha256 and byte counts** (7,171,431 / 3,369,787). I parsed each
+file's own `parameters:` echo block:
+
+| Parameter | Fish (file) | Invertebrate (file) | Plan / `PUBLISHED_GPBOOST` |
+|---|---|---|---|
+| `objective` | regression | regression | ✅ |
+| `num_iterations` | 1000 (1,000 `Tree=` blocks, highest 999) | 1000 (1,000 blocks) | ✅ (`num_boost_round`) |
+| `learning_rate` | 0.01 | 0.01 | ✅ |
+| `num_leaves` | 64 | 32 | ✅ |
+| `max_depth` | −1 | −1 | ✅ |
+| `min_data_in_leaf` | 10 | 10 | ✅ |
+| `lambda_l2` | 1 | 10 | ✅ |
+| `feature_fraction` / `bagging_fraction` | 1 / 1 | 1 / 1 | ✅ |
+
+Every value is verbatim; nothing was invented and nothing was tuned by us. The omitted keys
+(`lambda_l1 0`, `min_sum_hessian_in_leaf 0.001`, `bagging_freq 0`) are the library defaults, so the
+transferred set is complete for every parameter that differs from a default. Branch (1) is also
+correctly justified: the repository tree at `main` holds exactly four model files
+(`Fish`/`Invertebrate` × `with`/`without_DEB`) and a README that states only package versions
+(R 4.1.3, gpboost 1.2.1) — I read it — and the article is genuinely paywalled (Europe PMC:
+`isOpenAccess N`, no PMCID, PMID 38593686). Crossref confirms *Environment International* **186**,
+108607, 2024, authors Zubrod / Galic / Vaugeois / Dreier.
+
+**🟡 A3.5-1. "Trait-free" is right as a *choice between the two released forms*, but overstates the
+match.** `_without_DEB` means *without the DEB / Add-my-Pet trait parameters* — and that is indeed
+the form matching §1.1's trait drop; I confirmed neither file's feature list contains a DEB
+parameter. But both files' **fixed-effect feature lists still contain species one-hot indicators**
+(10 in Fish — `Oncorhynchus_mykiss`, `Pimephales_promelas`, `Daphnia_magna`, …; 13 in
+Invertebrate — `Gammarus_pulex`, `Chironomus_riparius`, …), on top of the species/genus/group random
+effects. So the published estimator is *not* taxon-free, and on this track it loses **three** things,
+not two: the grouping is reduced to `rank_phylum` (A3.0), the library differs (1.8.0 vs 1.2.1), **and
+its published species indicators are absent** (§1.1 forbids them). That third difference, like the
+first, makes our published comparator weaker than the authors' model, i.e. it biases in our
+candidate's favour — exactly the hazard A3.5's own closing note is careful about. Required: add it as
+a third disclosed adaptation in A3.5 and in the model card, and say "DEB-trait-free (the authors'
+species indicators are also absent here)" rather than "trait-free".
+
+**✅ Keeping both forms is legitimate and pre-declared.** The authors released taxon-specific models,
+the two differ in exactly two values (`num_leaves`, `lambda_l2`), and §5.1.1's pre-existing rule —
+"the reference among them is the variant with the best validation score, fixed in the hashed block
+before the pass" — already covers a published entry with variants; it is now in the frozen plan,
+before any fit of this entry (the registry holds no `gpboost*` selection row). The direction is
+conservative: the published comparator is given the *best* of 6 settings while `rf_published_chan`
+gets the best of 3, which strengthens the bar a claim must clear. Report that selection breadth
+beside the (b) comparison so the asymmetry is visible.
+
+**🟢 A3.5-2. One unevidenced execution claim.** The handoff says "Verified: both forms fit, grouping
+`('rank_phylum',)`, finite predictions", but there is no artefact or log for it (correctly, no
+registry row). Keep that smoke's log under
+`$SENTINEL_RUNS/chemtox/unseen_taxa/stage2_select/` and state in the handoff that it was one
+unlogged smoke not used for selection, so the protocol's "nothing fitted" statements stay exact.
+
+**🟢 A3.5-3. Provenance durability.** The two released model files exist only in a session scratchpad
+(`/tmp/claude-…/scratchpad/bioqsar_dl/`), which will not survive. The URL + sha256 in the plan make
+the retrieval reproducible (I reproduced it), but a durable copy or a manifest entry under
+`$SENTINEL_DATA/manifests/` would be better.
+
+### Inventory (A3.6) — confirmed by enumeration
+
+I enumerated every entry's configuration list under the new code: candidates 7×32 = 224; `rf` +
+`xgboost` 64; `rf_chan` + `xgboost_chan` 64; `rf_published_chan` + `xgboost_published_chan` 3+3 = 6;
+`gpboost_published_chan` 6 (2 forms × 3 channel settings, `published_form` recorded per
+configuration); `readacross` 32. **Total 396**, 15 searched entries, 15 + 12 = **27 entries**,
+**17 mandatory comparators** (2 + 5 + 5 + 1 + 4), **5 distinct channel-matched comparators**.
+`prereg_snapshot_v7` carries 396 / 12 / 27 / 17 / 5 as metrics and extra fields, so the counts cannot
+drift. A3.6 does state explicitly that it replaces "608 searched + 12 fixed across 31 model entries"
+— but see D1.
+
+### Runs that straddle the plan change — `need_rerun_after_a3: []` is correct
+
+Both v6 runs finished **before** the re-freeze (`xgboost.json` 18:22, `rf.json` 18:59; plan rewritten
+19:00:50, pins 19:01:06), so no run spans two plan hashes, as A3's preamble claims. Decisive check:
+I re-drew both entries under the **post-A3** runner and compared to the configurations actually
+fitted in `xgboost.json` / `rf.json` — **32/32 identical for each**, channels `[]` for every one, and
+per-fold training rows unchanged (676 / 8,378 / 11,523 / 24,505; features 659 / 423 / 431 / 430).
+`rf` and `xgboost` carry no `seed_offset`, no channel change and no space change, so A3 touches
+neither their rows nor their configurations. Their rows (xgboost mean RMSE 1.5918, worst 1.7318;
+rf 1.5629 / 1.7397, 0 failures each) stand as recorded under the v6 plan hash.
+
+### Documentation items left (none blocks a fit)
+
+- **🟡 D1. The stale §1.4.4 inventory is still in the frozen plan, with no in-place marker.** Lines
+  250-256 still read "**Total 31 model entries | 608 | 12**", "**21 are mandatory comparators**", and
+  — now false — "the registry `prereg_snapshot_v4`/`v5` carries the same three figures **so the count
+  cannot drift**". A reader reaches it 550 lines before A3.6. Append-only preserved the hashes, but
+  the plan now contains two inventories and the wrong one comes first. At the next re-pin add one
+  in-place line at §1.4.4 — "Superseded by A3.6 (396 / 12 / 27, 17 mandatory comparators)" — which is
+  how §1-§7 were revised through v2-v6, and re-run `make_pins()`.
+- **🟢 D2. Two live registry pairs now hold the same full-run xgboost numbers.** `acb74c91a991` /
+  `da890a9bc293` (23:22:06Z, the original full run) and `6c49b7b94c2f` / `6a23615fb292` (00:02:06Z,
+  the row written to supersede the smoke pair) are identical in value and both durable. Harmless, but
+  a later count of live rows per entry will read 2. Supersede one of the two so one entry means one
+  live pair.
+- **🟡 D3. Implement T3 or soften the sentence.** Either emit the aliases (e.g. `"aliases": ALIASES`
+  in `summary_index.json`, and an `alias_of` key on the four names in the eventual comparator table)
+  or reword A3.1 to "the stage-2 scorer prints them as `= rf` / `= xgboost`; the alias map is carried
+  in `prereg_snapshot_v7`". A frozen protocol should not describe output that no code writes.
+- **🟢 D4. Wrong article title in `sentinel/models/chemtox/gpboost_model.py:11`.** It cites
+  "Bio-QSARs 2.0: Unlocking a generic modeling approach for species sensitivity predictions"; the
+  real title (Crossref, Europe PMC and the repository README) is "Bio-QSARs 2.0: Unlocking a new
+  level of predictive power for machine learning-based ecotoxicity predictions by exploiting chemical
+  and biological information". The plan's own A3.5 citation (journal, volume, page, DOI, PMID,
+  authors) is correct. `gpboost_model.py` is not a pinned file, so fixing it does not disturb the
+  freeze — fix it before the title reaches the paper or the model card.
+
+### Gate — unlock
+
+**`--allow-grouping-dependent` may be unlocked**, i.e. `readacross`, `gpboost` and
+`gpboost_published_chan` may be fitted on the four validation folds, because every blocker is closed
+in code with a test or a run-time assertion, the grouping is both pinned and recorded truthfully, no
+comparator is a duplicate, and the published configuration is verbatim-sourced and independently
+verified. Two conditions, neither of which affects what is fitted:
+
+1. **Before the first `gpboost_published_chan` fit**, add the third disclosed adaptation
+   (A3.5-1: the authors' species indicators are absent here) to A3.5 and the model card, together
+   with D1's §1.4.4 pointer and D3's alias fix, then `make_pins()` and log `prereg_snapshot_v8`
+   as a documentation-only re-freeze (`no rule, fold, feature, configuration or datum changed`).
+   Doing all three in one re-pin avoids a third freeze later.
+2. **Run `gpboost_published_chan` first as a one-fold smoke without `--log-registry`** (the runner
+   now refuses a partial run's registry write anyway) and keep the log, since those published
+   parameter values have never executed inside the runner — the v6 determinism fit used different
+   values. `readacross` needs no smoke: its execution test passes.
+
+Nothing in this amendment may be read as authorising a test-block read. The three blocks remain
+unspent: no `AUTHORISED.json`, no `SCORED.json`, no claim marker, and `load_test_block` is still
+unreferenced by every stage-2 script.
+
+## EW-v2 live trial — delta review of amendment v0.2 (2026-11-09, evening)
+
+**Mode:** delta pre-test review of the fixes for C-L1–C-L3 and W-L1–W-L13 in the section above.
+**Scope:**
+- the diff `/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/m1live/live_delta_review.diff`. Its base is a copy taken at 18:17. I checked by file size that it equals the version reviewed above.
+- the current amendment (DRAFT v0.2);
+- config `7693424f…`;
+- issuing code `3ca4adfd…` (recomputed, match);
+- new files `stamp.py`, `log_status.py`, `build_label_snapshot.py`, `score_live.py` (scorer hash `67be86fb…`, reviewed in full), `ew_v2_live_deviations.md`;
+- `tests/test_live.py`;
+- the dry-run tree.
+
+**Safety:**
+- No FREEZE file was written, live mode was not run, nothing was committed, no cron was installed, nothing was submitted externally, and `keys.env` was not read.
+- Attacks and re-runs used scratch copies with `SENTINEL_RUNS` redirected:
+  - hash-log and eligibility attacks: `…/scratchpad/livegd2/attack.py`;
+  - the scorer rehearsal on the final scorer: `…/scratchpad/reh/`;
+  - the qualifier audit (reads only the cached WY2022–23 val-block OGC records and the legacy snapshot, train/val-role sites): `…/scratchpad/qual/`.
+- CPU only, ≤ 6 threads.
+
+### Verdict: 🔴 FAIL. The lead may NOT freeze the live trial yet.
+
+Most of the first review is fixed properly:
+- the whole 2026-12-01 → 2028-09-30 issuing span is frozen up front, with four gated looks;
+- a status row is written for every scheduled day, and git dates are no longer used;
+- the scorer and the label builder are outside the issuing closure;
+- issuing is atomic, and pinned static inputs are checked;
+- the replay on the final code is identical (≤ 3.9e-6);
+- 13/13 tests pass.
+
+Two defects block the freeze. Both sit in code or text that the freeze hashes:
+1. **C-D1.** Primary eligibility trusts local evidence files, so the C-L1 attack survives in a new form.
+2. **C-D2.** The timestamp backend has never run and cannot be tested. The environment lock also makes issuing fragile.
+
+The qualifier map also needs a two-line fix (W-D1).
+
+### Verified
+- **C-L2 (fixed).**
+  - Config, `LIVE_BLOCK` and the `verify_static_pins` cross-check all give 2026-10-01..2028-09-30.
+  - Each look has a gate: `prov_interim` ≥ 2027-10-15, `count_only` ≥ 2028-06-30, `final_wy2027` ≥ 2028-06-30, `final_pooled` ≥ 2029-06-30.
+  - A final look refuses without a sealed `count_only`, and refuses unless it is the look that `count_only` decided.
+  - The embargo applies only at block start (`sonde_splits.time_mask`), so there is no internal embargo at 2027-10-01.
+  - `test_span_beyond_wy2027_runs_end_to_end` passes.
+- **C-L3 (fixed for issuing).** `apply_series_map` falls back when the mapped series has no value in the last 7 days. Fallback keys are written to the manifest, and there is a test.
+- **Interim look.**
+  - `prov_interim` reads only key columns plus `alarm_b1` (`score_live.py:208`). It never reads `p`.
+  - It outputs counts, evaluable onsets and realised alarm-days on non-onset rows: no BSS, DM or POD.
+  - `count_only` reads key columns only.
+- **Scorer (full read).**
+  - All checks run before the claim.
+  - The claim is O_EXCL and paired with a registry row; any `BaseException` triggers abort; results are sealed; reruns are refused.
+  - Rows where any method has non-finite `p` are dropped for every method.
+  - The primary population is `on_time & primary_eligible`, with "all on-time rows" as a sensitivity.
+  - Holm uses m = 3 with p = 1 for hazards that are missing or underpowered (`ew_controls.primary_decision`).
+  - The strictly-ahead and sensor-fault analyses are implemented.
+  - I re-ran `prov_interim` and `final_wy2027` in rehearsal on the **final** scorer (`67be86fb…`). Both claimed and sealed (36 and 87 rows). The amendment's own rehearsal ran on `df204b65…`, before the last edit (W-D4).
+- **Issue-time attacks.**
+  - A second `issued` row for the same day is refused.
+  - The EXIT trap writes `failed` rows; the 2026-11-02 dry-run row shows this.
+  - Orphan and temporary directories are listed.
+  - No git date is used anywhere.
+  - `stamp.py` submits nothing without a lead-written freeze that lists `timestamp_backends`, and nothing at all in dry-run mode. The test monkeypatches `requests.post` to raise.
+  - The only other outward call is `ots upgrade` inside `verify_hashlog.ots_time`. It runs only for rows already stamped, and `run_daily` passes `--no-ots`.
+  - **The timestamp backend is therefore truly disabled until approved.**
+- **REVISED qualifier.** On the cached WY2022–23 OGC records, 6,583 REVISED values are equal to the legacy-snapshot value and 0 differ. On the hazard variables, the legacy snapshot has every one of them. The legacy tier kept them, so **keeping REVISED is correct.**
+
+### Critical issues
+
+**C-D1 — Primary eligibility is computed from local, deletable and forgeable evidence files.**
+- **Where:** `verify_hashlog.py:51–77`; `stamp.py:102–110`; amendment §5.7–5.8, §7.
+- **Selective exclusion after outcomes are known (demonstrated).** Days 12-01..03 were issued and stamped, then I deleted the local `*.evidence.json` of 12-02:
+  - eligibility became `[True, False, True]`;
+  - `verify_chain` returned `[]`, with no error;
+  - the day silently moved out of the primary analysis.
+
+  Evidence is committed only weekly, so this can be done with up to 7 days of provisional outcomes in view. That is the exact harm C-L1 was meant to prevent.
+- **Back-dating (demonstrated).** I appended a row for 12-04 with `on_time: true` and wrote a local GitHub record with `created_at 2026-12-04T12:05Z`. The row became primary-eligible, because GitHub evidence is read from the local JSON and never checked against GitHub.
+- **Mitigation that already exists.** OpenTimestamps proofs cannot be forged: `ots verify` checks the digest. They can, however, be deleted.
+- **Fix (rule in the amendment now; the code can live in the scorer, outside the issuing closure, so it can be finished before the scorer freeze):**
+  1. **OTS is the only backend that can grant primary eligibility.** GitHub comments can be deleted without trace, so they are visibility only.
+  2. **Fetch evidence from the third party, not from local files.** The eligibility verifier fetches every issued row's timestamp from the calendars by digest (`GET <calendar>/timestamp/<row_sha256>`), upgrades it and verifies it. Local `.ots` files are caches only, so deleting them changes nothing.
+  3. **Report rows the calendars do not know,** and treat a later row's attestation as also covering the rows it chains to.
+  4. **Refuse the claim if verification is broken.** If the `ots` client or the calendars are unavailable, a look would otherwise run with 0 eligible rows, which would trigger the extension and leave every hazard underpowered.
+
+**C-D2 — The timestamp path has never run, cannot be tested, and the environment lock makes issuing fragile.**
+- **No client.** `ots` is not installed in `sentinel2`. `which ots` and `import opentimestamps` both fail, so `ots_time` returns `None` for every row.
+- **Untested format.** The hand-built `.ots` (`stamp.py:53–55`) has never been checked by a real client. `stamp.py` refuses dry-run submission, so the path cannot be tested before 2026-12-01.
+- **Shared environment.** `env_lock_sha256` (`live_common.py:192–201`) hashes **every distribution installed in the shared `sentinel2` environment**, which all workstreams use.
+  - Installing `opentimestamps-client` after the freeze would stop live issuing.
+  - So would any other workstream's `pip install` at any time in the next 22 months. Every day would then be `failed`.
+- **Freeze record edited after the freeze.** §11.7 adds `timestamp_backends` after the freeze "through a dated deviation", which means editing the hashed freeze record after its public commit.
+- **Fix:**
+  1. **Dedicated environment.** Create `sentinel2-live`, a clone that no other workstream uses, with `opentimestamps-client` installed. Point `run_daily.sh` at it.
+  2. **Approval first, then a full test.** Get the owner's approval for hash-only OTS submission first. Then stamp one dry-run row, wait for a Bitcoin attestation, and confirm that `ots verify` and the `verify_hashlog` regex return its block time. Add `--allow-submit` for dry runs after approval.
+  3. **Freeze with the backend already set** (`timestamp_backends: ["ots"]`). Never edit the freeze record afterwards.
+
+### Warnings (W-D1 and W-D2 are in the issuing closure: fix them before the freeze)
+- **W-D1 — Two OGC qualifier mappings disagree with the legacy training tier** (`live_data.py:35–39`). Evidence is from the WY2022–23 cache.
+  - **FORCEINTERPOLATION is masked wrongly.** 514 of 521 values equal the legacy value, and all 293 on the hazard variables are present in legacy. **Make it non-masking.**
+  - **EQUIP and MAINT/MAINTENANCE are kept wrongly.** They carry values in OGC, but the legacy tier has none:
+    - EQUIP: 744 of 1,145 values missing in legacy, including do_mgl_min 11 of 11 and SC mean 116 of 147;
+    - MAINT: 226 of 231 missing.
+
+    **Mask both.** These are sensor-fault and maintenance days, and kept values can create spurious alarms or labels.
+  - **Other qualifiers are consistent.** ICE, DRY and SEASONAL values on the hazard variables are present in legacy. SEASONAL's 1310 values on temperature are removed by the plausibility check. ESTIMATED, LESSTHAN and GREATERTHAN are masked on both sides.
+- **W-D2 — `primary_eligibility` lives in `verify_hashlog.py`, inside the issuing closure.** Move it into the scorer so that the C-D1 fix does not change the issuing hash.
+- **W-D3 — The label-pin flow contradicts §9.** §9 says the scorer freeze is written *before* any label snapshot, but `pre_claim` requires each look's label pin *inside* `FREEZE_ew_live_score.json`. The lead would therefore rewrite the scorer freeze after retrieving labels, which is also when the scorer hash could change.
+  - Fix: write one append-only pin file per look (`FREEZE_ew_live_labels_<look>.json`) that records the label content SHA-256 and the SHA-256 of the scorer freeze.
+  - The scorer freeze is OTS-stamped and pushed before the first snapshot.
+  - `build_label_snapshot.py` refuses without the scorer freeze and records its SHA-256.
+  - Add `build_label_snapshot.py` to `scorer_code_files()`. It is currently unhashed, and it decides the labels.
+- **W-D4 — §10 cites evidence that was not produced on the final code.**
+  - The end-to-end daily cycle and the forced failure ran on issuing code `f8c13e59…` (dry-run hash-log rows 0–1). Only the snapshot days 11-06..08 ran on `3ca4adfd…`.
+  - The rehearsal ran on scorer `df204b65…`; I reproduced it on `67be86fb…`.
+  - "Applying the map changes onsets 10 vs 12" understates the effect. At the two affected sites, **0 of 8** legacy onsets coincide with the map path (6 vs 2 on each side).
+  - Fix: re-run `run_daily.sh dryrun` on the final code, and correct the wording.
+- **W-D5 — Labels at multi-sonde sites depend on which series is chosen.** In the identity check, the series choice moved 8 of 12 multi-series H1 onsets.
+  - Pre-specify a sensitivity analysis that excludes multi-series site-variables.
+  - Note that the label snapshot applies the 7-day fallback once, at the end of the whole window, while issuing applies it daily. Series choice can therefore differ between inputs and labels after a sensor swap. State this, or apply the daily rule to labels as well.
+- **W-D6 — Trusting count_only.** Final looks read `count_only.json` without checking it against the sealed `SHA256SUMS` and `SCORED.json`. Add the check.
+- **W-D7 — The tail-deletion residue is small but real.** The last day can be deleted before the next stamp, with up to about 24 h of outcomes in view: day-D values are published about 04:00 UTC on D+1.
+  - Report missing days against provisional onsets on those days.
+  - Sensitivity (b) partly covers this.
+  - Bitcoin attestations usually land within a few hours; monitor the share of rows attested before D 23:59 during December.
+
+### Status of the first-review items
+- **C-L1:** partly fixed; see C-D1 and C-D2.
+- **C-L2, C-L3:** fixed.
+- **W-L1, W-L4, W-L5, W-L7, W-L8, W-L10, W-L12, W-L13:** fixed.
+- **W-L2:** fixed, but the lock now covers a shared environment (C-D2).
+- **W-L3:** fixed, except §11.7 still edits the freeze record after the freeze (C-D2).
+- **W-L6:** fixed for unknown qualifiers; the known-qualifier map is wrong in two places (W-D1).
+- **W-L9:** fixed, except the pin flow (W-D3).
+- **W-L11:** partly fixed (W-D4).
+
+### Gate
+**The lead may NOT freeze the live trial yet.** Freeze after:
+1. C-D1 and C-D2 are fixed: third-party evidence verification, OTS only, a dedicated environment with the client, owner approval, a successful test stamp and verify, and the backend set in the freeze.
+2. W-D1 to W-D3 are fixed.
+3. The replay, `run_daily.sh dryrun` and the rehearsal are re-run on the final code.
+4. A short delta check confirms that no model, threshold, Platt map, site or hazard moved.
+
+All of this fits before 2026-12-01.
+
+## EW-v3-N and M1-N — pre-registration review (2026-11-09, evening)
+
+**Mode:** pre-registration review.
+**Scope:**
+- `docs/preregistration/ew_v3_protocol.md` and `m1n_protocol.md` (v0.2);
+- `sonde_newsites_list.json` (`6200a77c…`, 0444) and `sonde_newsites_overlap.json`;
+- `scripts/data/{build_newsite_list,download_newsites,newsite_overlap}.py`;
+- `sentinel/data/newsite_guard.py`;
+- registry rows `ew_v3_m1n/prereg_snapshot`: `3abd1e26a883` (v0.1), and `c8ad2b769543` (v0.2, which supersedes it);
+- the running pull (PID 1601264; DV done for 499 sites, IV at about 175 of 729).
+
+**Safety:** I read only metadata, site-ID lists, logs and file permissions. No new-site value was read.
+- The v1-mirror and processed-table scans matched site IDs only.
+- The qualifier audit above used val-block records of train/val-role split sites.
+
+### Verdict: 🔴 FAIL. Not freezable yet. The pull and the integrity work may continue.
+
+### Verified
+- **The list was built from metadata only.** `build_newsite_list.py` uses OGC `time-series-metadata` (series begin/end dates) and `monitoring-locations`, and no value.
+- **No target statistic has been computed.** I found none:
+  - the logs hold row counts and aggregate QC counts only;
+  - `download_newsites.py` writes counts and coverage only;
+  - `sonde_daily/index.parquet` holds only `n_days`, first/last dates and the provisional fraction;
+  - the scratch `sites_*.parquet` and `ts_metadata` files are catalogue metadata;
+  - no run record mentions the block.
+- **Recorded loads.** 156 `data_info.json` files reference only the 3 smoke-run sites the audit names.
+- **The DEV-split oversight is real and disclosed.** 113 sites; I confirmed it.
+- **Design.**
+  - The reference is the first 2 years per site, then a 42-day embargo, then scoring to 2025-09-30.
+  - Holm over {H1, H2, H4} with m = 3, and the unchanged power rule.
+  - The comparators include the frozen EW-v2 stack and ens3w unchanged.
+  - The hardened single-look requirements match the other gates.
+- **Tests.** `tests/test_newsite_list.py` passes.
+
+### Critical issues
+
+**C-N1 — The block is not "never-used": the v1 project used data from 70 of the sites, and the exposure audit did not look at v1.**
+- **Method.** I scanned the read-only v1 mirror `SENTINEL-HF` for site IDs (IDs only).
+- **What the scan found.** 464 of the 729 sites are named there. Most of these are harmless: demo station lists, NHDPlus topology and candidate catalogues.
+- **Value-level use at 70 sites:**
+  - the v1 sensor model's training set: `data/processed/sensor/full/preprocessing_stats.json`, 60 sites, with normalisation statistics computed on their values;
+  - v1 salinisation event results: `results/trackA_leadtime/salinization/conductance_events.json` and `…detection.json`, 4 sites;
+  - v1 build results for Track-A salt (9) and Track-A USGS (3);
+  - the v1 USGS anomaly and early-warning results and v1 prospective predictions.
+- **Effect on the primary population.**
+  - 58 of the 70 are outside the hard tier, and 52 of those are DO sites.
+  - The primary population currently has 208 DO sites. Removing the 52 leaves about 156, and the projected H1 count drops from about 50–54 to about 38–40, which is underpowered.
+- **No v2 model uses these files.** The only v2 code that reads `LEGACY_ROOT` is the microcystin benchmark builder. The exposure is the authors' prior knowledge plus v1-derived results.
+- **Fix:**
+  1. Extend `newsite_overlap.py` to the v1 mirror, with the file classes above.
+  2. Before any value is examined, the lead decides on metadata how to tier the v1 sites: value-level v1 use goes into the hard tier, or at minimum into a pre-declared sensitivity.
+  3. Re-state power.
+  4. Delete "never-used" from both protocols.
+
+**C-N2 — Perfect-prognosis is applied in validation, so selection and calibration are fitted on information the test will not have.**
+- **Where:** EW-v3 §5; M1-N §3.
+- **The problem.** Training *and validation* use observed gridMET for d+1..d+7, while the test uses issued NWP. As a result:
+  - **EW-v3:** Platt maps, stack weights, alarm thresholds and the selection rule are fitted on perfect foresight.
+  - **M1-N:** quantile calibration, ensemble weights and selection are fitted on perfect foresight.
+  - The NWP lever will look best in validation by construction. At test it will be over-confident and miss the alarm budget, wasting a single look on an irreplaceable block.
+  - The product mismatch between gridMET (downscaled) and GFS 2 m temperature adds a further shift.
+- **Archived forecasts already cover the validation period.** GFS temperature is available from 2021-03, which covers all of WY2022–23.
+- **Fix:**
+  1. Use perfect-prog only for **training** (train block).
+  2. Use the **archived issued NWP** for every validation step (selection, Platt, stack, thresholds, quantile calibration, weights).
+  3. Bias-correct NWP against gridMET using train-block overlap only, or document why not.
+  4. Keep precipitation/radiation NWP (from 2024) as an explicitly perfect-prog-validated secondary.
+  5. Apply the same rule to every covariate-taking comparator.
+
+**C-N3 — `newsite_guard.py` blocks nothing, and the block is readable through shared tiers.**
+- **The guard is advisory.** It works only if callers use it:
+  - `assert_not_newsite` is called nowhere;
+  - `claim_check` is supplied by the caller, so `lambda fr: True` passes;
+  - `processed/sonde_newsites/` is 0775 with 0664 files, so any `pd.read_parquet` reads it.
+- **Copies in shared tiers.** I count **422** new sites in the shared `processed/sonde_daily` (both snapshot dirs, which are in its index), 27 in `sonde_hourly` and 27 in `raw/usgs_iv`. The brief said about 470.
+- **Readers that would pick them up.** Several code paths read these tiers by directory or index rather than through a split:
+  - `sentinel/platform/data_access.py`;
+  - `events_feasibility_sonde.py` (globs `SITE_DIR`);
+  - the index-driven candidate builders in `sim/data.py` and `hydromet/data.py`;
+  - `killalert`;
+  - future EW-v3 and M1-N development code.
+- **What does protect them today.** Only M1's split-based `common.prepare_data` and M6's `hydromet_sota/reserved.py`.
+- **Why the files cannot simply be deleted.** They are inside the content pins of `FREEZE_ew` (`sonde_daily` and `sonde_hourly`, needed for the `test_ab` pass) and of `FREEZE_hydromet`, so deleting or moving them breaks those frozen scorers.
+- **Recommended guard:**
+  1. **Lock the new-site directory.** After the manifest is built, chmod `processed/sonde_newsites/{dv,daily_iv,hourly}` to 0700/0400, or move it under an owner-only directory. Readable again only at the look, by the lead.
+  2. **Lock the copies in the shared tiers.** Chmod the 422 + 27 + 27 files to 000 now. Contents are unchanged, so every pin stays valid. Restore permissions only around a frozen scorer that content-hashes the full tier (EW-v2 `test_ab`, and any pending HydroMet look), and log each restore as a dated step. An accidental read then fails loudly instead of silently.
+  3. **Shared exclusion helper.** Add a sha-pinned `exclude_reserved` / `assert_no_reserved` (the M6 `reserved.py` pattern) to every non-frozen loader that reads these tiers by index or glob, and to every EW-v3 and M1-N training entry point. Add a test that runs each loader on a list containing a reserved site and expects a refusal.
+  4. **Pre-claim audit.** Before the claim, scan every registry and `data_info` site list written after 2026-11-09 for reserved IDs.
+  5. **Correct the protocols.** EW-v3 §7.3 and M1-N §6 say "no other code path reads `processed/sonde_newsites`"; that is not true until steps 1–3 are in place.
+
+### Warnings
+- **W-N1 — The current files are not snapshotted.** `ew_v3_protocol.md` (`43b11643…`), `m1n_protocol.md` (`9f84bcd6…`) and `build_newsite_list.py` (`207aacf2…`) were edited at 19:06, after the v0.2 snapshot `c8ad2b769543` (00:05:37Z). They match neither snapshot, and `3abd1e26a883` is superseded. Re-snapshot after the C-N fixes.
+- **W-N2 — The two protocols define the reference window differently.** EW-v3 uses "the first 730 days from the first observation"; M1-N uses "the first 730 *observed* days". Pick one definition, or justify the difference.
+- **W-N3 — Power is at the threshold even before C-N1.**
+  - The primary projection of about 50–54 H1 onsets rests on an arbitrary ×0.5 discount and on stream rates applied to lakes and estuaries.
+  - State that underpowered is about as likely as not.
+  - The SOTA bar (beat every comparator, 3 seed sets) has low power at EW-v2-like effects (Test-A BSS +0.013).
+  - The 2-year climatology is a weaker reference than EW-v2's, so BSS against it is not comparable to EW-v2 and must be labelled.
+- **W-N4 — Hold-out type and grab-sample overlap.**
+  - **Contemporaneous spatial hold-out.** New-site issue years (WY2010–25) overlap the training years at other sites. Pre-specify a temporal-and-spatial sensitivity (issue dates ≥ 2023-10-01) and label the primary as spatial-only.
+  - **Other workstreams hold grab-sample values at these sites.** Grab samples at new sites are in `wqp_discrete`: DO 239, NO3+NO2 208, chloride 164, SC 348. Other workstreams use them (downstream, fuse, HydroMet track N). Extend the audit to their training-row site lists.
+  - **H2 regressions must be fitted inside the claimed look,** through the guard. Fitting them earlier reads new-site SC values.
+  - **Orbit and Lite overlap (M1-N turbidity).** Orbit's AquaCorr and S2 matchups (206 and 95 sites) and Lite's national labels (3 sites) carry turbidity and chlorophyll at new sites. Disclose this for M1-N turbidity.
+- **W-N5 — Pending items to finish before the freeze.**
+  - The IV-derived daily rule validation on train-role split sites.
+  - The integrity table and manifest.
+  - The IV gaps from the "503 on DST piece" skips (4 h each spring) should be disclosed.
+
+### Answer to the shared-tier risk
+**Risk: moderate now, high later.**
+- **Today.** No recorded run outside the 3 smoke sites has loaded a new site. M1 loaders are split-gated and M6 has its own reserved guard.
+- **Later.** The 422 + 27 files sit in tiers that many workstreams index, and nothing stops a future national, platform or EW-v3 development script from reading them.
+- **Detection is weak.** Not every workstream writes site lists to `data_info.json`, so the post-hoc audit could miss a load.
+- **Recommended guard:** C-N3 steps 1–4, that is permission locks (pins stay valid), a shared sha-pinned exclusion helper with tests, and a pre-claim audit.
+
+### Gate
+**EW-v3-N and M1-N may not be frozen.** Before freezing:
+1. Fix C-N1 to C-N3.
+2. Fix W-N1 and W-N2.
+3. Finish the IV-rule validation and the manifest.
+4. Re-snapshot the files, then run a short delta review.
+
+The pull and the integrity-only steps may continue, provided no value statistic is printed.
+
+## M4 unseen-taxa — A5 delta check (2026-11-09)
+
+**Scope.** Amendment A5 (`prereg_snapshot_v9`): plan `a3451d5e…` (v8) → **`9a6fab9d9fe41520…`**,
+diff `$SENTINEL_RUNS/chemtox/unseen_taxa/a5_plan.diff` (append-only, 151 added lines, nothing above
+the A5 heading touched), runner `1a4d2bfe…`, tests `31df5e4c…`. I re-derived every number myself on
+the frozen pool, re-ran the suite (**40 passed**: 23 select + 17 taxa), and audited the registry. No
+model was fitted for selection, nothing was logged, and no test row was read.
+
+**Verdict: the defect is real and correctly diagnosed; both fixes are correct in code; the
+re-run MAY START** once the one destructive-ordering condition below is met. Three findings require
+correction — one of them is that **A5's own verification test is vacuous**, so the plan's and the
+registry's claim to have proved the absence of self-inclusion is unsupported (the property is
+nevertheless true; I verified it with a test that has power).
+
+### The defect — reproduced exactly
+
+| Claim (A5.0) | My measurement |
+|---|---|
+| Channel A 0.0 % available on all four old folds | **0.0 %** on the Malacostraca fold (old `validation_splits`, old `SurrogateFeatures`) ✅ |
+| self-inclusion: 736/736 single-record training rows had `surr_pool_geomean` = own target | **736 of 736**, to machine precision ✅ |
+| held-out-class leakage ruled out | pool holds **0** held-out-class rows and **0** test-group rows; **0** in each fold's training side ✅ |
+| diagnostic: VAL RMSE 1.6433 → 2.3210 with the surrogate, TRAIN RMSE improving | both logs exist with exactly those figures (`smoke/surrogate_channel_diagnostic*.log`) ✅ |
+
+The mechanism is as stated: §4/W-M4U-3's chemical blocking plus §1.4.4's per-fold surrogate re-fit
+make it *impossible* for a validation chemical to have a pool record, so §1.4.4's own rationale was
+false as implemented. This was a selection-validity defect, not a test leak — I agree, and the
+evidence (0 held-out rows anywhere, availability exactly 0) supports it.
+
+### A5.1 — dropping W-M4U-3: **APPROVE**
+
+I checked how the test block is actually built, in code, not from the prose:
+`unseen_taxa.test_block()` selects rows by held-out `class` only and then **flags** novelty
+(`chem_novel` = absent from the pool by CAS *and* InChIKey; `parent_novel` = additionally novel at
+parent-structure level). It **never excludes a chemical for being in the pool**;
+`unseen_taxa.training_pool()` removes the held-out classes and `assert_no_test_classes` enforces it.
+So chemical overlap between pool and test block is designed-in (§1.2, and §2's strata: 477 of 7,165
+insect primary rows are `chem_novel`, i.e. 93 % are not), while the old folds forbade it. W-M4U-3 was
+therefore stricter than the test it claimed to mirror, and removing it increases fidelity.
+
+Re-derived on the frozen pool — the plan's new table is exact, and the leak checks pass:
+
+| Fold | Train | Validation | Channel-A availability (val) | Held-out-class rows in train | Chemicals shared val↔train |
+|---|---|---|---|---|---|
+| Actinopterygii | 18,042 | 42,533 | **88.0 %** | **0** | 1,117 |
+| Malacostraca | 51,189 | 9,386 | **98.4 %** | **0** | 767 |
+| Branchiopoda | 53,490 | 7,085 | **95.0 %** | **0** | 784 |
+| Maxillopoda | 59,384 | 1,191 | **98.5 %** | **0** | 267 |
+
+**No selection leak is introduced.** What test construction forbids is (i) a held-out-class row in
+training — still zero everywhere, and the class is removed in full; and (ii) a test `result_id` in
+training — irrelevant here, since validation rows are pool rows and no test row is touched. What A5
+now permits in selection (a validation row's chemical measured on *other* classes in training) is
+exactly the test-time situation. The validation row's own class is entirely absent from its fold's
+training side, so no same-class record can reach it.
+
+**🟡 A5.1-a. Report fold availability beside each fold's score.** Two folds (98.4 %, 98.5 %) sit
+*above* the whole test range (87.6-94.6 %), and the Actinopterygii fold (88.0 %) at its bottom, so
+selection slightly over-weights the surrogate-rich regime relative to the amphibian block. §4
+already reports all four per-fold scores; add the per-fold availability next to them so the
+mismatch is visible rather than inferred. No change to any rule.
+
+### A5.2 — out-of-class Channel A: **code APPROVE, verification REJECT**
+
+**The construction is correct, and I verified it with a perturbation that has power.** Single-row
+perturbation (+1000 on one training row's own target, in the column the surrogate code actually
+reads), Malacostraca fold, probe chemical 7758987 (1,561 own-class records, 1,971 total):
+
+* the perturbed row's **own 7 features: unchanged** → no self-inclusion, no same-class inclusion;
+* a row of **another** class sharing that chemical: **changed** → the check has power;
+* the **pinned** `unseen_taxa.SurrogateFeatures` on the same probe: **changed** → it reproduces the
+  original defect, confirming the check detects exactly what A5 claims to have removed.
+
+Structural checks also pass: `per_class_` contains every training class and **not** the held-out one;
+validation and test rows (class absent from the fitting frame) are served by `full_`, which is fitted
+on training rows only, so no validation target can reach a validation feature. Availability through
+the `parent_key` fallback is out-of-class too — of 300 probe rows whose CAS occurs only in their own
+class, the 70 still marked available were **70/70** parent-matched in *another* class, which is
+§1.4.1's pre-registered "CAS or, failing that, `parent_key`" rule, not a leak. `TrackChannelBuilder`
+and `ResidualOutOfClassModel` are wired into `run_entry` for every entry (lines 626, 635, 656), so
+both residual candidates use the out-of-class base; Channel B is reused unchanged and carries no
+target.
+
+**🔴 A5.2-a. The perturbation test is vacuous — it cannot fail.**
+`test_a5_no_self_inclusion_in_the_surrogate_features` shifts `M.TARGET`
+(`result_conc1_mean_mol_log`), but every surrogate aggregate reads `unseen_taxa.TARGET`
+(`log10_conc_mol_L`). `to_model_schema` keeps **both** columns (identical values, identical NaN
+mask), so the test perturbs a column no surrogate code ever reads. Measured: shifting `M.TARGET` by
++100 leaves the features bit-identical (as the test asserts) while shifting `log10_conc_mol_L` moves
+`surr_fish_geomean`, `surr_fish_most_sensitive`, `surr_pool_geomean` and `surr_ice_prediction` by
+**exactly 100.0**. The test would therefore pass unchanged against the defective pinned
+implementation, and it is insensitive to the only regression it exists to catch — for instance
+swapping `OutOfClassSurrogateFeatures` back to `SurrogateFeatures` inside `TrackChannelBuilder`.
+The same unsupported claim is now in the plan ("shifting **every** training target by +100 leaves
+all 7 surrogate features **bit-identical**, so no row's own target can reach its own features") and
+in the `prereg_snapshot_v9` notes. **Required:** perturb `unseen_taxa.TARGET` (or both columns), and
+assert the two-sided property — the perturbed row's own features unchanged **and** another class's
+row sharing the chemical changed — so the test demonstrably has power. Then correct both texts.
+
+**🟡 A5.2-b. "6 of 825" does not reproduce.** A5.0 says 736 single-record rows and A5.2 says 825 for
+the same quantity, which cannot both be right. Measured: old fold with the old code **736/736**
+(matches A5.0 and the `self_inclusion_rows_fixed = 736` registry metric); old fold rows with the new
+out-of-class code **15 of 934**; new fold with the new code **21 of 2,549**. The *rate* claim
+(≈0.7-0.8 % residual coincidental equality) holds and the direction is right, but no frame gives
+825 or 6. State the figures with the frame they were measured on, or drop them — the
+mechanism-not-equality argument is the sound one and does not need them.
+
+**🟡 A5.2-c. Disclose the train/serve availability asymmetry.** Out-of-class computation makes
+Channel A *less* often available on training rows than on the rows it serves: measured 88.1 / 82.2 /
+87.1 / 90.3 % (train, out-of-class) against 88.0 / 98.4 / 95.0 / 98.5 % (validation). This is the
+standard leave-one-group-out encoding trade-off and its direction is conservative — a feature more
+often missing in training is under-weighted, which cannot manufacture a win — but it is a real
+train/serve difference and belongs in A5.2 beside the validation figures.
+
+### A5.3 and the registry corrections
+
+* **No old-fold number is live as a result.** The experiment has **zero** live rows with a metric
+  beginning `rmse`: all four old-fold value rows are superseded (`acb74c91`/`da890a9b` for xgboost,
+  `c9109a21`/`ff0c6e5b` for rf), as are the two re-stamped xgboost rows and the earlier smoke pair.
+  The old values survive only inside retirement rows whose metric names say so
+  (`superseded_old_folds_a5`, `d2_duplicate_retired`). ✅
+* **The guessed-id incident is real, disclosed, and did no collateral damage.** The first A5 attempt
+  superseded `3d50c03d8b64` and `b9a2fbc2b511`, which **match no row anywhere in the registry** — so
+  nothing of another workstream was retired by mistake. The agent then found the real ids and
+  retired them properly (`3f77b77a`/`98b1daf5`, 00:34:25), and discloses both this and the earlier
+  D2 mistake in `docs/handoff/chemtox.md` with the exact bogus ids and the shared root cause.
+  **🟡 A5.3-a:** the two bad rows (`75fcc789`, `6d85035a`) are nevertheless **still live**, each
+  carrying an old-fold rf value and a pointer to nothing. Append one tombstone row superseding each,
+  note the incident in the next snapshot's notes (it is in the handoff but not in the registry), and
+  add a dangling-`supersedes` check to whatever script audits the registry — that check would have
+  caught both mistakes immediately.
+* **🟡 A5.3-b. A5.3's provenance sentence is wrong.** It says the two completed entries "were
+  obtained under plan `a3451d5e…`" (the v8 hash). Their rows record `plan_sha256 = 48553f19…`
+  (v6); only xgboost's *re-stamp* carried the v8 hash, and rf was never re-stamped. Correct it to
+  "fitted under v6 (`48553f19…`)".
+* **🔴 A5.3-c (ordering, must precede the re-run). Archive the old-fold artefacts first.** The
+  retired registry rows cite `…/stage2_select/xgboost.json` and `…/rf.json`, and the re-run writes
+  **those same paths**. Overwriting them leaves the superseded rows pointing at new-fold content, so
+  the retired numbers become unreproducible from their own artefact. Move `xgboost.json`, `rf.json`
+  and `summary_index.json` to `…/stage2_select/old_folds_a5/` (and fix the two rows' artefact paths
+  by appending corrected rows) **before** starting the re-run.
+* **🟡 A5.3-d. An aborted old-fold `lightgbm` run is sitting in the output directory, unexplained.**
+  `stage2_select/lightgbm.log` shows a full 32-configuration `lightgbm` selection run started
+  19:21:28 under plan `a3451d5e…` on the **old** folds (train 676 / 8,378 / 11,523 / 24,505), killed
+  after cfg03 (19:26:06); no `lightgbm.json`, no registry row. By timestamp this run — whose
+  Malacostraca RMSEs 2.1975 and 2.2660 are the Channel-A artefact itself — is what triggered the
+  diagnostic written at 19:25, yet A5.0 credits discovery only to "the gate-condition-2 smoke plus
+  an unlogged `rf` diagnostic". Add the aborted run to the discovery record and move the log into
+  `smoke/aborted_old_folds/`, so no old-fold partial log sits beside new-fold outputs where its
+  numbers could be mistaken for results.
+
+### Freeze mechanics and the discovery-order claim
+
+`verify_freeze()` **passes** (I ran it): plan `9a6fab9d…` matches the regenerated pins, and
+**`unseen_taxa.py` (`cf1493c6…`) and `unseen_taxa_guard.py` (`e3721450…`) are byte-identical to the
+original v6 pins** — the pinned code has never been edited across A3, A5 or the v8 documentation
+re-freeze; every fix lives in the unpinned runner and its test file. Frozen data unchanged
+(`649dc7d1…`, `7e915fbe…`); v8 pins preserved as `chemtox_unseen_taxa_pins.v8.json`; v6 backup still
+present. No `AUTHORISED.json`, no `SCORED.json`, no FREEZE file; `registry_rows()` is 0 for all three
+blocks; the runner still never references `load_test_block`.
+
+**The defect was found before any logged channel result — confirmed from the registry, not the
+narrative.** The only selection rows this experiment has ever held are `rf` and `xgboost`, both with
+`config.channels = []`; there is no row, superseded or live, for any channel-using entry
+(`lightgbm*`, `catboost`, `chemeleon*`, `chemprop`, `gpboost*`, `readacross`, any `_chan`). The
+aborted `lightgbm` run (A5.3-d) wrote nothing to the registry and produced no artefact, so it does
+not contradict the claim — it corroborates the timeline. Nothing about Channel A was ever selected,
+reported or logged under the defective folds.
+
+### Gate — may the re-run start?
+
+**Yes, the re-run may start**, with one condition that must precede it and three that run alongside:
+
+1. **Before launching (destructive ordering): A5.3-c** — archive `xgboost.json`, `rf.json`,
+   `summary_index.json` into `stage2_select/old_folds_a5/`, and move the aborted `lightgbm.log`
+   (A5.3-d) out of the output directory. Nothing else blocks the launch: the fold code, the
+   out-of-class Channel A, the grouping pin, the published configurations and the comparator set are
+   all verified, and `rf`/`xgboost` are correctly treated as void rather than as a bar.
+2. **In parallel, before any configuration is frozen as "selected": A5.2-a** — replace the vacuous
+   perturbation test with the two-sided version on `unseen_taxa.TARGET`. This changes no number; it
+   is the regression guard for the defect A5 exists to fix, and it currently cannot fail. Tests are
+   not pinned by `verify_freeze`, so this needs no re-freeze.
+3. **A documentation-only `prereg_snapshot_v10`** carrying the corrections: the perturbation claim
+   (plan A5.2 **and** the v9 registry notes), the 736/825/6 figures with their frames (A5.2-b), the
+   `48553f19…` attribution (A5.3-b), the train-side availability asymmetry (A5.2-c), the per-fold
+   availability reporting rule (A5.1-a), and the discovery record including the aborted `lightgbm`
+   run. None of these alters a rule, a fold, a feature, a configuration or a datum, so the re-run
+   need not wait for it — but it must land before any A5-era number is written up.
+4. **Registry hygiene: A5.3-a** — tombstone the two dangling rows and add a dangling-`supersedes`
+   check to the registry audit.
+
+The three test blocks remain unspent, and nothing in A5 authorises a test-block read.
+
+## EW-v2 live trial v0.3 and EW-v3-N / M1-N v0.3 — delta review (2026-11-09, late evening)
+
+**Mode:** delta review of M1's responses to the two FAIL sections above. The coordinator's rulings are taken as given:
+- IV-rule revision option (ii);
+- chmod 000 on the raw IV directories only;
+- the exclusion helper in non-frozen loaders.
+
+**Inputs:**
+- `…/scratchpad/m1live/live_delta_review_v03_cumulative.diff` and `snap_v03/`; I confirmed byte-identity with the repo, with one exception, below;
+- `sonde_newsites_v1_audit.json`, `sonde_newsites_tiers.json`, `newsite_guard.py`, `reserved.py`, `lock_newsites.py`, `ivrule_revision.py` and `sonde_ivrule_split.json`;
+- registry row `24ef8d1cc055`.
+
+**Safety:**
+- No FREEZE file was written, live mode was not run, nothing was committed and no cron was installed.
+- No OTS or other external submission was made: `ots_selftest.py` was not run.
+- `keys.env` was not read, and no new-site value was read.
+- CPU only, ≤ 6 threads.
+
+**Checks run:**
+- 33/33 live tests in `sentinel2-live`; 22/22 newsite/reserved tests;
+- FREEZE_ew, hydromet, lite and all five downstream frozen code hashes recomputed: all unchanged;
+- the qualifier derivation re-run in both counting modes (`…/scratchpad/qual/derive_multi.py`, `fidelity.py`);
+- v1-mirror ID scans.
+
+### Verdict
+
+**Live trial: 🔴 not yet. Two small blockers remain; neither needs another full review.**
+- Once C-E1 and C-E2 are closed and a hash-level check confirms it, **the lead may freeze, pending only the owner's OTS approval and a passing `ots_selftest.py`.**
+- The all-roles series-map build (§11.1) remains a lead step.
+
+**EW-v3-N / M1-N: 🔴 not freezable yet.** This was not expected at this stage: the pull is running and the IV rule is pending. One audit error and one design fix must be made before the IV dev phase runs.
+
+### Live trial
+
+**What is fixed:**
+- **C-D2.**
+  - The dedicated `sentinel2-live` env carries `opentimestamps-client` 0.8.0; env lock `e950cae0…`.
+  - Its `pip freeze` equals the committed lockfile. The lockfile differs from `sentinel2` only by the OTS stack, pip, setuptools and wheel.
+  - `run_daily.sh` uses `sentinel2-live`.
+  - `freeze_draft.py` puts `timestamp_backends: ["ots"]` in the record from the start, so the record is never edited after the freeze.
+  - `ots_selftest.py` refuses without `--i-have-owner-approval`, and it has not been run.
+- **C-D1, argument.** **M1's argument is correct, and my earlier proposal was wrong.**
+  - The official client appends a 16-byte random nonce before submission (`otsclient/cmds.py:176`).
+  - Calendars answer upgrades only for the commitment inside the proof, not for the original digest.
+  - So a proof cannot be re-fetched from a row hash, and committing the proof files' SHA-256s into the next chained, stamped row is a sound substitute.
+- **C-D1, verifier.** `ots_verify.py` is sound:
+  - message digests are recomputed by the library;
+  - the file digest must equal the row SHA-256;
+  - each Bitcoin merkle root is compared, byte-reversed, against two explorers that must agree;
+  - existence time = the minimum over the row's own attestation and every later chained attestation;
+  - `self_test()` gates the claim.
+- **W-D1 (qualifier map).**
+  - **The revision did not move the thresholds** (mask if ≥ 50 % absent in legacy; keep if ≥ 90 % equal).
+  - **It did flip three decisions.** Under the first counting mode REVISED (0.8957 equal), ICE and DRY were *masked*; under the single-qualifier mode they are *kept*. REVISED sits on a knife edge at 0.9009.
+  - **The revision is nevertheless correct.** Multi-qualifier values carry a masking qualifier and are masked anyway (923 of 923 in the cache). Final-map fidelity on the hazard variables is:
+    - 2,436 kept values, of which **1** is absent in legacy;
+    - 268 masked values, of which 30 are present in legacy (conservative over-masking).
+  - The first-run table should be kept in §12 so the flip is on record.
+- **W-D3, W-D4 (at 27496e20), W-D5, W-D6.** Fixed.
+  - Per-look pins are tied to the scorer-freeze SHA-256.
+  - The label builder refuses without the scorer freeze.
+  - Replay `27496e20` is identical (≤ 3.9e-6, all rows matched).
+  - The daily cycle, the forced failure and the three rehearsals ran on the then-final code.
+
+**C-E1 — The issuing code changed after the v0.3 evidence, and it now depends on a module under active edit.** (blocker; mechanical)
+- **What changed.** At 19:55 `scripts/live/live_data.py` gained `from sentinel.data.reserved import assert_no_reserved` and a call in `build_cube` (`:25`, `:141`). The C-N3 helper rollout reached the live closure. As a result:
+  - the issuing hash is now **`28996d48…`**, not the `27496e20…` cited in §10 and in the coordinator's note;
+  - `freeze_draft.py` would freeze `28996d48…`;
+  - the scorer hash moved to `0dc218e5…`;
+  - `sentinel/data/reserved.py` (edited again at 19:56) is now in the issuing closure.
+- **Why it matters.** Any future edit to that shared helper by the EW-v3, M1-N or other workstreams over 22 months would stop live issuing, and every day would be a `failed` row.
+- **Fix.**
+  1. Revert the import in `live_data.py`. Live sites are fixed by the frozen config, so a per-issue reserved check is redundant.
+  2. Replace `test_live_cube_refuses_reserved` with a test that the config's site lists are disjoint from the reserved list.
+  3. Confirm that the issuing hash is back to `27496e20…` and that `test_reserved_loaders.LOADERS` no longer lists `scripts/live/live_data.py`.
+  4. If you would rather keep the check, the §10 replay, daily cycle and rehearsals must be re-run on the new hash, and `reserved.py` frozen. I do not recommend this.
+
+**C-E2 — The 24 h residual is acceptable only if it is bounded and reported. As written it is neither.** (blocker; amendment text plus scorer code before the scorer freeze)
+- **The residual is inherent to OTS, and I accept its size.**
+  - The last row's proof can be deleted before the next row commits to it.
+  - During that window, about 24 h, only day D's values (one of three days of the h = 3 window) are public.
+- **Three defects:**
+  - (a) §5.8 says such a day is "missing". It is not: the row stays `issued` and simply loses primary eligibility.
+  - (b) The missing-days-vs-provisional-onsets report (`score_live.py:286–296`) runs only in `prov_interim`, not in the final looks the amendment names. It counts only days with no issued row, so the actual attack footprint (issued rows without a qualifying attestation) is not reported. The window `date_range(D, D+L)` also covers L+1 days instead of D..D+L−1.
+  - (c) No rule limits how many days can drop out this way.
+- **Fix:**
+  1. Correct the wording in §5.8 and §13.
+  2. Report, in every look, both "no row" days and "issued but not primary-eligible" days against provisional onsets in their windows, with the window fixed.
+  3. **Pre-specify the bound.** If more than 3 % of the trial's on-time issued rows lack a qualifying attestation, the "all on-time" population becomes **co-primary**: a hazard is claimed only if both populations reject under Holm. This makes selective deletion self-defeating.
+  4. **Recommended (owner's choice):** the owner's cron pushes `results/live/` (log plus proofs) right after `stamp.py`. That shrinks the window to minutes.
+  5. **Recommended:** turn the `EvidenceDestroyed` refusal into "restore from the public commit; if not restorable, refuse and report". As written, deliberately destroying a referenced proof makes a look unscoreable. That would be a public, self-incriminating act, but there should be no suppression lever at all.
+
+**Warnings:**
+- **W-E1 — Protect the dedicated env.** `sentinel2-live` is writable (0775). After the freeze, make it read-only (`chmod -R a-w`; the owner can still undo this) so that an agent's `pip install` cannot halt issuing.
+- **W-E2 — Block timestamps.** Bitcoin block header times can be off by about ±1–2 h. Given the 12 h margin (issue 12:00, deadline 23:59) this is negligible; disclose it in §13.
+- **W-E3 — Selftest comparison.** The `ots verify` comparison in `ots_selftest.py` needs a local Bitcoin node. Without one it fails, and the explorer path alone decides. That is acceptable, but say so, so that a failed `ots verify` line is not read as a failed test.
+
+### EW-v3-N / M1-N
+
+**What is fixed:**
+- **C-N2.**
+  - Perfect-prognosis is used for training only.
+  - Every validation step uses the archived issued GFS temperature forecasts, for every covariate model and every covariate-taking comparator.
+  - Precipitation and radiation form a labelled secondary.
+- **C-N3.**
+  - **Guard.** `open_site` now enforces the claim from disk (pid, host, no SCORED or ABORTED) with no callback.
+  - **Locking.** `lock_newsites.py` locks the own tiers once the manifest exists.
+  - **Raw IV.** All 27 raw-IV new-site directories are at mode 000, per the coordinator's ruling.
+  - **Shared helper.** The pinned helper `sentinel/data/reserved.py` is in the 12 non-frozen loaders listed in `test_reserved_loaders.py`. Tests pass. No other frozen hash moved: I recomputed EW, hydromet, lite and 5 downstream.
+  - **Pre-claim audit.** It exists (`assert_preclaim_clean`).
+- **W-N2, W-N3, W-N4.** Fixed: the reference window is unified, power is stated honestly, and S-T and the overlap disclosures are added.
+
+**C-F1 — The 1-site discrepancy is an audit error, not a deployment script.**
+- **What the site is.** `07288048` (Richies Bayou at Sherard, MS) is in the v1 files `data/processed/trackA_usgs/_build_results.json` and `usgs_manifest.json` as a **Track-A DO "EPISODE" site**:
+  - IV DO processed 2022-06 → 2025;
+  - `do_clean_min` 0.1 mg/L;
+  - `onset_index` 190.
+
+  That is a v1-derived **H1 outcome inside the new-site issue window**.
+- **The audit missed it.** `value_level_sites` lists 69 sites without it, and §2b attributes the difference to "one v1 deployment script that hard-codes a site". That attribution is wrong.
+- **The wider point.** 14 new sites carry v1 *outcome-level* artefacts: DO episode onsets, salinisation events and detections, the anomaly summary, prospective predictions. Of these, 2 are in the hard tier, 11 in the legacy tier, and `07288048` in neither.
+- **Fix.**
+  1. Correct the audit and the text.
+  2. By the lead's own rule ("derived labels → hard": the Powell labels and the chloride-eligible site), move the **12 v1 outcome-labelled sites** to the hard tier. Keep the 60 sensor-normalisation-only sites as the legacy tier.
+  3. If the lead keeps outcome-labelled sites in the primary population instead, `07288048` must at least join the legacy tier, and the inconsistency must be stated.
+  4. Re-run the population and power table either way. 3 of the 12 are DO sites, so the H1 effect is small.
+
+**C-F2 — The IV-rule confirmation half is not fresh. Fix it before `--phase dev` runs; the output directory is still empty.**
+- **What is pre-specified correctly** in `sonde_ivrule_split.json` (frozen 19:51):
+  - the design is sound: 3 pre-specified variants (R1–R3), a seeded hash split of 428 train-role sites (244 dev / 184 confirm), selection on dev, and a single O_EXCL confirmation;
+  - the bar is unchanged (≥ 99 % within 0.1 mg/L), **plus** H1-onset Jaccard ≥ 0.90. The Jaccard term rightly stops a variant from passing by dropping hard days;
+  - the fallback, non-confirmatory H1, is honest.
+- **But 25 of the 184 confirm sites are among the 54 sites of the failed validation.** Their per-site results were seen: median 98.6 %, 13 of 44 ≥ 99 %, 2 below 80 %. That failure diagnosis motivated R1–R3.
+- **Fix.** Write a dated replacement split record before any dev run, and drop the 54 previously evaluated sites from the confirm half (leaving about 159 fresh sites), or move them into dev.
+- **Also:**
+  - require the dev-phase selection to meet both criteria, with best agreement among the variants that pass Jaccard;
+  - report coverage (IV days / DV days) next to the confirmation result.
+- **Answer to the lead.** With these two changes, the procedure is sound. No new-site or outcome data are involved, and the confirmation is a genuine single test at the unchanged bar.
+
+**Warnings:**
+- **W-F1 — Bias correction.** It is fitted on only about 6 months of overlap (2021-03-24..09-30, spring–summer) per site and lead, so a seasonal bias is extrapolated to winter. Prefer the pooled HUC2 map as the default, with no seasonal terms, or no bias correction at all (the validation-fitted Platt and quantile maps already absorb mean bias). Decide before the freeze.
+- **W-F2 — Shared-tier residual.** The 422 + 27 shared-tier copies stay readable by the ruling, so protection is the helper (12 listed loaders) plus a detection-only pre-claim audit that sees only runs which record site lists.
+  - Add a repo-wide static test: every `.py` that references `sonde_daily`, `sonde_hourly`, `usgs_iv` or `SITE_DIR` must import the helper, unless it is on an allowlist of frozen files.
+  - Update the protocol's "permission plan not yet applied" text to the ruling as applied.
+- **W-F3 — `lock_newsites.py --unlock` cannot work from the CLI** (`open_claim` requires the scorer's own pid). That is acceptable, since unlocking is meant to happen inside the scorer, but say so in the docstring.
+- **W-F4 — Stale snapshot.** The registry snapshot `24ef8d1cc055` (00:50Z) records `newsite_guard.py` as `8bcf3750…`. The file is now `03abf757…` (19:56). `reserved.py`, `sonde_ivrule_split.json` and `sonde_newsites_v1_audit.json` are not hashed in it. Re-snapshot after C-F1 and C-F2.
+
+### Gate
+- **Live trial.** Close C-E1 (revert, hash back to `27496e20…`) and C-E2 (text: wording, both footprints in every look, the 3 % co-primary bound). A hash-level confirmation by any reviewer suffices. Then **the lead may freeze, pending only the owner's OTS approval and a passing `ots_selftest.py`**, followed by the §11 steps.
+- **EW-v3-N / M1-N.** Close C-F1 and C-F2 before the IV dev phase, re-snapshot, then run a delta review at freeze time, after the pull, the manifest, the lock and the IV confirmation.
+
+## EW-v2 live trial v0.4 — hash check, and EW-v3-N / M1-N v0.4 sanity check (2026-11-09/10, night)
+
+**Scope:**
+- the diff `…/scratchpad/m1live/live_delta_v03_to_v04.diff`;
+- the current repo files;
+- the dry-run tree;
+- registry snapshot `1aac08c1ad24`.
+
+**Safety:**
+- No FREEZE file, live run, commit, cron or external submission.
+- `keys.env` was not read, and no new-site value was read.
+- CPU only, ≤ 6 threads.
+- Scorer rehearsals ran on scratch copies, under `…/scratchpad/reh4/` and `…/scratchpad/reh4b/`.
+
+### Verdict
+- **Live trial: ✅ C-E1 and C-E2 are closed. The lead may freeze the live trial once the owner approves hash-only OTS submission and `ots_selftest.py` passes.** The remaining §11 steps follow, including the all-roles series map.
+- **One scorer defect was found (S-1).** It does not block the issuing freeze, because the scorer is outside the issuing closure and is frozen separately. It must be fixed before `FREEZE_ew_live_score.json`.
+
+### Hash check (all confirmed)
+- **Hashes.**
+  - Issuing code `9ee1a2ac69b1cd4b…`, 52 files, the same in `sentinel2` and `sentinel2-live`.
+  - Scorer `0fef84d58d853af1…`; env `e950cae0…`; config `7693424f…`; amendment v0.4 `bd5e6897…`.
+- **C-E1.**
+  - `live_data.py` is byte-identical to v0.3: `cmp` against `snap_v03` is clean.
+  - The closure no longer contains `sentinel/data/reserved.py`.
+  - The only issuing-side additions are `push_evidence.py` (in the entry-point list) and its `run_daily.sh` call.
+  - The overlap tests exist: `test_live.py:75` and the `test_live_config_sites_never_reserved` entry in `test_reserved_loaders.py`.
+  - 33/33 live tests pass.
+- **C-E2.**
+  - **Day classes.** Every look reports five classes: `issued_eligible`, `issued_on_time_not_eligible`, `issued_late`, `failed_only`, `missing_no_row`. Provisional-onset rates are given for the four non-late classes (`score_live.py`, day-class block).
+  - **Window.** The forecast window is now `date_range(D, D+L−1)`.
+  - **> 3 % bound.** It is enforced: `frac_on_time_days_without_qualifying_attestation > 0.03` makes the all-on-time population co-primary, and `claim_allowed` requires both Holm decisions. It is skipped only in rehearsal.
+  - **Wording.** The amendment now says "issued but not eligible" (§5.7–5.8, §7).
+- **Dormancy.**
+  - `stamp.py` is unchanged: it needs a live mode, a freeze record and `"ots"` in `timestamp_backends`.
+  - `push_evidence.py` returns unless live mode, a freeze record and `auto_push.enabled == true`. `freeze_draft.py` writes `enabled: false`.
+  - It stages and commits only the hash log and `results/live/timestamps/`.
+  - It has not run: dry row 8 has no push.
+- **Restore-from-public-copy cannot inject eligibility.**
+  - A file is restored only if its SHA-256 equals the value committed in a later chained row's `evidence_refs`.
+  - Eligibility still comes only from a Bitcoin attestation of the row hash, verified against two explorers, at or before D 23:59:59 UTC.
+  - The public copy is just a cache. It cannot hold a proof that the chain does not already pin, and no proof can be produced later with an earlier attestation.
+  - A proof that cannot be recovered makes its row "issued but not eligible", and the look still runs.
+- **§10 on 9ee1a2ac.**
+  - Replay `replay_20261109_202720.json`: code `9ee1a2ac`, config `7693424f`; all 9 cells row-identical; max |Δp| 3.9e-6.
+  - Dry row 8: `issued`, code `9ee1a2ac`, env `e950cae0`.
+  - **Gap.** The three rehearsals in §10 still carry scorer `31327567` (v0.3). I re-ran them on scorer `0fef84d5`; see S-1.
+
+### S-1 — The scorer burns a look on a zero-row issue day (fix before the scorer freeze)
+- **What happened.** Re-running the rehearsal on the actual dry-run tree **aborted all three looks**: `ArrowInvalid: No match for FieldRef.Name(issue_date)`.
+- **Cause.**
+  - Dry row 8 (issue date 2026-11-11, forecast data through 11-10) issued **0 rows**. `issue.py:294` then writes `pd.DataFrame()`, an `issue.parquet` with no schema.
+  - `load_issues` reads it with `columns=` and fails. Because this happens **after the claim**, the look is closed.
+- **It will happen in live.** A day where USGS values for d arrive late, or an empty OGC response, gives a 0-row on-time issue.
+- **Without that day the new code works.** The rehearsals pass: day classes `{issued_eligible: 6}`, unattested fraction 0.0, no co-primary.
+- **Fix (scorer only; the issuing hash does not change):**
+  1. In `load_issues`, skip files whose parquet metadata shows `num_rows == 0`.
+  2. Derive day classes from **hash-log rows**, not from loaded issue rows. Otherwise a 0-row issued day is misclassified as `missing_no_row`.
+  3. Add a pre-claim dry load of every issue file, so that no read error can burn a look.
+  4. Re-run the rehearsals on the fixed scorer and cite its hash before `FREEZE_ew_live_score.json`.
+- **Optional, issuing side.** An empty frame with the fixed schema would be cleaner, but it changes the issuing hash. Not needed if the scorer handles it.
+- **Note.** In dry-run mode, `issue.py` accepts a future date and flags it on time (row 8, D = tomorrow UTC). Live mode refuses future dates, so this is harmless; the §10 text should not cite row 8 as an on-time example.
+
+### EW-v3-N / M1-N v0.4 (sanity check)
+- **IV rule.**
+  - **Split.** The replacement split `sonde_ivrule_split_v2.json` (`f2ebe52f…`, 0444, 20:01) removes all 54 previously evaluated sites from the confirm half (0 of 159 confirm sites seen; 29 in dev) and requires both criteria at selection.
+  - **Dev run.** It happened after the new split (`dev_selection.json` 20:40; 4 `ivrule_dev` registry rows). Results:
+
+    | Variant | Agreement within 0.1 mg/L | Onset Jaccard |
+    |---|---|---|
+    | v0 | 0.964 | 0.714 |
+    | R1 | 0.976 | 0.718 |
+    | R2 | 0.963 | 0.701 |
+    | R3 | 0.976 | 0.718 |
+
+    No variant meets ≥ 0.99 together with ≥ 0.90, so `selected = null`.
+  - **Confirm half untouched.** No confirm marker exists and there is no `ivrule_confirm` row.
+  - **Outcome.** The pre-specified option (i) applies, correctly: EW-v3-N H1 is non-confirmatory with a DV-only primary (about 51 DO sites, about 17–18 projected onsets). H2 and H4 were already underpowered, so **EW-v3-N is descriptive as a whole**.
+  - **M1-N.** Its primary is restricted to DV-based sites (DO 51 sites, 24 HUC4) and stays viable. It must still meet its own ≥ 10 HUC4 rule per variable.
+- **Tiers v2** (`sonde_newsites_tiers_v2.json`, `cee6b019…`):
+  - hard tier 85 = 72 + 1 chloride-eligible site + **12 v1 outcome-level sites**;
+  - `07288048` is in the hard tier;
+  - legacy tier 46 (sensor-normalisation only);
+  - populations: primary 644, S1b 598.
+
+  This matches C-F1 and my counts.
+- **Snapshot.** Snapshot `1aac08c1ad24` (01:40Z) hashes match the current files: both protocols, tiers v2, split v2, the v1 audit v2, `newsite_guard.py` `03abf757…` and `reserved.py` `2ff9a4bf…`.
+- **Still open, from the previous section, for the freeze-time review of these tracks:**
+  - W-F1: bias-correction window;
+  - W-F2: repo-wide static test for shared-tier readers;
+  - W-F3: `--unlock` docstring;
+  - the pull, manifest and lock are still to be completed.
+
+
+## D4 TapRisk — delta review (2026-11-10)
+
+**Mode:** delta review of the fixes for the 2026-11-09 FAIL (C1–C7, W1–W8, protocol §11), the corrected validation
+re-run it2c and the new numeric track.
+**Reviewer:** the same independent agent. It wrote no FREEZE, ran no test look and built no test-role row.
+
+**Evidence and safety:**
+- **Attacks:** run on a fresh scratch copy of the repo with its own registry, a scratch `SENTINEL_RUNS`, and a scratch
+  `SENTINEL_DATA` made of symlinks to the 24 pinned files. `predict()` was replaced by a synthetic frame that calls
+  `LK.require_open` first, as the real builders do.
+- **Real data:** probes used train + val states only (`include_test=False`).
+- **Real tree after the review:**
+  - 366 `taprisk/*` registry rows, 0 of them on a test split;
+  - no `test_look/` folder;
+  - no `FREEZE_downstream_taprisk.json`.
+- **Scripts and outputs:**
+  `/tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/rev_d4/{probe2,delta_c5c6}.py`
+  (outputs in `.out`).
+- **Ordering evidence:** the downstream agent's transcript
+  `…/subagents/agent-a13a11b4ed2a6a688.jsonl` (an extract is in `rev_d4/ds_transcript_1110.txt`).
+
+### Verdict: 🟡 PASS WITH CONCERNS. The lead may NOT freeze the current candidate (`70f7304b…` / `25c8d327…`).
+
+The science corrections (C5, C6, W1–W4) are correct and leak-free, and most guard fixes hold under attack. Four
+small items remain. Each is a few lines in D4-owned files, and none needs retraining or a new validation result:
+- **E1:** the candidate is stale;
+- **E2:** the environment pin breaks on every git commit;
+- **E3:** an interrupt while the claim row is being written still allows a second look;
+- **E4:** a rescore does not re-verify the code hash.
+
+**The lead may freeze after:**
+1. E1–E4 are fixed;
+2. the pins and the candidate are regenerated;
+3. `--dry-run-on-val` is re-run in `sentinel2`;
+4. a diff-only check confirms the fixes.
+
+### Verified
+- **C5 (dated enforcement): correct.** `taprisk_it2.py:33-46, 63-67`.
+  - The join is exact. Of the train + val-state nitrate/DBP violations with `n_enf_formal > 0`, 59,505 of 59,505 match
+    the scan, and the counts are identical (82,833 vs 82,833 formal actions; 0 scan-only).
+  - Formal actions have no missing `ENFORCEMENT_DATE` or `ENF_FIRST_REPORTED_DATE`. The report lag is 119 d at the
+    median (95th percentile 2,724 d), so requiring both dates ≤ 31 Dec T is the right, stricter rule.
+  - An independent recomputation of `rh_task_enf_formal_5y` at T = 2016 gives 0 mismatches for both tasks (143 / 318
+    rows > 0).
+- **C6 (censored fit labels): correct.** `taprisk.py:92-98, 198-199`; `downstream_taprisk_test.py:60-64`.
+  - Censored positives are a subset of the uncensored ones.
+  - D4a: origin 2010 goes 158 → 154 and 2013 goes 154 → 111 (= 265). D4b: 339 → 336 and 527 → 394 (= 730).
+  - The scored origin keeps uncensored labels (218 / 542).
+  - An independent label recomputation gives 0 mismatches.
+  - The look uses S = 2019 for all fit rows (2010, 2013 and 2016); the dry run and it2c use S = 2016.
+  - The effect was material. On `val_known`, every learned model and kNN25 lost about 0.02–0.03 AUROC for D4b
+    (stack 0.845 → 0.820, `pennino_rf_hist` 0.843 → 0.816, kNN 0.745 → 0.722), while persistence, which uses no fit
+    labels, is unchanged. This confirms that the late-reported labels had been feeding same-system information.
+- **Pre-registration order** (UTC, from the transcript):
+  - §11 appended 15:39:43;
+  - code edits 15:39:56–15:43:38;
+  - it2c launched 15:42:14;
+  - code mtimes match these times.
+- **it2c / selection.** The rule was applied as written. D4a mean validation AUROC:
+
+  | Candidate | Mean D4a val AUROC | Qualifies |
+  |---|---|---|
+  | `stack_rf_gbm` | 0.9250 | no |
+  | `gbm_rich` | 0.9234 | no |
+  | `gbm_phase1` | 0.9178 | no |
+
+  So the frozen challenger is the stack again, and the expected label is competitive. The margin over `gbm_rich` is
+  thin (0.0016), but the rule is mechanical.
+- **Dry run.** The dry run (11:40, after the last code edit at 11:18) equals it2c on all 4 sets × 11 models (max
+  |ΔAUROC| = 0) and `numeric_val_v2` on all three targets. `claim_met` is false; the HUC8 Holm has m = 8 and the
+  state-cluster Holm has m = 4.
+- **Evidence rows.** The candidate's 20 evidence rows equal their `@it2c` registry values.
+- **FROZEN settings.** `FROZEN_P1` equals `phase1_results.json`:
+  - D4a: 88 trees, top-k 50 / 50;
+  - D4b: 75 trees, top-k all / all;
+  - both: 15 leaves / min_child 20.
+
+  No run artifact is read after the claim (C7).
+- **Import closure (C4).** My own AST walk (function-local imports and parent packages included) finds 24 repo modules
+  reachable from the test script, and all are in the 30-file hash. A13 (editing `sentinel/core/registry.py`) is refused
+  before the claim.
+- **Five existing freezes.** All five `FREEZE_downstream_*.json` still verify: `scoring_code_sha256`, every per-file
+  sha and the file set. Shared `common.py`, `testlook.py` and `wqp_track.py` are unchanged.
+- **Statistics.** D4a is primary: Holm over 8 by HUC8, plus the per-seed rule. W1 adds a state-cluster Holm for
+  `test_new` (`:113-118`). D4b and the numeric track are secondary, and `claim_met` uses only D4a.
+- **pytest.** `tests/test_downstream_taprisk_{look,closure,testpath}.py`: 15 passed. Registry `taprisk` rows are
+  unchanged (366).
+
+### Attack table (hardened path)
+
+| # | Attack | Result |
+|---|---|---|
+| A1 | Candidate copied verbatim as the FREEZE | refused before the claim ("not a lead freeze"); no marker, 0 rows ✅ |
+| A2 | Candidate with `status: FROZEN` only | refused (`authorised_by` missing) ✅ |
+| A3 / A3b | FREEZE `paths` ≠ current `SENTINEL_RUNS`; FREEZE referencing another candidate | refused before the claim ✅ |
+| A4 | Genuine look (real pin + pip check passed at 12:00) | claim row → seal row → 217 scoring rows → SCORED ✅ |
+| A5 / A6 | Second look; second look after deleting every look file | refused (registry claim/seal/scoring rows) ✅ |
+| A7 | `require_open` after scoring | refused ✅ |
+| A8 | Delete `SCORED.json`, rescore | refused (scoring rows exist); rows 219 → 219 ✅ |
+| A9 | Ctrl-C after the claim | `ABORTED.json` + `test_aborted` row; access closed; re-run after deleting all files refused ✅ |
+| A10a–c | Crash after sealing; then rescore with tampered predictions plus rewritten `PREDICTIONS_SAVED.json` / `SHA256SUMS`; then rescore with an unlisted file | refused ("differ from the registry seal"; "unlisted files") ✅ |
+| A10d | Rescore after editing `taprisk_numeric.py` (closure-only, used by `score()`) | **accepted** → E4 |
+| A10e / f | Rescore again | refused (scoring rows exist) ✅ |
+| A11 | Another pid calls `require_open` during the look | refused ✅ |
+| A12a / b | Interrupt while the `test_claim` row is being written; then delete `TEST_LOOK.json` and re-run | marker only, no abort, 0 rows → **second look ran** → E3 |
+| A13 | Edit `sentinel/core/registry.py` | refused before the claim ✅ |
+| A14 | Extra file in a pinned WQP partition | refused before the claim ✅ (checked directly; the full run stopped earlier at E2) |
+| A14b | Extra file in a **sub-folder** of a pinned partition | not detected → W-a |
+
+### Must fix before the freeze
+- **🔴 E1. The candidate is stale.** It was written at 16:48:59Z. The protocol was appended 22 s later (16:49:21Z,
+  "Configuration accounting"), so the hashes no longer match:
+  - common hash: candidate `70f7304b…` vs current `1bbcb0b9…`;
+  - closure hash: candidate `25c8d327…` vs current `59da6645…`;
+  - only `downstream_taprisk.md` differs.
+
+  A FREEZE copied from the candidate would be refused before the claim (safe). **Fix:** regenerate the candidate last,
+  after every protocol and code edit.
+- **🔴 E2. The environment pin includes the git HEAD.** `pip freeze` in `sentinel2` contains
+  `-e git+https://github.com/austinjin1/SENTINEL-STOCKHOLM.git@<HEAD>#egg=sentinel`.
+  - The commit `34df74ec` at 12:12:06 today changed the sha from the pinned `e1cfeeda…` to `75aa6588…`. This review
+    observed it live: A4 passed at 12:00, while A14 failed with "pip freeze differs".
+  - `TL.verify_data` therefore refuses the look now, before the claim (safe), and will refuse again after any future
+    commit.
+
+  **Fix:**
+  - in `taprisk_look.pre_claim`, check a D4-specific environment pin: the sha of `pip freeze --exclude-editable`, or a
+    `name==version` list of the third-party packages in the closure;
+  - drop `expected.pip_freeze_sha256` from the D4 pins, so that the shared `verify_data` does not also check it;
+  - re-pin. The repo code itself is already covered by the closure hash.
+- **🔴 E3. The claim-row write is outside the abort handler** (`downstream_taprisk_test.py:153-159`;
+  `taprisk_look.py:119-124`).
+  - An interrupt or registry-write failure between the O_EXCL marker and the `test_claim` row leaves only the marker,
+    with no `ABORTED` file and no row. After the marker is deleted, a second look ran (A12b).
+  - **Fix:** move `claim = LK.claim(sha)` inside the `try`, or wrap the `log_test_metric` call in `claim()` with
+    `except BaseException: abort(...); raise`.
+  - Add a pytest for it.
+- **🔴 E4. Rescore does not re-verify the frozen state** (`downstream_taprisk_test.py:149`; `taprisk_look.py:171-190`).
+  - Rescore mode runs only `load_freeze()` plus the shared `check_roles`, which checks the common hash and not the
+    closure hash. An edit to `taprisk_numeric.py`, `taprisk_models.py` or `taprisk_look.py` between a crash and the
+    rescore goes unnoticed (A10d), which is exactly the "change the scoring, then rescore" path.
+  - **Fix:** factor the freeze, split, closure-hash, paths, pins and folders checks out of `pre_claim` and run them in
+    rescore mode too (everything except the "registry empty" check).
+  - Add a pytest for it.
+
+### Should fix or record in the FREEZE
+- **🟡 W-a. Sub-folders are not checked.** `verify_pinned_folders` uses `iterdir`, so a file in a sub-folder of a
+  pinned partition (`variable=no3/sub/x.parquet`) passes. pyarrow's hive discovery would read it as `variable=no3`.
+  **Fix:** use `rglob` inside pinned folders and refuse any directory there.
+- **🟡 W-b. Numeric track: secondary only and leak-free, with deviations to record.**
+  - It never enters `claim_met` or H-G4.
+  - Its features date from ≤ 2017 (history cut at 31 Dec 2017, DOC ≤ 2017, StreamCat static, 2026 attributes
+    disclosed). The target is UCMR4, and the split is by frozen state roles. Validation was fit on train states and
+    scored on val states. Test states are read only via `require_open` inside the look.
+  - Deviations to record:
+    - the spec says "D4b feature set + rich features", but `feature_cols` omits the `rh_`/`sp_` features
+      (`taprisk_numeric.py:69-70`);
+    - HAA5 collection dates run to 2021-12-13, not "2018–2020";
+    - the floors were chosen after the first validation run (disclosed in §11; descriptive only);
+    - TOC 90 % PI coverage is 0.53, which should be reported as under-covered;
+    - `targets()` averages every state's UCMR values in memory, test states included, before the inner merge drops
+      them. Nothing is used, but filter `pwsid` first.
+- **🟡 W-c. Configuration accounting.** The 50 log entries are 40 + 6 it2c re-fits + 2 numeric configurations × 2
+  runs, and "42 distinct" is defensible. However:
+  - C5 and W3 changed the features of `pennino_rf_hist_rich` and the stack;
+  - the 6 it2c entries carry one placeholder config hash (`6c587fae…`).
+
+  Put a `configs_note` in the FREEZE: "50 entries; 42 distinct configurations; 6 corrected it2 re-fits (C5/C6/W3);
+  48 fitted variants".
+- **🟡 W-d.** The W1 state-cluster rule is implemented as a separate Holm over the 4 `test_new` comparisons (m = 4),
+  each with the per-seed rule. State this reading in the FREEZE.
+- **🟢 W-e.** The RESULTS.md D4 entry still shows the pre-correction it2 numbers. Update it to it2c (the file is not
+  hashed).
+- **🟢 W-f.** A crash between `PREDICTIONS_SAVED.json` and the `test_sealed` row leaves the look claimed but not
+  rescorable. This is safe-fail; report it to the lead if it happens.
+
+### Gate
+- **Do not freeze `70f7304b…` / `25c8d327…`.**
+- Fix E1–E4, preferably with W-a and W-b in the same patch.
+- Re-pin with the new environment check, regenerate the candidate **last**, and re-run `--dry-run-on-val` in `sentinel2`.
+  The predictions must be identical to the current dry run, because no model code changes.
+- Get a diff-only check of `taprisk_look.py` and `downstream_taprisk_test.py`, and of the new pytests for E3 and E4.
+- The lead may then write `FREEZE_downstream_taprisk.json`:
+  - status FROZEN, `authorised_by` / `authorised_at`, `candidate_record_sha256`, `paths`, `configs_note`;
+  - take the prereg snapshot and archive;
+  - make no git commit between the freeze and the look, unless E2 is fixed;
+  - run one `--allow-test` in `sentinel2`.
+
+The D4 test block is still unspent.

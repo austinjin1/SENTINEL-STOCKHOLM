@@ -1,0 +1,302 @@
+{
+  "sha256": "022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a",
+  "verdicts": [
+    {
+      "id": "I-01",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with design finding B2. /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/preregistration/microbe_arch_v2_amendment.md L556-566: look `M3E/test` scores the EA-dev block (15 groups, 1,094 runs) as the primary H3 inference, then 'the scorer writes an EA-dev-only label extract. Those rows become H4 development data'. docs/plans/sota_campaign.md rule 1: 'A spent block is never used for training, tuning or a second claim'. M3_architecture_plan.md H3 row ('the EA-test partition if H4 is approved. Single look `M3E/test`') and the lead approval (LEAD_DECISIONS L51-61) correspond to design A, not B. sentinel/models/microbe/testlook.py: LOOKS = ('M3/test','M3/test_b'); no M3E look exists. Not rated blocking because no EA label file exists on disk (find under sentinel_data: 0 hits for water_chem / Warren CSV) and one sentence can hold all EA label work.",
+      "ruling_text": "Design B and design C are rejected: EA-dev labels are never scored in any look; if H4 runs, H3 (registered TON and the added determinands) and H4 are scored once, together, on EA-test in one look (design A); sections 9.3-9.6 and 10 are not in force under this stamp, and no EA label file is downloaded or opened until (a) a stamped deviations file restates them for design A and (b) an M3E single-look guard with the rule-7 hardening exists and has been reviewed."
+    },
+    {
+      "id": "I-02",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with design finding B1. Amendment L37-39 and the section 9 title (L488) say the registered TON analysis is unchanged, and the governing table marks microbe_ea_protocol.md 'unchanged'. The frozen M3E protocol (sha256 85ee3667...) registers all linked runs, cluster bootstrap over the 22 letter groups (B = 2,000), Holm over SENTINEL model x comparator, comparators RF/XGB[genus-CLR] and tier-0 only, and 'no EA row ever enters fitting, tuning or calibration' (sections 2.5, 3, 4). Amendment L559-566 scores TON on 15 groups (design B) or 7 (design A), adds the Warren-recipe comparators and a changed model list. The claim of 'unchanged' is false under every design offered.",
+      "ruling_text": "The words 'the registered TON analysis is unchanged' are struck: any scoring of TON on fewer than the 22 registered letter groups, any added comparator and any changed model list are deviations from M3E sections 2.5, 3 and 4, are declared as deviations in every report, and the 22-group figure is not computed if H4 runs (it would need EA-dev labels in a look)."
+    },
+    {
+      "id": "I-03",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "sentinel/models/microbe/design.py L93-105: `if allow_holdout and default_root: require_open_claim()` - passing `root=` with allow_holdout=True skips the claim. sentinel/data/microbe_geo.py L221-227: `load_protected_labels(root)` calls require_open_claim only `if root is None`. /home/bcheng/STOCKHOLM/sentinel_data/processed/microbe_wq_geo/protected_labels.parquet exists (built 13:11 EST, 45,132 bytes) with mode 0664; I did not open it. grep finds no caller of load_protected_labels yet, so nothing has used the gap.",
+      "ruling_text": "Before the freeze candidate, `load_protected_labels` and `load_design(allow_holdout=True)` require the open claim for every root that holds real data (only a synthetic test root is exempt, and a test asserts both cases), and `protected_labels.parquet` is set read-only (0440 or stricter) and pinned by sha256 in the freeze."
+    },
+    {
+      "id": "I-04",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "scripts/data/microbe_geo_counts.py (sha256 69274472..., matches Appendix B) L80-90 and L113-116 computes and prints n_cens, n_cens_val, n_cens_noval per block including `002/holdout` and `001/reserve`; sentinel/data/microbe_geo.py target_counts L125-141 does the same; the results are stored in geo_counts.json and published in Appendix A.1 and at amendment L371-374 ('Holdout: 41 of 214 = 19.2%'). A censoring count is a count of a label-derived flag on protected rows, so the header claim 'Holdout and reserve rows: counts only' is true only loosely. No rule in the file uses the holdout share (the NH4 rule cites development 20.9%). The exposure cannot be undone; it can be disclosed and fenced.",
+      "ruling_text": "The holdout and reserve censoring counts in Appendix A.1 and section 7.1 are a disclosed pre-stamp exposure of a label-derived flag on protected rows: every censoring and detection-limit rule stays exactly as written, no rule, selection or kill decision may use those counts, and from now on count scripts emit only row and key counts for protected blocks."
+    },
+    {
+      "id": "I-05",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "sentinel/models/microbe/testlook.py (mtime 11-09): `claim()` calls `test_rows()` with no look filter and refuses if any M3 test row exists, so `M3/test_b` cannot be claimed after `M3/test`; no M3E look. FROZEN_GLOBS covers sentinel/models/microbe/*.py, configs/microbe/*.yaml, configs/events/microbe.yaml, scripts/train/microbe_*.py, microbe_protocol.md, events_microbe_protocol.md, microbe_split.json only; it omits this amendment, any rulings file, the log, microbe_split_lodo_x001.json, microbe_ea_protocol.md, sentinel/data/microbe_geo.py and the GEO tables. scripts/eval/microbe_final.py has no GEO scoring yet. Amendment 7.7 promises the extension before the freeze candidate but does not list the pins.",
+      "ruling_text": "Before the freeze candidate the guard is extended and independently reviewed: claims are per look (M3/test, M3/test_b, and the M3E look when it exists), and the freeze pins this amendment, the rulings file, the log, any deviations file, `microbe_split_lodo_x001.json`, `microbe_ea_protocol.md`, both GEO tables, `sentinel/data/microbe_geo.py` and the GEO scorer code."
+    },
+    {
+      "id": "I-06",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "grep of /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/docs/licenses.md: row 13 (ENA PRJEB90117) and row 15 (Warren GitHub CSV, 'no licence file in the repository ... research evaluation only; flagged for lead/author confirmation') exist; 0 hits for Zenodo 18668846 (Thorpe `water_chem.csv` and the two ASV files) and 0 hits for DP1.20097.001 (GAS-3).",
+      "ruling_text": "A licence row for Zenodo record 18668846 (each file used) and for NEON DP1.20097.001 is added to docs/licenses.md before the respective download; the Warren CSV stays 'research evaluation only' and is never used as a training label."
+    },
+    {
+      "id": "I-07",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment 10.2 itself says the letter group 'is presumed to be an EA area code. That is undocumented and is an assumption', yet the section 10 title says 'area-blocked' and the 10.4 claim wording is 'unsampled areas of England'. My label-free count on docs/preregistration/microbe_arch_v2_evidence/ena_PRJEB90117_samples.tsv: the numeric part of the title runs 1..66 for 19 of the 22 letters (65 for J and U, 24 for X), a uniform grid that does not look like area x site counts; every row carries one identical coordinate, so ENA holds no site key; M3E 2.5 says site codes are 'anonymised per year'. Site disjointness between EA-dev and EA-test therefore cannot be shown.",
+      "ruling_text": "H4 is named 'letter-group-blocked': the words 'area', 'unsampled areas' and any geographic claim are not used unless written documentation of the letter code is filed before the H4 freeze, and every H4 report states that site disjointness between EA-dev and EA-test is unverified."
+    },
+    {
+      "id": "I-08",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with design note N5(d). Amendment L502-507: the label file is 'read ... only by the scorer under the open claim', but 'How many ENA titles link is counted later by the scorer's count-only mode, which reads the ID column alone, after the ids freeze'; section 9.6 needs per-determinand counts of labelled samples per letter group 'decided from counts and fixed in the EA freeze', which the ID column alone cannot give and which must exist before the claim is open. No count-only code exists (testlook.py and microbe_final.py have no such mode).",
+      "ruling_text": "One hashed count-only script, run once after the ids freeze with its output logged for the lead, may parse the label file and emit only the number of linked ids and, per determinand, the number of non-empty cells per partition and letter group; it computes, prints and stores no value, range, mean, quantile or censoring share, and its output is pinned in the EA freeze."
+    },
+    {
+      "id": "I-09",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Split and merged: the D1 safeguards (SYNTHESIS 3.4 item 1) are ruled under A1, the counts-only overlap report (C3) under A2, and the shared constants module (X7) under B7. Checked: grep of the amendment finds no bio.infer-style ablation, no slope or SD-ratio diagnostic, no overlap report and no `physics_constants`; `ls sentinel/physics_constants*` returns nothing. LEAD_DECISIONS does not itself repeat these three items (grep: 0 hits), so they bind only through the review brief's must-contain list; the rulings file has to make them binding.",
+      "ruling_text": "SYNTHESIS section 3.4 item 1, C3 and X7 bind M3 as written in the rulings on the D1 gate, on H4 and on D2 in this file."
+    },
+    {
+      "id": "I-11",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "scripts/data/download_ea_biofilm.py: `CAP_GB = 5.0` counted over its own output folder only, checked `if k % 50 == 0`, and it stops at `free < 50` while the campaign floor is 60 GB (sota_campaign.md). The stream started 13:18 EST and crashed at 13:19 on an FTP error with 5 parts in sentinel_data/processed/ea_biofilm/_parts (log sentinel_runs/microbe/logs/ea_stream.log). `df`: 176 GB free, 95% used. grep '5 GB' in the amendment: 0 hits, so M3's new data (EA windows, GAS-3 up to 1 GB, Thorpe files, GEO tables) is never totalled against the 5 GB M3 cap. The script's embedded datasheet also says 'No EA row is used for training or tuning', which H4 contradicts.",
+      "ruling_text": "The EA read stream is not restarted until it stops at 60 GB free with the check made before every run; all new M3 data of this round (EA windows, GAS-3, the Zenodo files, GEO tables) totals at most 5 GB, reported by `du` before each download."
+    },
+    {
+      "id": "A1",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with the D1 part of I-09. SYNTHESIS 3.4 item 1 requires, before the D1 gate, (i) an unregularised bio.infer-style ablation, (ii) the within-region slope and predicted/observed SD diagnostic on D1's development predictions, (iii) WA-tol kept as comparator, and lowers P(condition 1) to about 0.35. The amendment has (iii) only (section 6 WA-tol row); its counted ablations are A1-A3 (L84-88), none unregularised; L203 still records P about 0.45; grep finds no slope or SD diagnostic. The gate (L193-198) can therefore pass on a shrunken, context-driven predictor. Not blocking: the lead can define the ablation in one sentence and nothing has been fitted (registry: 0 rows for NicheInvert).",
+      "ruling_text": "Before the D1 gate is evaluated, ablation A0 (NicheInvert-S with no context prior, kappa = 0 and no deshrinking clip; `lodo` only; counted, never selectable) and the calibration diagnostic (within-domain slope and predicted/observed SD ratio per target on D1's development predictions) are run and logged; WA-tol stays a mandatory comparator; P(condition 1) is recorded as about 0.35."
+    },
+    {
+      "id": "A2",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with the C3 part of I-09. Amendment L663-665: 'The biofilm sample ids are anonymised and carry no site or date key'. The date half is wrong: in the evidence TSV `collection_date` is present for all 1,643 grouped runs (346 distinct dates; the 6 missing are controls), and the header at L31 lists dates as seen. The site half holds for ENA (one identical coordinate on every row); whether `water_chem.csv` has a site column is unknown until the header check. The amendment commits to no counts-only overlap report against the M5-X X-U test keys (bioassess_x_freeze_candidate.json: 8,121 samples, 2021-2026), which C3 and ruling 4a need before the H4 freeze.",
+      "ruling_text": "H4 stays on hold: after the header check, if the label file carries a site key, EA-dev rows matching a frozen M5-X X-U test key (site and date window) are removed by a key list and a counts-only overlap report is filed before the H4 freeze; if it carries no site key, H4 is not run and is reported as not run."
+    },
+    {
+      "id": "A3",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "microbe_protocol.md 10.8 (L516-521): '<= 8 further SENTINEL configurations on the current tracks', numbered configuration x track, '#6-8: in reserve'. Amendment L79-83: 'up to 10 configuration x track runs, against the \"<= 8\" ... The stamp of this file is taken as approval of 10'. The 'lead dispatch asks for each of #6-#8 on both tracks' cannot be found: LEAD_DECISIONS L51-61 approves three slots and has no 'both tracks' text; docs/handoff/M3-microbe.md L132 says '<= 8 further configurations'; plan 8.2 (D1 and D3a on both tracks) is not among the approved items 1-3 and 5-6. The author's fallback (#6 on both tracks) still gives 4 run + 4 new, which reuses slot #5 that L74 calls 'retired, not reassigned' (the M6 ruling: retired slots are not transferred). `lodo` alone is the primary track (protocol L256: the two primary routes are LODO x time-out and the cross-release reserve), so a lodo-only candidate can still be M*.",
+      "ruling_text": "The cap of protocol 10.8 stays at 8 and is not raised by this stamp: slot #5 is retired and not reassigned, so #6, #7 and #8 each run on `lodo` only (G2, G4 and G6 are dropped); the sentence 'the stamp of this file is taken as approval of 10' is void; the ablations and controls (A0, A1, A2, A3, `xgb_nichez_context`) are a closed, counted, never-selectable list."
+    },
+    {
+      "id": "B3",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment L335-336: the 'strongest simple baseline' for any SOTA or architecture label is one model per target, 'the best development-LODO model of this list ... fixed at the freeze'. The section 6 list (L311-327) does not contain `xgb_v4mr`, `xgb_v4mr_stack` or `xgb_nichez_context`; `xgb_clr_stack` and XGB-chained-physics are listed 'only if' D3b / D2 runs. L179-182: `xgb_nichez_context` is 'not a comparator for the gate', and it only costs the label if the control beats D1 with a CI excluding 0 (one-sided: a tie keeps the architecture label). The plan's D1 fair test lists 'XGB on NicheInvert's z-posterior + context' as a comparator and SYNTHESIS 3.1 lists it as a parity reference. The lead's M5-X consistency ruling requires every listed comparator at test with every paired lower bound above 0.",
+      "ruling_text": "Any SOTA or architecture label needs the paired lower bound above 0 against every applicable comparator at the sealed look (intersection-union), not against one development-chosen baseline; for D1 and D2 the comparator set includes `xgb_nichez_context`, `xgb_v4mr`, `xgb_v4mr_stack` and `xgb_clr_stack` (each if run) and XGB-chained-physics for D2, and `xgb_nichez_context` is a comparator both for gate condition 2 and for the label."
+    },
+    {
+      "id": "B4",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment L95-96: 'Stochastic models: mean of seeds 0-2 ... Deterministic models are stated as such'; L152-153: NicheInvert-S has 'No stochastic step and therefore no seed average'. RESEARCH_PLAN 15.1 requires the gain in at least 3 seeds. grep finds no per-seed rule in the amendment; the M6 ruling in LEAD_DECISIONS uses an every-seed rule.",
+      "ruling_text": "A stochastic candidate must exceed each comparator in each of seeds 0-2, not only in the seed mean; a deterministic candidate is compared with each seed of every stochastic comparator, and its label states that the candidate has no seed variation."
+    },
+    {
+      "id": "B5",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Lead rule 3 (LEAD_DECISIONS L11-24): references use 'the same inputs, labels, auxiliary targets and ensembling as the candidate'. D1 fits one 17-dimension master vector (8 primary + GEO-8 + `field_temp_c`; L114-163) and tunes N_eff on the mean inner R2 over 16 dimensions (L145-146). The multi-output tree comparator `xgb_v4clr_mo` is 'one multi-output-tree model per family' with missing labels set to the training mean (L324), and the 17-dimension stacking twin `xgb_clr_stack` runs 'only if D3b runs' (L325), which is never when the D1 gate passes (L242). So when D1 or D2 is the candidate, no tree comparator sees the same label and auxiliary set.",
+      "ruling_text": "`xgb_v4clr_mo` is fitted on all 17 master dimensions with missing labels masked, and `xgb_clr_stack` (17-dimension out-of-fold stacking inputs) runs unconditionally on `lodo`, so that a tree comparator has the same labels and auxiliary targets as D1 and D2; both are comparators and are not counted against the cap."
+    },
+    {
+      "id": "B6",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment L194: the gate is 'Evaluated once, on `lodo`, from registry values', with no statement of when or by whom; condition 2 takes the maximum over 'every model of the parity list (section 6) that is not derived from NicheInvert', yet seven section 6 rows are 'to build' or 'never run; required' (L318-324). Evaluated early, the maximum is over fewer comparators and the gate is easier to pass.",
+      "ruling_text": "The D1 gate is evaluated once, by the lead, from registry rows, only after every unconditional section 6 comparator, `xgb_nichez_context`, `xgb_v4mr`, A0 and the calibration diagnostic are finished on `lodo`; the evaluation is logged with the row ids and is not repeated."
+    },
+    {
+      "id": "B7",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Merged with I-10 and the X7 part of I-09. Amendment L260-261: D2's 'optimiser, epochs, the 3 scalars and their priors' are fixed later 'in a dated log entry ... They may use nothing but D1's results' - an open design choice made after development results, outside any stamped file. The latent is 18-d against the plan's 16-d and D = 17 against the plan's 14. The decoder constants (Benson-Krause, McCleskey, Plummer-Busenberg) have no shared module: `ls sentinel/physics_constants*` and find return nothing, while SYNTHESIS X7 says the module 'must exist before any amendment that uses these constants is stamped'. The stop rule (L263-264) lets one GEO point estimate keep D2 running. D2 is conditional on a gate with P about 0.35, so holding it does not hold the stamp.",
+      "ruling_text": "D2 does not run on this stamp: before its first development run a stamped deviations file fixes its optimiser, epochs, the three scalars with their priors and the latent layout, the decoder constants come from a unit-tested shared constants module, 'may use D1's results' means the gate outcome only, and the 4 GPU-h stop rule uses the primary mean alone."
+    },
+    {
+      "id": "B8",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Open slots filled after results: GAS-3 'one spare declared in the log before it runs' (L479-480); EA model list 'one spare' (section 9.3); H4 '5-6. spares, each declared in the log before it runs' (L629). G10 is 'the +QMP twin of the G1-G9 entry with the highest GEO mean' (section 7.5) with no time of choice. Campaign rule 6 requires a pre-declared cap with all configurations counted; a log entry is not a stamped file.",
+      "ruling_text": "All spare slots are struck (GAS-3 at most 3 candidates, EA models at most 5, H4 candidates at most 4); G10 is chosen mechanically once, when every remaining G entry is finished, and the choice is logged with row ids before G10 is fitted."
+    },
+    {
+      "id": "B9",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment L170-172 quotes the minimum detectable difference 0.105-0.203 'at alpha = 0.05/8' for H-M3, whose Holm family is 16 (protocol L255-257); microbe_split_lodo_x001_report.json gives 0.112-0.216 at 0.05/16. In mitigation the frozen protocol L360 quotes the same 0.05/8 'worst case'. L399-401: a GEO target is labelled underpowered only if its development figure exceeds 0.30, while section 7.3 itself gives a holdout figure of about 0.10-0.49, so a target can be far underpowered at the look and carry no label.",
+      "ruling_text": "Power statements use the holdout-scaled minimum detectable difference at the family's first Holm step (0.05/16 for H-M3, 0.05/8 for H-GEO), and a target is labelled underpowered from that holdout-scaled figure, fixed in the power file before the freeze."
+    },
+    {
+      "id": "B10",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment L636-648: per-determinand inference is a row bootstrap, which 10.5 itself calls 'optimistic'; the composite is an exact sign-flip test over 7 groups whose smallest two-sided p is 2/2^7 = 0.0156, so it can reject only when all 7 groups agree or nearly so; one group has 14 runs (X). Section 15.1 needs a block bootstrap. A row bootstrap over clustered rows cannot carry a SOTA label.",
+      "ruling_text": "H4 carries no section 15.1 SOTA label: the single pre-declared composite sign-flip test over the 7 EA-test groups is its only confirmatory result, per-determinand results are descriptive and are shown with letter-group cluster intervals, and the row bootstrap is not used for any claim."
+    },
+    {
+      "id": "B11",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "Amendment L481-483: GAS-3 joins `M3/test` only if three readiness conditions hold, 'Otherwise GAS-3 is Test-B-only, declared as such in the log'; section 7.7: GEO moves to Test-B if the stamp or a comparator is late. Because the destination is decided after development numbers exist, a family can be routed to the later look on the strength of what was seen. Campaign rule 2 requires tracks justified before results.",
+      "ruling_text": "GEO is scored in `M3/test` and GAS-3 in Test-B only, fixed now; a family that misses a section 7.7 condition is reported descriptively in its own look, and no family changes look after any development number on it exists."
+    },
+    {
+      "id": "B12",
+      "verdict": "confirmed",
+      "final_severity": "should_fix",
+      "evidence": "microbe_protocol.md L183: 'Selection rule (fixed): among the DNA-encoded candidates'; L411-412 defines the V4 models as 'DNA-encoded SENTINEL candidates under section 6 (sequence-defined, release/primer-harmonised units; no taxonomy labels)'. Amendment L225-226: 'V4-MR uses taxonomy labels, so it is not purely DNA-encoded', yet 11.1 proposes it as eligible for M* by default. That widens a fixed selection rule of a frozen protocol the header calls unchanged.",
+      "ruling_text": "`xgb_v4mr` and `xgb_v4mr_stack` are not eligible as M* for the H-M3 family (protocol section 6: DNA-encoded, no taxonomy labels); they run in slots #7 and #8, are reported with their twins and act as comparators for D1 and D2; in the new GEO family they may be selected only with the wording 'table model with taxonomy labels' and no architecture label."
+    }
+  ],
+  "points": [
+    {
+      "point": "OQ1 - cap of 10 configuration x track runs, or the strict 8",
+      "ruling": "The cap stays 8. Slot #5 is retired and not reassigned. #6, #7 and #8 run on `lodo` only. The stamp does not approve 10, and the author's fallback (#6 on both tracks) is also refused.",
+      "reason": "Reviewers agree the raise is unapproved; the stricter reading is 3 new runs, not 4. Protocol 10.8 says 8; the 'lead dispatch' for both tracks is not in LEAD_DECISIONS or the handoff; the fallback spends the retired #5 unit. It can be carried out: `lodo` is the primary track, so a lodo-only model can still be M*."
+    },
+    {
+      "point": "OQ2 - master vector of 17 dimensions instead of the plan's 14",
+      "ruling": "Accepted as a declared deviation, on condition of full parity: `xgb_v4clr_mo` on all 17 dimensions and `xgb_clr_stack` unconditional on `lodo`. `field_temp_c` is an auxiliary training target only and is never a prediction-time input or a scored target.",
+      "reason": "The extra dimensions were fixed before any fit, so the choice is not post hoc; the risk is that the candidate sees labels its comparators do not (lead rule 3), which the parity condition removes."
+    },
+    {
+      "point": "OQ3 - are V4-MR models and +context niche models eligible as M*",
+      "ruling": "`xgb_v4mr` and `xgb_v4mr_stack` are not eligible as M* for H-M3; they are run, reported and used as comparators. NicheInvert-S and NicheGeo-Phys are eligible only under the section 10.4 +context bar, which includes beating `xgb_v4clr_context` and `xgb_nichez_context`.",
+      "reason": "The frozen protocol restricts selection to DNA-encoded candidates with no taxonomy labels (L183, L411-412) and the amendment admits V4-MR is not one. Widening a fixed selection rule after 55 configurations is the less safe option."
+    },
+    {
+      "point": "OQ4 - separate M*_GEO",
+      "ruling": "Accepted: M*_GEO is selected by the same mechanical rule among the remaining G entries, both models are fixed in one freeze, each claim is scoped to its own family, and every report states that the error rate across the two families can reach 0.10. A GEO result never supports or rescues an H-M3 claim.",
+      "reason": "One model forced on both families would be chosen on 16 targets after the fact; two families with a stated joint error rate is the honest form. Both reviewers accept this with the disclosure."
+    },
+    {
+      "point": "OQ5 - which EA rows are scored (designs A, B, C) and the H4 inference",
+      "ruling": "B and C are rejected. If H4 runs: design A, one look on EA-test for H3 and H4, frozen together, EA-dev labels never scored. If H4 does not run: the registered M3E analysis on all 22 groups, unchanged. The choice is made once, in the EA ids freeze, before any EA label file is on disk. H4 has no SOTA label; only the composite test is confirmatory.",
+      "reason": "B scores EA-dev and then trains on it, and C scores EA-test twice; both break campaign rule 1. A is the plan's text and what the lead approved. A cannot let H3 be scored before H4 is frozen, so the amendment's 'H4 never delays M3E/test' is void under A."
+    },
+    {
+      "point": "OQ6 - how the M5-X exclusion of ruling 4a is met",
+      "ruling": "H4 stays on hold. After the stamp, the header check decides: with a site key, key-list exclusion plus a counts-only overlap report before the H4 freeze; without one, H4 is not run and is reported as not run, unless the lead re-rules 4a in writing.",
+      "reason": "ENA has dates for all 1,643 grouped runs but no site key. A date-only exclusion is not usable: the M5-X X-U test keys span 2021-2026, so it would remove every row. An exclusion that cannot be shown is not met."
+    },
+    {
+      "point": "OQ7 - pinning the Zenodo files and timing of the header check",
+      "ruling": "Accepted: md5 and byte size now, sha256 recorded at download and pinned in the EA freeze, for `water_chem.csv` and for the two ASV files. The header check runs after the stamp, by one hashed script that keeps only the bytes before the first newline in memory and writes nothing else.",
+      "reason": "Zenodo publishes md5 only, so sha256 can exist only after download. The header check is a contact with a label file and is on the amendment's own not-allowed-before-the-stamp list."
+    },
+    {
+      "point": "OQ8 - the Warren comparator recipe",
+      "ruling": "Table 1 hyperparameters with a page reference if they can be transcribed; otherwise the full published search space at the published budget. A reduced 60-draw search may be run and reported but is not 'the published method' and cannot be the comparator behind a label.",
+      "reason": "A published comparator re-run with a smaller search is a weakened baseline, which the amendment's own rule ('baselines are never weakened') and section 15.1 forbid."
+    },
+    {
+      "point": "OQ9 - who downloads DP1.20097.001",
+      "ruling": "The lead runs the download through the project downloader after the stamp, with the licence row added first, a size check against the 1 GB cap, and `df` before and after. M3 never reads a key file.",
+      "reason": "Keeps the credential out of the workstream, and puts the 1 GB and 60 GB limits under the lead's eye. GAS-3 is priority 3 and is dropped first if the schedule slips."
+    },
+    {
+      "point": "OQ10 - the D1 gate uses the 8 primary targets only",
+      "ruling": "Yes, primary targets only. The gate is evaluated once by the lead after all unconditional comparators, A0 and the diagnostic are finished. The GEO clause is removed from the D2 stop rule, which uses the primary mean alone.",
+      "reason": "The plan words the gate on the 8 targets. Letting any one of 8 GEO point estimates keep D2 alive makes the stop rule easy to escape, so section 12's 'Rule 5 is stricter than the plan' is only partly true."
+    },
+    {
+      "point": "OQ11 - a new log file for this amendment",
+      "ruling": "Accepted for execution records only (what ran, when, row ids, counts). Anything that fixes a design choice (D2 hyperparameters, GAS floors, a rerun rule, a spare) needs a stamped deviations file. The stamped amendment and rulings file are set 0444.",
+      "reason": "A log entry is not reviewed and can follow results; the stamp procedure allows changes only in a stamped deviations file before the affected run yields a validation number."
+    },
+    {
+      "point": "OQ12 - freeze candidate no later than 2026-11-30",
+      "ruling": "Yes. Arms unfinished on that date are reported as not run and cannot join later; no family is moved to another look for the sake of a label.",
+      "reason": "A fixed date with no late joiners closes the optional-stopping route. It fits the SYNTHESIS schedule (M3 sealed look in the week of Nov 24-30)."
+    }
+  ],
+  "missed": [
+    {
+      "severity": "should_fix",
+      "section": "9.4-9.6, 10.6",
+      "issue": "The EA kill rules and power were written for design B and cannot be carried over to design A. Under A the scored block is EA-test (549 runs, 7 groups): the rule '< 10 letter groups with >= 10 samples' is then always true, so every determinand is descriptive by construction, and '< 500 linked labelled samples' fails if more than about 9% of rows lack a value. The power figure in 9.5 is for about 1,070 runs in 15 groups. Section 10.6 also says H4 'never delays ... M3E/test', which is impossible when both share one look.",
+      "evidence": "Amendment L581-583 (thresholds), L571-574 (power for EA-dev), L609 (549 runs, 7 groups), L668. No reviewer finding restates thresholds for design A.",
+      "suggested_ruling": "Under design A the thresholds of section 10.6 (at least 300 linked labelled EA-test samples and at least 5 EA-test groups with 20 or more) apply to H3 and H4 alike, power is restated label-free for 549 runs in 7 groups in `microbe_ea_ids.json`, and all of this is written in the stamped EA deviations file before any EA label file is downloaded."
+    },
+    {
+      "severity": "should_fix",
+      "section": "10.3, 9.1, M3E sections 3 and 6",
+      "issue": "H4 trains on EA rows, which conflicts with frozen text the header calls unchanged, and its label source is not named. M3E section 3 says 'no EA row ever enters fitting, tuning or calibration'; the datasheet embedded in the EA downloader says 'No EA row is used for training or tuning' and 'one target only'. Section 10.3 names no label file for TON in H4, and the only TON file on record is the Warren CSV, which has no licence.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/data/download_ea_biofilm.py (datasheet text); microbe_ea_protocol.md sections 3 and 6; docs/licenses.md row 15; amendment L614-630.",
+      "suggested_ruling": "H4 is a declared deviation from M3E section 3; it trains only on the CC BY `water_chem.csv` of Zenodo 18668846, including for TON; the Warren CSV is never a training label; the EA datasheet text is corrected before H4 starts."
+    },
+    {
+      "severity": "should_fix",
+      "section": "2.6, 6",
+      "issue": "The D1 gate's baseline is weaker than the plan's fair test. Condition 2 takes the maximum over section 6 models 'not derived from NicheInvert', which removes `xgb_nichez_context`, and section 6 does not list `xgb_v4mr` at all, so D1 can pass the gate without beating either a GBM on its own niche summary or the slot #7 tree model.",
+      "evidence": "Amendment L196-198 and L311-327; M3_architecture_plan.md D1 fair test lists 'XGB on NicheInvert's z-posterior + context' as a comparator. Reviewer B3 covers the label, not the gate.",
+      "suggested_ruling": "Closed by the comparator ruling: `xgb_nichez_context` and `xgb_v4mr` enter the maximum in gate condition 2."
+    },
+    {
+      "severity": "should_fix",
+      "section": "13, 12 rule 1",
+      "issue": "Nothing in code enforces 'no development number before the stamp'. `require_stamp` exists but no microbe entry point calls it, and the new arm code is already on disk. Reviewer I-13 recorded this as a note; with fitting code present it needs a ruling.",
+      "evidence": "grep `require_stamp` over sentinel/models/microbe, scripts/train, scripts/eval: only the definition and a docstring in stamp.py. niche.py (741 lines), v4mr.py, wa.py written 13:20-13:24 EST. Registry: 0 rows of experiment `microbe/prereg_snapshot`, 0 rows for NicheInvert, v4mr, stack, GEO, GAS, QMP or EA, so nothing has been violated.",
+      "suggested_ruling": "Every entry point that can write a development number for D1-D4, an added comparator or a GEO, GAS or EA target calls `require_stamp` first, and a test asserts that it refuses without the registry row."
+    },
+    {
+      "severity": "should_fix",
+      "section": "Header, governing inputs",
+      "issue": "The recorded hash of LEAD_DECISIONS no longer matches the file, so reviewer I-14 ('all seven match') is out of date. The file was appended at 13:26 and 14:26 EST.",
+      "evidence": "sha256sum now 11af2408686fc8942c776d498b8d75d9b7365e7ea520ea1f36acaf8e1313295b (414 lines); the amendment records eedd50b0...; `head -n 193 | sha256sum` reproduces eedd50b0..., so the cited part is unchanged. The other six hashes match.",
+      "suggested_ruling": "The snapshot row records the current hash of LEAD_DECISIONS; the part cited by the amendment (lines 1-193) is unchanged, and the later sections of that file bind M3 as well."
+    },
+    {
+      "severity": "should_fix",
+      "section": "2.5",
+      "issue": "A rerun after an abort is uncounted 'only if no development number from the aborted run was read', which nobody can check. With the cap at 8 and every slot used, an uncounted rerun is the only way to get a second attempt.",
+      "evidence": "Amendment L189-191.",
+      "suggested_ruling": "A rerun is the same configuration only if the registry and the run log hold no development metric from the aborted run; otherwise it is a new counted configuration, which the cap of 8 does not allow."
+    },
+    {
+      "severity": "note",
+      "section": "10.2",
+      "issue": "98 grouped EA runs are dated on or after 2023-10-01 (50 in EA-dev, 48 in EA-test). The campaign file's wording of the reserved block ('EA values from 2023-10-01 onward') is broader than the allocation note, which reserves sonde values only.",
+      "evidence": "Label-free count on ena_PRJEB90117_samples.tsv; sota_campaign.md L93; ea_england_allocation.md reservation 1; LEAD_DECISIONS ruling 4b ('no overlap').",
+      "suggested_ruling": "Record the counts and cite ruling 4b: the M3 biofilm chemistry is outside M6's sonde reservation."
+    },
+    {
+      "severity": "note",
+      "section": "13",
+      "issue": "A run of the registered secondary scheme `release_001_to_002` started after the draft and is not named in section 13's allowed list. It fits existing baselines and V4 tables on development rows only; it is no new-arm number.",
+      "evidence": "Registry: 280 rows of `neon_dev/release_001_to_002_cv`, 13:30-14:14 EST; PID 2233127 still running (not touched); protocol L159 registers the scheme as secondary; splits.py and design.py use development rows only.",
+      "suggested_ruling": "Record it as existing-track work under protocol L159."
+    },
+    {
+      "severity": "note",
+      "section": "12 rule 1, header L11",
+      "issue": "The amendment defines the stamp as sha256 + registry row + commit; the lead's current procedure defers the commit.",
+      "evidence": "Amendment L11-12; LEAD_DECISIONS stamp procedure.",
+      "suggested_ruling": "State that the stamp is the hash, the 0444 mode and the registry row, with the commit owed before any freeze."
+    },
+    {
+      "severity": "note",
+      "section": "M3E 2.1 vs 2.5",
+      "issue": "The frozen EA protocol says only the header row of the Warren CSV has been read, yet gives '1,620 of 1,649 linked by id'. I could not find the source of that count without opening a label file, so I did not check it.",
+      "evidence": "microbe_ea_protocol.md sections 2.1 and 2.5.",
+      "suggested_ruling": "The author states in the log where the 1,620 came from before the count-only script runs."
+    }
+  ],
+  "recommendation": "stamp_with_rulings",
+  "reason": "Hash matches; Appendix B hashes reproduce. The registry holds no new-arm, GEO, GAS, EA, holdout or reserve number and no EA label file is on disk. Every reviewer finding is confirmed, but each closes with a binding sentence: cap stays 8 on `lodo`; every comparator must be beaten; D1 safeguards before the gate; V4-MR not eligible as M*. Three parts are not released by this stamp and need a stamped deviations file first: D2, the added EA family and H4 (design A, new thresholds, guard). Holding the whole stamp for those would only delay the CPU arms."
+}

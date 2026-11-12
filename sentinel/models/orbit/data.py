@@ -23,6 +23,7 @@ from ...data import chips as C
 from ...data.sources import stac as S
 from . import guard
 from . import split as SP
+from . import wqp_surface as WS
 
 TARGETS = ("chla", "tss", "turbidity", "secchi")
 UNITS = {"chla": "ug/L", "tss": "mg/L", "turbidity": "NTU or FNU (AquaCorr: unit unstated)", "secchi": "m"}
@@ -136,6 +137,10 @@ def _wqp_tables(log=print):
 def wqp_rows(log=print) -> pd.DataFrame:
     smp, mt_all = _wqp_tables(log)
     smp = smp[smp.target.isin(TARGETS) & smp.jrc_water_ok.astype("boolean").fillna(False)].copy()
+    # Depth rule (lead ruling 2026-11-10; wqp_surface.py): the matchup builds saw every depth as unspecified, so
+    # the stored values include deep results. Values are replaced by the surface-result medians and samples
+    # without a surface result are dropped. Refuses to run unless every sample key is found in the side table.
+    smp = WS.apply(smp, log=log)
     fac = smp.apply(lambda r: WQP_UNIT_FACTORS.get(r.target, {}).get(r.unit, np.nan), axis=1)
     n_bad_unit = int(fac.isna().sum())
     smp["v"] = smp.value * fac
@@ -314,7 +319,8 @@ def build_table(*, allow_test: bool = False, freeze_file=None, log=print) -> tup
     """Assemble the benchmark table. Without authorised access, protected rows (test role / test years)
     are dropped right after split assignment; only their row/water-body counts are reported."""
     raw = pd.concat([aquacorr_rows(log), wqp_rows(log)], ignore_index=True)
-    info = {"n_rows_with_chip": int(len(raw)), "by_source": raw.source.value_counts().to_dict()}
+    info = {"n_rows_with_chip": int(len(raw)), "by_source": raw.source.value_counts().to_dict(),
+            "wqp_depth_rule": WS.last_applied()}
     qc = image_qc(raw)
     info["image_qc_pass"] = int(qc.sum())
     df = raw[qc.to_numpy()].reset_index(drop=True)

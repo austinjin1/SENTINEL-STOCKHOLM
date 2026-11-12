@@ -1,16 +1,39 @@
 # Model card — SENTINEL-Lite (M7): 4-band (R, G, B, NIR) student for drone/aerial water quality
 
-**Status:** development, **validation only**. No test-set result exists (`FREEZE_lite.json` not written; the test
-roles have never been loaded). Every number below is a registry entry (`results/registry.jsonl`, workstream
-`M7-lite`; experiments `lite_val`, `lite_val_compare`, `lite_export`, `lite_robustness_val`, `lite_val_national`)
+**Status:** the 4-state track was **frozen and scored once on 2026-11-09**: H-G6 FALSE, label "negative". See
+"Test results" below and `docs/preregistration/lite_test_results.md`. The national track is not yet frozen. Every number below is a registry entry (`results/registry.jsonl`, workstream
+`M7-lite`; experiments `lite_val`, `lite_val_compare`, `lite_export`, `lite_robustness_val`, `lite_val_national`,
+`lite_test`, `lite_test_h1`, `lite_test_h1_deployable`, `lite_test_h2`, `lite_test_events`, `lite_test_verdicts`)
 or is marked `[PENDING]`. Validation numbers are **selection-optimistic** (the selected configuration is the best of
 16 tried on the same val role: 8 on 2026-10-24 + 8 on 2026-11-08/09; a no-KD re-run and an RGB-only
 ablation are not selection candidates).
 
-- Protocol: `docs/preregistration/lite_protocol.md` v1.3 (deviation D1 and the W8 teacher result in §3/§5/§11;
-  national track §12).
+- Protocol: `docs/preregistration/lite_protocol.md` v1.7 (frozen 2026-11-09; deviation D1, the W8 teacher result,
+  §8a decision rules, §13 E4a descriptive-only; national track §12).
 - Splits: original 4-state `lite_split.json` (sha256 `46ed6e1f…7475`); national `lite_split_national.json`
   (sha256 `8e3b1ee0…7d19`).
+
+## Test results (single look, 2026-11-09; `docs/preregistration/lite_test_results.md`)
+Freeze sha `a066b57a…`; scoring code `a7a8be82…`. Test-A = unseen water bodies (Secchi 1,065 lake chips / 387
+water bodies; turbidity 92 / 44; TSS 98 / 44).
+
+| Model | Secchi | Turbidity | TSS |
+|---|---|---|---|
+| Student ensemble | 54.4 [48.0, 59.1] | 125.9 | 74.7 |
+| **Deployable INT8 seed 0** | 55.0 [46.0, 60.2] | 125.5 | 78.0 |
+| GBM-RGBN | **44.2 [39.7, 49.5]** | 87.2 | 75.2 |
+| Band-ratio | 54.2 | 117.3 | 84.2 |
+
+- H1, H1-deployable and H2 are not met: nothing was rejected under Holm ∧ CI.
+  - Secchi vs GBM: +10.2 [+4.4, +14.2] (ensemble) and +10.8 [+3.1, +15.3] (INT8). The point difference favours GBM
+    in each of the 3 seeds (+8.9 / +10.0 / +7.1).
+  - H2 Secchi: +1.6 [−1.7, +3.5]. The val distillation gain did not replicate.
+- Budgets are met; **H-G6 is FALSE**; the §15.1 label is **negative**.
+- Glint at 25% degrades Secchi from 53.1 to 86.1.
+- Red-edge gap, Secchi on the same Test-A chips: S2 teacher 36.2 vs student 48.9 (descriptive, no CI). Turbidity and
+  TSS are small-n and mixed.
+- E4a is descriptive only (Test-A derived AUPRC 0.55; no decision).
+
 
 ## Intended use
 - Chip-level (≈ 30 m centre window) estimates with a predictive σ of **Secchi depth (m), turbidity (NTU), TSS (mg/L)**
@@ -206,6 +229,13 @@ Paired comparisons, derived − X (ΔBrier < 0 and ΔAUPRC > 0 favour derived):
 - Derived and direct tie.
 - Derived beats climatology on both metrics.
 - Derived is about equal to GBM.
+- **E4a is descriptive only (protocol §13, v1.7).** No decision or claim depends on it. A v1.6 endpoint chosen after
+  the val results were seen was withdrawn.
+- Caveats:
+  - the direct head uses in-sample train embeddings (W-d), which favours "derived" in the route comparison;
+  - KD-path code parity for the RGB ablation is not shown (W-f);
+  - val counts are 329 lake chips / 85 positives / 42 water bodies. The plan's 104 / 43 counted all site
+    classes.
 
 Descriptive results (derived route, raw P):
 
@@ -219,7 +249,7 @@ Descriptive results (derived route, raw P):
 ## Other configurations tried (val, not selected)
 Secchi-only + KD 0.3: 46.3 / 96.0 / 136.3. There is no Secchi gain over Secchi-only without KD (+0.9 [−1.6, +3.5]).
 
-## Freeze candidate (for the lead's pre-test review; nothing frozen, test not scored)
+## Freeze record (frozen and scored 2026-11-09; the section below is the pre-freeze candidate description)
 - File: `docs/preregistration/FREEZE_lite_candidate.json`. It is not `FREEZE_lite.json`.
   - Before 2026-11-09 the guard **did** accept it as a freeze. This was review C2, now fixed.
   - Test access now requires `FREEZE_lite.json` with `status = FROZEN`, the lead's authorisation and an open

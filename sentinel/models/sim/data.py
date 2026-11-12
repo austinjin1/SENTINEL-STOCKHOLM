@@ -20,6 +20,8 @@
 
 from __future__ import annotations
 
+from ...data.reserved import assert_no_reserved
+
 import hashlib
 import json
 from dataclasses import dataclass, field
@@ -252,6 +254,7 @@ def build(mode: str = "validation", *, allow_test: bool = False, max_sites: int 
     reg = reg[(reg["network"] == "USGS") & reg["site_type"].isin(STREAM_TYPES) & reg["in_conus"].astype(bool)]
     reg = reg.assign(site_no=reg["site_id"].astype(str)).set_index("site_no")
     cand = [s for s in sorted(split.site_role) if split.site_role[s] in auth["roles"] and s in reg.index]
+    assert_no_reserved(cand, "sim.data.build")         # split-gated; reserved new-site block must never appear
     if site_subset is not None:
         keep = set(site_subset)
         cand = [s for s in cand if s in keep]

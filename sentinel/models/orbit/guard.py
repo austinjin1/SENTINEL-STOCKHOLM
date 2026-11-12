@@ -46,7 +46,12 @@ SHARED_CODE = ("sentinel/eval/metrics.py", "sentinel/eval/bootstrap.py", "sentin
                "sentinel/data/sources/hydrolakes.py", "sentinel/data/chips.py", "sentinel/data/sources/stac.py")
 # event track (orbit_protocol.md §12.5; event_layer_plan.md §4.1): outside the orbit globs, added DELIBERATELY to the
 # scoring-code hash because orbit_test.py scores the event endpoints in the same look
-EVENT_CODE = ("sentinel/eval/events.py", "sentinel/events/__init__.py", "sentinel/events/orbit.py",
+# + the full import closure of sentinel/eval/events.py (M7 review 2026-11-09): hazards.py sets the event thresholds,
+# ew_scoring.py / early_warning.py / bootstrap.py / metrics.py are imported by it; checked by
+# tests/test_orbit_testlook.py::test_event_import_closure_hashed (runs the event path, then compares sys.modules)
+EVENT_CODE = ("sentinel/eval/events.py", "sentinel/eval/hazards.py", "sentinel/eval/ew_scoring.py",
+              "sentinel/eval/early_warning.py", "sentinel/eval/__init__.py", "sentinel/__init__.py",
+              "sentinel/events/__init__.py", "sentinel/events/orbit.py",
               "scripts/eval/events_orbit.py", "configs/events/orbit.yaml")
 
 

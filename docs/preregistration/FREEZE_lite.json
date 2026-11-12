@@ -1,0 +1,199 @@
+{
+ "status": "FROZEN",
+ "created": "2026-11-09T16:39:12",
+ "split_sha256": "46ed6e1f8724a2ef4aded2f4251c151d322a920d3c1df0d90874bb81a3397475",
+ "scoring_code_sha256": "a7a8be82821edabc28621f07b6c6e0a2ecf259a3ed84f914ab3448a3fb7bf9ff",
+ "scoring_code_sha256_at_candidate": "a7a8be82821edabc28621f07b6c6e0a2ecf259a3ed84f914ab3448a3fb7bf9ff",
+ "scoring_code_files": 80,
+ "weights_sha256": {
+  "primary_seed0": "890f02627e70f7933a569cf9076b0dbd192de1d0e022c5eabc556bbe12e384e3",
+  "primary_seed1": "17174e9e8b54e8162afdfe89c3244465e07d2325e0df6bb0d85d6d1dee9142df",
+  "primary_seed2": "ddce83e3dea897a648585d8294e7b163bc3280cec43f7e313f77c566b56fc468",
+  "robust_variant_seed0": "fd26bfe16e583d9a494091421a84b3d6a6f9fdc368986014b281685cfe8fdc57",
+  "gloria_ablation_seed0": "c64d9cb9e9c75e239c0a7f3491b8117e35b4f693b41adffd291e183b21aecee5",
+  "gloria_ablation_seed1": "ab679d58c4b951f10814c7fa96e2dcd4d75b59b57cb2fa2414c96653ac7da834",
+  "gloria_ablation_seed2": "a2e4de6bfc42875c4cef80f8cae8c77384e24ade773dbf7ac4899cd44764ab08",
+  "gloria_base_seed0": "2d9267fd4f51cea3364a31274b408ccf8fcb26afc0dc11bd9424e593557cbc0b",
+  "gloria_base_seed1": "aab0ad0351a2b6084230d81ab741a2f14b13962d56ff1774b5e6d383e391e908",
+  "gloria_base_seed2": "38026fa6bdc105acff66ffb599efb2cec681852bba9361eb9924f694ad1bbe8f",
+  "nokd_seed0": "fde94bdb96798ca196b692212712aa7aef3f1e42e45470d74b09ecbba179d8ab",
+  "nokd_seed1": "dbf09db38cafb86c683191f6b85d581448ec6ed549279b8e89d8fbc59cac58b2",
+  "nokd_seed2": "5c614d5a8cf14af8c239f13dd8c644899079d7742dba9c85cd7ff348e7089eef",
+  "rgb_ablation_seed0": "888f6b9f7dcd46ecdc5fa54d8c16aa4f5f7d873a99cef588f0d678113d2da57a",
+  "rgb_ablation_seed1": "0ecd762ecf76b26b5e13f8f641d517ea4c8efca66226fd9974dda535adfef2d5",
+  "rgb_ablation_seed2": "6a946edabbf27b79ebbe6b4cb8bd04c8611de8e0f4dbd149d3bf56a2c81ab22f",
+  "deployable_int8_seed0": "0a4b5c355de2a8ab3c691a4312f13e4771b1f7cd9b13ca3b4a84e15a09475d08",
+  "deployable_fp32_seed0": "8d0e29d2658d55a0cdf1814f8d4279464f08e23b853971e8fbc6fd028947f1f4",
+  "export_report_seed0": "1c3ce2d56e8896ccb6afa89985f7c2fe81c0357ebe3da72fd5f0a83fcabab59e",
+  "events_heads": "1c926b1566dc60a09c040aef3cbab4e69424084a34422e2e7b4c15b8d2ffd8b7",
+  "events_comparators": "7d4e50153eeaf278c3d942fa325ee779d4982087e6b187554c2a42f2911e8b32",
+  "events_calibrators": "73f894402e55a3a7546765ea6acfa2aaac6c58745feb5470722031876927317c"
+ },
+ "models": {
+  "primary": {
+   "kind": "torch",
+   "run": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_20261108-152950",
+   "seeds": [
+    0,
+    1,
+    2
+   ]
+  },
+  "robust_variant": {
+   "kind": "torch",
+   "run": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_glint_20261108-201455",
+   "seeds": [
+    0
+   ]
+  },
+  "gloria_ablation": {
+   "kind": "torch",
+   "run": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_gloria_20261024-230636",
+   "seeds": [
+    0,
+    1,
+    2
+   ]
+  },
+  "gloria_base": {
+   "kind": "torch",
+   "run": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_20261024-221134",
+   "seeds": [
+    0,
+    1,
+    2
+   ]
+  },
+  "nokd": {
+   "kind": "torch",
+   "run": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_rerun_20261109-104748",
+   "seeds": [
+    0,
+    1,
+    2
+   ]
+  },
+  "rgb_ablation": {
+   "kind": "torch",
+   "run": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_rgb_20261109-105621",
+   "seeds": [
+    0,
+    1,
+    2
+   ]
+  },
+  "deployable_int8_seed0": {
+   "kind": "onnx",
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_20261108-152950/export_seed0/lite_int8.onnx",
+   "crop": 128
+  },
+  "deployable_fp32_seed0": {
+   "kind": "onnx",
+   "path": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_20261108-152950/export_seed0/lite_fp32.onnx",
+   "crop": 128
+  }
+ },
+ "not_run": {},
+ "deployable": "deployable_int8_seed0",
+ "h_g6_carrier": "deployable_int8_seed0 (protocol \u00a78a)",
+ "export_report": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_kd03_20261108-152950/export_seed0/export_report.json",
+ "teacher_manifest": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_litesafe/manifest.json",
+ "teacher_manifest_sha256": "85122e296045ffbd51d7ba69142b9bd992c64cc45b389cadbb5660be6c85ac6d",
+ "band_ratio_forms": {
+  "secchi": "kloiber_log",
+  "turbidity": "red_green_log_water",
+  "tss": "red_nir_log",
+  "chla": "oc_ndvi"
+ },
+ "baselines_run": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/baselines_20261024-221014",
+ "n_boot": 2000,
+ "device": "cpu",
+ "packages": {
+  "torch": "2.7.1+cu118",
+  "timm": "1.0.30",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "lightgbm": "4.7.0",
+  "onnx": "1.23.2",
+  "onnxruntime": "1.31.0",
+  "scikit-learn": "1.9.1",
+  "scipy": "1.17.1",
+  "pyarrow": "26.0.0"
+ },
+ "data_snapshots": {
+  "naip_chips": {
+   "files": [
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/naip_chips/wqp/index.parquet",
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/naip_chips/wqp/shards/shard-00000.npz",
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/naip_chips/wqp/shards/shard-00001.npz",
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/naip_chips/wqp/shards/shard-00002.npz",
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/naip_chips/wqp/shards/shard-00003.npz"
+   ],
+   "n_files": 5,
+   "content_sha256": "00db2d8cdd8d1dc93c57872d297931df92533614af877ec61dc4d032732a1fae"
+  },
+  "s2_teacher_chips": {
+   "files": [
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/s2_chips/naip_teacher/index.parquet",
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/s2_chips/naip_teacher/shards/shard-00000.npz",
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/s2_chips/naip_teacher/shards/shard-00001.npz"
+   ],
+   "n_files": 3,
+   "content_sha256": "2134214f2098cbf9f53c4acf24b294b6a59b59ec0dcb79813064e0a7ee643097"
+  },
+  "scene_stats": {
+   "files": [
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/naip_matchups/naip_scene_stats.parquet"
+   ],
+   "n_files": 1,
+   "content_sha256": "b5171d5bb806ff4d0857ed408e0d026b033f1e4e9cbac287028212ab35ce90d1"
+  },
+  "train_chip_cache": {
+   "files": [
+    "/home/bcheng/STOCKHOLM/sentinel_runs/lite/cache/train_52e0873ef590.npy"
+   ],
+   "n_files": 1,
+   "content_sha256": "dff60433b245e4b7f6b30b9d5ae082f9fa1878e633c2a79c1d8e233db807a87d"
+  },
+  "labels": {
+   "files": [
+    "/home/bcheng/STOCKHOLM/sentinel_data/processed/lite_labels/labels.parquet"
+   ],
+   "n_files": 1,
+   "content_sha256": "d9ca8756210b8bb613defbc77e99a8b3cbb2c7cc42a083ec978eb0460432f16a"
+  },
+  "manifest_naip_matchups": {
+   "files": [
+    "/home/bcheng/STOCKHOLM/sentinel_data/manifests/naip_matchups.json"
+   ],
+   "n_files": 1,
+   "content_sha256": "e9832543d90f80278ea3c539d1d4c8207e2c271c963ae214eb45e3e8ded4b4cf"
+  },
+  "manifest_lite_labels": {
+   "files": [
+    "/home/bcheng/STOCKHOLM/sentinel_data/manifests/lite_labels.json"
+   ],
+   "n_files": 1,
+   "content_sha256": "847ce4d926080b553b7736a87a03fff2ad3d67e4637799c2fd860c4867bb28fe"
+  }
+ },
+ "h2_comparator": "retrained under current code (review W1): /home/bcheng/STOCKHOLM/sentinel_runs/lite/student_mnv4s_raw_crop128_rerun_20261109-104748",
+ "configurations_tried": {
+  "original_track_selection_candidates": 16,
+  "breakdown": "2026-10-24: raw, film, scene, crop128, effl0, gloria, spectral, scenefilm; 2026-11-08/09: kd03, kd1, ep20, lrbb2e4, crop128_secchi, kd03_medpool, kd03_glint, kd03_secchi",
+  "not_counted": "no-KD re-run (W1, comparator), RGB-only ablation (pre-registered ablation), 4 crashed runs (TARGETS bug, re-run), deleted partial run 221015 (duplicate)"
+ },
+ "events": {
+  "events_module": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/eval/events.py",
+  "events_module_sha256": "4279d2427d777405ce1cb140cab995567a8086fee5fd4776950e4de1065954ae",
+  "heads": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/events_e4a/heads.json",
+  "comparators": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/events_e4a/comparators.json",
+  "calibrators": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/events_e4a/calibrators.json",
+  "added": "2026-11-09, after val model selection; the selection score S used Secchi/turbidity/TSS only (scripts/eval/lite_select.py TARGETS) \u2014 chl-a was a training target of every configuration but never entered selection"
+ },
+ "single_test_run_command": "python -B scripts/eval/lite_score_test.py --allow-test",
+ "authorised_by": "lead (Claude) 2026-11-09 after M7 E-patch check PASS (REVIEW_REPORT_PRE_TRAINING.md 'M7 Lite \u2014 E-patch check (2026-11-09)')",
+ "authorised_at": "2026-11-09T22:05:18Z",
+ "candidate_sha256": "415ad36f20e3aecacaf1ef6d2bdc166a1149686a3706a2851a6ce53a52fad83b",
+ "recovery_note_F1": "Reviewer F1: if scoring crashes AFTER sealing, the eval_test* chip caches written by the look block --rescore-from-saved. Recovery: delete $SENTINEL_RUNS/lite/cache/eval_test* (rebuilt from pinned shards), then run --rescore-from-saved once; report as a deviation. Integrity checks (sealed registry row, freeze sha, no scoring rows) still apply."
+}

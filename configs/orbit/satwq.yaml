@@ -5,6 +5,14 @@ n_layers: 3
 n_heads: 4
 k: 5
 dropout: 0.1
+ssl:          # orbit_protocol.md §11.6 (lever 4); off in the base configuration
+  enabled: false
+  epochs: 20
+  mask_frac: 0.3
+  lr: 0.001
+  batch: 4096
+  max_pixels: null
+  pixels: v1      # v1_trackU for track-U refits (held-out regions excluded)
 pretrain:
   enabled: true
   epochs: 300

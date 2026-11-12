@@ -96,3 +96,23 @@ All entries: **2026-10-24, pre-training review, before any fit.**
 - **W4** RF incumbent on all training rows with native NaN handling (no median fill, no subsampling).
 - **W5** bootstrap unit changed from site to HUC4 basin group.
 - **W7** GBM renamed "GBM challenger"; tuning parity (§6) made explicit with equal 4-config budgets.
+- **it2 — site-regime + daily-anomaly decomposition (pre-registered 2026-11-09, before any it2 code ran; lead
+  direction: finish D8 by decomposition or a final negative report).** One change to the challenger (incumbents,
+  baselines, split, asinh target of it1 unchanged): ŷ(site, day) = sinh( R(site) + A(site, day) ), where
+  **R** = random forest (500 trees, min_samples_leaf 3, max_features 0.33; fixed, no search) trained on ONE row per
+  training site — static features (StreamCat `sc_*`, lat, lon) → that site's mean asinh(target) over its training
+  days; **A** = LightGBM with the it1-selected GBM hyperparameters on daily rows, target asinh(y) − site mean,
+  features = the full it1 feature set. Rationale (diagnosis §6b): site-level magnitude does not transfer while
+  within-site temporal correlation is higher for learned models, so separating the two removes the dominance of
+  a few high-GPP sites from the daily learner. 2 configurations (R, A); 3 seeds for A. Scored like it1 (daily
+  R² at val sites, HUC4 paired bootstrap) against both RF incumbents and the strongest simple baseline, for GPP
+  and ER. Keep if it beats the stronger RF incumbent and the strongest simple baseline on GPP with CI > 0;
+  otherwise D8 is closed with a final negative/competitive report (no further iteration).
+- **it2 result (run `riverpulse/val_confHM_it2_decomp`, 2026-11-09): not kept → D8 closed (final report).** Daily
+  R² at validation sites: GPP decomposition 0.132 vs Maavara-style RF 0.176 (Δ −0.043 [−0.097, 0.433]), vs DOY
+  climatology +0.096 [0.048, 0.433]; ER 0.133 vs Maavara-style RF 0.207 (Δ −0.073 [−0.154, 0.069]), vs
+  light + season +0.100 [0.012, 0.215]. **Final D8 verdict (validation only; no test look spent): negative for the
+  SENTINEL challenger** — no learned challenger (GBM base / it1 asinh / it2 decomposition) beats the re-implemented
+  Maavara et al. 2025-style RF incumbent for GPP or ER; all learned models beat the simple baselines for ER, and
+  GPP at unseen sites remains barely predictable (best R² 0.18, CIs spanning 0 at the HUC4 level). Configurations:
+  32 + 2 = 34. D8 counts toward H-G4 "implemented" only.

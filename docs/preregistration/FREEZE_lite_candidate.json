@@ -1,10 +1,10 @@
 {
  "status": "CANDIDATE \u2014 not a freeze; refused by guard/testlook. The lead writes FREEZE_lite.json (status FROZEN, authorised_by/at, scoring_code_sha256 at freeze time).",
- "created": "2026-11-09T13:58:01",
+ "created": "2026-11-09T16:39:12",
  "split_sha256": "46ed6e1f8724a2ef4aded2f4251c151d322a920d3c1df0d90874bb81a3397475",
  "scoring_code_sha256": "PENDING",
- "scoring_code_sha256_at_candidate": "3c424b891c29b7aa32a5655aea73fc821bde7b6870cd1ac88a8d50cce95f52ad",
- "scoring_code_files": 77,
+ "scoring_code_sha256_at_candidate": "a7a8be82821edabc28621f07b6c6e0a2ecf259a3ed84f914ab3448a3fb7bf9ff",
+ "scoring_code_files": 80,
  "weights_sha256": {
   "primary_seed0": "890f02627e70f7933a569cf9076b0dbd192de1d0e022c5eabc556bbe12e384e3",
   "primary_seed1": "17174e9e8b54e8162afdfe89c3244465e07d2325e0df6bb0d85d6d1dee9142df",

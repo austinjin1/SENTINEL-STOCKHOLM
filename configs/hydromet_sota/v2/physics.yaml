@@ -1,0 +1,25 @@
+# P — physics-family reference (amendment §5): the frozen air2stream / DO-saturation-ratio classes
+# (sentinel.models.hydromet.baselines; settings of configs/hydromet/baselines_ws_physics.yaml, unchanged) refitted
+# on the daily rows of the pinned arch-v2 pool.
+# * Daily rows only (L-sonde + L-usgs). P reads no grab row, so its two label forms are the same model: one fit.
+# * P has no hour-resolved output: J_grab and N2 use its daily mean (amendment §9.2; "daily-mean baseline").
+# * Deterministic: no seeds. The every-seed rule compares each claim-model seed with this one model.
+# * Step 1 (inner): donors and DO ratios from the fit sites only; inner sites are predicted and never fitted.
+#   Member per primary endpoint = lowest standardised inner-sonde MSE (ties: the earlier member in the list below).
+#   Hour-resolved rows (J_grab, N2): per variable the member with the lowest term of J_grab (ties: earlier member).
+#   Step 2 (refit): donors and ratios from fit + inner sites; the chosen members are the reference P.
+arm: p
+model: physics_family
+data: {grab: false}
+members:
+  temp_c_mean: [air2stream_regional, air2stream_regional_ws]
+  temp_c_7dadm: [air2stream_regional, air2stream_regional_ws]
+  do_mgl_mean: ["dosat_ratio[air2stream_regional]", "dosat_ratio[air2stream_regional]_ws"]
+  do_mgl_min: ["dosat_ratio[air2stream_regional]", "dosat_ratio[air2stream_regional]_ws"]
+forcing: {air2stream_regional: site_cell, air2stream_regional_ws: basin_mean}
+air2stream: {k_donors: 10, iters: 300, lr: 0.05, min_obs: 365, min_calib_nse: 0.5, threads: 4}
+inst_members: {T: temp_c_mean, DO: do_mgl_mean}     # the daily mean of the chosen member is the hour-resolved value
+grid:
+  fixed: {}
+t_e_schema: "non-ws members only (amendment §5); on hold"
+n_jobs: 6

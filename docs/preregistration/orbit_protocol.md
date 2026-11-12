@@ -19,6 +19,50 @@ headline cell, H1 and the split rule are unchanged.
 **Authors:** Bryan Cheng (AI-assisted). **Implements:** RESEARCH_PLAN.md §5.2, §14 and §15 (M2 primary
 endpoint of H-G1; §15.5 amendment of 2026-10-24).
 
+## Change log
+Dated entries for changes made after v0.4. Each entry is written before the first result it affects.
+
+- **2026-11-10 13:27 EST: WQP label rule corrected before the dev_v5 build** (lead rulings of 2026-11-10: depth rule,
+  option A; sidecar exclusion, 13:21 EST).
+  - **Defect.** The sample values stored in the Sentinel-2 × WQP matchup tables (`s2_wqp_matchups`,
+    `s2_wqp_matchups_hist`) are not medians of QC-passed surface results.
+  - **Cause 1 (depth).** `sentinel.data.matchups.wqp_surface_samples` reads the WQX depth fields. The processed
+    `wqp_discrete` tables carry one column `depth_m` instead, and `load_wqp("processed")` does not keep it. Every
+    depth was therefore "unspecified", and deep results entered the medians.
+  - **Cause 2 (sidecar files).** `load_wqp("processed")` recognises a result table by its columns, so it also read
+    `wqp_discrete/_qc_rejects.parquet` (rows removed by the WQP QC) and `_unmapped.parquet` (rows that could not
+    be mapped, e.g. the ambiguous characteristic "Chlorophyll") as ordinary results.
+  - **Sizes** (result rows of the matchup targets): 16,404,590 were read by the matchup builds. Of these,
+    14,166,002 are harmonised QC-passed rows (depth known for 7,307,986), 1,440,242 come from `_qc_rejects` and
+    798,346 from `_unmapped`. Sample counts by table × target × role × drop reason: registry experiment
+    `orbit_wqp_depth_rule` and `orbit_wqp_depth_rule_counts_20261110.json` (counts only).
+  - **Rule** (one rule for every target, role, table, model and comparator):
+    1. Labels come from the harmonised, QC-passed tables only (`processed/wqp_discrete/variable=*/`). A row of
+       `_qc_rejects.parquet` or `_unmapped.parquet` never contributes to a label. The ambiguous "Chlorophyll" rows
+       stay out.
+    2. A result is a surface result when `depth_m` ≤ 1.0 m or its depth is unknown. A result flagged "bottom" is
+       dropped at any depth. Secchi depth is exempt. This is the behaviour of the unchanged
+       `wqp_surface_samples`, called with `depth_m` as `result_depth` in metres.
+    3. Sample label = median of the QC-passed surface results over (site, date, target, characteristic, unit).
+    4. A sample without such a result is dropped, and the reason is recorded (`no_qc_passed_result` or
+       `no_surface_result`).
+  - **Code.** `sentinel/models/orbit/wqp_surface.py` builds the side table `processed/orbit_wqp_surface`;
+    `data.py::wqp_rows` applies it and stops if any sample key is not found (nothing is defaulted to "unknown
+    depth"). The shared `sentinel/data/matchups.py` is not edited. Tests: `tests/test_orbit_wqp_surface.py`. The
+    side table and the `wqp_discrete` tables are added to the data pins (`testlook.py`) before the dev_v5 build.
+  - **Scope.** The rule precedes every dev_v5 result. It applies to dev_v5, the headline test block, Test-B and
+    Test-S alike.
+  - **No reported M2 number used a WQP label.** The trainable table of dev_v4 holds 0 WQP rows of 28,360
+    (counted 2026-11-10). Every WQP row with a chip in dev_v1 to dev_v4 was dated 2024–2025, so it was in the test
+    time block, protected, and dropped before any label use. For dev_v1–dev_v3 this was checked on the chip
+    store: the 4,000 WQP chips written before those builds were all sensed in 2024–2025, and rows are same-day
+    matches.
+  - **Superseded counts.** The protected cell counts in `orbit_split_report_dev_v4.json` were made under the old
+    rule, and so were the counts quoted from them in §5a, §9a and §11.4. The file is kept. The counts are
+    superseded and are recounted by the dev_v5 build (`orbit_split_report_dev_v5.json`).
+  - **Freeze candidate.** `docs/preregistration/orbit_freeze_candidate.json` hashes `data.py` and this file. It is
+    stale and must be regenerated before any pre-test review.
+
 ## 1. Objective and hypotheses
 We test whether a model fed Sentinel-2 L2A imagery retrieves in-situ water quality at **lakes it has
 never seen, in years after its training data**. It must also beat the strongest published retrieval
@@ -233,6 +277,12 @@ frozen rule. Distance reports (nearest train point for val and test points) are 
 - **Primary:** MdSA (%) = 100 × (exp(median |ln(e/o)|) − 1).
 - **Secondary:** SSPB, log10 slope, RMSLE (log10), log-MAE, log R², N and n_waterbodies.
 - **Intervals:** 68% and 95% central-interval coverage and width for distributional models.
+  - Scored by `orbit_test.py` (v0.4, 2026-11-10, user requirement) in every cell and stratum, for every target. It
+    covers the SatWQ-Net mixture head (also when the reported point is the declared +GBM blend) and MDN_B (mixture
+    of its inits).
+  - Reported: empirical coverage with a role-block bootstrap CI, and the mean log10 width, alongside MdSA, SSPB,
+    slope and RMSLE.
+  - Coverage is reported, not tested; there is no recalibration of the intervals.
 - **CIs:** the **role-block** cluster bootstrap is primary (B = 2,000, percentile; the 50-km lake
   block or the 200-km non-lake block is the unit the split assigns, RESEARCH_PLAN §15.1). The
   water-body cluster bootstrap is a sensitivity (review W1).
@@ -240,6 +290,27 @@ frozen rule. Distance reports (nearest train point for val and test points) are 
   clusters. Role blocks are primary; water bodies are a sensitivity.
 - **Scored rows:** rows where every compared model has a finite prediction. Each model's dropped rows
   are counted.
+
+## 5b. Split-conformal intervals (secondary; pre-declared 2026-11-10 before any conformal result; lead direction)
+- **Why.** The raw mixture intervals can be badly overconfident on sparse targets: TSS 95% coverage was 0.79 on 34
+  val rows (dev_v4 dry run).
+- **Method** (`sentinel/models/orbit/conformal.py`). Conformalised quantile regression on the raw central intervals
+  (log10): score = max(q_lo − y, y − q_hi). The offset Q is the **water-body-weighted** (1 − α) quantile of the val
+  scores: each water body has total weight 1, at level min(1, (1 − α)(1 + 1/n_waterbodies)). The interval is
+  [q_lo − Q, q_hi + Q].
+  - One Q per (model, target, level ∈ {68, 95}).
+  - Models: the SatWQ-Net seed-ensemble mixture and the val-selected MDN_B (comparator parity).
+- **Calibration cells** (validation only, as the §2.2 selection cells): `valxval_lake` for chl-a and Secchi;
+  `valxany_lake` for TSS and turbidity. Fewer than 10 calibration rows → no offset (raw only, stated).
+- **Val reporting.** Raw coverage/width, and conformal coverage/width **cross-fitted** over 5 folds grouped by water
+  body. Registered as `orbit_conformal_val_<version>`.
+- **Freeze.** The offsets are fitted on the full calibration cell and frozen in `conformal_orbit_<version>.json`,
+  sha-pinned (`weights_sha256["conformal_orbit"]`, track U: `conformal_orbit_track_u`, fitted with the U-fit models
+  on the same val cells).
+- **Test.** Raw and conformal coverage (role-block CI) and width are reported side by side for every cell, stratum
+  and target.
+- **Point predictions and model selection are unchanged.** This is a secondary analysis, logged once in
+  `configs_tried.jsonl` (`conformal_intervals`) and counted.
 
 ## 5a. Power analysis (v0.3, review W4)
 `scripts/train/orbit_power.py` uses only validation per-row predictions and the **counts** of the protected
@@ -265,6 +336,19 @@ quantity, not a result).
   Within each family, the member with the lowest val MdSA is the H1 comparator. This is optimistic
   for the baselines and conservative for SENTINEL. The inner-selected representatives are also
   reported. The selected comparators are written to FREEZE_orbit.json `comparators` before test scoring.
+
+## 6a. Conditional seed-variance round (declared 2026-11-09, before any dev_v5 result; lead-approved)
+- **Trigger.** After chain7 selects the dev_v5 configuration (§6), if **any** of its 5 seeds individually has val
+  chl-a MdSA (valxval_lake) ≥ the val-selected MDN_B MdSA (the §1/§15.1(iii) per-seed rule on val).
+- **Cap: 2 configurations × 5 seeds (10 GPU runs, each one process ≤ 2 h via the lock helper on GPUs 0/1).** Both
+  start from the selected configuration (its `noaug` setting kept); one change each, aimed at seed variance:
+  - **R1** `dropout = 0.2` (base 0.1);
+  - **R2** `dropout = 0.2` and `finetune.lr = 0.00025` (base 0.0005).
+- Each is compared plain and as the declared +GBM blend (4 val-scored configurations); all are appended to
+  `configs_tried.jsonl` and counted. The final configuration is again the lowest val chl-a MdSA among **all** dev_v5
+  configurations scored on val (original 4 + these 4). If an R configuration wins, its track-U refits (5 runs) are
+  trained, and the event track, dry run and candidate are redone on it. No further round without the lead.
+- Automated in `$SENTINEL_RUNS/orbit/logs/chain8_seedvar_v5.sh` (waits for chain7).
 
 ## 7. Secondary tracks
 - **T, within-lake temporal skill.**
@@ -329,6 +413,22 @@ Looks: `M2/test` (headline + Test-B + pooled + track E strata + event track §12
    Crash recovery between 5 and 6: `--rescore-from-saved` scores the sealed predictions (never re-predicts).
 7. The development dry run (`--dry-run-dev`) runs steps 4–6 on the val cell under a separate namespace
    (`test_looks_dryrun/`), without a freeze and without protected rows.
+8. **Additions from the M7 review (2026-11-09), before any candidate is authorised.**
+   - Every artifact and dependency (checkpoints, fitted baselines, event artifact and its events.py v1.0 hash, the
+     track-U rule file, the blend comparator) is verified **before** the claim.
+   - Sealing writes a `predictions_sealed` registry row, and **test access closes at sealing**: protected rows load
+     only between the claim and the seal.
+   - `--rescore-from-saved` is refused once any scoring row of the look exists in the registry.
+   - An event-track error (prediction or scoring) is recorded as `event_track_run = 0` ("not run", with the error)
+     and never aborts the look; the (A) results are still sealed and scored.
+   - The scoring-code hash includes the full import closure of `sentinel/eval/events.py` (`hazards.py`, `ew_scoring.py`,
+     `early_warning.py`, `bootstrap.py`, `metrics.py`, package `__init__` files); a test runs the event path in a fresh
+     interpreter and requires every loaded `sentinel` module to be hashed.
+   - The official MDN-STREAM weights (comparator `mdn_official`) are content-pinned with the data.
+   - (sota_campaign rule 7) The claim is bound to the claiming pid/host; only that process may load protected rows.
+     Any BaseException (incl. KeyboardInterrupt, SIGTERM → SystemExit) between claim and seal writes `ABORTED.json`
+     and a `look_aborted` registry row; the look is then spent and reported. The sealed/aborted registry rows also
+     close access, so deleting a marker file cannot re-open it.
 
 ## 9a. Test-B cell and pooled analysis (v0.3, declared 2026-11-08, before any test look)
 **Why.** The power analysis (§5a) shows that the headline chl-a cell is under-powered: 669 rows in 87 blocks,
@@ -410,7 +510,59 @@ saturated by a small, easy cell.
 - **Endpoint** (secondary, named "track U"). The same H1 comparison: SatWQ-Net vs MDN_B, GBM imagery +
   context and location kNN, all refitted on U-fit, ≥ 3 seeds, scored once after the freeze.
 
-### 11.3 Track L: cross-sensor Landsat 8/9 transfer (proposed, not started)
+### 11.4 Small-lake stratum (lead decision 2026-11-09; written before any val result by lake size)
+- **Status at registration.** No validation or test result by lake size has been computed or seen. The only
+  size-related quantities computed are the row/water-body/block **counts** below (no predictions were read).
+- **Definition (a priori, geometry only).** In-lake rows whose HydroLAKES v1.0 `Lake_area` < **1 km²**
+  (`orbit_test.lake_area_km2`); the complement (≥ 1 km²) is reported for context. Non-lake rows are not in either.
+- **Justification.** Mixed pixels, adjacency effects and few water pixels are worst in small lakes. Pixel sets and
+  shore distance are SatWQ-Net's inductive bias there, and local ponds and reservoirs are a practical monitoring
+  target. The stratum was chosen for that reason, not from any result.
+- **Cells.** Headline, Test-B and pooled, as §9a; the same models, comparators, metrics and role-block CIs as H1.
+- **Family and multiplicity.** A secondary family: 4 targets × the 3 H1 comparators (MDN_B, GBM imagery + context,
+  location kNN). Holm is applied within the family, per cell (`holm_p_smalllake`). It is reported win or lose, and
+  never replaces H1.
+- **Power statement (counts only).**
+  - dev_v4 `valxval_lake` chl-a: 399 of 1,159 rows (34%) are small-lake rows, in 162 lakes and 47 of 89 blocks.
+  - Projected headline (669 chl-a rows, 87 blocks): about 225 rows in about 46 blocks. Scaling the headline MDE
+    (10–14 MdSA points) by √(87/46) gives an **MDE of about 14–19 points**.
+  - Secchi is similar (32% of val rows). TSS and turbidity have under 15 val small-lake rows.
+  - **The stratum is therefore pre-declared as descriptive (under-powered).** No "SOTA" label is derived from it;
+    effects, CIs and Holm-adjusted p-values are reported as they come.
+
+### 11.5 Track G: new-geography lakes (lead-approved 2026-11-09; DRAFT pre-registration)
+- Defined in `docs/preregistration/orbit_track_g.md`. That file is frozen (its sha256 recorded here) after the licence
+  checks and **before any label download**.
+- Unseen block: test-role lakes outside the US × 2024–2025. It has its own freeze (`FREEZE_orbit_trackG.json`) and
+  look (`M2G/test`). No selection happens on track G.
+
+### 11.6 SSL pretraining on unlabelled S2 water pixels (lever 4; lead-approved 2026-11-09)
+- **Data.** Unlabelled water pixels from S2 chips whose lake/unit is **train-role** and whose acquisition is
+  **≤ 2021**.
+  - Every val-role or test-role lake/unit is excluded by coordinates: role recomputed with the frozen v3 rule from
+    each chip's lon/lat; buffer rows excluded; inner blocks excluded.
+  - The excluded and included chip lists are an exclusion manifest (`manifests/orbit_ssl_pixels_v1.json`, with
+    counts and sha256).
+- **Objective.** Masked-band reconstruction on the spectral-token encoder (the same architecture as §4.1). Then the
+  usual GLORIA pretraining and fit-cell fine-tuning.
+- **Cap.** 3 SSL configurations × 5 seeds, all counted. They are declared now, on top of the dev_v5 configuration
+  selected by §6/§6a. Every run has SSL 20 epochs, batch 4096, lr 1e-3, ≤ 2,000,000 pixels (64 per chip):
+  - **ssl1** mask fraction 0.3;
+  - **ssl2** mask fraction 0.5;
+  - **ssl3** mask fraction 0.3 without GLORIA pretraining.
+
+  Each is compared plain and as the +GBM blend (6 val-scored configurations). The §6 rule is then re-applied over all
+  dev_v5 configurations.
+- **Track U.** Track-U refits of an SSL configuration use the `v1_trackU` pixel set, which also excludes the held-out
+  HUC2 regions + 25-km buffer. The training script refuses otherwise.
+- Code: `sentinel/models/orbit/ssl.py` (hashed with the orbit globs); automation
+  `$SENTINEL_RUNS/orbit/logs/chain9_ssl_v5.sh` (pixel build after the WQP build, models after chain8).
+- **Asymmetry, stated.** MDN_B and the GBMs cannot use unlabelled imagery. Any gain from SSL is a gain from an
+  information source the comparators do not have, and the claim says so.
+- **Timing.** It enters the headline freeze only if ready within about 4 days of the dev_v5 candidate. Otherwise it
+  is evaluated only on the prospective Test-C block (WQP Oct 2026–Sep 2027).
+
+### 11.3 Track L: cross-sensor Landsat 8/9 transfer (proposed; deferred by the lead 2026-11-09)
 - **Design.** Apply the band-agnostic (wavelength-tagged) SatWQ-Net trained on S2 to Landsat 8/9 OLI C2 L2
   chips at the same matchups, against MDN/GBM retrained on Landsat.
 - **Prerequisite.** A Landsat chip extraction (Planetary Computer C2 L2): about 35 kB per chip, so about

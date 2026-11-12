@@ -48,3 +48,31 @@ Sources: arxiv.org/abs/2508.11075; biorxiv.org/content/10.64898/2026.01.25.70155
 pmc.ncbi.nlm.nih.gov/articles/PMC11232138 (Hermans 2024); pmc.ncbi.nlm.nih.gov/articles/PMC7398514;
 advanced.onlinelibrary.wiley.com/doi/10.1002/advs.202513333 (MGM); biorxiv.org/content/10.64898/2026.01.05.697599v1
 (BiomeGPT); journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009345 (Read2Pheno).
+
+## Update 2026-11-10 (second web-search pass; resumed M3 session)
+Restored the 2026-10-24 record above verbatim (an accidental overwrite was reverted from git).
+
+**New or re-checked items:**
+- **England river-biofilm 16S** (NERC NORA 541561): 1,574 samples, 694 sites, tree-based ML, taxa importance. This
+  is a national dataset. No held-out-region water-chemistry prediction was identified; data access is to be
+  checked as a possible external track.
+- **Pilgrim et al. 2022** (periphyton 16S, 25 streams; PMC9534034): TP/TN response thresholds (gradient forest).
+  This is indicator development, not prediction under domain shift.
+- **SetBERT** (Bioinformatics 2025, btaf370): a set model over DNA sequences. Architecture prior art only, so it
+  is not claimed.
+- Searches: "NEON aquatic microbial 16S predict water chemistry nutrients machine learning cross-site 2024
+  2025"; "eDNA 16S bacterial community predict stream nitrogen phosphorus conductivity random forest spatial
+  validation unseen catchments 2023 2024 2025". Neither found a held-out-region freshwater WQ evaluation.
+
+**Claim wording must change.** The protocol's cycle-2 diagnosis (microbe_protocol.md §10.3) contradicts the claim
+text above ("transfers … by representing each sequence by a frozen DNA language-model embedding"). Whole-amplicon
+DNABERT-S and k-mer embeddings do not align V3V4 with V4V5: the cross-release read-mass overlap of their units is
+0.04 and 0.00. Transfer instead uses **in-silico V4 harmonisation**, which raises the overlap to 0.337. Any
+first-in-class wording must name that representation. It must also state the results: cross-release transfer
+fails for TN, TP and DOC (development CV) and works for SC.
+
+**Provisional conclusion (unchanged in kind):** no conflicting freshwater prior work was found for 16S → water
+chemistry under leave-one-region-out evaluation. The label still requires the H-M3 bar on the frozen test (`[PENDING]`).
+Additional sources: https://link.springer.com/article/10.1186/s40793-024-00588-z ·
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9534034/ · https://nora.nerc.ac.uk/id/eprint/541561/1/N541561JA.pdf ·
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12245400/

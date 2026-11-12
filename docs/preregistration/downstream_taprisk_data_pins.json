@@ -1,0 +1,31 @@
+{
+ "app": "taprisk",
+ "created": "2026-11-10T15:19:35",
+ "expected": {},
+ "files": {
+  "interim/sdwis/violations_enforcement_scan.json": "aeff968a480436f825475d822907eba1f1456d625708309e9419b2c1b0336a33",
+  "interim/sdwis/violations_enforcement_scan.parquet": "58222575f5ec37614a345bdf9eb50efc9d92361658a80678069b5e64da0ca81d",
+  "processed/labels_sdwis/build_stats.json": "8e142696bd133e32e9b5cc939b4ba659a83db472ee9222e1f0f7b98db77cc451",
+  "processed/labels_sdwis/sdwis_areas_served.parquet": "fcfb1adafe866a1750caddb668cea0a440acaedc0123cd07d22f9ae45cd50159",
+  "processed/labels_sdwis/sdwis_pws_quarter_labels.parquet": "ad59e9f972ccfff7cb9803b370b844af50e96304eee14f13b4df15772303b360",
+  "processed/labels_sdwis/sdwis_ref_codes.parquet": "3fba3ce4b9004e4bb577003771422f0688a651177b7452aaab01c31f9b1029da",
+  "processed/labels_sdwis/sdwis_source_facilities.parquet": "0b5e915daf53a526c4ead851df5f2d30c2354d00d558f443c2b1719cdebad82e",
+  "processed/labels_sdwis/sdwis_systems.parquet": "0e77f9a4638287c05c2700d14559d0563e138b88bda34470a89e7102aafc9ac1",
+  "processed/labels_sdwis/sdwis_violations.parquet": "4f1e7a6d5c5d053f9f4b80dba67391dcc161209ca403892c3ca37b78e2fa0b4a",
+  "processed/labels_ucmr/build_stats.json": "8c84f22a20a4990cfa32a169c117894e757cca0afd5f8895bd9193511a56a8ed",
+  "processed/labels_ucmr/ucmr4_cyanotoxin_ade.parquet": "6b3e7853a122c0857c47c4ac714819a5650aa1a3e8ff656b1c133f31c266afa6",
+  "processed/labels_ucmr/ucmr4_cyanotoxins.parquet": "4701ee4cbfbee8ef4e98ef63111eee09aba9f6068e130fc52d1656a6fe155b50",
+  "processed/labels_ucmr/ucmr4_haa.parquet": "0600f6e0d70f5aff7ffae7949bef01643516faaf3055482e906bf888e5be6c09",
+  "processed/labels_ucmr/ucmr4_haa_ade.parquet": "2b77ab3c9f0db2003a010175ac5b410c200269b9360307f5ce2eb577f2400862",
+  "processed/labels_ucmr/ucmr4_source_water.parquet": "a56e876e76075c88c5e270a42bc3d53b5fd7b2ee98ac53ae533554c4163b5a6a",
+  "processed/labels_ucmr/ucmr4_zipcodes.parquet": "7647e9bbb21a2a06353286af4df50c95cf063882e88da7b17ce7efbecff1bc7a",
+  "processed/taprisk_catchment/streamcat_comid.parquet": "2d851689f5efed6f5cb2e9666501d78c3af752d8d61ea41131f9cb946615dadc",
+  "processed/taprisk_catchment/streamcat_dictionary.csv": "93bce399941e601178b1eaf636e83c59d5ef88b672abe6040c562d5c07cfce6a",
+  "processed/taprisk_catchment/system_links.parquet": "277735558667a9fe29d0ec15ab8cea68f48264a1d0e478117850348ce09b7e7c",
+  "processed/taprisk_catchment/system_points.parquet": "fed542e53da6669030b1077be6b526f6714ed94c72ca48bd75ff4f2bf32c80a4",
+  "processed/wbd_huc12/huc12.parquet": "6106911d8ba4aaa8fc5b651eab6d21b4c9f6acf666c0c9869a9291b673523421",
+  "processed/wqp_discrete/variable=doc/data.parquet": "8299ce478f19bfd2a181dab5c177df2549d3f9fc9752666a4de1627bf97a40ae",
+  "processed/wqp_discrete/variable=no3/data.parquet": "940dff670352ae3b00f16d942c7cd5d27684491b316c2353718136fdc09c2186",
+  "processed/wqp_discrete/variable=no3no2/data.parquet": "4752f9f7f14456bc8eec88de159132b36eaae9ede655032ea3214ab78f512c9d"
+ }
+}

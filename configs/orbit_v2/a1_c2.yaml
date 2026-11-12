@@ -1,0 +1,28 @@
+# Arm A1 configuration c2 (orbit_arch_v2_amendment.md §3.4): SatWQ-LakeSet-MT, full model, coordinate-free
+# (also the Track-G candidate).
+arm: a1_c2
+# What the arm is (network, context set, lat/lon, heads) is fixed in sentinel/models/orbit_v2/arm.py (ARMS).
+# The values below repeat the amendment's constants; the loader refuses a file that differs from the code.
+ema_decay: 0.999          # §3.2
+amp: true                 # §3.1: fp16 AMP
+p_set_drop: 0.3           # §3.4 item 3 (not used by a0 and c3)
+k_set: 6
+p_context: 8
+n_sab: 2
+min_head_fit: 200         # §3.4 item 8
+loss_weights: {chla: 1.0, secchi: 1.0, tss: 1.0, turbidity: 1.0, tp: 0.5, tn: 0.5, doc: 0.5, turbidity_fnu: 0.25,
+               ssc: 0.25, acdom440: 0.25}
+units: [0, 1, 2]          # §3.2: network seed = 100 x unit + init
+inits: [0, 1, 2]
+checkpoint_every: 5       # §3.1
+budget_minutes: 105       # one process stays below 2 h; a longer run continues from its checkpoint
+# The inherited v1 configuration (§3.1): architecture, learning rate, batch size, epochs, patience, dropout,
+# augmentation, pretraining and initialisation of the dev_v5 configuration selected by protocol §6/§6a/§11.6.
+# Filled in once, when that selection is registered and before the first A0 network starts; identical in the four
+# arm files. A real run is refused while any field is empty.
+base:
+  config_file: null             # e.g. configs/orbit/satwq.yaml
+  config_sha256: null
+  set: []                       # the selected configuration's key=value overrides
+  fit_scheme: null              # base | recent
+  selection_registry_row: null  # registry row id of the dev_v5 selection

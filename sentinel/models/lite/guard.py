@@ -37,7 +37,9 @@ SHARED_CODE = ("sentinel/eval/metrics.py", "sentinel/eval/bootstrap.py", "sentin
                "sentinel/models/orbit/satwq.py",
                # event track (protocol §13; event_layer_plan §4.1): added to the Lite hash deliberately, because the
                # event layer is scored inside the Lite single look. events.py = the released immutable v1.
-               "sentinel/eval/events.py", "sentinel/events/__init__.py", "sentinel/events/lite.py")
+               "sentinel/eval/events.py", "sentinel/events/__init__.py", "sentinel/events/lite.py",
+               # delta review D3: events.py's import closure (thresholds/onset rules come from hazards at import time)
+               "sentinel/eval/ew_scoring.py", "sentinel/eval/hazards.py", "sentinel/eval/early_warning.py")
 # National-track files (protocol §12) change on their own schedule and have their own freeze; they are not part of
 # the original-track scoring code (review W5).
 NATIONAL_EXCLUDE = ("national", "_nat.", "_nat_")

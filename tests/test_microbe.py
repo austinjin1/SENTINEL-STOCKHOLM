@@ -314,6 +314,7 @@ def test_holdout_guard(tmp_path):
     s.to_parquet(tmp_path / "samples.parquet")
     d.tokens.to_parquet(tmp_path / "tokens.parquet")
     d.sequences.to_parquet(tmp_path / "sequences.parquet")
+    (tmp_path / "SYNTHETIC_TEST_ROOT").write_text("synthetic test root (tests/test_microbe.py)\n")
     from sentinel.models.microbe.design import load_design
 
     rule = {"kind": "date_from", "date": "2019-06-01"}
@@ -414,3 +415,29 @@ def test_event_derived_probability_is_cross_fitted_by_domain():
     p = r["p"][np.isfinite(r["p"])]
     assert ((p >= 0) & (p <= 1)).all()
     assert set(np.unique(r["y"][np.isfinite(r["y"])])) <= {0.0, 1.0}
+
+
+def test_emp_pretraining_and_pretrained_init_round_trip(tmp_path, monkeypatch):
+    """SYNTHETIC: pretrain on random sets, save, fine-tune from the saved encoder state."""
+    import torch
+
+    from sentinel.core import paths as P
+    from sentinel.models.microbe import seqset as SS
+
+    d, seqs, sid = _synthetic_design()
+    table = np.zeros((len(sid) + 1, 64), np.float32)
+    table[1:] = dna.kmer_profile(seqs, k=3)
+    sr = {s: i + 1 for i, s in enumerate(sid)}
+    cfg = {"d_model": 16, "n_layers": 1, "n_heads": 2, "dropout": 0.0, "token_dropout": 0.0, "lr": 1e-3,
+           "weight_decay": 0.0, "batch_size": 16, "max_epochs": 3, "patience": 2, "seq_mode": "frozen"}
+    b = SS.encode_sets(d.tokens, d.samples.index.to_numpy(), sr, None, 20)
+    res = SS.pretrain_seqset(cfg, table, b, max_epochs=3)
+    assert res["state"] and all(k.startswith(SS.ENCODER_PREFIXES) for k in res["state"])
+    monkeypatch.setattr(P, "RUNS_ROOT", tmp_path)
+    torch.save(res, tmp_path / "enc.pt")
+    ids = d.samples.index.to_numpy()
+    tr = SS.encode_sets(d.tokens, ids[:60], sr, np.zeros((60, 0)), 20)
+    va = SS.encode_sets(d.tokens, ids[60:80], sr, np.zeros((20, 0)), 20)
+    Y = d.samples[["log_tp"]].to_numpy(float)
+    f = SS.fit_seqset({**cfg, "init_state": "enc.pt", "table_norm": "pretrain"}, table, tr, Y[:60], va, Y[60:80], seed=0)
+    assert np.isfinite(f.predict(va)).all()

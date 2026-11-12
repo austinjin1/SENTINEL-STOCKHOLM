@@ -1,0 +1,26 @@
+# R-TD (amendment §5; lead rulings §2.2 and L11): the published top-down LSTM, re-run here. One fixed recipe, no grid.
+# R-TD was run in two published configurations (Rahmani 2021 — this file; Willard 2024, first row of Table S6 —
+# rtd_w.yaml); neither was tuned here.
+# * Hidden size 100, dropout 0.5, one LSTM layer: Rahmani, Lawson, Ouyang, Appling, Oliver & Shen 2021, Environ. Res.
+#   Lett. 16 024025, Supplementary Table S2 (supplement PDF p. 6 of 7): "Final value: 2000 / 100 / 365 / 59 / 0.5"
+#   (epochs / hidden / rho / batch / dropout); main text Sect. 3.3 "100 hidden units"; and Rahmani, Shen, Oliver,
+#   Lawson & Appling 2021, Hydrol. Process. 35 e14400, Methods (accepted manuscript p. 9): "a hidden layer size of
+#   100, rho of 365 days, 2000 epochs ... and a dropout rate of 0.5". Read in the sources on 2026-11-10.
+#   Only hidden size and dropout are taken from the papers (rulings §2.2); epochs, batch, optimiser, loss, inputs and
+#   label pool are those of the amendment (§5, §7), identical for every neural model of the round.
+# * Grab share: fixed at 0.5 (lead ruling; it never depends on D1's selection).
+# * R-TD is always fitted in both label sets, 3 seeds each: `fixed` (with grab rows) and `published` (the published
+#   form: sonde + USGS daily labels only; logged with variant_of: fixed). Both are comparators in every family.
+# Statics are concatenated at every step; daily targets have independent heads; amplitude and phase heads feed the
+# observation operator for grab and hourly rows only. Dropout acts on the LSTM output before the heads.
+arm: rtd
+model: rtd
+variables: [T, DO]
+data: {grab: true}
+recipe_verified: true
+recipe_source: "deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)"
+net: {static: concat, heads: indep_op, hidden: 100, layers: 1, dropout: 0.5, static_noise: 0.5, attr_dropout: 0.0}
+grid:
+  fixed: {grab_share: 0.5}
+ablations:
+  published: {data: {grab: false}, grab_share: 0.0}        # the published form (no grab rows)

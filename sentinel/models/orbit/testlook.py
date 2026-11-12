@@ -45,13 +45,22 @@ DATA_PIN_SPECS = {
     "wqp_matchups": ("", ["s2_wqp_matchups/samples.parquet", "s2_wqp_matchups/matchups.parquet",
                           "s2_wqp_matchups_hist/samples.parquet", "s2_wqp_matchups_hist/matchups.parquet",
                           "s2_wqp_matchups_2026/samples.parquet", "s2_wqp_matchups_2026/matchups.parquet"]),
+    # WQP label rule (orbit_protocol.md change log, 2026-11-10): the side table that data.wqp_rows applies, and the
+    # processed WQP tables it is built from (variable=*/ = the label source; the two sidecar files are read only to
+    # reproduce the key set of the matchup builds and never contribute to a label)
+    "wqp_surface": ("orbit_wqp_surface", ["surface_samples.parquet", "surface_samples.meta.json"]),
+    "wqp_discrete": ("wqp_discrete", ["_stations.parquet", "_qc_rejects.parquet", "_unmapped.parquet",
+                                      "variable=*/data.parquet"]),
     "aquacorr_tables": ("aquacorr_global", ["s2_chip_requests.parquet", "s2_chip_plan.parquet"]),
     "chips_wqp": ("s2_chips/wqp", ["index.parquet", "index/*", "layers.json", "shards/*"]),
     "chips_aquacorr": ("s2_chips/aquacorr", ["index.parquet", "index/*", "layers.json", "shards/*"]),
     "hydrolakes": ("hydrolakes", ["hydrolakes_na_eu.parquet"]),
     "wbd_huc12": ("wbd_huc12", ["huc12.parquet"]),
     "gloria_srf": ("gloria", ["srf_info.parquet"]),
+    # official MDN-STREAM MSI weights (comparator mdn_official), read from RAW (prefix "RAW:")
+    "mdn_official_weights": ("RAW:mdn_stream_weights/MSI/x2025", ["**/*"]),
 }
+CONTROL_METRICS = ("look_claimed", "predictions_sealed", "look_aborted")   # registry rows that are not scores
 
 
 def look_dir(look: str, root: str = ROOT) -> Path:
@@ -84,14 +93,21 @@ def _excl_write(p: Path, rec: dict) -> None:
 
 
 # --------------------------------------------------------------------------- data pins
+def _pin_root(loader_dir: str) -> Path:
+    if loader_dir.startswith("RAW:"):
+        return paths.RAW / loader_dir[4:]
+    return paths.PROCESSED / loader_dir if loader_dir else paths.PROCESSED
+
+
 def pin_files(loader_dir: str, patterns) -> list[Path]:
-    root = paths.PROCESSED / loader_dir if loader_dir else paths.PROCESSED
+    root = _pin_root(loader_dir)
     return sorted({f for p in patterns for f in root.glob(p) if f.is_file()})
 
 
 def content_pin(loader_dir: str, patterns) -> dict:
-    """sha256 over (relative path, sha256) of every file matching ``patterns`` under PROCESSED/loader_dir."""
-    root = paths.PROCESSED / loader_dir if loader_dir else paths.PROCESSED
+    """sha256 over (relative path, sha256) of every file matching ``patterns`` under PROCESSED/loader_dir
+    (or RAW/<dir> for a ``RAW:`` prefix)."""
+    root = _pin_root(loader_dir)
     files = pin_files(loader_dir, patterns)
     h = hashlib.sha256()
     nbytes = 0
@@ -120,7 +136,7 @@ def verify_data_pins(freeze: dict) -> dict:
 
 
 # --------------------------------------------------------------------------- claim
-def registry_rows(experiment_name: str) -> int:
+def registry_rows(experiment_name: str, *, exclude_metrics=()) -> int:
     reg = paths.REPO_ROOT / "results" / "registry.jsonl"
     n = 0
     if reg.is_file():
@@ -128,9 +144,23 @@ def registry_rows(experiment_name: str) -> int:
             for line in fh:
                 if experiment_name not in line:
                     continue
-                if json.loads(line).get("experiment") == experiment_name:
+                r = json.loads(line)
+                if r.get("experiment") == experiment_name and r.get("metric") not in exclude_metrics:
                     n += 1
     return n
+
+
+def scoring_rows(experiment_name: str) -> int:
+    """Registry rows of the look other than the claim / sealing control rows (i.e. scores)."""
+    return registry_rows(experiment_name, exclude_metrics=CONTROL_METRICS)
+
+
+def require_no_scores(look: str, freeze: dict) -> None:
+    """Rescore (crash recovery) is refused once any scoring row of the look exists (M7 review)."""
+    exp = experiment(look, freeze["data_version"])
+    n = scoring_rows(exp)
+    if n:
+        raise ProtectedDataError(f"{look}: registry already holds {n} scoring rows of {exp} — no re-scoring")
 
 
 def claim(look: str, freeze: dict, *, root: str = ROOT, register: bool = True) -> dict:
@@ -155,22 +185,61 @@ def claim(look: str, freeze: dict, *, root: str = ROOT, register: bool = True) -
     return rec
 
 
+def _control_row(experiment_name: str, metric: str) -> bool:
+    reg = paths.REPO_ROOT / "results" / "registry.jsonl"
+    if not reg.is_file():
+        return False
+    with reg.open() as fh:
+        for line in fh:
+            if experiment_name in line and metric in line:
+                r = json.loads(line)
+                if r.get("experiment") == experiment_name and r.get("metric") == metric:
+                    return True
+    return False
+
+
 def open_claims(freeze_sha: str, root: str = ROOT) -> list[str]:
-    """Looks claimed under this freeze and not yet scored."""
+    """Looks claimed under this freeze, by THIS process on THIS host, not yet sealed/aborted/scored. Test access
+    closes at sealing (M7 review / sota_campaign rule 7): the marker files OR the append-only registry rows
+    (``predictions_sealed`` / ``look_aborted``) close it, so deleting a marker cannot re-open access."""
     out = []
     base = paths.RUNS_ROOT / "orbit" / root
     for m in sorted(base.glob("*/TEST_LOOK.json")) if base.is_dir() else []:
         rec = json.loads(m.read_text())
-        if rec.get("freeze_sha256") == freeze_sha and not (m.parent / "SCORED.json").exists():
+        if rec.get("freeze_sha256") != freeze_sha:
+            continue
+        if rec.get("pid") != os.getpid() or rec.get("host") != socket.gethostname():
+            continue                                     # only the claiming process may load protected rows
+        closed = any((m.parent / f).exists() for f in ("PREDICTIONS_SAVED.json", "SCORED.json", "ABORTED.json"))
+        exp = rec.get("experiment")
+        if root == ROOT and exp and (_control_row(exp, "predictions_sealed") or _control_row(exp, "look_aborted")):
+            closed = True
+        if not closed:
             out.append(rec["look"])
     return out
+
+
+def mark_aborted(look: str, freeze: dict, reason: str, *, root: str = ROOT, register: bool = True) -> None:
+    """Any exception (incl. KeyboardInterrupt / SystemExit from SIGTERM) between claim and seal: ABORTED marker +
+    ``look_aborted`` registry row. The look is spent; the abort is reported, never retried silently."""
+    try:
+        _excl_write(look_dir(look, root) / "ABORTED.json", {"aborted": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                                                            "reason": reason[:2000], "pid": os.getpid()})
+    except FileExistsError:
+        pass
+    if register:
+        from ...core.registry import log_result
+
+        log_result(workstream="M2-orbit", experiment=experiment(look, freeze["data_version"]), model="orbit_test_look",
+                   metric="look_aborted", value=1.0, split=f"{look} aborted before sealing",
+                   notes=f"single-pass guard: aborted ({reason[:300]})", extra={"freeze_sha256": freeze["_sha256"]})
 
 
 def require_open_claim(freeze: dict) -> str:
     claims = open_claims(freeze["_sha256"])
     if not claims:
         raise ProtectedDataError("protected rows need an open test-look claim of this freeze "
-                                 "(scripts/eval/orbit_test.py); none exists or the look was already scored")
+                                 "(scripts/eval/orbit_test.py); none exists, or its predictions are already sealed")
     return claims[0]
 
 
@@ -178,7 +247,8 @@ def require_open_claim(freeze: dict) -> str:
 PRED_SUFFIXES = (".parquet", ".npz", ".json")
 
 
-def seal_predictions(look: str, pred_dir: Path, root: str = ROOT) -> dict:
+def seal_predictions(look: str, pred_dir: Path, root: str = ROOT, *, freeze: dict | None = None,
+                     register: bool = True) -> dict:
     pred_dir = Path(pred_dir)
     if (look_dir(look, root) / "PREDICTIONS_SAVED.json").exists() or (pred_dir / "SHA256SUMS").exists():
         raise ProtectedDataError(f"{look}: predictions already sealed — they are written once")
@@ -195,6 +265,13 @@ def seal_predictions(look: str, pred_dir: Path, root: str = ROOT) -> dict:
     rec = {"dir": str(pred_dir), "n_files": len(files), "sha256sums": _sha_file(sp),
            "saved": time.strftime("%Y-%m-%dT%H:%M:%S")}
     _excl_write(look_dir(look, root) / "PREDICTIONS_SAVED.json", rec)
+    if register:                       # sealed-registry row (M7 review): the seal is on the record before scoring
+        from ...core.registry import log_result
+
+        log_result(workstream="M2-orbit", experiment=experiment(look, freeze["data_version"]), model="orbit_test_look",
+                   metric="predictions_sealed", value=float(len(files)), split=f"{look} sealed predictions",
+                   notes="sealing-time row (single-pass guard, orbit_protocol.md §9b); test access closed",
+                   extra={"freeze_sha256": freeze["_sha256"], "sha256sums": rec["sha256sums"], "dir": rec["dir"]})
     return rec
 
 

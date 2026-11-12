@@ -21,6 +21,8 @@ conditional-logistic / matched-set-concordance utilities.
 
 from __future__ import annotations
 
+from ...data.reserved import assert_no_reserved, exclude_reserved
+
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
@@ -188,6 +190,7 @@ def iowa_gauges(var: str, min_days: int = 2000) -> pd.DataFrame:
                & sites["network"].eq("USGS")]
     q = idx[(idx["var"] == var) & (idx["n_days"] >= min_days)]
     g = ia[ia["site_id"].isin(set(q["site_no"]))][["site_id", "lat", "lon"]]
+    g = g[g["site_id"].isin(exclude_reserved(g["site_id"].astype(str)))]   # reserved new-site block (index-driven)
     return g.reset_index(drop=True)
 
 
@@ -208,6 +211,7 @@ def gauge_anoms_from_series(x: pd.Series, clim_years, log: bool, lag_end_days: i
 
 
 def _gauge_anoms(site_no: str, var: str, clim_years, log: bool, lag_end_days: int = 1) -> pd.DataFrame:
+    assert_no_reserved([site_no], "killalert gauges")
     x = pd.read_parquet(paths.PROCESSED / "sonde_daily" / "sites" / f"{site_no}.parquet", columns=[var])[var]
     return gauge_anoms_from_series(x, clim_years, log, lag_end_days)
 

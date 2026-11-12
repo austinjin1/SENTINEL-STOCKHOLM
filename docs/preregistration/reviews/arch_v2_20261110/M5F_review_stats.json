@@ -1,0 +1,228 @@
+{
+ "file_sha256": "480c765fb3f783b2d441f6aaeec6e6d263d42b9ccf15b2515fe23f9ef1ef099e",
+ "verdict": "stamp_with_lead_rulings",
+ "lines_read": 960,
+ "summary": "sha256 480c765fb3f783b2d441f6aaeec6e6d263d42b9ccf15b2515fe23f9ef1ef099e (85,198 bytes, 960 lines), matching the expected value at the start and at the end of the review. All 960 lines read. I changed no file in the repo, data root or runs root, downloaded nothing and used no GPU; the only file written is a scratch script under the m5f_review scratchpad.\n\nVerdict: stamp with lead rulings. The statistical core is sound, but three points must be closed first. Each needs one or two sentences, which can go in `bioassess_f_lead_rulings.md` or in a v2 of the text.\n\nBlocking:\n- B1: section 8 has no rule for comparator hyperparameters. M5-X fixed them by reference to `configs/bioassess/baselines.yaml`; M5-F does not mention that file or any tuning rule, so comparator settings could be set after development results.\n- B2: the RF[c+ctx] and TabPFN v2 members of `ens_f` (#6) and `ens_zs` (#8) are not tied to a variant, while comparator variants are chosen per target on French development. The composition of the likeliest confirmatory candidate is therefore open after development results. For #8, inheriting those variants would bring French labels into the \"zero-shot\" candidate.\n- B3: L791-792 says the power proxy variance was seen on \"NRSA and UK rows\". By the M5-X protocol it comes from frozen M5 Test A (NRSA only) and was scaled to the UK cluster count. This is a false statement of fact, not a rule; a one-line correction resolves it.\n\nShould fix: the label rows other than row 1 look only at the per-target comparator (S1); the region-unit CI and per-seed terms of row 1 are under-defined (S2); gates G6-G8 and three selection phrases are not mechanical (S3); there is no pre-declared saturation rule (S4); transfer-function comparators are denied diatom training rows (S5).\n\nChecked and correct:\n- Arithmetic: Holm multipliers 4.039 / 3.833 / 3.707; all five power-table columns; 1,435 and 3,673 clusters for 0.02; molar factors; event thresholds; 96 departments assigned exactly once.\n- Flagged fact (b): the UK allowed set is identical under the 2020-12-01 and 2020-12-31 cuts (199,234 invertebrate and 14,030 diatom samples, 0 dropped).\n- Flagged fact (a): both F-Z input sets are named comparators and the candidate must beat every one.\n- Flagged facts (g) and (k): early stopping uses training-role rows only; the transductive use is identical for comparators.\n- No French data on disk and no M5-F validation number exists; the only run artefact is a synthetic smoke log.\n- No leakage of test labels, no reuse of a spent block, and the family of 36 is fixed a priori.\n\nNot opened: `power_x_v1.json`, because it holds statistics of spent-test labels. B3 therefore rests on the M5-X protocol text and `bioassess_x_power.py`, not on that file.",
+ "findings": [
+  {
+   "id": "B1",
+   "severity": "blocking",
+   "lines": "L490-523, L546-561",
+   "claim": "Section 8 fixes comparator inputs, pools, row budgets and seeds, but no rule for comparator hyperparameters. Comparator settings can therefore be set, or left weak, after French development results.",
+   "evidence": "A grep of the protocol for 'hyperparam', 'baselines.yaml', 'tuning', 'settings' and 'n_estimators' returns nothing; 'tuned' occurs only at L577, about the candidate ('is not tuned on French rows'). The M5-X protocol had the rule (bioassess_x_protocol.md L321: 'Hyperparameters = M5's fixed `configs/bioassess/baselines.yaml`'; L209: 'the same tuning budget (never weakened)'). That file exists (sha256 bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a) and holds rf, gbm, knn_community, wapls, tabpfn and nearest_reference settings. It holds none for the MEMLM members and stacking, multi-output RF, the ridge penalty of the region-offset model (L519-521), or the index-regression RF (L509). L557-561 lets the comparator variant be chosen on development but lists only pool and feature blocks, so settings are outside every stated rule. RESEARCH_PLAN section 15.5 item 4 (baselines never weakened or under-tuned) is a general backstop but does not say which settings apply here.",
+   "smallest_fix": "Add after the 'Row budgets' paragraph of section 8 (L546-548): \"**Comparator settings.** Every comparator uses the fixed settings of `configs/bioassess/baselines.yaml` (sha256 bfc4e86b99f045540cdaf5c5af18cac6db3fb3cd1288a3534df3559f8059011a), as in M5 and M5-X, with no tuning on French rows. A setting that file does not hold (MEMLM members and stacking rule, multi-output RF, the ridge penalty of the region-offset model, the index-regression RF, geography-only RF) is written in the comparator table before the first French development number and is not changed afterwards. No comparator setting is weakened; a change is a dated entry in a stamped file, made before any French development number for that comparator.\""
+  },
+  {
+   "id": "B2",
+   "severity": "blocking",
+   "lines": "L707-715, L557-561, L731-734",
+   "claim": "The RF[c+ctx] and TabPFN v2 members of `ens_f` (#6) and `ens_zs` (#8) are not tied to a variant. The make-up of the ensemble candidate can be chosen after development results, and for #8 this can put French development labels into a candidate that every label calls zero-shot.",
+   "evidence": "L707: 'mean(one BioSet-MA member, RF[c+ctx], TabPFN v2)'; L709: 'mean(#7, RF[c+ctx], TabPFN v2), context without latitude or longitude'. L711-713 fixes only the BioSet-MA member; L714-715 fixes only the training pool of the #8 members. L557-558 says that for each comparator and target 'the variant (training pool, diatom block, region descriptors, pool-prevalence columns, auxiliary out-of-fold features) is chosen on French development, seed 0'. Nothing says whether the ensemble members are those chosen variants or a fixed recipe, whether they take the diatom block, descriptors or prevalence columns, or whether the TabPFN member is [community] or [community + context]. If the members inherit the development-chosen variants, #8 contradicts L731-732 ('no French label in any fit, early stopping, scaler, calibration or candidate selection'). If they are free, each member variant is an uncounted configuration beyond the cap of 8 (L716-717 'The list is closed'). L796 names the ensemble as the likeliest SOTA candidate, so this is the confirmatory candidate's definition.",
+   "smallest_fix": "Add one bullet to section 9.3 after L715: \"**Fixed baseline members.** The RF and TabPFN v2 members of #6 and #8 are one fixed recipe for every target, not chosen on development: inputs = invertebrate Hellinger features + the attached-diatom Hellinger features (parity table, row 1) + the context columns of section 9.1 (without latitude and longitude in #8); training rows = the candidate's own pool for the track (#6) or the UK allowed rows (#8); no region descriptors, no pool-prevalence columns, no auxiliary out-of-fold features; the settings of `configs/bioassess/baselines.yaml`. They are not the development-chosen comparator variants of section 8.\" The lead may choose a different recipe; what matters is that it is written before the stamp."
+  },
+  {
+   "id": "B3",
+   "severity": "blocking",
+   "lines": "L778-780, L791-795",
+   "claim": "The stated basis of the power proxy is wrong. The per-cluster variance was not seen on 'NRSA and UK rows'; it comes from NRSA rows only (frozen M5 Test A) and was scaled to the UK cluster count. Blocking only as a false statement of fact; no rule changes.",
+   "evidence": "L791-792: 'The scaling assumes that the per-cluster variance of the paired difference seen in M5-X (NRSA and UK rows, `r2_anomaly`) transfers to France.' bioassess_x_protocol.md L246-260 defines the proxy as the 'empirical SE of the paired Δ `r2_anomaly` (ensemble C − comparator) on frozen M5 Test A (1,901 clusters), scaled by √(1,901 / n_clusters)', and adds 'The SE proxy comes from NRSA streams, with about 1 sample per cluster. X-U has 3.78 samples per cluster' and 'The X-U targets orthophosphate, ammonia and nitrate have no proxy'. `scripts/eval/bioassess_x_power.py` computes it from M5 Test A predictions. So no UK row contributed; three of the six F-A/F-Z primary targets have no proxy; the F-T annual-mean targets have none; and pooled R2 (half the family) has none until `power_f_v1.json` (L794-795 admits the last point only). The 650-cluster gate and the 0.030-0.048 range are therefore weaker evidence than the text suggests. I did not open `power_x_v1.json` (statistics of spent-test labels).",
+   "smallest_fix": "Replace L791-793 with: \"**Assumption.** The scaling assumes that the per-cluster variance of the paired difference seen on frozen M5 Test A (NRSA streams, about 1 sample per cluster, `r2_anomaly`), scaled by cluster count as in M5-X, transfers to France. No UK row contributed to it. Nitrate-N, ammonium-N and orthophosphate-P, pooled R² and the F-T targets have no proxy until `power_f_v1.json`. It may not transfer: samples per cluster and label noise can differ. The realised CI widths feed row 4.\""
+  },
+  {
+   "id": "S1",
+   "severity": "should_fix",
+   "lines": "L760-762, L772-773",
+   "claim": "Rows 3-5 and the target-level label look only at the per-target comparator. A candidate can be labelled 'Competitive', or get a target-level SOTA with 'not Below' on the other metric, while another listed comparator is significantly above it at test.",
+   "evidence": "L760: 'Below' = '95 % paired CI upper bound < 0 (against the per-target comparator)'. L762: 'otherwise → Competitive'. L772-773: target-level SOTA 'needs row 1 on at least one co-primary metric and not \"Below\" on the other'. The per-target comparator is the strongest on development (L563-564), which need not be the strongest at test. Only row 2 names comparators not beaten (L759). M5-X amendment v9 item 4 has the wider rule: 'A listed comparator whose CI lies entirely below 0 (it is above C-X) is named in the reason text of the row, whatever the label.'",
+   "smallest_fix": "Add a note under the decision table: \"A listed comparator whose paired 95 % CI lies entirely below 0 is named in the reason text of the row, whatever the label, and such a row is labelled 'Below (listed comparator)', not 'Competitive'.\" In L772-773 replace 'not \"Below\" on the other' with 'no listed comparator with a paired CI entirely below 0 on the other'."
+  },
+  {
+   "id": "S2",
+   "severity": "should_fix",
+   "lines": "L472-473, L478-479, L758, L766-767",
+   "claim": "Two of the four conditions of row 1 are under-defined: 'region-unit paired CI > 0' has no level, number of resamples or comparator, and 'per-seed Δ > 0' does not say against which comparator.",
+   "evidence": "L758: 'Holm-rejected ∧ per-seed Δ > 0 for seeds 0, 1, 2 ∧ region-unit paired CI > 0 ∧ paired 95 % CI lower bound > 0 against every listed comparator'. L764-765 defines only the every-comparator CIs. L472-473 calls the region-unit CI a 'sensitivity' and notes '8 units are coarse', while row 1 makes it a condition. The M5-X scorer (`scripts/eval/bioassess_x_final.py`, `label()`) uses a 95 % percentile paired bootstrap with region units as groups, B = 10,000, on the seed-mean statistic, against the per-target comparator only, and per-seed Δ against the per-target comparator only. L480 says 'Both definitions are those of the M5-X scorer' but that sentence covers the seed statistic and pairing, not these two terms. With 6-8 units a percentile CI excludes 0 only when nearly every unit agrees, so the definition decides labels.",
+   "smallest_fix": "Add to the notes under the table: \"The region-unit CI is a 95 % percentile paired bootstrap that resamples region units (B = 10,000) on the seed-mean statistic, against the per-target comparator; row 1 needs its lower bound above 0. Per-seed Δ is against the per-target comparator. Both are as in `scripts/eval/bioassess_x_final.py`.\""
+  },
+  {
+   "id": "S3",
+   "severity": "should_fix",
+   "lines": "L515-516, L563-564, L745, L810-812",
+   "claim": "Three gates and three selection phrases are not mechanical; each leaves a choice that can be made after development numbers exist.",
+   "evidence": "G6 (L810): 'more than 0.02 below the best single comparator on the selection score components for ≥ 4 of 6 F-A primary targets' does not say whether both components or their mean must be below, which seed, or whether the F-A result also removes eligibility for F-T. G7 (L811): 'mean development pooled R²' names no targets, track or seed, and does not use the selection score that the neighbouring gate uses. G8 (L812): 'on the selection score' names no track. L745: 'Up to two further configurations per track are secondary' has no rule for which two. L515-516: 'the mean of the three strongest single baselines on development' names no metric, target scope or seed. L563-564: 'the strongest comparator on development for that metric' names no seed and no tie rule (the candidate side has one at L743-744). These affect which configuration is eligible and which comparator enters the Holm test. They are development-stage choices, not test-stage, hence not blocking.",
+   "smallest_fix": "State for each: G6 = mean of the two components, seed 0, per F-A primary target, and it applies to both F-A and F-T; G7 and G8 = the selection score of section 9.5, evaluated per track; secondary configurations = the next two by selection score; item 7 = the three single baselines with the highest per-target mean of the two co-primary metrics, seed 0; per-target comparator = seed 0, ties within 0.002 to the earlier item of the section 8 list."
+  },
+  {
+   "id": "S4",
+   "severity": "should_fix",
+   "lines": "L299-302, L330, L754-762",
+   "claim": "The protocol has no pre-declared saturation rule, and does not tie its a-priori hardness strata to one, although RESEARCH_PLAN section 15.5 (amendment 2026-11-08) requires harder tracks and difficulty strata to be defined before results.",
+   "evidence": "'saturat' appears in the protocol only for DO saturation and the SANDRE field name. L51-53 motivates France as 'a harder task' because 'every learner sits near the same information ceiling', but no rule says what is reported if the strongest simple baseline of item 1 is near ceiling (the amendment's example is R² ≥ 0.9) or if all strong methods tie within CIs. The ≥ 50 km stratum (L299-300), the same-watercourse stratum (L301-302) and F-E (L330) exist but as sensitivity or secondary analyses with no link to a saturation flag. Because the 2023-2025 block is single-look, any harder track defined after the look could not be confirmatory on it.",
+   "smallest_fix": "Add to section 10: \"**Saturation flag.** A track × target is flagged 'saturated' if the strongest simple baseline of item 1 has pooled R² ≥ 0.9 at test or if every named comparator of items 5-7 and the candidate tie within paired CIs. For a flagged target the ≥ 50 km stratum, the same-watercourse stratum and F-E are the pre-declared hardness strata and are reported next to the row. No new track or stratum is defined on the 2023-2025 block after the look.\""
+  },
+  {
+   "id": "S5",
+   "severity": "should_fix",
+   "lines": "L537",
+   "claim": "The published transfer functions are denied diatom-only training rows on the ground that they are invertebrate methods, although WA-PLS and MAT are in origin diatom transfer functions. No diatom-fitted version is a comparator.",
+   "evidence": "L537: 'WA-PLS2, kNN-MAT, MEMLM, bio.infer and the index regressions are invertebrate methods and do not'. The candidate #2-#6 trains on diatom-only rows and reads diatom tokens. For pH and nutrients on rows with an attached diatom operation, a diatom WA-PLS2 or kNN-MAT fitted on all labelled diatom samples is the natural 'strongest published method' of RESEARCH_PLAN section 15.1. Parity is otherwise held by the ML baselines of item 6, which do receive those rows, and by the every-comparator rule. The index regressions do already use IBD and IPS (L507). This is a comparator-strength gap, not a hidden advantage, hence not blocking.",
+   "smallest_fix": "Replace the last sentence of the L537 cell with: \"WA-PLS2, kNN-MAT and MEMLM are also fitted on the diatom Hellinger features of all labelled training diatom samples and applied to test rows with an attached diatom operation, as named comparators (item 2, 'diatom'). bio.infer and the invertebrate index regressions do not receive diatom-only rows.\""
+  },
+  {
+   "id": "N1",
+   "severity": "note",
+   "lines": "L481-483",
+   "claim": "Filling a model's missing predictions with the training-pool mean changes what the paired CI against bio.infer and the index regressions measures where their coverage is low.",
+   "evidence": "L481-483: 'A model that returns no prediction for a scored row gets its fold's training-pool mean'. bio.infer depends on ITIS coverage of French taxa (L499-500) and the index regressions on delivered indices (L505-508). The rule is fixed a priori and symmetric, so it is not a post-hoc choice, but a win over a comparator that is mostly filled is a win over the mean.",
+   "smallest_fix": "Report, next to each paired CI where the comparator's filled share exceeds a stated fraction (for example 10 %), the same CI on the rows where both models predict, as descriptive."
+  },
+  {
+   "id": "N2",
+   "severity": "note",
+   "lines": "L395-397, L786-787",
+   "claim": "The power gate uses pre-look availability masks, but label rules applied to values can only reduce the realised cluster count inside the look. No rule covers a target whose realised count falls below 650.",
+   "evidence": "Rule 9 (L397) sets labels missing outside plausibility bounds on the window statistic, and non-finite results are dropped; both are known only when values are read. L786-787 defines the gate on 'test location clusters with the target'.",
+   "smallest_fix": "Add: \"Family membership is fixed from the masks at G4 and does not change if the realised count is lower; the realised count is reported and row 4 applies.\""
+  },
+  {
+   "id": "N3",
+   "severity": "note",
+   "lines": "L648-651",
+   "claim": "The F-Z no-region-context ablation is run at test on the locked block; the text should say it never carries a label.",
+   "evidence": "L648-651 describes an inference-only ablation of #7/#8 without the region context. It is not one of the eight configurations and not in the family; the decision table does not mention it.",
+   "smallest_fix": "Add 'descriptive only; it carries no label and is not a candidate' to L651."
+  },
+  {
+   "id": "N4",
+   "severity": "note",
+   "lines": "L786-787",
+   "claim": "650 is not exactly 'the count at which the low end of the range equals 0.03'; the exact count is about 638.",
+   "evidence": "0.015 × (4.0386 / 3.7069) × √(2,149 / n) = 0.03 at n ≈ 638; at n = 650 the low end is 0.0297. The table entry 0.030 is correct to three decimals.",
+   "smallest_fix": "Insert 'about' before 'the count'."
+  },
+  {
+   "id": "N5",
+   "severity": "note",
+   "lines": "L287-302, L749-752",
+   "claim": "The Holm test resamples 1-km location clusters, while the fits and the main error component are at region level (8 folds). The region-unit condition of row 1 is the only guard, so its definition (S2) carries weight.",
+   "evidence": "L466-467 states that region-level bias is the only large model-side error component. L751 uses the location-cluster bootstrap for p. B = 10,000 resolves p down to 2e-4, which is adequate for the first Holm step 0.05 / 36 = 0.00139.",
+   "smallest_fix": "None beyond S2."
+  },
+  {
+   "id": "N6",
+   "severity": "note",
+   "lines": "L18-31, L43-45, L251-267, L525-530, L624-626, L941-955",
+   "claim": "The facts the protocol flags about its own state check out.",
+   "evidence": "(b) Replicating `ftrack.uk_allowed()` on metadata columns only, with the cut at 2020-12-31 (the code's `UK_ALLOWED_TO`, L58 of ftrack.py) and at 2020-12-01 (the v1 text): 199,234 allowed invertebrate samples and 14,030 allowed diatom samples under both, 0 dropped; 1 invertebrate sample is dated 2020-12-02 to 12-31 and it has no allowed role; 0 diatom samples in that range. The code/text mismatch is disclosed in section 15.3 and changes no allowed row. (a) L525-530 and L559 name both F-Z input sets as comparators, and row 1 requires beating every one. (g) Early stopping uses training-role inner-validation rows only (L624-626). (k) The transductive region context is label-free and identical for comparators (item 9). No Naïades or Hub'eau data exists under the data root; `sentinel_runs/bioassess/f_track/` holds only 60 reference documents and one synthetic smoke log with no validation metric. F-T is not made trivial by temporal overlap: training labels end 2021-12-31, test windows start on or after 2022-01-01, and region and 1-km station exclusion remove same-station history.",
+   "smallest_fix": "None."
+  }
+ ],
+ "prior_items_status": [
+  {
+   "item": "Must-fix 1: label tested against one comparator, not both",
+   "status": "resolved",
+   "where": "Section 8 L566-571; section 10 row 1 L758",
+   "comment": "Row 1 needs the paired 95 % CI lower bound above 0 against every listed comparator. Residual gap for rows 3-5 and the target-level label: finding S1."
+  },
+  {
+   "item": "Must-fix 3: label construction leaves open choices",
+   "status": "resolved",
+   "where": "Section 6.3 rules 1-11 L385-399; G4 freeze from counts L404-409",
+   "comment": "Censoring, duplicates, same-day analyses, plausibility bounds, unit and fraction codes and the '≥ 6 analyses' meaning are all written. Value-dependent rules can shrink realised counts: note N2."
+  },
+  {
+   "item": "Must-fix 5: transductive uses contradict the lock rule",
+   "status": "resolved",
+   "where": "Section 2.3 item 6 closed list L171-183; section 9.1 mirror rule L652-663; comparator item 9 L519-523",
+   "comment": "Permitted label-free uses are a closed list and comparators get the same region-context rows."
+  },
+  {
+   "item": "Must-fix 6: test statistic over seeds undefined",
+   "status": "resolved",
+   "where": "Section 7 L475-480",
+   "comment": "Seed-mean prediction enters the bootstrap; per-seed pairing defined. The comparator for the per-seed and region-unit conditions of row 1 is still unstated: S2."
+  },
+  {
+   "item": "Should-fix 2: F-Z selection on French development labels; ens_zs member pools",
+   "status": "partly_resolved",
+   "where": "L338-339, L714-715, L731-734, L739-741",
+   "comment": "F-Z candidate selection now uses UK development only and the label wording is fixed. The training pool of the ens_zs members is stated, but their variant is not, which can re-admit French development labels: B2."
+  },
+  {
+   "item": "Should-fix 4: whether comparators receive diatom-only training rows",
+   "status": "resolved",
+   "where": "L537",
+   "comment": "Stated. The stated reason for excluding the transfer functions is questionable: S5."
+  },
+  {
+   "item": "Should-fix 5: MDE at the gate; underpowered statement; variance-transfer assumption",
+   "status": "partly_resolved",
+   "where": "L786-793",
+   "comment": "Underpowered rule and cluster counts (1,435 and 3,673) are correct. The assumption sentence misstates the source of the variance: B3."
+  },
+  {
+   "item": "Should-fix 6: multiplier formula",
+   "status": "resolved",
+   "where": "L768-771",
+   "comment": "Formula given; 4.039, 3.833 and 3.707 recomputed and correct."
+  },
+  {
+   "item": "Should-fix 7: merge rule below 100 clusters; floor on region units",
+   "status": "resolved",
+   "where": "L306-315",
+   "comment": "Fewer than 6 region units makes row 1 unreachable."
+  },
+  {
+   "item": "Should-fix 8: pairing fallback target; 'primary targets' ambiguity; UK labels for replacements",
+   "status": "resolved",
+   "where": "L212-216, L411-418"
+  },
+  {
+   "item": "Should-fix 10: French events (codes, thresholds in label units, windows, P90 pool)",
+   "status": "resolved",
+   "where": "Section 6.4 L420-453",
+   "comment": "Thresholds 11.295, 0.16305 and 0.38825 recomputed and correct. Secondary track only."
+  },
+  {
+   "item": "Should-fix 11: MEMLM neither compared nor excluded with reason",
+   "status": "resolved",
+   "where": "L492-498",
+   "comment": "Now a named comparator (reimplemented). Its settings are not fixed anywhere: B1."
+  },
+  {
+   "item": "Should-fix 12: folds split rivers; distance report and ≥ 50 km stratum",
+   "status": "resolved",
+   "where": "L293-302",
+   "comment": "Both strata are sensitivity analyses; not tied to a saturation rule: S4."
+  },
+  {
+   "item": "Should-fix 13: embedding derivation; ens_f member fixed across tracks",
+   "status": "partly_resolved",
+   "where": "L685-688, L711-713",
+   "comment": "The BioSet-MA member rule is mechanical and shared by both tracks. The RF and TabPFN members are not fixed: B2."
+  },
+  {
+   "item": "Should-fix 17: UK date rule versus on-disk pm30d summaries",
+   "status": "resolved",
+   "where": "L258-265",
+   "comment": "Counts verified: the 2020-12-01 and 2020-12-31 cuts give the same allowed set (199,234 and 14,030). Code constant not yet aligned, as disclosed."
+  },
+  {
+   "item": "Question 1: Holm family of 36",
+   "status": "resolved",
+   "where": "L749-752",
+   "comment": "Both co-primary metrics are in the family, fixed a priori."
+  },
+  {
+   "item": "Question 5: F-Z pool asymmetry",
+   "status": "resolved",
+   "where": "L731-734, L525-530",
+   "comment": "The asymmetry favours the comparators and is stated in every F-Z label."
+  },
+  {
+   "item": "Must-fix 2 and 4; should-fix 1, 3, 9, 14, 15, 16, 18; questions 2-4 and 6-12",
+   "status": "not_applicable",
+   "comment": "Data handling, download route, eligibility, licence and naming items; outside the statistics, comparators and claim-logic lens."
+  }
+ ]
+}

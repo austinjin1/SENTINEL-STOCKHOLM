@@ -1,0 +1,15 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+# M6 SOTA lever configuration (docs/preregistration/hydromet_sota_protocol.md §4). Base recipe = configs/hydromet/lstm_ws.yaml
+# with the DIAG inner selection (hidden 128, dropout 0.4, static noise 0.5); only the lever keys below differ.
+model: sota_C1b
+lever_id: C1b
+lever: 1
+base_config: configs/hydromet/lstm_ws.yaml
+hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+data: {lever1a: true, q_only_sites: false, weak: true, aux_q: false}
+weak_share: 0.5
+aux: {}
+store: cpu
+job_minutes: 100
+seeds: [0, 1, 2]

@@ -7,11 +7,14 @@ import pandas as pd
 from sentinel.core import paths
 SPL = paths.REPO_ROOT / "docs" / "preregistration" / "sonde_split.json"
 D = paths.processed("sonde_daily") / "sites"
+from sentinel.data.reserved import is_reserved  # noqa: E402
 s = json.load(open(SPL))
 T = {"do": "do_mgl_mean", "turb": "turb_fnu_mean", "no3": "no3no2_mgl_mean", "chl": "chl_ugl_mean", "temp": "temp_c_mean", "sc": "spcond_uscm_mean"}
 dev_end, tst0, tst1 = pd.Timestamp("2023-09-30"), pd.Timestamp("2023-11-12"), pd.Timestamp("2025-09-30")
 rows = []
 for site, role in s["site_role"].items():
+    if is_reserved(site):          # reserved new-site block (sentinel.data.reserved)
+        continue
     f = f"{D}/{site}.parquet"
     if not os.path.exists(f):
         continue

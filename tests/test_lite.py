@@ -348,9 +348,12 @@ def test_candidate_never_unlocks_test(tmp_path, monkeypatch):
 
 
 def test_single_look_claim_and_seal(tmp_path, monkeypatch):
-    """C1: the claim is O_EXCL and refused when lite_test* registry rows exist; predictions are sealed once and
-    tampering is detected; SCORED blocks re-scoring."""
+    """C1 + delta D1: the claim is O_EXCL and registry-refused; sealing writes a registry anchor and closes test access
+    for good (deleting markers cannot re-open it); re-sealing, tampering, unlisted files, another freeze and prior
+    scoring rows are all refused."""
+    import json as _json
     import os as _os
+    import shutil
 
     from sentinel.models.lite import testlook as T
 
@@ -361,32 +364,98 @@ def test_single_look_claim_and_seal(tmp_path, monkeypatch):
     monkeypatch.setattr(T.paths, "REPO_ROOT", tmp_path)
     import sentinel.core.registry as REG
 
-    logged = []
-    monkeypatch.setattr(REG, "log_result", lambda **kw: logged.append(kw))
+    def fake_log(**kw):
+        with reg.open("a") as fh:
+            fh.write(_json.dumps({k: kw.get(k) for k in ("experiment", "metric", "value", "extra")}) + "\n")
+
+    monkeypatch.setattr(REG, "log_result", fake_log)
     fz = {"_path": "F", "_sha256": "abc", "scoring_code_sha256": "c"}
     T.claim(fz)
-    assert logged and logged[0]["metric"] == "look_claimed"
     assert (_os.stat(T.marker()).st_mode & 0o777) == 0o444
     with pytest.raises(G.ProtectedDataError):
-        T.claim(fz)                                   # marker exists
+        T.claim(fz)                                   # marker + claim row
     T.require_open_claim(fz)
     with pytest.raises(G.ProtectedDataError):
         T.require_open_claim({"_sha256": "other"})
     T.pred_dir().mkdir(parents=True)
     (T.pred_dir() / "pred_test.parquet").write_bytes(b"x")
-    T.seal_predictions()
+    T.seal_predictions(fz)
+    assert T.sealed_row()["extra"]["freeze_sha256"] == "abc"
     with pytest.raises(G.ProtectedDataError):
-        T.seal_predictions()
-    assert T.check_sealed() == T.pred_dir()
-    T.mark_scored({"ok": 1})
+        T.require_open_claim(fz)                      # D1c: sealed -> closed
     with pytest.raises(G.ProtectedDataError):
-        T.check_sealed()
+        T.seal_predictions(fz)
+    assert T.check_sealed(fz) == T.pred_dir()
+    with pytest.raises(G.ProtectedDataError, match="another freeze"):
+        T.check_sealed({"_sha256": "zzz"})            # D1b: sealed predictions belong to this freeze only
+    extra = T.pred_dir() / "injected.parquet"
+    extra.write_bytes(b"y")
+    with pytest.raises(G.ProtectedDataError, match="unlisted"):
+        T.check_sealed(fz)                            # D1d
+    extra.unlink()
+    # D1a: delete SHA256SUMS + PREDICTIONS_SAVED and re-seal consistently -> refused (registry anchor exists)
+    _os.chmod(T.pred_dir() / "SHA256SUMS", 0o644)
+    (T.pred_dir() / "SHA256SUMS").unlink()
+    (T.look_dir() / "PREDICTIONS_SAVED.json").unlink()
     with pytest.raises(G.ProtectedDataError):
-        T.require_open_claim(fz)                      # scored -> protected data closed
-    reg.write_text('{"experiment": "lite_test", "value": 1}\n')
-    monkeypatch.setattr(T, "look_dir", lambda: tmp_path / "look2")
-    with pytest.raises(G.ProtectedDataError, match="registry already holds"):
+        T.seal_predictions(fz)
+    with pytest.raises(G.ProtectedDataError):
+        T.require_open_claim(fz)                      # still closed: the registry anchor persists
+    shutil.rmtree(T.look_dir())
+    (tmp_path / "look").mkdir()
+    T.marker().write_text(_json.dumps({"freeze_sha256": "abc"}))
+    T.pred_dir().mkdir(parents=True)
+    (T.pred_dir() / "pred_test.parquet").write_bytes(b"x")
+    with pytest.raises(G.ProtectedDataError):
+        T.check_sealed(fz)                            # anchor/sums mismatch (no PREDICTIONS_SAVED)
+    # D1b: once a scoring row exists, rescoring is refused even if SCORED.json is gone
+    fake_log(experiment="lite_test", metric="mdsa", value=1.0, extra={})
+    with pytest.raises(G.ProtectedDataError, match="scoring rows"):
+        T.check_sealed(fz)
+    assert not T.open_claim("abc")
+
+
+def test_mark_aborted_closes_look(tmp_path, monkeypatch):
+    """D2: a crash after the claim and before sealing writes ABORTED.json + a registry row; the look stays closed."""
+    import json as _json
+
+    from sentinel.models.lite import testlook as T
+
+    monkeypatch.setattr(T, "look_dir", lambda: tmp_path / "look")
+    reg = tmp_path / "results" / "registry.jsonl"
+    reg.parent.mkdir(parents=True)
+    reg.write_text("")
+    monkeypatch.setattr(T.paths, "REPO_ROOT", tmp_path)
+    import sentinel.core.registry as REG
+
+    monkeypatch.setattr(REG, "log_result", lambda **kw: reg.open("a").write(_json.dumps(
+        {"experiment": kw["experiment"]}) + "\n"))
+    fz = {"_path": "F", "_sha256": "abc", "scoring_code_sha256": "c"}
+    T.claim(fz)
+    T.mark_aborted(fz, "boom")
+    assert (T.look_dir() / "ABORTED.json").exists() and not T.open_claim("abc")
+    with pytest.raises(G.ProtectedDataError):
         T.claim(fz)
+
+
+def test_verify_artifacts_before_claim(tmp_path):
+    """D2: every hashed artifact and run dir is checked before the claim; missing H1/H2/H-G6 models are refused."""
+    from sentinel.models.lite import testlook as T
+
+    cand = __import__("json").loads((G.paths.REPO_ROOT / "docs" / "preregistration" / "FREEZE_lite_candidate.json").read_text())
+    assert T.verify_artifacts(cand)["n_artifacts"] >= 20
+    bad = __import__("copy").deepcopy(cand)
+    bad["models"]["nokd"]["run"] = str(tmp_path / "missing")
+    with pytest.raises(G.ProtectedDataError):
+        T.verify_artifacts(bad)
+    bad = __import__("copy").deepcopy(cand)
+    bad["weights_sha256"]["primary_seed1"] = "0" * 64
+    with pytest.raises(G.ProtectedDataError):
+        T.verify_artifacts(bad)
+    bad = __import__("copy").deepcopy(cand)
+    del bad["models"]["nokd"]
+    with pytest.raises(G.ProtectedDataError, match="nokd"):
+        T.verify_artifacts(bad)
 
 
 def test_one_sided_tail_and_ci_rule():
@@ -416,7 +485,8 @@ def test_scoring_hash_covers_scorer_import_closure():
 
     code = ("import importlib.util,sys;s=importlib.util.spec_from_file_location('s','scripts/eval/lite_score_test.py');"
             "m=importlib.util.module_from_spec(s);s.loader.exec_module(m);"
-            "import sentinel.models.orbit.teacher, sentinel.models.orbit.satwq;"
+            "import sentinel.models.orbit.teacher, sentinel.models.orbit.satwq, sentinel.models.lite.testlook;"
+            "import sentinel.events.lite as EL; EL.EV();"
             "r=sys.argv[1];print('\\n'.join(sorted({v.__file__[len(r):] for v in list(sys.modules.values()) "
             "if getattr(v,'__file__',None) and v.__file__.startswith(r)})))")
     root = str(G.paths.REPO_ROOT) + "/"
@@ -447,3 +517,37 @@ def test_event_adapter_e4a_labels_p_and_calibrator_roundtrip():
     assert np.allclose(cal.transform(pv), cal2.transform(pv))
     h = EL.fit_head(rs.normal(size=(200, 5)), (rs.uniform(size=200) < 0.3).astype(float))
     assert 0 <= EL.head_p(rs.normal(size=(3, 5)), h).min() <= 1
+
+
+def test_open_claim_bound_to_claiming_process_and_no_stale_test_cache(tmp_path, monkeypatch):
+    """E3a: only the claiming process (pid + host recorded in the marker) may load test rows. E3b: a pre-existing
+    eval_test* chip cache is refused before the claim."""
+    import json as _json
+    import os as _os
+
+    from sentinel.models.lite import testlook as T
+
+    cand = _json.loads((G.paths.REPO_ROOT / "docs" / "preregistration" / "FREEZE_lite_candidate.json").read_text())
+    monkeypatch.setattr(T, "look_dir", lambda: tmp_path / "look")
+    reg = tmp_path / "results" / "registry.jsonl"
+    reg.parent.mkdir(parents=True)
+    reg.write_text("")
+    monkeypatch.setattr(T.paths, "REPO_ROOT", tmp_path)
+    import sentinel.core.registry as REG
+
+    monkeypatch.setattr(REG, "log_result", lambda **kw: None)
+    fz = {"_path": "F", "_sha256": "abc", "scoring_code_sha256": "c"}
+    T.claim(fz)
+    assert T.open_claim("abc")
+    rec = _json.loads(T.marker().read_text())
+    _os.chmod(T.marker(), 0o644)
+    T.marker().write_text(_json.dumps({**rec, "pid": rec["pid"] + 1}))
+    assert not T.open_claim("abc")
+    T.marker().write_text(_json.dumps({**rec, "host": "elsewhere"}))
+    assert not T.open_claim("abc")
+    # E3b
+    monkeypatch.setattr(T.paths, "RUNS_ROOT", tmp_path)
+    (tmp_path / "lite" / "cache").mkdir(parents=True)
+    (tmp_path / "lite" / "cache" / "eval_test_deadbeef.npy").write_bytes(b"x")
+    with pytest.raises(G.ProtectedDataError, match="test chip cache"):
+        T.verify_artifacts(cand)

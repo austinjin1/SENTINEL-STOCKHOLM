@@ -1,0 +1,190 @@
+{
+  "sha256": "5001373da42652926c6ea4a84028ac46628aa0e6d8b6e99380244417aeb8df8a",
+  "hash_matches": true,
+  "findings": [
+    {
+      "id": "CMP-1",
+      "severity": "should_fix",
+      "section": "§3.5 l.373; §6.2 l.461-467; §6.4 l.483",
+      "issue": "The strongest simple baseline already known on validation is excluded from the claim. The equal-weight MDN_B + GBM average is declared 'descriptive only, no claim role', although the author's own plan shows it beat both claim comparators on dev_v4 validation chl-a. A label under RESEARCH_PLAN §15.1(i) needs the strongest simple baseline, and lead rule 3 asks for the same ensembling as a 9-network candidate. Leaving it out is a choice made with the result in view.",
+      "evidence": "docs/plans/architecture_research/M2_architecture_plan.md l.93: 'avg(MDN_B, GBM), post hoc, not a registered comparator | 49.7', against MDN_B 52.6, GBM 56.3 and the SatWQ 3-seed ensemble 48.3. Same file l.261-264: 'A stronger simple baseline may exist: an equal-weight MDN_B + GBM average (49.7)'. RESEARCH_PLAN.md l.362 (§15.1(i)). LEAD_DECISIONS_20261110.md l.20 (same ensembling).",
+      "suggested_ruling": "For every base and Track N target, the equal-weight average in log10 space of the validation-selected MDN_B family member and the validation-selected GBM family member is an additional claim comparator in the intersection-union tests of H1-S, H2-S, Track N and the small-lake family, for v1 and v2 alike, and in the per-seed-unit rule; its predictions are sealed with the other comparators and no label is issued for an arm that does not beat it."
+    },
+    {
+      "id": "GATE-1",
+      "severity": "should_fix",
+      "section": "§1.5 l.100-116; §1.7 l.133-138; §2.6 l.208-214; §6.3 l.474",
+      "issue": "The MDE gates are written against 'every comparator', which includes location kNN, but the §1.5 table shows only MDN_B and GBM. On the registered numbers the small-lake gate (chl-a MDE80 ≤ 10 against all three) cannot be met, so the 'confirmatory only if' clause is close to empty. The Track N gate (> 15 against any of five comparators) is likely to be decided by the noisiest weak comparator. That invites re-reading the gate once the binding numbers are seen. The small-lake family also has no label definition and uses Holm 'per arm', while every other family corrects across arms.",
+      "evidence": "results/registry.jsonl, experiment orbit_power_dev_v4, model compare_satwq_v4_noaug, chl-a: mde80_test_vs_location_knn[val-sel] = 33.71 at 87 blocks (vs MDN_B 10.27, GBM 14.30). By the √(87/B) scaling the file itself uses, ≤ 10 against kNN needs about 990 blocks. docs/preregistration/orbit_testS_keycounts_20261110.json gives an upper bound of 212 small-lake blocks (WQP) and 91 (AquaCorr). docs/preregistration/orbit_protocol.md l.478-487: the stratum is descriptive on the headline, Holm per cell.",
+      "suggested_ruling": "The gates of §1.7 and §2.6 are read as written: the largest MDE80 over both arms and over all claim comparators (location kNN and the MDN_B + GBM average included) decides, and no gate, threshold or comparator list may be re-read once any dev_v5m validation prediction exists; the lead records that on the registered dev_v4 numbers the small-lake stratum is expected to be descriptive; if it were confirmatory, Holm runs over both arms' hypotheses together and a label for a target needs every comparator hypothesis of that target rejected plus the per-seed-unit rule."
+    },
+    {
+      "id": "GATE-2",
+      "severity": "should_fix",
+      "section": "§1.5 l.114-116; §1.7 l.136-138; §2.6 l.210-214; open point 2",
+      "issue": "The binding power calculation is not fully fixed, and it decides which families are confirmatory after validation predictions are seen. The text says `orbit_power.py` 'is re-run', but that script cannot serve Test-S, a stratum, the scene-disjoint subset or a Track N target, and it is a file hashed by the v1 freeze, so new code is needed. Not defined: which arm supplies the predictions, which validation rows stand in for a stratum or a Track N cell, the simulation seeds, and the α. The 2.80 SE factor is for unadjusted α = 0.05, while the tests run at Holm-adjusted α.",
+      "evidence": "scripts/train/orbit_power.py: TEST_CELL = 'testxtest_lake' is hard-coded; --track accepts only 'headline' or 'U'; one 'SENTINEL' column; mde80 = 2.80 * se; joint power uses 1.96; block_draws seeds 0 and 1; n_sim 2000. docs/preregistration/orbit_freeze_candidate.json frozen_files lists scripts/train/orbit_power.py. Amendment §5 l.431-432: no v1-hashed file is edited before M2/test is sealed. `ls` shows no sentinel/models/orbit_v2 and no scripts/*/orbitv2_* yet.",
+      "suggested_ruling": "The binding power calculation is made once by a new script outside the v1 globs that calls orbit_power.block_draws unchanged (n_sim 2,000, seeds 0 and 1), resamples only validation rows of the same target, stratum and selection cell (small-lake rows of valxval_lake for §1.7; the target's §2.5 selection cell for Track N), uses the role-block count of the primary cell fixed by §1.6, computes the MDE at the Holm-adjusted α of the hypothesis's family (z(1-α/2) + 0.84 standard errors), takes the maximum over arms and claim comparators, and has its code hash registered before the first validation number of any new arm."
+    },
+    {
+      "id": "SEED-1",
+      "severity": "should_fix",
+      "section": "§3.2 l.259-271; §6.2 l.463, l.466-467",
+      "issue": "The per-seed rule was moved from single networks to 3-network units after 2 of 3 single seeds failed on validation. The lead approved this with parity, but the rule's scope is still loose: 'the comparator' is singular, and it is not stated that all 3 units must pass, on which cell and endpoints, or what happens to a crashed or diverged network. v1 must pass with every single network while v2 passes with 3 ensembles, an asymmetry a reader must be told. No existing code computes any per-seed rule, so the Test-S module must seal per-unit predictions or the rule cannot be checked after the look.",
+      "evidence": "`grep -n -i seed scripts/eval/orbit_test.py sentinel/models/orbit/testlook.py` returns 0 lines. orbit_test.py predict_cells (l.160-200) seals only the ensemble columns pred|t|SATWQ and SATWQ_mixture_median. docs/preregistration/orbit_protocol.md l.35-36 ('each of ≥ 3 seeds individually') and l.297-298 (the validation trigger fires if any of the 5 seeds fails, i.e. all seeds must pass). M2_architecture_plan.md l.87-97 (2 of 3 seeds fail) and l.401-408 ('It does make criterion (iii) achievable').",
+      "suggested_ruling": "For v2 the per-seed rule means that each of the 3 pre-declared seed units (network seeds 0-2, 100-102, 200-202), taken alone, has a lower MdSA than every claim comparator in its full form on the endpoint's primary cell, for every endpoint on which a label is sought; for v1 it means every frozen single network; no network or unit is replaced or added (a failed run is re-run with the same seed and configuration only); the Test-S module seals per-unit and per-network predictions before scoring; and every v2 label carries the sentence 'the per-seed rule was applied to 3-network seed units; k of 9 single networks individually beat every comparator'."
+    },
+    {
+      "id": "STAT-1",
+      "severity": "should_fix",
+      "section": "§6.2 l.461-467; §6.3 l.472-473",
+      "issue": "The test form is incomplete in three ways. (1) The bootstrap p-value is not defined in the amendment or the protocol; the code's version can be exactly 0, which is anti-conservative at Holm thresholds such as 0.05/6. (2) 'The smaller p-value is tested at 0.025 and the other at 0.05' does not say Holm is step-down. (3) For H2-S and Track N the bootstrap unit, B, the 'largest p over comparators' rule (five comparators for Track N), the direction condition and the per-seed-unit rule are not restated.",
+      "evidence": "sentinel/models/orbit/evaluate.py paired_mdsa: `p = min(1.0, 2 * min(np.mean(d <= 0), np.mean(d >= 0)))`, N_BOOT = 2000, seed 0. scripts/eval/orbit_test.py l.71-79: holm() is step-down but is applied only to the small-lake family (l.288-296). orbit_protocol.md l.33-36 defines H1 by CIs only. Amendment §6.3 says only 'same intersection-union form' for H2-S and names nothing for Track N.",
+      "suggested_ruling": "In every Test-S family the per-comparison p-value is the two-sided paired role-block bootstrap p-value of evaluate.paired_mdsa with the +1 correction (B = 2,000, seed 0); a hypothesis's p-value is the largest over all its claim comparators (all of §2.5 for Track N) and counts only if every point difference favours the arm; Holm is step-down with monotone adjusted p-values; and the per-seed-unit rule applies to H2-S, Track N and small lakes exactly as to H1-S."
+    },
+    {
+      "id": "STAT-4",
+      "severity": "should_fix",
+      "section": "§6.3 l.472; §1.4 l.74-75; open point 9",
+      "issue": "TSS and turbidity-NTU are confirmatory members of H2-S on cells the planned sample cannot power. A percentile cluster bootstrap on about 20-30 clusters is unreliable, so a label there would not be credible. The MDE rule applied to Track N is not applied to them.",
+      "evidence": "docs/preregistration/orbit_split_report_dev_v4.json protected_cell_counts (counts only): testxtrain_lake + testxval_lake hold TSS 79 + 13 = 92 rows in at most 23 + 6 blocks, and turbidity 36 + 13 = 49 rows in at most 15 + 6 blocks. Registry orbit_power_dev_v4: headline MDE80 for TSS is 22-57 points at 57 blocks and for turbidity 32-50 points at 53 blocks. The WQP 2015-2023 rows may add blocks; their count is unknown (upper bounds only).",
+      "suggested_ruling": "TSS and turbidity-NTU are confirmatory in H2-S only if the target's primary Test-S cell holds at least 30 role blocks and its binding MDE80 is at most 15 MdSA points against every claim comparator; otherwise the target is pre-declared descriptive in the freeze candidate; the Holm denominator of H2-S stays 6 either way."
+    },
+    {
+      "id": "CMP-2",
+      "severity": "should_fix",
+      "section": "§2.5 item 5, l.201-203",
+      "issue": "The trophic-chain baseline is handicapped. Its OLS is fitted on the fit cell using predictions from an MDN_B that was trained on that same fit cell (in-sample), then applied to out-of-sample predictions at test. The GBM stacking member correctly uses out-of-fold predictions. Section 2.2 says this chain 'may well be the best available' for TP and TN, so it must be built at full strength.",
+      "evidence": "Amendment l.201-203 ('ordinary least squares, fitted on the fit cell, of the log target on the validation-selected MDN_B's predicted log chl-a and log Secchi') against l.362-364 (out-of-fold, 5 folds grouped by role block, for the GBM). Amendment l.166-167.",
+      "suggested_ruling": "The trophic-chain OLS is fitted on out-of-fold predictions (the 5 role-block-grouped folds of §3.5) of the validation-selected chl-a and Secchi members; a second chain built on the GBM's out-of-fold predictions is also a member; the member with the lower validation MdSA on the target's selection cell is comparator 5."
+    },
+    {
+      "id": "CMP-3",
+      "severity": "should_fix",
+      "section": "§2.5 l.195-203; §6.3 l.473",
+      "issue": "For TP, TN and DOC no published retrieval method is identified. The 'strongest published method' slot is filled by MDN_B re-targeted, which was published for chl-a and TSS, not for nutrients. §15.1(i) cannot be satisfied by assumption, so a Track N 'state of the art' label would be overstated.",
+      "evidence": "RESEARCH_PLAN.md l.362 (§15.1(i): strongest published method, re-run when code exists). Amendment §2.5 lists five references, none cited as a published TP/TN/DOC method. No novelty or literature check for Track N is referenced in the file.",
+      "suggested_ruling": "Before the Test-S freeze a dated literature check in docs/novelty_checks lists published Sentinel-2 or Landsat retrieval methods for lake TP, TN and DOC; a reproducible one not covered by §2.5 is added as a comparator by dated addendum; otherwise any Track N label reads 'better than every retrained reference of arch-v2 §2.5; no published method was re-run' and the words 'state of the art' are not used for TP, TN or DOC."
+    },
+    {
+      "id": "CMP-4",
+      "severity": "should_fix",
+      "section": "§3.5 l.357-361",
+      "issue": "Input parity for the context set is partial. A1 receives per-date tokens with acquisition quality (AOT, angles, glint, baseline) and Δt for up to 6 dates. The GBM receives only a per-band median and IQR over those dates, and the MDN_B member only a context median. Lead rule 3 asks for the same inputs.",
+      "evidence": "Amendment l.303-306 (token = e_d + MLP(q_d) + MLP(Δt_d), K = 6, ordered by AOT) against l.359-361 (GBM summaries) and l.365 (MDN_B '12-band + context median + ring'). LEAD_DECISIONS_20261110.md l.20.",
+      "suggested_ruling": "The GBM family gains a member with per-context-date features for the same K = 6 dates in the same order (12 band water medians, q_d and Δt_d per slot, missing slots NaN), fitted and selected under the same rules as the other members."
+    },
+    {
+      "id": "CMP-5",
+      "severity": "should_fix",
+      "section": "§6.3 l.475",
+      "issue": "The event family at Test-S is under-specified. It does not say that the event comparators are refitted under the §3.5 parity rules, which arm's event result can carry a label, or how two arms are corrected. Protocol §12.4 applies no multiplicity correction because it has one arm.",
+      "evidence": "docs/preregistration/orbit_protocol.md l.557-570 (five comparator groups fitted on the fit cell) and l.579-586 (E-H1, E-H2, 'no multiplicity correction', power rule). The amendment row says only that 'v2's event artifact is refitted with the same specification'.",
+      "suggested_ruling": "At M2S/test the event comparators of protocol §12.3 are refitted on dev_v5m from the arch-v2 §3.5 families (the direct GBM classifier also receives the ring and context summaries); E-H1 and E-H2 are each tested with Holm over the 2 arms; and the protocol §12.4 power rule is applied to the primary cell fixed by §1.6."
+    },
+    {
+      "id": "OPEN-1",
+      "severity": "should_fix",
+      "section": "§3.1 l.247-250; §3.3 l.274-276; open point 7",
+      "issue": "The shared initialisation is fixed 'at the moment the first A0 network starts training'. The author controls that moment relative to incoming chain9 validation results, so it is a free choice after results are seen. It also conflicts with §3.3, which defines A0 from 'the frozen headline configuration': that configuration does not exist until v1 is frozen.",
+      "evidence": "Amendment l.247-250 against l.274-276. docs/preregistration/orbit_freeze_candidate.json: status CANDIDATE, data_version dev_v4, note 'Superseded automatically by chain7 on dev_v5'. No dev_v5 experiment is in the registry (scan of 6,390 M2-orbit rows).",
+      "suggested_ruling": "A0 and A1 take the configuration and initialisation named in the reviewed dev_v5 freeze candidate of the headline look; no A0 or A1 network starts before that candidate is reviewed, and a chain9 result changes neither arm unless its selection is in that candidate."
+    },
+    {
+      "id": "OPEN-2",
+      "severity": "should_fix",
+      "section": "§3.4 l.288-332; §3.1 l.252-253",
+      "issue": "The file says 'every value below is fixed now', but several values are not written (MLP widths, the form of W, set-transformer width, 'about 0.3 M parameters'). It has no rule for what counts as a new configuration or for a failed run. Without one, a changed re-run could be scored on validation and not counted. The caps are already filled by A0, c1, c2 and c3.",
+      "evidence": "Amendment l.288 ('about 0.3 M parameters'), l.304, l.312, l.318 (unspecified MLP sizes and W). Caps: A0 1 (l.273) + A1 3 (l.282) = 4, which matches LEAD_DECISIONS_20261110.md l.44. configs/orbit_v2 does not exist yet. /home/bcheng/STOCKHOLM/sentinel_runs/orbit/configs_tried.jsonl has 235 rows, as stated.",
+      "suggested_ruling": "The complete configuration files of A0, c1, c2 and c3 (every width, depth, loss weight and the seed list) are written to configs/orbit_v2 and their sha256 registered before the first validation number of any new arm; any later change that alters a prediction is a new configuration, and because the caps (A0 1, A1 3) are filled, none is allowed; a failed run is re-run unchanged or reported as failed."
+    },
+    {
+      "id": "OPEN-3",
+      "severity": "should_fix",
+      "section": "§2.4 l.176-177",
+      "issue": "AquaCorr DOC and aCDOM values are used 'after a unit check' with no pass criterion. DOC is a confirmatory Track N target, so an undefined check is a choice that can be made after data are seen. On protected rows a check that reads values is not allowed at all.",
+      "evidence": "Amendment l.175-177. No tolerance, data subset or outcome rule is given anywhere in §2.4 or §4.",
+      "suggested_ruling": "AquaCorr doc_value and acdom440_value are used only if AquaCorr's metadata state the unit explicitly (mg/L as C; 1/m at 440 nm); the check reads metadata and fit-cell rows only, its outcome is written to the dev_v5m split report before any Track N validation number, and if it fails the AquaCorr values are used neither for fitting nor for scoring."
+    },
+    {
+      "id": "OPEN-4",
+      "severity": "should_fix",
+      "section": "§3.6 l.376-379; §3.8 l.388-397; §1.8 l.143-145",
+      "issue": "The v2 selection set includes 'any gated arm that was funded and run before the Test-S freeze'. Funding can be decided after the M2/test result on the same test lakes is known, so the set of candidates can depend on a test result. The tie order covers only A0 and c1-c3. Nothing commits the project to run M2S/test whatever the headline outcome.",
+      "evidence": "Amendment l.376-378 and l.391 (the A2 gate needs 'the lead's funding decision'). LEAD_DECISIONS_20261110.md l.47-48 (A2-A4 gated; headline look not delayed, so it runs first). Tie order l.379: 'A0, c3, c2, c1'.",
+      "suggested_ruling": "M2S/test is run for v1 and v2 whatever the M2/test outcome; an arm whose addendum is stamped after M2/test has been scored cannot enter the v2 selection for M2S/test (Test-C only); the tie order of any arm added by addendum is fixed in that addendum."
+    },
+    {
+      "id": "WORD-1",
+      "severity": "should_fix",
+      "section": "§1.2 l.57-58; §1.5 l.112-113; §6.2-§6.3",
+      "issue": "The file says Test-S 'addresses the power problem' but leaves out the plan's own estimate that v1 stays under-powered there. The look carries five families, each at 0.05, and nothing requires reports to say so.",
+      "evidence": "M2_architecture_plan.md l.627-633: joint power for v1 at its validation gains is about 0.25-0.3 at 150 blocks and about 0.35 at 200. Registry orbit_power_dev_v4: validation gains -4.37 (MDN_B) and -8.02 (GBM); amendment table: MDE80 about 7.4 and 10.3 at 169 blocks. The scene-disjoint primary subset keeps about 70% of rows (keycounts JSON frac_rows 0.6953). sonde_arch_v2_lead_rulings.md R4.2 is the precedent for stating the family count.",
+      "suggested_ruling": "Every Test-S label is written in full as 'unseen lakes, archive years 2015-2023' with 'scene-disjoint' or 'scenes shared with training' as fixed by §1.6; every report states the number of confirmatory families and hypotheses in the look; and an endpoint whose binding MDE80 exceeds the arm's validation gain against any claim comparator is called under-powered in the freeze candidate and in the report."
+    },
+    {
+      "id": "NOTE-1",
+      "severity": "note",
+      "section": "§0, §1.4, §1.5, §2.6, §3.1, caps",
+      "issue": "Author statements checked against the repo and found correct: no validation number for any new arm or Track N target; the count tables; the registered MDE values and the √ scaling; the caps; configs_tried at 235 rows; no new-arm code yet.",
+      "evidence": "sha256sum matches. results/registry.jsonl: 6,390 M2-orbit rows; a pattern scan (v5m, orbitv2, A0/A1, testxarchive, M2S, orbit_TEST, trackN) hits only the 67 orbit_archv2_keycounts rows; the tp/tn/doc/fnu/ssc target rows (6 each) are those key counts. The §1.4 table equals orbit_split_report_dev_v4.json (2,001/510/143; 638/243/79; and the rest). The keycounts JSON gives 3,790 / 693 / 169 and 2,635 (69.5%) / 159 (94.1%) scene-disjoint. The power table arithmetic is correct. With val scenes in the reference set the preview is 63.4% of rows, close to the 60% threshold before WQP scenes are added.",
+      "suggested_ruling": "None needed."
+    },
+    {
+      "id": "NOTE-2",
+      "severity": "note",
+      "section": "§3.2 l.271; §3.5 l.343, l.372",
+      "issue": "Three smaller parity points. (1) 'Every comparator is fitted on the identical data version as the arm it faces' is not literally true for v1, which is frozen on dev_v5 and faces dev_v5m comparators with richer inputs; this is harder on v1, not easier. (2) EMA is given to no comparator; the lead decision does not require it. (3) The role-block bootstrap ignores scene sharing across neighbouring blocks.",
+      "evidence": "Amendment l.343, l.372, l.380-381 and §4 l.403-410. LEAD_DECISIONS_20261110.md l.44-46.",
+      "suggested_ruling": "Optional: state in the rulings file that v1 faces the dev_v5m comparator set at Test-S and that this is the stricter reading."
+    }
+  ],
+  "points": [
+    {
+      "point": "1. Scene-disjointness reference set (§1.6)",
+      "recommendation": "Confirm the count rule; the leakage lens should settle the reference set. From the claim side, add one condition: if the roles swap, every label says 'scenes shared with training'.",
+      "reason": "Both options are decided from counts, so neither opens a choice after results. The swap fallback makes the weaker design primary, and with val scenes added the AquaCorr-only preview is already 63.4% of rows against a 60% threshold."
+    },
+    {
+      "point": "2. Binding MDE after the stamp (§1.7, §2.6)",
+      "recommendation": "Accept only with the GATE-1 and GATE-2 rulings.",
+      "reason": "`orbit_power.py` cannot compute these cells as written, and the arm, validation rows, α and comparator scope are open. The gate against kNN (33.7 points at 87 blocks) makes the small-lake clause unreachable, which invites re-reading later."
+    },
+    {
+      "point": "4. Parity reading (§3.5)",
+      "recommendation": "Confirm, and add the MDN_B + GBM average as a claim comparator (CMP-1).",
+      "reason": "The reading is at least as strict as the lead's minimum (10 initialisations, 9-seed bag, each unit against the full comparator). The one gap is the baseline average, which beat both comparators on dev_v4 validation (49.7 vs 52.6 and 56.3)."
+    },
+    {
+      "point": "5. Multi-target-by-stacking GBM member (§3.5)",
+      "recommendation": "Confirm.",
+      "reason": "It gives the GBM the same auxiliary targets, as lead rule 3 requires, and uses out-of-fold predictions. It can only strengthen the reference."
+    },
+    {
+      "point": "6. Track N arm when v2 = A0 or A1 fails (§2.7)",
+      "recommendation": "Confirm the default.",
+      "reason": "The arm is fixed by a chl-a validation rule with no fork, and if A1 fails no SENTINEL claim is made. The per-seed-unit rule must apply to that arm on Track N (STAT-1)."
+    },
+    {
+      "point": "7. Shared initialisation fixed when A0 starts (§3.1)",
+      "recommendation": "Change: fix it by an event, the reviewed dev_v5 freeze candidate of the headline look (OPEN-1).",
+      "reason": "The start time of the first A0 network is under the author's control relative to chain9 validation results. §3.3 already defines A0 from the frozen headline configuration."
+    },
+    {
+      "point": "9. H2-S family with small TSS and NTU counts (§6.3)",
+      "recommendation": "Change to the alternative: apply the MDE > 15 rule plus a minimum of 30 role blocks, and keep the Holm denominator at 6 (STAT-4).",
+      "reason": "dev_v4 Test-S holds 92 TSS rows and 49 turbidity rows in at most 29 and 21 blocks. The headline MDE for these targets is already 22-57 points at 53-57 blocks."
+    },
+    {
+      "point": "11. Code separation (§5)",
+      "recommendation": "Confirm, with two conditions: the new look module seals per-unit and per-network predictions, and the binding power script is new code with a registered hash.",
+      "reason": "The existing `orbit_test.py` and `testlook.py` contain no per-seed computation (0 grep hits for 'seed'). `orbit_power.py` is hashed by the v1 freeze and cannot be edited."
+    },
+    {
+      "point": "12. Early stopping on the four base targets; a-priori ranges (§3.4 item 9, §2.1)",
+      "recommendation": "Confirm.",
+      "reason": "New-target labels then cannot steer the stopping point of the base-target claims, and the criterion matches v1 and A0. The ranges are fixed before any value was read."
+    }
+  ],
+  "summary": "Hash matches. No blocking finding; 15 should_fix items, each closable by one ruling sentence. The repo confirms the author's factual claims (no new-arm validation numbers, counts, registered MDE, caps 1 + 3). Main gaps: the MDN_B + GBM average, known to beat both claim comparators on validation, has no claim role; the MDE gates include kNN (33.7 points), so the small-lake clause is unreachable and open to re-reading; `orbit_power.py` cannot compute the binding power as written; the per-seed-unit rule is loosely scoped and no code implements it; p-value and Holm form are incomplete; TSS and NTU are unpowerable in H2-S; initialisation timing, configuration details and the DOC unit check remain open."
+}

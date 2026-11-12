@@ -115,4 +115,11 @@ The host disk is 98% full: about 100 GB free, shared with another user.
   Reserved before download. Lock-on-download as for `sonde_newsites`.
 - **M1 StreamPULSE (M1-SP) and M7 P2:** each locks its test block on download or at index build, in its own
   amendment, before any label value is read.
+- **M4 `T1_test`, `T6a_test`, `T6b_test`** (SENTINEL-Toxin, architecture round v2): the rows with those values of
+  the block column in `chemtox_t1t6_split_v2.parquet`, sha256
+  `ab71aace46260980a6f011a561c2280fe0025226978508daa57f96493c5323a3`. Rows / hold-out units: T1_test 11,363 / 546,
+  T6a_test 11,249 / 694, T6b_test 4,106 / 289. Reserved at the lead stamp of 2026-11-10
+  (`docs/preregistration/chemtox_arch_v2_lead_rulings.md`, C-4). No workstream trains or tunes on those
+  `result_id`s; any overlap is reported to the lead as counts. The first-text split
+  (`chemtox_t1t6_split_v1.parquet`) is superseded and is not a reservation.
 - Decisions and scope: `docs/plans/architecture_research/LEAD_DECISIONS_20261110.md`.

@@ -15,6 +15,8 @@ light series keeps its diel shape (it is the driver). Missing hours are masked, 
 
 from __future__ import annotations
 
+from ...data.reserved import is_reserved
+
 import numpy as np
 import pandas as pd
 
@@ -33,7 +35,7 @@ NEGATIVE = [("dh", "light"), ("tw", "light")]
 
 
 def has_hourly(site: str) -> bool:
-    return (HOURLY / f"{site}.parquet").exists()
+    return (HOURLY / f"{site}.parquet").exists() and not is_reserved(site)   # reserved new-site block
 
 
 def site_matrix(d: D.SimData, i: int) -> pd.DataFrame | None:

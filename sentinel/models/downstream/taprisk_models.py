@@ -51,6 +51,10 @@ class BalancedRF:
     def predict(self, X: pd.DataFrame):
         A = X[self.cols].to_numpy(float)
         A = np.where(np.isnan(A), self.med_, A)
+        for m in self.models_:
+            # Prediction is single-threaded (lead ruling 2026-11-10): a threaded forest sums its trees in thread-arrival
+            # order, which is not bit-reproducible. Fitting is unaffected (threaded fits are identical tree by tree).
+            m.set_params(n_jobs=1)
         return np.mean([m.predict_proba(A)[:, 1] for m in self.models_], axis=0)
 
 

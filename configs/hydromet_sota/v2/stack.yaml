@@ -1,0 +1,30 @@
+# D3 SENTINEL-Stack and the references-only stacks (amendment §6.3; lead ruling L11.5). One code path for all three.
+# Weights: per endpoint, w >= 0 and sum(w) = 1, least squares on the inner rows of the members' 3-seed-mean
+# EARLY-STOPPED predictions (train-role inner groups x train block; no validation row). Applied to the refitted
+# members. The inner criterion of a stack is cross-fitted: leave one inner basin group out (one fold per inner group), weights from
+# the other groups, squared error on the held-out group.
+# Solver: exact enumeration of the active sets (every non-empty subset of the members; equality-constrained least
+# squares in closed form; the feasible subset with the lowest squared error; ties: the subset listed first).
+arm: d3
+model: stack
+stacks:
+  d3: {members: [d1, d2, rtd, g2], role: candidate}
+  ref_stack: {members: [rtd, g1, g2], role: comparator}              # mandatory control (amendment §6.3)
+  ref_stack_w: {members: [rtd, rtd_w, g1, g2], role: comparator}     # second references-only stack (L11.5)
+endpoints:
+  daily: [temp_c_mean, temp_c_7dadm, do_mgl_mean, do_mgl_min]        # inner sonde rows, standardised squared error
+  inst: [T, DO]                # hour-resolved output (N2): inner grab rows with the J_grab row weights (30-day cap)
+members:
+  label_form: gate              # every member in the label set that gate G-D1a determines (with grab rows / no-grab)
+  d1: selected                  # the selected D1 grid point
+  d2: "selected point if D2 is released, passed its kill rule and has inner predictions; otherwise absent"
+  absent_member: "left out of the stack for that endpoint and reported; the member list is not otherwise changed"
+  no_inst_output: "a member without an hour-resolved output is not a member of the inst endpoints"
+secondary_targets: "T_max, T_min, DO_max are not stacked"
+every_seed: "weights are fitted once, on the members' 3-seed means; the seed-k stack is these weights applied to the seed-k refits of the members (deterministic members unchanged)"
+inst_weights_nograb: "in the no-grab label form no grab row enters a configuration: the inst endpoints T and DO take the weights of temp_c_mean and do_mgl_mean"
+min_rows: 200                 # an endpoint with fewer common inner rows is not stacked (reported)
+ridge: 0.0
+n_jobs: 2
+grid:
+  fixed: {}

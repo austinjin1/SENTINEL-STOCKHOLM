@@ -1,0 +1,42 @@
+# D2 ThermOx-T, temperature stage (amendment §6.2): grid of 3 at seed 0, 2 ablations on the selected point.
+# Counted configurations: 5 (+ the DO stage, <= 1, gated by G-DO and by its own stamped deviations entry).
+# NOT RELEASED by deviations entry 1: D2 grid runs wait for the D2 entry (lead rulings L4, L6). Only the train-only
+# smoke of the kill rule (amendment §8) may run before it.
+# The bounded static parameters (names, bounds, prior medians) and the constants of the energy balance are code
+# (sentinel/hydromet_sota/thermox/nets.py, thermox/physics.py, gso_mt/constants.py); they are recorded with the
+# sha256 of those files in the D2 deviations entry before any D2 grid run. No Powell-derived prior is used
+# (rulings §2.3: the shared Powell role table does not exist).
+arm: d2
+model: thermox
+variables: [T, DO]            # temperature stage: the DO heads are plain statistical heads until the DO stage exists
+data: {grab: true}
+released_by: "D2 deviations entry (L4); not entry 1"
+grab_share: 0.5               # not stated in the amendment; fixed here before any fit (as R-TD's), never tuned
+net:
+  static_hidden: [128, 64]    # static MLP [191 -> 128 -> 64 -> 32] (L5)
+  static_emb: 32
+  static_noise: 0.5
+  gru_hidden: 64
+  n_newton: 4                 # Newton steps of the equilibrium-temperature solve
+  te_range: [-5.0, 45.0]      # deg C clamp
+  diel: {enabled: true, cycles: 2, steps: 24, days: rule}    # days: see kill_rule
+  mixing: full                # atmosphere, groundwater kernel, reservoir kernel, upstream Te lagged, melt at 0 deg C
+  warmup_epochs: 3            # residual frozen at 0
+  powell_prior: false
+  prior: {shade: 0.3, wind_shelter: 0.6}                     # = gbm.yaml te_prior = thermox.physics.PRIOR
+grid:
+  g1: {net: {residual_cap: 0.0}, lambda_q: 1.0}              # always reported
+  g2: {net: {residual_cap: 1.0}, lambda_q: 1.0}
+  g3: {net: {residual_cap: 1.0}, lambda_q: 0.3}
+ablations:
+  abl_nodiel: {net: {diel: {enabled: false}}}
+  abl_nomix: {net: {mixing: atmosphere_only}}
+  nograb: {data: {grab: false}, grab_share: 0.0}             # label-set variant (closed list, rulings Q1); not counted
+# Kill rule (amendment §8), train-only smoke, <= 50 train-role sites, batch 256, one 11 GB GPU. The outcome is a run
+# record (sota_v2/d2/kill_rule.json) read by the driver; this file does not change with it.
+kill_rule:
+  max_s_per_step: 0.5
+  step_1_all_days: "diel sub-model on every loss day"
+  step_2_fallback_months: [6, 7, 8, 9]                       # if step 1 is > 0.5 s/step
+  step_3: "drop D2 if still > 0.5 s/step"
+do_stage: {enabled: false, gate: G-DO, k600: "Powell rows of H confidence, weight 0.1; needs the role table and the DO-stage entry"}

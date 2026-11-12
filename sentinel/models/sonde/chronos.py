@@ -176,8 +176,23 @@ class ChronosForecaster:
         return inputs, tv
 
     def predict_multi(self, data: SondeData, rows_by_var: dict[str, Rows]) -> dict[str, np.ndarray]:
-        out = {v: np.full((len(r), len(self.horizons), len(QUANTILES)), np.nan, dtype=np.float32)
-               for v, r in rows_by_var.items()}
+        return self.predict_multi_resumable(data, rows_by_var)[0]
+
+    def predict_multi_resumable(self, data: SondeData, rows_by_var: dict[str, Rows], *, resume: dict | None = None,
+                                deadline: float | None = None) -> tuple[dict[str, np.ndarray], dict]:
+        """``predict_multi`` that can stop after a batch flush once ``deadline`` (time.time()) has passed and resume
+        later from ``resume`` = {"out": partial arrays, "next_site_pos": int} (≤ 2 h GPU jobs, lead rule). It stops
+        and resumes ONLY at flush boundaries, where the pending batch is empty, so every batch, and hence every
+        forecast, is identical to an uninterrupted run. Returns (out, {"complete": bool, "next_site_pos": int})."""
+        import time
+
+        if resume is not None:
+            out = {v: np.array(resume["out"][v], dtype=np.float32, copy=True) for v in rows_by_var}
+            start = int(resume["next_site_pos"])
+        else:
+            out = {v: np.full((len(r), len(self.horizons), len(QUANTILES)), np.nan, dtype=np.float32)
+                   for v, r in rows_by_var.items()}
+            start = 0
         # union of (site, issue) over variables
         pos = {}
         for v, r in rows_by_var.items():
@@ -203,7 +218,11 @@ class ChronosForecaster:
             batch_inputs.clear()
             batch_keys.clear()
 
-        for s, ts in by_site.items():
+        if start and start > len(by_site):
+            raise ValueError(f"resume position {start} > {len(by_site)} sites")
+        for k_site, (s, ts) in enumerate(by_site.items()):
+            if k_site < start:
+                continue
             ts = np.array(sorted(ts), dtype=np.int64)
             inputs, tv = self.prepared_inputs(data, s, ts, site_vars[s])
             for t, inp, tvars in zip(ts.tolist(), inputs, tv):
@@ -213,8 +232,10 @@ class ChronosForecaster:
                 batch_keys.append((s, t, tvars))
             if len(batch_inputs) >= self.cfg.chunk_rows // 4:
                 flush()
+                if deadline is not None and time.time() > deadline and k_site + 1 < len(by_site):
+                    return out, {"complete": False, "next_site_pos": k_site + 1, "n_sites": len(by_site)}
         flush()
-        return out
+        return out, {"complete": True, "next_site_pos": len(by_site), "n_sites": len(by_site)}
 
     def predict(self, data: SondeData, rows_by_var: dict[str, Rows]) -> dict[str, np.ndarray]:
         if self.cfg.mode == "uni":

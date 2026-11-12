@@ -1,0 +1,1427 @@
+{
+ "blocks": {
+  "002/dev": {
+   "n_events": 1215,
+   "n_with_chem_parent": 1215,
+   "sites": 33,
+   "domains": 19,
+   "n_all7_non_nh4": 1018,
+   "n_qpcr_16s": 1159,
+   "n_qpcr_16s_and_volume": 1159,
+   "n_filtered_volume": 1215,
+   "vars": {
+    "lab_ph": {
+     "n": 1165,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 1165,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "cl_mgl": {
+     "n": 1171,
+     "n_cens": 20,
+     "n_cens_noval": 7,
+     "n_cens_val": 13,
+     "n_usable": 1178,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "so4_mgl": {
+     "n": 1176,
+     "n_cens": 23,
+     "n_cens_noval": 2,
+     "n_cens_val": 21,
+     "n_usable": 1178,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "ca_mgl": {
+     "n": 1105,
+     "n_cens": 15,
+     "n_cens_noval": 12,
+     "n_cens_val": 3,
+     "n_usable": 1117,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "dic_mgl": {
+     "n": 1171,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 1171,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "field_do_sat_pct": {
+     "n": 1174,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 1174,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "nh4_n_mgl": {
+     "n": 1141,
+     "n_cens": 247,
+     "n_cens_noval": 41,
+     "n_cens_val": 206,
+     "n_usable": 1182,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "uv_absorbance_254_nm_au": {
+     "n": 1175,
+     "n_cens": 7,
+     "n_cens_noval": 7,
+     "n_cens_val": 0,
+     "n_usable": 1182,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "nh4_n_ugl": {
+     "n": 5,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 5,
+     "sites": 1,
+     "domains": 1,
+     "n_time_match": 0
+    },
+    "mg_mgl": {
+     "n": 1110,
+     "n_cens": 69,
+     "n_cens_noval": 65,
+     "n_cens_val": 4,
+     "n_usable": 1175,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "na_mgl": {
+     "n": 1115,
+     "n_cens": 5,
+     "n_cens_noval": 2,
+     "n_cens_val": 3,
+     "n_usable": 1117,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "k_mgl": {
+     "n": 1174,
+     "n_cens": 19,
+     "n_cens_noval": 1,
+     "n_cens_val": 18,
+     "n_usable": 1175,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "si_mgl": {
+     "n": 1137,
+     "n_cens": 44,
+     "n_cens_noval": 38,
+     "n_cens_val": 6,
+     "n_usable": 1175,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "f_mgl": {
+     "n": 1117,
+     "n_cens": 353,
+     "n_cens_noval": 61,
+     "n_cens_val": 292,
+     "n_usable": 1178,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "tds_mgl": {
+     "n": 1080,
+     "n_cens": 6,
+     "n_cens_noval": 6,
+     "n_cens_val": 0,
+     "n_usable": 1086,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "tdn_mgl": {
+     "n": 1154,
+     "n_cens": 64,
+     "n_cens_noval": 21,
+     "n_cens_val": 43,
+     "n_usable": 1175,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "tdp_mgl": {
+     "n": 1181,
+     "n_cens": 60,
+     "n_cens_noval": 1,
+     "n_cens_val": 59,
+     "n_usable": 1182,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "field_spcond_uscm": {
+     "n": 1191,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 1191,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "field_do_mgl": {
+     "n": 1172,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 1172,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "field_temp_c": {
+     "n": 1194,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 1194,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "ortho_p_mgl": {
+     "n": 1064,
+     "n_cens": 368,
+     "n_cens_noval": 118,
+     "n_cens_val": 250,
+     "n_usable": 1182,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "ortho_p_ugl": {
+     "n": 4,
+     "n_cens": 4,
+     "n_cens_noval": 1,
+     "n_cens_val": 3,
+     "n_usable": 5,
+     "sites": 1,
+     "domains": 1,
+     "n_time_match": 0
+    },
+    "tss_mgl": {
+     "n": 769,
+     "n_cens": 336,
+     "n_cens_noval": 289,
+     "n_cens_val": 47,
+     "n_usable": 1058,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "br_mgl": {
+     "n": 907,
+     "n_cens": 729,
+     "n_cens_noval": 271,
+     "n_cens_val": 458,
+     "n_usable": 1178,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "lab_anc_meql": {
+     "n": 487,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 487,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "anc_meql": {
+     "n": 342,
+     "n_cens": 1,
+     "n_cens_noval": 1,
+     "n_cens_val": 0,
+     "n_usable": 343,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "lab_alk_meql": {
+     "n": 679,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 679,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "fe_mgl": {
+     "n": 471,
+     "n_cens": 876,
+     "n_cens_noval": 704,
+     "n_cens_val": 172,
+     "n_usable": 1175,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "mn_mgl": {
+     "n": 479,
+     "n_cens": 928,
+     "n_cens_noval": 696,
+     "n_cens_val": 232,
+     "n_usable": 1175,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "no2_n_mgl": {
+     "n": 1062,
+     "n_cens": 257,
+     "n_cens_noval": 120,
+     "n_cens_val": 137,
+     "n_usable": 1182,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "toc_mgl": {
+     "n": 1179,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 1179,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "uv_absorbance_280_nm_au": {
+     "n": 1174,
+     "n_cens": 9,
+     "n_cens_noval": 8,
+     "n_cens_val": 1,
+     "n_usable": 1182,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 1
+    },
+    "specificconductance_uscm": {
+     "n": 343,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 343,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    }
+   }
+  },
+  "002/holdout": {
+   "n_events": 214,
+   "n_with_chem_parent": 214,
+   "sites": 33,
+   "domains": 19,
+   "n_all7_non_nh4": 202,
+   "n_qpcr_16s": 214,
+   "n_qpcr_16s_and_volume": 189,
+   "n_filtered_volume": 189,
+   "vars": {
+    "lab_ph": {
+     "n": 211,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 211,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "cl_mgl": {
+     "n": 212,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "so4_mgl": {
+     "n": 212,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "ca_mgl": {
+     "n": 212,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "dic_mgl": {
+     "n": 211,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 211,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 24
+    },
+    "field_do_sat_pct": {
+     "n": 210,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 210,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "nh4_n_mgl": {
+     "n": 208,
+     "n_cens": 41,
+     "n_cens_noval": 6,
+     "n_cens_val": 35,
+     "n_usable": 214,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "uv_absorbance_254_nm_au": {
+     "n": 210,
+     "n_cens": 2,
+     "n_cens_noval": 2,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "nh4_n_ugl": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    },
+    "mg_mgl": {
+     "n": 212,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "na_mgl": {
+     "n": 212,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "k_mgl": {
+     "n": 212,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "si_mgl": {
+     "n": 212,
+     "n_cens": 4,
+     "n_cens_noval": 0,
+     "n_cens_val": 4,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "f_mgl": {
+     "n": 212,
+     "n_cens": 64,
+     "n_cens_noval": 0,
+     "n_cens_val": 64,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "tds_mgl": {
+     "n": 212,
+     "n_cens": 3,
+     "n_cens_noval": 0,
+     "n_cens_val": 3,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "tdn_mgl": {
+     "n": 214,
+     "n_cens": 11,
+     "n_cens_noval": 0,
+     "n_cens_val": 11,
+     "n_usable": 214,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "tdp_mgl": {
+     "n": 214,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 214,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "field_spcond_uscm": {
+     "n": 213,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 213,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "field_do_mgl": {
+     "n": 210,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 210,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "field_temp_c": {
+     "n": 214,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 214,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "ortho_p_mgl": {
+     "n": 210,
+     "n_cens": 58,
+     "n_cens_noval": 4,
+     "n_cens_val": 54,
+     "n_usable": 214,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "ortho_p_ugl": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    },
+    "tss_mgl": {
+     "n": 121,
+     "n_cens": 122,
+     "n_cens_noval": 92,
+     "n_cens_val": 30,
+     "n_usable": 213,
+     "sites": 30,
+     "domains": 19,
+     "n_time_match": 18
+    },
+    "br_mgl": {
+     "n": 61,
+     "n_cens": 153,
+     "n_cens_noval": 151,
+     "n_cens_val": 2,
+     "n_usable": 212,
+     "sites": 26,
+     "domains": 16,
+     "n_time_match": 15
+    },
+    "lab_anc_meql": {
+     "n": 85,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 85,
+     "sites": 29,
+     "domains": 17,
+     "n_time_match": 7
+    },
+    "anc_meql": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    },
+    "lab_alk_meql": {
+     "n": 127,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 127,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 18
+    },
+    "fe_mgl": {
+     "n": 206,
+     "n_cens": 61,
+     "n_cens_noval": 6,
+     "n_cens_val": 55,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "mn_mgl": {
+     "n": 203,
+     "n_cens": 25,
+     "n_cens_noval": 9,
+     "n_cens_val": 16,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 24
+    },
+    "no2_n_mgl": {
+     "n": 214,
+     "n_cens": 5,
+     "n_cens_noval": 0,
+     "n_cens_val": 5,
+     "n_usable": 214,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "toc_mgl": {
+     "n": 212,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 24
+    },
+    "uv_absorbance_280_nm_au": {
+     "n": 210,
+     "n_cens": 2,
+     "n_cens_noval": 2,
+     "n_cens_val": 0,
+     "n_usable": 212,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 25
+    },
+    "specificconductance_uscm": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    }
+   }
+  },
+  "001/reserve": {
+   "n_events": 190,
+   "n_with_chem_parent": 62,
+   "sites": 24,
+   "domains": 15,
+   "n_all7_non_nh4": 46,
+   "n_qpcr_16s": 172,
+   "n_qpcr_16s_and_volume": 139,
+   "n_filtered_volume": 155,
+   "vars": {
+    "lab_ph": {
+     "n": 57,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 57,
+     "sites": 20,
+     "domains": 14,
+     "n_time_match": 0
+    },
+    "cl_mgl": {
+     "n": 62,
+     "n_cens": 1,
+     "n_cens_noval": 0,
+     "n_cens_val": 1,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "so4_mgl": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "ca_mgl": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "dic_mgl": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "field_do_sat_pct": {
+     "n": 49,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 49,
+     "sites": 21,
+     "domains": 15,
+     "n_time_match": 0
+    },
+    "nh4_n_mgl": {
+     "n": 62,
+     "n_cens": 35,
+     "n_cens_noval": 0,
+     "n_cens_val": 35,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "uv_absorbance_254_nm_au": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "nh4_n_ugl": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    },
+    "mg_mgl": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "na_mgl": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "k_mgl": {
+     "n": 61,
+     "n_cens": 1,
+     "n_cens_noval": 1,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "si_mgl": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "f_mgl": {
+     "n": 45,
+     "n_cens": 37,
+     "n_cens_noval": 17,
+     "n_cens_val": 20,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "tds_mgl": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "tdn_mgl": {
+     "n": 62,
+     "n_cens": 9,
+     "n_cens_noval": 0,
+     "n_cens_val": 9,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "tdp_mgl": {
+     "n": 56,
+     "n_cens": 21,
+     "n_cens_noval": 6,
+     "n_cens_val": 15,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "field_spcond_uscm": {
+     "n": 59,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 59,
+     "sites": 20,
+     "domains": 14,
+     "n_time_match": 0
+    },
+    "field_do_mgl": {
+     "n": 49,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 49,
+     "sites": 21,
+     "domains": 15,
+     "n_time_match": 0
+    },
+    "field_temp_c": {
+     "n": 60,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 60,
+     "sites": 21,
+     "domains": 15,
+     "n_time_match": 0
+    },
+    "ortho_p_mgl": {
+     "n": 62,
+     "n_cens": 1,
+     "n_cens_noval": 0,
+     "n_cens_val": 1,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "ortho_p_ugl": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    },
+    "tss_mgl": {
+     "n": 49,
+     "n_cens": 25,
+     "n_cens_noval": 12,
+     "n_cens_val": 13,
+     "n_usable": 61,
+     "sites": 21,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "br_mgl": {
+     "n": 39,
+     "n_cens": 57,
+     "n_cens_noval": 23,
+     "n_cens_val": 34,
+     "n_usable": 62,
+     "sites": 21,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "lab_anc_meql": {
+     "n": 23,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 23,
+     "sites": 13,
+     "domains": 8,
+     "n_time_match": 0
+    },
+    "anc_meql": {
+     "n": 61,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 61,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "lab_alk_meql": {
+     "n": 34,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 34,
+     "sites": 15,
+     "domains": 12,
+     "n_time_match": 0
+    },
+    "fe_mgl": {
+     "n": 59,
+     "n_cens": 14,
+     "n_cens_noval": 3,
+     "n_cens_val": 11,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "mn_mgl": {
+     "n": 55,
+     "n_cens": 19,
+     "n_cens_noval": 7,
+     "n_cens_val": 12,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "no2_n_mgl": {
+     "n": 57,
+     "n_cens": 61,
+     "n_cens_noval": 5,
+     "n_cens_val": 56,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "toc_mgl": {
+     "n": 61,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 61,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "uv_absorbance_280_nm_au": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    },
+    "specificconductance_uscm": {
+     "n": 62,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 62,
+     "sites": 22,
+     "domains": 15,
+     "n_time_match": 1
+    }
+   }
+  },
+  "001/train1718": {
+   "n_events": 517,
+   "n_with_chem_parent": 514,
+   "sites": 33,
+   "domains": 19,
+   "n_all7_non_nh4": 423,
+   "n_qpcr_16s": 510,
+   "n_qpcr_16s_and_volume": 483,
+   "n_filtered_volume": 490,
+   "vars": {
+    "lab_ph": {
+     "n": 472,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 472,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "cl_mgl": {
+     "n": 492,
+     "n_cens": 23,
+     "n_cens_noval": 11,
+     "n_cens_val": 12,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "so4_mgl": {
+     "n": 498,
+     "n_cens": 10,
+     "n_cens_noval": 5,
+     "n_cens_val": 5,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "ca_mgl": {
+     "n": 503,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "dic_mgl": {
+     "n": 493,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 493,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "field_do_sat_pct": {
+     "n": 493,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 493,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "nh4_n_mgl": {
+     "n": 448,
+     "n_cens": 220,
+     "n_cens_noval": 45,
+     "n_cens_val": 175,
+     "n_usable": 493,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "uv_absorbance_254_nm_au": {
+     "n": 502,
+     "n_cens": 4,
+     "n_cens_noval": 4,
+     "n_cens_val": 0,
+     "n_usable": 506,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "nh4_n_ugl": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    },
+    "mg_mgl": {
+     "n": 503,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "na_mgl": {
+     "n": 502,
+     "n_cens": 4,
+     "n_cens_noval": 1,
+     "n_cens_val": 3,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "k_mgl": {
+     "n": 503,
+     "n_cens": 30,
+     "n_cens_noval": 0,
+     "n_cens_val": 30,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "si_mgl": {
+     "n": 502,
+     "n_cens": 1,
+     "n_cens_noval": 1,
+     "n_cens_val": 0,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "f_mgl": {
+     "n": 501,
+     "n_cens": 334,
+     "n_cens_noval": 2,
+     "n_cens_val": 332,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "tds_mgl": {
+     "n": 504,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 504,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "tdn_mgl": {
+     "n": 462,
+     "n_cens": 87,
+     "n_cens_noval": 35,
+     "n_cens_val": 52,
+     "n_usable": 497,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "tdp_mgl": {
+     "n": 490,
+     "n_cens": 99,
+     "n_cens_noval": 5,
+     "n_cens_val": 94,
+     "n_usable": 495,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "field_spcond_uscm": {
+     "n": 503,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "field_do_mgl": {
+     "n": 494,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 494,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "field_temp_c": {
+     "n": 505,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 505,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "ortho_p_mgl": {
+     "n": 486,
+     "n_cens": 208,
+     "n_cens_noval": 8,
+     "n_cens_val": 200,
+     "n_usable": 494,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "ortho_p_ugl": {
+     "n": 0,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 0,
+     "sites": 0,
+     "domains": 0,
+     "n_time_match": 0
+    },
+    "tss_mgl": {
+     "n": 375,
+     "n_cens": 127,
+     "n_cens_noval": 126,
+     "n_cens_val": 1,
+     "n_usable": 501,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "br_mgl": {
+     "n": 492,
+     "n_cens": 483,
+     "n_cens_noval": 11,
+     "n_cens_val": 472,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "lab_anc_meql": {
+     "n": 229,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 229,
+     "sites": 31,
+     "domains": 18,
+     "n_time_match": 0
+    },
+    "anc_meql": {
+     "n": 502,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 502,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "lab_alk_meql": {
+     "n": 242,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 242,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "fe_mgl": {
+     "n": 493,
+     "n_cens": 269,
+     "n_cens_noval": 10,
+     "n_cens_val": 259,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "mn_mgl": {
+     "n": 499,
+     "n_cens": 318,
+     "n_cens_noval": 4,
+     "n_cens_val": 314,
+     "n_usable": 503,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "no2_n_mgl": {
+     "n": 475,
+     "n_cens": 460,
+     "n_cens_noval": 18,
+     "n_cens_val": 442,
+     "n_usable": 493,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "toc_mgl": {
+     "n": 489,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 489,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "uv_absorbance_280_nm_au": {
+     "n": 499,
+     "n_cens": 7,
+     "n_cens_noval": 7,
+     "n_cens_val": 0,
+     "n_usable": 506,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    },
+    "specificconductance_uscm": {
+     "n": 508,
+     "n_cens": 0,
+     "n_cens_noval": 0,
+     "n_cens_val": 0,
+     "n_usable": 508,
+     "sites": 33,
+     "domains": 19,
+     "n_time_match": 0
+    }
+   }
+  }
+ },
+ "qpcr_meta": {
+  "n_16s_rows_nonprovisional": 2363,
+  "n_labs": 2,
+  "n_batches": 263
+ },
+ "detection_limit_meta": {
+  "ca_mgl": {
+   "n_records": 6829,
+   "n_with_dl": 6829,
+   "n_dl_zero": 0,
+   "min_nonzero": 0.001,
+   "median": 0.001,
+   "max": 0.022
+  },
+  "cl_mgl": {
+   "n_records": 6828,
+   "n_with_dl": 6828,
+   "n_dl_zero": 0,
+   "min_nonzero": 0.003,
+   "median": 0.01,
+   "max": 0.06
+  },
+  "dic_mgl": {
+   "n_records": 6824,
+   "n_with_dl": 6824,
+   "n_dl_zero": 0,
+   "min_nonzero": 0.025,
+   "median": 0.025,
+   "max": 0.2
+  },
+  "nh4_n_mgl": {
+   "n_records": 7108,
+   "n_with_dl": 5899,
+   "n_dl_zero": 0,
+   "min_nonzero": 0.002,
+   "median": 0.004,
+   "max": 0.05
+  },
+  "so4_mgl": {
+   "n_records": 6828,
+   "n_with_dl": 6828,
+   "n_dl_zero": 0,
+   "min_nonzero": 0.006,
+   "median": 0.01,
+   "max": 0.09
+  },
+  "uv_absorbance_254_nm_au": {
+   "n_records": 6829,
+   "n_with_dl": 6770,
+   "n_dl_zero": 5851,
+   "min_nonzero": 0.001,
+   "median": 0.0,
+   "max": 0.001
+  }
+ }
+}

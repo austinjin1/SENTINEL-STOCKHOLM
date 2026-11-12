@@ -1,0 +1,27 @@
+# R-TD-W (lead ruling L11 of 2026-11-10, recorded in deviations entry 1): a second published recipe of the top-down
+# LSTM, run as a comparator (never a candidate; counted outside the cap of 12 as one fixed configuration).
+# R-TD was run in two published configurations (Rahmani 2021 — rtd.yaml; Willard 2024, first row of Table S6 — this
+# file); neither was tuned here.
+# * Hidden size 570, 4 LSTM layers, dropout 2.216e-05: Willard, Ciulla, Weierbach, Kumar & Varadharajan 2024,
+#   arXiv:2410.19865v1, Table S6 "Top 5 Hyperparameter Combinations for LSTM", FIRST ROW LISTED (PDF p. 75):
+#   batch_size 496 | n_hidden 570 | num_layers 4 | weight_decay 4.128e-06 | dropout 2.216e-05. Checked visually on
+#   the rendered PDF page on 2026-11-10. The row was fixed by the lead before any fit; it is not chosen among the
+#   five on any number.
+# * Only hidden size, number of layers and dropout are taken. Willard's sequence length (200 d), batch size (496),
+#   learning rate (1e-3) and weight decay (4.128e-06) are NOT taken: windows, batch, optimiser, steps, epochs,
+#   patience and clipping are those of the amendment (§5, §7), identical to R-TD.
+# * Dropout is applied between the LSTM layers (torch.nn.LSTM `dropout`), not on the output of the last layer.
+# * Everything else is identical to rtd.yaml: inputs, heads, auxiliary targets, observation operator, label pool,
+#   grab share 0.5, both label forms, 3 seeds each. If a job cannot finish inside the job limit it continues with
+#   --resume; the recipe is never shrunk.
+arm: rtd_w
+model: rtd
+variables: [T, DO]
+data: {grab: true}
+recipe_verified: true
+recipe_source: "deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)"
+net: {static: concat, heads: indep_op, hidden: 570, layers: 4, dropout: 2.216e-05, static_noise: 0.5, attr_dropout: 0.0}
+grid:
+  fixed: {grab_share: 0.5}
+ablations:
+  published: {data: {grab: false}, grab_share: 0.0}        # the published form (no grab rows)

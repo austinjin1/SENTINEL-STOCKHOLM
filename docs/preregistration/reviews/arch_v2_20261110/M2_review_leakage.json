@@ -1,0 +1,167 @@
+{
+  "sha256": "5001373da42652926c6ea4a84028ac46628aa0e6d8b6e99380244417aeb8df8a",
+  "hash_matches": true,
+  "findings": [
+    {
+      "id": "F-M7-SCORED",
+      "severity": "should_fix",
+      "section": "§0 l.23-24 and l.34-36; §1.8 l.141-142",
+      "issue": "Test-S is not fully unseen. M7's sealed test look (2026-11-09) scored a Sentinel-2-input SatWQ-Net (the Lite-safe M2 teacher, v1 architecture) against in-situ Secchi, TSS and turbidity labels at rows that lie in Test-S lakes and archive years. §0 says the block is one \"no model has been scored on\" and that \"no scorer reads them\". The M7 national look, not yet run, has the same scoring step and would add more overlap after the reservation.",
+      "evidence": "/home/bcheng/STOCKHOLM/sentinel_runs/lite/test_look/TEST_LOOK.json (claimed 2026-11-09T17:05:53) and SCORED.json (17:30:46). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/eval/lite_score_test.py l.185-203 builds OrbitTeacher predictions `teacher_s2_imgonly`; l.430-435 scores them against y_{t}. Registry: 6 rows, experiment `lite_test`, model `lite_teacher_s2_imgonly`, splits test (secchi n=321, tss 19, turbidity 25) and test_time (247, 109, 148). Keys-only count (scratch /tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/leakrev/keys_check4.py; only id, lat/lon, date and role columns read, no y_ or pred column): M7 rows with an S2 chip are 349 (test) and 447 (test_time); under split v3 (chip centre + sensing date) 67 + 39 = 106 are in-lake, non-buffer rows of M2 test-role water bodies dated <= 2023 (41 and 27 water bodies, 19 and 16 role blocks); test role of any water type: 75 + 154. This is an upper bound on scored rows (label presence not read). Whether each is also a Test-S row after same-day match and QC was not checked. The sealed files predictions/pred_test.parquet and pred_test_time.parquet hold y_* labels and S2 teacher predictions per row. /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/eval/national_lite_score_test.py l.178-189 repeats the step for the national look (naip_teacher index now 10,694 chips; only `lite/test_look` exists so far).",
+      "suggested_ruling": "§0 is corrected: M7's sealed lite/test look scored an S2-input SatWQ-Net on up to 106 site-dates in Test-S lakes; every Test-S row matching an M7 look row (same M2 water body, S2 sensing date within 1 day) is removed from Test-S by a keys-only list fixed before any dev_v5m build, with the count appended; no M2 v2 code or decision reads any M7 look file; and until M2S/test is sealed no workstream, including the M7 national look, scores a Sentinel-2-input model on a row of an M2 test-role water body dated <= 2023-12-31."
+    },
+    {
+      "id": "F-ABORT-MARKER",
+      "severity": "should_fix",
+      "section": "§0 l.37; §5 l.444-446",
+      "issue": "A stray ABORTED.json sits in the real M2/test look directory. It was almost certainly written by a unit test, not by a look. As the guard is written, the real M2/test would claim, fail its first protected read, register `look_aborted` and be spent with no result. §0 says the look \"has not run\" without mentioning the marker. The M2S look imports the same primitives, so the same test pattern could spend it too.",
+      "evidence": "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/test_looks/M2_test/ABORTED.json (0444, 2026-11-09 17:26:57, reason \"KeyboardInterrupt()\", pid 1575747). The directory holds no TEST_LOOK.json; no FREEZE_orbit*.json exists; the registry has 0 `look_aborted` or `look_claimed` rows. Source: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/tests/test_orbit_testlook.py l.196-201: `monkeypatch.undo()` reverts the sandbox RUNS_ROOT (l.20), l.197 then resolves the real runs root, and `TL.mark_aborted(\"M2/test\", ..., \"KeyboardInterrupt()\")` writes there. The test still has this form (file mtime 2026-11-10 10:59) and now passes silently because the O_EXCL write hits FileExistsError. Guard logic: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/orbit/testlook.py claim() l.160-179 does not check for ABORTED.json; open_claims() l.207 treats the directory as closed; scripts/eval/orbit_test.py l.515 and l.530-531 then abort and spend the look. I could not prove pytest origin with certainty (the reason string equals a real repr), but the missing claim marker, freeze and registry rows support it. Not mentioned in docs/handoff/M2-orbit.md.",
+      "suggested_ruling": "Before any M2/test or M2S/test claim the lead confirms from the registry that no look ran, removes the test-written ABORTED.json himself and records it; tests/test_orbit_testlook.py and every orbit_v2 look test resolve only a temporary RUNS_ROOT; and a claim refuses to start when its look directory already holds any file."
+    },
+    {
+      "id": "F-SCENE-REF",
+      "severity": "should_fix",
+      "section": "§1.6 l.118-131; §8 point 1",
+      "issue": "The scene reference set covers only fit and inner rows. It omits scenes the models also read: val-cell rows (selection, kill criterion, conformal offsets), train-role 2022-23 rows, A1 context chips and SSL chips if that init is inherited. The choice changes the rule's outcome. With all dev rows as reference the preview falls below the 60% row threshold, so the roles would swap. The swap also makes the all-rows cell primary exactly when scene sharing is highest.",
+      "evidence": "Keys-only recount on AquaCorr any-target rows (scratch keys_check2.py in the same scratchpad folder; Test-S 3,790 rows, 693 water bodies, 169 blocks reproduced). Scene-disjoint rows / blocks by reference set: fit+inner (author) 2,635 (69.5%) / 159 (94.1%); plus val-role rows (author's reported variant) 2,402 (63.4%) / 153 (90.5%); fit+inner plus train-role 2022-23 only 2,411 (63.6%) / 157 (92.9%); all non-protected non-buffer rows 2,203 (58.1%) / 151 (89.3%); including buffer-excluded rows 2,168 (57.2%) / 150 (88.8%). The author's script /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/data/orbitv2_testS_keycounts.py l.108-109 defines fit as train x <=2021 and val as val-role only, so train-role 2022-23 rows (4,774 dev rows) are in neither. WQP 2015-2023 rows and context or SSL chips will lower every fraction further (l.130-131). Counts are on any-target rows; the binding rule uses the chl-a cell.",
+      "suggested_ruling": "The reference set is the scene keys of every chip read in fitting, early stopping, selection, calibration or pretraining of any arm or comparator (all non-protected non-buffer dev_v5m rows, their context chips, and the SSL manifest chips if that init is inherited); thresholds are unchanged; and when all rows are primary, a §15.1 label also requires the scene-disjoint estimate to favour the arm against every comparator."
+    },
+    {
+      "id": "F-DISCLOSE",
+      "severity": "should_fix",
+      "section": "§0 l.30-37",
+      "issue": "Two facts the author told the lead are absent from the file. §0 instead says \"no scorer reads them\". (1) The v1 test script loads every protected row, Test-S included, inside the M2/test claim and extracts their pixels. (2) The M7 teacher store holds M2 v1 predictions on 242 chips in Test-S lakes and archive years.",
+      "evidence": "(1) /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/eval/orbit_test.py l.139-141: `D.build_table(allow_test=True)` then `D.extract_pixels(df)` on all protected rows; cells at l.149-153 are headline, testB_2026 and pooled_2024_2026 only, so no Test-S row is predicted, saved or scored. sentinel/models/orbit/guard.py drop_protected l.152-162 returns all protected rows under allow_test. (2) /home/bcheng/STOCKHOLM/sentinel_runs/orbit/teacher/naip_teacher_teacher_preds.parquet: 2,130 rows, of which 242 chips in 131 water bodies are test role, in-lake, non-buffer, archive years (keys-only count, scratch keys_check.py); test role of any type: 554. scripts/train/orbit_teacher.py reads imagery only. `grep -n -i -E 'teacher|naip|M7'` on the amendment finds neither fact; orbit_test.py appears only at l.514.",
+      "suggested_ruling": "Recorded: orbit_test.py holds Test-S rows in memory inside the M2/test claim, and the teacher store holds imagery-only v1 predictions on 242 Test-S-lake chips; M2/test and M2U/test write, log, seal or score nothing from any test-role row dated <= 2023-12-31, and no teacher prediction on a test-role chip is joined to a label or read by any v2 arm or comparator before M2S/test is sealed."
+    },
+    {
+      "id": "F-LOADER-V2",
+      "severity": "should_fix",
+      "section": "§2.4 l.192-193; §4 item 2 l.411-413; §5 l.433-447; §8 point 11",
+      "issue": "The v2 loaders the text relies on do not exist yet, so the protected-row claims for dev_v5m, the context cache and the Test-S loader cannot be checked against code. The existing guard sits only at build_table, write_cache and load_dev; the raw readers are public and unguarded, and one script already calls them directly. The v1 look list and freeze path are hard-coded, so M2S/test needs a new guard path.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/orbit_v2/ holds only __init__.py, chipfeat.py, lakeset.py, stamp.py and train.py (13:01 today); __init__.py names `targets`, `context` and `devm`, which are absent. Unguarded readers: sentinel/models/orbit/data.py aquacorr_rows l.73-103 and wqp_rows l.136-173. Bypass precedent: scripts/train/orbit_tracks.py l.57 concatenates both readers and holds protected label values in memory (output is counts only, l.66-72). dedupe (data.py l.212-244) runs before split assignment and the drop is at l.328. testlook.py look_dir l.60-63 accepts only M2/test and M2U/test; guard.FREEZE_FILE is fixed to FREEZE_orbit.json. orbit_v2/stamp.py gates validation numbers only, not protected reads. No code reads wqp_discrete values yet (grep: only the keys-only script, l.155-157).",
+      "suggested_ruling": "No dev_v5m build reads a new-target value column until the orbit_v2 targets, context and devm modules pass an independent leakage review; the builder assigns split roles from keys first and loads value columns only for non-protected keys, the dev context cache is built from an allow-list of train-role and val-role chip ids, and a test asserts that no protected row or chip id is in any dev_v5m artifact."
+    },
+    {
+      "id": "F-SAME-LAKES",
+      "severity": "should_fix",
+      "section": "§1.1 l.47-49; §1.8 l.143-145; §3.6 l.376-378; §3.8 l.391-397",
+      "issue": "Test-S lakes are the headline lakes in earlier years. Once M2/test is scored, per-lake results for v1 on those same lakes exist while v2 is still being developed. §1.8 forbids changing the file after M2/test, but count-determined addenda, the A2 gate, funding decisions and selection among \"any gated arm funded and run before the Test-S freeze\" all happen later.",
+      "evidence": "Amendment l.143-145 (later addenda allowed), l.377-378 (gated arms can join selection), l.391 (A2 gate depends on chain9 and a later funding decision). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/eval/orbit_test.py l.226 writes per-row predictions for the headline cell of the same water bodies. /home/bcheng/STOCKHOLM/sentinel_runs/orbit/logs/chain7_freeze_v5.sh shows the headline freeze is queued ahead of v2 work. No text forbids using headline per-lake output in v2 decisions.",
+      "suggested_ruling": "From the moment M2/test or M2U/test is claimed, no per-row prediction, label or per-lake or per-block result of those looks is used for any v2 design, funding, selection, calibration or addendum decision; a gated arm funded after M2/test is scored is tested only on Test-C; and test-role rows and rows dated >= 2024 never enter v2 training data."
+    },
+    {
+      "id": "F-CTX-ROLE",
+      "severity": "should_fix",
+      "section": "§3.4 item 3 l.296-301; §4 item 2 l.411-413",
+      "issue": "The context rule does not require a context chip to share the row's split role, and it does not name the chip stores. For non-lake rows a chip \"centred within 100 m\" can belong to a different water body or block, so a train-role row could read imagery of a test-role site. Four stores exist; which ones count as \"any existing chip store\" is left open, and membership follows in-situ sampling.",
+      "evidence": "Amendment l.296-299: non-lake members are chips within 100 m; \"Chips come from any existing chip store\". Stores under processed/s2_chips: aquacorr, wqp, naip_teacher (10,694 index rows, rebuilt 2026-11-09) and mc_benchmark (5,924 rows). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/orbit/data.py STORES lists only aquacorr and wqp. Split v3 assigns a point within 500 m of a lake to that lake (split.py LAKE_MAX_DIST_M), so a non-lake row and a chip 100 m away can differ in water body and role. No count of affected rows was made: the context builder does not exist yet.",
+      "suggested_ruling": "A context chip must have the same frozen-rule water body and split role as its row (non-lake rows: same 200-km block, not in-lake, not buffer-excluded); the context stores are named explicitly by the lead and pinned by content hash at the first dev_v5m build; mc_benchmark and any store built later are excluded."
+    },
+    {
+      "id": "F-OLS-INSAMPLE",
+      "severity": "should_fix",
+      "section": "§2.5 item 5 l.201-203",
+      "issue": "The trophic-chain baseline is fitted on MDN_B predictions for the same fit-cell rows MDN_B was trained on. Those in-sample predictions are cleaner than the out-of-sample ones it is applied to at test, which biases the fit and weakens the comparator the amendment itself expects to be strong for TP and TN. The stacking GBM already uses out-of-fold predictions.",
+      "evidence": "Amendment l.201-203: OLS \"fitted on the fit cell, of the log target on the validation-selected MDN_B's predicted log chl-a and log Secchi\"; no out-of-fold wording. Contrast l.362-364: the stacking GBM uses \"out-of-fold predictions (5 folds grouped by role block within the fit cell)\". No code exists yet for this baseline, so this is a reading of the text only.",
+      "suggested_ruling": "The trophic-chain OLS is fitted on out-of-fold MDN_B predictions (5 folds grouped by role block within the fit cell, as for the stacking GBM) and applied to the full-fit MDN_B predictions."
+    },
+    {
+      "id": "F-JOIN-100M",
+      "severity": "should_fix",
+      "section": "§2.4 l.182-183",
+      "issue": "The 100 m same-date join of a WQP station to an AquaCorr row is not restricted to the same water body or role. A station assigned to another water body could give its value to a row of a different role. The 1,000 m buffer rule makes this rare.",
+      "evidence": "Amendment l.182-183: \"the nearest WQP station within 100 m on the same date\". For base targets the equivalent merge is inside dedupe (data.py l.212-244) before split assignment; the new join is a separate path that does not exist yet. Not measured: counting affected rows needs station-level split assignment for wqp_discrete sites, which I did not run.",
+      "suggested_ruling": "The 100 m join of §2.4 is made only to a WQP station whose frozen-rule water body equals the row's; otherwise the row carries no value for that target."
+    },
+    {
+      "id": "F-RULINGS-PIN",
+      "severity": "should_fix",
+      "section": "§5 l.448-450; header l.3",
+      "issue": "The lead's rulings override the amendment, but nothing pins the rulings file. The code gate and the freeze candidate record only the amendment's hash, so a ruling could change after results without any hash moving.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/orbit_v2/stamp.py l.21-22 and l.39-58: the gate opens on any registry row of experiment `orbit/prereg_snapshot` whose extra.sha256 maps the amendment path to its current hash; no rulings file is referenced. Amendment l.448: the freeze candidate records \"this file's sha256\". The registry currently has 0 rows of that experiment.",
+      "suggested_ruling": "The stamp row and the Test-S freeze candidate record the sha256 of both the amendment and the lead-rulings file, and orbit_v2.stamp.require_stamp checks both."
+    },
+    {
+      "id": "N-TEMPORAL-CTX",
+      "severity": "note",
+      "section": "§3.4 item 3 l.300-301, l.310-311; §8 point 3",
+      "issue": "Two-sided context lets a fit row dated <= 2021 read 2022-23 imagery of its own train-role lake, unlike the SSL manifest, which stops at 2021. This is acceptable for a spatial claim but removes any temporal reading of A1 results.",
+      "evidence": "Amendment l.300-301 (context <= 2023-12-31 for every development row) and l.310-311 (\"looks both ways in time\"). /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/orbit/ssl.py eligible_chips l.41-63 keeps train role x train time block only.",
+      "suggested_ruling": "No action beyond labelling: any A1 result on a train-role 2022-23 cell or on a later-year cell is reported as non-temporal."
+    },
+    {
+      "id": "N-SPLITV1",
+      "severity": "note",
+      "section": "§0 l.34-35",
+      "issue": "\"Every development cache dropped them\" has a two-row exception. Two Test-S rows (one water body, one block) were train role under split v1 and so were eligible for dev_v1.",
+      "evidence": "Keys-only check (scratch keys_check.py): of 3,790 Test-S AquaCorr rows, 8 lie 100-500 m from their lake; under the v1 rule (100 m capture, own 50-km block) 6 are test and 2 are train x train. Only /home/bcheng/STOCKHOLM/sentinel_runs/orbit/compare_SMOKE_satwq (2026-10-24) used dev_v1; the registry has 12 `orbit_placebo_dev_v1` rows and no dev_v1 validation rows.",
+      "suggested_ruling": "No action; record the two-row exception with the disclosure correction."
+    },
+    {
+      "id": "N-COUNTS-IN-MEMORY",
+      "severity": "note",
+      "section": "§0 l.25-28; §1.4; §2.6",
+      "issue": "The counts were made without reading label values, as claimed. Separately, v1 build paths hold protected label values in memory before dropping them, and the censoring fractions cited in §0 are table-wide statistics of wqp_discrete that include protected sites.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/data/orbitv2_testS_keycounts.py reads only key columns (l.75-78, l.126-127, l.156-157) and sets targets to NaN (l.91-92); output docs/preregistration/orbit_testS_keycounts_20261110.json and 67 registry rows of `orbit_archv2_keycounts` hold counts only. docs/preregistration/orbit_split_report_dev_v4.json reproduces 2,001/510/143, 638/243/79 and the TSS and turbidity counts. data.py build_table l.313-342 loads all label values before the drop at l.328. Plan §5 quotes pool-wide censoring percentages.",
+      "suggested_ruling": "No action."
+    },
+    {
+      "id": "N-PINS",
+      "severity": "note",
+      "section": "§5 l.438-439",
+      "issue": "The promised content-hash pins for context chips and wqp_discrete are not in the imported v1 pin list, so the M2S look must add its own.",
+      "evidence": "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/sentinel/models/orbit/testlook.py DATA_PIN_SPECS has no wqp_discrete, naip_teacher or context-store entry.",
+      "suggested_ruling": "No action now; the independent code review of the M2S look checks the pin list against every file its protected loader opens."
+    },
+    {
+      "id": "N-CHAINS",
+      "severity": "note",
+      "section": "§3.1 l.247-250; §3.8 l.391; §8 point 7",
+      "issue": "Queued v1 chains will register multi-seed and SSL validation numbers on dev_v5 during the stamp window. They are v1-protocol work, but the shared-init rule and the A2 gate depend on chain9's outcome, so the moment \"the first A0 network starts\" is a choice that can be made after seeing chain9's interim numbers.",
+      "evidence": "/home/bcheng/STOCKHOLM/sentinel_runs/orbit/logs/chain8_seedvar_v5.sh and chain9_ssl_v5.sh (validation only; chain9 has a 4-day window). Amendment l.247-250 ties the init to the start time of the first A0 network.",
+      "suggested_ruling": "No action if point 7 is ruled with a fixed cut-off (see points)."
+    },
+    {
+      "id": "N-CONFIRMED",
+      "severity": "note",
+      "section": "§0; author's statements to the lead",
+      "issue": "Checks that came back clean: no validation or test result exists for any new arm or Track N target, and the v1 guard paths do what the text says. Other workstreams were not checked exhaustively.",
+      "evidence": "Registry /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/results/registry.jsonl (72,703 rows): M2 experiments are dev_v1/v3/v4 validation, dry run, power, events, conformal and the keys-only counts; the only rows with target tp, tn, doc, ssc or turbidity_fnu are 30 keys-only rows of `orbit_archv2_keycounts`; no model named A0, A1 or LakeSet; no M2 test rows. /home/bcheng/STOCKHOLM/sentinel_runs/orbit has no v2, dev_v5 or Test-S run folder; cache holds dev_v4 only. Guard: data.py l.328 (drop), l.402-409 (write_cache refusal), l.412-426 (load_dev check), l.434-460 (gloria_rows); guard.py check_rows l.128-149; ssl.py l.41-63; track_u.py test_mask needs the test time block. Other workstreams: fuse_tier_w.py l.60-61 reads the 2024-25 matchups only; bioassess/xtrack.py l.169-185 excludes M2 test-role NLA visits by keys; M7's lake rule uses 100 m against Orbit's 500 m (lite/data.py l.153).",
+      "suggested_ruling": "No action."
+    }
+  ],
+  "points": [
+    {
+      "point": "1. Scene-disjointness reference set (§1.6)",
+      "recommendation": "Change. Use the stricter set: every non-protected, non-buffer dev_v5m row (fit, inner, val-role, train-role 2022-23), their context chips, and SSL manifest chips if that init is inherited. Keep both thresholds. Add the sign-agreement condition when all rows are primary.",
+      "reason": "The choice decides which cell is primary. Keys-only preview: 69.5% disjoint with fit+inner, 63.4% with val-role rows added, 58.1% with all dev rows, which is below the 60% threshold before WQP 2015-2023 rows and context chips lower it further."
+    },
+    {
+      "point": "2. Binding MDE after the stamp (§1.7, §2.6)",
+      "recommendation": "Confirm, with the condition that the calculation reads validation predictions and protected counts only and that its script is named in the rulings.",
+      "reason": "The existing method (orbit_power.py, protocol §5a) uses protected counts only; the rule and thresholds are already fixed in the text."
+    },
+    {
+      "point": "3. Context date limit and two-sided context (§3.4 item 3)",
+      "recommendation": "Confirm the <= 2023-12-31 limit and two-sided context, and add: context chips must share the row's water body and split role, and the chip stores are named and pinned now.",
+      "reason": "The date limit keeps headline-year imagery out. The role and store gaps are the open leakage paths (F-CTX-ROLE)."
+    },
+    {
+      "point": "5. Multi-target-by-stacking GBM member (§3.5)",
+      "recommendation": "Confirm, and apply the same out-of-fold rule to the trophic-chain OLS.",
+      "reason": "Out-of-fold predictions grouped by role block are the right guard against in-sample stacking; the OLS baseline lacks it (F-OLS-INSAMPLE)."
+    },
+    {
+      "point": "7. Shared initialisation fixed when A0 starts (§3.1)",
+      "recommendation": "Change to a fixed cut-off: both arms use the non-SSL init unless chain9 has registered its selection by a date and time the lead writes into the rulings; the decision is logged in the registry before the first A0 network starts and is never revisited.",
+      "reason": "\"When A0 starts\" is a moment the engineer controls and can pick after seeing chain9's interim validation numbers."
+    },
+    {
+      "point": "11. Code separation (§5)",
+      "recommendation": "Confirm separation outside the v1 globs, with three conditions: the v2 guard and loaders are independently reviewed before any dev_v5m build reads a new-target value; look tests use only a temporary runs root; a claim refuses a non-empty look directory.",
+      "reason": "The v1 look list and freeze path are hard-coded, so M2S/test needs new guard code that does not exist yet, and a unit test has already written an abort marker into the real M2/test directory (F-ABORT-MARKER)."
+    }
+  ],
+  "summary": "Hash matches. No result exists on any new arm or Track N target; the counts script is keys-only; v1 guard paths behave as described. No blocking finding, but the stamp needs rulings. (1) M7's sealed look already scored an S2 SatWQ-Net at up to 106 site-dates in Test-S lakes, and the M7 national look would add more. (2) A pytest-written ABORTED.json in the real M2_test directory would spend M2/test at claim. (3) The scene reference set omits val, train 2022-23, context and SSL scenes; with all dev rows only 58.1% is disjoint, below the 60% threshold. (4) Two disclosed facts are missing from the file. (5) The v2 loaders do not exist yet and need review."
+}

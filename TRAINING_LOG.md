@@ -15739,3 +15739,12583 @@ Fields with bad pandas dtypes: chem__tn_mgl__cens: object, chem__tp_mgl__cens: o
   - folds_total_done: 9
 - **Notes**: —
 - **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/bioset_parts/X-L/bsx_flat_geo_rloss
+
+## downstream / taprisk/it2/d4a_gw_nitrate — 2026-11-09 16:09
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 7.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package a5230df1967e3875, script `downstream_taprisk.py`
+- **Data**: labels_sdwis, labels_cws_boundaries, taprisk_catchment, wqp_discrete, wbd_huc12
+- **Config** (hash b91f82d4629b65c1):
+  - split_sha256: a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298
+  - task: d4a_gw_nitrate
+- **Final metrics**:
+  - (none)
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/taprisk/it2_d4a_gw_nitrate
+
+## downstream / taprisk/it2/d4b_sw_dbp — 2026-11-09 16:17
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 6cc074da0fa0db61, script `downstream_taprisk.py`
+- **Data**: labels_sdwis, labels_cws_boundaries, taprisk_catchment, wqp_discrete, wbd_huc12
+- **Config** (hash 7a794019c4fdf564):
+  - split_sha256: a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298
+  - task: d4b_sw_dbp
+- **Final metrics**:
+  - (none)
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/taprisk/it2_d4b_sw_dbp
+
+## downstream / riverpulse/it2_decomp — 2026-11-09 16:22
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) D8 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 6cc074da0fa0db61, script `downstream_riverpulse_decomp.py`
+- **Data**: labels_powell_metabolism, forcings_daily, streamcat, sites, downstream_catchment
+- **Config** (hash 900d405f22a6d12d):
+  - gbm: {'num_leaves': 31, 'min_child_samples': 200}
+  - rf: {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.33}
+  - split_sha256: 20c550f9ab42ac343fdbdda1bd2eb845ad7e2081a06904037bbd19881b66b0d8
+- **Final metrics**:
+  - er_decomp_r2: 0.133321
+  - gpp_decomp_r2: 0.132489
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/riverpulse/val_confHM_it2_decomp
+
+## M6-hydromet / ealstm — 2026-11-09 16:04
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: cycle1
+- **Status**: ✅ Completed | **Duration**: 41.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 23f8fb7a93d2ed16, script `hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 8e71febee19e28b9):
+  - _config_file: configs/hydromet/lstm.yaml
+  - _smoke: False
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - grid: [{'hidden': 128, 'dropout': 0.4, 'static_noise': 0.0}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 1.0}]
+  - grid_point: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - iteration: cycle1
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: ealstm
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R4_plains_texas
+- **Final metrics**:
+  - best_inner_val_loss: 0.4016
+- **Notes**: grid {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, epochs 15, params 87790
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R4_plains_texas_ealstm_s2/g0_s2
+
+## bioassess / bioassess_x_dev/X-L/rf_community/multi — 2026-11-09 15:52
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 82.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 94f0a2d8ddabcf22, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash f3b2cf2a0d646af5):
+  - block: X-L
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: rf_community
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 82.2915
+  - n_rows: 415
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-L
+
+## M6-hydromet / ealstm — 2026-11-09 16:57
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: cycle1
+- **Status**: ✅ Completed | **Duration**: 25.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 94f0a2d8ddabcf22, script `hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 75ea2b7bf198c796):
+  - _config_file: configs/hydromet/lstm.yaml
+  - _smoke: False
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - grid: [{'hidden': 128, 'dropout': 0.4, 'static_noise': 0.0}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 1.0}]
+  - grid_point: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - iteration: cycle1
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: ealstm
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R5_southwest_basin
+- **Final metrics**:
+  - best_inner_val_loss: 0.47451
+- **Notes**: grid {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, epochs 9, params 87790
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R5_southwest_basin_ealstm_s0/g0_s0
+
+## bioassess / bioassess_x_dev/X-U/bsx_flat_geo_same — 2026-11-09 15:59
+- **Plan ref**: bioassess_x_protocol.md §7, amendment v4.9 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 83.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 94f0a2d8ddabcf22, script `bioassess_x_bioset.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash f2a6d202dc1741ac):
+  - block: X-U
+  - cfg: {'arch': 'settransformer', 'd_model': 128, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'token_dropout': 0.1, 'resolution_dropout': 0.0, 'embedding': 'flat', 'levels': ['phylum', 'class', 'order', 'family', 'genus', 'name'], 'init_std': {'phylum': 1.0, 'class': 0.7, 'order': 0.5, 'family': 0.35, 'genus': 0.25, 'name': 0.15}, 'min_name_count': 3, 'loss': 'mse', 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 128, 'max_epochs': 200, 'patience': 25, 'pretrained': None, 'finetune_lr_scale': 1.0, 'aux_targets': False, 'aux_weight': 0.5, 'region_loss_weight': 0.0, 'candidate': 'bsx_flat_geo_same'}
+  - device: cuda
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: bsx_flat_geo_same
+  - seed: 0
+  - spec: {'embedding': 'flat', 'same_continent': True}
+- **Final metrics**:
+  - folds_done_this_chunk: 19
+  - folds_total_done: 19
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/bioset_parts/X-U/bsx_flat_geo_same
+
+## bioassess / bioassess_x_dev/X-L/bsx_flat_geo_same — 2026-11-09 17:25
+- **Plan ref**: bioassess_x_protocol.md §7, amendment v4.9 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 4.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package bf74e2eeeca6cd61, script `bioassess_x_bioset.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash d13a19092c6dc30c):
+  - block: X-L
+  - cfg: {'arch': 'settransformer', 'd_model': 128, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'token_dropout': 0.1, 'resolution_dropout': 0.0, 'embedding': 'flat', 'levels': ['phylum', 'class', 'order', 'family', 'genus', 'name'], 'init_std': {'phylum': 1.0, 'class': 0.7, 'order': 0.5, 'family': 0.35, 'genus': 0.25, 'name': 0.15}, 'min_name_count': 3, 'loss': 'mse', 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 128, 'max_epochs': 200, 'patience': 25, 'pretrained': None, 'finetune_lr_scale': 1.0, 'aux_targets': False, 'aux_weight': 0.5, 'region_loss_weight': 0.0, 'candidate': 'bsx_flat_geo_same'}
+  - device: cuda
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: bsx_flat_geo_same
+  - seed: 0
+  - spec: {'embedding': 'flat', 'same_continent': True}
+- **Final metrics**:
+  - folds_done_this_chunk: 9
+  - folds_total_done: 9
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/bioset_parts/X-L/bsx_flat_geo_same
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost — 2026-11-09 17:35
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 0.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package bf74e2eeeca6cd61, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash e2d373f409cb615c):
+  - budget: 1
+  - entry: xgboost
+  - folds: ['Maxillopoda']
+  - plan_sha256: 48553f19ac3674b5ed18c35954641580d81fab0c8974ae245f37ead0f7fd835e
+  - role: comparator
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.7685
+  - n_configurations: 1
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.7685
+- **Notes**: —
+- **Artifacts**: /tmp/claude-1016/-home-bcheng-STOCKHOLM/dbc009e4-477d-4528-910a-e89e964c5c0f/scratchpad/smoke2
+
+## bioassess / bioassess_x_dev/X-L/rf_community_geography/multi — 2026-11-09 17:15
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 55.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package dcd728ac10335adf, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 0a1addd09b25a079):
+  - block: X-L
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: rf_community_geography
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 55.1719
+  - n_rows: 415
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-L
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost — 2026-11-09 17:36
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 45.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package dcd728ac10335adf, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 881a187110084d73):
+  - budget: 32
+  - entry: xgboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: 48553f19ac3674b5ed18c35954641580d81fab0c8974ae245f37ead0f7fd835e
+  - role: comparator
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.59181
+  - n_configurations: 32
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.73181
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / ealstm — 2026-11-09 17:33
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: cycle1
+- **Status**: ✅ Completed | **Duration**: 54.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package dcd728ac10335adf, script `hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 422b998f1ed27f03):
+  - _config_file: configs/hydromet/lstm.yaml
+  - _smoke: False
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - grid: [{'hidden': 128, 'dropout': 0.4, 'static_noise': 0.0}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 1.0}]
+  - grid_point: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - iteration: cycle1
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: ealstm
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R5_southwest_basin
+- **Final metrics**:
+  - best_inner_val_loss: 0.491485
+- **Notes**: grid {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, epochs 20, params 87790
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R5_southwest_basin_ealstm_s1/g0_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/rf — 2026-11-09 18:22
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 37.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package dcd728ac10335adf, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c4aebd6704edc8c4):
+  - budget: 32
+  - entry: rf
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: 48553f19ac3674b5ed18c35954641580d81fab0c8974ae245f37ead0f7fd835e
+  - role: comparator
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.56289
+  - n_configurations: 32
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.73972
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_x_dev/X-L/rf_community_context/multi — 2026-11-09 18:10
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 53.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 9f6a77eb1386ebdd, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash a3acaa72c6af0030):
+  - block: X-L
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: rf_community_context
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 53.146
+  - n_rows: 415
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-L
+
+## bioassess / bioassess_x_dev/X-U/wapls2/multi — 2026-11-09 19:03
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 1.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 9f6a77eb1386ebdd, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash ba3bd89889201234):
+  - block: X-U
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: wapls2
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 1.66239
+  - n_rows: 4788
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-U
+
+## bioassess / bioassess_x_dev/X-U/knn_community/multi — 2026-11-09 19:05
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 1.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 9f6a77eb1386ebdd, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 49a72bab6a286c7f):
+  - block: X-U
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: knn_community
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 1.44681
+  - n_rows: 4788
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-U
+
+## M6-hydromet / ealstm — 2026-11-09 18:39
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: cycle1
+- **Status**: ✅ Completed | **Duration**: 30.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 9f6a77eb1386ebdd, script `hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 080d9c0298042ef0):
+  - _config_file: configs/hydromet/lstm.yaml
+  - _smoke: False
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - grid: [{'hidden': 128, 'dropout': 0.4, 'static_noise': 0.0}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 1.0}]
+  - grid_point: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - iteration: cycle1
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: ealstm
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R5_southwest_basin
+- **Final metrics**:
+  - best_inner_val_loss: 0.525651
+- **Notes**: grid {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, epochs 11, params 87790
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R5_southwest_basin_ealstm_s2/g0_s2
+
+## M6-hydromet / baselines — 2026-11-09 14:22
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 291.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 9f6a77eb1386ebdd, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash e2440b5d4d6498d4):
+  - _config_file: configs/hydromet/baselines.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 8, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R2_southeast
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R2_southeast_base
+
+## bioassess / bioassess_x_dev/X-U/gbm_community/multi — 2026-11-09 19:07
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 8.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 9f6a77eb1386ebdd, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 88a8eac57c9a749f):
+  - block: X-U
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: gbm_community
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 8.55453
+  - n_rows: 4788
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-U
+
+## bioassess / bioassess_x_dev/X-U/bsx_flat_geo_ukpt — 2026-11-09 17:32
+- **Plan ref**: bioassess_x_protocol.md §7, amendment v4.9 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 110.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 9f6a77eb1386ebdd, script `bioassess_x_bioset.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 3718ee3663b4b9f0):
+  - block: X-U
+  - cfg: {'arch': 'settransformer', 'd_model': 128, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'token_dropout': 0.1, 'resolution_dropout': 0.0, 'embedding': 'flat', 'levels': ['phylum', 'class', 'order', 'family', 'genus', 'name'], 'init_std': {'phylum': 1.0, 'class': 0.7, 'order': 0.5, 'family': 0.35, 'genus': 0.25, 'name': 0.15}, 'min_name_count': 3, 'loss': 'mse', 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 128, 'max_epochs': 200, 'patience': 25, 'pretrained': None, 'finetune_lr_scale': 1.0, 'aux_targets': False, 'aux_weight': 0.5, 'region_loss_weight': 0.0, 'candidate': 'bsx_flat_geo_ukpt'}
+  - device: cuda
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: bsx_flat_geo_ukpt
+  - seed: 0
+  - spec: {'embedding': 'flat', 'ukpt': True}
+- **Final metrics**:
+  - folds_done_this_chunk: 14
+  - folds_total_done: 14
+- **Notes**: chunk stopped before fold 14 (time budget)
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/bioset_parts/X-U/bsx_flat_geo_ukpt
+
+## bioassess / bioassess_x_dev/X-U/bsx_flat_geo_ukpt — 2026-11-09 19:24
+- **Plan ref**: bioassess_x_protocol.md §7, amendment v4.9 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 40.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 4d4a3ab210d79cd3, script `bioassess_x_bioset.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 3718ee3663b4b9f0):
+  - block: X-U
+  - cfg: {'arch': 'settransformer', 'd_model': 128, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'token_dropout': 0.1, 'resolution_dropout': 0.0, 'embedding': 'flat', 'levels': ['phylum', 'class', 'order', 'family', 'genus', 'name'], 'init_std': {'phylum': 1.0, 'class': 0.7, 'order': 0.5, 'family': 0.35, 'genus': 0.25, 'name': 0.15}, 'min_name_count': 3, 'loss': 'mse', 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 128, 'max_epochs': 200, 'patience': 25, 'pretrained': None, 'finetune_lr_scale': 1.0, 'aux_targets': False, 'aux_weight': 0.5, 'region_loss_weight': 0.0, 'candidate': 'bsx_flat_geo_ukpt'}
+  - device: cuda
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: bsx_flat_geo_ukpt
+  - seed: 0
+  - spec: {'embedding': 'flat', 'ukpt': True}
+- **Final metrics**:
+  - folds_done_this_chunk: 5
+  - folds_total_done: 19
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/bioset_parts/X-U/bsx_flat_geo_ukpt
+
+## M6-hydromet / ealstm — 2026-11-09 19:21
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: cycle1
+- **Status**: ✅ Completed | **Duration**: 45.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 4d4a3ab210d79cd3, script `hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash ec8174899a4c5acf):
+  - _config_file: configs/hydromet/lstm.yaml
+  - _smoke: False
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - grid: [{'hidden': 128, 'dropout': 0.4, 'static_noise': 0.0}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 1.0}]
+  - grid_point: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - iteration: cycle1
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: ealstm
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R6_pacific
+- **Final metrics**:
+  - best_inner_val_loss: 0.400551
+- **Notes**: grid {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, epochs 17, params 87790
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R6_pacific_ealstm_s0/g0_s0
+
+## M6-hydromet / baselines — 2026-11-09 19:14
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 90.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 4d4a3ab210d79cd3, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash a96626b48a729ba8):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R2_southeast
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s0']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R2_southeast_gbmbag_s0
+
+## bioassess / bioassess_x_dev/X-L/bsx_flat_geo_ukpt — 2026-11-09 20:07
+- **Plan ref**: bioassess_x_protocol.md §7, amendment v4.9 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 43.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 4d4a3ab210d79cd3, script `bioassess_x_bioset.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 77757e70c0f874b6):
+  - block: X-L
+  - cfg: {'arch': 'settransformer', 'd_model': 128, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'token_dropout': 0.1, 'resolution_dropout': 0.0, 'embedding': 'flat', 'levels': ['phylum', 'class', 'order', 'family', 'genus', 'name'], 'init_std': {'phylum': 1.0, 'class': 0.7, 'order': 0.5, 'family': 0.35, 'genus': 0.25, 'name': 0.15}, 'min_name_count': 3, 'loss': 'mse', 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 128, 'max_epochs': 200, 'patience': 25, 'pretrained': None, 'finetune_lr_scale': 1.0, 'aux_targets': False, 'aux_weight': 0.5, 'region_loss_weight': 0.0, 'candidate': 'bsx_flat_geo_ukpt'}
+  - device: cuda
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: bsx_flat_geo_ukpt
+  - seed: 0
+  - spec: {'embedding': 'flat', 'ukpt': True}
+- **Final metrics**:
+  - folds_done_this_chunk: 9
+  - folds_total_done: 9
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/bioset_parts/X-L/bsx_flat_geo_ukpt
+
+## M7-lite / baselines — 2026-11-09 21:11
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `lite_baselines.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 056ae327439708c8):
+  - gbm_params: {'n_estimators': 400, 'learning_rate': 0.03, 'num_leaves': 15, 'min_child_samples': 20, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'n_jobs': 6, 'verbose': -1}
+  - knn_k: 10
+  - smoke: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+- **Final metrics**:
+  - band_ratio/chla/bal_acc: 0.321443
+  - band_ratio/secchi/mdsa: 78.5859
+  - band_ratio/tss/mdsa: 100.431
+  - band_ratio/turbidity/mdsa: 129.623
+  - band_ratio_kloiber_linear/secchi/mdsa: 91.6214
+  - band_ratio_kloiber_log/secchi/mdsa: 79.4186
+  - band_ratio_kloiber_log_water/secchi/mdsa: 78.5859
+  - band_ratio_oc_ndvi/chla/bal_acc: 0.321443
+  - band_ratio_oc_ndvi_water/chla/bal_acc: 0.315652
+  - band_ratio_red_green_log_water/tss/mdsa: 100.905
+  - band_ratio_red_green_log_water/turbidity/mdsa: 140.3
+  - band_ratio_red_nir_log/tss/mdsa: 100.431
+  - band_ratio_red_nir_log/turbidity/mdsa: 129.623
+  - band_ratio_red_nir_log_water/tss/mdsa: 102.167
+  - band_ratio_red_nir_log_water/turbidity/mdsa: 130.028
+  - gbm_rgbn/chla/bal_acc: 0.352178
+  - gbm_rgbn/secchi/mdsa: 47.3322
+  - gbm_rgbn/tss/mdsa: 97.9352
+  - gbm_rgbn/turbidity/mdsa: 116.763
+  - gbm_rgbn_ctx/chla/bal_acc: 0.344254
+  - gbm_rgbn_ctx/secchi/mdsa: 36.4998
+  - gbm_rgbn_ctx/tss/mdsa: 102.699
+  - gbm_rgbn_ctx/turbidity/mdsa: 111.871
+  - loc_knn/chla/bal_acc: 0.298726
+  - loc_knn/secchi/mdsa: 51.4614
+  - loc_knn/tss/mdsa: 116.506
+  - loc_knn/turbidity/mdsa: 129.075
+  - loc_season_gbm/chla/bal_acc: 0.312717
+  - loc_season_gbm/secchi/mdsa: 58.0623
+  - loc_season_gbm/tss/mdsa: 126.406
+  - loc_season_gbm/turbidity/mdsa: 142.072
+  - train_median/chla/bal_acc: 0.25
+  - train_median/secchi/mdsa: 100.967
+  - train_median/tss/mdsa: 107.695
+  - train_median/turbidity/mdsa: 151.884
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natbaselines_20261109-211150
+
+## M4 ChemTox / chemtox_unseen_taxa_select/rf — 2026-11-09 20:17
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 58.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7e26822732290ee7):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - cuda_visible_devices: None
+  - entry: rf
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.21662
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.32747
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_x_dev/X-U/rf_community/multi — 2026-11-09 19:15
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 133.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 675f84b6311693fe):
+  - block: X-U
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: rf_community
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 132.986
+  - n_rows: 4788
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-U
+
+## M4 ChemTox / chemtox_unseen_taxa_select/rf — 2026-11-09 21:15
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 24.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 9cec495768e49628):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+  - cuda_visible_devices: None
+  - entry: rf
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.21459
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.31647
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_x_dev/X-U/bsx_flat_geo — 2026-11-09 20:54
+- **Plan ref**: bioassess_x_protocol.md §7, amendment v4.9 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 46.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `bioassess_x_bioset.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 88d0021dfab6a2ec):
+  - block: X-U
+  - cfg: {'arch': 'settransformer', 'd_model': 128, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'token_dropout': 0.1, 'resolution_dropout': 0.0, 'embedding': 'flat', 'levels': ['phylum', 'class', 'order', 'family', 'genus', 'name'], 'init_std': {'phylum': 1.0, 'class': 0.7, 'order': 0.5, 'family': 0.35, 'genus': 0.25, 'name': 0.15}, 'min_name_count': 3, 'loss': 'mse', 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 128, 'max_epochs': 200, 'patience': 25, 'pretrained': None, 'finetune_lr_scale': 1.0, 'aux_targets': False, 'aux_weight': 0.5, 'region_loss_weight': 0.0, 'candidate': 'bsx_flat_geo'}
+  - device: cuda
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: bsx_flat_geo
+  - seed: 0
+  - spec: {'embedding': 'flat'}
+- **Final metrics**:
+  - folds_done_this_chunk: 11
+  - folds_total_done: 19
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/bioset_parts/X-U/bsx_flat_geo
+
+## M6-hydromet / baselines — 2026-11-09 20:44
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 82.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 4c9e57e0a9e8f7ac):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 1
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R2_southeast
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s1']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R2_southeast_gbmbag_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost — 2026-11-09 21:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 41.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7947b7308bd93a33):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - cuda_visible_devices: None
+  - entry: xgboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.22092
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.33548
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_x_dev/X-U/rf_community_geography/multi — 2026-11-09 21:28
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 89.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 55506b1be24ec142):
+  - block: X-U
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: rf_community_geography
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 89.753
+  - n_rows: 4788
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-U
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost — 2026-11-09 22:22
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 36.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 58148d836088af96):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+  - cuda_visible_devices: None
+  - entry: xgboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.23422
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.3271
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / ealstm — 2026-11-09 21:49
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: cycle1
+- **Status**: ✅ Completed | **Duration**: 76.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash fb5da8b4ca00775b):
+  - _config_file: configs/hydromet/lstm.yaml
+  - _smoke: False
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - grid: [{'hidden': 128, 'dropout': 0.4, 'static_noise': 0.0}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 1.0}]
+  - grid_point: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - iteration: cycle1
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: ealstm
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R6_pacific
+- **Final metrics**:
+  - best_inner_val_loss: 0.391954
+- **Notes**: grid {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, epochs 28, params 87790
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R6_pacific_ealstm_s1/g0_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-09 23:05
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7a2c4cc7f50142da):
+  - accelerator: gpu
+  - config_index: 0
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.27086
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / baselines — 2026-11-09 22:07
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 91.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash a2981b52a2c66d0a):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R2_southeast
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s2']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R2_southeast_gbmbag_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-09 23:15
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 24.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 66ac7cc260f8051d):
+  - accelerator: gpu
+  - config_index: 0
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.30911
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/lightgbm — 2026-11-09 22:58
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 53.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c71f38ad4d1766f2):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - cuda_visible_devices: None
+  - entry: lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.11462
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.2187
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_controls:perm:rf_clr — 2026-11-09 04:14
+- **Plan ref**: microbe_protocol §5 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 1182.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `microbe_controls.py`
+- **Data**: microbe_wq
+- **Config** (hash 152abf13562bbc04):
+  - model: rf_clr
+  - n_perm: 20
+  - permutation: within each fold's training rows, all targets jointly
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - tag: 
+- **Final metrics**:
+  - null_mean_do: -0.0279748
+  - null_mean_log_chla: -0.0551828
+  - null_mean_log_doc: -0.061275
+  - null_mean_log_no3: -0.0860747
+  - null_mean_log_sc: -0.121596
+  - null_mean_log_tn: -0.10775
+  - null_mean_log_tp: -0.0410627
+  - null_mean_log_turb: -0.15094
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/controls
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-09 23:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 24.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 6da50ea4e6112ff5):
+  - accelerator: gpu
+  - config_index: 0
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.18464
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_x_dev/X-U/rf_community_context/multi — 2026-11-09 22:58
+- **Plan ref**: bioassess_x_protocol.md §6, amendment v4 | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 90.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `bioassess_x_dev.py`
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash ef568d01773a8447):
+  - block: X-U
+  - folds_sha256: b3c1433abdf63d35f9dffaf21fd17542cef943aa2c9b13dd8c5b7c7299a67138
+  - model: rf_community_context
+  - seed: 0
+  - variant: multi
+- **Final metrics**:
+  - minutes: 90.0464
+  - n_rows: 4788
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/x_track/dev/preds/X-U
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 00:05
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 29.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash a902c6fb3a60637f):
+  - accelerator: gpu
+  - config_index: 0
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.08088
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/lightgbm — 2026-11-09 23:52
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 46.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 75f36a9450dc8d5a):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+  - cuda_visible_devices: None
+  - entry: lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.10533
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.17519
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 00:34
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 1d152bc9a3167511):
+  - accelerator: gpu
+  - config_index: 1
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.25871
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 00:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 13.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash f25df558971d2970):
+  - accelerator: gpu
+  - config_index: 1
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.32213
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 00:53
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 13.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash e59a17f3c0f5aacf):
+  - accelerator: gpu
+  - config_index: 1
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.20447
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/catboost — 2026-11-10 00:38
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 36.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c4c0d3f530873e05):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 4, 8, 12, 16, 20, 24, 28]
+  - cuda_visible_devices: None
+  - entry: catboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 0
+  - shards: 4
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.13022
+  - n_configurations: 8
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.20845
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:07
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 15.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 0592d32ac8d225a5):
+  - accelerator: gpu
+  - config_index: 1
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.04963
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:22
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c853959a5d040079):
+  - accelerator: gpu
+  - config_index: 2
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34116
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop128_kd03_national2 — 2026-11-10 00:46
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 40.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 19b8257d0cdd8367):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 128
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop128_kd03_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.321343
+  - ensemble/secchi/mdsa: 50.7233
+  - ensemble/tss/mdsa: 98.7657
+  - ensemble/turbidity/mdsa: 94.7989
+  - seed0/chla: 0.324953
+  - seed0/secchi: 53.397
+  - seed0/tss: 98.199
+  - seed0/turbidity: 100.368
+  - seed1/chla: 0.321809
+  - seed1/secchi: 51.0894
+  - seed1/tss: 101.306
+  - seed1/turbidity: 99.4726
+  - seed2/chla: 0.322678
+  - seed2/secchi: 50.8327
+  - seed2/tss: 97.8781
+  - seed2/turbidity: 96.9411
+- **Notes**: KD: 2902184 teacher cells over 2599 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop128_kd03_national2_20261110-004644
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:26
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash d39a012c76d3cbef):
+  - accelerator: gpu
+  - config_index: 2
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34819
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:31
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 54ace41da843d7e8):
+  - accelerator: gpu
+  - config_index: 2
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.1752
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:38
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 02f8ca34b9cd94a4):
+  - accelerator: gpu
+  - config_index: 2
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.01022
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/catboost — 2026-11-10 01:15
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 31.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash f18dd871a68166b3):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 5, 9, 13, 17, 21, 25, 29]
+  - cuda_visible_devices: None
+  - entry: catboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 1
+  - shards: 4
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.1107
+  - n_configurations: 8
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.20555
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:45
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash ba966d202251e6fd):
+  - accelerator: gpu
+  - config_index: 3
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33376
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:48
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash d9384b6ce2262ff5):
+  - accelerator: gpu
+  - config_index: 3
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33798
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 01:54
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 558cd0d5a031f014):
+  - accelerator: gpu
+  - config_index: 3
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.42073
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 02:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash d978d515439b5f67):
+  - accelerator: gpu
+  - config_index: 3
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.00918
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop192_kd03_national2 — 2026-11-10 01:26
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 41.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 5d0853b3806de961):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 192
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop192_kd03_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.332422
+  - ensemble/secchi/mdsa: 50.5559
+  - ensemble/tss/mdsa: 91.4658
+  - ensemble/turbidity/mdsa: 97.1995
+  - seed0/chla: 0.343857
+  - seed0/secchi: 50.9897
+  - seed0/tss: 90.2481
+  - seed0/turbidity: 98.5928
+  - seed1/chla: 0.329499
+  - seed1/secchi: 51.873
+  - seed1/tss: 98.4925
+  - seed1/turbidity: 98.1017
+  - seed2/chla: 0.320877
+  - seed2/secchi: 50.4519
+  - seed2/tss: 90.1765
+  - seed2/turbidity: 97.9332
+- **Notes**: KD: 2902184 teacher cells over 2599 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop192_kd03_national2_20261110-012653
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 02:06
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 3bc8000fb20ab028):
+  - accelerator: gpu
+  - config_index: 4
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34202
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/catboost — 2026-11-10 01:47
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 31.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 9b357b354e8a32b8):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [2, 6, 10, 14, 18, 22, 26, 30]
+  - cuda_visible_devices: None
+  - entry: catboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 2
+  - shards: 4
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.11201
+  - n_configurations: 8
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.1975
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 02:10
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 41fdce5bf131dac1):
+  - accelerator: gpu
+  - config_index: 4
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.3819
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 02:19
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash d90e6cb3fa62fd8e):
+  - accelerator: gpu
+  - config_index: 4
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.40904
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 02:29
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash dc623edc2f91be25):
+  - accelerator: gpu
+  - config_index: 4
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.04811
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop256_kd03_national2 — 2026-11-10 02:08
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 38.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 16b05d4eb9c7a73f):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_kd03_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.348386
+  - ensemble/secchi/mdsa: 48.8611
+  - ensemble/tss/mdsa: 91.5714
+  - ensemble/turbidity/mdsa: 91.0411
+  - seed0/chla: 0.339421
+  - seed0/secchi: 50.2326
+  - seed0/tss: 97.9727
+  - seed0/turbidity: 98.9298
+  - seed1/chla: 0.34925
+  - seed1/secchi: 50.4943
+  - seed1/tss: 96.5879
+  - seed1/turbidity: 97.0325
+  - seed2/chla: 0.346348
+  - seed2/secchi: 48.1451
+  - seed2/tss: 92.8559
+  - seed2/turbidity: 91.8485
+- **Notes**: KD: 2902184 teacher cells over 2599 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_kd03_national2_20261110-020817
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 02:38
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 14.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 597f95d5002bee63):
+  - accelerator: gpu
+  - config_index: 5
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.22301
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/catboost — 2026-11-10 02:18
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 41.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d575899d223ea0c7, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b2c488790faf7e57):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [3, 7, 11, 15, 19, 23, 27, 31]
+  - cuda_visible_devices: None
+  - entry: catboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 3
+  - shards: 4
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.11095
+  - n_configurations: 8
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.20198
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 02:53
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 31.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b0c5911e60f23e2f):
+  - accelerator: gpu
+  - config_index: 5
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.32004
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost_chan — 2026-11-10 03:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 44.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash dca45ef99438298b):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - cuda_visible_devices: None
+  - entry: xgboost_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.09771
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.16785
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 03:24
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 30.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 10a24f804620062e):
+  - accelerator: gpu
+  - config_index: 5
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.23405
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost_chan — 2026-11-10 03:45
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 36.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c6814342764c1d2d):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+  - cuda_visible_devices: None
+  - entry: xgboost_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.10473
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.17768
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 03:55
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 31.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 259c68cb3f89ae04):
+  - accelerator: gpu
+  - config_index: 5
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02948
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 04:27
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash e9235541b117ccf6):
+  - accelerator: gpu
+  - config_index: 6
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.31495
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / baselines — 2026-11-09 23:38
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 318.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash f01ac7ce73565890):
+  - _config_file: configs/hydromet/baselines.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 8, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R3_midwest_greatlakes
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R3_midwest_greatlakes_base
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 04:39
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 29.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash aa5f84d0660032fe):
+  - accelerator: gpu
+  - config_index: 6
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.35215
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 05:09
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 31.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash d8b1f775e776a662):
+  - accelerator: gpu
+  - config_index: 6
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.37454
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/rf_chan — 2026-11-10 04:21
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 89.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 2685ce0f48fbd82a):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - cuda_visible_devices: None
+  - entry: rf_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.11105
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.16295
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 05:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 33.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b82c79e4754651cf):
+  - accelerator: gpu
+  - config_index: 6
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 0.988427
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / lite_ssl/simsiam_v1 — 2026-11-10 05:34
+- **Plan ref**: docs/handoff/M7-lite.md SOTA plan lever 2 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 42.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `ssl_lite_pretrain.py`
+- **Data**: naip_ssl_corpus
+- **Config** (hash a55f0267bfb48e72):
+  - backbone: mnv4s
+  - batch: 128
+  - corpus_manifest: naip_ssl_corpus
+  - epochs: 40
+  - method: simsiam
+  - n_chips: 24943
+  - seed: 0
+  - smoke: False
+- **Final metrics**:
+  - epochs_done: 40
+  - final_loss: -0.945529
+- **Notes**: SSL complete; encoder saved
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite_ssl/simsiam_v1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:14
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash ee0bd5510960e095):
+  - accelerator: gpu
+  - config_index: 7
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.29567
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / baselines — 2026-11-10 04:57
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 80.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash fc892c782c422495):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R3_midwest_greatlakes
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s0']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R3_midwest_greatlakes_gbmbag_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:18
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 9993bda180b1664b):
+  - accelerator: gpu
+  - config_index: 7
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.32479
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:23
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 49d720c4e0e5e7f0):
+  - accelerator: gpu
+  - config_index: 7
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.26186
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:27
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 12c98ac70f544c2d):
+  - accelerator: gpu
+  - config_index: 7
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.06049
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:32
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash fb8d829ae8719df2):
+  - accelerator: gpu
+  - config_index: 8
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.25398
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:35
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 8d89a13f44696de9):
+  - accelerator: gpu
+  - config_index: 8
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.29889
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:41
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash f668dda746e9103b):
+  - accelerator: gpu
+  - config_index: 8
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.21921
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop128_kd03_ssl_national2 — 2026-11-10 06:17
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 34.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 06f9e137f396a116):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 128
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop128_kd03_ssl_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - ssl_init: lite_ssl/simsiam_v1/ssl_encoder.pt
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.311514
+  - ensemble/secchi/mdsa: 53.5986
+  - ensemble/tss/mdsa: 103.296
+  - ensemble/turbidity/mdsa: 102.968
+  - seed0/chla: 0.314848
+  - seed0/secchi: 53.1973
+  - seed0/tss: 102.096
+  - seed0/turbidity: 100.574
+  - seed1/chla: 0.312034
+  - seed1/secchi: 53.9069
+  - seed1/tss: 103.21
+  - seed1/turbidity: 110.408
+  - seed2/chla: 0.31323
+  - seed2/secchi: 52.5763
+  - seed2/tss: 101.02
+  - seed2/turbidity: 103.404
+- **Notes**: KD: 2902184 teacher cells over 2599 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop128_kd03_ssl_national2_20261110-061734
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:46
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 4ec057aae0b7412c):
+  - accelerator: gpu
+  - config_index: 8
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02044
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:52
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 65282758fac6a60e):
+  - accelerator: gpu
+  - config_index: 9
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.14995
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/rf_chan — 2026-11-10 05:51
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 67.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 22b7c59e105f7ed7):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+  - cuda_visible_devices: None
+  - entry: rf_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.14208
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.21232
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost_published_chan — 2026-11-10 06:58
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 1.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 1c84367586b75ac5):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2]
+  - cuda_visible_devices: None
+  - entry: xgboost_published_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.12666
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.21559
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/xgboost_published_chan — 2026-11-10 06:59
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 0.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 6c57845ddd0315ff):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1]
+  - cuda_visible_devices: None
+  - entry: xgboost_published_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.113
+  - n_configurations: 1
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.17518
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/rf_published_chan — 2026-11-10 07:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 34e2dcc182e1f506):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2]
+  - cuda_visible_devices: None
+  - entry: rf_published_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.15199
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.21832
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/rf_published_chan — 2026-11-10 07:03
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 0.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 3f795733b0071f68):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1]
+  - cuda_visible_devices: None
+  - entry: rf_published_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.18496
+  - n_configurations: 1
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.25019
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 06:57
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 502eec45e39dbd70):
+  - accelerator: gpu
+  - config_index: 9
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.2995
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:06
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7d187f65ff3b66fe):
+  - accelerator: gpu
+  - config_index: 9
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.19524
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:xgb_clr_tuned:lodo — 2026-11-09 23:57
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: w6
+- **Status**: ✅ Completed | **Duration**: 439.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash 8edfe203fec85dd1):
+  - descriptors: True
+  - model: xgb_clr_tuned
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+- **Final metrics**:
+  - mean_r2: 0.282425
+  - r2_do: 0.374796
+  - r2_log_chla: 0.188494
+  - r2_log_doc: 0.289153
+  - r2_log_no3: 0.184543
+  - r2_log_sc: 0.736001
+  - r2_log_tn: 0.0444615
+  - r2_log_tp: 0.282691
+  - r2_log_turb: 0.159258
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/lodo
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:15
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 2bb44baab2bff375):
+  - accelerator: gpu
+  - config_index: 9
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02679
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:24
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 4e280e190fc7edf4):
+  - accelerator: gpu
+  - config_index: 10
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.24238
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:26
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 1a5b35a013376a11):
+  - accelerator: gpu
+  - config_index: 10
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.28631
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / baselines — 2026-11-10 06:18
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 73.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 920a1bbe25ca15bd):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 1
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R3_midwest_greatlakes
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s1']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R3_midwest_greatlakes_gbmbag_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:30
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 1f643d15bf1bb559):
+  - accelerator: gpu
+  - config_index: 10
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.19244
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:34
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash df140dfa31dfb411):
+  - accelerator: gpu
+  - config_index: 10
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02583
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:39
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 850a7fce8d25b97c):
+  - accelerator: gpu
+  - config_index: 11
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.22236
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:42
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b7f10d9f1d189685):
+  - accelerator: gpu
+  - config_index: 11
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.38336
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/lightgbm_resid_ice — 2026-11-10 07:04
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 49.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 41a238305e236672):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - cuda_visible_devices: None
+  - entry: lightgbm_resid_ice
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.10546
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.20865
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:48
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 5b28b300c61cafe1):
+  - accelerator: gpu
+  - config_index: 11
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.2573
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 07:55
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash a9eba8980d34cb6f):
+  - accelerator: gpu
+  - config_index: 11
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.06686
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 08:01
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 31b767b5c90694f3):
+  - accelerator: gpu
+  - config_index: 12
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34377
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / baselines — 2026-11-10 07:31
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 55.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash c62573e079313842):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R3_midwest_greatlakes
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s2']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R3_midwest_greatlakes_gbmbag_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 08:11
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 20.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 64b6cb67bcd47ce8):
+  - accelerator: gpu
+  - config_index: 12
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.27386
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/lightgbm_resid_ice — 2026-11-10 07:53
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 41.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 461dbeb7bb4e684a):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+  - cuda_visible_devices: None
+  - entry: lightgbm_resid_ice
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.12418
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.2009
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 08:31
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 21.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 405a15d77597074e):
+  - accelerator: gpu
+  - config_index: 12
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.14479
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 08:52
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 24.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b7a1da66e0a6c05a):
+  - accelerator: gpu
+  - config_index: 12
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02684
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:17
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 0d21e3187c5ed909):
+  - accelerator: gpu
+  - config_index: 13
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.21359
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/lightgbm_resid_surrogate — 2026-11-10 08:35
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 49.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c3fdb5c721536745):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - cuda_visible_devices: None
+  - entry: lightgbm_resid_surrogate
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.10156
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.21387
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:20
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash e5e77f1a6395a1da):
+  - accelerator: gpu
+  - config_index: 13
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.3387
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:26
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 7.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 6cddc1fe3aa5b0cd):
+  - accelerator: gpu
+  - config_index: 13
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.20706
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:33
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 46b227079306f652):
+  - accelerator: gpu
+  - config_index: 13
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.03682
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:42
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 512505cfc99d98d3):
+  - accelerator: gpu
+  - config_index: 14
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.32556
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:45
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 1fb8aef3ce5a0375):
+  - accelerator: gpu
+  - config_index: 14
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34671
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:51
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 435a35481aed7f6f):
+  - accelerator: gpu
+  - config_index: 14
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.26611
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 09:58
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 96debc6c32415b85):
+  - accelerator: gpu
+  - config_index: 14
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.09091
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/lightgbm_resid_surrogate — 2026-11-10 09:25
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 40.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 407575fca20c12df):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+  - cuda_visible_devices: None
+  - entry: lightgbm_resid_surrogate
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.12594
+  - n_configurations: 16
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.19593
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:05
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash f3bf7a60b3b354d1):
+  - accelerator: gpu
+  - config_index: 15
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.45997
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:09
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 063ebd63d7358d20):
+  - accelerator: gpu
+  - config_index: 15
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33604
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:18
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 765dd10ccead0bfe, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 0dcbcda83fc8fb94):
+  - accelerator: gpu
+  - config_index: 15
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.20666
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / SMOKE/natstudent/mnv4s_raw_crop256_kd03_ctx_national2 — 2026-11-10 10:36
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package fe48d38055394792, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash f0ce9bd6dc751d18):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - context_film: True
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 2
+  - film: True
+  - film_source: scene
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_kd03_ctx_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0]
+  - smoke: True
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.25
+  - ensemble/secchi/mdsa: 54.1674
+  - ensemble/tss/mdsa: 50.7906
+  - ensemble/turbidity/mdsa: 92.3756
+  - seed0/chla: 0.25
+  - seed0/secchi: 54.1674
+  - seed0/tss: 50.7906
+  - seed0/turbidity: 92.3756
+- **Notes**: KD: 85004 teacher cells over 74 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/smoke/natstudent_mnv4s_raw_crop256_kd03_ctx_national2_20261110-103630
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:27
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package fe48d38055394792, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 218b747b3afcdae7):
+  - accelerator: gpu
+  - config_index: 15
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.14312
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:38
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 22e4b595096ad260, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 3cabc61601351d39):
+  - accelerator: gpu
+  - config_index: 16
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33143
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:41
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package accdfbefd7ba0e1c, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 1401ea5c60f67061):
+  - accelerator: gpu
+  - config_index: 16
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.28349
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## downstream / taprisk/it2c/d4a_gw_nitrate — 2026-11-10 10:42
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package accdfbefd7ba0e1c, script `downstream_taprisk.py`
+- **Data**: labels_sdwis, labels_cws_boundaries, taprisk_catchment, wqp_discrete, wbd_huc12
+- **Config** (hash b91f82d4629b65c1):
+  - split_sha256: a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298
+  - task: d4a_gw_nitrate
+- **Final metrics**:
+  - (none)
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/taprisk/it2c_d4a_gw_nitrate
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:47
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package accdfbefd7ba0e1c, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 3d697a125992d7bc):
+  - accelerator: gpu
+  - config_index: 16
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.16253
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## downstream / taprisk/it2c/d4b_sw_dbp — 2026-11-10 10:50
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package accdfbefd7ba0e1c, script `downstream_taprisk.py`
+- **Data**: labels_sdwis, labels_cws_boundaries, taprisk_catchment, wqp_discrete, wbd_huc12
+- **Config** (hash 7a794019c4fdf564):
+  - split_sha256: a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298
+  - task: d4b_sw_dbp
+- **Final metrics**:
+  - (none)
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/taprisk/it2c_d4b_sw_dbp
+
+## downstream / taprisk/numeric_val — 2026-11-10 10:55
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 0.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package accdfbefd7ba0e1c, script `downstream_taprisk.py`
+- **Data**: labels_sdwis, labels_cws_boundaries, taprisk_catchment, wqp_discrete, wbd_huc12, labels_ucmr
+- **Config** (hash d4644770d2527bd5):
+  - split_sha256: a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298
+- **Final metrics**:
+  - (none)
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/taprisk/numeric_val
+
+## downstream / taprisk/numeric_val — 2026-11-10 10:57
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 0.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `downstream_taprisk.py`
+- **Data**: labels_sdwis, labels_cws_boundaries, taprisk_catchment, wqp_discrete, wbd_huc12, labels_ucmr
+- **Config** (hash d4644770d2527bd5):
+  - split_sha256: a4a1fc7bb5f997d0a656c527c884ed4691c59da341eff81d0d424bbd3e5b3298
+- **Final metrics**:
+  - (none)
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/taprisk/numeric_val_v2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:52
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 3bb2412a9f3ef0a2):
+  - accelerator: gpu
+  - config_index: 16
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.08087
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 10:58
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 1.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 4ba0e447a38cecdb):
+  - accelerator: gpu
+  - config_index: 17
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.20535
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M2-orbit / conformal_satwq_v4_noaug — 2026-11-10 10:59
+- **Plan ref**: orbit_protocol.md §5b | **Iteration**: conformal-v1
+- **Status**: ✅ Completed | **Duration**: 3.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `orbit_conformal.py`
+- **Data**: orbit_dev_v4
+- **Config** (hash 7bd7e7fa5b2af64f):
+  - baselines: baselines_dev_v4
+  - cal_cells: {'chla': 'valxval_lake', 'secchi': 'valxval_lake', 'tss': 'valxany_lake', 'turbidity': 'valxany_lake'}
+  - fit_scheme: base
+  - levels: ['68', '95']
+  - method: CQR, water-body-weighted quantile (orbit_protocol.md §5b)
+  - n_folds: 5
+  - satwq: ['satwq_v4_noaug_s0', 'satwq_v4_noaug_s1', 'satwq_v4_noaug_s2']
+  - version: dev_v4
+- **Final metrics**:
+  - (none)
+- **Notes**: artifact /home/bcheng/STOCKHOLM/sentinel_runs/orbit/conformal_satwq_v4_noaug/conformal_orbit_dev_v4.json sha256 3536cb8cd7bc
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/conformal_satwq_v4_noaug
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 3f1f3eb741de67f2):
+  - accelerator: gpu
+  - config_index: 17
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.28121
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:03
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 4505a6daf9f7e0ab):
+  - accelerator: gpu
+  - config_index: 17
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.22676
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:07
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 51d1a2862d828d60):
+  - accelerator: gpu
+  - config_index: 17
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 0.965387
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:10
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 60505c92784cea27):
+  - accelerator: gpu
+  - config_index: 18
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.31631
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:14
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash ae69f777b7d93aeb):
+  - accelerator: gpu
+  - config_index: 18
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33404
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:19
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 1a3ea3c0c361d85c):
+  - accelerator: gpu
+  - config_index: 18
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.36625
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:25
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash be1a57dde3cfcc5c):
+  - accelerator: gpu
+  - config_index: 18
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 0.988857
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:32
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b41562504f4047ed):
+  - accelerator: gpu
+  - config_index: 19
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34997
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:38
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8890e0eceb62ca16, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash e5b7759d228d9a12):
+  - accelerator: gpu
+  - config_index: 19
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.38894
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:46
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d3c5e419478fea54, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash bea869ba26859271):
+  - accelerator: gpu
+  - config_index: 19
+  - cuda_visible_devices: 1
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.42495
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_pretrain:emp_v4_150 — 2026-11-10 11:54
+- **Plan ref**: microbe_protocol §10.8 | **Iteration**: cycle6
+- **Status**: ✅ Completed | **Duration**: 2.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@8b2090ea (dirty), package d3c5e419478fea54, script `microbe_emp_pretrain.py`
+- **Data**: emp_freshwater
+- **Config** (hash 08e8dc02d0077329):
+  - batch_size: 64
+  - candidate: seqset_kmer_v4_150
+  - context: False
+  - d_model: 128
+  - dropout: 0.1
+  - encoder: kmer5_v4_150
+  - inner_val_frac: 0.15
+  - lr: 0.0005
+  - max_epochs: 300
+  - max_tokens: 256
+  - min_seq_count: 3
+  - n_heads: 4
+  - n_layers: 2
+  - n_samples: 2969
+  - patience: 30
+  - primer_onehot: True
+  - radius_km: 10.0
+  - seed: 0
+  - seq_mode: frozen
+  - token_dropout: 0.1
+  - weight_decay: 0.01
+- **Final metrics**:
+  - pretrain_best_val_mse: 0.940978
+- **Notes**: pretrain best val 0.9410 after 184 epochs
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/pretrain
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 11:57
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8ba11b9f7c70cf98, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 4065e8c8c2a2b3b6):
+  - accelerator: gpu
+  - config_index: 19
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.08494
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:seqset_kmer_v4:lodo — 2026-11-10 11:54
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle5
+- **Status**: ✅ Completed | **Duration**: 16.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=4)
+- **Code**: v2-rebuild@8b2090ea (dirty), package 8ba11b9f7c70cf98, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash ad27006f49afc0db):
+  - batch_size: 64
+  - candidate: seqset_kmer_v4
+  - context: False
+  - d_model: 128
+  - dropout: 0.1
+  - encoder: kmer5_v4
+  - inner_val_frac: 0.15
+  - inner_val_unit: domain
+  - lr: 0.0005
+  - max_epochs: 300
+  - max_tokens: 256
+  - min_seq_count: 3
+  - model: seqset_kmer_v4
+  - n_heads: 4
+  - n_layers: 2
+  - patience: 30
+  - primer_onehot: True
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - seq_mode: frozen
+  - token_dropout: 0.1
+  - weight_decay: 0.01
+- **Final metrics**:
+  - mean_r2: 0.269037
+  - n_params: 514568
+  - r2_do: 0.217164
+  - r2_log_chla: 0.18277
+  - r2_log_doc: 0.325189
+  - r2_log_no3: 0.161555
+  - r2_log_sc: 0.646879
+  - r2_log_tn: 0.157968
+  - r2_log_tp: 0.292316
+  - r2_log_turb: 0.168457
+- **Notes**: median best epoch 8
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/lodo
+
+## M3-microbe / microbe_phase1_cv:seqset_kmer_v4_150:lodo — 2026-11-10 11:55
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle6
+- **Status**: ✅ Completed | **Duration**: 16.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@8b2090ea (dirty), package da4b15c2a33817f4, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash 2214a6b90d83dfca):
+  - batch_size: 64
+  - candidate: seqset_kmer_v4_150
+  - context: False
+  - d_model: 128
+  - dropout: 0.1
+  - encoder: kmer5_v4_150
+  - inner_val_frac: 0.15
+  - inner_val_unit: domain
+  - lr: 0.0005
+  - max_epochs: 300
+  - max_tokens: 256
+  - min_seq_count: 3
+  - model: seqset_kmer_v4_150
+  - n_heads: 4
+  - n_layers: 2
+  - patience: 30
+  - primer_onehot: True
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - seq_mode: frozen
+  - token_dropout: 0.1
+  - weight_decay: 0.01
+- **Final metrics**:
+  - mean_r2: 0.245802
+  - n_params: 514568
+  - r2_do: 0.171636
+  - r2_log_chla: 0.169015
+  - r2_log_doc: 0.349421
+  - r2_log_no3: 0.188784
+  - r2_log_sc: 0.647516
+  - r2_log_tn: 0.106036
+  - r2_log_tp: 0.28897
+  - r2_log_turb: 0.0450338
+- **Notes**: median best epoch 9
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/lodo
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:09
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@8b2090ea (dirty), package da4b15c2a33817f4, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 37ec8231a107092b):
+  - accelerator: gpu
+  - config_index: 20
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.316
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:11
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 7a48ca1b5f3f7c6a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash edaabcb3ae68fd05):
+  - accelerator: gpu
+  - config_index: 20
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.35492
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:seqset_kmer_v4:lodo_x001 — 2026-11-10 11:54
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle5
+- **Status**: ✅ Completed | **Duration**: 22.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=6)
+- **Code**: v2-rebuild@34df74ec (dirty), package 7a48ca1b5f3f7c6a, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash b054b3cb7a7ac3ef):
+  - batch_size: 64
+  - candidate: seqset_kmer_v4
+  - context: False
+  - d_model: 128
+  - dropout: 0.1
+  - encoder: kmer5_v4
+  - inner_val_frac: 0.15
+  - inner_val_unit: domain
+  - lr: 0.0005
+  - max_epochs: 300
+  - max_tokens: 256
+  - min_seq_count: 3
+  - model: seqset_kmer_v4
+  - n_heads: 4
+  - n_layers: 2
+  - patience: 30
+  - primer_onehot: True
+  - scheme: lodo_x001
+  - seeds: [0, 1, 2]
+  - seq_mode: frozen
+  - token_dropout: 0.1
+  - weight_decay: 0.01
+- **Final metrics**:
+  - mean_r2: 0.235411
+  - n_params: 514568
+  - r2_do: 0.144551
+  - r2_log_chla: 0.188059
+  - r2_log_doc: 0.301748
+  - r2_log_no3: 0.209231
+  - r2_log_sc: 0.681471
+  - r2_log_tn: 0.0823676
+  - r2_log_tp: 0.189804
+  - r2_log_turb: 0.0860543
+- **Notes**: median best epoch 6
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/lodo_x001
+
+## M3-microbe / microbe_phase1_cv:seqset_kmer_v4_150_emp:lodo — 2026-11-10 11:57
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle6
+- **Status**: ✅ Completed | **Duration**: 20.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 7c861a55fd0c1964, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash 3e833b1fd171f323):
+  - batch_size: 64
+  - candidate: seqset_kmer_v4_150_emp
+  - context: False
+  - d_model: 128
+  - dropout: 0.1
+  - encoder: kmer5_v4_150
+  - init_state: microbe/pretrain/emp_v4_150_seed0.pt
+  - inner_val_frac: 0.15
+  - inner_val_unit: domain
+  - lr: 0.0005
+  - max_epochs: 300
+  - max_tokens: 256
+  - min_seq_count: 3
+  - model: seqset_kmer_v4_150_emp
+  - n_heads: 4
+  - n_layers: 2
+  - patience: 30
+  - primer_onehot: True
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - seq_mode: frozen
+  - table_norm: pretrain
+  - token_dropout: 0.1
+  - weight_decay: 0.01
+- **Final metrics**:
+  - mean_r2: 0.205951
+  - n_params: 514568
+  - r2_do: 0.218989
+  - r2_log_chla: 0.173983
+  - r2_log_doc: 0.210158
+  - r2_log_no3: 0.0811881
+  - r2_log_sc: 0.614092
+  - r2_log_tn: -0.0317311
+  - r2_log_tp: 0.289345
+  - r2_log_turb: 0.0915817
+- **Notes**: median best epoch 11
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/lodo
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:16
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 9f8a59529faeb0c5, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 652e8752dd621f8a):
+  - accelerator: gpu
+  - config_index: 20
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.36105
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:20
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2e6848d5fc252df2, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 2f2df426121b4d62):
+  - accelerator: gpu
+  - config_index: 20
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02022
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop256_nokd_national2 — 2026-11-10 11:54
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 31.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=7)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2e6848d5fc252df2, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash fce91622963865e2):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_nokd_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.335662
+  - ensemble/secchi/mdsa: 51.6682
+  - ensemble/tss/mdsa: 99.7823
+  - ensemble/turbidity/mdsa: 100.934
+  - seed0/chla: 0.343564
+  - seed0/secchi: 53.84
+  - seed0/tss: 96.3419
+  - seed0/turbidity: 98.2226
+  - seed1/chla: 0.34362
+  - seed1/secchi: 50.3659
+  - seed1/tss: 105.977
+  - seed1/turbidity: 106.165
+  - seed2/chla: 0.354818
+  - seed2/secchi: 52.3116
+  - seed2/tss: 100.757
+  - seed2/turbidity: 102.262
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_nokd_national2_20261110-115426
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:24
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package fc9566e78344bad1, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash be746ae5ad4d6cd1):
+  - accelerator: gpu
+  - config_index: 21
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.32995
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## downstream / troutrefuge/phase1 — 2026-11-10 11:53
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 34.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package fc9566e78344bad1, script `downstream_troutrefuge.py`
+- **Data**: nars_streams, downstream_catchment, forcings_daily, d7_mast
+- **Config** (hash f75f5aeb57e3447b):
+  - split_sha256: 587caeca6c634e944d8268b001becbcca8ba650d3244f68f4c2bdad3e6f84a3c
+- **Final metrics**:
+  - val_all/gbm_challenger/auroc: 0.959367
+  - val_newloc/gbm_challenger/auroc: 0.951474
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/troutrefuge/phase1
+
+## M7-lite / natstudent/mnv4s_raw_crop256_kd03_ssl_national2 — 2026-11-10 11:53
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 35.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=2)
+- **Code**: v2-rebuild@34df74ec (dirty), package 8dd62e7d0b1d17fd, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash e74116a90fa9333c):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_kd03_ssl_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - ssl_init: lite_ssl/simsiam_v1/ssl_encoder.pt
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.338053
+  - ensemble/secchi/mdsa: 50.7437
+  - ensemble/tss/mdsa: 102.546
+  - ensemble/turbidity/mdsa: 97.9687
+  - seed0/chla: 0.338901
+  - seed0/secchi: 51.5103
+  - seed0/tss: 105.355
+  - seed0/turbidity: 102.859
+  - seed1/chla: 0.347073
+  - seed1/secchi: 51.1092
+  - seed1/tss: 106.449
+  - seed1/turbidity: 99.264
+  - seed2/chla: 0.340778
+  - seed2/secchi: 50.1357
+  - seed2/tss: 101.54
+  - seed2/turbidity: 95.8935
+- **Notes**: KD: 2902184 teacher cells over 2599 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_kd03_ssl_national2_20261110-115345
+
+## M7-lite / natstudent/mnv4s_raw_crop256_kd03_ctx_national2 — 2026-11-10 11:54
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 37.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package ae4698704fc29f3e, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash a76425f7044c0eba):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - context_film: True
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: True
+  - film_source: scene
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_kd03_ctx_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.397347
+  - ensemble/secchi/mdsa: 37.9679
+  - ensemble/tss/mdsa: 96.6186
+  - ensemble/turbidity/mdsa: 89.8116
+  - seed0/chla: 0.403305
+  - seed0/secchi: 38.8319
+  - seed0/tss: 93.1337
+  - seed0/turbidity: 93.4392
+  - seed1/chla: 0.377214
+  - seed1/secchi: 40.0903
+  - seed1/tss: 111.745
+  - seed1/turbidity: 95.5808
+  - seed2/chla: 0.382306
+  - seed2/secchi: 39.1063
+  - seed2/tss: 91.867
+  - seed2/turbidity: 94.3827
+- **Notes**: KD: 2902184 teacher cells over 2599 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_kd03_ctx_national2_20261110-115406
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:27
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package ee85e65685938cb9, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 5d7dbcd8f1cd471f):
+  - accelerator: gpu
+  - config_index: 21
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.36361
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 12:20
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 17.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package f033af8c50256878, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c6def184694bb1bf):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 16]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 0
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.19621
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.29638
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / ealstm — 2026-11-10 11:54
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: cycle1
+- **Status**: ✅ Completed | **Duration**: 43.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package f033af8c50256878, script `hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash b2ec0afaece4e090):
+  - _config_file: configs/hydromet/lstm.yaml
+  - _smoke: False
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - grid: [{'hidden': 128, 'dropout': 0.4, 'static_noise': 0.0}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, {'hidden': 128, 'dropout': 0.4, 'static_noise': 1.0}]
+  - grid_point: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - iteration: cycle1
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: ealstm
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R6_pacific
+- **Final metrics**:
+  - best_inner_val_loss: 0.409076
+- **Notes**: grid {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}, epochs 16, params 87790
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R6_pacific_ealstm_s2/g0_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:33
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package f033af8c50256878, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 83ea5566304fb5d8):
+  - accelerator: gpu
+  - config_index: 21
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.41476
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 12:38
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package a80582547b08e60c, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c6617da99529ad22):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 17]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 1
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.13391
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.2137
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 039b7fbc1713b72f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c9f2e2167d8c9ee9):
+  - accelerator: gpu
+  - config_index: 21
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.01471
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:46
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 66f361befdb59fc6, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 9b78c69e41315e01):
+  - accelerator: gpu
+  - config_index: 22
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.20068
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## downstream / troutrefuge/phase1b — 2026-11-10 12:48
+- **Plan ref**: RESEARCH_PLAN.md §8 (Goal 4 downstream applications) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 1.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 66f361befdb59fc6, script `downstream_troutrefuge.py`
+- **Data**: nars_streams, downstream_catchment, forcings_daily, d7_mast
+- **Config** (hash f75f5aeb57e3447b):
+  - split_sha256: 587caeca6c634e944d8268b001becbcca8ba650d3244f68f4c2bdad3e6f84a3c
+- **Final metrics**:
+  - val_newloc/gbm_challenger/auroc_diff_vs_msst_rule: 0.0295133
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/downstream/troutrefuge/phase1b
+
+## bioassess / bioassess_f/smoke_synthetic/ma_full_rc — 2026-11-10 12:55
+- **Plan ref**: bioassess_f_protocol.md (DRAFT v0) §9.4: code/shape smoke before the stamp | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package f9e8a3658647d182, script `bioassess_f_smoke.py`
+- **Data**: —
+- **Config** (hash 0ebd328c65686f56):
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'lat', 'lon', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 3, 'patience': 3, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.1, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_full_rc'}
+  - data: synthetic
+  - device: cuda
+  - recipe: ma_full_rc
+  - rows: 14000
+  - seed: 0
+- **Final metrics**:
+  - epoch_seconds: 5.84152
+  - featurize_seconds: 8.53309
+  - fit_rows: 8957
+  - n_params: 882784
+  - peak_vram_predict_mb: 198.778
+  - peak_vram_reserved_mb: 538
+  - peak_vram_train_mb: 372.652
+  - predict_rows_per_s: 9841.81
+  - train_rows_per_s: 1533.33
+- **Notes**: synthetic inputs and random targets only; no validation number of any arm
+- **Artifacts**: —
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:50
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 7.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package f9e8a3658647d182, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b204383eae4bd932):
+  - accelerator: gpu
+  - config_index: 22
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.3116
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 12:43
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 17.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package fd5bdf9abe43de85, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 2f20d8abb4ea52b8):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [2, 18]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 2
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.2063
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.28786
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 12:58
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 7.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package a8e6de2adc51ea0a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash d020554f8eed8ec0):
+  - accelerator: gpu
+  - config_index: 22
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.19373
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop256_nokd_ctx_national2 — 2026-11-10 12:38
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 34.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 5a43379dc6b9ca8a, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash c912c7dcd47ff80b):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - context_film: True
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: True
+  - film_source: scene
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_nokd_ctx_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 976b5be7ed7c76e9417d526f41e7b6899f88e49e3dc00b7dba077bf78f40ebe2
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.368232
+  - ensemble/secchi/mdsa: 40.1555
+  - ensemble/tss/mdsa: 98.8697
+  - ensemble/turbidity/mdsa: 100.767
+  - seed0/chla: 0.371694
+  - seed0/secchi: 42.3268
+  - seed0/tss: 101.865
+  - seed0/turbidity: 99.7935
+  - seed1/chla: 0.350823
+  - seed1/secchi: 41.0822
+  - seed1/tss: 96.9582
+  - seed1/turbidity: 103.277
+  - seed2/chla: 0.373823
+  - seed2/secchi: 38.3829
+  - seed2/tss: 104.655
+  - seed2/turbidity: 100.349
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_nokd_ctx_national2_20261110-123816
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 13:05
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 7.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 5a43379dc6b9ca8a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 889e90c81cba0c3c):
+  - accelerator: gpu
+  - config_index: 22
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.09687
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:rf_clr_tuned:lodo — 2026-11-10 07:16
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: w6
+- **Status**: ✅ Completed | **Duration**: 360.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 34496cd30b8a41d6, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash 0083c908be09d25f):
+  - descriptors: True
+  - model: rf_clr_tuned
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+- **Final metrics**:
+  - mean_r2: 0.248852
+  - r2_do: 0.394325
+  - r2_log_chla: 0.203508
+  - r2_log_doc: 0.221021
+  - r2_log_no3: 0.129542
+  - r2_log_sc: 0.604282
+  - r2_log_tn: 0.0467542
+  - r2_log_tp: 0.267314
+  - r2_log_turb: 0.12407
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/lodo
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 13:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 18.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 34496cd30b8a41d6, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b2038d755b5c75cf):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [3, 19]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 3
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.2318
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.32644
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_C2a — 2026-11-10 12:22
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 57.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 67795e9b7a144db0, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 4b41f9cbb260bf5c):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - best_inner_primary_mse: 0.117455
+  - best_inner_val_loss: 0.216031
+- **Notes**: epochs 21, best epoch 14, params 92336, fit 1456 / inner 256 / weak 0
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C2a_s0
+
+## M6-hydromet / SMOKE/M6V2/d1.g1 — 2026-11-10 13:20
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package 626c3b7d32e47eb8, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash bcb9d3f01b794036):
+  - _config_file: configs/hydromet_sota/v2/d1.yaml
+  - _smoke: True
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: g1
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 2, best epoch 1, params 350695, 0.15540707111358643 s/step, {'max_allocated_mb': 2527.1, 'max_reserved_mb': 5876.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/d1_g1_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 13:13
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 7f784324cbab1c9d, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 0e6b3ce3c3e2e11a):
+  - accelerator: gpu
+  - config_index: 23
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33359
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:context_rf:release_001_to_002 — 2026-11-10 13:20
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 10.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2850478996670c2f, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash d1d41a37d9d5af75):
+  - descriptors: False
+  - model: context_rf
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0, 1, 2]
+- **Final metrics**:
+  - mean_r2: -0.269581
+  - r2_do: 0.197334
+  - r2_log_chla: -0.231171
+  - r2_log_doc: -0.0134675
+  - r2_log_no3: 0.0378326
+  - r2_log_sc: -0.504515
+  - r2_log_tn: -0.400999
+  - r2_log_tp: -0.574404
+  - r2_log_turb: -0.667258
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M3-microbe / microbe_phase1_cv:global_mean:release_001_to_002 — 2026-11-10 13:30
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 0.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2850478996670c2f, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash 80a767b52a459cb9):
+  - descriptors: False
+  - model: global_mean
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0]
+- **Final metrics**:
+  - mean_r2: -0.1553
+  - r2_do: -0.0696115
+  - r2_log_chla: -0.0628329
+  - r2_log_doc: -0.0747717
+  - r2_log_no3: -0.104318
+  - r2_log_sc: -0.14415
+  - r2_log_tn: -0.0620068
+  - r2_log_tp: -0.252797
+  - r2_log_turb: -0.471912
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M3-microbe / microbe_phase1_cv:context_ridge:release_001_to_002 — 2026-11-10 13:30
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 0.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2850478996670c2f, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash a5a43124ec5a8263):
+  - descriptors: False
+  - model: context_ridge
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0]
+- **Final metrics**:
+  - mean_r2: -0.12055
+  - r2_do: 0.162223
+  - r2_log_chla: -0.371671
+  - r2_log_doc: 0.19618
+  - r2_log_no3: 0.120543
+  - r2_log_sc: -0.18094
+  - r2_log_tn: 0.0223506
+  - r2_log_tp: -0.392239
+  - r2_log_turb: -0.520846
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M6-hydromet / baselines — 2026-11-10 08:27
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 304.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2850478996670c2f, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 369eccb55cf145bb):
+  - _config_file: configs/hydromet/baselines.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 8, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R4_plains_texas
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R4_plains_texas_base
+
+## M3-microbe / microbe_phase1_cv:ridge_clr:release_001_to_002 — 2026-11-10 13:31
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 1.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 3227a0862b63978c, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash a566dfcdb5492c72):
+  - descriptors: False
+  - model: ridge_clr
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0]
+- **Final metrics**:
+  - mean_r2: -0.320228
+  - r2_do: 0.00544281
+  - r2_log_chla: 0.0333553
+  - r2_log_doc: -0.532703
+  - r2_log_no3: -0.0865309
+  - r2_log_sc: -0.729628
+  - r2_log_tn: -0.365028
+  - r2_log_tp: -0.252669
+  - r2_log_turb: -0.634063
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M6-hydromet / SMOKE/M6V2/d1.g1 — 2026-11-10 13:32
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 3227a0862b63978c, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash bcb9d3f01b794036):
+  - _config_file: configs/hydromet_sota/v2/d1.yaml
+  - _smoke: True
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: g1
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 2, best epoch 1, params 349159, 0.15119266510009766 s/step, {'max_allocated_mb': 2187.2, 'max_reserved_mb': 5404.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/d1_g1_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 13:22
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 21.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 290a406e254f2253, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 6688b720233cbc37):
+  - accelerator: gpu
+  - config_index: 23
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.37131
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:ridge_v4clr:release_001_to_002 — 2026-11-10 13:32
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 18.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 290a406e254f2253, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash a491965113deb158):
+  - descriptors: False
+  - model: ridge_v4clr
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0]
+- **Final metrics**:
+  - mean_r2: -0.0194121
+  - r2_do: -0.136617
+  - r2_log_chla: 0.0327548
+  - r2_log_doc: 0.00808849
+  - r2_log_no3: -0.0685778
+  - r2_log_sc: 0.538662
+  - r2_log_tn: 0.15181
+  - r2_log_tp: -0.268512
+  - r2_log_turb: -0.412906
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 13:44
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 22.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 290a406e254f2253, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 95e8f9b3211a17c0):
+  - accelerator: gpu
+  - config_index: 23
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.35983
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:xgb_clr:release_001_to_002 — 2026-11-10 13:50
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 24.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 290a406e254f2253, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash 08462170961cf06c):
+  - descriptors: False
+  - model: xgb_clr
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0, 1, 2]
+- **Final metrics**:
+  - mean_r2: -0.0647469
+  - r2_do: 0.0166162
+  - r2_log_chla: -0.150248
+  - r2_log_doc: 0.157197
+  - r2_log_no3: 0.0542493
+  - r2_log_sc: 0.503267
+  - r2_log_tn: -0.0299784
+  - r2_log_tp: -0.369842
+  - r2_log_turb: -0.699237
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 14:06
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 22.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package e7413a14eb380e31, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 8c3373589dac3613):
+  - accelerator: gpu
+  - config_index: 23
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.03157
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 14:29
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 1a33caa439ba840c, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash cf27078d9c8ff8d7):
+  - accelerator: gpu
+  - config_index: 24
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34396
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 14:33
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 7df00894d01e9222, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash ce4d9ee844f0dc83):
+  - accelerator: gpu
+  - config_index: 24
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.37205
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 14:38
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package f1010821f511709c, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 0aa48f94abe7f882):
+  - accelerator: gpu
+  - config_index: 24
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.38061
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 14:44
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package dc23f4e8a7bbcac3, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 6251c4939d8fab49):
+  - accelerator: gpu
+  - config_index: 24
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.07511
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SMOKE/M6V2/g1.sel — 2026-11-10 14:51
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 4.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package d3545c14e049f6e0, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash ef44bea4bb236bb0):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: True
+  - arm: g1
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - seed: 0
+  - seed_role: grid + selection
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 2 + 2 + 2 refitted members; 116 columns; fixed selection False
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/g1_sel_s0
+
+## M6-hydromet / SMOKE/M6V2/g2.sel — 2026-11-10 14:55
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 2.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 88c1cf73093d6a14, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash baf68a274d2a4ccd):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: True
+  - arm: g2
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics', 'te_prior', 'stacks']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - seed: 0
+  - seed_role: grid + selection
+  - stack: {'targets': ['logq', 'T_min', 'T_max', 'DO_max'], 'n_folds': 5, 'max_rows_per_site': 1000}
+  - te_prior: {'shade': 0.3, 'wind_shelter': 0.6}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 2 + 1 + 3 refitted members; 134 columns; fixed selection False
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/g2_sel_s0
+
+## M6-hydromet / SOTA/sota_C1b — 2026-11-10 13:53
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 65.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package 88c1cf73093d6a14, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash fc3fe7935743126d):
+  - _config_file: configs/hydromet_sota/C1b.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1b
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1b
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.5
+- **Final metrics**:
+  - best_inner_primary_mse: 0.122183
+  - best_inner_val_loss: 0.207734
+- **Notes**: epochs 20, best epoch 13, params 92014, fit 1497 / inner 256 / weak 3545
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C1b_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 14:51
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 09eb8ba9846e2dcb, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 219c7fb54f2e18f4):
+  - accelerator: gpu
+  - config_index: 25
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.30184
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_f/smoke_synthetic/ma_full_rc — 2026-11-10 15:02
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4: code/shape smoke before the stamp | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package d52185648760d8aa, script `bioassess_f_smoke.py`
+- **Data**: —
+- **Config** (hash 0ebd328c65686f56):
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'lat', 'lon', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 3, 'patience': 3, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.1, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_full_rc'}
+  - data: synthetic
+  - device: cuda
+  - recipe: ma_full_rc
+  - rows: 14000
+  - seed: 0
+- **Final metrics**:
+  - epoch_seconds: 5.98791
+  - featurize_seconds: 7.54554
+  - fit_rows: 8957
+  - n_chunks: 3
+  - n_params: 882784
+  - peak_vram_predict_mb: 309.743
+  - peak_vram_reserved_mb: 610
+  - peak_vram_train_mb: 452.305
+  - predict_rows_per_s: 15023.4
+  - train_rows_per_s: 1495.85
+- **Notes**: synthetic inputs and random targets only; no validation number of any arm
+- **Artifacts**: —
+
+## M6-hydromet / baselines — 2026-11-10 13:31
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 100.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 9ab90e17f0b9b132, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 05879954db079183):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R4_plains_texas
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s0']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R4_plains_texas_gbmbag_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 14:59
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 13.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 002f968147bd8b47, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 28fdbb3028aac467):
+  - accelerator: gpu
+  - config_index: 25
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.27891
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_C1a — 2026-11-10 13:53
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 82.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package d83b0ae9ad17d0e9, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash a38c90a36827214d):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - best_inner_primary_mse: 0.115168
+  - best_inner_val_loss: 0.19773
+- **Notes**: epochs 26, best epoch 19, params 92014, fit 1497 / inner 256 / weak 3545
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C1a_s0
+
+## M6-hydromet / SMOKE/M6V2/rtd.fixed — 2026-11-10 15:26
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash b2c2983fe2262d25):
+  - _config_file: configs/hydromet_sota/v2/rtd.yaml
+  - _smoke: True
+  - arm: rtd
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 100, 'layers': 1, 'dropout': 0.5, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)
+  - recipe_verified: True
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 2, best epoch 1, params 129244, 0.06892383098602295 s/step, {'max_allocated_mb': 1397.9, 'max_reserved_mb': 3004.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/rtd_fixed_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 15:13
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 14.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 901fb431f3032d04):
+  - accelerator: gpu
+  - config_index: 25
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.15701
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:xgb_v4clr:release_001_to_002 — 2026-11-10 14:14
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 77.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash ec2825494f0b8ab4):
+  - descriptors: False
+  - model: xgb_v4clr
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0, 1, 2]
+- **Final metrics**:
+  - mean_r2: -0.115787
+  - r2_do: -0.198053
+  - r2_log_chla: -0.243372
+  - r2_log_doc: 0.0322732
+  - r2_log_no3: 0.0307309
+  - r2_log_sc: 0.209079
+  - r2_log_tn: 0.0527032
+  - r2_log_tp: -0.458688
+  - r2_log_turb: -0.35097
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M6-hydromet / SOTA/sota_C2b — 2026-11-10 15:19
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 22.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 342c85e108320a56):
+  - _config_file: configs/hydromet_sota/C2b.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': True, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2b
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2b
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - best_inner_primary_mse: 0.118925
+  - best_inner_val_loss: 0.233013
+- **Notes**: epochs 8, best epoch 1, params 92336, fit 1860 / inner 256 / weak 0
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C2b_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 15:28
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 16.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 2b5b103c3724bae5):
+  - accelerator: gpu
+  - config_index: 25
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02515
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 15:18
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 27.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 75e4a67c31f704ba):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [5, 21]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 5
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.12266
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.24479
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M3-microbe / microbe_phase1_cv:rf_clr:release_001_to_002 — 2026-11-10 15:31
+- **Plan ref**: RESEARCH_PLAN §5.3; microbe_protocol §6 | **Iteration**: cycle3
+- **Status**: ✅ Completed | **Duration**: 17.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `microbe_cv.py`
+- **Data**: microbe_wq
+- **Config** (hash aec6117094ed8c21):
+  - descriptors: False
+  - model: rf_clr
+  - params: {'rf': {'n_estimators': 500, 'min_samples_leaf': 3, 'max_features': 0.3}, 'xgb': {'n_estimators': 600, 'learning_rate': 0.03, 'max_depth': 4, 'subsample': 0.8, 'colsample_bytree': 0.3, 'min_child_weight': 3, 'reg_lambda': 1.0}, 'ridge_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'clr': {'min_prev': 0.05, 'max_features': 500, 'pseudo': 0.5}, 'tabpfn': {'n_estimators': 8, 'max_features': 300, 'max_train_rows': 6000}}
+  - scheme: release_001_to_002
+  - seeds: [0, 1, 2]
+- **Final metrics**:
+  - mean_r2: -0.0480893
+  - r2_do: 0.0176754
+  - r2_log_chla: -0.199105
+  - r2_log_doc: 0.0676782
+  - r2_log_no3: -0.0160656
+  - r2_log_sc: 0.51232
+  - r2_log_tn: 0.0314165
+  - r2_log_tp: -0.366448
+  - r2_log_turb: -0.432186
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv/release_001_to_002
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 15:44
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7423085cfa54a13b):
+  - accelerator: gpu
+  - config_index: 26
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.43602
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 15:46
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 13.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash adde7491ead66297):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [6, 22]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 6
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.10465
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.17647
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 15:50
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 8e59af2d8f65b778):
+  - accelerator: gpu
+  - config_index: 26
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.34191
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_C2a — 2026-11-10 15:47
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 22.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 741d51149e77a0e7):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - best_inner_primary_mse: 0.123083
+  - best_inner_val_loss: 0.225435
+- **Notes**: epochs 8, best epoch 1, params 92336, fit 1456 / inner 256 / weak 0
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C2a_s1
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s0_temp_c_mean — 2026-11-10 15:27
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 42.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 2bb6d8687d82b20a):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_temp_c_mean: 1.91344
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s0
+
+## M6-hydromet / SOTA/sota_C1a — 2026-11-10 15:23
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 47.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=7)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash a8a74e3485d7a89d):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - best_inner_primary_mse: 0.124459
+  - best_inner_val_loss: 0.21923
+- **Notes**: epochs 14, best epoch 7, params 92014, fit 1497 / inner 256 / weak 3545
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C1a_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:01
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 12.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash cd549d93e4105a39):
+  - accelerator: gpu
+  - config_index: 26
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.27708
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_C1a — 2026-11-10 15:23
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 59.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash ffaf17975eadd4e6):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - best_inner_primary_mse: 0.111152
+  - best_inner_val_loss: 0.19628
+- **Notes**: epochs 18, best epoch 11, params 92014, fit 1497 / inner 256 / weak 3545
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C1a_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:13
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 12.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash f001958d2553ed54):
+  - accelerator: gpu
+  - config_index: 26
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.14407
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_C2a — 2026-11-10 15:47
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 41.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_lstm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash c124e1a8566c67e6):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - best_inner_primary_mse: 0.114725
+  - best_inner_val_loss: 0.206287
+- **Notes**: epochs 15, best epoch 8, params 92336, fit 1456 / inner 256 / weak 0
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_C2a_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:26
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 5d2df1c64bf41f09):
+  - accelerator: gpu
+  - config_index: 27
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.37095
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:29
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 9fe8b2acea6f544b):
+  - accelerator: gpu
+  - config_index: 27
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.28148
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:35
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash fca3b7073208a0a2):
+  - accelerator: gpu
+  - config_index: 27
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.15899
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 16:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 43.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b0f4407fc463a6a4):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [7, 23]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 7
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.15017
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.22091
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:42
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 6.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash f35815f6ac42b383):
+  - accelerator: gpu
+  - config_index: 27
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.08547
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s0_temp_c_7dadm — 2026-11-10 16:17
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 32.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash e074dc3f22216f4b):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_7dadm', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_temp_c_7dadm: 2.03605
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s0
+
+## M6-hydromet / baselines — 2026-11-10 15:11
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 99.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash f256989476036870):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 1
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R4_plains_texas
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s1']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R4_plains_texas_gbmbag_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:48
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 2.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash badd44b0c30ab85d):
+  - accelerator: gpu
+  - config_index: 28
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33117
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:51
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash a480ed78a8a2ceea):
+  - accelerator: gpu
+  - config_index: 28
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.37447
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 16:55
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash fc152504b824f56b):
+  - accelerator: gpu
+  - config_index: 28
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.36587
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s0_do_mgl_mean — 2026-11-10 16:56
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 8.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash b4118f9f3e91c043):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_do_mgl_mean: 1.02423
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 91973946998bd1d3):
+  - accelerator: gpu
+  - config_index: 28
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.07523
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 16:43
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 26.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7e6c84e0774fccf6):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [8, 24]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 8
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.12616
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.22037
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:06
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 127d794ae6227b7f):
+  - accelerator: gpu
+  - config_index: 29
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.21488
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s0_do_mgl_min — 2026-11-10 17:11
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 4.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 8e85a1c27d7480ae):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_min', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_do_mgl_min: 1.14859
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:10
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash e4240191e8a2f1ed):
+  - accelerator: gpu
+  - config_index: 29
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33854
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:19
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b020f79d129cc7f4):
+  - accelerator: gpu
+  - config_index: 29
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.22428
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 17:10
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 20.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 22333fe8dbdc5fc1):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [9, 25]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 9
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.15472
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.22609
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:28
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 55733c4e1152d6db):
+  - accelerator: gpu
+  - config_index: 29
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 0.984169
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:39
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 3e8940d83cfef095):
+  - accelerator: gpu
+  - config_index: 30
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.3706
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s1_temp_c_mean — 2026-11-10 17:22
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 21.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash bb1f04866218ac86):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_temp_c_mean: 1.92536
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:43
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c44b8791d7f995f0):
+  - accelerator: gpu
+  - config_index: 30
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.35268
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 17:53
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 5d47e7ef62b5dcf0):
+  - accelerator: gpu
+  - config_index: 30
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.38712
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 18:03
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b860dc1b088d188d):
+  - accelerator: gpu
+  - config_index: 30
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.02887
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / baselines — 2026-11-10 16:50
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 85.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 7ede72c8a0b14b82):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R4_plains_texas
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s2']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R4_plains_texas_gbmbag_s2
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s1_temp_c_7dadm — 2026-11-10 17:50
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 27.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 2a86d2da6ad6192f):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_7dadm', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_temp_c_7dadm: 2.04958
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s1
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 18:14
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 7.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 12382a333373fc2e, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 70014bb9e0ae0a17):
+  - accelerator: gpu
+  - config_index: 31
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Actinopterygii
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.33923
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s1_do_mgl_mean — 2026-11-10 18:23
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 5.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package b0f1dc1dd8919cdd, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 20962d9c3c1661e0):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_do_mgl_mean: 1.04864
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s1
+
+## M6-hydromet / SMOKE/M6V2/p.fixed — 2026-11-10 18:28
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 2.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package f202f01c8ae16a51, script `sota_hydromet_v2_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 9c97d2815a2df37e):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/physics.yaml
+  - _smoke: True
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'threads': 4}
+  - arm: p
+  - data: {'grab': False}
+  - forcing: {'air2stream_regional': 'site_cell', 'air2stream_regional_ws': 'basin_mean'}
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_members: {'T': 'temp_c_mean', 'DO': 'do_mgl_mean'}
+  - job_minutes: 100
+  - members: {'temp_c_mean': ['air2stream_regional', 'air2stream_regional_ws'], 'temp_c_7dadm': ['air2stream_regional', 'air2stream_regional_ws'], 'do_mgl_mean': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws'], 'do_mgl_min': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws']}
+  - model: physics_family
+  - n_jobs: 6
+  - point: fixed
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - t_e_schema: non-ws members only (amendment §5); on hold
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 2 members x (inner, refit); deterministic; one label form
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/p_fixed
+
+## M6-hydromet / SMOKE/M6V2/rtd_w.fixed — 2026-11-10 18:29
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package f202f01c8ae16a51, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash ec36a9998f5616e1):
+  - _config_file: configs/hydromet_sota/v2/rtd_w.yaml
+  - _smoke: True
+  - arm: rtd_w
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 570, 'layers': 4, 'dropout': 2.216e-05, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)
+  - recipe_verified: True
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 2, best epoch 1, params 9619364, 0.6611168384552002 s/step, {'max_allocated_mb': 6848.7, 'max_reserved_mb': 7430.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/rtd_w_fixed_s0
+
+## M6-hydromet / SMOKE/M6V2/ref_stack_w.fixed — 2026-11-10 18:32
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 18a3eedbce358e23, script `sota_hydromet_v2_stack.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 9ebc3ea511091acd):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/stack.yaml
+  - _smoke: True
+  - arm: ref_stack_w
+  - endpoints: {'daily': ['temp_c_mean', 'temp_c_7dadm', 'do_mgl_mean', 'do_mgl_min'], 'inst': ['T', 'DO']}
+  - every_seed: weights are fitted once, on the members' 3-seed means; the seed-k stack is these weights applied to the seed-k refits of the members (deterministic members unchanged)
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_weights_nograb: in the no-grab label form no grab row enters a configuration: the inst endpoints T and DO take the weights of temp_c_mean and do_mgl_mean
+  - job_minutes: 100
+  - members: {'label_form': 'gate', 'd1': 'selected', 'd2': 'selected point if D2 is released, passed its kill rule and has inner predictions; otherwise absent', 'absent_member': 'left out of the stack for that endpoint and reported; the member list is not otherwise changed', 'no_inst_output': 'a member without an hour-resolved output is not a member of the inst endpoints'}
+  - min_rows: 200
+  - model: stack
+  - n_jobs: 2
+  - point: fixed
+  - ridge: 0.0
+  - role: comparator
+  - secondary_targets: T_max, T_min, DO_max are not stacked
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - stack_members: ['rtd', 'rtd_w', 'g1', 'g2']
+  - stacks: {'d3': {'members': ['d1', 'd2', 'rtd', 'g2'], 'role': 'candidate'}, 'ref_stack': {'members': ['rtd', 'g1', 'g2'], 'role': 'comparator'}, 'ref_stack_w': {'members': ['rtd', 'rtd_w', 'g1', 'g2'], 'role': 'comparator'}}
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 4 members, 3 inner groups, form grab
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/ref_stack_w_fixed
+
+## M3-microbe / microbe_arch_v2_cv:global_mean:lodo:G — 2026-11-10 18:34
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 0.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package ea43a9b91e512be9, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 54d30d7a9c77d895):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: base
+  - device: cpu
+  - families: ['G']
+  - model: global_mean
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0]
+  - stamp_row: 421854a9d225
+- **Final metrics**:
+  - G:mean_r2: -0.0572581
+  - G:r2_do_sat: -0.028817
+  - G:r2_log_ca: -0.0568124
+  - G:r2_log_cl: -0.0602791
+  - G:r2_log_dic: -0.0989903
+  - G:r2_log_nh4: -0.0191686
+  - G:r2_log_so4: -0.0528571
+  - G:r2_log_uv254: -0.05689
+  - G:r2_ph: -0.0842506
+  - cpu_hours: 1.94444e-05
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M3-microbe / microbe_arch_v2_cv:context_ridge:lodo:G — 2026-11-10 18:35
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 0.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package ea43a9b91e512be9, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash ec1cee282aa263ca):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: base
+  - device: cpu
+  - families: ['G']
+  - model: context_ridge
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0]
+  - stamp_row: 421854a9d225
+- **Final metrics**:
+  - G:mean_r2: -0.118469
+  - G:r2_do_sat: -0.0512178
+  - G:r2_log_ca: -0.153758
+  - G:r2_log_cl: -0.0939214
+  - G:r2_log_dic: -0.284693
+  - G:r2_log_nh4: -0.0110657
+  - G:r2_log_so4: -0.145959
+  - G:r2_log_uv254: 0.0852371
+  - G:r2_ph: -0.292375
+  - cpu_hours: 0.00266667
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 18:22
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 17.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 4d84c06edab7264a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 2e66cb510a58f646):
+  - accelerator: gpu
+  - config_index: 31
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Malacostraca
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.27517
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / M5-X final-scorer dry run v10 (manual entry) — 2026-11-10
+- **Status**: finished 18:36 EST, exit 0; development rows only (`--dry-run-dev --max-folds 1`); **no test value read, no FREEZE written**
+- **Done**: all listed comparators fitted and scored (14 per target X-L, 17 X-U; GJAM not compared); 12 confirmatory rows: 10 inconclusive (underpowered), 1 competitive (X-U NH4-N), 1 not estimable (X-U chloride, 1 cluster in the single fold); labels identical to the earlier dry run, deltas equal to 4 decimals; candidate sha256 `20a4d2e3…f4680` unchanged, 63 hashed files unchanged
+- **Artifacts**: `sentinel_runs/bioassess/x_final_dryrun_dev_20261110T144544/`; log `x_track/dev/logs/dryrun_x_final_v10.log`; handoff section "2026-11-10 18:40 EST"
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s1_do_mgl_min — 2026-11-10 18:37
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 4.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 4d84c06edab7264a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash d032ff33f7ddd5ef):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_min', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_do_mgl_min: 1.16306
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s1
+
+## M6-hydromet / SMOKE/M6V2/p.fixed — 2026-11-10 18:40
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 3.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 8eb351ca74aa1aea, script `sota_hydromet_v2_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 9c97d2815a2df37e):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/physics.yaml
+  - _smoke: True
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'threads': 4}
+  - arm: p
+  - data: {'grab': False}
+  - forcing: {'air2stream_regional': 'site_cell', 'air2stream_regional_ws': 'basin_mean'}
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_members: {'T': 'temp_c_mean', 'DO': 'do_mgl_mean'}
+  - job_minutes: 100
+  - members: {'temp_c_mean': ['air2stream_regional', 'air2stream_regional_ws'], 'temp_c_7dadm': ['air2stream_regional', 'air2stream_regional_ws'], 'do_mgl_mean': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws'], 'do_mgl_min': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws']}
+  - model: physics_family
+  - n_jobs: 6
+  - point: fixed
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - t_e_schema: non-ws members only (amendment §5); on hold
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 2 members x (inner, refit); deterministic; one label form
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/p_fixed
+
+## M3-microbe / microbe_arch_v2_cv:context_rf:lodo:G — 2026-11-10 18:35
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 11.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 66d7e6b33555eb63, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 3b772c72457767d9):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: base
+  - device: cpu
+  - families: ['G']
+  - model: context_rf
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - stamp_row: 421854a9d225
+- **Final metrics**:
+  - G:mean_r2: -0.320872
+  - G:r2_do_sat: -0.219652
+  - G:r2_log_ca: -0.377953
+  - G:r2_log_cl: -0.217492
+  - G:r2_log_dic: -0.539131
+  - G:r2_log_nh4: 0.0142366
+  - G:r2_log_so4: -0.411257
+  - G:r2_log_uv254: -0.113658
+  - G:r2_ph: -0.702067
+  - cpu_hours: 0.252661
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M3-microbe / microbe_arch_v2_cv:tier0_best:lodo:G — 2026-11-10 18:47
+- **Plan ref**: microbe_protocol §10; amendment §6 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 0.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 66d7e6b33555eb63, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 7771728fe26a77d6):
+  - choice: {'ph': 'global_mean', 'log_cl': 'global_mean', 'log_so4': 'global_mean', 'log_ca': 'global_mean', 'log_dic': 'global_mean', 'do_sat': 'global_mean', 'log_nh4': 'context_rf', 'log_uv254': 'context_ridge'}
+  - family: G
+  - model: tier0_best
+  - scheme: lodo
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: -0.0353166
+  - G:r2_do_sat: -0.028817
+  - G:r2_log_ca: -0.0568124
+  - G:r2_log_cl: -0.0602791
+  - G:r2_log_dic: -0.0989903
+  - G:r2_log_nh4: 0.0142366
+  - G:r2_log_so4: -0.0528571
+  - G:r2_log_uv254: 0.0852371
+  - G:r2_ph: -0.0842506
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo/G
+
+## bioassess / M5-F stamped work started: biology pull, comparator table, UK development design (manual entry) — 2026-11-10
+
+- **Status**: running (pull chunk 1 since 18:41 EST; first UK development fits since 18:52 EST)
+- **Done**: French biology pull started 2026-11-10T23:32Z under stamp row `f87159c7dc1d` (probe on department 01
+  checked by counts only: 14,914 index records = stored lines minus headers); comparator table written before any
+  fit (current sha256 `9622754b…3048`, two dated §9 lines at 23:51Z); UK development design built (19 folds,
+  4,788 pseudo-test rows); references started on CPU and GPUs 5–7; #7 `ma_zs` timing run on GPU 8 (no validation
+  number). Candidate predictions are stored unscored (gate G5, §9.5).
+- **Artifacts**: `docs/preregistration/bioassess_f_comparators.md`, `sentinel/models/bioassess/fdev.py`,
+  `scripts/eval/bioassess_f_ukdev.py`, `sentinel_runs/bioassess/f_track/ukdev/`, registry row `09ffb9f65ff0`,
+  `docs/handoff/bioassess.md` (section of 2026-11-10 18:54 EST)
+
+## bioassess / bioassess_f/ukdev/pool_mean — 2026-11-10 18:53
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 1.4 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package cec6e09347704365, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash a862ae9ca17828d8):
+  - model: pool_mean
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 82.0538
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/pool_mean
+
+## bioassess / bioassess_f/ukdev/month_clim — 2026-11-10 18:54
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 0.9 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package cec6e09347704365, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 369ab40eac8dd01e):
+  - model: month_clim
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 53.2038
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/month_clim
+
+## bioassess / bioassess_f/ukdev/nearest_station — 2026-11-10 18:55
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 0.8 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package cec6e09347704365, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash d58f9b43833624a1):
+  - model: nearest_station
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 47.9785
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/nearest_station
+
+## bioassess / bioassess_f/ukdev/ma_zs_timing — 2026-11-10 18:53
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 4.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package cec6e09347704365, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 5592749c3cded53f):
+  - area: ANGLIAN - CENTRAL
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 3, 'patience': 3, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: None
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 3
+- **Final metrics**:
+  - epoch_seconds: 54.9031
+  - epochs: 3
+  - featurize_seconds: 73.7207
+  - fit_rows: 169269
+  - inner_val_rows: 21910
+  - n_params: 859616
+  - peak_vram_train_mb: 1186.88
+- **Notes**: timing run on UK rows: sets the chunk length; no pseudo-test prediction is made
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 18:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 20.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package a97536d424cab7c8, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c2be8621e609edc6):
+  - accelerator: gpu
+  - config_index: 31
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Branchiopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.21369
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_f/ukdev/rf_geography — 2026-11-10 18:56
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 7.8 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package a97536d424cab7c8, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 633cf9c0c6098f61):
+  - model: rf_geography
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 466.426
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/rf_geography
+
+## bioassess / bioassess_f/ukdev/idx_ols — 2026-11-10 19:03
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 1.0 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package a97536d424cab7c8, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 85d9bf91d8d569c0):
+  - model: idx_ols
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 58.4609
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/idx_ols
+
+## bioassess / bioassess_f/ukdev/idx_ols_geo — 2026-11-10 19:04
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 1.1 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package a97536d424cab7c8, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash ffba7c6af6b76563):
+  - model: idx_ols_geo
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 67.2975
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/idx_ols_geo
+
+## M6-hydromet / SOTA/sota_gbm_C2a_qstack — 2026-11-10 18:39
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 31.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 894cfddca235f309, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash d3fabf8c3f95f2f2):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': None, 'stage': 'qstack'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_logq: 1.43307
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s1
+
+## M6-hydromet / SOTA/sota_gbm_C2a_qstack — 2026-11-10 18:39
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 31.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 894cfddca235f309, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 7f276c76f6cda1ba):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': None, 'stage': 'qstack'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_logq: 1.42195
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 17:30
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 103.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 68cfbc37adcca818, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 968c83023ee86026):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [10, 26]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 10
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.13753
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.21044
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_f/ukdev/idx_rf — 2026-11-10 19:06
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 7.6 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package 68cfbc37adcca818, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 0eb375fc93627adc):
+  - model: idx_rf
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 458.813
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/idx_rf
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 18:58
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 20.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package 9c989942c17eac4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 00f2656281a7b673):
+  - area: ANGLIAN - EASTERN
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 48.2537
+  - epochs: 24
+  - featurize_seconds: 59.667
+  - fit_rows: 153601
+  - inner_val_rows: 32058
+  - n_params: 857312
+  - peak_vram_train_mb: 1141.11
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 18:58
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 21.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 9191b6bc0a71e219, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash d0eb3c913f5085a3):
+  - area: ANGLIAN - CENTRAL
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 52.6283
+  - epochs: 23
+  - featurize_seconds: 64.4586
+  - fit_rows: 169269
+  - inner_val_rows: 21910
+  - n_params: 859616
+  - peak_vram_train_mb: 1188.63
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemprop — 2026-11-10 19:01
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4, A7 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 20.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 88f9c56039b70367, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7dc7726c55c55768):
+  - accelerator: gpu
+  - config_index: 31
+  - cuda_visible_devices: 0
+  - entry: chemprop
+  - fold: Maxillopoda
+  - granularity: one configuration x one fold
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - track: unseen_taxa
+- **Final metrics**:
+  - fold_rmse: 1.04994
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_f/ukdev/idx_rf_geo — 2026-11-10 19:13
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 10.3 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package 913c29f56f07100d, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash d84552aebad4b003):
+  - model: idx_rf_geo
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 618.796
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/idx_rf_geo
+
+## bioassess / bioassess_f/ukdev/wapls2 — 2026-11-10 19:24
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 1.7 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package 5a673d093f970036, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 84dddfcd4ef8dc77):
+  - model: wapls2
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 100.421
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/wapls2
+
+## bioassess / bioassess_f/ukdev/knn_mat — 2026-11-10 19:25
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 1.8 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package 8da7ede36912f573, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash d1f68eb7ca432b99):
+  - model: knn_mat
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: None
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 107.565
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/knn_mat
+
+## M6-hydromet / SMOKE/M6V2/d2.g2 — 2026-11-10 19:28
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 1.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package da6fb782523030c4, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 1dc4df231b1a1e1b):
+  - _config_file: configs/hydromet_sota/v2/d2.yaml
+  - _smoke: True
+  - arm: d2
+  - data: {'grab': True}
+  - do_stage: {'enabled': False, 'gate': 'G-DO', 'k600': 'Powell rows of H confidence, weight 0.1; needs the role table and the DO-stage entry'}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - kill_rule: {'max_s_per_step': 0.5, 'step_1_all_days': 'diel sub-model on every loss day', 'step_2_fallback_months': [6, 7, 8, 9], 'step_3': 'drop D2 if still > 0.5 s/step'}
+  - lambda_q: 1.0
+  - model: thermox
+  - net: {'static_hidden': [128, 64], 'static_emb': 32, 'static_noise': 0.5, 'gru_hidden': 64, 'n_newton': 4, 'te_range': [-5.0, 45.0], 'diel': {'enabled': True, 'cycles': 2, 'steps': 24, 'months': None}, 'mixing': 'full', 'warmup_epochs': 3, 'powell_prior': False, 'prior': {'shade': 0.3, 'wind_shelter': 0.6}, 'residual_cap': 1.0}
+  - point: g2
+  - released_by: D2 deviations entry (L4); not entry 1
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 2, best epoch 1, params 63574, 9.157605409622192 s/step, {'max_allocated_mb': 0.0, 'max_reserved_mb': 0.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/d2_g2_s0
+
+## M6-hydromet / SMOKE/M6V2/d2.g1 — 2026-11-10 19:36
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 5e2e811d7e97f334, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash d2cff666df52e887):
+  - _config_file: configs/hydromet_sota/v2/d2.yaml
+  - _smoke: True
+  - arm: d2
+  - data: {'grab': True}
+  - do_stage: {'enabled': False, 'gate': 'G-DO', 'k600': 'Powell rows of H confidence, weight 0.1; needs the role table and the DO-stage entry'}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - kill_rule: {'max_s_per_step': 0.5, 'step_1_all_days': 'diel sub-model on every loss day', 'step_2_fallback_months': [6, 7, 8, 9], 'step_3': 'drop D2 if still > 0.5 s/step'}
+  - lambda_q: 1.0
+  - model: thermox
+  - net: {'static_hidden': [128, 64], 'static_emb': 32, 'static_noise': 0.5, 'gru_hidden': 64, 'n_newton': 4, 'te_range': [-5.0, 45.0], 'diel': {'enabled': True, 'cycles': 2, 'steps': 24, 'months': None}, 'mixing': 'full', 'warmup_epochs': 3, 'powell_prior': False, 'prior': {'shade': 0.3, 'wind_shelter': 0.6}, 'residual_cap': 0.0}
+  - point: g1
+  - released_by: D2 deviations entry (L4); not entry 1
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 2, best epoch 1, params 61973, 0.1483771800994873 s/step, {'max_allocated_mb': 1767.8, 'max_reserved_mb': 2712.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/d2_g1_s0
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 19:18
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 20.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package acaed84c2952c671, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash cae214718b9b83e1):
+  - area: NORTH EAST - NORTH EAST
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 55.1644
+  - epochs: 21
+  - featurize_seconds: 54.1266
+  - fit_rows: 159604
+  - inner_val_rows: 29140
+  - n_params: 858944
+  - peak_vram_train_mb: 1174.09
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 19:19
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 23.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package b296023914828f2b, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash d2b637a25f246f85):
+  - area: MIDLANDS - WEST
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 55.8666
+  - epochs: 24
+  - featurize_seconds: 58.4251
+  - fit_rows: 156583
+  - inner_val_rows: 26389
+  - n_params: 858656
+  - peak_vram_train_mb: 1150.78
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s2_temp_c_mean — 2026-11-10 18:50
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 67.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 037aaa72cb6db00d, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash b2b02d79f75ffe79):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_temp_c_mean: 1.93174
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s2
+
+## M3-microbe / microbe_arch_v2_cv:niche_s:lodo:P+G — 2026-11-10 19:58
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 1.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 4dfe8d572f20ad36, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 1f747aeca3355ca5):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: niche
+  - code_sha256: {'sentinel/models/microbe/niche.py': '32d01a52205836827f3ba645c115ac284fca25596c1c66bed31084e650a0f07c', 'sentinel/models/microbe/archv2.py': 'a92bbf5529795592ca36f54a2520a2d089f72e1c89c53fce87edf9ce649893ce', 'scripts/train/microbe_arch_v2_cv.py': 'eef84f4a002360805ebe90d6432345ce877f4ed64134008e0462c83a97b4a8db'}
+  - device: cpu
+  - families: ['P', 'G']
+  - model: niche_s
+  - n_jobs: 1
+  - n_shard_processes: 6
+  - params: {'min_events': 2, 'kmer': 5, 'n_pc': 64, 'prior_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0], 'kappa': 5.0, 'tol_pool_min_n2': 5.0, 'tol_floor': 0.25, 'context_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'context_cols': None, 'context_prior': True, 'flat_prior_ridge': 1e-06, 'qmp': False, 'cov_shrink': 0.2, 'eig_floor': 0.001, 'n_eff_grid': [10.0, 30.0, 100.0, 300.0, 1000.0], 'n_eff_default': 100.0, 'inner_folds': 3, 'newton_steps': 6, 'halvings': 5, 'slope_clip': [0.5, 3.0], 'prior': 'sequence', 'min_rows': 10, 'hess_tol': 1e-09, 'chunk': 128}
+  - role: slot#6
+  - scheme: lodo
+  - seeds: [0]
+  - shard_cpu_hours: [0.1104, 0.1021, 0.1053, 0.0975, 0.1061, 0.0993, 0.1012, 0.1108, 0.1102, 0.1075, 0.1044, 0.1023, 0.1008, 0.1076, 0.1123, 0.108, 0.1039, 0.0949, 0.1006]
+  - sharded: True
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: 0.198924
+  - G:r2_do_sat: 0.00912582
+  - G:r2_log_ca: 0.227866
+  - G:r2_log_cl: 0.0320939
+  - G:r2_log_dic: 0.713535
+  - G:r2_log_nh4: 0.12218
+  - G:r2_log_so4: -0.00958158
+  - G:r2_log_uv254: 0.114711
+  - G:r2_ph: 0.381461
+  - P:mean_r2: 0.185689
+  - P:r2_do: 0.227962
+  - P:r2_log_chla: 0.0661696
+  - P:r2_log_doc: 0.272259
+  - P:r2_log_no3: 0.144647
+  - P:r2_log_sc: 0.56594
+  - P:r2_log_tn: 0.078656
+  - P:r2_log_tp: 0.0957965
+  - P:r2_log_turb: 0.0340811
+  - cpu_hours: 1.98533
+  - first_step_fail_share: 0.00164609
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M3-microbe / microbe_arch_v2_cv:xgb_nichez_context:lodo:P+G — 2026-11-10 19:59
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 1.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 4dfe8d572f20ad36, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 7a9569a30ab2b71b):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: niche
+  - code_sha256: {'sentinel/models/microbe/niche.py': '32d01a52205836827f3ba645c115ac284fca25596c1c66bed31084e650a0f07c', 'sentinel/models/microbe/archv2.py': 'a92bbf5529795592ca36f54a2520a2d089f72e1c89c53fce87edf9ce649893ce', 'scripts/train/microbe_arch_v2_cv.py': 'eef84f4a002360805ebe90d6432345ce877f4ed64134008e0462c83a97b4a8db'}
+  - device: cpu
+  - families: ['P', 'G']
+  - model: xgb_nichez_context
+  - n_jobs: 1
+  - n_shard_processes: 6
+  - params: {'min_events': 2, 'kmer': 5, 'n_pc': 64, 'prior_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0], 'kappa': 5.0, 'tol_pool_min_n2': 5.0, 'tol_floor': 0.25, 'context_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'context_cols': None, 'context_prior': True, 'flat_prior_ridge': 1e-06, 'qmp': False, 'cov_shrink': 0.2, 'eig_floor': 0.001, 'n_eff_grid': [10.0, 30.0, 100.0, 300.0, 1000.0], 'n_eff_default': 100.0, 'inner_folds': 3, 'newton_steps': 6, 'halvings': 5, 'slope_clip': [0.5, 3.0], 'prior': 'sequence', 'min_rows': 10, 'hess_tol': 1e-09, 'chunk': 128}
+  - role: control
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - shard_cpu_hours: [0.0172, 0.0162, 0.0162, 0.0166, 0.0165, 0.0145, 0.0158, 0.0159, 0.0169, 0.0164, 0.0161, 0.0159, 0.0166, 0.0159, 0.016, 0.0166, 0.0153, 0.0139, 0.0152]
+  - sharded: True
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: 0.177503
+  - G:r2_do_sat: -0.13219
+  - G:r2_log_ca: 0.310259
+  - G:r2_log_cl: 0.0993996
+  - G:r2_log_dic: 0.521428
+  - G:r2_log_nh4: 0.171378
+  - G:r2_log_so4: 0.120201
+  - G:r2_log_uv254: 0.12937
+  - G:r2_ph: 0.200176
+  - P:mean_r2: 0.139212
+  - P:r2_do: 0.306955
+  - P:r2_log_chla: 0.0635515
+  - P:r2_log_doc: 0.194697
+  - P:r2_log_no3: 0.176431
+  - P:r2_log_sc: 0.520155
+  - P:r2_log_tn: -0.0303782
+  - P:r2_log_tp: 0.0799493
+  - P:r2_log_turb: -0.197667
+  - cpu_hours: 0.303692
+  - first_step_fail_share: 0.00164609
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 19:43
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 18.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 4dfe8d572f20ad36, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 0685339496ae276d):
+  - area: SOUTH WEST - CORNWALL
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 54.5984
+  - epochs: 19
+  - featurize_seconds: 62.1479
+  - fit_rows: 154501
+  - inner_val_rows: 38647
+  - n_params: 858848
+  - peak_vram_train_mb: 1199.22
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 19:39
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 24.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package 4dfe8d572f20ad36, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 2351b4a5282db083):
+  - area: SOUTH WEST - DEVON
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 57.5015
+  - epochs: 24
+  - featurize_seconds: 58.8597
+  - fit_rows: 167228
+  - inner_val_rows: 25175
+  - n_params: 858944
+  - peak_vram_train_mb: 1199.03
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s0_temp_c_mean — 2026-11-10 19:16
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 61.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 4fdfd3360049d187, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash e69e088cf278daa6):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_temp_c_mean: 1.93288
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s0
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 20:04
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 20.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package 0fe8519a78853a55, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 6fa6baf0ebf950c2):
+  - area: THAMES - NORTH EAST
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 52.2287
+  - epochs: 22
+  - featurize_seconds: 69.4499
+  - fit_rows: 168231
+  - inner_val_rows: 22587
+  - n_params: 857408
+  - peak_vram_train_mb: 1186.24
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 20:04
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 21.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 0fe8519a78853a55, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash ef4c5042682c7d7e):
+  - area: SOUTHERN - SOLENT & S. DOWNS
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 50.914
+  - epochs: 24
+  - featurize_seconds: 62.2071
+  - fit_rows: 164899
+  - inner_val_rows: 21910
+  - n_params: 853088
+  - peak_vram_train_mb: 1167.61
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / SMOKE/M6V2/d1.g1 — 2026-11-10 20:24
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 1.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 0fe8519a78853a55, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash bcb9d3f01b794036):
+  - _config_file: configs/hydromet_sota/v2/d1.yaml
+  - _smoke: True
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: g1
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 2, best epoch 1, params 350695, 20.693645119667053 s/step, {'max_allocated_mb': 0.0, 'max_reserved_mb': 0.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/d1_g1_s0
+
+## M3-microbe / microbe_arch_v2_cv:tabpfn_v4clr:lodo:P — 2026-11-10 18:50
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 99.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 0064679b0e700354, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash e39b8091de9bd768):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: v4mr
+  - device: cuda
+  - families: ['P']
+  - model: tabpfn_v4clr
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - P:mean_r2: 0.305018
+  - P:r2_do: 0.391455
+  - P:r2_log_chla: 0.174973
+  - P:r2_log_doc: 0.404131
+  - P:r2_log_no3: 0.167375
+  - P:r2_log_sc: 0.801023
+  - P:r2_log_tn: 0.121523
+  - P:r2_log_tp: 0.235287
+  - P:r2_log_turb: 0.144376
+  - cpu_hours: 2.42608
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M6-hydromet / SMOKE/M6V2/g1.sel — 2026-11-10 20:26
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 7.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 75a655d2cd7bb929, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash ef44bea4bb236bb0):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: True
+  - arm: g1
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - seed: 0
+  - seed_role: grid + selection
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 2 + 2 + 2 refitted members; 116 columns; fixed selection False
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/g1_sel_s0
+
+## M3-microbe / microbe_arch_v2_cv:calibration:niche_s:lodo — 2026-11-10 20:34
+- **Plan ref**: lead rulings §2.2 A1 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 0.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 75a655d2cd7bb929, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash d51a9156bf111e9c):
+  - diagnostic: calibration
+  - families: ['P', 'G']
+  - model: niche_s
+  - scheme: lodo
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:sd_ratio_do_sat: 0.233122
+  - G:sd_ratio_log_ca: 0.484299
+  - G:sd_ratio_log_cl: 0.245571
+  - G:sd_ratio_log_dic: 0.891828
+  - G:sd_ratio_log_nh4: 0.343481
+  - G:sd_ratio_log_so4: 0.340015
+  - G:sd_ratio_log_uv254: 0.331228
+  - G:sd_ratio_ph: 0.452495
+  - G:slope_within_domain_do_sat: 1.24981
+  - G:slope_within_domain_log_ca: 0.692483
+  - G:slope_within_domain_log_cl: 0.767602
+  - G:slope_within_domain_log_dic: 0.618683
+  - G:slope_within_domain_log_nh4: 1.43136
+  - G:slope_within_domain_log_so4: 0.189184
+  - G:slope_within_domain_log_uv254: 0.520549
+  - G:slope_within_domain_ph: 1.20924
+  - P:sd_ratio_do: 0.439643
+  - P:sd_ratio_log_chla: 0.382644
+  - P:sd_ratio_log_doc: 0.498223
+  - P:sd_ratio_log_no3: 0.360588
+  - P:sd_ratio_log_sc: 0.887687
+  - P:sd_ratio_log_tn: 0.368205
+  - P:sd_ratio_log_tp: 0.268662
+  - P:sd_ratio_log_turb: 0.248101
+  - P:slope_within_domain_do: 1.45505
+  - P:slope_within_domain_log_chla: -0.221883
+  - P:slope_within_domain_log_doc: 0.521259
+  - P:slope_within_domain_log_no3: 1.43308
+  - P:slope_within_domain_log_sc: 0.655907
+  - P:slope_within_domain_log_tn: 0.935528
+  - P:slope_within_domain_log_tp: 1.26816
+  - P:slope_within_domain_log_turb: 1.44249
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## bioassess / bioassess_f/ukdev/tabpfn__nocoords — 2026-11-10 18:53
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 102.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=7)
+- **Code**: v2-rebuild@34df74ec (dirty), package 75a655d2cd7bb929, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 5ecd9dad0c894f62):
+  - model: tabpfn__nocoords
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('tabpfn', {'numeric': ('doy_sin', 'doy_cos', 'altitude_m'), 'max_taxa': {'invertebrate': 300}, 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 2
+- **Final metrics**:
+  - (none)
+- **Notes**: time limit reached; resumable
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/tabpfn__nocoords
+
+## M6-hydromet / SMOKE/M6V2/p.fixed — 2026-11-10 20:33
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 3.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 5903366d2382ebac, script `sota_hydromet_v2_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 9c97d2815a2df37e):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/physics.yaml
+  - _smoke: True
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'threads': 4}
+  - arm: p
+  - data: {'grab': False}
+  - forcing: {'air2stream_regional': 'site_cell', 'air2stream_regional_ws': 'basin_mean'}
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_members: {'T': 'temp_c_mean', 'DO': 'do_mgl_mean'}
+  - job_minutes: 100
+  - members: {'temp_c_mean': ['air2stream_regional', 'air2stream_regional_ws'], 'temp_c_7dadm': ['air2stream_regional', 'air2stream_regional_ws'], 'do_mgl_mean': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws'], 'do_mgl_min': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws']}
+  - model: physics_family
+  - n_jobs: 6
+  - point: fixed
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - t_e_schema: non-ws members only (amendment §5); on hold
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 2 members x (inner, refit); deterministic; one label form
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/p_fixed
+
+## M6-hydromet / SMOKE/M6V2/d3.fixed — 2026-11-10 20:37
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: smoke
+- **Status**: ✅ Completed | **Duration**: 0.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 5903366d2382ebac, script `sota_hydromet_v2_stack.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 726661f5bfdf7907):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/stack.yaml
+  - _smoke: True
+  - arm: d3
+  - endpoints: {'daily': ['temp_c_mean', 'temp_c_7dadm', 'do_mgl_mean', 'do_mgl_min'], 'inst': ['T', 'DO']}
+  - every_seed: weights are fitted once, on the members' 3-seed means; the seed-k stack is these weights applied to the seed-k refits of the members (deterministic members unchanged)
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_weights_nograb: in the no-grab label form no grab row enters a configuration: the inst endpoints T and DO take the weights of temp_c_mean and do_mgl_mean
+  - job_minutes: 100
+  - members: {'label_form': 'gate', 'd1': 'selected', 'd2': 'selected point if D2 is released, passed its kill rule and has inner predictions; otherwise absent', 'absent_member': 'left out of the stack for that endpoint and reported; the member list is not otherwise changed', 'no_inst_output': 'a member without an hour-resolved output is not a member of the inst endpoints'}
+  - min_rows: 200
+  - model: stack
+  - n_jobs: 2
+  - point: fixed
+  - ridge: 0.0
+  - role: candidate
+  - secondary_targets: T_max, T_min, DO_max are not stacked
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - stack_members: ['d1', 'd2', 'rtd', 'g2']
+  - stacks: {'d3': {'members': ['d1', 'd2', 'rtd', 'g2'], 'role': 'candidate'}, 'ref_stack': {'members': ['rtd', 'g1', 'g2'], 'role': 'comparator'}, 'ref_stack_w': {'members': ['rtd', 'rtd_w', 'g1', 'g2'], 'role': 'comparator'}}
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: 4 members, 3 inner groups, form grab
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/smoke/d3_fixed
+
+## bioassess / bioassess_f/ukdev/tabpfn__coords — 2026-11-10 18:53
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 103.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=6)
+- **Code**: v2-rebuild@34df74ec (dirty), package 5903366d2382ebac, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 18171f5093690200):
+  - model: tabpfn__coords
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('tabpfn', {'numeric': ('doy_sin', 'doy_cos', 'lat', 'lon', 'altitude_m'), 'max_taxa': {'invertebrate': 300}, 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 2
+- **Final metrics**:
+  - (none)
+- **Notes**: time limit reached; resumable
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/tabpfn__coords
+
+## M3-microbe / microbe_arch_v2_cv:wa_tol:lodo:P+G — 2026-11-10 20:34
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 2.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 5903366d2382ebac, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash bd58eb2363712898):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: wa
+  - device: cpu
+  - families: ['P', 'G']
+  - model: wa_tol
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0]
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: 0.304431
+  - G:r2_do_sat: 0.0455464
+  - G:r2_log_ca: 0.397804
+  - G:r2_log_cl: 0.124581
+  - G:r2_log_dic: 0.758938
+  - G:r2_log_nh4: 0.151651
+  - G:r2_log_so4: 0.232801
+  - G:r2_log_uv254: 0.151302
+  - G:r2_ph: 0.572822
+  - P:mean_r2: 0.193518
+  - P:r2_do: 0.250771
+  - P:r2_log_chla: 0.184331
+  - P:r2_log_doc: 0.225414
+  - P:r2_log_no3: -0.135468
+  - P:r2_log_sc: 0.632133
+  - P:r2_log_tn: 0.143376
+  - P:r2_log_tp: 0.187441
+  - P:r2_log_turb: 0.0601432
+  - cpu_hours: 0.0300722
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M3-microbe / microbe_arch_v2_cv:wa_pls:lodo:P+G — 2026-11-10 20:37
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 5.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2769936b48553975, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 8eab2752ce14b4a8):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: wa
+  - device: cpu
+  - families: ['P', 'G']
+  - model: wa_pls
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0]
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: 0.337938
+  - G:r2_do_sat: 0.109425
+  - G:r2_log_ca: 0.443405
+  - G:r2_log_cl: 0.0757512
+  - G:r2_log_dic: 0.870605
+  - G:r2_log_nh4: 0.169419
+  - G:r2_log_so4: 0.154014
+  - G:r2_log_uv254: 0.202254
+  - G:r2_ph: 0.67863
+  - P:mean_r2: 0.281263
+  - P:r2_do: 0.319038
+  - P:r2_log_chla: 0.180147
+  - P:r2_log_doc: 0.341044
+  - P:r2_log_no3: 0.176662
+  - P:r2_log_sc: 0.743143
+  - P:r2_log_tn: 0.074228
+  - P:r2_log_tp: 0.180711
+  - P:r2_log_turb: 0.235127
+  - cpu_hours: 0.0685
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## bioassess / bioassess_f/ukdev/tabpfn__community — 2026-11-10 19:02
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 101.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2769936b48553975, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 9ab32f076e98f9ab):
+  - model: tabpfn__community
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('tabpfn', {'max_taxa': {'invertebrate': 300}, 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 2
+- **Final metrics**:
+  - (none)
+- **Notes**: time limit reached; resumable
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/tabpfn__community
+
+## M3-microbe / microbe_arch_v2_cv:niche_s_a0:lodo:P+G — 2026-11-10 20:43
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 0.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2769936b48553975, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash a2e5705f13b22f5f):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: niche
+  - code_sha256: {'sentinel/models/microbe/niche.py': '32d01a52205836827f3ba645c115ac284fca25596c1c66bed31084e650a0f07c', 'sentinel/models/microbe/archv2.py': 'a92bbf5529795592ca36f54a2520a2d089f72e1c89c53fce87edf9ce649893ce', 'scripts/train/microbe_arch_v2_cv.py': 'd85d90a7d32d89a7a5dbbb4e9d0648cada355d452703ce1ce7742dea647e8cbd'}
+  - device: cpu
+  - families: ['P', 'G']
+  - model: niche_s_a0
+  - n_jobs: 1
+  - n_shard_processes: 6
+  - params: {'min_events': 2, 'kmer': 5, 'n_pc': 64, 'prior_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0], 'kappa': 0.0, 'tol_pool_min_n2': 5.0, 'tol_floor': 0.25, 'context_alphas': [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0], 'context_cols': None, 'context_prior': False, 'flat_prior_ridge': 1e-06, 'qmp': False, 'cov_shrink': 0.2, 'eig_floor': 0.001, 'n_eff_grid': [100.0], 'n_eff_default': 100.0, 'inner_folds': 3, 'newton_steps': 6, 'halvings': 5, 'slope_clip': None, 'prior': 'sequence', 'min_rows': 10, 'hess_tol': 1e-09, 'chunk': 128}
+  - role: ablation A0
+  - scheme: lodo
+  - seeds: [0]
+  - shard_cpu_hours: [0.039, 0.0377, 0.0381, 0.0392, 0.0387, 0.0396, 0.0319, 0.0359, 0.0321, 0.0321, 0.0359, 0.0314, 0.0322, 0.0341, 0.0331, 0.0323, 0.034, 0.0309, 0.0318]
+  - sharded: True
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: 0.145252
+  - G:r2_do_sat: -0.0271245
+  - G:r2_log_ca: 0.180329
+  - G:r2_log_cl: -0.111939
+  - G:r2_log_dic: 0.719892
+  - G:r2_log_nh4: 0.110619
+  - G:r2_log_so4: -0.0223356
+  - G:r2_log_uv254: 0.0679618
+  - G:r2_ph: 0.244611
+  - P:mean_r2: 0.1042
+  - P:r2_do: 0.00953862
+  - P:r2_log_chla: 0.113265
+  - P:r2_log_doc: 0.157689
+  - P:r2_log_no3: 0.0291915
+  - P:r2_log_sc: 0.437774
+  - P:r2_log_tn: -0.0439415
+  - P:r2_log_tp: 0.105384
+  - P:r2_log_turb: 0.0246966
+  - cpu_hours: 0.660236
+  - first_step_fail_share: 0.0271605
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 20:28
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 20.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2769936b48553975, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash fd9e52b9aef0de7c):
+  - area: MIDLANDS - CENTRAL
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 56.5401
+  - epochs: 20
+  - featurize_seconds: 64.3405
+  - fit_rows: 164228
+  - inner_val_rows: 21910
+  - n_params: 855680
+  - peak_vram_train_mb: 1162.37
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## bioassess / bioassess_f/ukdev/tabpfn__nocoords — 2026-11-10 20:36
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 11.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 2769936b48553975, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 5ecd9dad0c894f62):
+  - model: tabpfn__nocoords
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('tabpfn', {'numeric': ('doy_sin', 'doy_cos', 'altitude_m'), 'max_taxa': {'invertebrate': 300}, 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 2
+- **Final metrics**:
+  - seconds: 711.082
+  - units_fitted: 2
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/tabpfn__nocoords
+
+## bioassess / bioassess_f/ukdev/tabpfn__coords — 2026-11-10 20:38
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 11.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=6)
+- **Code**: v2-rebuild@34df74ec (dirty), package 6e1f58fad3ec22a1, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 18171f5093690200):
+  - model: tabpfn__coords
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('tabpfn', {'numeric': ('doy_sin', 'doy_cos', 'lat', 'lon', 'altitude_m'), 'max_taxa': {'invertebrate': 300}, 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 2
+- **Final metrics**:
+  - seconds: 714.036
+  - units_fitted: 2
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/tabpfn__coords
+
+## M3-microbe / microbe_arch_v2_cv:tabpfn_v4clr:lodo:G — 2026-11-10 18:50
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 120.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package 57e0c052ae94e86d, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 7b05594470843221):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: v4mr
+  - device: cuda
+  - families: ['G']
+  - model: tabpfn_v4clr
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: 0.337946
+  - G:r2_do_sat: 0.187551
+  - G:r2_log_ca: 0.417338
+  - G:r2_log_cl: 0.0474756
+  - G:r2_log_dic: 0.815047
+  - G:r2_log_nh4: 0.244263
+  - G:r2_log_so4: 0.109813
+  - G:r2_log_uv254: 0.333154
+  - G:r2_ph: 0.548928
+  - cpu_hours: 3.26633
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## bioassess / bioassess_f/ukdev/rf__nocoords — 2026-11-10 19:28
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 85.1 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package 57e0c052ae94e86d, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 5001a4239e3807cf):
+  - model: rf__nocoords
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('rf', {'numeric': ('doy_sin', 'doy_cos', 'altitude_m')})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 5107.68
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/rf__nocoords
+
+## M3-microbe / microbe_arch_v2_cv:tabpfn_clr:lodo:G — 2026-11-10 18:50
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 123.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=4)
+- **Code**: v2-rebuild@34df74ec (dirty), package 57e0c052ae94e86d, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash d6d12f7a9f8e91a5):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: base
+  - device: cuda
+  - families: ['G']
+  - model: tabpfn_clr
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - G:mean_r2: 0.353433
+  - G:r2_do_sat: 0.172363
+  - G:r2_log_ca: 0.417549
+  - G:r2_log_cl: 0.208791
+  - G:r2_log_dic: 0.803862
+  - G:r2_log_nh4: 0.296482
+  - G:r2_log_so4: 0.126292
+  - G:r2_log_uv254: 0.203504
+  - G:r2_ph: 0.598623
+  - cpu_hours: 3.29731
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 20:27
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 28.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 801ce71f461c3614, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 046a46b38efe8231):
+  - area: ANGLIAN - NORTHERN
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 56.0275
+  - epochs: 29
+  - featurize_seconds: 59.4925
+  - fit_rows: 156865
+  - inner_val_rows: 23995
+  - n_params: 855104
+  - peak_vram_train_mb: 1138.49
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / M6V2/rtd_w.published — 2026-11-10 20:49
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 17.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=7)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 578fcb737162c5dd):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd_w.yaml
+  - _smoke: False
+  - arm: rtd_w
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 570, 'layers': 4, 'dropout': 2.216e-05, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: published
+  - recipe_source: deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: fixed
+- **Final metrics**:
+  - best_J: 0.123829
+  - best_j_sonde: 0.123829
+- **Notes**: epochs 7, best epoch 0, params 9637604, 0.6814781427383423 s/step, {'max_allocated_mb': 6858.9, 'max_reserved_mb': 7448.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd_w/rtd_w_published_s0
+
+## M6-hydromet / M6V2/rtd.fixed — 2026-11-10 20:53
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 13.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 451b164124587094):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd.yaml
+  - _smoke: False
+  - arm: rtd
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 100, 'layers': 1, 'dropout': 0.5, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.155678
+  - best_j_grab: 0.290221
+  - best_j_sonde: 0.122043
+- **Notes**: epochs 41, best epoch 34, params 132444, 0.07170557975769043 s/step, {'max_allocated_mb': 2142.4, 'max_reserved_mb': 3754.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd/rtd_fixed_s0
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s1_temp_c_mean — 2026-11-10 19:16
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 116.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 1e7594a07c70a89b):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_temp_c_mean: 1.92422
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s1
+
+## bioassess / bioassess_f/ukdev/gbm__nocoords — 2026-11-10 20:55
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 20.4 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash e6ef403090f1c1fe):
+  - model: gbm__nocoords
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('gbm', {'numeric': ('doy_sin', 'doy_cos', 'altitude_m'), 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - (none)
+- **Notes**: time limit reached; resumable
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/gbm__nocoords
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 20:48
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 29.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 81ecaa9a7f075ebf):
+  - area: NORTH WEST - NORTH
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 60.6922
+  - epochs: 28
+  - featurize_seconds: 53.087
+  - fit_rows: 160681
+  - inner_val_rows: 25769
+  - n_params: 853952
+  - peak_vram_train_mb: 1163.47
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s2_temp_c_7dadm — 2026-11-10 20:06
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 71.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 23170728dc22437d):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_7dadm', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_temp_c_7dadm: 2.01937
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s2
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 20:55
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 25.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash c46af7e9c5a5145d):
+  - area: NORTH EAST - YORKSHIRE
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 60.2593
+  - epochs: 24
+  - featurize_seconds: 63.8121
+  - fit_rows: 156222
+  - inner_val_rows: 24664
+  - n_params: 851936
+  - peak_vram_train_mb: 1129
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / M6V2/rtd.published — 2026-11-10 21:14
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 9.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 06da144e04ceb567):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd.yaml
+  - _smoke: False
+  - arm: rtd
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 100, 'layers': 1, 'dropout': 0.5, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: published
+  - recipe_source: deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: fixed
+- **Final metrics**:
+  - best_J: 0.119523
+  - best_j_sonde: 0.119523
+- **Notes**: epochs 32, best epoch 25, params 132444, 0.06926512718200684 s/step, {'max_allocated_mb': 2142.2, 'max_reserved_mb': 3754.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd/rtd_published_s0
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 21:07
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 32.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=7)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 0e273085ce74f130):
+  - area: MIDLANDS - EAST
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 62.2759
+  - epochs: 30
+  - featurize_seconds: 58.329
+  - fit_rows: 164074
+  - inner_val_rows: 21909
+  - n_params: 858560
+  - peak_vram_train_mb: 1163.82
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 21:17
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 25.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 664803d5459ff8bf):
+  - area: SOUTH WEST - SOUTH WESSEX
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 69.6617
+  - epochs: 21
+  - featurize_seconds: 59.6066
+  - fit_rows: 165530
+  - inner_val_rows: 25931
+  - n_params: 857216
+  - peak_vram_train_mb: 1194.72
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / M6V2/rtd.fixed — 2026-11-10 21:31
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 11.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 6e3c55e0afb7858c):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd.yaml
+  - _smoke: False
+  - arm: rtd
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 100, 'layers': 1, 'dropout': 0.5, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.154588
+  - best_j_grab: 0.29397
+  - best_j_sonde: 0.119742
+- **Notes**: epochs 34, best epoch 27, params 132444, 0.06923818588256836 s/step, {'max_allocated_mb': 2142.4, 'max_reserved_mb': 3756.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd/rtd_fixed_s1
+
+## M6-hydromet / M6V2/rtd_w.published — 2026-11-10 21:12
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 35.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash aa128ac9a1583b7e):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd_w.yaml
+  - _smoke: False
+  - arm: rtd_w
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 570, 'layers': 4, 'dropout': 2.216e-05, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: published
+  - recipe_source: deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: fixed
+- **Final metrics**:
+  - best_J: 0.12342
+  - best_j_sonde: 0.12342
+- **Notes**: epochs 10, best epoch 3, params 9637604, 0.6975933313369751 s/step, {'max_allocated_mb': 6858.9, 'max_reserved_mb': 7448.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd_w/rtd_w_published_s1
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s2_do_mgl_mean — 2026-11-10 21:27
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 22.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 181ccb965f2b498c):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_do_mgl_mean: 1.04256
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s2
+
+## M3-microbe / microbe_arch_v2_cv:rf_v4clr:lodo:P — 2026-11-10 20:43
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 66.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 0fd273f6ccac59a1):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: v4mr
+  - device: cpu
+  - families: ['P']
+  - model: rf_v4clr
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - P:mean_r2: 0.280515
+  - P:r2_do: 0.401517
+  - P:r2_log_chla: 0.22519
+  - P:r2_log_doc: 0.278757
+  - P:r2_log_no3: 0.109899
+  - P:r2_log_sc: 0.755341
+  - P:r2_log_tn: 0.105947
+  - P:r2_log_tp: 0.260975
+  - P:r2_log_turb: 0.106492
+  - cpu_hours: 4.95212
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M6-hydromet / M6V2/rtd.published — 2026-11-10 21:50
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 5.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 8351b87e0d6cf211):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd.yaml
+  - _smoke: False
+  - arm: rtd
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 100, 'layers': 1, 'dropout': 0.5, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: published
+  - recipe_source: deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: fixed
+- **Final metrics**:
+  - best_J: 0.128535
+  - best_j_sonde: 0.128535
+- **Notes**: epochs 16, best epoch 9, params 132444, 0.07351672649383545 s/step, {'max_allocated_mb': 2142.2, 'max_reserved_mb': 3754.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd/rtd_published_s1
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 21:21
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 37.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=8)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 0d20e590e3582874):
+  - area: SOUTH WEST - NORTH WESSEX
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 80.3378
+  - epochs: 27
+  - featurize_seconds: 65.8835
+  - fit_rows: 166959
+  - inner_val_rows: 25652
+  - n_params: 859712
+  - peak_vram_train_mb: 1199.31
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M6-hydromet / SOTA/sota_gbm_C1a_bag_s2_do_mgl_min — 2026-11-10 21:58
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 11.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash d24dd54e0cc3668a):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_min', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - inner_rmse_do_mgl_min: 1.16472
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C1a_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 21:13
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 57.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash e4e7a5ffdfbcc98f):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [12, 28]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 12
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.22521
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.31988
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / M6V2/rtd.fixed — 2026-11-10 22:03
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 11.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 92496188c39c6d8d):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd.yaml
+  - _smoke: False
+  - arm: rtd
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 100, 'layers': 1, 'dropout': 0.5, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.158075
+  - best_j_grab: 0.307346
+  - best_j_sonde: 0.120757
+- **Notes**: epochs 29, best epoch 22, params 132444, 0.08353674411773682 s/step, {'max_allocated_mb': 2142.4, 'max_reserved_mb': 3754.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd/rtd_fixed_s2
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-10 21:40
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 40.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=7)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 75a49a58b11f08db):
+  - area: NORTH WEST - SOUTH
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 78.0757
+  - epochs: 30
+  - featurize_seconds: 57.4199
+  - fit_rows: 155712
+  - inner_val_rows: 25769
+  - n_params: 856928
+  - peak_vram_train_mb: 1139.52
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 22:11
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 12.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 435d127189d2defb):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [13, 29]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 13
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.14762
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.21909
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / M6V2/rtd.published — 2026-11-10 22:21
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 3.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash dfc044ba35a07265):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd.yaml
+  - _smoke: False
+  - arm: rtd
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 100, 'layers': 1, 'dropout': 0.5, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: published
+  - recipe_source: deviations entry 1 (L11.1): Rahmani et al. 2021 ERL 16 024025 Suppl. Table S2 (PDF p. 6); Rahmani et al. 2021 Hydrol. Process. 35 e14400 Methods (accepted ms p. 9)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: fixed
+- **Final metrics**:
+  - best_J: 0.126718
+  - best_j_sonde: 0.126718
+- **Notes**: epochs 13, best epoch 6, params 132444, 0.061043620109558105 s/step, {'max_allocated_mb': 2142.2, 'max_reserved_mb': 3754.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd/rtd_published_s2
+
+## M6-hydromet / M6V2/g1.sel — 2026-11-10 20:59
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 86.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7e13ae885786ad59):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: False
+  - arm: g1
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seed_role: grid + selection
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: job chunk ended before member inst_T_1000_0.5; 4 built, 0 loaded; resumed by the next job
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/g1/g1_sel_s0
+
+## M6-hydromet / M6V2/rtd_w.fixed — 2026-11-10 20:53
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 94.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 33735e562d49df81):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd_w.yaml
+  - _smoke: False
+  - arm: rtd_w
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 570, 'layers': 4, 'dropout': 2.216e-05, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.155916
+  - best_j_grab: 0.281715
+  - best_j_sonde: 0.124466
+- **Notes**: epochs 24, best epoch 17, params 9637604, 1.193578839302063 s/step, {'max_allocated_mb': 6858.9, 'max_reserved_mb': 7448.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd_w/rtd_w_fixed_s0
+
+## M6-hydromet / SOTA/sota_phys_C1a — 2026-11-10 22:16
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever1
+- **Status**: ✅ Completed | **Duration**: 12.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash a38c90a36827214d):
+  - _config_file: configs/hydromet_sota/C1a.yaml
+  - _smoke: False
+  - aux: {}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': True, 'q_only_sites': False, 'weak': True, 'aux_q': False}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 1
+  - lever_id: C1a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C1a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.25
+- **Final metrics**:
+  - air2stream_donors: 1228
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_phys_C1a
+
+## M6-hydromet / M6V2/rtd_w.published — 2026-11-10 22:30
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 27.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash a28088f469cd9e3d):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd_w.yaml
+  - _smoke: False
+  - arm: rtd_w
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 570, 'layers': 4, 'dropout': 2.216e-05, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: published
+  - recipe_source: deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: fixed
+- **Final metrics**:
+  - best_J: 0.120307
+  - best_j_sonde: 0.120307
+- **Notes**: epochs 11, best epoch 4, params 9637604, 0.6873900890350342 s/step, {'max_allocated_mb': 6858.9, 'max_reserved_mb': 7448.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd_w/rtd_w_published_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 22:24
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 36.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash c1eac5c9a716476d):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [14, 30]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 14
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.16065
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.26376
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_gbm_C2a_qstack — 2026-11-10 22:33
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 36.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash c088aa9f1b72f0eb):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': None, 'stage': 'qstack'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_logq: 1.42954
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s2
+
+## bioassess / bioassess_f/ukdev/tabpfn__community — 2026-11-10 23:17
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 5.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 9ab32f076e98f9ab):
+  - model: tabpfn__community
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('tabpfn', {'max_taxa': {'invertebrate': 300}, 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 2
+- **Final metrics**:
+  - seconds: 345.98
+  - units_fitted: 1
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/tabpfn__community
+
+## M6-hydromet / M6V2/rtd_w.fixed — 2026-11-10 22:45
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 40.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 20ccc5d9cbb313f6):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd_w.yaml
+  - _smoke: False
+  - arm: rtd_w
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 570, 'layers': 4, 'dropout': 2.216e-05, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.153437
+  - best_j_grab: 0.281109
+  - best_j_sonde: 0.121519
+- **Notes**: epochs 15, best epoch 8, params 9637604, 0.6851093769073486 s/step, {'max_allocated_mb': 6858.9, 'max_reserved_mb': 7448.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd_w/rtd_w_fixed_s1
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s1_temp_c_7dadm — 2026-11-10 22:33
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 60.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash a1c76c62041df919):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_7dadm', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_temp_c_7dadm: 2.01531
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s1
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s0_temp_c_7dadm — 2026-11-10 22:33
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 68.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash c119659eb23af55f):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_7dadm', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_temp_c_7dadm: 2.0276
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s0
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s1_do_mgl_mean — 2026-11-10 23:38
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 6.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash c3f8952e1d45fe16):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_do_mgl_mean: 1.10416
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s1
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s0_do_mgl_mean — 2026-11-10 23:49
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 5.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 9141d663c349b27b):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_do_mgl_mean: 1.11831
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s0
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s1_do_mgl_min — 2026-11-10 23:50
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 7.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 54168659d8262012):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_min', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_do_mgl_min: 1.15199
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s1
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s0_do_mgl_min — 2026-11-11 00:01
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 4.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 818b517070d11be7):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_min', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_do_mgl_min: 1.166
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s0
+
+## M6-hydromet / M6V2/g1.sel — 2026-11-10 22:39
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 90.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7e13ae885786ad59):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: False
+  - arm: g1
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seed_role: grid + selection
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: job chunk ended before member direct_T_7dadm_1000; 11 built, 4 loaded; resumed by the next job
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/g1/g1_sel_s0
+
+## M6-hydromet / M6V2/rtd_w.fixed — 2026-11-10 23:34
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 39.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 17e6db1b623e5c0d):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/rtd_w.yaml
+  - _smoke: False
+  - arm: rtd_w
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: rtd
+  - net: {'static': 'concat', 'heads': 'indep_op', 'hidden': 570, 'layers': 4, 'dropout': 2.216e-05, 'static_noise': 0.5, 'attr_dropout': 0.0}
+  - point: fixed
+  - recipe_source: deviations entry 1 (L11.2): Willard et al. 2024 arXiv:2410.19865v1 Table S6, first row (PDF p. 75)
+  - recipe_verified: True
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.151632
+  - best_j_grab: 0.259166
+  - best_j_sonde: 0.124749
+- **Notes**: epochs 15, best epoch 8, params 9637604, 0.6878343820571899 s/step, {'max_allocated_mb': 6858.9, 'max_reserved_mb': 7448.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/rtd_w/rtd_w_fixed_s2
+
+## M3-microbe / microbe_arch_v2_cv:xgb_v4clr_3000:lodo:P — 2026-11-11 00:16
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 0.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash c681d0e6c4fec27d):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: v4mr
+  - code_sha256: {'sentinel/models/microbe/niche.py': '32d01a52205836827f3ba645c115ac284fca25596c1c66bed31084e650a0f07c', 'sentinel/models/microbe/archv2.py': 'a92bbf5529795592ca36f54a2520a2d089f72e1c89c53fce87edf9ce649893ce', 'scripts/train/microbe_arch_v2_cv.py': 'd85d90a7d32d89a7a5dbbb4e9d0648cada355d452703ce1ce7742dea647e8cbd'}
+  - device: cpu
+  - families: ['P']
+  - model: xgb_v4clr_3000
+  - n_jobs: 1
+  - n_shard_processes: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - shard_cpu_hours: [0.93, 0.8847, 0.8691, 0.8605, 0.8714, 0.8606, 0.947, 0.855, 0.9519, 0.9361, 0.8556, 0.8916, 0.8419, 0.872, 0.8665, 0.8671, 0.873, 0.8838, 0.6975]
+  - sharded: True
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - P:mean_r2: 0.318789
+  - P:r2_do: 0.37798
+  - P:r2_log_chla: 0.228642
+  - P:r2_log_doc: 0.32883
+  - P:r2_log_no3: 0.25744
+  - P:r2_log_sc: 0.814245
+  - P:r2_log_tn: 0.108563
+  - P:r2_log_tp: 0.304812
+  - P:r2_log_turb: 0.129801
+  - cpu_hours: 16.6152
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-10 23:00
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 93.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash ecc42ca756178c25):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [15, 31]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 15
+  - shards: 16
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.1873
+  - n_configurations: 2
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.28538
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s2_temp_c_mean — 2026-11-10 23:37
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 62.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash d905d8a2d9c315d8):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_temp_c_mean: 1.91501
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s2
+
+## M6-hydromet / SOTA/sota_phys_C2a — 2026-11-11 00:10
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 31.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=3)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 4b41f9cbb260bf5c):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - air2stream_donors: 1216
+  - air2stream_q_donors: 1217
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_phys_C2a
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s2_temp_c_7dadm — 2026-11-11 00:44
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 25.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 4c14bcfa3fe2c737):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'temp_c_7dadm', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_temp_c_7dadm: 2.05861
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s2
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s2_do_mgl_mean — 2026-11-11 01:14
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 6.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 89fe59f44fac057b):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_mean', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_do_mgl_mean: 1.11273
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s2
+
+## M6-hydromet / SOTA/sota_gbm_C2a_bag_s2_do_mgl_min — 2026-11-11 01:24
+- **Plan ref**: docs/preregistration/hydromet_sota_protocol.md (M6 SOTA levers) | **Iteration**: sota-lever2
+- **Status**: ✅ Completed | **Duration**: 5.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota
+- **Config** (hash 95c1b3bc95ee9e0c):
+  - _config_file: configs/hydromet_sota/C2a.yaml
+  - _smoke: False
+  - aux: {'logq': 0.5}
+  - base_config: configs/hydromet/lstm_ws.yaml
+  - data: {'lever1a': False, 'q_only_sites': False, 'weak': False, 'aux_q': True}
+  - ealstm: {'seq_len': 365, 'predict_last': 90, 'hidden': 128, 'static_emb': 32, 'dropout': 0.4, 'static_to_head': True, 'head': 'gaussian', 'physics_do': False, 'detach_temp_for_do': False, 'ratio_bounds': [0.2, 1.6], 'initial_forget_bias': 3.0, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'max_epochs': 60, 'steps_per_epoch': 200, 'patience': 6, 'grad_clip': 1.0, 'val_max_windows': 4000, 'early_stop_metric': 'mse', 'static_noise': 0.5, 'site_sampling': 'target_share', 'max_minutes': None}
+  - eval_roles: ['val']
+  - forcing_lag_days: 0
+  - gbm: {'lgbm': {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'no_inner_n_estimators': 500, 'refit_full': True}, 'grid': [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}], 'target': 'do_mgl_min', 'stage': 'target'}
+  - hparams_from: hydromet/DIAG_ealstm_inner/selection.json
+  - hparams_selected: {'hidden': 128, 'dropout': 0.4, 'static_noise': 0.5}
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - job_minutes: 100
+  - lever: 2
+  - lever_id: C2a
+  - min_days_per_site: 60
+  - mode: nowcast
+  - model: sota_C2a
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: ['train']
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - split: docs/preregistration/sonde_split.json
+  - store: cpu
+  - upstream_forcing: append
+  - weak_share: 0.0
+- **Final metrics**:
+  - inner_rmse_do_mgl_min: 1.14569
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota/sota_gbm_C2a_s2
+
+## M6-hydromet / M6V2/g1.sel — 2026-11-11 00:20
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 90.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7e13ae885786ad59):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: False
+  - arm: g1
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seed_role: grid + selection
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: job chunk ended before member refit_direct_T_7dadm_1000; 9 built, 15 loaded; resumed by the next job
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/g1/g1_sel_s0
+
+## M6-hydromet / baselines — 2026-11-10 18:16
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 467.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash fbb389bcc14df781):
+  - _config_file: configs/hydromet/baselines.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 8, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R5_southwest_basin
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R5_southwest_basin_base
+
+## M6-hydromet / M6V2/g1.sel — 2026-11-11 02:00
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 26.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7e13ae885786ad59):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: False
+  - arm: g1
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seed_role: grid + selection
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.139824
+  - best_j_grab: 0.267118
+  - best_j_sonde: 0.108
+- **Notes**: 4 + 2 + 1 refitted members; 292 columns; fixed selection False
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/g1/g1_sel_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/readacross — 2026-11-11 00:34
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 117.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 63a6fe8e2b478ef3):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 8, 16, 24]
+  - cuda_visible_devices: None
+  - entry: readacross
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.40615
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.47233
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / baselines — 2026-11-11 02:03
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 88.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 14840858bd07e01c):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R5_southwest_basin
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s0']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R5_southwest_basin_gbmbag_s0
+
+## M6-hydromet / M6V2/g2.sel — 2026-11-11 02:35
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 103.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7b5f553546131956):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: False
+  - arm: g2
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics', 'te_prior', 'stacks']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seed_role: grid + selection
+  - stack: {'targets': ['logq', 'T_min', 'T_max', 'DO_max'], 'n_folds': 5, 'max_rows_per_site': 1000}
+  - te_prior: {'shade': 0.3, 'wind_shelter': 0.6}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: job chunk ended before member stack_DO_max; 3 built, 0 loaded; resumed by the next job
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/g2/g2_sel_s0
+
+## M6-hydromet / baselines — 2026-11-11 03:32
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 84.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash a72f82c3cdd3de15):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 1
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R5_southwest_basin
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s1']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R5_southwest_basin_gbmbag_s1
+
+## M6-hydromet / M6V2/g2.sel — 2026-11-11 04:27
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 87.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_gbm.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7b5f553546131956):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/gbm.yaml
+  - _smoke: False
+  - arm: g2
+  - fixed_selection: None
+  - grid: {'p1': {'max_rows_per_site': 3000, 'grab_share': 0.5}, 'p2': {'max_rows_per_site': 3000, 'grab_share': 0.25}, 'p3': {'max_rows_per_site': 1000, 'grab_share': 0.5}}
+  - inputs: ['frozen_causal_features', 'solar_channels', 'vaa_statics', 'te_prior', 'stacks']
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100}
+  - model: gbm_ref
+  - n_jobs: 6
+  - point: sel
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seed_role: grid + selection
+  - stack: {'targets': ['logq', 'T_min', 'T_max', 'DO_max'], 'n_folds': 5, 'max_rows_per_site': 1000}
+  - te_prior: {'shade': 0.3, 'wind_shelter': 0.6}
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.139634
+  - best_j_grab: 0.266506
+  - best_j_sonde: 0.107916
+- **Notes**: 3 + 2 + 0 refitted members; 310 columns; fixed selection False
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/g2/g2_sel_s0
+
+## M6-hydromet / baselines — 2026-11-11 04:56
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 90.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash ec2c8e9bbb6da7df):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R5_southwest_basin
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s2']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R5_southwest_basin_gbmbag_s2
+
+## M2-orbit / orbit_baselines/baselines_dev_v5 — 2026-11-10 21:12
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 615.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_baselines.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash b5cd2c91f269eaa2):
+  - device: cpu
+  - fit_scheme: base
+  - gbm_grid_size: 16
+  - index_defs: {'chla': ['OC3', 'NDCI', 'B5_B4', 'MCI'], 'tss': ['red_B4', 'nir_B8A', 'B4_B3'], 'turbidity': ['red_B4', 'nir_B8A', 'B4_B3'], 'secchi': ['B2_B4', 'B3_B4', 'red_B4']}
+  - knn_k_grid: [4, 8, 16, 32]
+  - mdn_b_grid: bands {7,12} x n_iter {5k,10k,20k} x x_log {F,T}
+  - mdn_iter: 10000
+  - seed: 0
+  - version: dev_v5
+- **Final metrics**:
+  - inner_mdsa_chla_gbm_imagery: 63.8657
+  - inner_mdsa_chla_gbm_imagery_context: 59.9973
+  - inner_mdsa_chla_gbm_season_location: 96.6428
+  - inner_mdsa_chla_global_median: 139.63
+  - inner_mdsa_chla_index_opt: 112.361
+  - inner_mdsa_chla_location_knn: 108.654
+  - inner_mdsa_chla_mdn_b: 57.995
+  - inner_mdsa_chla_mdn_b12: 58.7401
+  - inner_mdsa_chla_mdn_b12_10k_log: 64.6218
+  - inner_mdsa_chla_mdn_b12_20k_lin: 63.5048
+  - inner_mdsa_chla_mdn_b12_20k_log: 69.7106
+  - inner_mdsa_chla_mdn_b12_5k_lin: 57.995
+  - inner_mdsa_chla_mdn_b12_5k_log: 60.3849
+  - inner_mdsa_chla_mdn_b7: 65.0068
+  - inner_mdsa_chla_mdn_b7_10k_log: 63.4102
+  - inner_mdsa_chla_mdn_b7_20k_lin: 63.2336
+  - inner_mdsa_chla_mdn_b7_20k_log: 65.5656
+  - inner_mdsa_chla_mdn_b7_5k_lin: 63.3676
+  - inner_mdsa_chla_mdn_b7_5k_log: 63.5506
+  - inner_mdsa_chla_mdn_gloria: 86.6017
+  - inner_mdsa_chla_mdn_official: 99.9512
+- **Notes**: baseline predictions written; scoring/registry in orbit_compare.py
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/baselines_dev_v5
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_s1 — 2026-11-11 07:29
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 15.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash feb0c086f49f9ba9):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 1
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 35
+  - finetune_minutes: 12.676
+  - inner_mdsa_chla: 53.1812
+  - inner_mdsa_select: 39.1883
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.621518
+  - pretrain_minutes: 1.39987
+  - valxval_lake_mdsa_chla: 50.1861
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_s1
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_s0 — 2026-11-11 07:27
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 17.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 4c3fa1b4c78ed36d):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 0
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 44
+  - finetune_minutes: 14.7835
+  - inner_mdsa_chla: 56.8951
+  - inner_mdsa_select: 40.662
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.587662
+  - pretrain_minutes: 1.40729
+  - valxval_lake_mdsa_chla: 52.4453
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_s0
+
+## M2-orbit / orbit_satwq/satwq_v5_base_s0 — 2026-11-11 07:28
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 19.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash eefc8b3594f53ee7):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 0
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 43
+  - finetune_minutes: 15.8869
+  - inner_mdsa_chla: 56.4262
+  - inner_mdsa_select: 40.9287
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.673986
+  - pretrain_minutes: 2.04476
+  - valxval_lake_mdsa_chla: 53.1464
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_s0
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_s2 — 2026-11-11 07:46
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 16.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 60354716667054f9):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 2
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 37
+  - finetune_minutes: 13.2087
+  - inner_mdsa_chla: 59.0493
+  - inner_mdsa_select: 41.263
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.60935
+  - pretrain_minutes: 1.46254
+  - valxval_lake_mdsa_chla: 50.3184
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_s2
+
+## M2-orbit / orbit_satwq/satwq_v5_base_s1 — 2026-11-11 07:45
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 20.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 934204623acbfd13):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 1
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 49
+  - finetune_minutes: 16.9064
+  - inner_mdsa_chla: 57.4375
+  - inner_mdsa_select: 41.1162
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.654428
+  - pretrain_minutes: 1.5915
+  - valxval_lake_mdsa_chla: 53.7155
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_s1
+
+## M2-orbit / orbit_satwq/satwq_v5_base_s2 — 2026-11-11 07:48
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 22.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 440d05f5b354b4ad):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 2
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 54
+  - finetune_minutes: 18.8677
+  - inner_mdsa_chla: 55.8152
+  - inner_mdsa_select: 40.0097
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.672859
+  - pretrain_minutes: 2.05552
+  - valxval_lake_mdsa_chla: 54.8175
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_s2
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_s3 — 2026-11-11 08:03
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 16.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash d41dc65e8abcf4c4):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 3
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 36
+  - finetune_minutes: 12.9678
+  - inner_mdsa_chla: 54.2135
+  - inner_mdsa_select: 39.5359
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.594564
+  - pretrain_minutes: 1.4466
+  - valxval_lake_mdsa_chla: 53.2672
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_s3
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_s4 — 2026-11-11 08:11
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 32e991d5684d200b):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 4
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 14
+  - finetune_minutes: 7.5778
+  - inner_mdsa_chla: 54.0163
+  - inner_mdsa_select: 40.7371
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.624378
+  - pretrain_minutes: 1.49525
+  - valxval_lake_mdsa_chla: 48.1397
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_s4
+
+## M2-orbit / orbit_satwq/satwq_v5_base_s3 — 2026-11-11 08:06
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 17.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 116f1a117fd72a31):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 3
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 41
+  - finetune_minutes: 14.2397
+  - inner_mdsa_chla: 57.0003
+  - inner_mdsa_select: 40.6118
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.669231
+  - pretrain_minutes: 1.44134
+  - valxval_lake_mdsa_chla: 53.3974
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_s3
+
+## M2-orbit / orbit_satwq/satwq_v5_base_s4 — 2026-11-11 08:20
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 14.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash b801d45b5aa42fb4):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: base
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 4
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 24
+  - finetune_minutes: 10.6983
+  - inner_mdsa_chla: 54.9567
+  - inner_mdsa_select: 39.8826
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.673528
+  - pretrain_minutes: 2.05997
+  - valxval_lake_mdsa_chla: 54.4637
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_s4
+
+## M6-hydromet / M6V2/p.fixed — 2026-11-11 06:00
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 210.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7bbfe520589db518):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/physics.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'threads': 4}
+  - arm: p
+  - data: {'grab': False}
+  - forcing: {'air2stream_regional': 'site_cell', 'air2stream_regional_ws': 'basin_mean'}
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_members: {'T': 'temp_c_mean', 'DO': 'do_mgl_mean'}
+  - job_minutes: 100
+  - members: {'temp_c_mean': ['air2stream_regional', 'air2stream_regional_ws'], 'temp_c_7dadm': ['air2stream_regional', 'air2stream_regional_ws'], 'do_mgl_mean': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws'], 'do_mgl_min': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws']}
+  - model: physics_family
+  - n_jobs: 6
+  - point: fixed
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - t_e_schema: non-ws members only (amendment §5); on hold
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: job chunk ended before member refit_site_cell; resumed by the next job
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/p/p_fixed
+
+## M6-hydromet / baselines — 2026-11-11 06:27
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 286.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash e3110025f86aff07):
+  - _config_file: configs/hydromet/baselines.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 8, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']
+  - n_boot: 2000
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R6_pacific
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['doy_location_gbm', 'air2water_linear', 'air2water_mohseni', 'air2stream_regional', 'dosat_ratio[doy_location_gbm]', 'dosat_ratio[air2stream_regional]', 'forcing_gbm']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R6_pacific_base
+
+## M6-hydromet / baselines — 2026-11-11 11:13
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 43.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 0533b5d7c6945c49):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 0
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R6_pacific
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s0']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R6_pacific_gbmbag_s0
+
+## M6-hydromet / baselines — 2026-11-11 11:57
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 48.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 269d61f14f7deee3):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 1
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R6_pacific
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s1']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R6_pacific_gbmbag_s1
+
+## M6-hydromet / M6V2/p.fixed — 2026-11-11 09:36
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 199.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 95507b98a76bce4a, script `sota_hydromet_v2_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7bbfe520589db518):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/physics.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'threads': 4}
+  - arm: p
+  - data: {'grab': False}
+  - forcing: {'air2stream_regional': 'site_cell', 'air2stream_regional_ws': 'basin_mean'}
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_members: {'T': 'temp_c_mean', 'DO': 'do_mgl_mean'}
+  - job_minutes: 100
+  - members: {'temp_c_mean': ['air2stream_regional', 'air2stream_regional_ws'], 'temp_c_7dadm': ['air2stream_regional', 'air2stream_regional_ws'], 'do_mgl_mean': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws'], 'do_mgl_min': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws']}
+  - model: physics_family
+  - n_jobs: 6
+  - point: fixed
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - t_e_schema: non-ws members only (amendment §5); on hold
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: job chunk ended before member inner_basin_mean; resumed by the next job
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/p/p_fixed
+
+## bioassess / bioassess_f/ukdev/gbm__nocoords — 2026-11-11 12:58
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 0.6 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package aedf173a5b0864f9, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash e6ef403090f1c1fe):
+  - model: gbm__nocoords
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('gbm', {'numeric': ('doy_sin', 'doy_cos', 'altitude_m'), 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 36.0523
+  - units_fitted: 1
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/gbm__nocoords
+
+## bioassess / bioassess_x selection + v11 candidate — 2026-11-11 13:10
+- **Plan ref**: bioassess_x_protocol.md v11 items 1 and 4 (lead rulings X-B3, record errors) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: sel 11 min + gen 2 min | **Hardware**: cpu (1-2 threads)
+- **Code**: scripts `bioassess_x_select.py`, `bioassess_x_freeze_candidate.py`, `bioassess_x_final.py`,
+  tests `tests/test_bioassess_x_dev.py` (41 pass)
+- **Data**: nars_streams, nars_lakes, uk_ea_ecology, taxonomy_harmonised (unchanged pins)
+- **Config**: no fit; rule comparators `cxr_nobioset` / `cxr_swap` built from existing seed-0 development
+  predictions; listed sets X-L 16, X-U 19
+- **Final metrics**:
+  - swap member X-L: gbm_community (dev mean r2_anomaly 0.3102)
+  - swap member X-U: rf_community_geography (0.2934)
+  - per-target comparators changed: 0 of 12
+  - candidate sha256: 477d6886221b59701f00d2d4c7bea8363293c5f0259d9a281a3a29dbdc89cb62
+  - code snapshot: sentinel_runs/bioassess_x/code_069aa2f3d4e62c46 (57 files, 0444/0555)
+- **Notes**: no FREEZE file; 0 bioassess_x_test rows; no test row or label read
+- **Artifacts**: docs/preregistration/bioassess_x_freeze_candidate.json,
+  sentinel_runs/bioassess/x_track/dev/selection_x_v1.json
+
+## bioassess / bioassess_x development rehearsal (v11 item 7) — 2026-11-11 13:10
+- **Plan ref**: bioassess_x_protocol.md v11 item 7 (lead ruling X-B4) | **Iteration**: dev rehearsal
+- **Status**: 🔄 Running | **Duration**: from 13:00 | **Hardware**: GPU 1 + GPU 5 (lock helper) and 6 CPU threads
+- **Code**: run from the pinned snapshot `sentinel_runs/bioassess_x/code_069aa2f3d4e62c46`
+- **Config**: `--dry-run-dev --rehearsal-cap 300`; 1,046 units; all 9 X-L and 19 X-U development folds
+- **Final metrics**:
+  - GPU chunk shard 0/2 (GPU 1): 84 units; shard 1/2 (GPU 5): 84 units, 5.3 min
+  - CPU chunk killed by PID after 52 units and started again: no unit refitted
+- **Notes**: REHEARSAL — numbers not usable (training rows capped, reduced ensembles and epochs). Development
+  folds only; no test row, no test label, run-local look directory and scratch registry.
+- **Artifacts**: sentinel_runs/bioassess/x_final_dryrun_dev_20261111T130056
+
+## M7-lite / litev2_comparators_tabular — 2026-11-11 13:07
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_comparators.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash e27bf744f7791b50):
+  - aft_params: {'objective': 'survival:aft', 'eval_metric': 'aft-nloglik', 'aft_loss_distribution': 'normal', 'aft_loss_distribution_scale': 1.0, 'learning_rate': 0.03, 'max_depth': 4, 'nthread': 6, 'verbosity': 0}
+  - aft_rounds: 400
+  - features: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_features/train_11beada59e3a.parquet
+  - gbm_params: {'n_estimators': 400, 'learning_rate': 0.03, 'num_leaves': 15, 'min_child_samples': 20, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'n_jobs': 6, 'verbose': -1}
+  - group: tabular
+  - label_version: national-2b
+  - n_train_rows: 10651
+  - seeds: [0, 1, 2]
+  - train_smoke: False
+- **Final metrics**:
+  - national_val/P1_kloiber_linear/secchi/mdsa: 91.6152
+  - national_val/P1_kloiber_log/secchi/mdsa: 79.4132
+  - national_val/P1_kloiber_log_water/secchi/mdsa: 78.6017
+  - national_val/P1_oc_ndvi/chla/bal_acc: 0.317332
+  - national_val/P1_oc_ndvi_water/chla/bal_acc: 0.307547
+  - national_val/P1_red_green_log_water/ssc/mdsa: 889.58
+  - national_val/P1_red_green_log_water/tss/mdsa: 95.8173
+  - national_val/P1_red_green_log_water/turb_fnu/mdsa: 413.702
+  - national_val/P1_red_green_log_water/turbidity/mdsa: 139.246
+  - national_val/P1_red_nir_log/ssc/mdsa: 286.964
+  - national_val/P1_red_nir_log/tss/mdsa: 101.154
+  - national_val/P1_red_nir_log/turb_fnu/mdsa: 443.973
+  - national_val/P1_red_nir_log/turbidity/mdsa: 127.07
+  - national_val/P1_red_nir_log_water/ssc/mdsa: 328.218
+  - national_val/P1_red_nir_log_water/tss/mdsa: 100.506
+  - national_val/P1_red_nir_log_water/turb_fnu/mdsa: 449.292
+  - national_val/P1_red_nir_log_water/turbidity/mdsa: 126.988
+  - national_val/P2a_cyfi/chla/bal_acc: 0.358027
+  - national_val/P2a_cyfi/secchi/mdsa: 44.7379
+  - national_val/P2a_cyfi/ssc/mdsa: 429.532
+  - national_val/P2a_cyfi/tss/mdsa: 94.7698
+  - national_val/P2a_cyfi/turb_fnu/mdsa: 612.113
+  - national_val/P2a_cyfi/turbidity/mdsa: 103.784
+  - national_val/P2b_cyfi_parity/chla/bal_acc: 0.357858
+  - national_val/P2b_cyfi_parity/secchi/mdsa: 37.6249
+  - national_val/P2b_cyfi_parity/ssc/mdsa: 290.505
+  - national_val/P2b_cyfi_parity/tss/mdsa: 106.733
+  - national_val/P2b_cyfi_parity/turb_fnu/mdsa: 481.934
+  - national_val/P2b_cyfi_parity/turbidity/mdsa: 88.1616
+  - national_val/S1_train_median/chla/bal_acc: 0.25
+  - national_val/S1_train_median/secchi/mdsa: 100.967
+  - national_val/S1_train_median/ssc/mdsa: 1563.62
+  - national_val/S1_train_median/tss/mdsa: 108
+  - national_val/S1_train_median/turb_fnu/mdsa: 301.961
+  - national_val/S1_train_median/turbidity/mdsa: 143.478
+  - national_val/S2_loc_knn/chla/bal_acc: 0.295211
+  - national_val/S2_loc_knn/secchi/mdsa: 51.4614
+  - national_val/S2_loc_knn/ssc/mdsa: 170.339
+  - national_val/S2_loc_knn/tss/mdsa: 114.433
+  - national_val/S2_loc_knn/turb_fnu/mdsa: 358.964
+  - national_val/S2_loc_knn/turbidity/mdsa: 125.352
+  - national_val/S3_loc_season_gbm/chla/bal_acc: 0.322565
+  - national_val/S3_loc_season_gbm/secchi/mdsa: 58.2722
+  - national_val/S3_loc_season_gbm/ssc/mdsa: 411.374
+  - national_val/S3_loc_season_gbm/tss/mdsa: 114.851
+  - national_val/S3_loc_season_gbm/turb_fnu/mdsa: 181.982
+  - national_val/S3_loc_season_gbm/turbidity/mdsa: 149.274
+  - national_val/S4_gbm_rgbn/chla/bal_acc: 0.344752
+  - national_val/S4_gbm_rgbn/secchi/mdsa: 46.7401
+  - national_val/S4_gbm_rgbn/ssc/mdsa: 296.86
+  - national_val/S4_gbm_rgbn/tss/mdsa: 102.365
+  - national_val/S4_gbm_rgbn/turb_fnu/mdsa: 415.473
+  - national_val/S4_gbm_rgbn/turbidity/mdsa: 112.293
+  - national_val/S5_gbm_ctx/chla/bal_acc: 0.358619
+  - national_val/S5_gbm_ctx/secchi/mdsa: 36.5106
+  - national_val/S5_gbm_ctx/ssc/mdsa: 313.965
+  - national_val/S5_gbm_ctx/tss/mdsa: 95.2705
+  - national_val/S5_gbm_ctx/turb_fnu/mdsa: 393.141
+  - national_val/S5_gbm_ctx/turbidity/mdsa: 110.222
+  - national_val/S6_gbm_parity/chla/bal_acc: 0.367367
+  - national_val/S6_gbm_parity/secchi/mdsa: 36.5174
+  - national_val/S6_gbm_parity/ssc/mdsa: 210.864
+  - national_val/S6_gbm_parity/tss/mdsa: 104.392
+  - national_val/S6_gbm_parity/turb_fnu/mdsa: 170.621
+  - national_val/S6_gbm_parity/turbidity/mdsa: 97.4314
+  - national_val/S7_gbm_parity_unit/chla/bal_acc: 0.367367
+  - national_val/S7_gbm_parity_unit/secchi/mdsa: 36.5174
+  - national_val/S7_gbm_parity_unit/ssc/mdsa: 210.864
+  - national_val/S7_gbm_parity_unit/tss/mdsa: 104.392
+  - national_val/S7_gbm_parity_unit/turb_fnu/mdsa: 514.8
+  - national_val/S7_gbm_parity_unit/turbidity/mdsa: 103.087
+  - national_val/S8_gbm_parity_mt/chla/bal_acc: 0.393655
+  - national_val/S8_gbm_parity_mt/secchi/mdsa: 36.6643
+  - national_val/S8_gbm_parity_mt/ssc/mdsa: 256.541
+  - national_val/S8_gbm_parity_mt/tss/mdsa: 90.3732
+  - national_val/S8_gbm_parity_mt/turb_fnu/mdsa: 181.081
+  - national_val/S8_gbm_parity_mt/turbidity/mdsa: 84.3334
+  - national_val/S9_gbm_parity_aft/chla/bal_acc: 0.366786
+  - national_val/S9_gbm_parity_aft/secchi/mdsa: 38.5568
+  - national_val/S9_gbm_parity_aft/tss/mdsa: 100.389
+  - val_p2/P1_red_green_log_water/turb_fnu/mdsa: 315.227
+  - val_p2/P1_red_nir_log/turb_fnu/mdsa: 229.619
+  - val_p2/P1_red_nir_log_water/turb_fnu/mdsa: 360.021
+  - val_p2/P2a_cyfi/turb_fnu/mdsa: 157.638
+  - val_p2/P2b_cyfi_parity/turb_fnu/mdsa: 226.981
+  - val_p2/S1_train_median/turb_fnu/mdsa: 173.333
+  - val_p2/S2_loc_knn/turb_fnu/mdsa: 307.953
+  - val_p2/S3_loc_season_gbm/turb_fnu/mdsa: 201.325
+  - val_p2/S4_gbm_rgbn/turb_fnu/mdsa: 245.935
+  - val_p2/S5_gbm_ctx/turb_fnu/mdsa: 250.216
+  - val_p2/S6_gbm_parity/turb_fnu/mdsa: 163.844
+  - val_p2/S7_gbm_parity_unit/turb_fnu/mdsa: 289.374
+  - val_p2/S8_gbm_parity_mt/turb_fnu/mdsa: 144.917
+- **Notes**: anchor artefact sha256 63ef5fe56107fad85cfdb6285934e388c2d3a95d1d396c4f57a581b5aca52921 / block national_val: 10651 training rows, 2020 evaluation rows / S1–S5 and P1 forms done (27 s) / S6 and anchors done (27 s) / S7, S8 done (90 s) / S9 done (108 s) / P2a, P2b done (122 s) / block val_p2: 10651 training rows, 153 evaluation rows / S1–S5 and P1 forms done (15 s) / S6 and anchors done (15 s) / S7, S8 done (82 s) / S9 done (101 s) / P2a, P2b done (116 s)
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_comparators_tabular_20261111-130735
+
+## M6-hydromet / baselines — 2026-11-11 12:45
+- **Plan ref**: RESEARCH_PLAN.md §5.6 (M6 SENTINEL-HydroMet) | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 52.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `hydromet_baselines.py`
+- **Data**: sonde_daily, forcings_daily, streamcat
+- **Config** (hash 9b0d703cdbc433fa):
+  - _config_file: configs/hydromet/baselines_gbmbag.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'device': 'cpu', 'threads': 4}
+  - air2water_windows: [1, 3, 7, 14, 30]
+  - eval_roles: ['val']
+  - forcing_gbm_grid: [{'max_rows_per_site': 1000}, {'max_rows_per_site': 3000}, {'max_rows_per_site': None}]
+  - forcing_lag_days: 0
+  - inner_frac: 0.15
+  - inner_seed: 0
+  - lgbm: {'num_leaves': 63, 'learning_rate': 0.05, 'n_estimators': 3000, 'min_child_samples': 200, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'early_stopping_rounds': 100, 'n_jobs': 6, 'max_rows_per_site': 1000, 'refit_full': True}
+  - min_days_per_site: 60
+  - mode: nowcast
+  - models: ['forcing_gbm']
+  - n_boot: 2000
+  - name_suffix: _bag_s{seed}
+  - refs: ['doy_location_gbm', 'forcing_gbm', 'air2stream_regional']
+  - secondary_eval_roles: []
+  - seed: 2
+  - split: docs/preregistration/sonde_split.json
+  - track_r: R6_pacific
+- **Final metrics**:
+  - (none)
+- **Notes**: baselines ['forcing_gbm_bag_s2']; sites {'train': 1712, 'val': 300}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/trackr_R6_pacific_gbmbag_s2
+
+## M7-lite / natstudent/mnv4s_raw_crop256_kd03_national2b — 2026-11-11 13:06
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 39.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash e78afc9591a0e304):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_kd03_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.336232
+  - ensemble/secchi/mdsa: 48.354
+  - ensemble/tss/mdsa: 94.0807
+  - ensemble/turbidity/mdsa: 93.22
+  - seed0/chla: 0.320603
+  - seed0/secchi: 48.6924
+  - seed0/tss: 95.1877
+  - seed0/turbidity: 94.3889
+  - seed1/chla: 0.338951
+  - seed1/secchi: 50.6478
+  - seed1/tss: 94.5835
+  - seed1/turbidity: 93.6824
+  - seed2/chla: 0.341677
+  - seed2/secchi: 48.9035
+  - seed2/tss: 93.9079
+  - seed2/turbidity: 93.5888
+- **Notes**: KD: 2503712 teacher cells over 2289 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_kd03_national2b_20261111-130652
+
+## M6-hydromet / M6V2/d1.g1 — 2026-11-11 13:57
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 15.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash d06f58b905442ede):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: g1
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.154655
+  - best_j_grab: 0.304612
+  - best_j_sonde: 0.117165
+- **Notes**: epochs 20, best epoch 13, params 350183, 0.16142737865447998 s/step, {'max_allocated_mb': 3527.9, 'max_reserved_mb': 6736.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_g1_s0
+
+## M7-lite / natstudent/mnv4s_raw_crop256_nokd_national2b — 2026-11-11 13:47
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 35.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash f1a61a0806354227):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_nokd_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.318117
+  - ensemble/secchi/mdsa: 50.234
+  - ensemble/tss/mdsa: 99.9005
+  - ensemble/turbidity/mdsa: 95.9249
+  - seed0/chla: 0.317766
+  - seed0/secchi: 50.7741
+  - seed0/tss: 102.938
+  - seed0/turbidity: 96.6918
+  - seed1/chla: 0.325288
+  - seed1/secchi: 54.0458
+  - seed1/tss: 93.482
+  - seed1/turbidity: 98.5522
+  - seed2/chla: 0.323264
+  - seed2/secchi: 49.3907
+  - seed2/tss: 100.796
+  - seed2/turbidity: 97.0543
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_nokd_national2b_20261111-134700
+
+## M6-hydromet / M6V2/d1.g2 — 2026-11-11 14:20
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 10.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 13235131cbe82330):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.25
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: g2
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.156454
+  - best_j_grab: 0.325192
+  - best_j_sonde: 0.114269
+- **Notes**: epochs 13, best epoch 6, params 350183, 0.15958952903747559 s/step, {'max_allocated_mb': 3527.9, 'max_reserved_mb': 6736.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_g2_s0
+
+## M7-lite / litev2_fit_P3a_densenet_lr1e-4 — 2026-11-11 13:26
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 70.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash a99e92eacabecb5b):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - init_run: None
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0001
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [0]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - seed0/train_loss: -0.722561
+- **Notes**: seed 0 epoch=1 label=0.02229 loss=0.02229 sec=53.74 / seed 0 epoch=2 label=-0.1599 loss=-0.1599 sec=51.38 / seed 0 epoch=3 label=0.5708 loss=0.5708 sec=56.12 / seed 0 epoch=4 label=1.352 loss=1.352 sec=55.28 / seed 0 epoch=5 label=1.456 loss=1.456 sec=54.29 / seed 0 epoch=6 label=2.07 loss=2.07 sec=51.91 / seed 0 epoch=7 label=1.726 loss=1.726 sec=50.09 / seed 0 epoch=8 label=0.4116 loss=0.4116 sec=51.16 / seed 0 epoch=9 label=0.2306 loss=0.2306 sec=50.17 / seed 0 epoch=10 label=0.06887 loss=0.06887 sec=48.89 / seed 0 epoch=11 label=5.303 loss=5.303 sec=53.09 / seed 0 epoch=12 label=0.7654 loss=0.7654 sec=52.62 / seed 0 epoch=13 label=0.1714 loss=0.1714 sec=51.04 / seed 0 epoch=14 label=0.5086 loss=0.5086 sec=51.4 / seed 0 epoch=15 label=-0.06047 loss=-0.06047 sec=53.94 / seed 0 epoch=16 label=-0.3661 loss=-0.3661 sec=55.96 / seed 0 epoch=17 label=-0.0487 loss=-0.0487 sec=51.67 / seed 0 epoch=18 label=-0.1156 loss=-0.1156 sec=53.98 / seed 0 epoch=19 label=-0.1238 loss=-0.1238 sec=51.98 / seed 0 epoch=20 label=-0.316 loss=-0.316 sec=51.84 / seed 0 epoch=21 label=-0.2654 loss=-0.2654 sec=49.76 / seed 0 epoch=22 label=0.2415 loss=0.2415 sec=49.56 / seed 0 epoch=23 label=-0.3424 loss=-0.3424 sec=51.36 / seed 0 epoch=24 label=-0.5047 loss=-0.5047 sec=50.27 / seed 0 epoch=25 label=-0.3772 loss=-0.3772 sec=49.93 / seed 0 epoch=26 label=-0.5527 loss=-0.5527 sec=51.2 / seed 0 epoch=27 label=-0.3654 loss=-0.3654 sec=52.67 / seed 0 epoch=28 label=-0.5589 loss=-0.5589 sec=52.19 / seed 0 epoch=29 label=1.261 loss=1.261 sec=49.17 / seed 0 epoch=30 label=-0.598 loss=-0.598 sec=47.75 / seed 0 epoch=31 label=-0.6345 loss=-0.6345 sec=52.82 / seed 0 epoch=32 label=-0.6577 loss=-0.6577 sec=49.79 / seed 0 epoch=33 label=-0.4592 loss=-0.4592 sec=49.95 / seed 0 epoch=34 label=-0.4698 loss=-0.4698 sec=49.45 / seed 0 epoch=35 label=-0.5613 loss=-0.5613 sec=48.83 / seed 0 epoch=36 label=-0.6949 loss=-0.6949 sec=49.39 / seed 0 epoch=37 label=-0.7083 loss=-0.7083 sec=49.65 / seed 0 epoch=38 label=-0.6999 loss=-0.6999 sec=48.76 / seed 0 epoch=39 label=-0.7168 loss=-0.7168 sec=51.08 / seed 0 epoch=40 label=-0.7113 loss=-0.7113 sec=48.81 / seed 0 epoch=41 label=-0.7146 loss=-0.7146 sec=48.76 / seed 0 epoch=42 label=-0.7346 loss=-0.7346 sec=48.31 / seed 0 epoch=43 label=-0.754 loss=-0.754 sec=52.12 / seed 0 epoch=44 label=-0.6955 loss=-0.6955 sec=54.1 / seed 0 epoch=45 label=-0.6746 loss=-0.6746 sec=56.54 / seed 0 epoch=46 label=-0.7442 loss=-0.7442 sec=52.83 / seed 0 epoch=47 label=-0.7382 loss=-0.7382 sec=52.95 / seed 0 epoch=48 label=-0.7552 loss=-0.7552 sec=52.56 / seed 0 epoch=49 label=-0.7296 loss=-0.7296 sec=52.97 / seed 0 epoch=50 label=-0.7388 loss=-0.7388 sec=52.37 / seed 0 epoch=51 label=-0.7444 loss=-0.7444 sec=51.96 / seed 0 epoch=52 label=-0.742 loss=-0.742 sec=54.23 / seed 0 epoch=53 label=-0.7465 loss=-0.7465 sec=52.69 / seed 0 epoch=54 label=-0.7495 loss=-0.7495 sec=57.15 / seed 0 epoch=55 label=-0.7428 loss=-0.7428 sec=55.41 / seed 0 epoch=56 label=-0.747 loss=-0.747 sec=54.03 / seed 0 epoch=57 label=-0.7418 loss=-0.7418 sec=55.37 / seed 0 epoch=58 label=-0.7621 loss=-0.7621 sec=52.02 / seed 0 epoch=59 label=-0.7346 loss=-0.7346 sec=51.13 / seed 0 epoch=60 label=-0.74 loss=-0.74 sec=49.84 / seed 0 epoch=61 label=-0.7482 loss=-0.7482 sec=51.57 / seed 0 epoch=62 label=-0.7597 loss=-0.7597 sec=49.02 / seed 0 epoch=63 label=-0.7361 loss=-0.7361 sec=48.83 / seed 0 epoch=64 label=-0.7375 loss=-0.7375 sec=51.42 / seed 0 epoch=65 label=-0.735 loss=-0.735 sec=51.57 / seed 0 epoch=66 label=-0.7334 loss=-0.7334 sec=49.44 / seed 0 epoch=67 label=-0.7305 loss=-0.7305 sec=53.85 / seed 0 epoch=68 label=-0.735 loss=-0.735 sec=53.1 / seed 0 epoch=69 label=-0.7281 loss=-0.7281 sec=51.58 / seed 0 epoch=70 label=-0.7248 loss=-0.7248 sec=53.62 / seed 0 epoch=71 label=-0.7458 loss=-0.7458 sec=58.95 / seed 0 epoch=72 label=-0.7266 loss=-0.7266 sec=54.32 / seed 0 epoch=73 label=-0.715 loss=-0.715 sec=52.22 / seed 0 epoch=74 label=-0.7345 loss=-0.7345 sec=51.48 / seed 0 epoch=75 label=-0.7305 loss=-0.7305 sec=52.26 / seed 0 epoch=76 label=-0.7226 loss=-0.7226 sec=54.81 / seed 0 epoch=77 label=-0.7435 loss=-0.7435 sec=53.73 / seed 0 epoch=78 label=-0.7252 loss=-0.7252 sec=51.87 / seed 0 epoch=79 label=-0.7279 loss=-0.7279 sec=55.86 / seed 0 epoch=80 label=-0.7226 loss=-0.7226 sec=53.9
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr1e-4
+
+## M6-hydromet / M6V2/d1.g3 — 2026-11-11 14:51
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 8.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 60aa602078868537):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 128}
+  - point: g3
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.154802
+  - best_j_grab: 0.2923
+  - best_j_sonde: 0.120427
+- **Notes**: epochs 24, best epoch 17, params 177895, 0.07375001907348633 s/step, {'max_allocated_mb': 2381.9, 'max_reserved_mb': 4520.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_g3_s0
+
+## M7-lite / natstudent/mnv4s_raw_crop128_kd03_national2b — 2026-11-11 14:22
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 41.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 0ac0df4127bdc727):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 128
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop128_kd03_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.313755
+  - ensemble/secchi/mdsa: 51.5743
+  - ensemble/tss/mdsa: 96.556
+  - ensemble/turbidity/mdsa: 98.3117
+  - seed0/chla: 0.317872
+  - seed0/secchi: 52.961
+  - seed0/tss: 96.6884
+  - seed0/turbidity: 99.8144
+  - seed1/chla: 0.30656
+  - seed1/secchi: 52.6982
+  - seed1/tss: 98.8983
+  - seed1/turbidity: 109.655
+  - seed2/chla: 0.327134
+  - seed2/secchi: 49.4095
+  - seed2/tss: 98.09
+  - seed2/turbidity: 99.9871
+- **Notes**: KD: 2503712 teacher cells over 2289 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop128_kd03_national2b_20261111-142208
+
+## M6-hydromet / M6V2/d1.g1 — 2026-11-11 15:09
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 11.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 0c04f9aeae80d000):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: g1
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.154939
+  - best_j_grab: 0.302126
+  - best_j_sonde: 0.118142
+- **Notes**: epochs 15, best epoch 8, params 350183, 0.15698528289794922 s/step, {'max_allocated_mb': 3527.9, 'max_reserved_mb': 6736.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_g1_s1
+
+## M6-hydromet / M6V2/d1.g1 — 2026-11-11 15:29
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 10.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 1ca93aae6eba13e6):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: g1
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.150501
+  - best_j_grab: 0.283534
+  - best_j_sonde: 0.117243
+- **Notes**: epochs 12, best epoch 5, params 350183, 0.1622309684753418 s/step, {'max_allocated_mb': 3527.9, 'max_reserved_mb': 6736.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_g1_s2
+
+## M7-lite / natstudent/mnv4s_raw_crop192_kd03_national2b — 2026-11-11 15:03
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 41.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 95b2064760bb60c7):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 192
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop192_kd03_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.323785
+  - ensemble/secchi/mdsa: 51.4377
+  - ensemble/tss/mdsa: 90.4325
+  - ensemble/turbidity/mdsa: 99.0498
+  - seed0/chla: 0.322059
+  - seed0/secchi: 51.1249
+  - seed0/tss: 93.0381
+  - seed0/turbidity: 103.878
+  - seed1/chla: 0.322382
+  - seed1/secchi: 53.0927
+  - seed1/tss: 90.415
+  - seed1/turbidity: 96.9364
+  - seed2/chla: 0.324004
+  - seed2/secchi: 50.8118
+  - seed2/tss: 100.159
+  - seed2/turbidity: 96.62
+- **Notes**: KD: 2503712 teacher cells over 2289 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop192_kd03_national2b_20261111-150334
+
+## M7-lite / litev2_fit_P3a_densenet_lr1e-4 — 2026-11-11 14:36
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 72.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash f1de6d4f28e7029b):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - init_run: None
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0001
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [1]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - seed1/train_loss: -0.713983
+- **Notes**: seed 1 epoch=1 label=0.0124 loss=0.0124 sec=60.28 / seed 1 epoch=2 label=-0.1039 loss=-0.1039 sec=54.45 / seed 1 epoch=3 label=0.07516 loss=0.07516 sec=52.97 / seed 1 epoch=4 label=0.224 loss=0.224 sec=52.22 / seed 1 epoch=5 label=0.008927 loss=0.008927 sec=53.35 / seed 1 epoch=6 label=-0.07479 loss=-0.07479 sec=49.8 / seed 1 epoch=7 label=-0.1526 loss=-0.1526 sec=49.23 / seed 1 epoch=8 label=-0.3706 loss=-0.3706 sec=47.68 / seed 1 epoch=9 label=-0.3121 loss=-0.3121 sec=51.79 / seed 1 epoch=10 label=-0.3726 loss=-0.3726 sec=53.88 / seed 1 epoch=11 label=-0.4269 loss=-0.4269 sec=54.1 / seed 1 epoch=12 label=-0.3685 loss=-0.3685 sec=53.71 / seed 1 epoch=13 label=-0.4383 loss=-0.4383 sec=55.1 / seed 1 epoch=14 label=-0.5112 loss=-0.5112 sec=57.69 / seed 1 epoch=15 label=-0.4005 loss=-0.4005 sec=54.45 / seed 1 epoch=16 label=-0.4898 loss=-0.4898 sec=53.81 / seed 1 epoch=17 label=-0.5345 loss=-0.5345 sec=53.01 / seed 1 epoch=18 label=-0.3078 loss=-0.3078 sec=55.47 / seed 1 epoch=19 label=-0.4296 loss=-0.4296 sec=58.01 / seed 1 epoch=20 label=-0.4969 loss=-0.4969 sec=57.13 / seed 1 epoch=21 label=-0.5726 loss=-0.5726 sec=54.73 / seed 1 epoch=22 label=-0.5733 loss=-0.5733 sec=53.53 / seed 1 epoch=23 label=-0.606 loss=-0.606 sec=54.66 / seed 1 epoch=24 label=-0.6382 loss=-0.6382 sec=55.01 / seed 1 epoch=25 label=-0.5987 loss=-0.5987 sec=52.94 / seed 1 epoch=26 label=-0.6156 loss=-0.6156 sec=54.39 / seed 1 epoch=27 label=-0.6159 loss=-0.6159 sec=52.18 / seed 1 epoch=28 label=-0.6461 loss=-0.6461 sec=53.2 / seed 1 epoch=29 label=-0.6759 loss=-0.6759 sec=52.67 / seed 1 epoch=30 label=-0.6836 loss=-0.6836 sec=53.55 / seed 1 epoch=31 label=-0.6345 loss=-0.6345 sec=55.54 / seed 1 epoch=32 label=-0.6262 loss=-0.6262 sec=52.45 / seed 1 epoch=33 label=-0.691 loss=-0.691 sec=52.54 / seed 1 epoch=34 label=-0.6851 loss=-0.6851 sec=54.54 / seed 1 epoch=35 label=-0.659 loss=-0.659 sec=57.38 / seed 1 epoch=36 label=-0.7065 loss=-0.7065 sec=48.89 / seed 1 epoch=37 label=-0.6943 loss=-0.6943 sec=48.15 / seed 1 epoch=38 label=-0.7272 loss=-0.7272 sec=49.75 / seed 1 epoch=39 label=-0.7229 loss=-0.7229 sec=48.29 / seed 1 epoch=40 label=-0.7381 loss=-0.7381 sec=49.33 / seed 1 epoch=41 label=-0.7456 loss=-0.7456 sec=48.1 / seed 1 epoch=42 label=-0.7361 loss=-0.7361 sec=48.72 / seed 1 epoch=43 label=-0.7479 loss=-0.7479 sec=51.03 / seed 1 epoch=44 label=-0.7478 loss=-0.7478 sec=48.51 / seed 1 epoch=45 label=-0.7559 loss=-0.7559 sec=50.96 / seed 1 epoch=46 label=-0.7509 loss=-0.7509 sec=52.88 / seed 1 epoch=47 label=-0.7475 loss=-0.7475 sec=52.73 / seed 1 epoch=48 label=-0.7376 loss=-0.7376 sec=53.81 / seed 1 epoch=49 label=-0.7159 loss=-0.7159 sec=51.07 / seed 1 epoch=50 label=-0.7458 loss=-0.7458 sec=53.06 / seed 1 epoch=51 label=-0.7431 loss=-0.7431 sec=53.72 / seed 1 epoch=52 label=-0.7367 loss=-0.7367 sec=52.77 / seed 1 epoch=53 label=-0.7468 loss=-0.7468 sec=54.16 / seed 1 epoch=54 label=-0.7401 loss=-0.7401 sec=54.17 / seed 1 epoch=55 label=-0.7442 loss=-0.7442 sec=53.13 / seed 1 epoch=56 label=-0.7237 loss=-0.7237 sec=53.44 / seed 1 epoch=57 label=-0.7427 loss=-0.7427 sec=56.76 / seed 1 epoch=58 label=-0.7538 loss=-0.7538 sec=59.85 / seed 1 epoch=59 label=-0.7386 loss=-0.7386 sec=53.49 / seed 1 epoch=60 label=-0.7411 loss=-0.7411 sec=55.54 / seed 1 epoch=61 label=-0.7241 loss=-0.7241 sec=54.57 / seed 1 epoch=62 label=-0.7399 loss=-0.7399 sec=51.46 / seed 1 epoch=63 label=-0.7445 loss=-0.7445 sec=57.18 / seed 1 epoch=64 label=-0.7339 loss=-0.7339 sec=54.81 / seed 1 epoch=65 label=-0.7416 loss=-0.7416 sec=55.93 / seed 1 epoch=66 label=-0.7348 loss=-0.7348 sec=56.45 / seed 1 epoch=67 label=-0.7244 loss=-0.7244 sec=54.62 / seed 1 epoch=68 label=-0.7111 loss=-0.7111 sec=55 / seed 1 epoch=69 label=-0.728 loss=-0.728 sec=56.18 / seed 1 epoch=70 label=-0.7461 loss=-0.7461 sec=53.86 / seed 1 epoch=71 label=-0.7179 loss=-0.7179 sec=54.99 / seed 1 epoch=72 label=-0.726 loss=-0.726 sec=55.46 / seed 1 epoch=73 label=-0.7237 loss=-0.7237 sec=53.91 / seed 1 epoch=74 label=-0.7204 loss=-0.7204 sec=55.21 / seed 1 epoch=75 label=-0.7339 loss=-0.7339 sec=58.46 / seed 1 epoch=76 label=-0.7122 loss=-0.7122 sec=54.87 / seed 1 epoch=77 label=-0.7076 loss=-0.7076 sec=56.63 / seed 1 epoch=78 label=-0.727 loss=-0.727 sec=57.83 / seed 1 epoch=79 label=-0.7232 loss=-0.7232 sec=57.07 / seed 1 epoch=80 label=-0.714 loss=-0.714 sec=55.69
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr1e-4
+
+## M6-hydromet / M6V2/d1.abl_nograb — 2026-11-11 15:46
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 9.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash fe4215d9159404c5):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_nograb
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - best_J: 0.117232
+  - best_j_sonde: 0.117232
+- **Notes**: epochs 14, best epoch 7, params 350183, 0.16385424137115479 s/step, {'max_allocated_mb': 3529.0, 'max_reserved_mb': 5562.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_nograb_s0
+
+## M3-microbe / microbe_arch_v2_cv:xgb_gfo:lodo:P — 2026-11-11 13:27
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 152.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 649de43e6438e632):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: v4mr
+  - device: cpu
+  - families: ['P']
+  - model: xgb_gfo
+  - n_jobs: 6
+  - role: comparator
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - P:mean_r2: 0.279193
+  - P:r2_do: 0.378514
+  - P:r2_log_chla: 0.226057
+  - P:r2_log_doc: 0.273936
+  - P:r2_log_no3: 0.19628
+  - P:r2_log_sc: 0.67709
+  - P:r2_log_tn: 0.0488219
+  - P:r2_log_tp: 0.275541
+  - P:r2_log_turb: 0.157307
+  - cpu_hours: 14.7478
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M6-hydromet / M6V2/d1.abl_nograb — 2026-11-11 16:01
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 13.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 9136285e4ad10046):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_nograb
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - best_J: 0.12076
+  - best_j_sonde: 0.12076
+- **Notes**: epochs 20, best epoch 13, params 350183, 0.16634607315063477 s/step, {'max_allocated_mb': 3529.0, 'max_reserved_mb': 5562.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_nograb_s1
+
+## M7-lite / natstudent/mnv4s_raw_crop128_kd03_ssl_national2b — 2026-11-11 15:44
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 42.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 4e171855e5f5362c):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 128
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop128_kd03_ssl_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - ssl_init: lite_ssl/simsiam_v1/ssl_encoder.pt
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.325189
+  - ensemble/secchi/mdsa: 55.3803
+  - ensemble/tss/mdsa: 103.393
+  - ensemble/turbidity/mdsa: 100.111
+  - seed0/chla: 0.309857
+  - seed0/secchi: 55.3784
+  - seed0/tss: 103.65
+  - seed0/turbidity: 99.1315
+  - seed1/chla: 0.314592
+  - seed1/secchi: 55.0594
+  - seed1/tss: 103.008
+  - seed1/turbidity: 100.767
+  - seed2/chla: 0.316086
+  - seed2/secchi: 53.8878
+  - seed2/tss: 103.454
+  - seed2/turbidity: 104.229
+- **Notes**: KD: 2503712 teacher cells over 2289 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop128_kd03_ssl_national2b_20261111-154448
+
+## M6-hydromet / M6V2/d1.abl_nograb — 2026-11-11 16:20
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 7.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash ba05bbc3f0936393):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_nograb
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - best_J: 0.121943
+  - best_j_sonde: 0.121943
+- **Notes**: epochs 12, best epoch 5, params 350183, 0.1599259376525879 s/step, {'max_allocated_mb': 3529.0, 'max_reserved_mb': 5562.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_nograb_s2
+
+## bioassess / bioassess_x development rehearsal v11 (final) — 2026-11-11 16:33
+- **Plan ref**: bioassess_x_protocol.md v11 item 7 (lead ruling X-B4) | **Iteration**: dev rehearsal
+- **Status**: ✅ Completed | **Duration**: 28 min prediction phase + 1 h 40 min scoring | **Hardware**: GPU 1 through
+  the lock helper + 5-6 CPU threads
+- **Code**: run from the pinned snapshot `sentinel_runs/bioassess_x/code_179746238432ac31`
+- **Config**: `--dry-run-dev --rehearsal-cap 300` (R methods at 3x the cap); 1,046 units; all 9 X-L and 19 X-U
+  development folds; seeds 0-2
+- **Final metrics**:
+  - units: 1046 | unit wall total: 54.9 min (cpu 44.9, cuda 10.1)
+  - sealed prediction files: 141 | registry rows in one append: 569 | confirmatory rows: 12
+  - scoring killed once at 12 s, then --rescore-from-saved: 1 h 40 min
+- **Notes**: REHEARSAL — numbers not usable (training rows capped, reduced ensembles and epochs). Development
+  folds only; no test row, no test label; run-local look directory and scratch registry. Two defects found and
+  fixed (chunk no longer dies on a failing unit; R methods are not starved by the cap); 42 unit tests pass.
+- **Artifacts**: sentinel_runs/bioassess/x_final_dryrun_dev_20261111T141649,
+  sentinel_runs/bioassess_x/rehearsal_v11.json
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost_published_chan — 2026-11-11 16:32
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 03a985bb12a6b6b3):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 2, 4]
+  - cuda_visible_devices: None
+  - entry: gpboost_published_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 0
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.12957
+  - n_configurations: 3
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.24149
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost_published_chan — 2026-11-11 16:36
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 3.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 7ee6165cb28c5c9f):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 3, 5]
+  - cuda_visible_devices: None
+  - entry: gpboost_published_chan
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: comparator
+  - seed: 0
+  - shard: 1
+  - shards: 2
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.12586
+  - n_configurations: 3
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.2174
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M6-hydromet / M6V2/d1.abl_indep — 2026-11-11 16:38
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 10.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash bfe06e950d3310ab):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'indep', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_indep
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - best_J: 0.160645
+  - best_j_grab: 0.317728
+  - best_j_sonde: 0.121374
+- **Notes**: epochs 13, best epoch 6, params 349508, 0.16228747367858887 s/step, {'max_allocated_mb': 3514.1, 'max_reserved_mb': 5560.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_indep_s0
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 16:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash ff891f17ba19f3df):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [0, 8, 16, 24]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 0
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.20516
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.31571
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 16:51
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 5.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 165d2bf182922e0a):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [1, 9, 17, 25]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 1
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.14878
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.24742
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / litev2_fit_P3a_densenet_lr1e-4 — 2026-11-11 15:48
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 72.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash a8d60e3f8b26bb29):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - init_run: None
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0001
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [2]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - seed2/train_loss: -0.722517
+- **Notes**: seed 2 epoch=1 label=-0.0189 loss=-0.0189 sec=54.21 / seed 2 epoch=2 label=-0.1351 loss=-0.1351 sec=52.51 / seed 2 epoch=3 label=-0.03388 loss=-0.03388 sec=50.63 / seed 2 epoch=4 label=-0.08238 loss=-0.08238 sec=50.67 / seed 2 epoch=5 label=-0.1222 loss=-0.1222 sec=52.4 / seed 2 epoch=6 label=-0.3464 loss=-0.3464 sec=51.17 / seed 2 epoch=7 label=-0.3363 loss=-0.3363 sec=54.72 / seed 2 epoch=8 label=-0.4365 loss=-0.4365 sec=50.85 / seed 2 epoch=9 label=-0.2201 loss=-0.2201 sec=53.37 / seed 2 epoch=10 label=-0.45 loss=-0.45 sec=56.37 / seed 2 epoch=11 label=-0.4545 loss=-0.4545 sec=58.38 / seed 2 epoch=12 label=-0.4714 loss=-0.4714 sec=55.05 / seed 2 epoch=13 label=-0.516 loss=-0.516 sec=55.36 / seed 2 epoch=14 label=-0.4673 loss=-0.4673 sec=56 / seed 2 epoch=15 label=-0.5626 loss=-0.5626 sec=52.85 / seed 2 epoch=16 label=-0.4391 loss=-0.4391 sec=51.36 / seed 2 epoch=17 label=-0.4242 loss=-0.4242 sec=48.89 / seed 2 epoch=18 label=-0.5464 loss=-0.5464 sec=52.33 / seed 2 epoch=19 label=-0.5921 loss=-0.5921 sec=56.08 / seed 2 epoch=20 label=-0.5969 loss=-0.5969 sec=55.01 / seed 2 epoch=21 label=-0.61 loss=-0.61 sec=56.1 / seed 2 epoch=22 label=-0.567 loss=-0.567 sec=54.9 / seed 2 epoch=23 label=-0.6115 loss=-0.6115 sec=55.9 / seed 2 epoch=24 label=-0.5537 loss=-0.5537 sec=54.72 / seed 2 epoch=25 label=-0.6095 loss=-0.6095 sec=49.7 / seed 2 epoch=26 label=-0.6146 loss=-0.6146 sec=53.92 / seed 2 epoch=27 label=-0.4752 loss=-0.4752 sec=53.79 / seed 2 epoch=28 label=-0.6496 loss=-0.6496 sec=52.23 / seed 2 epoch=29 label=-0.6547 loss=-0.6547 sec=52.21 / seed 2 epoch=30 label=-0.6953 loss=-0.6953 sec=54.21 / seed 2 epoch=31 label=-0.6857 loss=-0.6857 sec=54.34 / seed 2 epoch=32 label=-0.6163 loss=-0.6163 sec=56.17 / seed 2 epoch=33 label=-0.6757 loss=-0.6757 sec=51.71 / seed 2 epoch=34 label=-0.715 loss=-0.715 sec=53.08 / seed 2 epoch=35 label=-0.6971 loss=-0.6971 sec=51.07 / seed 2 epoch=36 label=-0.7089 loss=-0.7089 sec=53.04 / seed 2 epoch=37 label=-0.7075 loss=-0.7075 sec=51.2 / seed 2 epoch=38 label=-0.7041 loss=-0.7041 sec=51.01 / seed 2 epoch=39 label=-0.72 loss=-0.72 sec=54.04 / seed 2 epoch=40 label=-0.7632 loss=-0.7632 sec=51.72 / seed 2 epoch=41 label=-0.7273 loss=-0.7273 sec=53.92 / seed 2 epoch=42 label=-0.7299 loss=-0.7299 sec=53.46 / seed 2 epoch=43 label=-0.7444 loss=-0.7444 sec=53.63 / seed 2 epoch=44 label=-0.7361 loss=-0.7361 sec=56.03 / seed 2 epoch=45 label=-0.7346 loss=-0.7346 sec=50.77 / seed 2 epoch=46 label=-0.7326 loss=-0.7326 sec=53.55 / seed 2 epoch=47 label=-0.7502 loss=-0.7502 sec=50.63 / seed 2 epoch=48 label=-0.7647 loss=-0.7647 sec=54.34 / seed 2 epoch=49 label=-0.7521 loss=-0.7521 sec=54.03 / seed 2 epoch=50 label=-0.7455 loss=-0.7455 sec=53.52 / seed 2 epoch=51 label=-0.7572 loss=-0.7572 sec=53.69 / seed 2 epoch=52 label=-0.7356 loss=-0.7356 sec=56.85 / seed 2 epoch=53 label=-0.7491 loss=-0.7491 sec=58.63 / seed 2 epoch=54 label=-0.7379 loss=-0.7379 sec=54.15 / seed 2 epoch=55 label=-0.7432 loss=-0.7432 sec=53.22 / seed 2 epoch=56 label=-0.7426 loss=-0.7426 sec=57.05 / seed 2 epoch=57 label=-0.7444 loss=-0.7444 sec=55.58 / seed 2 epoch=58 label=-0.7469 loss=-0.7469 sec=52.73 / seed 2 epoch=59 label=-0.7332 loss=-0.7332 sec=53.51 / seed 2 epoch=60 label=-0.7341 loss=-0.7341 sec=54.95 / seed 2 epoch=61 label=-0.7171 loss=-0.7171 sec=54.28 / seed 2 epoch=62 label=-0.7271 loss=-0.7271 sec=53.75 / seed 2 epoch=63 label=-0.7358 loss=-0.7358 sec=55.72 / seed 2 epoch=64 label=-0.7258 loss=-0.7258 sec=53.68 / seed 2 epoch=65 label=-0.7251 loss=-0.7251 sec=53.99 / seed 2 epoch=66 label=-0.7289 loss=-0.7289 sec=55.98 / seed 2 epoch=67 label=-0.7321 loss=-0.7321 sec=55.54 / seed 2 epoch=68 label=-0.7224 loss=-0.7224 sec=59.92 / seed 2 epoch=69 label=-0.7122 loss=-0.7122 sec=54.55 / seed 2 epoch=70 label=-0.7158 loss=-0.7158 sec=53.11 / seed 2 epoch=71 label=-0.7058 loss=-0.7058 sec=53.45 / seed 2 epoch=72 label=-0.7143 loss=-0.7143 sec=52.35 / seed 2 epoch=73 label=-0.7117 loss=-0.7117 sec=54.6 / seed 2 epoch=74 label=-0.7136 loss=-0.7136 sec=51.92 / seed 2 epoch=75 label=-0.7115 loss=-0.7115 sec=52.87 / seed 2 epoch=76 label=-0.7126 loss=-0.7126 sec=52.29 / seed 2 epoch=77 label=-0.7111 loss=-0.7111 sec=53.1 / seed 2 epoch=78 label=-0.7141 loss=-0.7141 sec=50.52 / seed 2 epoch=79 label=-0.7215 loss=-0.7215 sec=49.32 / seed 2 epoch=80 label=-0.7225 loss=-0.7225 sec=50.47
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr1e-4
+
+## M7-lite / litev2_eval_P3a_densenet_lr1e-4 — 2026-11-11 17:01
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 0.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 4f7a6eb56c2b09b3):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0001
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [0, 1, 2]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - national_val/P3a_densenet_lr1e-4/chla/bal_acc: 0.343138
+  - national_val/P3a_densenet_lr1e-4/secchi/mdsa: 42.8202
+  - national_val/P3a_densenet_lr1e-4/ssc/mdsa: 226.327
+  - national_val/P3a_densenet_lr1e-4/tss/mdsa: 95.5459
+  - national_val/P3a_densenet_lr1e-4/turb_fnu/mdsa: 337.163
+  - national_val/P3a_densenet_lr1e-4/turbidity/mdsa: 105.356
+  - val_p2/P3a_densenet_lr1e-4/turb_fnu/mdsa: 196.485
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr1e-4
+
+## M6-hydromet / M6V2/p.fixed — 2026-11-11 13:02
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 240.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7bbfe520589db518):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/physics.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'threads': 4}
+  - arm: p
+  - data: {'grab': False}
+  - forcing: {'air2stream_regional': 'site_cell', 'air2stream_regional_ws': 'basin_mean'}
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_members: {'T': 'temp_c_mean', 'DO': 'do_mgl_mean'}
+  - job_minutes: 100
+  - members: {'temp_c_mean': ['air2stream_regional', 'air2stream_regional_ws'], 'temp_c_7dadm': ['air2stream_regional', 'air2stream_regional_ws'], 'do_mgl_mean': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws'], 'do_mgl_min': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws']}
+  - model: physics_family
+  - n_jobs: 6
+  - point: fixed
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - t_e_schema: non-ws members only (amendment §5); on hold
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - (none)
+- **Notes**: job chunk ended before member refit_basin_mean; resumed by the next job
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/p/p_fixed
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 16:57
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 512690ad70ef24a1):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [2, 10, 18, 26]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 2
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.11315
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.20929
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop256_kd03_ssl_national2b — 2026-11-11 16:27
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 41.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash e69299e0c47faeed):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: False
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_kd03_ssl_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - ssl_init: lite_ssl/simsiam_v1/ssl_encoder.pt
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.33236
+  - ensemble/secchi/mdsa: 50.2528
+  - ensemble/tss/mdsa: 98.9671
+  - ensemble/turbidity/mdsa: 93.8046
+  - seed0/chla: 0.323586
+  - seed0/secchi: 51.6808
+  - seed0/tss: 97.6581
+  - seed0/turbidity: 93.9698
+  - seed1/chla: 0.333265
+  - seed1/secchi: 52.4893
+  - seed1/tss: 96.6374
+  - seed1/turbidity: 97.8103
+  - seed2/chla: 0.33618
+  - seed2/secchi: 49.6224
+  - seed2/tss: 105.513
+  - seed2/turbidity: 93.3262
+- **Notes**: KD: 2503712 teacher cells over 2289 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_kd03_ssl_national2b_20261111-162707
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-11 16:51
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 23.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 08d0acb2234d1d40):
+  - area: THAMES - SOUTH EAST
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 48.2075
+  - epochs: 28
+  - featurize_seconds: 52.0325
+  - fit_rows: 172560
+  - inner_val_rows: 22850
+  - n_params: 859808
+  - peak_vram_train_mb: 1209.38
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 17:06
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.8 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash b382adf20cc31db9):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [3, 11, 19, 27]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 3
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.15468
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.2709
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 17:18
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 6f14b5627a7a414f):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [4, 12, 20, 28]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 4
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.23902
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.56011
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 17:27
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 4.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 6fa19123c83879f6):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [5, 13, 21, 29]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 5
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.13674
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.25942
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-11 17:14
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 20.4 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash e60401e9c0c71aa2):
+  - area: THAMES - WEST
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 47.1668
+  - epochs: 25
+  - featurize_seconds: 40.9071
+  - fit_rows: 172976
+  - inner_val_rows: 21910
+  - n_params: 858368
+  - peak_vram_train_mb: 1181.46
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## M3-microbe / microbe_arch_v2_cv:xgb_v4mr:lodo:P — 2026-11-11 17:35
+- **Plan ref**: microbe_arch_v2_amendment §2-§7; microbe_arch_v2_lead_rulings §2 | **Iteration**: arch_v2
+- **Status**: ✅ Completed | **Duration**: 0.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `microbe_arch_v2_cv.py`
+- **Data**: microbe_wq, microbe_wq_geo
+- **Config** (hash 7f44c6af8f009734):
+  - amendment_sha256: 022841f3e94498efd94b4258449730472f790c5c2ef800556350cfe55d82eb6a
+  - backend: v4mr
+  - code_sha256: {'sentinel/models/microbe/niche.py': '32d01a52205836827f3ba645c115ac284fca25596c1c66bed31084e650a0f07c', 'sentinel/models/microbe/archv2.py': 'a92bbf5529795592ca36f54a2520a2d089f72e1c89c53fce87edf9ce649893ce', 'scripts/train/microbe_arch_v2_cv.py': '94ac5fa22d503ba43893341d951b5fb78c95c643c098977b3d3cc85ca8a98d66'}
+  - device: cpu
+  - families: ['P']
+  - model: xgb_v4mr
+  - n_jobs: 1
+  - n_shard_processes: 6
+  - role: slot#7
+  - scheme: lodo
+  - seeds: [0, 1, 2]
+  - shard_cpu_hours: [1.0761, 0.9631, 1.0391, 1.052, 0.9902, 1.0221, 0.9532, 1.0052, 0.98, 1.0937, 1.0901, 1.104, 0.9567, 1.0126, 0.8755, 0.9823, 0.8537, 0.9885, 0.741]
+  - sharded: True
+  - stamp_row: ccbf6d0e2fb5
+- **Final metrics**:
+  - P:mean_r2: 0.318637
+  - P:r2_do: 0.406815
+  - P:r2_log_chla: 0.239096
+  - P:r2_log_doc: 0.322306
+  - P:r2_log_no3: 0.244491
+  - P:r2_log_sc: 0.794774
+  - P:r2_log_tn: 0.0877987
+  - P:r2_log_tp: 0.289674
+  - P:r2_log_turb: 0.16414
+  - cpu_hours: 18.7792
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/microbe/cv_archv2/lodo
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 17:31
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 8.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash ef70b4f70b0a0465):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [6, 14, 22, 30]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 6
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.14021
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.24683
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / natstudent/mnv4s_raw_crop256_kd03_ctx_national2b — 2026-11-11 17:08
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 38.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 1359b02b87715dc5):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - context_film: True
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: True
+  - film_source: scene
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_targets: /home/bcheng/STOCKHOLM/sentinel_runs/lite/teacher_targets_litesafe_national2/teacher_targets.parquet
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_kd03_ctx_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.356547
+  - ensemble/secchi/mdsa: 40.4349
+  - ensemble/tss/mdsa: 89.1075
+  - ensemble/turbidity/mdsa: 96.4757
+  - seed0/chla: 0.356276
+  - seed0/secchi: 40.3663
+  - seed0/tss: 93.1909
+  - seed0/turbidity: 100.465
+  - seed1/chla: 0.352716
+  - seed1/secchi: 41.5476
+  - seed1/tss: 94.9761
+  - seed1/turbidity: 98.5145
+  - seed2/chla: 0.357689
+  - seed2/secchi: 39.2423
+  - seed2/tss: 101.999
+  - seed2/turbidity: 104.837
+- **Notes**: KD: 2503712 teacher cells over 2289 chips
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_kd03_ctx_national2b_20261111-170820
+
+## M4 ChemTox / chemtox_unseen_taxa_select/gpboost — 2026-11-11 17:40
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 180a595ce1aa860c):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [7, 15, 23, 31]
+  - cuda_visible_devices: None
+  - entry: gpboost
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 7
+  - shards: 8
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.13778
+  - n_configurations: 4
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.22594
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-11 17:34
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 18.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 99c44accc858010d):
+  - area: SOUTHERN - KENT & E. SUSSEX
+  - cfg: {'d_model': 96, 'n_layers': 2, 'n_heads': 4, 'dropout': 0.1, 'trunk': 256, 'nu': 4.0, 'modalities': ('invertebrate', 'diatom'), 'token_cap': {'invertebrate': 150, 'diatom': 100}, 'min_name_count': 3, 'lineage_std': 0.1, 'context_cols': ('doy_sin', 'doy_cos', 'altitude_m'), 'token_dropout': 0.1, 'modality_dropout': 0.3, 'source_dropout': 0.1, 'lr': 0.001, 'weight_decay': 0.01, 'batch_size': 256, 'max_epochs': 100, 'patience': 10, 'amp': True, 'inner_val_frac': 0.15, 'inner_block_km': 50.0, 'prevalence_km': 200.0, 'prevalence_cell_km': 50.0, 'prevalence_min_pool': 10, 'region_context': True, 'region_max': 256, 'pseudo_region_km': (50.0, 150.0), 'episode_rows': 64, 'val_region_km': 100.0, 'coherence_weight': 0.0, 'do_tol': 0.06, 'embed_dim': 32, 'name': 'ma_zs'}
+  - chunk_epochs: 30
+  - device: cuda
+  - recipe: ma_zs
+  - seed: 0
+  - time_only: 0
+- **Final metrics**:
+  - epoch_seconds: 45.3147
+  - epochs: 24
+  - featurize_seconds: 35.7494
+  - fit_rows: 166159
+  - inner_val_rows: 20542
+  - n_params: 851840
+  - peak_vram_train_mb: 1171.05
+- **Notes**: predictions stored for the pseudo-test rows (with region context and with the slot masked); scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/ckpt/ma_zs
+
+## bioassess / bioassess_f/ukdev/ma_zs — 2026-11-11 17:53
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design, arm #7 (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 19 areas over 2026-11-10 18:5x – 2026-11-11 17:53 in resumable chunks
+  (--chunk-epochs 30) | **Hardware**: GPUs 1, 5, 7, 8, 9 through the lock helper, one job per GPU
+- **Config**: model ma_zs (BioSet-MA zero-shot arm), 19 agency_area folds, inner-validation NLL early stopping
+- **Final metrics**:
+  - areas stored: 19 of 19 | last area 24 epochs, 45.3 s/epoch, best epoch 13, peak VRAM 1171 MB
+- **Notes**: predictions stored UNSCORED (gate G5 / §9.5). No score is computed before the lead's G4 stamp.
+- **Artifacts**: sentinel_runs/bioassess/f_track/ukdev/pred/ma_zs/seed0
+
+## M7-lite / litev2_fit_P3a_densenet_lr3e-4 — 2026-11-11 17:01
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 62.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 74023c673a143e42):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - init_run: None
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0003
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [0]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - seed0/train_loss: -0.65439
+- **Notes**: seed 0 epoch=1 label=-0.04155 loss=-0.04155 sec=46.61 / seed 0 epoch=2 label=1.326 loss=1.326 sec=44.82 / seed 0 epoch=3 label=1.354 loss=1.354 sec=42.42 / seed 0 epoch=4 label=1.7 loss=1.7 sec=44.38 / seed 0 epoch=5 label=1.412 loss=1.412 sec=47.18 / seed 0 epoch=6 label=3.824 loss=3.824 sec=46.74 / seed 0 epoch=7 label=3.853 loss=3.853 sec=45.64 / seed 0 epoch=8 label=1.824 loss=1.824 sec=43.87 / seed 0 epoch=9 label=2.489 loss=2.489 sec=43.07 / seed 0 epoch=10 label=30.69 loss=30.69 sec=43.72 / seed 0 epoch=11 label=2.141 loss=2.141 sec=43.78 / seed 0 epoch=12 label=3.274 loss=3.274 sec=41.61 / seed 0 epoch=13 label=2.443 loss=2.443 sec=44.56 / seed 0 epoch=14 label=1.681 loss=1.681 sec=41.41 / seed 0 epoch=15 label=8.666 loss=8.666 sec=44.84 / seed 0 epoch=16 label=2.682 loss=2.682 sec=47.42 / seed 0 epoch=17 label=8.358 loss=8.358 sec=48.97 / seed 0 epoch=18 label=7.04 loss=7.04 sec=47.43 / seed 0 epoch=19 label=4.779 loss=4.779 sec=47.64 / seed 0 epoch=20 label=13.3 loss=13.3 sec=43.92 / seed 0 epoch=21 label=4.973 loss=4.973 sec=48.01 / seed 0 epoch=22 label=11.19 loss=11.19 sec=48.11 / seed 0 epoch=23 label=6.388 loss=6.388 sec=49.11 / seed 0 epoch=24 label=6.608 loss=6.608 sec=48.53 / seed 0 epoch=25 label=4.269 loss=4.269 sec=46.16 / seed 0 epoch=26 label=2.937 loss=2.937 sec=47.25 / seed 0 epoch=27 label=4.022 loss=4.022 sec=43.83 / seed 0 epoch=28 label=5.862 loss=5.862 sec=46.74 / seed 0 epoch=29 label=6.188 loss=6.188 sec=44.42 / seed 0 epoch=30 label=8.779 loss=8.779 sec=46.49 / seed 0 epoch=31 label=4.518 loss=4.518 sec=48.76 / seed 0 epoch=32 label=7.834 loss=7.834 sec=45.61 / seed 0 epoch=33 label=8.885 loss=8.885 sec=44.01 / seed 0 epoch=34 label=2.65 loss=2.65 sec=44.17 / seed 0 epoch=35 label=2.349 loss=2.349 sec=45.39 / seed 0 epoch=36 label=0.7055 loss=0.7055 sec=49.04 / seed 0 epoch=37 label=0.5584 loss=0.5584 sec=48.44 / seed 0 epoch=38 label=0.4421 loss=0.4421 sec=45.58 / seed 0 epoch=39 label=0.06235 loss=0.06235 sec=45.04 / seed 0 epoch=40 label=-0.3473 loss=-0.3473 sec=44.95 / seed 0 epoch=41 label=-0.1307 loss=-0.1307 sec=45.1 / seed 0 epoch=42 label=-0.4625 loss=-0.4625 sec=44.58 / seed 0 epoch=43 label=-0.5053 loss=-0.5053 sec=46.41 / seed 0 epoch=44 label=-0.4604 loss=-0.4604 sec=47.17 / seed 0 epoch=45 label=-0.4778 loss=-0.4778 sec=45.18 / seed 0 epoch=46 label=-0.5324 loss=-0.5324 sec=46.33 / seed 0 epoch=47 label=-0.35 loss=-0.35 sec=46.41 / seed 0 epoch=48 label=0.4027 loss=0.4027 sec=47.45 / seed 0 epoch=49 label=-0.5395 loss=-0.5395 sec=49.74 / seed 0 epoch=50 label=-0.5185 loss=-0.5185 sec=49.8 / seed 0 epoch=51 label=-0.551 loss=-0.551 sec=49.52 / seed 0 epoch=52 label=-0.5765 loss=-0.5765 sec=51.57 / seed 0 epoch=53 label=-0.5823 loss=-0.5823 sec=50.55 / seed 0 epoch=54 label=-0.5989 loss=-0.5989 sec=50.69 / seed 0 epoch=55 label=-0.5577 loss=-0.5577 sec=49.99 / seed 0 epoch=56 label=-0.5964 loss=-0.5964 sec=49.15 / seed 0 epoch=57 label=-0.5887 loss=-0.5887 sec=50.01 / seed 0 epoch=58 label=-0.5998 loss=-0.5998 sec=48.69 / seed 0 epoch=59 label=-0.4272 loss=-0.4272 sec=48.38 / seed 0 epoch=60 label=-0.6325 loss=-0.6325 sec=50.36 / seed 0 epoch=61 label=-0.6297 loss=-0.6297 sec=50.93 / seed 0 epoch=62 label=-0.6509 loss=-0.6509 sec=49.3 / seed 0 epoch=63 label=-0.6458 loss=-0.6458 sec=49.84 / seed 0 epoch=64 label=-0.6577 loss=-0.6577 sec=48.83 / seed 0 epoch=65 label=-0.6547 loss=-0.6547 sec=48.44 / seed 0 epoch=66 label=-0.675 loss=-0.675 sec=43.07 / seed 0 epoch=67 label=-0.6568 loss=-0.6568 sec=43.72 / seed 0 epoch=68 label=-0.6567 loss=-0.6567 sec=44.02 / seed 0 epoch=69 label=-0.6756 loss=-0.6756 sec=42.95 / seed 0 epoch=70 label=-0.648 loss=-0.648 sec=46.14 / seed 0 epoch=71 label=-0.6452 loss=-0.6452 sec=45.46 / seed 0 epoch=72 label=-0.6366 loss=-0.6366 sec=44.93 / seed 0 epoch=73 label=-0.6699 loss=-0.6699 sec=42.25 / seed 0 epoch=74 label=-0.6699 loss=-0.6699 sec=42.66 / seed 0 epoch=75 label=-0.6641 loss=-0.6641 sec=48.6 / seed 0 epoch=76 label=-0.6715 loss=-0.6715 sec=43.1 / seed 0 epoch=77 label=-0.6759 loss=-0.6759 sec=43.51 / seed 0 epoch=78 label=-0.6901 loss=-0.6901 sec=46.07 / seed 0 epoch=79 label=-0.69 loss=-0.69 sec=49.08 / seed 0 epoch=80 label=-0.6544 loss=-0.6544 sec=48.6
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr3e-4
+
+## bioassess / bioassess_f/ukdev/b2_rf_zs — 2026-11-11 16:32
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 94.9 min | **Hardware**: cpu
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 957649a9771b3694):
+  - model: b2_rf_zs
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('rf', {'modalities': ('invertebrate', 'diatom'), 'descriptors': False, 'numeric': ('doy_sin', 'doy_cos', 'altitude_m'), 'tokens': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 5
+- **Final metrics**:
+  - seconds: 5691.64
+  - units_fitted: 19
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/b2_rf_zs
+
+## M6-hydromet / M6V2/d1.abl_indep — 2026-11-11 17:59
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 12.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash a27f11856c1c0905):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'indep', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_indep
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - best_J: 0.151075
+  - best_j_grab: 0.287809
+  - best_j_sonde: 0.116891
+- **Notes**: epochs 18, best epoch 11, params 349508, 0.1462627649307251 s/step, {'max_allocated_mb': 3514.1, 'max_reserved_mb': 5560.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_indep_s1
+
+## M7-lite / natstudent/mnv4s_raw_crop256_nokd_ctx_national2b — 2026-11-11 17:46
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 35.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `lite_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 70117edaf23adcc2):
+  - amp: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - backbone: mnv4s
+  - batch: 32
+  - beta: 0.5
+  - context_film: True
+  - crop: 0
+  - dec_ch: 48
+  - epochs: 40
+  - film: True
+  - film_source: scene
+  - gloria_init: None
+  - input_mode: raw
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0005
+  - name: mnv4s_raw_crop256_nokd_ctx_national2
+  - pretrained: True
+  - rgb_only: False
+  - seeds: [0, 1, 2]
+  - smoke: False
+  - spectral: False
+  - split_sha256: 29f0dd009bb69a5e36a7829d3bf5b8c7c4301f683a87b6a1b6ddd2fd1ca08092
+  - track: national
+  - train_targets: None
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - ensemble/chla/bal_acc: 0.347145
+  - ensemble/secchi/mdsa: 40.9775
+  - ensemble/tss/mdsa: 95.3562
+  - ensemble/turbidity/mdsa: 96.5116
+  - seed0/chla: 0.352876
+  - seed0/secchi: 39.9322
+  - seed0/tss: 91.1478
+  - seed0/turbidity: 91.2714
+  - seed1/chla: 0.329992
+  - seed1/secchi: 43.973
+  - seed1/tss: 94.2792
+  - seed1/turbidity: 97.0695
+  - seed2/chla: 0.399816
+  - seed2/secchi: 41.3367
+  - seed2/tss: 102.593
+  - seed2/turbidity: 106.12
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/natstudent_mnv4s_raw_crop256_nokd_ctx_national2b_20261111-174641
+
+## M6-hydromet / M6V2/d1.abl_indep — 2026-11-11 18:18
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 7.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7b024bb018ceba6a):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': True}
+  - grab_share: 0.5
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'indep', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_indep
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - best_J: 0.163595
+  - best_j_grab: 0.318805
+  - best_j_sonde: 0.124792
+- **Notes**: epochs 9, best epoch 8, params 349508, 0.1501854658126831 s/step, {'max_allocated_mb': 3514.1, 'max_reserved_mb': 5560.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_indep_s2
+
+## M4 ChemTox / chemtox_unseen_taxa_select/chemeleon_lightgbm — 2026-11-11 18:02
+- **Plan ref**: docs/preregistration/chemtox_unseen_taxa_plan.md §4 | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 27.0 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `chemtox_unseen_select.py`
+- **Data**: —
+- **Config** (hash 4aba5707748c8a9a):
+  - accelerator: cpu
+  - budget: 32
+  - config_indices: [4]
+  - cuda_visible_devices: None
+  - entry: chemeleon_lightgbm
+  - folds: ['Actinopterygii', 'Malacostraca', 'Branchiopoda', 'Maxillopoda']
+  - plan_sha256: ce6cf8b02266328fbd02bad6c3d61fd515ae0517d080c2c3508ba3f07d1caff2
+  - role: candidate
+  - seed: 0
+  - shard: 4
+  - shards: 32
+  - track: unseen_taxa
+- **Final metrics**:
+  - mean_rmse_best: 1.22881
+  - n_configurations: 1
+  - n_failed: 0
+  - worst_fold_rmse_best: 1.32026
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/chemtox/unseen_taxa/stage2_select
+
+## M7-lite / litev2_comparators_tabpfn — 2026-11-11 18:24
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 10.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_comparators.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash ef347c3b2c1d05bb):
+  - aft_params: {'objective': 'survival:aft', 'eval_metric': 'aft-nloglik', 'aft_loss_distribution': 'normal', 'aft_loss_distribution_scale': 1.0, 'learning_rate': 0.03, 'max_depth': 4, 'nthread': 6, 'verbosity': 0}
+  - aft_rounds: 400
+  - features: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_features/train_11beada59e3a.parquet
+  - gbm_params: {'n_estimators': 400, 'learning_rate': 0.03, 'num_leaves': 15, 'min_child_samples': 20, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'n_jobs': 6, 'verbose': -1}
+  - group: tabpfn
+  - label_version: national-2b
+  - n_train_rows: 10651
+  - seeds: [0, 1, 2]
+  - train_smoke: False
+- **Final metrics**:
+  - national_val/S10_tabpfn/chla/bal_acc: 0.421252
+  - national_val/S10_tabpfn/secchi/mdsa: 34.6463
+  - national_val/S10_tabpfn/ssc/mdsa: 225.52
+  - national_val/S10_tabpfn/tss/mdsa: 89.5278
+  - national_val/S10_tabpfn/turb_fnu/mdsa: 413.696
+  - national_val/S10_tabpfn/turbidity/mdsa: 95.7204
+  - val_p2/S10_tabpfn/turb_fnu/mdsa: 258.47
+- **Notes**: block national_val: 10651 training rows, 2020 evaluation rows / S10 secchi: 9371 rows fitted (293 s) / S10 turbidity: 1453 rows fitted (25 s) / S10 turb_fnu: 177 rows fitted (13 s) / S10 tss: 1203 rows fitted (23 s) / S10 ssc: 134 rows fitted (11 s) / S10 chla: 1875 rows fitted (32 s) / block val_p2: 10651 training rows, 153 evaluation rows / S10 secchi: 9371 rows fitted (141 s) / S10 turbidity: 1453 rows fitted (15 s) / S10 turb_fnu: 177 rows fitted (7 s) / S10 tss: 1203 rows fitted (13 s) / S10 ssc: 134 rows fitted (7 s) / S10 chla: 1875 rows fitted (18 s)
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_comparators_tabpfn_20261111-182444
+
+## M6-hydromet / M6V2/d1.abl_nograb.refit — 2026-11-11 18:30
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 4.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash fe4215d9159404c5):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_nograb
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 8, best epoch None, params 350183, 0.14760935306549072 s/step, {'max_allocated_mb': 2188.1, 'max_reserved_mb': 2538.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_nograb_s0_refit
+
+## M7-lite / litev2_comparators_stacked — 2026-11-11 18:35
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 0.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_comparators.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 4b2491d9f74391a4):
+  - aft_params: {'objective': 'survival:aft', 'eval_metric': 'aft-nloglik', 'aft_loss_distribution': 'normal', 'aft_loss_distribution_scale': 1.0, 'learning_rate': 0.03, 'max_depth': 4, 'nthread': 6, 'verbosity': 0}
+  - aft_rounds: 400
+  - features: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_features/train_11beada59e3a.parquet
+  - gbm_params: {'n_estimators': 400, 'learning_rate': 0.03, 'num_leaves': 15, 'min_child_samples': 20, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'n_jobs': 6, 'verbose': -1}
+  - group: stacked
+  - label_version: national-2b
+  - n_train_rows: 10651
+  - seeds: [0, 1, 2]
+  - train_smoke: False
+- **Final metrics**:
+  - national_val/S11_gbm_stacked/chla/bal_acc: 0.364698
+  - national_val/S11_gbm_stacked/secchi/mdsa: 36.308
+  - national_val/S11_gbm_stacked/ssc/mdsa: 277.034
+  - national_val/S11_gbm_stacked/tss/mdsa: 91.307
+  - national_val/S11_gbm_stacked/turb_fnu/mdsa: 154.813
+  - national_val/S11_gbm_stacked/turbidity/mdsa: 83.1248
+  - val_p2/S11_gbm_stacked/turb_fnu/mdsa: 141.425
+- **Notes**: block national_val: 10651 training rows, 2020 evaluation rows / S11 seed 0 done / S11 seed 1 done / S11 seed 2 done / block val_p2: 10651 training rows, 153 evaluation rows / S11 seed 0 done / S11 seed 1 done / S11 seed 2 done
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_comparators_stacked_20261111-183506
+
+## M2-orbit / orbit_baselines/baselines_dev_v5_trackU — 2026-11-11 09:07
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 585.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_baselines.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash b3ef6b753efeab10):
+  - device: cpu
+  - fit_scheme: track_u
+  - gbm_grid_size: 16
+  - index_defs: {'chla': ['OC3', 'NDCI', 'B5_B4', 'MCI'], 'tss': ['red_B4', 'nir_B8A', 'B4_B3'], 'turbidity': ['red_B4', 'nir_B8A', 'B4_B3'], 'secchi': ['B2_B4', 'B3_B4', 'red_B4']}
+  - knn_k_grid: [4, 8, 16, 32]
+  - mdn_b_grid: bands {7,12} x n_iter {5k,10k,20k} x x_log {F,T}
+  - mdn_iter: 10000
+  - seed: 0
+  - version: dev_v5
+- **Final metrics**:
+  - inner_mdsa_chla_gbm_imagery: 65.0506
+  - inner_mdsa_chla_gbm_imagery_context: 60.1845
+  - inner_mdsa_chla_gbm_season_location: 97.9471
+  - inner_mdsa_chla_global_median: 142.82
+  - inner_mdsa_chla_index_opt: 114.683
+  - inner_mdsa_chla_location_knn: 104.554
+  - inner_mdsa_chla_mdn_b: 62.4061
+  - inner_mdsa_chla_mdn_b12: 63.1475
+  - inner_mdsa_chla_mdn_b12_10k_log: 67.8585
+  - inner_mdsa_chla_mdn_b12_20k_lin: 70.4836
+  - inner_mdsa_chla_mdn_b12_20k_log: 72.3093
+  - inner_mdsa_chla_mdn_b12_5k_lin: 62.4903
+  - inner_mdsa_chla_mdn_b12_5k_log: 65.2637
+  - inner_mdsa_chla_mdn_b7: 66.6006
+  - inner_mdsa_chla_mdn_b7_10k_log: 64.0156
+  - inner_mdsa_chla_mdn_b7_20k_lin: 70.6348
+  - inner_mdsa_chla_mdn_b7_20k_log: 66.475
+  - inner_mdsa_chla_mdn_b7_5k_lin: 62.4061
+  - inner_mdsa_chla_mdn_b7_5k_log: 64.3316
+  - inner_mdsa_chla_mdn_gloria: 85.8817
+  - inner_mdsa_chla_mdn_official: 99.9288
+- **Notes**: baseline predictions written; scoring/registry in orbit_compare.py
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/baselines_dev_v5_trackU
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_trackU_s0 — 2026-11-11 18:52
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 12.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 8beabcbaca0d86e6):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 0
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 34
+  - finetune_minutes: 9.28651
+  - inner_mdsa_chla: 55.8547
+  - inner_mdsa_select: 40.6141
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.549857
+  - pretrain_minutes: 1.39998
+  - valxval_lake_mdsa_chla: 56.4855
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_trackU_s0
+
+## M7-lite / litev2_fit_P3a_densenet_lr3e-4 — 2026-11-11 18:04
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 62.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 307511a6c60eb695):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - init_run: None
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0003
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [1]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - seed1/train_loss: -0.588883
+- **Notes**: seed 1 epoch=1 label=-0.02662 loss=-0.02662 sec=52.55 / seed 1 epoch=2 label=0.838 loss=0.838 sec=48.64 / seed 1 epoch=3 label=4.01 loss=4.01 sec=48.82 / seed 1 epoch=4 label=4.02 loss=4.02 sec=43.15 / seed 1 epoch=5 label=14.47 loss=14.47 sec=44.92 / seed 1 epoch=6 label=3.698 loss=3.698 sec=44.88 / seed 1 epoch=7 label=8.512 loss=8.512 sec=43.69 / seed 1 epoch=8 label=3.423 loss=3.423 sec=45.8 / seed 1 epoch=9 label=4.335 loss=4.335 sec=45.62 / seed 1 epoch=10 label=4.477 loss=4.477 sec=46.1 / seed 1 epoch=11 label=3.823 loss=3.823 sec=45.56 / seed 1 epoch=12 label=3.304 loss=3.304 sec=47.98 / seed 1 epoch=13 label=3.969 loss=3.969 sec=47.43 / seed 1 epoch=14 label=3.949 loss=3.949 sec=51.93 / seed 1 epoch=15 label=2.908 loss=2.908 sec=52.72 / seed 1 epoch=16 label=7.662 loss=7.662 sec=53.01 / seed 1 epoch=17 label=11.88 loss=11.88 sec=51.83 / seed 1 epoch=18 label=5.806 loss=5.806 sec=51.77 / seed 1 epoch=19 label=2.906 loss=2.906 sec=51.18 / seed 1 epoch=20 label=2.463 loss=2.463 sec=52.26 / seed 1 epoch=21 label=5.987 loss=5.987 sec=48.2 / seed 1 epoch=22 label=7.572 loss=7.572 sec=51.67 / seed 1 epoch=23 label=3.16 loss=3.16 sec=50.5 / seed 1 epoch=24 label=2.624 loss=2.624 sec=51.98 / seed 1 epoch=25 label=2.711 loss=2.711 sec=52.59 / seed 1 epoch=26 label=10.61 loss=10.61 sec=46.59 / seed 1 epoch=27 label=3.992 loss=3.992 sec=49.25 / seed 1 epoch=28 label=1.096 loss=1.096 sec=46.6 / seed 1 epoch=29 label=0.9651 loss=0.9651 sec=50.77 / seed 1 epoch=30 label=-0.2232 loss=-0.2232 sec=48.76 / seed 1 epoch=31 label=-0.3017 loss=-0.3017 sec=42.59 / seed 1 epoch=32 label=-0.3248 loss=-0.3248 sec=44.59 / seed 1 epoch=33 label=-0.3695 loss=-0.3695 sec=49.33 / seed 1 epoch=34 label=-0.25 loss=-0.25 sec=49.63 / seed 1 epoch=35 label=0.04977 loss=0.04977 sec=49.14 / seed 1 epoch=36 label=0.3498 loss=0.3498 sec=47.11 / seed 1 epoch=37 label=-0.3508 loss=-0.3508 sec=51.19 / seed 1 epoch=38 label=-0.2665 loss=-0.2665 sec=50.76 / seed 1 epoch=39 label=-0.2755 loss=-0.2755 sec=52.27 / seed 1 epoch=40 label=-0.3735 loss=-0.3735 sec=49.47 / seed 1 epoch=41 label=-0.292 loss=-0.292 sec=50.48 / seed 1 epoch=42 label=-0.4075 loss=-0.4075 sec=48.74 / seed 1 epoch=43 label=-0.4123 loss=-0.4123 sec=48.37 / seed 1 epoch=44 label=-0.4173 loss=-0.4173 sec=49.56 / seed 1 epoch=45 label=-0.4316 loss=-0.4316 sec=49.54 / seed 1 epoch=46 label=-0.4185 loss=-0.4185 sec=50.31 / seed 1 epoch=47 label=-0.4888 loss=-0.4888 sec=49.45 / seed 1 epoch=48 label=-0.4749 loss=-0.4749 sec=49.3 / seed 1 epoch=49 label=-0.5127 loss=-0.5127 sec=49.92 / seed 1 epoch=50 label=-0.503 loss=-0.503 sec=48.08 / seed 1 epoch=51 label=-0.5277 loss=-0.5277 sec=50.7 / seed 1 epoch=52 label=-0.4794 loss=-0.4794 sec=49.63 / seed 1 epoch=53 label=-0.5162 loss=-0.5162 sec=50.77 / seed 1 epoch=54 label=-0.5085 loss=-0.5085 sec=48.18 / seed 1 epoch=55 label=-0.5097 loss=-0.5097 sec=49.49 / seed 1 epoch=56 label=-0.5297 loss=-0.5297 sec=50.44 / seed 1 epoch=57 label=-0.5129 loss=-0.5129 sec=50.2 / seed 1 epoch=58 label=-0.5389 loss=-0.5389 sec=48.09 / seed 1 epoch=59 label=-0.5271 loss=-0.5271 sec=40.9 / seed 1 epoch=60 label=-0.5287 loss=-0.5287 sec=40.55 / seed 1 epoch=61 label=-0.5447 loss=-0.5447 sec=44.92 / seed 1 epoch=62 label=-0.5449 loss=-0.5449 sec=40.31 / seed 1 epoch=63 label=-0.5649 loss=-0.5649 sec=40.45 / seed 1 epoch=64 label=-0.5296 loss=-0.5296 sec=39.24 / seed 1 epoch=65 label=-0.5637 loss=-0.5637 sec=40.25 / seed 1 epoch=66 label=-0.556 loss=-0.556 sec=39.38 / seed 1 epoch=67 label=-0.5686 loss=-0.5686 sec=40.32 / seed 1 epoch=68 label=-0.5519 loss=-0.5519 sec=40.51 / seed 1 epoch=69 label=-0.591 loss=-0.591 sec=40.4 / seed 1 epoch=70 label=-0.575 loss=-0.575 sec=40.31 / seed 1 epoch=71 label=-0.5819 loss=-0.5819 sec=40.19 / seed 1 epoch=72 label=-0.5781 loss=-0.5781 sec=40.29 / seed 1 epoch=73 label=-0.5982 loss=-0.5982 sec=40.31 / seed 1 epoch=74 label=-0.5682 loss=-0.5682 sec=40.77 / seed 1 epoch=75 label=-0.5955 loss=-0.5955 sec=40.37 / seed 1 epoch=76 label=-0.5776 loss=-0.5776 sec=39.47 / seed 1 epoch=77 label=-0.5716 loss=-0.5716 sec=41.49 / seed 1 epoch=78 label=-0.5864 loss=-0.5864 sec=39.92 / seed 1 epoch=79 label=-0.569 loss=-0.569 sec=40.34 / seed 1 epoch=80 label=-0.5889 loss=-0.5889 sec=41.22
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr3e-4
+
+## M2-orbit / orbit_satwq/satwq_v5_base_trackU_s1 — 2026-11-11 19:05
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 12.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash eb1fb1dca22d7e83):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 1
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 31
+  - finetune_minutes: 8.81771
+  - inner_mdsa_chla: 52.8425
+  - inner_mdsa_select: 38.954
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.62796
+  - pretrain_minutes: 1.47678
+  - valxval_lake_mdsa_chla: 53.6325
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_trackU_s1
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_trackU_s1 — 2026-11-11 19:17
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 9c376277758ae081):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 1
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 25
+  - finetune_minutes: 7.88634
+  - inner_mdsa_chla: 57.201
+  - inner_mdsa_select: 41.073
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.591758
+  - pretrain_minutes: 1.79093
+  - valxval_lake_mdsa_chla: 54.0504
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_trackU_s1
+
+## bioassess / bioassess_f/ukdev/b2_tabpfn_zs — 2026-11-11 18:35
+- **Plan ref**: bioassess_f_protocol.md v1 §9.4 UK development design (seed 0) | **Iteration**: dev
+- **Status**: ✅ Completed | **Duration**: 55.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `bioassess_f_ukdev.py`
+- **Data**: uk_ea_ecology, taxonomy_harmonised
+- **Config** (hash 01a6c588f84b0154):
+  - model: b2_tabpfn_zs
+  - rf_max_rows: 60000
+  - seed: 0
+  - spec: ('tabpfn', {'modalities': ('invertebrate', 'diatom'), 'descriptors': False, 'numeric': ('doy_sin', 'doy_cos', 'altitude_m'), 'tokens': True, 'max_taxa': {'invertebrate': 300, 'diatom': 150}, 'max_cols': 500, 'nan_blocks': True})
+  - tabpfn_max_rows: 6000
+  - targets: ['ph__pm30d', 'log10_cond25_us_cm__pm30d', 'log10_chloride_mg_l__pm30d', 'log10_no3n_mg_l__pm30d', 'log10_nh4n_mg_l__pm30d', 'log10_po4p_mg_l__pm30d']
+  - threads: 2
+- **Final metrics**:
+  - seconds: 3354.78
+  - units_fitted: 7
+- **Notes**: predictions stored; scores come from the 'table' stage
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/bioassess/f_track/ukdev/pred/b2_tabpfn_zs
+
+## M2-orbit / orbit_satwq/satwq_v5_base_trackU_s0 — 2026-11-11 19:29
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.9 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash f7fbef8d121a177d):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 0
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 30
+  - finetune_minutes: 8.63954
+  - inner_mdsa_chla: 55.4236
+  - inner_mdsa_select: 40.4842
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.641537
+  - pretrain_minutes: 1.42402
+  - valxval_lake_mdsa_chla: 53.0134
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_trackU_s0
+
+## M2-orbit / orbit_satwq/satwq_v5_base_trackU_s2 — 2026-11-11 19:31
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 12.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 3b3be0a7ac5259b0):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 2
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 31
+  - finetune_minutes: 8.83971
+  - inner_mdsa_chla: 56.2814
+  - inner_mdsa_select: 40.4843
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.646631
+  - pretrain_minutes: 1.42326
+  - valxval_lake_mdsa_chla: 51.945
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_trackU_s2
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_trackU_s2 — 2026-11-11 19:24
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 28.3 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=9)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 63f892698e6860d4):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 2
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 39
+  - finetune_minutes: 23.053
+  - inner_mdsa_chla: 54.9648
+  - inner_mdsa_select: 39.4804
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.570312
+  - pretrain_minutes: 2.72632
+  - valxval_lake_mdsa_chla: 51.1774
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_trackU_s2
+
+## M2-orbit / orbit_satwq/satwq_v5_base_trackU_s3 — 2026-11-11 19:44
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 3b7c8a129346e73c):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 3
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 27
+  - finetune_minutes: 8.02638
+  - inner_mdsa_chla: 56.4943
+  - inner_mdsa_select: 40.3854
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.624871
+  - pretrain_minutes: 1.42803
+  - valxval_lake_mdsa_chla: 51.7075
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_trackU_s3
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_trackU_s3 — 2026-11-11 19:42
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 16.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 4392706325d86641):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 3
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 54
+  - finetune_minutes: 13.027
+  - inner_mdsa_chla: 56.2754
+  - inner_mdsa_select: 40.8515
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.560953
+  - pretrain_minutes: 1.43818
+  - valxval_lake_mdsa_chla: 55.9249
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_trackU_s3
+
+## M6-hydromet / M6V2/d1.abl_nograb.refit — 2026-11-11 19:59
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 7.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 9136285e4ad10046):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_nograb
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 1
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 14, best epoch None, params 350183, 0.1443796157836914 s/step, {'max_allocated_mb': 2188.1, 'max_reserved_mb': 2538.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_nograb_s1_refit
+
+## M7-lite / litev2_fit_P3a_densenet_lr3e-4 — 2026-11-11 19:07
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 60.1 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash fcabaa39cc9eed23):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - init_run: None
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0003
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [2]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - seed2/train_loss: -0.62029
+- **Notes**: seed 2 epoch=1 label=-0.03271 loss=-0.03271 sec=43.61 / seed 2 epoch=2 label=0.06255 loss=0.06255 sec=40.42 / seed 2 epoch=3 label=2.262 loss=2.262 sec=40.97 / seed 2 epoch=4 label=1.679 loss=1.679 sec=40.08 / seed 2 epoch=5 label=3.57 loss=3.57 sec=40.4 / seed 2 epoch=6 label=0.8284 loss=0.8284 sec=40.9 / seed 2 epoch=7 label=2.787 loss=2.787 sec=40.98 / seed 2 epoch=8 label=2.097 loss=2.097 sec=39.7 / seed 2 epoch=9 label=6.939 loss=6.939 sec=40.59 / seed 2 epoch=10 label=2.471 loss=2.471 sec=40.83 / seed 2 epoch=11 label=30.94 loss=30.94 sec=39.65 / seed 2 epoch=12 label=6.729 loss=6.729 sec=41.39 / seed 2 epoch=13 label=4.796 loss=4.796 sec=40.76 / seed 2 epoch=14 label=3.992 loss=3.992 sec=41 / seed 2 epoch=15 label=12.74 loss=12.74 sec=40.98 / seed 2 epoch=16 label=3.13 loss=3.13 sec=40.59 / seed 2 epoch=17 label=5.425 loss=5.425 sec=40.33 / seed 2 epoch=18 label=67.92 loss=67.92 sec=40.63 / seed 2 epoch=19 label=4.419 loss=4.419 sec=40.03 / seed 2 epoch=20 label=11.42 loss=11.42 sec=41.52 / seed 2 epoch=21 label=33.65 loss=33.65 sec=41.33 / seed 2 epoch=22 label=10.92 loss=10.92 sec=40.07 / seed 2 epoch=23 label=7.75 loss=7.75 sec=41.15 / seed 2 epoch=24 label=2.623 loss=2.623 sec=40.78 / seed 2 epoch=25 label=3.594 loss=3.594 sec=41.48 / seed 2 epoch=26 label=25.69 loss=25.69 sec=40.65 / seed 2 epoch=27 label=17.71 loss=17.71 sec=40.26 / seed 2 epoch=28 label=3.479 loss=3.479 sec=41.43 / seed 2 epoch=29 label=8.51 loss=8.51 sec=40.97 / seed 2 epoch=30 label=4.154 loss=4.154 sec=41.14 / seed 2 epoch=31 label=6.216 loss=6.216 sec=40.56 / seed 2 epoch=32 label=8.306 loss=8.306 sec=40.76 / seed 2 epoch=33 label=3.211 loss=3.211 sec=43.37 / seed 2 epoch=34 label=9.293 loss=9.293 sec=50.35 / seed 2 epoch=35 label=2.982 loss=2.982 sec=49.15 / seed 2 epoch=36 label=5.01 loss=5.01 sec=51.06 / seed 2 epoch=37 label=3.637 loss=3.637 sec=49 / seed 2 epoch=38 label=4.667 loss=4.667 sec=50.35 / seed 2 epoch=39 label=2.223 loss=2.223 sec=52.85 / seed 2 epoch=40 label=1.903 loss=1.903 sec=50.98 / seed 2 epoch=41 label=9.615 loss=9.615 sec=51.43 / seed 2 epoch=42 label=5.331 loss=5.331 sec=51.28 / seed 2 epoch=43 label=3.96 loss=3.96 sec=48.58 / seed 2 epoch=44 label=2.045 loss=2.045 sec=48.74 / seed 2 epoch=45 label=0.09671 loss=0.09671 sec=49.59 / seed 2 epoch=46 label=2.252 loss=2.252 sec=52.53 / seed 2 epoch=47 label=-0.3769 loss=-0.3769 sec=49.66 / seed 2 epoch=48 label=-0.4077 loss=-0.4077 sec=51.82 / seed 2 epoch=49 label=-0.2532 loss=-0.2532 sec=49.31 / seed 2 epoch=50 label=-0.3737 loss=-0.3737 sec=49.92 / seed 2 epoch=51 label=-0.1564 loss=-0.1564 sec=52.24 / seed 2 epoch=52 label=-0.5228 loss=-0.5228 sec=51.29 / seed 2 epoch=53 label=-0.4508 loss=-0.4508 sec=49.06 / seed 2 epoch=54 label=-0.5147 loss=-0.5147 sec=49.1 / seed 2 epoch=55 label=-0.3244 loss=-0.3244 sec=51.27 / seed 2 epoch=56 label=-0.5779 loss=-0.5779 sec=49.75 / seed 2 epoch=57 label=-0.5571 loss=-0.5571 sec=48.58 / seed 2 epoch=58 label=-0.5623 loss=-0.5623 sec=50.03 / seed 2 epoch=59 label=-0.5674 loss=-0.5674 sec=49.98 / seed 2 epoch=60 label=-0.5738 loss=-0.5738 sec=48.24 / seed 2 epoch=61 label=-0.6004 loss=-0.6004 sec=49.14 / seed 2 epoch=62 label=-0.5929 loss=-0.5929 sec=49.7 / seed 2 epoch=63 label=-0.6162 loss=-0.6162 sec=50.29 / seed 2 epoch=64 label=-0.5996 loss=-0.5996 sec=49.67 / seed 2 epoch=65 label=-0.6127 loss=-0.6127 sec=47.01 / seed 2 epoch=66 label=-0.6163 loss=-0.6163 sec=45.08 / seed 2 epoch=67 label=-0.6122 loss=-0.6122 sec=44.01 / seed 2 epoch=68 label=-0.6081 loss=-0.6081 sec=41.36 / seed 2 epoch=69 label=-0.631 loss=-0.631 sec=44.48 / seed 2 epoch=70 label=-0.6092 loss=-0.6092 sec=40.84 / seed 2 epoch=71 label=-0.6031 loss=-0.6031 sec=39.47 / seed 2 epoch=72 label=-0.6209 loss=-0.6209 sec=40.51 / seed 2 epoch=73 label=-0.637 loss=-0.637 sec=40.26 / seed 2 epoch=74 label=-0.6281 loss=-0.6281 sec=42.08 / seed 2 epoch=75 label=-0.6499 loss=-0.6499 sec=44.68 / seed 2 epoch=76 label=-0.6291 loss=-0.6291 sec=40.29 / seed 2 epoch=77 label=-0.6554 loss=-0.6554 sec=40 / seed 2 epoch=78 label=-0.6564 loss=-0.6564 sec=40.06 / seed 2 epoch=79 label=-0.6397 loss=-0.6397 sec=40.57 / seed 2 epoch=80 label=-0.6203 loss=-0.6203 sec=39.73
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr3e-4
+
+## M7-lite / litev2_eval_P3a_densenet_lr3e-4 — 2026-11-11 20:07
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ❌ Failed | **Duration**: 0.5 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash 3681e2f70497da08):
+  - amp: True
+  - arm: P3a_densenet
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.0
+  - lr: 0.001
+  - lr_backbone: 0.0003
+  - net: densenet
+  - parity: False
+  - reduced: False
+  - seeds: [0, 1, 2]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - (none)
+- **Notes**: RuntimeError: P3a_densenet_lr3e-4: non-finite predictions on national_val / traceback tail: Traceback (most recent call last):  |   File "/home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/scripts/train/litev2_train.py", line 287, in stage_eval     raise RuntimeError(f"{name}: non-finite predictions on {b}")  | RuntimeError: P3a_densenet_lr3e-4: non-finite predictions on national_val 
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3a_densenet_lr3e-4
+
+## M2-orbit / orbit_satwq/satwq_v5_base_trackU_s4 — 2026-11-11 19:58
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 9.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=0)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash d237d7963d7c6d76):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0.1, 'p_band_drop': 0.1, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 4
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 17
+  - finetune_minutes: 6.19861
+  - inner_mdsa_chla: 53.5581
+  - inner_mdsa_select: 39.3667
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.635964
+  - pretrain_minutes: 1.40444
+  - valxval_lake_mdsa_chla: 50.5252
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_base_trackU_s4
+
+## M2-orbit / orbit_satwq/satwq_v5_noaug_trackU_s4 — 2026-11-11 20:06
+- **Plan ref**: RESEARCH_PLAN.md §5.2 (M2 SENTINEL-Orbit); docs/preregistration/orbit_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 11.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `orbit_satwq.py`
+- **Data**: orbit_dev_v5, gloria
+- **Config** (hash 85394323f643989d):
+  - config_file: configs/orbit/satwq.yaml
+  - d: 64
+  - dropout: 0.1
+  - finetune: {'epochs': 80, 'lr': 0.0005, 'batch': 128, 'patience': 15, 'aug': {'mult_noise': 0.02, 'add_noise': 0.001, 'band_add_noise': 0.0005, 'p_rgbn': 0, 'p_band_drop': 0, 'p_ctx_drop': 0.5, 'p_pixel_subset': 0.3, 'ctx_off': False}}
+  - fit_scheme: track_u
+  - k: 5
+  - model: satwq
+  - n_heads: 4
+  - n_layers: 3
+  - pretrain: {'enabled': True, 'epochs': 300, 'lr': 0.001, 'batch': 256, 'aug': {'mult_noise': 0.1, 'add_noise': 0.004, 'band_add_noise': 0.002, 'p_rgbn': 0, 'p_band_drop': 0, 'ctx_off': True, 'p_pixel_subset': 0.0}}
+  - seed: 4
+  - seeds: [0, 1, 2, 3, 4]
+  - select_targets: ['chla', 'secchi']
+  - smoke: False
+  - ssl: {'enabled': False, 'epochs': 20, 'mask_frac': 0.3, 'lr': 0.001, 'batch': 4096, 'max_pixels': None, 'pixels': 'v1'}
+  - version: dev_v5
+- **Final metrics**:
+  - best_epoch: 28
+  - finetune_minutes: 8.19558
+  - inner_mdsa_chla: 57.0164
+  - inner_mdsa_select: 40.8037
+  - n_gloria: 2631
+  - n_params: 182780
+  - pretrain_final_nll: 0.601466
+  - pretrain_minutes: 1.44376
+  - valxval_lake_mdsa_chla: 51.244
+- **Notes**: —
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/orbit/satwq_v5_noaug_trackU_s4
+
+## M6-hydromet / M6V2/d1.abl_nograb.refit — 2026-11-11 20:21
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 3.6 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=1)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_nn.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash ba05bbc3f0936393):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/d1.yaml
+  - _smoke: False
+  - arm: d1
+  - data: {'grab': False}
+  - grab_share: 0.0
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - job_minutes: 100
+  - model: gso_mt
+  - net: {'static': 'film', 'heads': 'diel', 'static_emb': 32, 'static_hidden': 128, 'static_noise': 0.5, 'attr_dropout': 0.1, 'dropout': 0.4, 'hidden': 192}
+  - point: abl_nograb
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 2
+  - seeds: [0, 1, 2]
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variables: ['T', 'DO']
+  - variant_of: g1
+- **Final metrics**:
+  - (none)
+- **Notes**: epochs 6, best epoch None, params 350183, 0.14357447624206543 s/step, {'max_allocated_mb': 2188.1, 'max_reserved_mb': 2538.0}
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/d1/d1_abl_nograb_s2_refit
+
+## M6-hydromet / M6V2/p.fixed — 2026-11-11 17:09
+- **Plan ref**: docs/preregistration/hydromet_arch_v2_amendment.md (M6 architecture v2) | **Iteration**: arch-v2
+- **Status**: ✅ Completed | **Duration**: 228.7 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `sota_hydromet_v2_physics.py`
+- **Data**: sonde_daily, forcings_daily, streamcat, hydromet_upstream_forcing, hydromet_sota, hydromet_sota_v2
+- **Config** (hash 7bbfe520589db518):
+  - _config_file: /home/bcheng/STOCKHOLM/SENTINEL-STOCKHOLM/configs/hydromet_sota/v2/physics.yaml
+  - _smoke: False
+  - air2stream: {'k_donors': 10, 'iters': 300, 'lr': 0.05, 'min_obs': 365, 'min_calib_nse': 0.5, 'threads': 4}
+  - arm: p
+  - data: {'grab': False}
+  - forcing: {'air2stream_regional': 'site_cell', 'air2stream_regional_ws': 'basin_mean'}
+  - implementation_constants: {'dense_term_weights': {'T_mean': 1.0, 'T_7dadm': 1.0, 'DO_mean': 1.0, 'DO_min': 1.0, 'T_max': 0.5, 'T_min': 0.5, 'DO_max': 0.5, 'hour_T': 0.5, 'hour_DO': 0.5}, 'aux_weights': {'logq': 0.5, 'sc': 0.25, 'turb': 0.25, 'no3': 0.25}, 'sigma_src_prior': {'family': 'half-normal', 'scale': 0.5, 'weight': 0.01}, 'dense_site_sampling': 'target_share', 'grab_same_visit_span_h': 2.0, 'grab_logger_min_distinct_hours': 20, 'grab_time_000000_is_missing': True, 'untimed_mixture_hours': [8, 17], 'diel_init': {'peak_hour': 15, 'softplus_amp_bias': -2.0, 'kappa_logit_bias': -1.0}, 'label_scales': "T-type labels share T_mean's mean/std, DO-type DO_mean's; statistics from FINAL train-role fit sites", 'inner_grab_station_cap_days': 30}
+  - inst_members: {'T': 'temp_c_mean', 'DO': 'do_mgl_mean'}
+  - job_minutes: 100
+  - members: {'temp_c_mean': ['air2stream_regional', 'air2stream_regional_ws'], 'temp_c_7dadm': ['air2stream_regional', 'air2stream_regional_ws'], 'do_mgl_mean': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws'], 'do_mgl_min': ['dosat_ratio[air2stream_regional]', 'dosat_ratio[air2stream_regional]_ws']}
+  - model: physics_family
+  - n_jobs: 6
+  - point: fixed
+  - release: {'amendment_sha256': 'a65e6eb578f5bebe001dada100cd8ea49f2383b80987cd3927014f759696e656', 'amendment_registry_id': 'e956ed69fd42', 'deviations_sha256': '65a1599aa604924aeb2dab5af841760983027c609f3454f24dccb9e40d02b048', 'deviations_registry_id': 'e956ed69fd42', 'pins_sha256': '84958df5acf2e468a8ec926a5f59d779901f50a72375188b63723c71bff1c5d9', 'changed_under_stamp': {}, 'code_pins_sha256': '574307a10dd417c03997890bf4022f6ac346be01de6e2a906acbfc1e350c0182', 'code_changed_under_stamp': {}, 'reader': 'sentinel.hydromet_sota.gso_mt.data.load_v2_train(require_pins=True): daily label tables through scan_cube (date filter inside the file scan), grab rows through read_grab_inst'}
+  - seed: 0
+  - seeds: [0, 1, 2]
+  - t_e_schema: non-ws members only (amendment §5); on hold
+  - train: {'seq_len': 365, 'predict_last': 90, 'batch_size': 256, 'lr': 0.0005, 'weight_decay': 0.0001, 'steps_per_epoch': 200, 'max_epochs': 60, 'patience': 6, 'min_delta': 0.0001, 'grad_clip': 1.0, 'grab_weight_cap_obs': 400}
+  - variant_of: None
+- **Final metrics**:
+  - best_J: 0.216708
+  - best_j_grab: 0.501771
+  - best_j_sonde: 0.145442
+- **Notes**: 2 members x (inner, refit); deterministic; one label form
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/hydromet/sota_v2/p/p_fixed
+
+## M7-lite / litev2_fit_P3b_densenet_parity_lr1e-4 — 2026-11-11 20:08
+- **Plan ref**: RESEARCH_PLAN.md §10 (G6 SENTINEL-Lite); docs/preregistration/lite_protocol.md | **Iteration**: base
+- **Status**: ✅ Completed | **Duration**: 55.2 min | **Hardware**: NVIDIA GeForce RTX 2080 Ti (CUDA_VISIBLE_DEVICES=5)
+- **Code**: v2-rebuild@34df74ec (dirty), package 50ed344d1845da7f, script `litev2_train.py`
+- **Data**: naip_matchups, lite_labels
+- **Config** (hash ba128d85bbdd8988):
+  - amp: True
+  - arm: P3b_densenet_parity
+  - attention: True
+  - aug: True
+  - aug_band_gain: 0.1
+  - aug_gamma: 0.1
+  - aug_global_gain: 0.15
+  - aug_noise_dn: 1.5
+  - aug_offset_dn: 3.0
+  - aug_p_resample: 0.2
+  - batch: 32
+  - beta: 0.5
+  - delta_reg: 0.0
+  - epochs: 80
+  - grad_clip: 5.0
+  - init_run: None
+  - kd_sigma_scale2: 0.01
+  - kd_weight: 0.3
+  - lr: 0.001
+  - lr_backbone: 0.0001
+  - net: densenet
+  - parity: True
+  - reduced: False
+  - seeds: [0]
+  - targets: ('secchi', 'turbidity', 'turb_fnu', 'tss', 'ssc', 'chla')
+  - use_anchor: True
+  - use_context: True
+  - warmup_epochs: 2
+  - wd: 0.0001
+- **Final metrics**:
+  - seed0/train_loss: -0.646177
+- **Notes**: seed 0 epoch=1 label=-0.2333 kd=0.4605 loss=-0.0951 sec=43.23 / seed 0 epoch=2 label=-0.3952 kd=0.3346 loss=-0.2948 sec=41.67 / seed 0 epoch=3 label=-0.5023 kd=0.3052 loss=-0.4107 sec=40.86 / seed 0 epoch=4 label=-0.5053 kd=0.287 loss=-0.4192 sec=41.27 / seed 0 epoch=5 label=-0.5643 kd=0.2706 loss=-0.4831 sec=39.63 / seed 0 epoch=6 label=-0.5925 kd=0.2603 loss=-0.5144 sec=42.47 / seed 0 epoch=7 label=-0.5763 kd=0.2614 loss=-0.4979 sec=45.47 / seed 0 epoch=8 label=-0.5862 kd=0.2458 loss=-0.5124 sec=41.81 / seed 0 epoch=9 label=-0.6125 kd=0.2496 loss=-0.5377 sec=41.53 / seed 0 epoch=10 label=-0.639 kd=0.2364 loss=-0.568 sec=39.67 / seed 0 epoch=11 label=-0.6338 kd=0.2375 loss=-0.5625 sec=40.7 / seed 0 epoch=12 label=-0.6408 kd=0.2274 loss=-0.5726 sec=39.72 / seed 0 epoch=13 label=-0.6404 kd=0.231 loss=-0.5711 sec=44.48 / seed 0 epoch=14 label=-0.6744 kd=0.228 loss=-0.606 sec=41.67 / seed 0 epoch=15 label=-0.6696 kd=0.2232 loss=-0.6027 sec=41.33 / seed 0 epoch=16 label=-0.6688 kd=0.2224 loss=-0.6021 sec=45.96 / seed 0 epoch=17 label=-0.6961 kd=0.2201 loss=-0.63 sec=43.92 / seed 0 epoch=18 label=-0.7046 kd=0.2307 loss=-0.6354 sec=41.71 / seed 0 epoch=19 label=-0.6931 kd=0.2177 loss=-0.6278 sec=42.62 / seed 0 epoch=20 label=-0.7177 kd=0.2108 loss=-0.6544 sec=43.13 / seed 0 epoch=21 label=-0.725 kd=0.2177 loss=-0.6597 sec=40.66 / seed 0 epoch=22 label=-0.7282 kd=0.2083 loss=-0.6657 sec=41.26 / seed 0 epoch=23 label=-0.735 kd=0.2087 loss=-0.6724 sec=41.23 / seed 0 epoch=24 label=-0.7368 kd=0.213 loss=-0.6729 sec=39.78 / seed 0 epoch=25 label=-0.7317 kd=0.2009 loss=-0.6714 sec=40.26 / seed 0 epoch=26 label=-0.7431 kd=0.2103 loss=-0.68 sec=40.87 / seed 0 epoch=27 label=-0.7585 kd=0.1993 loss=-0.6987 sec=45.02 / seed 0 epoch=28 label=-0.7576 kd=0.2108 loss=-0.6944 sec=42.55 / seed 0 epoch=29 label=-0.7575 kd=0.1976 loss=-0.6982 sec=47.83 / seed 0 epoch=30 label=-0.7563 kd=0.2109 loss=-0.693 sec=44.54 / seed 0 epoch=31 label=-0.7615 kd=0.193 loss=-0.7036 sec=39.98 / seed 0 epoch=32 label=-0.7564 kd=0.1949 loss=-0.698 sec=40.23 / seed 0 epoch=33 label=-0.7544 kd=0.1901 loss=-0.6973 sec=39.68 / seed 0 epoch=34 label=-0.7654 kd=0.1846 loss=-0.71 sec=38.78 / seed 0 epoch=35 label=-0.7632 kd=0.1894 loss=-0.7064 sec=38.19 / seed 0 epoch=36 label=-0.7801 kd=0.1916 loss=-0.7226 sec=37.98 / seed 0 epoch=37 label=-0.7651 kd=0.1804 loss=-0.711 sec=38.71 / seed 0 epoch=38 label=-0.7589 kd=0.1948 loss=-0.7004 sec=38.96 / seed 0 epoch=39 label=-0.7593 kd=0.1776 loss=-0.706 sec=39.1 / seed 0 epoch=40 label=-0.7691 kd=0.1742 loss=-0.7168 sec=41.77 / seed 0 epoch=41 label=-0.7599 kd=0.1806 loss=-0.7057 sec=42.06 / seed 0 epoch=42 label=-0.765 kd=0.1775 loss=-0.7118 sec=42.05 / seed 0 epoch=43 label=-0.7481 kd=0.1678 loss=-0.6977 sec=41.74 / seed 0 epoch=44 label=-0.7634 kd=0.1747 loss=-0.711 sec=40.86 / seed 0 epoch=45 label=-0.769 kd=0.1767 loss=-0.716 sec=42.52 / seed 0 epoch=46 label=-0.7614 kd=0.1689 loss=-0.7108 sec=41.61 / seed 0 epoch=47 label=-0.7615 kd=0.1658 loss=-0.7118 sec=41.9 / seed 0 epoch=48 label=-0.7526 kd=0.1694 loss=-0.7018 sec=41.67 / seed 0 epoch=49 label=-0.7504 kd=0.1685 loss=-0.6998 sec=41.23 / seed 0 epoch=50 label=-0.7485 kd=0.1645 loss=-0.6991 sec=41.66 / seed 0 epoch=51 label=-0.748 kd=0.163 loss=-0.6991 sec=40.92 / seed 0 epoch=52 label=-0.7405 kd=0.1557 loss=-0.6938 sec=42.03 / seed 0 epoch=53 label=-0.7424 kd=0.1575 loss=-0.6951 sec=41.29 / seed 0 epoch=54 label=-0.7446 kd=0.1633 loss=-0.6956 sec=41.15 / seed 0 epoch=55 label=-0.734 kd=0.1557 loss=-0.6873 sec=41.29 / seed 0 epoch=56 label=-0.7253 kd=0.1516 loss=-0.6798 sec=41.97 / seed 0 epoch=57 label=-0.7281 kd=0.156 loss=-0.6813 sec=40.82 / seed 0 epoch=58 label=-0.7416 kd=0.1508 loss=-0.6964 sec=42.2 / seed 0 epoch=59 label=-0.7185 kd=0.1508 loss=-0.6733 sec=41.29 / seed 0 epoch=60 label=-0.722 kd=0.1515 loss=-0.6765 sec=41.9 / seed 0 epoch=61 label=-0.7202 kd=0.1518 loss=-0.6746 sec=40.79 / seed 0 epoch=62 label=-0.7221 kd=0.1504 loss=-0.6769 sec=42.28 / seed 0 epoch=63 label=-0.7195 kd=0.1445 loss=-0.6761 sec=42.5 / seed 0 epoch=64 label=-0.7025 kd=0.1502 loss=-0.6575 sec=40.19 / seed 0 epoch=65 label=-0.7021 kd=0.1447 loss=-0.6587 sec=41.81 / seed 0 epoch=66 label=-0.7096 kd=0.1449 loss=-0.6661 sec=42.83 / seed 0 epoch=67 label=-0.7116 kd=0.1469 loss=-0.6676 sec=41.68 / seed 0 epoch=68 label=-0.7132 kd=0.1434 loss=-0.6702 sec=41.1 / seed 0 epoch=69 label=-0.6935 kd=0.1424 loss=-0.6508 sec=41.71 / seed 0 epoch=70 label=-0.697 kd=0.1403 loss=-0.6549 sec=40.67 / seed 0 epoch=71 label=-0.7025 kd=0.1422 loss=-0.6598 sec=39.36 / seed 0 epoch=72 label=-0.6937 kd=0.1435 loss=-0.6507 sec=37.56 / seed 0 epoch=73 label=-0.6918 kd=0.1414 loss=-0.6493 sec=39.14 / seed 0 epoch=74 label=-0.7005 kd=0.1445 loss=-0.6572 sec=37.1 / seed 0 epoch=75 label=-0.6942 kd=0.1437 loss=-0.6511 sec=36.85 / seed 0 epoch=76 label=-0.6919 kd=0.1408 loss=-0.6497 sec=38.21 / seed 0 epoch=77 label=-0.6942 kd=0.1477 loss=-0.6499 sec=36.78 / seed 0 epoch=78 label=-0.7032 kd=0.1434 loss=-0.6602 sec=37.08 / seed 0 epoch=79 label=-0.6862 kd=0.1325 loss=-0.6465 sec=37.62 / seed 0 epoch=80 label=-0.6883 kd=0.1404 loss=-0.6462 sec=36.87
+- **Artifacts**: /home/bcheng/STOCKHOLM/sentinel_runs/lite/litev2_P3b_densenet_parity_lr1e-4

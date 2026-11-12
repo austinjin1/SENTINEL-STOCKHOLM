@@ -1,0 +1,322 @@
+# MIT License — Bryan Cheng, 2026
+# Part of SENTINEL v2
+#
+# M4 ChemTox architecture round v2 — tracks T1 and T6. THE CONFIGURATION, written before any pool
+# fit, as ruling §4 of docs/preregistration/chemtox_arch_v2_lead_rulings.md requires.
+#
+# Governing documents, in precedence order:
+#   1. docs/preregistration/chemtox_arch_v2_lead_rulings.md  sha256 553be413bef252e5900023dc1dc983dd8f228a5825194ca70505cf6649c7f060
+#   2. docs/preregistration/chemtox_arch_v2_addendum_01.md    sha256 9a195e643c420c39b7fd4451053fd3f482e738441d3ca626e85659cd342c9f2e  (proposed)
+#   3. docs/preregistration/chemtox_arch_v2_amendment.md      sha256 fb52cd4b072fa19c8c1e19b9fe1374a0e8abb71d9492eff764f2034cb26d293b  (stamped)
+# Where 1 and 3 differ, 1 wins. These values are the protocol, not tunables: changing one changes
+# what is being measured, and after any validation number exists on either track a change needs a
+# dated addendum under C-7.
+#
+# NOTHING HERE HAS BEEN FITTED. The guard is closed until the lead writes
+# docs/preregistration/chemtox_arch_v2_pins.json (S2, C-2).
+
+meta:
+  tracks: [T1, T6]
+  split_file: $DATA/processed/chemtox_arch_v2/chemtox_t1t6_split_v2.parquet
+  split_sha256: ab71aace46260980a6f011a561c2280fe0025226978508daa57f96493c5323a3
+  pool_block: train_pool
+  pool_rows: 32106
+  pool_loader: sentinel.models.chemtox.arch_v2_guard.load_training_pool
+  auxiliary_loader: sentinel.models.chemtox.arch_v2_guard.load_auxiliary_rows   # addendum 01
+  h4_loader: sentinel.models.chemtox.arch_v2_guard.load_h4_rows                 # addendum 01
+  # F1: no §15.1 label is available on any of the three blocks. They are DESCRIPTIVE ONLY.
+  blocks:
+    T1_test:  {rows: 11363, units: 546, status: descriptive_only}
+    T6a_test: {rows: 11249, units: 694, status: descriptive_only}
+    T6b_test: {rows: 4106,  units: 289, status: descriptive_only}
+
+# ----------------------------------------------------------------------------- the primary metric
+metric:
+  primary: micro_rmse            # log10(mol/L) on the block's rows; frozen T2 protocol §6
+  primary_lower_is_better: true
+  # reported, never claimed (PRIMARY-METRIC-AND-CI)
+  reported_only: [macro_rmse_by_chemical, macro_rmse_by_species, mae, r2, bias, within_1_log,
+                  within_one_bin_class]
+
+# ----------------------------------------------------------- F6 — intervals, seeds, Holm p-values
+statistics:
+  seeds: [0, 1, 2]
+  seed_pairing: by_index          # seed s of the candidate pairs with seed s of the comparator
+  point_estimate: seed_mean       # mean over seeds 0,1,2 of candidate minus the same for comparator
+  bootstrap:
+    kind: percentile_cluster_bootstrap
+    two_sided_alpha: 0.05
+    B_holm_family: 10000          # F6: raised to 10,000 for every interval entering a Holm family;
+    B_minimum: 10000              #      never lowered
+    paired_on_identical_rows: true
+  holm_p_value: "2 * min(share of resamples <= 0, share of resamples >= 0), each share computed as (count + 1) / (B + 1)"
+  all_seeds_better_rule: >
+    TRUE only if the point difference favours the candidate for each of seeds 0, 1 and 2 against
+    each of the (a) and (b) comparators, on the full block.
+  # F5 — legs (a) and (b) must exclude 0 under BOTH clusterings
+  clusterings: [holdout_unit, reference_number]
+  both_clusterings_required_for: [a, b]
+  # F7 — the analytic MDE governs; the bootstrap check is never a gate
+  mde_source: $RUNS/chemtox/arch_v2/t1t6_mde_v2.json
+  mde_source_sha256: f67d0376fa3440e7653c77fd0a74ed78afda9a214979f44fdb5af6bc32151475
+  mde_governs: analytic
+  mde_bootstrap_is_a_gate: false
+  mde_disclosure_required: >
+    every write-up that quotes an MDE states both figures and that the percentile bootstrap's
+    coverage on heavy-tailed unit sizes has not been verified.
+  governing_mde_icc_0_5:            # F10: the pinned JSON governs wherever this text differs
+    T1_test: 0.0959
+    T6a_test: 0.1027
+    T6b_test: 0.1033
+  no_shared_reference_mde_icc_0_5:
+    T1_test: 0.1255
+    T6a_test: 0.1061
+    T6b_test: 0.1039
+
+# ------------------------------------------------------------------- F2 — condition (a) comparator
+condition_a:
+  arms: [mmoe, gpboost_published]
+  rule: >
+    read against whichever of mmoe and gpboost_published has the LOWER pool-validation score,
+    whatever its §4.6 reproduction status; a §4.6 miss is disclosed beside the result and never
+    removes that arm from (a).
+  resolved_by: pool_validation      # C-3: mean micro-RMSE over the track's selection folds
+  named_in_writing_before_the_look: true
+  if_neither_finite: no_label_available_on_that_block
+
+# ------------------------------------------------------------- F3 — condition (b), a CLOSED list
+condition_b:
+  rule: >
+    read against the LOWEST pool-validation scorer among all entries that are neither a candidate
+    nor a published-form arm. The list is closed; the chosen entry is named in writing before the
+    look.
+  closed_list:
+    - r1_monotone_gbm
+    - r2_aft_gbm
+    - r3_multitask_stack_gbm
+    - xgboost_emb
+    - xgboost_emb_dur
+    - rf_emb
+    - rf_emb_dur
+    - lightgbm_noemb
+    - readacross
+    - trivial_global_mean
+    - trivial_per_species_mean
+    - trivial_per_chemical_mean
+    - trivial_per_species_x_band_mean
+    - haber_rule
+    - nearest_duration_carry_forward
+    - ensemble_mean_baseline
+    - ensemble_decorrelated_baseline
+  named_in_writing_before_the_look: true
+
+# --------------------------------------------------------------------- F8 — the outcome wording
+outcome_wording:
+  all_conditions_met: "exceeds the pre-registered MDE on an under-powered block; no SOTA label"
+  ahead_but_a_condition_unmet: "not resolvable on this block"
+  behind_on_point_estimate: "no gain"
+  behind_with_ci_excluding_zero: "worse than <comparator>"
+  fails_shared_reference_leg: "ahead on the full block, not separable from publication structure"
+  no_candidate_ahead_anywhere: >
+    RESEARCH_PLAN §15.5 applies and the next track must be harder or larger.
+  equal_prominence_required: true     # a "no gain" is reported as prominently as a win
+
+# --------------------------------------------------------------------------- the embedding source
+# §5.6 precedence, resolved 2026-11-10 by licence check; recorded here BEFORE any fit.
+embedding:
+  chosen: molformer_xl
+  repo_id: ibm-research/MoLFormer-XL-both-10pct
+  licence: apache-2.0
+  licence_gated: false
+  licence_checked: 2026-11-10
+  total_repo_bytes: 374640429
+  parameters: 46805760
+  citation: "Ross et al., Nature Machine Intelligence 4(12):1256-1264 (2022), doi 10.1038/s42256-022-00580-7"
+  precedence_record:
+    - {source: molformer_xl, licence: apache-2.0, clears: true,
+       note: "chosen; ungated, no extra terms on the model card"}
+    - {source: chemberta_2, repo_id: DeepChem/ChemBERTa-77M-MLM, licence: none_stated,
+       clears: false, note: "no licence tag and no model card; the DeepChem MIT licence covers the
+                             code, not these weights. NOT USED."}
+    - {source: chemeleon, licence: MIT, clears: true,
+       note: "Zenodo 15460715, chemeleon_mp.pt 34,859,448 B, open. The declared fallback; in-tree
+              already and used by T2's chemeleon_lightgbm. NOT USED because MolFormer-XL clears
+              first."}
+  one_source_only: true
+  second_source_is_a_new_entry: true    # §5.5 (iii): 32 (T1) / 16 (T6) configs against the total
+  concatenate_never_substitute: true
+  cache_key_includes_split_sha256: true # PRETRAINED-CACHE
+
+# ---------------------------------------------------------------- the entries and the caps (§5.5)
+caps:
+  T1: {searched_entries: 12, per_entry: 32, searched_total: 384, fixed_configurations: 13}
+  T6: {searched_entries: 8,  per_entry: 16, searched_total: 128, fixed_configurations: 13}
+  ablations_fixed: 12        # A1-A6 on the single selected `ted` configuration, per track
+  grand_total: 550
+  entries_total: 44
+  every_configuration_counted: true
+  failed_fit_consumes_its_slot: true
+  ablations_do_not_grow_under_the_fallback: true
+  fallback_if_ceiling_reached: 8   # configurations per track for the entry concerned
+
+entries:
+  T1:
+    searched:
+      ted:                    {role: candidate,  gpu: true,  configs: 32}
+      timehead:               {role: candidate,  gpu: true,  configs: 32}
+      rx_lightgbm:            {role: candidate,  gpu: false, configs: 32}
+      rx_catboost:            {role: candidate,  gpu: false, configs: 32}
+      rx_chemprop:            {role: candidate,  gpu: true,  configs: 32}
+      mmoe:                   {role: comparator, gpu: true,  configs: 32, published_arm: true}
+      r1_monotone_gbm:        {role: comparator, gpu: false, configs: 32}
+      r2_aft_gbm:             {role: comparator, gpu: false, configs: 32}
+      r3_multitask_stack_gbm: {role: comparator, gpu: false, configs: 32}
+      xgboost_emb:            {role: comparator, gpu: false, configs: 32}
+      rf_emb:                 {role: comparator, gpu: false, configs: 32}
+      lightgbm_noemb:         {role: comparator, gpu: false, configs: 32, information_control: true}
+    fixed:
+      rf_published_adore:            {role: published_arm, configs: 1, embedding: false}
+      xgboost_published_adore:       {role: published_arm, configs: 1, embedding: false}
+      gpboost_published:             {role: published_arm, configs: 2, embedding: false}
+      readacross:                    {role: comparator,    configs: 1}
+      trivial_global_mean:           {role: comparator,    configs: 1}
+      trivial_per_species_mean:      {role: comparator,    configs: 1}
+      trivial_per_chemical_mean:     {role: comparator,    configs: 1}
+      r5_trident_released_errors:    {role: cross_reference, configs: 1, fits: false}
+      ensemble_mean:                 {role: candidate,     configs: 1}
+      ensemble_decorrelated:         {role: candidate,     configs: 1}
+      ensemble_mean_baseline:        {role: comparator,    configs: 1}
+      ensemble_decorrelated_baseline: {role: comparator, configs: 1}
+  T6:
+    searched:
+      ted:                    {role: candidate,  gpu: true,  configs: 16}
+      timehead:               {role: candidate,  gpu: true,  configs: 16}
+      rx_lightgbm_dur:        {role: candidate,  gpu: false, configs: 16}
+      r1_monotone_gbm:        {role: comparator, gpu: false, configs: 16}
+      r2_aft_gbm:             {role: comparator, gpu: false, configs: 16}
+      r3_multitask_stack_gbm: {role: comparator, gpu: false, configs: 16}
+      xgboost_emb_dur:        {role: comparator, gpu: false, configs: 16}
+      mmoe:                   {role: comparator, gpu: true,  configs: 16, published_arm: true}
+    fixed:
+      trivial_per_species_mean:        {role: comparator, configs: 1}
+      trivial_per_chemical_mean:       {role: comparator, configs: 1}
+      trivial_per_species_x_band_mean: {role: comparator, configs: 1}
+      rf_emb_dur:                      {role: comparator, configs: 1}   # F10, fixed not searched
+      rf_published_adore:              {role: published_arm, configs: 1, embedding: false}
+      xgboost_published_adore:         {role: published_arm, configs: 1, embedding: false}
+      gpboost_published:               {role: published_arm, configs: 2, embedding: false}
+      readacross:                      {role: comparator, configs: 1}
+      haber_rule:                      {role: comparator, configs: 1}
+      nearest_duration_carry_forward:  {role: comparator, configs: 1}
+      trivial_global_mean:             {role: comparator, configs: 1}
+      r5_trident_released_errors:      {role: cross_reference, configs: 1, fits: false}
+
+# ------------------------------------------------------------------------------------- F10
+# rf_emb_dur uses the rf_emb configuration WITH THE DURATION FEATURE ADDED AND NOTHING ELSE.
+rf_emb_dur:
+  derives_from: rf_emb
+  adds_features: [duration_h]
+  changes_nothing_else: true
+  hyperparameters: inherit_from_rf_emb_selected_configuration
+  configs: 1
+  track: T6
+xgboost_emb_dur:
+  derives_from: xgboost_emb
+  adds_features: [duration_h]
+  changes_nothing_else: true
+rx_lightgbm_dur:
+  derives_from: rx_lightgbm
+  adds_features: [duration_h]
+  changes_nothing_else: true
+
+# ------------------------------------------------------------------------- R4 parity (§4.3)
+parity:
+  embedding_goes_to: [r1_monotone_gbm, r2_aft_gbm, r3_multitask_stack_gbm, xgboost_emb,
+                      xgboost_emb_dur, rf_emb, rf_emb_dur]
+  published_arms_stay_verbatim_without_embedding: true
+  condition_g_read_against: [r1_monotone_gbm, r2_aft_gbm, r3_multitask_stack_gbm, xgboost_emb,
+                             xgboost_emb_dur, rf_emb, rf_emb_dur]
+  checked_mechanically: true    # per-fold row count, sorted feature names + their hash, aux targets
+  ensembling_parity: matched_baseline_ensemble_with_same_member_count
+
+# -------------------------------------------------------------------- §4.6 reproduction tolerances
+reproduction_tolerance:
+  rf_published_adore:      {reference: 0.927, tolerance: 0.03, basis: "ADORE t-F2F published RMSE"}
+  xgboost_published_adore: {reference: 0.927, tolerance: 0.03, basis: "ADORE t-F2F published RMSE"}
+  gpboost_published:       {reference: null,  tolerance: null,
+                            check: "nine hyper-parameters asserted verbatim against the manifest
+                                    chemtox_published_gpboost; gpboost 1.8.0 vs the authors' 1.2.1
+                                    disclosed"}
+  mmoe:                    {reference: null,  tolerance: null,
+                            check: "must beat lightgbm_noemb on pool validation, else reported as a
+                                    failed reproduction"}
+  miss_rule: >
+    F2: a comparator that misses §4.6 cannot be the ONLY arm carrying (a) or (b); a miss never
+    removes a stronger arm from (a).
+
+# -------------------------------------------------------------------------- selection (§7.1)
+selection:
+  T1: {folds: 4, rule: leave_one_unit_group_out, seed: 20261110, groups_balanced_by: row_count}
+  T6: {folds: 3, rule: duration_band_holdout_inside_the_pool,
+       folds_detail: ["train 24-72 h, validate >72-96 h",
+                      "train 48-96 h, validate 24-<36 h",
+                      "train 24-48 h, validate >48-96 h"]}
+  T6b: {folds: 1, rule: unit_group_and_top_band_held_out_together}
+  score: mean_micro_rmse_over_folds
+  retain: [worse_half, worst_fold, per_fold, top5_spread]
+  winner: lowest_mean_then_lowest_worst_fold
+  refit_seeds: [0, 1, 2]
+
+ensembles:
+  member_margin_rmse: 0.05
+  objective: "maximise mean pairwise (1 - corr(residuals))"
+  member_set_fixed_before_the_look: true
+  disclosure: >
+    0.05 is about five times T1's row-level MDE and about half its governing unit-level gate, so
+    members may differ from the best single model by more than a claimable difference at the
+    row-level reading. Reported beside every ensemble result.
+  no_ensemble_entry_on_T6: true     # §5.3: no ensemble claim is available on T6 at all
+
+ablations:
+  A1: "D-MPNN trunk, free-form duration conditioning, no composition layer"
+  A2: "composition layer with B = 0 (pure anchored law)"
+  A3: "duration and endpoint fed to the trunk as well (leak test)"
+  A4: "acute-only training (no chronic, no censored)"
+  A5: "+ BCF head (admissible: the join/QC report landed)"
+  A6: "+ Q10 term with a free prior; no literature constant assumed"
+  attribution_rule: >
+    if A1 scores within the block's governing MDE of the full model, the win belongs to the trunk
+    and the data, the mechanistic framing is dropped, and that is reported in the headline table.
+  read_at: unit_level_gate
+
+bands:
+  definition: {lt24: "MIN < d < 24", w24_96: "24 <= d <= 96", gt96_168: "96 < d <= 168",
+               gt168_720: "168 < d <= 720", gt720_2160: "720 < d <= 2160", gt2160: "d > 2160"}
+  min_units_for_claim: 50
+  descriptive_only_bands: {T6a_test: [gt2160], T6b_test: [gt720_2160, gt2160]}
+  # F9: the headline of each T6 look is the FULL BLOCK, never a subset of bands chosen after it
+  headline_is_the_full_block: true
+  all_five_bands_printed_beside_every_headline: true
+  no_band_carries_a_label: true
+
+compute:
+  gpus_allowed: [0, 1, 3, 4, 5, 6, 7, 8, 9]   # never GPU 2 while another user's job is on it
+  gpu_helper: "python -m sentinel.core.gpu --name <job> --min-free-mb <n> --"
+  max_hours_per_job: 2
+  one_config_one_fold_per_job: true
+  cpu_threads_per_job: 6
+  cpu_jobs_sequential: true
+  vram_budget_gb: 4
+  disk_floor_gb_free: 60
+  new_data_cap_gb: 10
+  per_entry_gpu_hour_ceiling:
+    ted_T1: 30
+    ted_T6: 12
+    rx_chemprop_T1: 26
+    mmoe_T1: 12
+    mmoe_T6: 5
+    timehead_both: 2
+    embedding_cache: 2
+    seed_refits: 6
+    total: 95
+  no_renegotiation_after_a_validation_number_exists: true

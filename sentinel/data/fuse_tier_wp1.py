@@ -20,6 +20,8 @@ scoring) but every development reader drops them on load.
 
 from __future__ import annotations
 
+from .reserved import exclude_reserved
+
 import json
 
 import numpy as np
@@ -69,7 +71,7 @@ def build(log=lambda *a: print(*a, flush=True), max_sites: int | None = None) ->
     cal = pd.date_range(*CAL, freq="D")
     grid = cal[(np.arange(len(cal)) % GRID_DAYS) == 0]
     sdir = paths.processed("sonde_daily") / "sites"
-    sites = sorted(s for s in roles if (sdir / f"{s}.parquet").exists())
+    sites = exclude_reserved(sorted(s for s in roles if (sdir / f"{s}.parquet").exists()))   # reserved new-site block
     if max_sites:                     # smoke only
         sites = sites[:max_sites]
     labs = {v: ftw._lab(v, {f"USGS-{s}" for s in sites}) for v in ftw.W_TARGETS}
